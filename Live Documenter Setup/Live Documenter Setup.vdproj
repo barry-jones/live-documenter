@@ -7,12 +7,24 @@
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
-"SccProjectName" = "8:"
-"SccLocalPath" = "8:"
-"SccAuxPath" = "8:"
-"SccProvider" = "8:"
+"SccProjectName" = "8:Svn"
+"SccLocalPath" = "8:Svn"
+"SccAuxPath" = "8:Svn"
+"SccProvider" = "8:SubversionScc"
     "Hierarchy"
     {
+        "Entry"
+        {
+        "MsmKey" = "8:_00F6EF50004420341867BF9EBB5DDF8C"
+        "OwnerKey" = "8:_92290D9E131F71F13EA97B6D31631A6C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_00F6EF50004420341867BF9EBB5DDF8C"
+        "OwnerKey" = "8:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
         "Entry"
         {
         "MsmKey" = "8:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
@@ -21,7 +33,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_260B1928C31D30CB62D01F5520F1F2DE"
+        "MsmKey" = "8:_283424E27A7253C9357FEFA982F505AF"
+        "OwnerKey" = "8:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_92290D9E131F71F13EA97B6D31631A6C"
         "OwnerKey" = "8:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,7 +51,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D2CC91EC00E7E89CD312EF26F5E3C8D1"
+        "MsmKey" = "8:_C1A225C423B218A3B05F0446AD7457F3"
         "OwnerKey" = "8:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -46,13 +64,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_260B1928C31D30CB62D01F5520F1F2DE"
+        "OwnerKey" = "8:_283424E27A7253C9357FEFA982F505AF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D2CC91EC00E7E89CD312EF26F5E3C8D1"
+        "OwnerKey" = "8:_C1A225C423B218A3B05F0446AD7457F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_92290D9E131F71F13EA97B6D31631A6C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_00F6EF50004420341867BF9EBB5DDF8C"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -80,6 +110,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
+                    {
+                    "Name" = "8:.NET Framework 3.5 SP1"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
         "Release"
@@ -147,20 +190,82 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_260B1928C31D30CB62D01F5520F1F2DE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_00F6EF50004420341867BF9EBB5DDF8C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_00F6EF50004420341867BF9EBB5DDF8C"
+                    {
+                    "Name" = "8:WPFToolkit.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WPFToolkit.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7C65AA7BEB43422DAABC1C031C35B9BC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_283424E27A7253C9357FEFA982F505AF"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:TheBoxSoftware, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_260B1928C31D30CB62D01F5520F1F2DE"
+                    "_283424E27A7253C9357FEFA982F505AF"
                     {
                     "Name" = "8:TheBoxSoftware.dll"
                     "Attributes" = "3:512"
                     }
                 }
             "SourcePath" = "8:TheBoxSoftware.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7C65AA7BEB43422DAABC1C031C35B9BC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_92290D9E131F71F13EA97B6D31631A6C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Windows.Controls.Input.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_92290D9E131F71F13EA97B6D31631A6C"
+                    {
+                    "Name" = "8:System.Windows.Controls.Input.Toolkit.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Windows.Controls.Input.Toolkit.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7C65AA7BEB43422DAABC1C031C35B9BC"
@@ -198,14 +303,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D2CC91EC00E7E89CD312EF26F5E3C8D1"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C1A225C423B218A3B05F0446AD7457F3"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TheBoxSoftware.Reflection, Version=0.1.3810.33440, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TheBoxSoftware.Reflection, Version=0.1.3852.31474, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_D2CC91EC00E7E89CD312EF26F5E3C8D1"
+                    "_C1A225C423B218A3B05F0446AD7457F3"
                     {
                     "Name" = "8:TheBoxSoftware.Reflection.dll"
                     "Attributes" = "3:512"
@@ -855,7 +960,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
             {
-            "SourcePath" = "8:..\\TheBoxSoftware.DeveloperSuite.LiveDocumenter\\obj\\Release\\Live Documenter.exe"
+            "SourcePath" = "8:..\\TheBoxSoftware.DeveloperSuite.LiveDocumenter\\obj\\Debug\\Live Documenter.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7C65AA7BEB43422DAABC1C031C35B9BC"
