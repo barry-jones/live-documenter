@@ -1,0 +1,18 @@
+﻿<Section x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements.TypeHeaderSection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Section.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/SummaryTable.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type Table}">
+                <Setter Property="Margin" Value="0,0,0,5" />
+            </Style>
+            <Style TargetType="{x:Type TableCell}">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="TextAlignment" Value="Left" />
+            </Style>
+        </ResourceDictionary>
+    </Section.Resources>
+</Section>

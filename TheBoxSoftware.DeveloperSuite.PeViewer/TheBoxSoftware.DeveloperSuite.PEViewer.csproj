@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E23C4A5D-127A-48B1-A17E-4972054A078F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheBoxSoftware.DeveloperSuite.PEViewer</RootNamespace>
+    <AssemblyName>PE Viewer</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\PE Viewer.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\About.xaml">
+      <Link>About.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\About.xaml.cs">
+      <Link>About.xaml.cs</Link>
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CollectionNotificationManager.cs" />
+    <Compile Include="Controls\DataGridView.cs" />
+    <Compile Include="Controls\DataGridViewColumn.cs" />
+    <Compile Include="Controls\DataGridViewPropertyDescriptorAttribute.cs" />
+    <Compile Include="Controls\PropertyInfoEngine.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CLRDirectoryEntry.cs" />
+    <Compile Include="Model\Entry.cs" />
+    <Compile Include="Model\GuidStreamEntry.cs" />
+    <Compile Include="Model\MetadataStreamEntry.cs" />
+    <Compile Include="Model\MetadataTableEntry.cs" />
+    <Compile Include="Model\MetadataWrappers\AssemblyMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\AssemblyRefMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\ClassLayoutMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\ConstantMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\CustomAttributeMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\DeclSecurityMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\EventMapMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\EventMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\FieldLayoutMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\FieldMarshalMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\FieldMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\FieldRVAMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\FileMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\GenericParamConstraintMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\GenericParamMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\ImplMapMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\InterfaceImplMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\ManifestResourceMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\MemberRefMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\MethodDefMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\MethodImplMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\MethodSemanticsMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\MethodSpecMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\ModuleMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\ModuleRefMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\NestedClassMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\ParamMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\PropertyMapMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\PropertyMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\StandAloneSigMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\TypeDefMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\TypeRefMetadataWrapper.cs" />
+    <Compile Include="Model\MetadataWrappers\TypeSpecMetadataWrapper.cs" />
+    <Compile Include="Model\PEFile.cs" />
+    <Compile Include="Model\SimpleIndexEntry.cs" />
+    <Compile Include="Model\StringStreamEntry.cs" />
+    <Compile Include="Model\TableData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
+      <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
+      <Name>TheBoxSoftware.Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bluebackground.png" />
+    <Resource Include="Resources\grayheader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataViews\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

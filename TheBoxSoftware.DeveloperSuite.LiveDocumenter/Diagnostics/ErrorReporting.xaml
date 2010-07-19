@@ -1,0 +1,20 @@
+﻿<Window x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics.ErrorReporting"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Error Report: Please help us make this software better." Height="356" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="41*" />
+            <RowDefinition Height="67*" />
+            <RowDefinition Height="119*" />
+            <RowDefinition Height="35*" />
+        </Grid.RowDefinitions>
+        <TextBlock TextWrapping="Wrap" Padding="5">Unfortunately an error occurred which we are unable to recover from. Please help by adding a note describing what you were doing and sending the following information to our support team.</TextBlock>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left" Padding="3" Margin="12,6,0,0" Name="textBlock1" Width="120" Height="22" VerticalAlignment="Top">What were you doing?</TextBlock>
+        <TextBox Grid.Row="1" Margin="12,34,12,9" Name="txtUserDescription" />
+        <TextBlock Margin="12,10,12,0" Name="textBlock2" Padding="3" Height="22" Grid.Row="2" VerticalAlignment="Top">Below are the details we will be sending to the support team.</TextBlock>
+        <TextBox Margin="12,38,12,0" Name="txtExceptionDetails" Grid.Row="2" />
+        <Button Grid.Row="3" HorizontalAlignment="Right" Margin="0,6,12,14" Name="sendErrorReport" Width="107" Click="sendErrorReport_Click">Send Error Report</Button>
+        <Button HorizontalAlignment="Right" Margin="0,6,125,14" Name="cancel" Width="55" Grid.Row="3" Command="ApplicationCommands.Close">Cancel</Button>
+    </Grid>
+</Window>
