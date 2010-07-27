@@ -322,11 +322,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 		private void ShowPreferences(object sender, RoutedEventArgs e) {
 			Preferences p = new Preferences();
+			p.Owner = this;
 			p.ShowDialog();
 		}
 
 		private void ShowAbout(object sender, RoutedEventArgs e) {
 			About about = new About();
+			about.Owner = this;
 			about.ShowDialog();
 		}
 
