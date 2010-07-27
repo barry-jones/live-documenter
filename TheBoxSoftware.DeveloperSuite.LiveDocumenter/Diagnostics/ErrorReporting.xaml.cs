@@ -47,6 +47,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 				errorReport.DateOccurred = DateTime.Now.ToUniversalTime();
 				errorReport.UserActivity = this.txtUserDescription.Text;
 
+				string osVersion = Environment.OSVersion.ToString();
+				string framework = Environment.Version.ToString();
+				string emial = this.email.Text;
+				errorReport.Environment = new TheBoxSoftware.DeveloperSuite.LiveDocumenter.BoxSoftwareServices.EnvironmentInformation();
+				errorReport.Environment.OperatingSystem = osVersion;
+				errorReport.Environment.FrameworkVersion = framework;
+				errorReport.Email = emial;
+
 				// write out all of the exceptions
 				Exception current = this.currentException;
 				List<BoxSoftwareServices.ExceptionReport> exceptions = new List<BoxSoftwareServices.ExceptionReport>();

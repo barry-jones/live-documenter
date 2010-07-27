@@ -2,16 +2,6 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
-      <s:element name="ReportError">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="content" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="ReportErrorResponse">
-        <s:complexType />
-      </s:element>
       <s:element name="ReportAnError">
         <s:complexType>
           <s:sequence>
@@ -25,8 +15,16 @@
           <s:element minOccurs="0" maxOccurs="1" name="ProductVersion" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="UserActivity" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="DateOccurred" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Environment" type="tns:EnvironmentInformation" />
           <s:element minOccurs="0" maxOccurs="1" name="Assemblies" type="tns:ArrayOfReferencedAssembly" />
           <s:element minOccurs="0" maxOccurs="1" name="Exceptions" type="tns:ArrayOfExceptionReport" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EnvironmentInformation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OperatingSystem" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FrameworkVersion" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="ArrayOfReferencedAssembly">
@@ -58,12 +56,6 @@
       </s:element>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="ReportErrorSoapIn">
-    <wsdl:part name="parameters" element="tns:ReportError" />
-  </wsdl:message>
-  <wsdl:message name="ReportErrorSoapOut">
-    <wsdl:part name="parameters" element="tns:ReportErrorResponse" />
-  </wsdl:message>
   <wsdl:message name="ReportAnErrorSoapIn">
     <wsdl:part name="parameters" element="tns:ReportAnError" />
   </wsdl:message>
@@ -71,10 +63,6 @@
     <wsdl:part name="parameters" element="tns:ReportAnErrorResponse" />
   </wsdl:message>
   <wsdl:portType name="ErrorReportingSoap">
-    <wsdl:operation name="ReportError">
-      <wsdl:input message="tns:ReportErrorSoapIn" />
-      <wsdl:output message="tns:ReportErrorSoapOut" />
-    </wsdl:operation>
     <wsdl:operation name="ReportAnError">
       <wsdl:input message="tns:ReportAnErrorSoapIn" />
       <wsdl:output message="tns:ReportAnErrorSoapOut" />
@@ -82,15 +70,6 @@
   </wsdl:portType>
   <wsdl:binding name="ErrorReportingSoap" type="tns:ErrorReportingSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="ReportError">
-      <soap:operation soapAction="http://tempuri.org/ReportError" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="ReportAnError">
       <soap:operation soapAction="http://tempuri.org/ReportAnError" style="document" />
       <wsdl:input>
@@ -103,15 +82,6 @@
   </wsdl:binding>
   <wsdl:binding name="ErrorReportingSoap12" type="tns:ErrorReportingSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="ReportError">
-      <soap12:operation soapAction="http://tempuri.org/ReportError" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="ReportAnError">
       <soap12:operation soapAction="http://tempuri.org/ReportAnError" style="document" />
       <wsdl:input>
