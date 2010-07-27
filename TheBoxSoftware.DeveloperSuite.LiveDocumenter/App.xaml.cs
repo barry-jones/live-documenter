@@ -16,6 +16,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
                 new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
 
             base.OnStartup(e);
+
+			System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-GB", true);
         }
 
         /// <summary>
