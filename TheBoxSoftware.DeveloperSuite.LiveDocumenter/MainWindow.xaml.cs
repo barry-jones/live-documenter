@@ -273,9 +273,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			Entry preUpdateSelection = this.currentSelection;
 			Entry preUpdateSelectionParent = this.currentSelectionParent;
             bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
+			bool hasBeenReloaded = false;
 
 			foreach (DocumentedAssembly current in LiveDocumentorFile.Singleton.Files) {
 				if (current.HasAssemblyBeenModified()) {
+					hasBeenReloaded = true;
+
 					// The assembly has been modified, find the existing node
 					// and generate the new one
 					Entry existingEntry = null;
@@ -303,7 +306,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			// Tries to reselect a node in the tree that was selected before the window was
 			// activated. That is before we tried to reload the project.
-			if (preUpdateSelectionParent != null && preUpdateSelection != null) {
+			if (hasBeenReloaded && (preUpdateSelectionParent != null && preUpdateSelection != null)) {
 				// We need something in the document map to search on
 				if (LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count >= 1) {
 					Entry foundParent = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.First<Entry>(
@@ -312,7 +315,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					Entry foundEntry = foundParent.FindByKey(preUpdateSelection.Key, preUpdateSelection.SubKey);
 					if (foundEntry != null) {
 						foundEntry.IsSelected = true;
-                        foundEntry.IsExpanded = wasExpanded;
+                        foundEntry.IsExpanded = true;
+						foundEntry.IsExpanded = wasExpanded;
 					}
 				}
 			}
