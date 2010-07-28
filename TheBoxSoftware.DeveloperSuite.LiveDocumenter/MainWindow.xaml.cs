@@ -26,6 +26,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		private Entry currentSelection;
 		private Entry currentSelectionParent;
+		private bool allowFileRefreshing = true;
 
 		/// <summary>
 		/// Initialises a new instance of the MainWindow class.
@@ -272,59 +273,61 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		private void mainWindow_Activated(object sender, EventArgs e) {
-			this.Cursor = Cursors.Wait;
-			Entry preUpdateSelection = this.currentSelection;
-			Entry preUpdateSelectionParent = this.currentSelectionParent;
-            bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
-			bool hasBeenReloaded = false;
+			if (this.AllowFileRefreshing) {
+				this.Cursor = Cursors.Wait;
+				Entry preUpdateSelection = this.currentSelection;
+				Entry preUpdateSelectionParent = this.currentSelectionParent;
+				bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
+				bool hasBeenReloaded = false;
 
-			foreach (DocumentedAssembly current in LiveDocumentorFile.Singleton.Files) {
-				if (current.HasAssemblyBeenModified()) {
-					hasBeenReloaded = true;
+				foreach (DocumentedAssembly current in LiveDocumentorFile.Singleton.Files) {
+					if (current.HasAssemblyBeenModified()) {
+						hasBeenReloaded = true;
 
-					// The assembly has been modified, find the existing node
-					// and generate the new one
-					Entry existingEntry = null;
-					int entryAtIndex = -1;
-					for (int i = 0; i < LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count; i++) {
-						Entry currentEntry = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap[i];
-						if (currentEntry.Name == System.IO.Path.GetFileName(current.FileName)) {
-							existingEntry = currentEntry;
-							entryAtIndex = i;
-							break;
+						// The assembly has been modified, find the existing node
+						// and generate the new one
+						Entry existingEntry = null;
+						int entryAtIndex = -1;
+						for (int i = 0; i < LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count; i++) {
+							Entry currentEntry = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap[i];
+							if (currentEntry.Name == System.IO.Path.GetFileName(current.FileName)) {
+								existingEntry = currentEntry;
+								entryAtIndex = i;
+								break;
+							}
+						}
+
+						// Remove the old entry, we need to do this now so any searches performed in the
+						// generate method do not return values from here.
+						LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.RemoveAt(entryAtIndex);
+
+						int fileCounter = ((TheBoxSoftware.Reflection.AssemblyDef)existingEntry.Item).UniqueId;
+						Entry assemblyEntry = LiveDocumentorFile.Singleton.LiveDocument.GenerateDocumentForAssembly(current, ref fileCounter);
+
+						// Insert the newly generated entry in the same location as the old one
+						LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Insert(entryAtIndex, assemblyEntry);
+					}
+				}
+
+				// Tries to reselect a node in the tree that was selected before the window was
+				// activated. That is before we tried to reload the project.
+				if (hasBeenReloaded && (preUpdateSelectionParent != null && preUpdateSelection != null)) {
+					// We need something in the document map to search on
+					if (LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count >= 1) {
+						Entry foundParent = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.First<Entry>(
+							entry => entry.Key == preUpdateSelectionParent.Key
+							);
+						Entry foundEntry = foundParent.FindByKey(preUpdateSelection.Key, preUpdateSelection.SubKey);
+						if (foundEntry != null) {
+							foundEntry.IsSelected = true;
+							foundEntry.IsExpanded = true;
+							foundEntry.IsExpanded = wasExpanded;
 						}
 					}
-
-					// Remove the old entry, we need to do this now so any searches performed in the
-					// generate method do not return values from here.
-					LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.RemoveAt(entryAtIndex);
-
-					int fileCounter = ((TheBoxSoftware.Reflection.AssemblyDef)existingEntry.Item).UniqueId;
-					Entry assemblyEntry = LiveDocumentorFile.Singleton.LiveDocument.GenerateDocumentForAssembly(current, ref fileCounter);
-
-					// Insert the newly generated entry in the same location as the old one
-					LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Insert(entryAtIndex, assemblyEntry);
 				}
-			}
 
-			// Tries to reselect a node in the tree that was selected before the window was
-			// activated. That is before we tried to reload the project.
-			if (hasBeenReloaded && (preUpdateSelectionParent != null && preUpdateSelection != null)) {
-				// We need something in the document map to search on
-				if (LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count >= 1) {
-					Entry foundParent = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.First<Entry>(
-						entry => entry.Key == preUpdateSelectionParent.Key
-						);
-					Entry foundEntry = foundParent.FindByKey(preUpdateSelection.Key, preUpdateSelection.SubKey);
-					if (foundEntry != null) {
-						foundEntry.IsSelected = true;
-                        foundEntry.IsExpanded = true;
-						foundEntry.IsExpanded = wasExpanded;
-					}
-				}
+				this.Cursor = null;
 			}
-
-			this.Cursor = null;
 		}
 
 		private void ShowPreferences(object sender, RoutedEventArgs e) {
@@ -426,6 +429,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Informs the window if it is allowed to refresh the file list.
+		/// </summary>
+		internal bool AllowFileRefreshing {
+			get { return this.allowFileRefreshing; }
+			set { this.allowFileRefreshing = value; }
 		}
 	}
 }

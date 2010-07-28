@@ -16,7 +16,16 @@
     Loaded="mainWindow_Loaded" 
     Closing="mainWindow_Closing" 
     Activated="mainWindow_Activated">
-	<Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Key="Left" Modifiers="Alt" Command="NavigationCommands.BrowseBack" />
+        <KeyBinding Key="Right" Modifiers="Alt" Command="NavigationCommands.BrowseForward" />
+        <KeyBinding Key="O" Modifiers="Control" Command="ApplicationCommands.Open" />
+        <KeyBinding Key="P" Modifiers="Control" Command="ApplicationCommands.Print" />
+        <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
+    </Window.InputBindings>
+
+    <Window.Resources>
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
         </Style>

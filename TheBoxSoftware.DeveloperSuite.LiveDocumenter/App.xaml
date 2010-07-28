@@ -4,31 +4,13 @@
     xmlns:pages="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages"
     xmlns:local="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements"
     xmlns:doc="clr-namespace:System.Windows.Documents;assembly=PresentationFramework"
-    StartupUri="MainWindow.xaml" ShutdownMode="OnLastWindowClose">
+    ShutdownMode="OnLastWindowClose" StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/DefaultStyles.xaml" />
                 <ResourceDictionary Source="Resources/SummaryTable.xaml" x:Name="SummaryTableResources" />
             </ResourceDictionary.MergedDictionaries>
-           
-           
         </ResourceDictionary>
     </Application.Resources>
-    
-    <Application.MainWindow>
-        <Window>
-            <Window.CommandBindings>
-                
-            </Window.CommandBindings>
-
-            <Window.InputBindings>
-                <KeyBinding Key="Left" Modifiers="Alt" Command="NavigationCommands.BrowseBack" />
-                <KeyBinding Key="Right" Modifiers="Alt" Command="NavigationCommands.BrowseForward" />
-                <KeyBinding Key="O" Modifiers="Control" Command="ApplicationCommands.Open" />
-                <KeyBinding Key="P" Modifiers="Control" Command="ApplicationCommands.Print" />
-                <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
-            </Window.InputBindings>
-        </Window>
-    </Application.MainWindow>
 </Application>

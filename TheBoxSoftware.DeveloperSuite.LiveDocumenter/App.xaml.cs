@@ -29,6 +29,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
             DispatcherUnhandledExceptionEventArgs e) {
             TheBoxSoftware.Diagnostics.Logging.Log(e.Exception);
 
+			// [#87] close the main window so we dont get any activation errors (for ever repeating error dialogues)
+			((MainWindow)App.Current.MainWindow).AllowFileRefreshing = false;
+
 			e.Handled = true;
 
 			Diagnostics.ErrorReporting errorReport = new Diagnostics.ErrorReporting();
