@@ -60,14 +60,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 				try {
 					List<DocumentedAssembly> readFiles = DocumentationFileReader.Read(ofd.FileName);
-					LiveDocumentorFile.Singleton.Add(readFiles, ofd.FileName);
+					if (readFiles != null) {
+						LiveDocumentorFile.Singleton.Add(readFiles, ofd.FileName);
 
-					this.UpdateView();
+						this.UpdateView();
 
-					this.userViewingHistory.ClearHistory();
-					Model.UserApplicationStore.Store.RecentFiles.AddFile(new TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.RecentFile(
-						ofd.FileName, System.IO.Path.GetFileName(ofd.FileName)
-						));
+						this.userViewingHistory.ClearHistory();
+						Model.UserApplicationStore.Store.RecentFiles.AddFile(new TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.RecentFile(
+							ofd.FileName, System.IO.Path.GetFileName(ofd.FileName)
+							));
+					}
 					this.Cursor = null;
 				}
 				catch (TheBoxSoftware.Reflection.Core.NotAManagedLibraryException) {

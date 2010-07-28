@@ -29,9 +29,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				throw new ArgumentNullException("fileName");
 			}
 
-			List<DocumentedAssembly> files = new List<DocumentedAssembly>();
+			List<DocumentedAssembly> files = null;
 			FileReader reader = null;
-			switch (Path.GetExtension(fileName)) {
+
+			switch (Path.GetExtension(fileName).ToLower()) {
 				case ".sln":
 					reader = new SolutionFileReader(fileName);
 					break;
@@ -47,7 +48,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					reader = new LibraryFileReader(fileName);
 					break;
 			}
-			files.AddRange(reader.Read());
+
+			files = reader.Read();
+
 			return files;
 		}
 
@@ -254,6 +257,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			public VS2003ProjectFileReader(string filename) : 
 				base(filename) {
 			}
+
 			public override List<DocumentedAssembly> Read() {
 								// TODO: Consider how we will know which is the selected output type
 
