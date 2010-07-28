@@ -37,6 +37,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 			this.txtExceptionDetails.Text = ex.ToString();
 		}
 
+		/// <summary>
+		/// Sends the error report
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void sendErrorReport_Click(object sender, RoutedEventArgs e) {
 			try {
 				this.Cursor = Cursors.AppStarting;
@@ -105,10 +110,19 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 			StringBuilder sb = new StringBuilder();
 			if (dictionary != null && dictionary.Count > 0) {
 				foreach (System.Collections.DictionaryEntry entry in dictionary) {
-					sb.AppendFormat("{0} - {1}<br />", entry.Key, entry.Value);
+					sb.AppendFormat("{0} - {1}|", entry.Key, entry.Value);
 				}
 			}
 			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Simply closes the form returning control to the application error handler.
+		/// </summary>
+		/// <param name="sender">Calling object</param>
+		/// <param name="e">Event arguments</param>
+		private void cancel_Click(object sender, RoutedEventArgs e) {
+			this.Close();
 		}
 	}
 }
