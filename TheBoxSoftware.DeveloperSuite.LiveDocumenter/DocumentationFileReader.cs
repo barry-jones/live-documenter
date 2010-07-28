@@ -159,6 +159,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				XmlDocument doc = new XmlDocument();
 				doc.Load(filename);
 
+				// should find a nice way of figuring out the schema version numbers and loading a reader based on that
+				// but speed is of the essance! [#94]
 				if (doc.FirstChild.Name == "Project" || (doc.FirstChild.Name=="xml" && doc.FirstChild.NextSibling.Name == "Project")) {
 					return new ProjectFileReader(filename);
 				}
