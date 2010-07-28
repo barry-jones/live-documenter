@@ -4,7 +4,7 @@
     xmlns:pages="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages"
     xmlns:local="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements"
     xmlns:doc="clr-namespace:System.Windows.Documents;assembly=PresentationFramework"
-    StartupUri="MainWindow.xaml">
+    StartupUri="MainWindow.xaml" ShutdownMode="OnLastWindowClose">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

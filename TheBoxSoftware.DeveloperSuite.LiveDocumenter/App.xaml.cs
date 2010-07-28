@@ -34,7 +34,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			Diagnostics.ErrorReporting errorReport = new Diagnostics.ErrorReporting();
 			errorReport.SetException(e.Exception);
 			errorReport.ShowDialog();
-			Application.Current.Shutdown();
+			App.Current.Shutdown();
         }
     }
 }

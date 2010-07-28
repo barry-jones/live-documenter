@@ -217,6 +217,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="e">The event arguments</param>
 		private void mainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			Model.UserApplicationStore.Save();
+			App.Current.Shutdown();
 		}
 
 		/// <summary>
@@ -225,7 +226,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="sender">The caller.</param>
 		/// <param name="e">The event arguments.</param>
 		private void CloseApplication(object sender, RoutedEventArgs e) {
-			Application.Current.Shutdown();
+			App.Current.Shutdown();
 		}
 
 		/// <summary>
