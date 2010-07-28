@@ -126,7 +126,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				foreach (string project in projectFiles) {
 					string fullProjectPath = System.IO.Path.GetDirectoryName(this.FileName) + "\\" + project;
 					if (System.IO.File.Exists(fullProjectPath)) {
-						ProjectFileReader reader = ProjectFileReader.Create(versionMatch.Groups[1].Value, fullProjectPath);
+						ProjectFileReader reader = ProjectFileReader.Create(fullProjectPath);
 						references.AddRange(reader.Read());
 					}					
 				}
@@ -155,18 +155,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			/// <param name="fileName">The full path of the project file to read.</param>
 			public ProjectFileReader(string fileName) : base(fileName) { }
 
-			public static ProjectFileReader Create(string solutionVersion, string fileName) {
-				switch (solutionVersion) {
-					case "8.00":
-						return new VS2003ProjectFileReader(fileName);
-					default:
-						return new ProjectFileReader(fileName);
-				}
-			}
-
 			public static ProjectFileReader Create(string filename) {
 				XmlDocument doc = new XmlDocument();
 				doc.Load(filename);
+
 				if (doc.FirstChild.Name == "Project" || (doc.FirstChild.Name=="xml" && doc.FirstChild.NextSibling.Name == "Project")) {
 					return new ProjectFileReader(filename);
 				}
