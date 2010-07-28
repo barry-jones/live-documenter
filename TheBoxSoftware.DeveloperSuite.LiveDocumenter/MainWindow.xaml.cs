@@ -81,6 +81,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						MessageBoxButton.OK,
 						MessageBoxImage.Information
 						);
+					this.pageViewer.Document = new Pages.WelcomePage();
 				}
 			}
 		}

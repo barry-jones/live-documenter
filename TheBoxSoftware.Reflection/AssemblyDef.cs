@@ -62,6 +62,15 @@ namespace TheBoxSoftware.Reflection {
 		public static AssemblyDef Create(string fileName) {
 			if (string.IsNullOrEmpty(fileName))
 				throw new ArgumentNullException(fileName);
+
+			// [#102] check for CLR directory to make sure it is a managed PE file
+			PeCoffFile peFile = new PeCoffFile(fileName);
+
+			if (!peFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader)) {
+				peFile = null;	// would be nice to get the memory back
+				throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", fileName));
+			}
+
 			return AssemblyDef.Create(new PeCoffFile(fileName));
 		}
 

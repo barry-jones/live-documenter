@@ -54,12 +54,6 @@ namespace TheBoxSoftware.Reflection.Core {
 			this.FileHeader = new FileHeader(contentsAsArray, offset);
 			this.PeHeader = new PEHeader(contentsAsArray, offset);
 
-			if (
-				((this.PeHeader.Magic & FileMagicNumbers.Bit32) != FileMagicNumbers.Bit32) && 
-				((this.PeHeader.Magic & FileMagicNumbers.Bit63) != FileMagicNumbers.Bit63)) {
-				throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", filePath));
-			}
-
 			this.ReadSectionHeaders(offset);
 			this.ReadDirectories();
 		}
