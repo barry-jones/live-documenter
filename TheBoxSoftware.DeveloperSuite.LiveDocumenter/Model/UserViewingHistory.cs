@@ -30,11 +30,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 				if (viewedEntries[viewedEntries.Count - 1] != this.Current) {
 					// Clear the list in front of the current element so we can continue
 					// the viewers history without it getting complicated with branches
-					Entry nextEntry = this.viewedEntries[this.currentPositionInHistory + 1];
+					int indexInfront = this.currentPositionInHistory + 1;
+					Entry nextEntry = this.viewedEntries[indexInfront];
 					while (nextEntry != null) {
-						this.viewedEntries.RemoveAt(this.currentPositionInHistory);
-						if (this.currentPositionInHistory + 1 < this.viewedEntries.Count) {
-							nextEntry = this.viewedEntries[this.currentPositionInHistory + 1];
+						this.viewedEntries.RemoveAt(indexInfront);
+						if (indexInfront < this.viewedEntries.Count) {
+							nextEntry = this.viewedEntries[indexInfront];
 						}
 						else {
 							nextEntry = null;
