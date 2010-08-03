@@ -97,7 +97,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// <param name="comment">The parsed XmlCodeComment to parse.</param>
 		/// <returns>A List of blocks for the members commentary.</returns>
 		public static List<Block> Parse(AssemblyDef assembly, XmlCodeComment comment) {
-
 			List<Block> blocks = new List<Block>();
 			if (comment != XmlCodeComment.Empty && comment.Elements.Count > 0) {
 				blocks = Parser.Parse(assembly, (XmlContainerCodeElement)comment);
@@ -148,6 +147,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		}
 
 		private static Block ParseBlock(AssemblyDef assembly, XmlCodeElement element, ParsingSession session) {
+			System.Diagnostics.Trace.WriteLineIf(LiveDocumenterApplication.IsTraceEnabled,
+				string.Format("parsing-block: e({0})",
+					element.Element.ToString()
+				));
+			System.Diagnostics.Trace.Indent();
+
 			CrefEntryKey crefEntryKey;
 			Hyperlink link;
 			
@@ -201,7 +206,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
                     if (((SeeAlsoXmlCodeElement)element).Member.PathType == CRefTypes.Error) {
                         return new Paragraph();
                     }
-					return new SeeAlso(assembly, ((SeeAlsoXmlCodeElement)element).Member);
+					SeeAlsoXmlCodeElement seeAlso = (SeeAlsoXmlCodeElement)element;
+					System.Diagnostics.Trace.WriteLineIf(LiveDocumenterApplication.IsTraceEnabled, string.Format("seealso({0})", seeAlso.Member.ToString()));
+					return new SeeAlso(assembly, seeAlso.Member);
 				case XmlCodeElements.TypeParam:
 					TypeParamXmlCodeElement typeParamElement = (TypeParamXmlCodeElement)element;
 					return new TypeParamEntry(typeParamElement.Name, typeParamElement.Text);

@@ -18,6 +18,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
             base.OnStartup(e);
 
 			System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-GB", true);
+
+			// setup traceing
+			System.Diagnostics.BooleanSwitch ts = new System.Diagnostics.BooleanSwitch("TRACE", string.Empty);
+			LiveDocumenterApplication.IsTraceEnabled = ts.Enabled;
         }
 
         /// <summary>

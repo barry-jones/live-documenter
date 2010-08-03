@@ -133,6 +133,7 @@
     <Compile Include="Extensions\TreeViewItemBehaviour.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LiveDocument.cs" />
+    <Compile Include="LiveDocumenterApplication.cs" />
     <Compile Include="LiveDocumentorFile.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -272,7 +272,6 @@ namespace TheBoxSoftware.Reflection {
 		/// <param name="theTypeName">The name of the type</param>
 		/// <returns>The resolved type definition or null if not found.</returns>
 		public TypeDef FindType(string theNamespace, string theTypeName) {
-			System.Diagnostics.Trace.WriteLine(string.Format("FindType: {0}.{1}", theNamespace, theTypeName));
 			return this.namspaceMap.FindTypeInNamespace(theNamespace, theTypeName);
 		}
 
