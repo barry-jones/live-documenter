@@ -21,7 +21,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			// setup traceing
 			System.Diagnostics.BooleanSwitch ts = new System.Diagnostics.BooleanSwitch("TRACE", string.Empty);
-			LiveDocumenterApplication.IsTraceEnabled = ts.Enabled;
+			TraceHelper.IsTraceEnabled = ts.Enabled;
         }
 
         /// <summary>

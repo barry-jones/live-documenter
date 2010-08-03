@@ -187,18 +187,27 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// <param name="mapReference">The DocumentMap to use and to add to</param>
 		/// <returns>A new Page instance that can be displayed in the LiveDocumentor</returns>
 		public static Page Create(object forItem, XmlCodeCommentFile commentsXml) {
+			TraceHelper.WriteLine("create page");
+			TraceHelper.Indent();
+
 			Page created = null;
 			if (forItem is AssemblyDef) {
-				created = new AssemblyPage(forItem as AssemblyDef, commentsXml);
+				AssemblyDef ass = forItem as AssemblyDef;
+				TraceHelper.WriteLine("assemblydef ({0})", ass.Name);
+				created = new AssemblyPage(ass, commentsXml);
 			}
 			else if (forItem is MethodDef) {
-				created = new MethodPage(forItem as MethodDef, commentsXml);
+				MethodDef method = forItem as MethodDef;
+				TraceHelper.WriteLine("method ({0}.{1}.{2})", method.Type.Namespace, method.Type.Name, method.Name);
+				created = new MethodPage(method, commentsXml);
 			}
 			else if (forItem is List<MethodDef>) {
+				TraceHelper.WriteLine("methods page");
 				created = new TypeMethodsPage(forItem as List<MethodDef>, commentsXml);
 			}
 			else if (forItem is TypeDef) {
 				TypeDef typeDef = forItem as TypeDef;
+				TraceHelper.WriteLine("typedef ({0}.{1})", typeDef.Namespace, typeDef.Name);
 				if (typeDef.InheritsFrom != null && typeDef.InheritsFrom.GetFullyQualifiedName() == "System.Enum") {
 					created = new EnumerationPage(forItem as TypeDef, commentsXml);
 				}
@@ -210,29 +219,42 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				}
 			}
 			else if (forItem is KeyValuePair<string, List<TypeDef>>) {
+				TraceHelper.WriteLine("namespace {0}", ((KeyValuePair<string, List<TypeDef>>)forItem).Key);
 				created = new NamespacePage((KeyValuePair<string, List<TypeDef>>)forItem, commentsXml);
 			}
 			else if (forItem is List<FieldDef>) {
+				TraceHelper.WriteLine("fields page");
 				created = new TypeFieldsPage(forItem as List<FieldDef>, commentsXml);
 			}
 			else if (forItem is FieldDef) {
-				created = new FieldPage(forItem as FieldDef, commentsXml);
+				FieldDef field = forItem as FieldDef;
+				TraceHelper.WriteLine("field ({0}.{1}.{2})", field.Type.Namespace, field.Type.Name, field.Name);
+				created = new FieldPage(field, commentsXml);
 			}
 			else if (forItem is List<PropertyDef>) {
+				TraceHelper.WriteLine("properties page");
 				created = new TypePropertiesPage(forItem as List<PropertyDef>, commentsXml);
 			}
 			else if (forItem is PropertyDef) {
-				created = new PropertyPage(forItem as PropertyDef, commentsXml);
+				PropertyDef property = forItem as PropertyDef;
+				TraceHelper.WriteLine("property ({0}.{1}.{2})", property.Type.Namespace, property.Type.Name, property.Name);
+				created = new PropertyPage(property, commentsXml);
 			}
 			else if (forItem is List<EventDef>) {
+				TraceHelper.WriteLine("events page");
 				created = new TypeEventsPage(forItem as List<EventDef>, commentsXml);
 			}
 			else if (forItem is EventDef) {
-				created = new EventPage(forItem as EventDef, commentsXml);
+				EventDef ev = forItem as EventDef;
+				TraceHelper.WriteLine("event ({0}.{1}.{2})", ev.Type.Namespace, ev.Type.Name, ev.Name);
+				created = new EventPage(ev, commentsXml);
 			}
 			else {
 				created = new Page(forItem.ToString());
 			}
+
+			TraceHelper.Unindent();
+
 			return created;
 		}
 

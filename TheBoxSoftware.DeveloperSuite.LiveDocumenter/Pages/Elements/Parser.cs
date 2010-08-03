@@ -147,11 +147,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		}
 
 		private static Block ParseBlock(AssemblyDef assembly, XmlCodeElement element, ParsingSession session) {
-			System.Diagnostics.Trace.WriteLineIf(LiveDocumenterApplication.IsTraceEnabled,
-				string.Format("parsing-block: e({0})",
-					element.Element.ToString()
-				));
-			System.Diagnostics.Trace.Indent();
+			if (TraceHelper.IsTraceEnabled) {
+				TraceHelper.WriteLine("parsing-block: e({0})", element.Element.ToString());
+			}
 
 			CrefEntryKey crefEntryKey;
 			Hyperlink link;
@@ -207,7 +205,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
                         return new Paragraph();
                     }
 					SeeAlsoXmlCodeElement seeAlso = (SeeAlsoXmlCodeElement)element;
-					System.Diagnostics.Trace.WriteLineIf(LiveDocumenterApplication.IsTraceEnabled, string.Format("seealso({0})", seeAlso.Member.ToString()));
+					
+					TraceHelper.Indent();
+					TraceHelper.WriteLine("seealso({0})", seeAlso.Member.ToString());
+					TraceHelper.Unindent();
+
 					return new SeeAlso(assembly, seeAlso.Member);
 				case XmlCodeElements.TypeParam:
 					TypeParamXmlCodeElement typeParamElement = (TypeParamXmlCodeElement)element;
@@ -264,6 +266,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		}
 
 		private static Inline ParseInline(AssemblyDef assembly, XmlCodeElement element, ParsingSession session) {
+			if (TraceHelper.IsTraceEnabled) {
+				TraceHelper.WriteLine("parsing-inline: e({0})", element.Element.ToString());
+			}
+
 			switch (element.Element) {
 					// Invalid elements
 				case XmlCodeElements.Code:
@@ -299,6 +305,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				case XmlCodeElements.See:
 					SeeXmlCodeElement seeElement = element as SeeXmlCodeElement;
 					CrefEntryKey key = new CrefEntryKey(assembly, seeElement.Member.ToString());
+
+					TraceHelper.Indent();
+					TraceHelper.WriteLine("see ({0})", key.CRef);
+					TraceHelper.Unindent();
 
                     // check if the member has been output by visual studio. If the cref is
                     // empty vs did not find it.
@@ -340,7 +350,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					return new Italic(new Run(element.Text)); 
 			}
 
-			throw new Exception("WTF, inline parsing error.");
+			throw new Exception("Unknown inline parsing error.");
 		}
 
 		private static Hyperlink CreateHyperlink(CrefEntryKey key, string name) {

@@ -25,6 +25,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// empty string.
 		/// </exception>
 		public static List<DocumentedAssembly> Read(string fileName) {
+			if (TraceHelper.IsTraceEnabled) {
+				TraceHelper.WriteLine("reading file: {0}", fileName);
+				TraceHelper.Indent();
+			}
+
 			if (string.IsNullOrEmpty(fileName)) {
 				throw new ArgumentNullException("fileName");
 			}
@@ -50,6 +55,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 
 			files = reader.Read();
+
+			TraceHelper.Unindent();
 
 			return files;
 		}
@@ -111,17 +118,22 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 				// Find the version number
 				Match versionMatch = Regex.Match(solutionFile, VersionPattern);
+				TraceHelper.WriteLine("solution version: {0}", versionMatch.Value);
 
 				// Find all the project files
 				MatchCollection projectFileMatches = Regex.Matches(solutionFile, V10ProjectPattern);
+				TraceHelper.WriteLine("number of projects: {0}", projectFileMatches.Count);
+				TraceHelper.Indent();
 				foreach (Match current in projectFileMatches) {
 					if (current.Groups.Count == 2) {
 						string projectFile = current.Groups[1].Value;
+						TraceHelper.WriteLine("project: {0}", projectFile);
 						if (ValidExtensions.Contains(System.IO.Path.GetExtension(projectFile))) {
 							projectFiles.Add(projectFile);
 						}
 					}
 				}
+				TraceHelper.Unindent();
 
 				foreach (string project in projectFiles) {
 					string fullProjectPath = System.IO.Path.GetDirectoryName(this.FileName) + "\\" + project;
@@ -162,9 +174,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				// should find a nice way of figuring out the schema version numbers and loading a reader based on that
 				// but speed is of the essance! [#94]
 				if (doc.FirstChild.Name == "Project" || (doc.FirstChild.Name=="xml" && doc.FirstChild.NextSibling.Name == "Project")) {
+					TraceHelper.WriteLine("reading with 05 > ProjectFileReader");
 					return new ProjectFileReader(filename);
 				}
 				else {
+					TraceHelper.WriteLine("reading with 03 < VS2003ProjectFileReader");
 					return new VS2003ProjectFileReader(filename);
 				}
 			}
