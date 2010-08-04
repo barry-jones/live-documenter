@@ -71,7 +71,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 							ofd.FileName, System.IO.Path.GetFileName(ofd.FileName)
 							));
 					}
-					this.Cursor = null;
 				}
 				catch (TheBoxSoftware.Reflection.Core.NotAManagedLibraryException) {
 					LiveDocumentorFile.Singleton.Files.Clear();	// Clear it again, we already did that before loading
@@ -82,6 +81,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						MessageBoxImage.Information
 						);
 					this.pageViewer.Document = new Pages.WelcomePage();
+					this.pageViewer.Focus(); // [#98] need to reset focus or commands are all greyed out
+				}
+				finally {
+					this.Cursor = null;
 				}
 			}
 		}
