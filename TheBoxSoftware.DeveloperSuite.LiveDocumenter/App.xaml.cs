@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Threading;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
+	using TheBoxSoftware.Diagnostics;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

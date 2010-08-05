@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace TheBoxSoftware.Reflection.Core {
+	using TheBoxSoftware.Diagnostics;
 	using TheBoxSoftware.Reflection.Core.PE;
 
 	/// <summary>
@@ -19,6 +20,8 @@ namespace TheBoxSoftware.Reflection.Core {
 		/// </summary>
 		/// <param name="filePath">The physical location of the file</param>
 		public PeCoffFile(string filePath) {
+			TraceHelper.WriteLine("loading pecoff file ({0})", filePath);
+			TraceHelper.Indent();
 			this.FileName = filePath;
 			this.Map = new MetadataToDefinitionMap();
 			this.IsMetadataLoaded = false;
@@ -26,6 +29,7 @@ namespace TheBoxSoftware.Reflection.Core {
 			this.ReadFileContents();
 			this.FileContents = null;
 			this.IsMetadataLoaded = true;
+			TraceHelper.Unindent();
 		}
 
 		#region Methods

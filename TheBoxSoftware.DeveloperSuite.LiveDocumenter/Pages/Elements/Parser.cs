@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Documents;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
+	using TheBoxSoftware.Diagnostics;
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 	using TheBoxSoftware.Reflection.Syntax;

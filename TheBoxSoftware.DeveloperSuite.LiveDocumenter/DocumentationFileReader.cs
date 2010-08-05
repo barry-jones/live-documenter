@@ -8,6 +8,8 @@ using System.Xml;
 using System.Xml.XPath;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
+	using TheBoxSoftware.Diagnostics;
+
 	/// <summary>
 	/// Helper class for reading and parsing file types to get the referenced
 	/// libraries.

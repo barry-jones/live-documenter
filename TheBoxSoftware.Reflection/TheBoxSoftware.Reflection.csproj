@@ -308,6 +308,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
+      <Project>{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}</Project>
+      <Name>TheBoxSoftware</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

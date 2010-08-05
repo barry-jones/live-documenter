@@ -59,6 +59,10 @@ namespace TheBoxSoftware.Reflection {
 		/// <param name="fileName">The file name of the assembly to reflect.</param>
 		/// <returns>The instantiated AssemblyDef.</returns>
 		/// <exception cref="ArgumentNullException">The filename was null or empty.</exception>
+		/// <exception cref="NotAManagedLibraryException">
+		/// Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
+		/// does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
+		/// </exception>
 		public static AssemblyDef Create(string fileName) {
 			if (string.IsNullOrEmpty(fileName))
 				throw new ArgumentNullException(fileName);
@@ -81,9 +85,18 @@ namespace TheBoxSoftware.Reflection {
 		/// <param name="peCoffFile">The PeCoffFile to load the AssemblyDef from.</param>
 		/// <returns>The instantiated AssemblyDef.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when the PeCoffFile is null.</exception>
+		/// <exception cref="NotAManagedLibraryException">
+		/// Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
+		/// does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
+		/// </exception>
 		public static AssemblyDef Create(PeCoffFile peCoffFile) {
 			if (peCoffFile == null) 
 				throw new ArgumentNullException("peCoffFile");
+
+			if (!peCoffFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader)) {
+				peCoffFile = null;	// would be nice to get the memory back
+				throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", peCoffFile.FileName));
+			}
 
 			AssemblyDef assembly = new AssemblyDef();
 			assembly.Modules = new List<ModuleDef>();

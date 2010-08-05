@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
+	using TheBoxSoftware.Diagnostics;
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 	using TheBoxSoftware.Reflection.Syntax;

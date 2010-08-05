@@ -9,7 +9,7 @@
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
     xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
     x:Name="mainWindow"
-    Title="Live Documenter" 
+    Title="Live Documenter - FREE NON-COMMERCIAL VERSION" 
     Height="639" 
     Width="969" 
     PreviewKeyDown="mainWindow_PreviewKeyDown"
