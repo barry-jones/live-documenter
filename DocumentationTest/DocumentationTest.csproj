@@ -62,6 +62,7 @@
     <Compile Include="DocumentedInterface.cs" />
     <Compile Include="EnumerationTest.cs" />
     <Compile Include="ExternalInheritanceTest.cs" />
+    <Compile Include="GeneratedConstructorTest.cs" />
     <Compile Include="GenericArrayTest.cs" />
     <Compile Include="GenericClass.cs" />
     <Compile Include="InheritanceTest.cs" />
