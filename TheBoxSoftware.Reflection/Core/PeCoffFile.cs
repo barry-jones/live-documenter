@@ -109,7 +109,7 @@ namespace TheBoxSoftware.Reflection.Core {
 					? (int)this.SectionHeaders[i + 1].VirtualAddress
 					: max;
 
-				if (rva > minAddress) {
+				if (rva >= minAddress) {
 					if (maxAddress == -1 || rva < maxAddress) {
 						virtualOffset = (int)this.SectionHeaders[i].VirtualAddress;
 						rawOffset = (int)this.SectionHeaders[i].PointerToRawData;
