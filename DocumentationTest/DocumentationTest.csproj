@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceInterfaceDocumentationTest.cs" />
     <Compile Include="SeeDocumentationTest.cs" />
+    <Compile Include="StaticConstructorTest_25.cs" />
     <Compile Include="VisibilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
