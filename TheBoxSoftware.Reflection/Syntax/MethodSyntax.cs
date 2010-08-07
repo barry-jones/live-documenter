@@ -91,6 +91,10 @@ namespace TheBoxSoftware.Reflection.Syntax {
 			List<ParamDef> parameters = this.method.Parameters;
 
 			for (int i = 0; i < parameters.Count; i++) {
+				if (parameters[i].Sequence == 0) {
+					hasReturnParam = true;
+					continue;
+				}
 				details.Add(new ParameterDetails(
 					parameters[i].Name,
 					definedParameters[i].GetTypeDetails(this.method)

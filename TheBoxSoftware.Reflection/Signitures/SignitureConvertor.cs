@@ -42,7 +42,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 						hadReturnParameter = true;
 						continue;
 					}
-					ParamSignitureToken currentToken = parametersToConvert[hadReturnParameter ? i + 1 : i];
+					ParamSignitureToken currentToken = parametersToConvert[hadReturnParameter ? i - 1 : i];
 					TypeRef typeRef = currentToken.ResolveParameter(method.Assembly, currentParameter);
 
 					if (isFirstParameter) {
