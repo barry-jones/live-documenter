@@ -75,7 +75,7 @@ namespace TheBoxSoftware.Reflection {
 				throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", fileName));
 			}
 
-			return AssemblyDef.Create(new PeCoffFile(fileName));
+			return AssemblyDef.Create(peFile);
 		}
 
 		/// <summary>
