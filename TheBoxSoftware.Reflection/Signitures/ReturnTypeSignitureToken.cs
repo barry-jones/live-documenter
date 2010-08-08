@@ -32,9 +32,9 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			}
 		}
 
-		internal TypeRef ResolveType(AssemblyDef assembly) {
+		internal TypeRef ResolveType(AssemblyDef assembly, ReflectedMember member) {
 			if (this.Tokens.Last() is TypeSignitureToken) {
-				return ((TypeSignitureToken)this.Tokens.Last()).ResolveType(assembly, null);
+				return ((TypeSignitureToken)this.Tokens.Last()).ResolveType(assembly, member);
 			}
 			else {
 				return ((ElementTypeSignitureToken)this.Tokens.Last()).ResolveToken(assembly);

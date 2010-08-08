@@ -178,7 +178,7 @@ namespace TheBoxSoftware.Reflection {
 			get {
 				TypeRef parent = this.InheritsFrom;
 				if (parent != null) {
-					return (parent.Name == "MulticastDelegate" || parent.Name == "Delegate");
+					return (parent.Name == "MulticastDelegate" || (parent.Name == "Delegate" && this.Name != "MulticastDelegate"));
 				}
 				else return false;
 			}
@@ -492,18 +492,6 @@ namespace TheBoxSoftware.Reflection {
 				}
 			}
 		}
-
-		//public PropertyDef FindPropertyByName(string name) {
-		//    return this.GetProperties().First(property => property.Name == name);
-		//}
-
-		//public FieldDef FindFieldByName(string name) {
-		//    return this.Fields.First(field => field.Name == name);
-		//}
-
-		//public MethodDef FindMethodByName(string name) {
-		//    return this.Methods.First(method => method.Name == name);
-		//}
 		#endregion
 
 		#region Internals

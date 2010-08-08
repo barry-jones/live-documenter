@@ -69,7 +69,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 			this.Parameters = this.Convert(method);
 			if (method.IsOperator && method.IsConversionOperator) {
 				this.isOperator = true;
-				this.returnType = method.Signiture.GetReturnTypeToken().ResolveType(method.Assembly).GetFullyQualifiedName();
+				this.returnType = method.Signiture.GetReturnTypeToken().ResolveType(method.Assembly, method).GetFullyQualifiedName();
 			}
 		}
 
@@ -190,6 +190,11 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// Thrown when the parser finds a type that it can not handle.
 		/// </exception>
 		private void ParseType() {
+			if (this.crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(this.crefPath.Substring(0, this.crefPath.IndexOf(':')))) {
+				this.PathType = CRefTypes.Error;
+				return;
+			}
+
 			string typePortion = this.crefPath.Substring(0, this.crefPath.IndexOf(':'));
 			switch (typePortion) {
 				case CRefConstants.TypeIndicator: this.PathType = CRefTypes.Type; break;
