@@ -20,6 +20,7 @@ namespace DocumentationTest {
 	/// This code block is inside the example block.
 	/// </code>
 	/// </example>
+	/// This method <see cref="ATestMethod(int)" />, is simply a test. <see cref="ATestMethod(string)"/>. <see cref="Gah{T}()"/>. <see cref="Gah{T}(string)"/>
 	/// </summary>
 	/// <remarks>
 	/// <para>Here are some remarks inside a para element.</para>
@@ -39,6 +40,12 @@ namespace DocumentationTest {
 	/// <typeparam name="T">This is detail for the type parameter information</typeparam>
 	/// <seealso cref="Object"/>
 	public class Gah<T> {
+		public Gah() {
+		}
+
+		public Gah(string s) {
+		}
+
 		/// <summary>
 		/// Value is apparently what youwould put on a private member. <see cref="ATestMethod" />.
 		/// <example>
@@ -66,6 +73,10 @@ namespace DocumentationTest {
 		/// <seealso cref="AllOutputTypesClass"/>
 		public string ATestMethod(int i) {
 			return i.ToString();
+		}
+
+		public string ATestMethod(string s) {
+			return string.Empty;
 		}
 	}
 }

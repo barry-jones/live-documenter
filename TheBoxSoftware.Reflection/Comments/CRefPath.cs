@@ -224,7 +224,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 					if (this.PathType != CRefTypes.Type) {
 						typePortion += "." + this.ElementName;
 					}
-					// BUG #32 - Added code to make cref paths add parameters for
+					// [#32] - Added code to make cref paths add parameters for
 					//	parameterised properties.
 					if (this.PathType == CRefTypes.Method  || (this.PathType == CRefTypes.Property && this.Parameters != null)) {
 						typePortion += this.Parameters;
@@ -241,6 +241,55 @@ namespace TheBoxSoftware.Reflection.Comments {
 					break;
 			}
 			return toString;
+		}
+
+		/// <summary>
+		/// Finds the member this <see cref="CRefPath"/> refers to in the provided type.
+		/// </summary>
+		/// <param name="type">The type.</param>
+		/// <returns>The found member ref.</returns>
+		/// <exception cref="ArgumentNullException">When <paramref name="type"/> is null.</exception>
+		public ReflectedMember FindIn(TypeDef type) {
+			if (type == null) throw new ArgumentNullException("type");
+
+			if (this.PathType == CRefTypes.Namespace || this.PathType == CRefTypes.Type || this.PathType == CRefTypes.Error) {
+				throw new InvalidOperationException(string.Format("Can not find member in a type when the path type is '{0}'", this.PathType.ToString()));
+			}
+
+			ReflectedMember member = null;
+			List<ReflectedMember> foundMembers = new List<ReflectedMember>();
+
+			// find all potential members
+			switch (this.PathType) {
+				case CRefTypes.Event:
+					foundMembers.AddRange(type.Events.FindAll(e => e.Name == this.ElementName).ToArray());
+					break;
+				case CRefTypes.Field:
+					foundMembers.AddRange(type.Fields.FindAll(e => e.Name == this.ElementName).ToArray());
+					break;
+				case CRefTypes.Method:
+					foundMembers.AddRange(type.Methods.FindAll(e => e.Name == this.ElementName.Replace('#', '.')).ToArray());
+					break;
+				case CRefTypes.Property:
+					foundMembers.AddRange(type.Properties.FindAll(e => e.Name == this.ElementName).ToArray());
+					break;
+			}
+
+			if (foundMembers.Count == 1) {
+				member = foundMembers[0];
+			}
+			else if (foundMembers.Count > 1) {
+				// the elements will differ by the parameters, this is slow!
+				foreach (ReflectedMember current in foundMembers) {
+					string found = CRefPath.Create(current).ToString();
+					if (found == this.ToString()) {
+						member = current;
+						break;
+					}
+				}
+			}
+
+			return member;
 		}
 		#endregion
 

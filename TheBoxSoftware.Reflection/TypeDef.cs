@@ -493,17 +493,17 @@ namespace TheBoxSoftware.Reflection {
 			}
 		}
 
-		public PropertyDef FindPropertyByName(string name) {
-			return this.GetProperties().First(property => property.Name == name);
-		}
+		//public PropertyDef FindPropertyByName(string name) {
+		//    return this.GetProperties().First(property => property.Name == name);
+		//}
 
-		public FieldDef FindFieldByName(string name) {
-			return this.Fields.First(field => field.Name == name);
-		}
+		//public FieldDef FindFieldByName(string name) {
+		//    return this.Fields.First(field => field.Name == name);
+		//}
 
-		public MethodDef FindMethodByName(string name) {
-			return this.Methods.First(method => method.Name == name);
-		}
+		//public MethodDef FindMethodByName(string name) {
+		//    return this.Methods.First(method => method.Name == name);
+		//}
 		#endregion
 
 		#region Internals

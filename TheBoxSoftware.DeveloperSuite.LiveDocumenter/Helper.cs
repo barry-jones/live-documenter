@@ -77,13 +77,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, resolvedType));
 							break;
 						case CRefTypes.Field:
-							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, resolvedType.FindFieldByName(crefPath.ElementName)));
+							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, crefPath.FindIn(resolvedType)));
 							break;
 						case CRefTypes.Property:
-							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, resolvedType.FindPropertyByName(crefPath.ElementName)));
+							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, crefPath.FindIn(resolvedType)));
 							break;
 						case CRefTypes.Method:
-							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, resolvedType.FindMethodByName(crefPath.ElementName)));
+							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, crefPath.FindIn(resolvedType)));
 							break;
 					}
 				}

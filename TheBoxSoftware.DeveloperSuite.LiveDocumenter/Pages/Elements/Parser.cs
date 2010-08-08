@@ -333,7 +333,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 								// these could be generic and so will need to modify to
 								// a more appropriate display name
 							case CRefTypes.Method:
-								MethodDef method = def.GetMethods().Find(m => m.Name == seeElement.Member.ElementName);
+								MethodDef method = seeElement.Member.FindIn(def) as MethodDef;
+
 								if (method != null) {
 									displayName = method.GetDisplayName(false);
 								}
