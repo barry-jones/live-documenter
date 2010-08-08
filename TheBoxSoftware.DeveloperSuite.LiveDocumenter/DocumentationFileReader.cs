@@ -207,12 +207,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				// DocumentationFile
 				XmlNode assemblyNode = projectFile.SelectSingleNode(@"/pr:Project/pr:PropertyGroup/pr:AssemblyName", namespaceManager);
 				XmlNode outputTypeNode = projectFile.SelectSingleNode(@"/pr:Project/pr:PropertyGroup/pr:OutputType", namespaceManager);
-				XmlNodeList ouputPathNodes = projectFile.SelectNodes(@"/pr:Project/pr:PropertyGroup/pr:OutputPath", namespaceManager);
+				XmlNodeList conditionalGroups = projectFile.SelectNodes(@"/pr:Project/pr:PropertyGroup[@Condition]", namespaceManager);
+				XmlNodeList ouputPathNodes = projectFile.SelectNodes(@"/pr:Project/pr:PropertyGroup[@Condition]/pr:OutputPath", namespaceManager);
 				XmlNode parentPropertyGroup = assemblyNode.ParentNode;
 
 				string outputExtension = string.Empty;
 				string libraryName = assemblyNode.InnerText;
 				string outputPath = string.Empty;
+				string documentationPath = string.Empty;
 
 				switch(outputTypeNode.InnerText) {
 					case "Library":
@@ -223,17 +225,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						outputExtension = "exe";
 						break;
 					default:
-						int x = 0;
 						break;
 				}
 
-				foreach (XmlNode currentNode in ouputPathNodes) {
-					foreach (XmlAttribute attribute in currentNode.ParentNode.Attributes) {
-						if (attribute.Name == "Condition") {
-							if (attribute.Value.IndexOf(Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString(), StringComparison.InvariantCultureIgnoreCase) != -1) {
-								outputPath = currentNode.InnerText;
-								break;
-							}
+				foreach (XmlNode currentNode in conditionalGroups) {
+					foreach(XmlAttribute attribute in currentNode.Attributes) {
+						if (attribute.Name == "Condition" && (attribute.Value.IndexOf(Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString(), StringComparison.InvariantCultureIgnoreCase) != -1)) {
+							XmlNode outPath = currentNode.SelectSingleNode("pr:OutputPath", namespaceManager);
+							XmlNode docPath = currentNode.SelectSingleNode("pr:DocumentationFile", namespaceManager);
+
+							if (outPath != null) outputPath = outPath.InnerText;
+							if (docPath != null) documentationPath = docPath.InnerText;
 						}
 					}
 				}
@@ -244,9 +246,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 							outputPath,
 							libraryName,
 							outputExtension);
+
+					string documentation = string.Empty;
+					if (System.IO.Path.IsPathRooted(documentationPath)) {
+						documentation = documentationPath;
+					}
+					else {
+						documentation = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(this.FileName) + "\\" + documentationPath);
+					}
+
 					if (System.IO.File.Exists(outputFile)) {
 						return new List<DocumentedAssembly>() {
-							new DocumentedAssembly(outputFile)
+							new DocumentedAssembly(outputFile, documentation)
 							};
 					}
 					else {
@@ -286,12 +297,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				XmlNode settings = projectFile.SelectSingleNode(@"/VisualStudioProject/*/Build/Settings");
 				XmlNode debugNode = projectFile.SelectSingleNode(@"/VisualStudioProject/*/Build/Settings/Config[@Name='" + 
 					Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString() + "']");
-				// XmlNodeList ouputPathNodes = projectFile.SelectNodes(@"/pr:Project/pr:PropertyGroup/pr:OutputPath", namespaceManager);
-				// XmlNode parentPropertyGroup = assemblyNode.ParentNode;
 
 				string outputExtension = string.Empty;
 				string libraryName = settings.Attributes["AssemblyName"].Value;
 				string outputPath = debugNode.Attributes["OutputPath"].Value;
+				string documentationFile = string.Empty;
+
+				if (debugNode.Attributes["DocumentationFile"] != null) {
+					documentationFile = debugNode.Attributes["DocumentationFile"].Value;
+				}
 
 				switch(settings.Attributes["OutputType"].Value) {
 					case "Library":
@@ -302,7 +316,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						outputExtension = "exe";
 						break;
 					default:
-						int x = 0;
 						break;
 				}
 
@@ -312,9 +325,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 							outputPath,
 							libraryName,
 							outputExtension);
+
+					string documentation = string.Empty;
+					if (System.IO.Path.IsPathRooted(documentationFile)) {
+						documentation = documentationFile;
+					}
+					else {
+						documentation = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(this.FileName) + "\\" + documentationFile);
+					}
+
 					if (System.IO.File.Exists(outputFile)) {
 						return new List<DocumentedAssembly>() {
-							new DocumentedAssembly(outputFile)
+							new DocumentedAssembly(outputFile, documentation)
 							};
 					}
 					else {

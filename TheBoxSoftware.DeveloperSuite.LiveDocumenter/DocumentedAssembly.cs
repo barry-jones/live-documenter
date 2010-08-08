@@ -32,10 +32,35 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// for example.
 		/// </remarks>
 		public DocumentedAssembly(string fileName) {
-			if (string.IsNullOrEmpty(fileName))
-				throw new ArgumentNullException("fileName");
+			if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException("fileName");
+
 			this.FileName = fileName;
 			this.XmlFileName = System.IO.Path.ChangeExtension(fileName, "xml");
+			this.Name = System.IO.Path.GetFileNameWithoutExtension(fileName);
+		}
+
+		/// <summary>
+		/// Initialises a new instance of the DocumentedAssembly class where the FileName
+		/// of the assembly is known.
+		/// </summary>
+		/// <param name="fileName">The full filepath and name of the assembly.</param>
+		/// <param name="documentationFile">The full filepath and name of the associated xml documentation file.</param>
+		/// <exception cref="ArgumentNullException">The FileName is null or empty.</exception>
+		/// <remarks>
+		/// When only the fileName is provided the xml comment file is assumed to be the same
+		/// file (i.e. path and name) as the assembly with the .xml extension instead of dll
+		/// for example.
+		/// </remarks>
+		public DocumentedAssembly(string fileName, string documentationFile) {
+			if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException("fileName");
+
+			// no doc file, assume output in default location
+			if (string.IsNullOrEmpty(documentationFile)) {
+				documentationFile = System.IO.Path.ChangeExtension(fileName, "xml");
+			}
+
+			this.FileName = fileName;
+			this.XmlFileName = documentationFile;
 			this.Name = System.IO.Path.GetFileNameWithoutExtension(fileName);
 		}
 		#endregion
