@@ -83,6 +83,10 @@ namespace TheBoxSoftware.Reflection.Syntax {
 			return details;
 		}
 
+		/// <summary>
+		/// Collects and returns all of the parameters for the associated <see cref="MethodDef" />.
+		/// </summary>
+		/// <returns>The list of <see cref="ParameterDetails" /> detailing the parameters</returns>
 		public List<ParameterDetails> GetParameters() {
 			List<ParameterDetails> details = new List<ParameterDetails>();
 			List<ParamSignitureToken> definedParameters = new List<ParamSignitureToken>(this.signiture.Tokens.FindAll(
@@ -90,14 +94,17 @@ namespace TheBoxSoftware.Reflection.Syntax {
 				).ConvertAll<ParamSignitureToken>(p => (ParamSignitureToken)p).ToArray());
 			List<ParamDef> parameters = this.method.Parameters;
 
+			// if a method has a return value (sequence 0) we need to miss it out as it is not in the
+			// methods normal parameter list. That information is returned by GetReturnType
+			bool hasReturnParam = false;
 			for (int i = 0; i < parameters.Count; i++) {
 				if (parameters[i].Sequence == 0) {
 					hasReturnParam = true;
 					continue;
 				}
 				details.Add(new ParameterDetails(
-					parameters[i].Name,
-					definedParameters[i].GetTypeDetails(this.method)
+					parameters[hasReturnParam ? i - 1 : i].Name,
+					definedParameters[hasReturnParam ? i - 1 : i].GetTypeDetails(this.method)
 					));
 			}
 			return details;
