@@ -218,13 +218,12 @@ namespace TheBoxSoftware.Reflection {
 
 					List<string> containingClassNames = new List<string>();
 					TypeDef currentType = this;
-					if (currentType.IsNested)
-					{
+					if (currentType.IsNested) {
 						currentType = currentType.ContainingClass;
-						containingClassNames.Add(currentType.Name);
+						containingClassNames.Add(currentType.GetDisplayName(false));
 					}
-					for (int i = containingClassNames.Count - 1; i >= 0; i--)
-					{
+
+					for (int i = containingClassNames.Count - 1; i >= 0; i--) {
 						sb.Append(".");
 						sb.Append(containingClassNames[i]);
 					}
