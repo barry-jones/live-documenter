@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
+	using TheBoxSoftware.Documentation;
 
 	/// <summary>
 	/// A page that provides a deployment diagram built from the details about the

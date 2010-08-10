@@ -5,6 +5,7 @@ using System.Text;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.Reflection;
+	using TheBoxSoftware.Documentation;
 
 	/// <summary>
 	/// Represents a project file, which can be used to save and load

@@ -9,6 +9,7 @@ using System.Xml.XPath;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.Diagnostics;
+	using TheBoxSoftware.Documentation;
 
 	/// <summary>
 	/// Helper class for reading and parsing file types to get the referenced

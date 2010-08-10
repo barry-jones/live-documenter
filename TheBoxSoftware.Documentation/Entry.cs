@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-/*
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
-	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages;
+
+namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection.Comments;
+	using TheBoxSoftware.Reflection;
 
 	/// <summary>
 	/// Class that represents an entry in the live document, relates to a single page
@@ -107,23 +107,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		#region Properties
-		/// <summary>
-		/// The page to display for this entry
-		/// </summary>
-		public Page Page {
-			get {
-				Page toLoad = null;
-				if (this.Name == "Members" || this.Name == "Constructors" || this.Name == "Component Diagram" || this.Name == "Operators") {
-					toLoad = Page.Create(item, this.Name, xmlComments);
-				}
-				else {
-					toLoad = Page.Create(item, xmlComments);
-				}
-				toLoad.Generate();
-				return toLoad;
-			}
-		}
-
 		/// <summary>
 		/// The display name for this entry, this will be used foremost to
 		/// display in the DocumentMap for the LiceDocument. This does not
@@ -225,19 +208,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		/// <summary>
-		/// Returns a path to an icon that represents this entry in the documentmap.
-		/// </summary>
-		public string IconPath {
-			get {
-				string path = Model.ElementIconConstants.GetIconPathFor(this.item);
-				if (string.IsNullOrEmpty(path) && this.item is KeyValuePair<string, List<TheBoxSoftware.Reflection.TypeDef>>) {
-					path = "Resources/ElementIcons/vsobject_namespace.png";
-				}
-				return string.IsNullOrEmpty(path) ? "Resources/default.png" : path;
-			}
-		}
-
-		/// <summary>
 		/// 
 		/// </summary>
 		public object Item { 
@@ -277,4 +247,3 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		#endregion
 	}
 }
-*/

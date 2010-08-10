@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-/*
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
+
+namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection;
 
 	/// <summary>
-	/// Represents the details of an assembly that is being documented
-	/// by the application.
+	/// An assembly that is being documented by the application. Acts as a wrapper to the file
+	/// and associated xml file.
 	/// </summary>
+	/// <seealso cref="AssemblyDef" />
+	/// <seealso cref="Comments.XmlCodeCommentFile" />
 	public sealed class DocumentedAssembly {
 		private AssemblyDef assembly;
 
@@ -32,8 +34,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// for example.
 		/// </remarks>
 		public DocumentedAssembly(string fileName) {
-			if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException("fileName");
-
+			if (string.IsNullOrEmpty(fileName))
+				throw new ArgumentNullException("fileName");
 			this.FileName = fileName;
 			this.XmlFileName = System.IO.Path.ChangeExtension(fileName, "xml");
 			this.Name = System.IO.Path.GetFileNameWithoutExtension(fileName);
@@ -120,4 +122,3 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		#endregion
 	}
 }
- * */

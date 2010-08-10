@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+/*
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
     /// <summary>
     /// An entry in the document map that indicates that there are no entries. Used
@@ -17,3 +17,4 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
         public EmptyEntry(string displayText) : base(null, displayText, null) { }
     }
 }
+*/

@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.IO.IsolatedStorage;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
+	using TheBoxSoftware.Documentation;
+
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
@@ -144,7 +146,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			LiveDocument document = LiveDocumentorFile.Singleton.Update();
 			this.documentMap.ItemsSource = document.DocumentMap;
 			if (document.DocumentMap.Count > 0) {
-				this.pageViewer.Document = document.DocumentMap[0].Page;
+				this.pageViewer.Document = ((LiveDocumenterEntry)document.DocumentMap[0]).Page;
 			}
 			else {
                 // There are no entries in this project/solution
@@ -163,7 +165,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
         private void documentMap_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             if (e.NewValue != null && !(e.NewValue is EmptyEntry)) {
                 this.Cursor = Cursors.Wait;
-                TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Page page = ((Entry)e.NewValue).Page;
+				TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Page page = ((LiveDocumenterEntry)e.NewValue).Page;
                 this.pageViewer.Document = page;
                 this.userViewingHistory.Add((Entry)e.NewValue);
                 this.currentSelection = (Entry)e.NewValue;
@@ -188,19 +190,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		private void MenuItem_Click(object sender, RoutedEventArgs e) {
-			//if (sender == this.TestException) {
-				throw new ApplicationException("Its just a test halt!");
-			//}
-			//else {
-				//this.Cursor = Cursors.AppStarting;
-				//Model.DocumentationExporter exporter = new TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.DocumentationExporter();
-				//exporter.Export();
-				//this.Cursor = null;
-			//}
-
-			System.Xml.XmlDocument xdoc = new System.Xml.XmlDocument();
-			xdoc.LoadXml(System.Windows.Markup.XamlWriter.Save(((Entry)this.documentMap.SelectedItem).Page));
-			xdoc.Save(@"test.xml");
+			// test
+			Documentation.Exporting.WebsiteExporter exp = new TheBoxSoftware.Documentation.Exporting.WebsiteExporter(
+				LiveDocumentorFile.Singleton.Files,
+				new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+				Documentation.Exporting.ExportConfigFile.Create(@"ApplicationData/web-msdn.ldec")
+				);
+			exp.Export();
 		}
 
 		/// <summary>

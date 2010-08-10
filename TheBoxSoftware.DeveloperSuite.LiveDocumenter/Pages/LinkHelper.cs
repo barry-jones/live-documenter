@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Controls;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
+	using TheBoxSoftware.Documentation;
+
 	/// <summary>
 	/// Helps links in the flow document resolve out to an item in the
 	/// document map.

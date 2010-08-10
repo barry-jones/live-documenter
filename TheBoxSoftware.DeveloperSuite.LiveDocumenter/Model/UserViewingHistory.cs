@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
+	using TheBoxSoftware.Documentation;
+
 	/// <summary>
 	/// Class that manages the history of the users viewing activities. This will
 	/// record any page that the user visits and allow them to navigate their history

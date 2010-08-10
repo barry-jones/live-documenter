@@ -9,6 +9,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.Reflection.Core;
 	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages;
 	using TheBoxSoftware.Reflection.Comments;
+	using TheBoxSoftware.Documentation;
 
 	/// <summary>
 	/// Represents a live document, which is a collection of pages which display
@@ -53,10 +54,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			// For each of the documentedfiles generate the document map and add
 			// it to the parent node of the document map
-			for(int i = 0; i < this.DocumentedFiles.Count; i++) {
+			for (int i = 0; i < this.DocumentedFiles.Count; i++) {
 				Entry assemblyEntry = this.GenerateDocumentForAssembly(
-					this.DocumentedFiles[i], ref fileCounter
-					);
+						this.DocumentedFiles[i], ref fileCounter
+						);
 				this.DocumentMap.Add(assemblyEntry);
 			}
 		}
@@ -69,7 +70,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <returns>The entry that relates to the key or null if not found</returns>
 		private Entry FindByKey(long key, string subKey, bool checkChildren) {
 			Entry found = null;
-			for(int i = 0; i < this.DocumentMap.Count; i++) {
+			for (int i = 0; i < this.DocumentMap.Count; i++) {
 				found = this.DocumentMap[i].FindByKey(key, subKey, checkChildren);
 				if (found != null) {
 					break;
@@ -87,7 +88,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		internal List<Entry> Search(string searchText) {
 			List<Entry> results = new List<Entry>();
 			if (this.DocumentMap != null) {
-				for(int i = 0; i < this.DocumentMap.Count; i++) {
+				for (int i = 0; i < this.DocumentMap.Count; i++) {
 					results.AddRange(this.DocumentMap[i].Search(searchText));
 				}
 			}
@@ -108,7 +109,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				xmlComments = new XmlCodeCommentFile();
 			}
 
-			Entry assemblyEntry = new Entry(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
+			Entry assemblyEntry = new LiveDocumenterEntry(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
 			assembly.UniqueId = fileCounter++;
 			assemblyEntry.Key = Helper.GetUniqueKey(assembly);
 			assemblyEntry.IsSearchable = false;
@@ -122,7 +123,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				Entry namespaceEntry = assemblyEntry.FindByKey(assemblyEntry.Key, currentNamespace.Key, false);
 				//namespaceEntry.Item = currentNamespace;
 				if (namespaceEntry == null) {
-					namespaceEntry = new Entry(currentNamespace, currentNamespace.Key, xmlComments, assemblyEntry);
+					namespaceEntry = new LiveDocumenterEntry(currentNamespace, currentNamespace.Key, xmlComments, assemblyEntry);
 					namespaceEntry.Key = assemblyEntry.Key;
 					namespaceEntry.SubKey = currentNamespace.Key;
 					namespaceEntry.IsSearchable = false;
@@ -134,7 +135,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					if (currentType.Name.StartsWith("<")) {
 						continue;
 					}
-					Entry typeEntry = new Entry(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
+					Entry typeEntry = new LiveDocumenterEntry(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
 					typeEntry.Key = Helper.GetUniqueKey(assembly, currentType);
 					typeEntry.IsSearchable = true;
 					typeEntry.FullName = currentType.GetFullyQualifiedName();
@@ -143,8 +144,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					// For some elements we will not want to load the child objects
 					// this is currently for System.Enum derived values.
 					if (
-						currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
-						currentType.IsDelegate) {
+							currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
+							currentType.IsDelegate) {
 						// Ignore children
 					}
 					else {
@@ -179,14 +180,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			List<MethodDef> operators = typeDef.GetOperators();
 
 			if (typeDef.HasMembers) {
-				Entry membersEntry = new Entry(typeDef, "Members", commentsXml, typeEntry);
+				Entry membersEntry = new LiveDocumenterEntry(typeDef, "Members", commentsXml, typeEntry);
 				membersEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, typeDef);
 				membersEntry.SubKey = "Members";
 				typeEntry.Children.Add(membersEntry);
 			}
 
 			if (constructors.Count > 0) {
-				Entry constructorsEntry = new Entry(constructors, "Constructors", commentsXml, typeEntry);
+				Entry constructorsEntry = new LiveDocumenterEntry(constructors, "Constructors", commentsXml, typeEntry);
 				constructorsEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, typeDef);
 				constructorsEntry.SubKey = "Constructors";
 				constructorsEntry.IsSearchable = false;
@@ -194,10 +195,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 				// Add the method pages child page entries to the map
 				int count = constructors.Count;
-				for(int i = 0; i < count; i++) {
-				// foreach (MethodDef currentMethod in constructors) {
+				for (int i = 0; i < count; i++) {
+					// foreach (MethodDef currentMethod in constructors) {
 					MethodDef currentMethod = constructors[i];
-					Entry constructorEntry = new Entry(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
+					Entry constructorEntry = new LiveDocumenterEntry(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
 					constructorEntry.IsSearchable = true;
 					constructorEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, currentMethod);
 					constructorsEntry.Children.Add(constructorEntry);
@@ -206,18 +207,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 
 			// Add a methods containing page and the associated methods
-			if (methods.Count > 0) {				
-				Entry methodsEntry = new Entry(methods, "Methods", commentsXml, typeEntry);
+			if (methods.Count > 0) {
+				Entry methodsEntry = new LiveDocumenterEntry(methods, "Methods", commentsXml, typeEntry);
 				methodsEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, typeDef);
 				methodsEntry.SubKey = "Methods";
 				methodsEntry.IsSearchable = false;
 				typeEntry.Children.Add(methodsEntry);
-				
+
 				// Add the method pages child page entries to the map
 				int count = methods.Count;
-				for(int i = 0; i < count; i++) {
+				for (int i = 0; i < count; i++) {
 					MethodDef currentMethod = methods[i];
-					Entry methodEntry = new Entry(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
+					Entry methodEntry = new LiveDocumenterEntry(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
 					methodEntry.IsSearchable = true;
 					methodEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, currentMethod);
 					methodsEntry.Children.Add(methodEntry);
@@ -226,7 +227,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 
 			if (operators.Count > 0) {
-				Entry operatorsEntry = new Entry(operators, "Operators", commentsXml, typeEntry);
+				Entry operatorsEntry = new LiveDocumenterEntry(operators, "Operators", commentsXml, typeEntry);
 				operatorsEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, typeDef);
 				operatorsEntry.SubKey = "Operators";
 				operatorsEntry.IsSearchable = false;
@@ -235,7 +236,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				int count = operators.Count;
 				for (int i = 0; i < count; i++) {
 					MethodDef current = operators[i];
-					Entry operatorEntry = new Entry(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
+					Entry operatorEntry = new LiveDocumenterEntry(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
 					operatorEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, current);
 					operatorEntry.IsSearchable = true;
 					operatorsEntry.Children.Add(operatorEntry);
@@ -243,16 +244,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				operatorsEntry.Children.Sort();
 			}
 
-			// Add entries to allow the viewing of the types fields			
+			// Add entries to allow the viewing of the types fields                 
 			if (fields.Count > 0) {
-				Entry fieldsEntry = new Entry(fields, "Fields", commentsXml, typeEntry);
+				Entry fieldsEntry = new LiveDocumenterEntry(fields, "Fields", commentsXml, typeEntry);
 				fieldsEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, typeDef);
 				fieldsEntry.SubKey = "Fields";
 				fieldsEntry.IsSearchable = false;
 				typeEntry.Children.Add(fieldsEntry);
 
 				foreach (FieldDef currentField in fields) {
-					Entry fieldEntry = new Entry(currentField, currentField.Name, commentsXml, fieldsEntry);
+					Entry fieldEntry = new LiveDocumenterEntry(currentField, currentField.Name, commentsXml, fieldsEntry);
 					fieldEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, currentField);
 					fieldEntry.IsSearchable = true;
 					fieldsEntry.Children.Add(fieldEntry);
@@ -262,14 +263,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			// Display the properties defined in the current type
 			if (properties.Count > 0) {
-				Entry propertiesEntry = new Entry(properties, "Properties", commentsXml, typeEntry);
+				Entry propertiesEntry = new LiveDocumenterEntry(properties, "Properties", commentsXml, typeEntry);
 				propertiesEntry.IsSearchable = false;
 				propertiesEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, typeDef);
 				propertiesEntry.SubKey = "Properties";
 				typeEntry.Children.Add(propertiesEntry);
 
 				foreach (PropertyDef currentProperty in properties) {
-					Entry propertyEntry = new Entry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
+					Entry propertyEntry = new LiveDocumenterEntry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
 					propertyEntry.IsSearchable = true;
 					propertyEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, currentProperty);
 					propertiesEntry.Children.Add(propertyEntry);
@@ -279,14 +280,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			// Display the properties defined in the current type
 			if (events.Count > 0) {
-				Entry propertiesEntry = new Entry(events, "Events", commentsXml, typeEntry);
+				Entry propertiesEntry = new LiveDocumenterEntry(events, "Events", commentsXml, typeEntry);
 				propertiesEntry.IsSearchable = false;
 				propertiesEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, typeDef);
 				propertiesEntry.SubKey = "Events";
 				typeEntry.Children.Add(propertiesEntry);
 
 				foreach (EventDef currentProperty in events) {
-					Entry propertyEntry = new Entry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
+					Entry propertyEntry = new LiveDocumenterEntry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
 					propertyEntry.IsSearchable = true;
 					propertyEntry.Key = Helper.GetUniqueKey(typeDef.Assembly, currentProperty);
 					propertiesEntry.Children.Add(propertyEntry);

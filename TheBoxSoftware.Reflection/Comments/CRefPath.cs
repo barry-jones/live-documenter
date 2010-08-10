@@ -42,7 +42,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// <param name="property">The property to initialise the path with.</param>
 		public CRefPath(PropertyDef property)
 			: this(CRefTypes.Property, property.Type.Namespace, property.Type.Name, property.Name) {
-			this.Parameters = this.Convert(property.GetMethod);
+			MethodDef method = property.GetMethod ?? property.SetMethod;
+			this.Parameters = this.Convert(method);
 		}
 
 		/// <summary>

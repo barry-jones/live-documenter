@@ -6,6 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
+	using TheBoxSoftware.Documentation;
 
 	/// <summary>
 	/// Class that contains helper methods for this application

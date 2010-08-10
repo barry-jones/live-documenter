@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
+	using TheBoxSoftware.Documentation;
+
 	public class TreeViewItemDataTemplateSelector : DataTemplateSelector {
 		public override DataTemplate SelectTemplate(object item, DependencyObject container) {
 			Entry current = (Entry)item;

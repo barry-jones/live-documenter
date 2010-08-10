@@ -6,6 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
+	using TheBoxSoftware.Documentation;
 
 	/// <summary>
 	/// Represents an individual result from a search across the
