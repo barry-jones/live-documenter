@@ -326,7 +326,7 @@
                 <MenuItem Header="_Open..." Command="ApplicationCommands.Open" />
                 <MenuItem x:Name="recentFiles" Header="Recent Files" Click="recentFiles_Click" ItemsSource="{Binding ''}" ItemTemplate="{StaticResource RecentFileMenuItem}" />
                 <MenuItem Header="E_xit" Command="ApplicationCommands.Close" />
-                <MenuItem Click="MenuItem_Click" Header="Test Exporting" /><!--
+                <!--<MenuItem Click="MenuItem_Click" Header="Test Exporting" />
                 <MenuItem Name="TestException" Click="MenuItem_Click" Header="Test Exception Handling" />-->
             </MenuItem>
             <MenuItem Header="Tools">

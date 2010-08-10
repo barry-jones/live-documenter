@@ -126,9 +126,6 @@
       <DependentUpon>SequenceObject.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentationFileReader.cs" />
-    <Compile Include="DocumentedAssembly.cs" />
-    <Compile Include="EmptyEntry.cs" />
-    <Compile Include="Entry.cs" />
     <Compile Include="EntryKey.cs" />
     <Compile Include="Extensions\TreeViewItemBehaviour.cs" />
     <Compile Include="Helper.cs" />

@@ -7,7 +7,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38DB0E87-8DF0-4CDE-AA61-EC35482E0C0C}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\eula.rtf = Solution Items\eula.rtf
+		Solution Items\IKVM.OpenJDK.Charsets.dll = Solution Items\IKVM.OpenJDK.Charsets.dll
+		Solution Items\IKVM.OpenJDK.Core.dll = Solution Items\IKVM.OpenJDK.Core.dll
+		Solution Items\IKVM.OpenJDK.Text.dll = Solution Items\IKVM.OpenJDK.Text.dll
+		Solution Items\IKVM.OpenJDK.Util.dll = Solution Items\IKVM.OpenJDK.Util.dll
+		Solution Items\IKVM.OpenJDK.XML.API.dll = Solution Items\IKVM.OpenJDK.XML.API.dll
+		Solution Items\IKVM.Runtime.dll = Solution Items\IKVM.Runtime.dll
+		Solution Items\Ionic.Zip.dll = Solution Items\Ionic.Zip.dll
 		Solution Items\live-documenter-setup-banner.jpg = Solution Items\live-documenter-setup-banner.jpg
+		Solution Items\saxon9he-api.dll = Solution Items\saxon9he-api.dll
+		Solution Items\saxon9he.dll = Solution Items\saxon9he.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{99959C78-1632-423F-B474-F37FCA98F34C}"
