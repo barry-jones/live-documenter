@@ -28,10 +28,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// empty string.
 		/// </exception>
 		public static List<DocumentedAssembly> Read(string fileName) {
-			if (TraceHelper.IsTraceEnabled) {
-				TraceHelper.WriteLine("reading file: {0}", fileName);
-				TraceHelper.Indent();
-			}
+			TraceHelper.WriteLine("reading file: {0}", fileName);
+			TraceHelper.Indent();
 
 			if (string.IsNullOrEmpty(fileName)) {
 				throw new ArgumentNullException("fileName");

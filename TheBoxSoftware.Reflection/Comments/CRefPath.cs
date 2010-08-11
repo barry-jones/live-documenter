@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Comments {
+	using TheBoxSoftware.Diagnostics;
+
 	/// <summary>
 	/// Class that handles and parses a CRef comment path. A CRef path can contain
 	/// a fully qualified link to a type, property, method etc in an assembly.
@@ -204,7 +206,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 				case CRefConstants.FieldTypeIndicator: this.PathType = CRefTypes.Field; break;
 				case CRefConstants.ErrorTypeIndicator: this.PathType = CRefTypes.Error; break;
 				default:
-					System.Diagnostics.Debug.WriteLine("Parsing for cref paths of type " + typePortion + " has not been implemented");
+					TraceHelper.WriteLine("Parsing for cref paths of type " + typePortion + " has not been implemented");
 					break;
 			}
 		}

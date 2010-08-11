@@ -148,9 +148,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		}
 
 		private static Block ParseBlock(AssemblyDef assembly, XmlCodeElement element, ParsingSession session) {
-			if (TraceHelper.IsTraceEnabled) {
-				TraceHelper.WriteLine("parsing-block: e({0})", element.Element.ToString());
-			}
+			TraceHelper.WriteLine("parsing-block: e({0})", element.Element.ToString());
 
 			CrefEntryKey crefEntryKey;
 			Hyperlink link;
@@ -267,9 +265,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		}
 
 		private static Inline ParseInline(AssemblyDef assembly, XmlCodeElement element, ParsingSession session) {
-			if (TraceHelper.IsTraceEnabled) {
-				TraceHelper.WriteLine("parsing-inline: e({0})", element.Element.ToString());
-			}
+			TraceHelper.WriteLine("parsing-inline: e({0})", element.Element.ToString());
 
 			switch (element.Element) {
 					// Invalid elements

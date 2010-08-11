@@ -353,11 +353,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationData\livexmltohtml.xslt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ApplicationData\msdn-loband.css" />
     <Content Include="ApplicationData\xamltolivexml.xslt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Service References\BoxSoftwareServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
