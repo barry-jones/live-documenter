@@ -82,13 +82,13 @@
         "Entry"
         {
         "MsmKey" = "8:_2F3D19CCC3E1799857F3A0926B2EAC73"
-        "OwnerKey" = "8:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
+        "OwnerKey" = "8:_1B0D2B49550F0A63FA6B35FF856D8D83"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_2F3D19CCC3E1799857F3A0926B2EAC73"
-        "OwnerKey" = "8:_1B0D2B49550F0A63FA6B35FF856D8D83"
+        "OwnerKey" = "8:_0B5D119BCD6C46B987B3B6DD8DB65ACC"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -286,12 +286,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2F3D19CCC3E1799857F3A0926B2EAC73"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_479D5C89A7FDAE44ED41D8E2F080D50B"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -299,6 +293,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_1B0D2B49550F0A63FA6B35FF856D8D83"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2F3D19CCC3E1799857F3A0926B2EAC73"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1001,14 +1001,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Live Documenter"
-        "ProductCode" = "8:{1D6AE4B2-5162-49EC-BDAA-9BFEFCA58D8C}"
-        "PackageCode" = "8:{B63A232D-E210-4A42-9450-3E613EC83278}"
+        "ProductCode" = "8:{52AFC2DD-F0C2-4A1F-8F00-0A42B5746CBD}"
+        "PackageCode" = "8:{A74CEF38-AF8D-43FB-822F-439C5BAA421B}"
         "UpgradeCode" = "8:{CB2660FD-7314-4B97-8D37-8D4996F01AFC}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:The Box Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
