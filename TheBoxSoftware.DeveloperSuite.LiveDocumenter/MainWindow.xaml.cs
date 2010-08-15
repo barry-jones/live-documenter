@@ -343,6 +343,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		/// <summary>
+		/// Shows the export dialog.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+		private void exportClick(object sender, RoutedEventArgs e) {
+			Export export = new Export();
+			export.Owner = this;
+			export.ShowDialog();
+		}
+
+		/// <summary>
 		/// Starts the time of for the search box. After a period of time has elapsed
 		/// without the user entering more keys the search will complete.
 		/// </summary>

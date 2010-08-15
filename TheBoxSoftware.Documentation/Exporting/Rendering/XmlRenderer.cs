@@ -13,37 +13,41 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 		public abstract void Render(System.Xml.XmlWriter writer);
 
-		public static XmlRenderer Create(Entry associatedEntry, ReflectedMember member, XmlCodeCommentFile comments, Exporter exporter) {
+		/// <summary>
+		/// Factory method for creating new instances of <see cref="XmlRenderer"/>. Instantiates
+		/// the correct renderer forthe specied document map <see cref="Entry"/>.
+		/// </summary>
+		/// <param name="entry">The entry in the document map to render.</param>
+		/// <param name="exporter">The exporter.</param>
+		/// <returns>A valid renderer or null.</returns>
+		public static XmlRenderer Create(Entry entry, Exporter exporter) {
 			XmlRenderer renderer = null;
 
-			// check sub key so we don't output members, fields etc nodes
-			if (member is TypeDef && string.IsNullOrEmpty(associatedEntry.SubKey)) {
-				renderer = new TypeXmlRenderer((TypeDef)member, comments, associatedEntry);
+			if (entry.Item is ReflectedMember) {
+				if (entry.Item is TypeDef && string.IsNullOrEmpty(entry.SubKey)) {
+					renderer = new TypeXmlRenderer(entry);
+				}
+				else if (entry.Item is MethodDef) {
+					renderer = new MethodXmlRenderer(entry);
+				}
+				else if (entry.Item is FieldDef) {
+					renderer = new FieldXmlRenderer(entry);
+				}
+				else if (entry.Item is PropertyDef) {
+					renderer = new PropertyXmlRenderer(entry);
+				}
+				else if (entry.Item is EventDef) {
+					renderer = new EventXmlRenderer(entry);
+				}
 			}
-			else if (member is MethodDef) {
-				renderer = new MethodXmlRenderer((MethodDef)member, comments, associatedEntry);
+			else if (entry.Item is KeyValuePair<string, List<TypeDef>>) { // namespace
+				renderer = new NamespaceXmlRenderer(entry);
 			}
-			else if (member is FieldDef) {
-				renderer = new FieldXmlRenderer((FieldDef)member, comments, associatedEntry);
-			}
-			else if (member is PropertyDef) {
-				renderer = new PropertyXmlRenderer((PropertyDef)member, comments, associatedEntry);
-			}
-			else if (member is EventDef) {
-				renderer = new EventXmlRenderer((EventDef)member, comments, associatedEntry);
-			}
-
-			if (renderer != null) {
-				renderer.Exporter = exporter;
+			else if (entry.Item is List<PropertyDef> || entry.Item is List<MethodDef> || entry.Item is List<FieldDef> || entry.Item is List<EventDef>) {
+				renderer = new TypeMembersXmlRenderer(entry);
 			}
 			
-			return renderer;
-		}
-
-		public static XmlRenderer Create(Entry associatedEntry, TypeDef parent, List<ReflectedMember> members, XmlCodeCommentFile comments, Exporter exporter) {
-			XmlRenderer renderer = null;
-
-			renderer = new TypeMembersXmlRenderer(parent, (List<ReflectedMember>)members, comments, associatedEntry);
+			// TODO: still need to ouput a members page xml page
 
 			if (renderer != null) {
 				renderer.Exporter = exporter;
@@ -87,25 +91,27 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		}
 
 		protected void Serialize(XmlCodeElement comment, System.Xml.XmlWriter writer) {
-			writer.WriteStartElement(comment.Element.ToString().ToLower());
+			if (comment != XmlCodeComment.Empty) {
+				writer.WriteStartElement(comment.Element.ToString().ToLower());
 
-			if (comment.Element == XmlCodeElements.See) {
-				SeeXmlCodeElement see = (SeeXmlCodeElement)comment;
-				long mId, tId;
-				this.Exporter.GetUniqueId(see.Member, out mId, out tId);
-				writer.WriteAttributeString("member", mId.ToString());
-				writer.WriteAttributeString("type", tId.ToString());
-			}
-
-			if (comment is XmlContainerCodeElement) {
-				foreach (XmlCodeElement element in ((XmlContainerCodeElement)comment).Elements) {
-					this.Serialize(element, writer);
+				if (comment.Element == XmlCodeElements.See) {
+					SeeXmlCodeElement see = (SeeXmlCodeElement)comment;
+					long mId, tId;
+					this.Exporter.GetUniqueId(see.Member, out mId, out tId);
+					writer.WriteAttributeString("member", mId.ToString());
+					writer.WriteAttributeString("type", tId.ToString());
 				}
+
+				if (comment is XmlContainerCodeElement) {
+					foreach (XmlCodeElement element in ((XmlContainerCodeElement)comment).Elements) {
+						this.Serialize(element, writer);
+					}
+				}
+				else {
+					writer.WriteString(comment.Text);
+				}
+				writer.WriteEndElement();
 			}
-			else {
-				writer.WriteString(comment.Text);
-			}
-			writer.WriteEndElement();
 		}
 	}
 }

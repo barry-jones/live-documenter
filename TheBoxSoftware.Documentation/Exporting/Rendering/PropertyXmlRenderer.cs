@@ -10,10 +10,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		private PropertyDef member;
 		private XmlCodeCommentFile xmlComments;
 
-		public PropertyXmlRenderer(PropertyDef member, XmlCodeCommentFile xmlComments, Entry associatedEntry) {
-			this.member = member;
-			this.xmlComments = xmlComments;
-			this.AssociatedEntry = associatedEntry;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PropertyXmlRenderer"/> class.
+		/// </summary>
+		/// <param name="entry">The entry to intialise the renderer with.</param>
+		public PropertyXmlRenderer(Entry entry) {
+			this.member = (PropertyDef)entry.Item;
+			this.xmlComments = entry.XmlCommentFile;
+			this.AssociatedEntry = entry;
 		}
 
 		public override void Render(System.Xml.XmlWriter writer) {

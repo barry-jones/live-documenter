@@ -10,10 +10,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		private TypeDef member;
 		private XmlCodeCommentFile xmlComments;
 
-		public TypeXmlRenderer(TypeDef member, XmlCodeCommentFile xmlComments, Entry associatedEntry) {
-			this.member = member;
-			this.xmlComments = xmlComments;
-			this.AssociatedEntry = associatedEntry;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TypeXmlRenderer"/> class.
+		/// </summary>
+		/// <param name="entry">The entry in the document map to initialise the renderer with.</param>
+		public TypeXmlRenderer(Entry entry) {
+			this.member = (TypeDef)entry.Item;
+			this.xmlComments = entry.XmlCommentFile;
+			this.AssociatedEntry = entry;
 		}
 
 		public override void Render(System.Xml.XmlWriter writer) {

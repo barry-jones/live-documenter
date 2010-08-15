@@ -10,10 +10,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		private EventDef member;
 		private XmlCodeCommentFile xmlComments;
 
-		public EventXmlRenderer(EventDef member, XmlCodeCommentFile xmlComments, Entry associatedEntry) {
-			this.member = member;
-			this.xmlComments = xmlComments;
-			this.AssociatedEntry = associatedEntry;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="EventXmlRenderer"/> class.
+		/// </summary>
+		/// <param name="entry">The entry to initialise the renderer with.</param>
+		public EventXmlRenderer(Entry entry) {
+			this.member = (EventDef)entry.Item;
+			this.xmlComments = entry.XmlCommentFile;
+			this.AssociatedEntry = entry;
 		}
 
 		public override void Render(System.Xml.XmlWriter writer) {

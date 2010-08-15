@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,16 @@ using TheBoxSoftware.Reflection.Comments;
 namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	internal sealed class TypeMembersXmlRenderer : XmlRenderer {
 		private TypeDef containingType = null;
-		private List<ReflectedMember> members;
 		private XmlCodeCommentFile xmlComments;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TypeMembersXmlRenderer"/> class.
 		/// </summary>
-		/// <param name="container">The <see cref="TypeDef"/> that contains these members.</param>
-		/// <param name="members">The members.</param>
-		/// <param name="xmlComments">The XML comments.</param>
 		/// <param name="associatedEntry">The associated entry.</param>
-		public TypeMembersXmlRenderer(TypeDef container, List<ReflectedMember> members, XmlCodeCommentFile xmlComments, Entry associatedEntry) {
-			this.containingType = container;
-			this.members = members;
-			this.xmlComments = xmlComments;
-			this.AssociatedEntry = associatedEntry;
+		public TypeMembersXmlRenderer(Entry entry) {
+			this.containingType = (TypeDef)entry.Parent.Item;
+			this.xmlComments = entry.XmlCommentFile;
+			this.AssociatedEntry = entry;
 		}
 
 		public override void Render(System.Xml.XmlWriter writer) {

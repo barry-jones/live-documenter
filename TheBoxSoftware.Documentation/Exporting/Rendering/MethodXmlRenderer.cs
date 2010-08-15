@@ -10,10 +10,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		private MethodDef member;
 		private XmlCodeCommentFile xmlComments;
 
-		public MethodXmlRenderer(MethodDef member, XmlCodeCommentFile xmlComments, Entry associatedEntry) {
-			this.member = member;
-			this.xmlComments = xmlComments;
-			this.AssociatedEntry = associatedEntry;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MethodXmlRenderer"/> class.
+		/// </summary>
+		/// <param name="entry">The entry to initialise the renderer with.</param>
+		public MethodXmlRenderer(Entry entry) {
+			this.member = (MethodDef)entry.Item;
+			this.xmlComments = entry.XmlCommentFile;
+			this.AssociatedEntry = entry;
 		}
 
 		public override void Render(System.Xml.XmlWriter writer) {

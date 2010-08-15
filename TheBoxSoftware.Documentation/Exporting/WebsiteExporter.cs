@@ -336,34 +336,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			System.Diagnostics.Debug.WriteLine("SaveXaml: " + current.Name + "[" + current.Key + ", " + current.SubKey + "]");
 			System.Diagnostics.Debug.Indent();
 
-			Rendering.XmlRenderer r = null;
-			if (current.Item is ReflectedMember) {
-				System.Diagnostics.Debug.WriteLine("Is ReflectedMember");
-				r = Rendering.XmlRenderer.Create(current, (ReflectedMember)current.Item, current.XmlCommentFile, this);
-			}
-			else if (current.Item is List<MethodDef>) {
-				TypeDef parent = current.Parent.Item as TypeDef;
-				r = Rendering.XmlRenderer.Create(current, parent,
-					new List<ReflectedMember>(((List<MethodDef>)current.Item).ToArray()), current.XmlCommentFile, this);
-			}
-			else if (current.Item is List<FieldDef>) {
-				TypeDef parent = current.Parent.Item as TypeDef;
-				r = Rendering.XmlRenderer.Create(current, parent,
-					new List<ReflectedMember>(((List<FieldDef>)current.Item).ToArray()), current.XmlCommentFile, this);
-			}
-			else if (current.Item is List<PropertyDef>) {
-				TypeDef parent = current.Parent.Item as TypeDef;
-				r = Rendering.XmlRenderer.Create(current, parent,
-					new List<ReflectedMember>(((List<PropertyDef>)current.Item).ToArray()), current.XmlCommentFile, this);
-			}
-			else if (current.Item is List<EventDef>) {
-				TypeDef parent = current.Parent.Item as TypeDef;
-				r = Rendering.XmlRenderer.Create(current, parent,
-					new List<ReflectedMember>(((List<EventDef>)current.Item).ToArray()), current.XmlCommentFile, this);
-			}
+			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
 
 			if (r != null) {
-				string filename = string.Format("{0}/{1}{2}.xml", this.tempdirectory, current.Key, string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + current.SubKey);
+				string filename = string.Format("{0}{1}{2}.xml", this.tempdirectory, current.Key, string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.illegalFileCharacters.Replace(current.SubKey, string.Empty));
+				System.Diagnostics.Debug.WriteLine("filename: " + filename);
 				using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
 					r.Render(writer);
 				}
@@ -386,9 +363,17 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 		}
 
+		/// <summary>
+		/// A <see cref="XmlRenderer"/> that renders the only copy of the index page for the
+		/// output documentation.
+		/// </summary>
 		private class IndexXmlRenderer : Rendering.XmlRenderer {
 			private List<Entry> documentMap = null;
-			
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="IndexXmlRenderer"/> class.
+			/// </summary>
+			/// <param name="documentMap">The document map.</param>
 			public IndexXmlRenderer(List<Entry> documentMap) {
 				this.documentMap = documentMap;
 			}
