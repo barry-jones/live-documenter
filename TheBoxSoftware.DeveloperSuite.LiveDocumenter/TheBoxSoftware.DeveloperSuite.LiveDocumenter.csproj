@@ -127,6 +127,9 @@
     </Compile>
     <Compile Include="DocumentationFileReader.cs" />
     <Compile Include="EntryKey.cs" />
+    <Compile Include="Export.xaml.cs">
+      <DependentUpon>Export.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\TreeViewItemBehaviour.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LiveDocument.cs" />
@@ -283,6 +286,10 @@
     <Page Include="Diagramming\SequenceObject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Export.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
