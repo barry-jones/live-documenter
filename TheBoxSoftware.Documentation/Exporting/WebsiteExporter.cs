@@ -311,7 +311,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				}
 			}
 			catch (Exception ex) {
-				throw new ExportException(ex.Message, ex);
+				ExportException exception = new ExportException(ex.Message, ex);
+				this.OnExportException(new ExportExceptionEventArgs(exception));
 			}
 			finally {
 				// clean up the temp directory

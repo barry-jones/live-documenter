@@ -66,37 +66,43 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			exporter.ExportCalculated += new ExportCalculatedEventHandler(exporter_ExportCalculated);
 			exporter.ExportStep += new ExportStepEventHandler(exporter_ExportStep);
+			exporter.ExportException += new ExportExceptionHandler(exporter_ExportException);
 
 			if (exporter != null) {
 				this.resetEvent = new ManualResetEvent(false);
 				Exception e = null;	// holder for exceptions that occur in the thread
+
 				ThreadPool.QueueUserWorkItem(state => {
 					DateTime start = DateTime.Now;
-					try {
-						this.ThreadedExport(exporter);
-					}
-					catch (Exception ex) {
-						e = ex;
-					}
-					finally {
-						// set cursor back to normal
-						DateTime end = DateTime.Now;
-						TimeSpan duration = end.Subtract(start);
-						DispatcherOperation op = this.Dispatcher.BeginInvoke(
-							DispatcherPriority.Normal,
-							new Action<ExportStepEventArgs>(
-								p => {
-									this.progressIndicator.Value = this.progressIndicator.Maximum;
-									this.progressText.Text = string.Format("Complete in {0}:{1}s", (int)duration.TotalMinutes, duration.Seconds);
-									this.finish.IsEnabled = true;
-									this.Cursor = null;
-								}),
-							e);
+					this.ThreadedExport(exporter);
 
-						this.resetEvent.Set();
-					}
+					// set cursor back to normal
+					DateTime end = DateTime.Now;
+					TimeSpan duration = end.Subtract(start);
+					DispatcherOperation op = this.Dispatcher.BeginInvoke(
+						DispatcherPriority.Normal,
+						new Action<ExportStepEventArgs>(
+							p => {
+								this.progressIndicator.Value = this.progressIndicator.Maximum;
+								this.progressText.Text = string.Format("Complete in {0}:{1}s", (int)duration.TotalMinutes, duration.Seconds);
+								this.finish.IsEnabled = true;
+								this.Cursor = null;
+							}),
+						e);
+
+					this.resetEvent.Set();
 				});
 			}
+		}
+
+		/// <summary>
+		/// Handles the ExportException event of the exporter control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
+		void exporter_ExportException(object sender, ExportExceptionEventArgs e) {
+			this.resetEvent.WaitOne();
+			throw e.Exception;
 		}
 
 		/// <summary>
@@ -111,7 +117,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					p => {
 						this.progressIndicator.Value = p.Step;
 						this.progressText.Text = p.Description;
-						//System.Windows.Forms.Application.DoEvents();
 					}),
 				e);
 		}
@@ -129,7 +134,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						this.progressIndicator.Value = 0;
 						this.progressIndicator.Minimum = 0;
 						this.progressIndicator.Maximum = p.NumberOfSteps;
-						// this.progressIndicator.IsIndeterminate = true;
 						this.progressText.Text = "Started export";
 					}),
 				e);

@@ -6,12 +6,26 @@ using TheBoxSoftware.Reflection;
 using TheBoxSoftware.Reflection.Comments;
 
 namespace TheBoxSoftware.Documentation.Exporting {
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This class will not throw exceptions in the Export method. All exceptions will be driven
+	/// through the <see cref="ExportException"/> event.
+	/// </para>
+	/// <para>
+	/// Implementers of derived classes should make sure that this export exception mechanism
+	/// is continued. As this method is likely to be called on seperate threads.
+	/// </para>
+	/// </remarks>
 	public abstract class Exporter {
 		public List<Entry> DocumentMap { get; set; }
 		public List<DocumentedAssembly> CurrentFiles { get; set; }
 		protected ExportSettings Settings { get; set; }
 		private ExportCalculatedEventHandler exportCalculated;
 		private ExportStepEventHandler exportStep;
+		private ExportExceptionHandler exportException;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
@@ -143,6 +157,24 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		protected void OnExportCalculated(ExportCalculatedEventArgs e) {
 			if (this.exportCalculated != null) {
 				this.exportCalculated(this, e);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an exception occurs in the export process.
+		/// </summary>
+		public event ExportExceptionHandler ExportException {
+			add { this.exportException += value; }
+			remove { this.exportException -= value; }
+		}
+
+		/// <summary>
+		/// Raises the <see cref="E:ExportException"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
+		protected void OnExportException(ExportExceptionEventArgs e) {
+			if (this.exportException != null) {
+				this.exportException(this, e);
 			}
 		}
 		#endregion

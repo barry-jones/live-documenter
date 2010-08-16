@@ -90,6 +90,8 @@
     <Compile Include="Exporting\Exporter.cs" />
     <Compile Include="Exporting\Exporters.cs" />
     <Compile Include="Exporting\ExportException.cs" />
+    <Compile Include="Exporting\ExportExceptionEventArgs.cs" />
+    <Compile Include="Exporting\ExportExceptionHandler.cs" />
     <Compile Include="Exporting\ExportSettings.cs" />
     <Compile Include="Exporting\ExportStepEventArgs.cs" />
     <Compile Include="Exporting\ExportStepEventHandler.cs" />
