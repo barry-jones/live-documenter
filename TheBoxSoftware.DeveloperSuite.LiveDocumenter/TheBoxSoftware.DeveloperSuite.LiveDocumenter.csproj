@@ -359,7 +359,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ApplicationData\web-msdn.ldec" />
+    <None Include="ApplicationData\web-msdn.ldec">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Service References\BoxSoftwareServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
