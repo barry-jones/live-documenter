@@ -186,7 +186,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					return new Example(Parser.Parse(assembly, exampleElement));
 				case XmlCodeElements.Para:
 					ParaXmlCodeElement paraElement = element as ParaXmlCodeElement;
-					return new Para(new List<Inline>(((Paragraph)Parser.Parse(assembly, paraElement)[0]).Inlines));
+
+					List<Block> blocks = Parser.Parse(assembly, paraElement);
+					List<Inline> paragraphInlines = new List<Inline>();
+					if (blocks.Count == 1) {
+						paragraphInlines = new List<Inline>(((Paragraph)blocks[0]).Inlines);
+					}
+					TraceHelper.WriteLineIf(blocks.Count != 1, "Unexpected numbers of blocks {0}", blocks.Count);
+
+					return new Para(paragraphInlines);
 				case XmlCodeElements.Remarks:
 					return new Remarks(Parser.Parse(assembly, element as RemarksXmlCodeElement));
 				case XmlCodeElements.Returns:
