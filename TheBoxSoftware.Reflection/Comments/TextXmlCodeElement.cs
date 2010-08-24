@@ -32,6 +32,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 			// Make sure we have not removed too much whitespace. Check if the previous elements
 			// a non text element and add a space if the current element defines space at the beginning.
 			if (node.PreviousSibling != null 
+				&& XmlCodeComment.DefinedElements.ContainsKey(node.PreviousSibling.Name)
 				&& XmlCodeElement.DefinedElements[node.PreviousSibling.Name] != XmlCodeElements.Text 
 				&& node.InnerText.StartsWith(" ")) {
 				this.Text = " " + this.Text;
