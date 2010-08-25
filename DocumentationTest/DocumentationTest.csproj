@@ -67,6 +67,7 @@
     <Compile Include="GenericClass.cs" />
     <Compile Include="InheritanceTest.cs" />
     <Compile Include="InterfaceTest.cs" />
+    <Compile Include="Issues\Issue120.cs" />
     <Compile Include="Issues\Issue6.cs" />
     <Compile Include="Issues\Issue9.cs" />
     <Compile Include="OperatorOverloads.cs" />
