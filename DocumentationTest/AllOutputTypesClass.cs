@@ -7,6 +7,7 @@ namespace DocumentationTest {
 	/// <summary>
     /// Enter description here for class X. 
     /// ID string generated is "T:N.X". 
+	/// <para></para>
     /// </summary>
 	public unsafe class AllOutputTypesClass {
         /// <summary>
