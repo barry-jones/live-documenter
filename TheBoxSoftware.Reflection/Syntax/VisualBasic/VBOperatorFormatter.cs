@@ -87,6 +87,9 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 				case "op_LeftShift": representation = "<<"; break;
 				case "op_RightShift": representation = ">>"; break;
 
+					// Concatenation operator is & in a visual basic library - cant be overloaded in C#
+				case "op_Concatenate": representation = "&"; break;
+
 				case "op_Implicit": return new List<SyntaxToken>() { new SyntaxToken("CType", SyntaxTokens.Text) };
 
 				case "op_Explicit": return new List<SyntaxToken>() { new SyntaxToken("CType", SyntaxTokens.Text) };

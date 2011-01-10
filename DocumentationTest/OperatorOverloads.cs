@@ -44,6 +44,7 @@ namespace DocumentationTest {
 		public static OpTest operator *(OpTest one, OpTest two) { return one; }
 		public static OpTest operator /(OpTest one, OpTest two) { return one; }
 		public static OpTest operator %(OpTest one, OpTest two) { return one; }
+		// The & symbol is also the concatenation symbol in VB
 		public static OpTest operator &(OpTest one, OpTest two) { return one; }
 		public static OpTest operator |(OpTest one, OpTest two) { return one; }
 		public static OpTest operator ^(OpTest one, OpTest two) { return one; }

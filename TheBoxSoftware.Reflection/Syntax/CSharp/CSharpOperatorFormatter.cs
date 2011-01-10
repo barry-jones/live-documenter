@@ -100,6 +100,9 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 				case "op_LeftShift": representation = "<<"; break;
 				case "op_RightShift": representation = ">>"; break;
 
+					// Concatenation operator is & in a visual basic library - cant be overloaded in C#
+				case "op_Concatenate": representation = "+"; break;
+
 				case "op_Implicit": return this.FormatTypeDetails(syntax.GetReturnType());
 
 				case "op_Explicit": return this.FormatTypeDetails(syntax.GetReturnType());
