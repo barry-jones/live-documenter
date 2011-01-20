@@ -43,6 +43,15 @@ namespace DocumentationTest {
 		public Gah() {
 		}
 
+		/// <summary>
+		/// <PARA></PARA>
+		/// <para>
+		/// <B>A bold section.</B>
+		/// Erroneous summary text to throw a KeyNotFound exception. Use a non-lowercase
+		/// XML tag.
+		/// </para>
+		/// </summary>
+		/// <param name="s"></param>
 		public Gah(string s) {
 		}
 
