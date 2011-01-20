@@ -27,27 +27,42 @@ namespace TheBoxSoftware.Reflection.Comments {
 			// 4. Trim that smallest lead from all other lines in the block.
 
 			// 1
-			string strippedString = this.RemoveLeadingAndTrailingWhitespace(node.InnerText);
+			List<string> allLines = new List<string>(node.InnerText.Split('\n'));
+			for (int i = 0; i < allLines.Count; i++) {	// remove blank lines from the front
+				if (string.IsNullOrEmpty(this.RemoveLeadingAndTrailingWhitespace(allLines[i]))) {
+					allLines.RemoveAt(i);
+					i--;
+				}
+				else { break; }
+			}
+			for (int i = allLines.Count - 1; i > 0; i--) {	// remove blank lines from the rear
+				if (string.IsNullOrEmpty(this.RemoveLeadingAndTrailingWhitespace(allLines[i]))) {
+					allLines.RemoveAt(i);
+				}
+				else { break; }
+			}
+			string[] strippedStrings = allLines.ToArray();
 
 			// 2 & 3
-			Regex leadRegex = new Regex(@"(^\s*)", RegexOptions.Multiline);
+			Regex leadRegex = new Regex(@"(^\s*)");
 			int charsToTrim = int.MaxValue;
-			foreach (Match currentMatch in leadRegex.Matches(strippedString)) {
-				if (currentMatch.Success) {
-					if (currentMatch.Captures[0].Length < charsToTrim && currentMatch.Captures[0].Length > 0) {
-						charsToTrim = currentMatch.Captures[0].Length;
+			for (int i = 0; i < strippedStrings.Length; i++) {
+				foreach (Match currentMatch in leadRegex.Matches(strippedStrings[i])) {
+					if (currentMatch.Success) {
+						if (currentMatch.Captures[0].Length < charsToTrim && currentMatch.Captures[0].Length >= 0) {
+							charsToTrim = currentMatch.Captures[0].Length;
+						}
 					}
 				}
 			}
 
 			// 4
-			string[] lines = strippedString.Split('\n');
-			for (int i = 1; i < lines.Length; i++) {	// 1 because we have already trimmed the first entry
-				lines[i] = lines[i].Substring(charsToTrim);
+			for (int i = 0; i < strippedStrings.Length; i++) {
+				strippedStrings[i] = strippedStrings[i].Substring(charsToTrim);
 			}
 
 			// Store the new string
-			this.Text = string.Join("\n", lines);
+			this.Text = string.Join("\n", strippedStrings);
 		}
 	}
 }
