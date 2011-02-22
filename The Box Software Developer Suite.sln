@@ -1,9 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection", "TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj", "{B8749831-5746-4443-BEE9-9B01792C0D98}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter", "TheBoxSoftware.DeveloperSuite.LiveDocumenter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.csproj", "{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38DB0E87-8DF0-4CDE-AA61-EC35482E0C0C}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\eula.rtf = Solution Items\eula.rtf
@@ -20,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{99959C78-1632-423F-B474-F37FCA98F34C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection", "TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj", "{B8749831-5746-4443-BEE9-9B01792C0D98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter", "TheBoxSoftware.DeveloperSuite.LiveDocumenter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.csproj", "{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentationTest", "DocumentationTest\DocumentationTest.csproj", "{2AD369A3-7737-4EC5-A4BA-3E846F80C066}"
 EndProject
