@@ -187,12 +187,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				case XmlCodeElements.Para:
 					ParaXmlCodeElement paraElement = element as ParaXmlCodeElement;
 
+					// #120 now handles empty para tags
+					// #135 now handles block level elements in the para tag
 					List<Block> blocks = Parser.Parse(assembly, paraElement);
 					List<Inline> paragraphInlines = new List<Inline>();
-					if (blocks.Count == 1) {
-						paragraphInlines = new List<Inline>(((Paragraph)blocks[0]).Inlines);
+					for (int i = 0; i < blocks.Count; i++) {
+						if (blocks[i] is Paragraph) {
+							paragraphInlines.AddRange(((Paragraph)blocks[i]).Inlines);
+						}
 					}
-					TraceHelper.WriteLineIf(blocks.Count != 1, "Unexpected numbers of blocks {0}", blocks.Count);
+					TraceHelper.WriteLineIf(blocks.Count != 1, "Unexpected numbers of blocks {0}. Block level elements where only inlines expected.", blocks.Count);
 
 					return new Para(paragraphInlines);
 				case XmlCodeElements.Remarks:
