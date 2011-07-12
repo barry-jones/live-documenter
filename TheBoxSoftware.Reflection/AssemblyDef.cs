@@ -89,11 +89,13 @@ namespace TheBoxSoftware.Reflection {
 		/// Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
 		/// does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
 		/// </exception>
-		public static AssemblyDef Create(PeCoffFile peCoffFile) {
-			if (peCoffFile == null) 
+		public static AssemblyDef Create(PeCoffFile peCoffFile)
+		{
+			if (peCoffFile == null)
 				throw new ArgumentNullException("peCoffFile");
 
-			if (!peCoffFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader)) {
+			if (!peCoffFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
+			{
 				peCoffFile = null;	// would be nice to get the memory back
 				throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", peCoffFile.FileName));
 			}
@@ -118,16 +120,19 @@ namespace TheBoxSoftware.Reflection {
 			//
 			assembly.StringStream = (StringStream)metadata.Streams[Streams.StringStream];
 
-			if (metadataStream.Tables.ContainsKey(MetadataTables.Assembly)) {
+			if (metadataStream.Tables.ContainsKey(MetadataTables.Assembly))
+			{
 				// Always one and only
 				AssemblyMetadataTableRow assemblyRow = (AssemblyMetadataTableRow)metadataStream.Tables[MetadataTables.Assembly][0];
 				assembly.Name = assembly.StringStream.GetString(assemblyRow.Name.Value);
 				assembly.Version = assemblyRow.GetVersion();
 			}
 
-			if (metadataStream.Tables.ContainsKey(MetadataTables.AssemblyRef)) {
+			if (metadataStream.Tables.ContainsKey(MetadataTables.AssemblyRef))
+			{
 				MetadataRow[] items = metadataStream.Tables[MetadataTables.AssemblyRef];
-				for (int i = 0; i < items.Length; i++) {
+				for (int i = 0; i < items.Length; i++)
+				{
 					AssemblyRefMetadataTableRow assemblyRefRow = items[i] as AssemblyRefMetadataTableRow;
 					AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(assembly, metadata, assemblyRefRow);
 					map.Add(MetadataTables.AssemblyRef, assemblyRefRow, assemblyRef);
@@ -135,21 +140,25 @@ namespace TheBoxSoftware.Reflection {
 				}
 			}
 
-			foreach (ModuleMetadataTableRow moduleRow in metadataStream.Tables[MetadataTables.Module]) {
+			foreach (ModuleMetadataTableRow moduleRow in metadataStream.Tables[MetadataTables.Module])
+			{
 				ModuleDef module = ModuleDef.CreateFromMetadata(assembly, metadata, moduleRow);
 				map.Add(MetadataTables.Module, moduleRow, module);
 				assembly.Modules.Add(module);
 			}
 
-			if (metadataStream.Tables.ContainsKey(MetadataTables.TypeRef)) {
-				foreach (TypeRefMetadataTableRow typeRefRow in metadataStream.Tables[MetadataTables.TypeRef]) {
+			if (metadataStream.Tables.ContainsKey(MetadataTables.TypeRef))
+			{
+				foreach (TypeRefMetadataTableRow typeRefRow in metadataStream.Tables[MetadataTables.TypeRef])
+				{
 					TypeRef typeRef = TypeRef.CreateFromMetadata(assembly, metadata, typeRefRow);
 					map.Add(MetadataTables.TypeRef, typeRefRow, typeRef);
 				}
 			}
 
 			count = metadataStream.Tables[MetadataTables.TypeDef].Length;
-			for(int i = 0; i < count; i++) {
+			for (int i = 0; i < count; i++)
+			{
 				TypeDefMetadataTableRow typeDefRow = (TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][i];
 				TypeDef type = TypeDef.CreateFromMetadata(assembly, metadata, typeDefRow);
 				map.Add(MetadataTables.TypeDef, typeDefRow, type);
@@ -157,9 +166,11 @@ namespace TheBoxSoftware.Reflection {
 				assembly.Types.Add(type);
 			}
 
-			if (metadataStream.Tables.ContainsKey(MetadataTables.MemberRef)) {
+			if (metadataStream.Tables.ContainsKey(MetadataTables.MemberRef))
+			{
 				count = metadataStream.Tables[MetadataTables.MemberRef].Length;
-				for(int i = 0; i < count; i++) {
+				for (int i = 0; i < count; i++)
+				{
 					MemberRefMetadataTableRow memberRefRow = (MemberRefMetadataTableRow)metadataStream.Tables[MetadataTables.MemberRef][i];
 					MemberRef memberRef = MemberRef.CreateFromMetadata(assembly, metadata, memberRefRow);
 					map.Add(MetadataTables.MemberRef, memberRefRow, memberRef);
@@ -167,7 +178,8 @@ namespace TheBoxSoftware.Reflection {
 			}
 
 			if (metadataStream.Tables.ContainsKey(MetadataTables.TypeSpec)) {
-				foreach (TypeSpecMetadataTableRow typeSpecRow in metadataStream.Tables[MetadataTables.TypeSpec]) {
+				foreach (TypeSpecMetadataTableRow typeSpecRow in metadataStream.Tables[MetadataTables.TypeSpec])
+				{
 					TypeSpec typeRef = TypeSpec.CreateFromMetadata(assembly, metadata, typeSpecRow);
 					map.Add(MetadataTables.TypeSpec, typeSpecRow, typeRef);
 				}
@@ -176,7 +188,8 @@ namespace TheBoxSoftware.Reflection {
 			// Sort out the nested classes
 			if (metadataStream.Tables.ContainsKey(MetadataTables.NestedClass)) {
 				MetadataRow[] nestedClasses = metadataStream.Tables[MetadataTables.NestedClass];
-				for (int i = 0; i < nestedClasses.Length; i++) {
+				for (int i = 0; i < nestedClasses.Length; i++)
+				{
 					NestedClassMetadataTableRow nestedClassRow = nestedClasses[i] as NestedClassMetadataTableRow;
 					TypeDefMetadataTableRow nestedClass = (TypeDefMetadataTableRow)metadataStream.Tables.GetEntryFor(
 						MetadataTables.TypeDef, nestedClassRow.NestedClass
@@ -193,18 +206,20 @@ namespace TheBoxSoftware.Reflection {
 			// Associate the interface references types implement with there types
 			if (metadataStream.Tables.ContainsKey(MetadataTables.InterfaceImpl)) {
 				MetadataRow[] interfaceImplementations = metadataStream.Tables[MetadataTables.InterfaceImpl];
-				for (int i = 0; i < interfaceImplementations.Length; i++) {
+				for (int i = 0; i < interfaceImplementations.Length; i++)
+				{
 					InterfaceImplMetadataTableRow interfaceImplRow = interfaceImplementations[i] as InterfaceImplMetadataTableRow;
 					TypeDefMetadataTableRow implementingClassRow = (TypeDefMetadataTableRow)metadataStream.Tables.GetEntryFor(
 						MetadataTables.TypeDef, interfaceImplRow.Class
 						);
 					MetadataRow interfaceRow = metadataStream.Tables.GetEntryFor(
-						interfaceImplRow.Interface.Table, 
+						interfaceImplRow.Interface.Table,
 						interfaceImplRow.Interface.Index);
 
 					TypeDef implementingClass = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, implementingClassRow);
 					TypeRef implementedClass = (TypeRef)map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow);
-					if (implementedClass is TypeSpec) {
+					if (implementedClass is TypeSpec)
+					{
 						((TypeSpec)implementedClass).ImplementingType = implementingClass;
 					}
 					implementingClass.Implements.Add((TypeRef)map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow));
@@ -213,10 +228,12 @@ namespace TheBoxSoftware.Reflection {
 
 			if (metadataStream.Tables.ContainsKey(MetadataTables.Constant)) {
 				MetadataRow[] constants = metadataStream.Tables[MetadataTables.Constant];
-				for (int i = 0; i < constants.Length; i++) {
+				for (int i = 0; i < constants.Length; i++)
+				{
 					ConstantMetadataTableRow constantRow = constants[i] as ConstantMetadataTableRow;
 					ConstantInfo constant = ConstantInfo.CreateFromMetadata(assembly, metadataStream, constantRow);
-					switch (constantRow.Parent.Table) {
+					switch (constantRow.Parent.Table)
+					{
 						case MetadataTables.Field:
 							FieldDef field = (FieldDef)map.GetDefinition(MetadataTables.Field,
 								metadataStream.GetEntryFor(MetadataTables.Field, constantRow.Parent.Index)
