@@ -37,7 +37,14 @@ namespace TheBoxSoftware.Reflection {
 			MemberRef memberRef = new MemberRef();
 
 			memberRef.UniqueId = assembly.GetUniqueId();
-			memberRef.Type = (TypeRef)assembly.ResolveCodedIndex(row.Class);
+			// #122 fix problem with interop types see class property on ECMA page 126
+			object o = assembly.ResolveCodedIndex(row.Class);
+			if (o is TypeRef) {
+				memberRef.Type = (TypeRef)o;
+			}
+			else if (o is MethodDef) {
+				memberRef.Type = ((MethodDef)o).Type;
+			}
 			memberRef.Name = assembly.StringStream.GetString(row.Name.Value);
 			memberRef.SignitureBlob = row.Signiture;
 			memberRef.Assembly = assembly;
