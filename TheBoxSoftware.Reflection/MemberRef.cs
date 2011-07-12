@@ -37,7 +37,20 @@ namespace TheBoxSoftware.Reflection {
 			MemberRef memberRef = new MemberRef();
 
 			memberRef.UniqueId = assembly.GetUniqueId();
-			memberRef.Type = (TypeRef)assembly.ResolveCodedIndex(row.Class);
+
+			// as per page: 126 of the ECMA, the class column can contain a reference to a TypeRef,
+			// MemberRef, TypeSpec or ModuleRef entry
+			// TODO: Handle TypeSpec and ModuleRef references
+			object o = assembly.ResolveCodedIndex(row.Class);
+			if (o is TypeRef)
+			{
+				memberRef.Type = (TypeRef)o;
+			}
+			else if (o is MethodDef)
+			{
+				memberRef.Type = ((MethodDef)o).Type;
+			}
+
 			memberRef.Name = assembly.StringStream.GetString(row.Name.Value);
 			memberRef.SignitureBlob = row.Signiture;
 			memberRef.Assembly = assembly;
