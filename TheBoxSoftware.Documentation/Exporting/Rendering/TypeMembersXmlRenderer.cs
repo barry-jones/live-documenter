@@ -43,16 +43,18 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				writer.WriteStartElement("entry");
 				writer.WriteAttributeString("id", current.Key.ToString());
 				writer.WriteAttributeString("subId", current.SubKey);
+				writer.WriteAttributeString("type", ReflectionHelper.GetType(m));
+				writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(m));
 
 				writer.WriteStartElement("name");
-				writer.WriteString(this.GetDisplayName(m));
+				writer.WriteString(ReflectionHelper.GetDisplayName(m));
 				writer.WriteEndElement();
 
 				// find and output the summary
 				if (comment != XmlCodeComment.Empty) {
 					XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
 					if (summary != null) {
-						this.Serialize(summary, writer);
+						this.Serialize(summary, writer, this.containingType.Assembly);
 					}
 				}
 
@@ -62,30 +64,6 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			writer.WriteEndElement();
 			writer.WriteEndDocument();
-		}
-
-		/// <summary>
-		/// Obtains a name to display for the reflected member.
-		/// </summary>
-		/// <param name="entry">The entry.</param>
-		/// <returns>A name for the ReflectedMember</returns>
-		private string GetDisplayName(ReflectedMember entry) {
-			string displayName = string.Empty;
-
-			if (entry is FieldDef) {
-				displayName = ((FieldDef)entry).Name;
-			}
-			else if (entry is PropertyDef) {
-				displayName = ((PropertyDef)entry).GetDisplayName(false);
-			}
-			else if (entry is MethodDef) {
-				displayName = ((MethodDef)entry).GetDisplayName(false, true);
-			}
-			else if (entry is EventDef) {
-				displayName = ((EventDef)entry).Name;
-			}
-
-			return displayName;
 		}
 	}
 }

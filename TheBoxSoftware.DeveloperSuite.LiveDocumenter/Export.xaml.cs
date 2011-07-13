@@ -101,7 +101,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
 		void exporter_ExportException(object sender, ExportExceptionEventArgs e) {
-			this.resetEvent.WaitOne();
+			// this.resetEvent.WaitOne();
 			throw e.Exception;
 		}
 

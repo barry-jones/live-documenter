@@ -36,47 +36,26 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteString(string.Format("{0} Namespace", this.member.Key));
 			writer.WriteEndElement();
 
-			foreach (TypeDef current in this.member.Value) {
+			foreach (Entry current in this.AssociatedEntry.Children) {
 				writer.WriteStartElement("parent");
-				writer.WriteAttributeString("name", current.GetDisplayName(false));
-				writer.WriteAttributeString("key", current.UniqueId.ToString());
-				writer.WriteAttributeString("type", this.GetTypeAsString(current));
+				writer.WriteAttributeString("name", current.Name);
+				writer.WriteAttributeString("key", current.Key.ToString());
+				writer.WriteAttributeString("type", ReflectionHelper.GetType((TypeDef)current.Item));
+				writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(current.Item));
 
 				// write the summary text for the current member
-				this.Serialize(this.xmlComments.ReadComment(new CRefPath(current)), writer);
-
-
+				XmlCodeComment comment = this.xmlComments.ReadComment(new CRefPath((TypeDef)current.Item));
+				if (comment != null && comment.Elements != null) {
+					Reflection.Comments.SummaryXmlCodeElement summary = comment.Elements.First(p => p is Reflection.Comments.SummaryXmlCodeElement) as Reflection.Comments.SummaryXmlCodeElement;
+					if (summary != null) {
+						this.Serialize(summary, writer, this.member.Value[0].Assembly);
+					}
+				}
+				
 				writer.WriteEndElement();
 			}
 
 			writer.WriteEndElement();
-		}
-
-		/// <summary>
-		/// Returns a string that describes the current type.
-		/// </summary>
-		/// <param name="current">The current.</param>
-		/// <returns>A string that details the type of TypeDef.</returns>
-		/// <remarks>
-		/// A <see cref="TypeDef"/> can be many things. This method checks the properties
-		/// of the type and returns a string which describes the type. struct, class, interface
-		/// etc.
-		/// </remarks>
-		private string GetTypeAsString(TypeDef current) {
-			string actualType = "class";
-			if (current.IsDelegate) {
-				actualType = "delegate";
-			}
-			else if (current.IsEnumeration) {
-				actualType = "enum";
-			}
-			else if (current.IsInterface) {
-				actualType = "interface";
-			}
-			else if (current.IsStructure) {
-				actualType = "struct";
-			}
-			return actualType;
 		}
 	}
 }

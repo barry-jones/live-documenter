@@ -80,7 +80,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				if (namespaceEntry == null) {
 					namespaceEntry = new Entry(currentNamespace, currentNamespace.Key, xmlComments);
 					namespaceEntry.Key = assemblyEntry.Key;
-					namespaceEntry.SubKey = currentNamespace.Key;
+					namespaceEntry.SubKey = this.illegalFileCharacters.Replace(currentNamespace.Key, "_");
 					namespaceEntry.IsSearchable = false;
 					namespaceEntry.FullName = currentNamespace.Key;
 					this.DocumentMap[0].Children.Add(namespaceEntry);
@@ -131,13 +131,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			List<PropertyDef> properties = typeDef.GetProperties();
 			List<EventDef> events = typeDef.GetEvents();
 			List<MethodDef> operators = typeDef.GetOperators();
-
-			if (typeDef.HasMembers) {
-				Entry membersEntry = new Entry(typeDef, "Members", commentsXml, typeEntry);
-				membersEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
-				membersEntry.SubKey = "Members";
-				typeEntry.Children.Add(membersEntry);
-			}
 
 			if (constructors.Count > 0) {
 				Entry constructorsEntry = new Entry(constructors, "Constructors", commentsXml, typeEntry);
@@ -388,6 +381,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				writer.WriteAttributeString("subId", string.Empty);
 
 				writer.WriteStartElement("title");
+				writer.WriteString("Documentation produced by Live Documenter");
 				writer.WriteEndElement();
 
 				// write all the namespaces
@@ -398,7 +392,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					writer.WriteAttributeString("subkey", current.SubKey);
 
 					writer.WriteStartElement("name");
-					writer.WriteString(current.SubKey);
+					writer.WriteString(current.Name);
 					writer.WriteEndElement();
 
 					writer.WriteEndElement();

@@ -49,8 +49,6 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			else if (entry.Item is List<PropertyDef> || entry.Item is List<MethodDef> || entry.Item is List<FieldDef> || entry.Item is List<EventDef>) {
 				renderer = new TypeMembersXmlRenderer(entry);
 			}
-			
-			// TODO: still need to ouput a members page xml page
 
 			if (renderer != null) {
 				renderer.Exporter = exporter;
@@ -77,43 +75,108 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 		}
 
-		protected void RenderSeeAlsoBlock(ReflectedMember member, System.Xml.XmlWriter writer, XmlCodeComment comment) {
+		/// <summary>
+		/// Renders a seealso xml block when the specified member has seealso references in the comments.
+		/// </summary>
+		/// <param name="member">The member to render the block for.</param>
+		/// <param name="writer">The writer to write the xml to.</param>
+		/// <param name="comment">The associated xml comments.</param>
+		protected void RenderSeeAlsoBlock(ReflectedMember member, System.Xml.XmlWriter writer, XmlCodeComment comment, AssemblyDef assembly) {
 			if (comment != XmlCodeComment.Empty) {
 				List<XmlCodeElement> elements = comment.Elements.FindAll(e => e.Element == XmlCodeElements.SeeAlso);
-				writer.WriteStartElement("seealsolist");
-				foreach (SeeAlsoXmlCodeElement current in elements) {
-					long memberId, typeId;
-					this.Exporter.GetUniqueId(current.Member, out memberId, out typeId);
-					writer.WriteStartElement("seealso");
-					writer.WriteAttributeString("id", memberId.ToString());
-					writer.WriteString(current.Text);
-					writer.WriteEndElement();
+				if (elements != null && elements.Count > 0) {
+					writer.WriteStartElement("seealsolist");
+					foreach (SeeAlsoXmlCodeElement current in elements) {
+						if (current.Member.PathType != CRefTypes.Error) {
+							long memberId, typeId;
+							this.Exporter.GetUniqueId(current.Member, out memberId, out typeId);
+							writer.WriteStartElement("seealso");
+
+							TypeDef def = assembly.FindType(current.Member.Namespace, current.Member.TypeName);
+							string displayName = current.Member.TypeName;
+							if (def != null) displayName = def.GetDisplayName(false);
+
+							if (def != null) {
+								writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly, def).ToString());
+							}
+							else if (memberId != 0) {
+								writer.WriteAttributeString("id", memberId.ToString());
+							}
+
+							writer.WriteString(displayName);
+							writer.WriteEndElement(); // seealso
+						}
+					}
+					writer.WriteEndElement(); // seealsolist
 				}
-				writer.WriteEndElement();
 			}
 		}
 
-		protected void Serialize(XmlCodeElement comment, System.Xml.XmlWriter writer) {
+		protected void Serialize(XmlCodeElement comment, System.Xml.XmlWriter writer, AssemblyDef assembly) {
 			if (comment != XmlCodeComment.Empty) {
-				writer.WriteStartElement(comment.Element.ToString().ToLower());
-
 				if (comment.Element == XmlCodeElements.See) {
 					SeeXmlCodeElement see = (SeeXmlCodeElement)comment;
 					long mId, tId;
 					this.Exporter.GetUniqueId(see.Member, out mId, out tId);
-					writer.WriteAttributeString("member", mId.ToString());
-					writer.WriteAttributeString("type", tId.ToString());
-				}
+					string displayName = see.Text;
 
-				if (comment is XmlContainerCodeElement) {
-					foreach (XmlCodeElement element in ((XmlContainerCodeElement)comment).Elements) {
-						this.Serialize(element, writer);
+					if (see.Member.PathType != CRefTypes.Error) {
+						writer.WriteStartElement(comment.Element.ToString().ToLower());
+						TypeDef def = assembly.FindType(see.Member.Namespace, see.Member.TypeName);
+
+						switch (see.Member.PathType) {
+							// these elements are named and the type of element will
+							// not modify how it should be displayed
+							case CRefTypes.Field:
+							case CRefTypes.Property:
+							case CRefTypes.Event:
+								if (mId != 0) {
+									writer.WriteAttributeString("id", mId.ToString());
+								}
+								break;
+
+							case CRefTypes.Namespace:
+								writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly).ToString());
+								writer.WriteAttributeString("type", "namespace");
+								writer.WriteAttributeString("name", displayName);
+								break;
+
+							// these could be generic and so will need to modify to
+							// a more appropriate display name
+							case CRefTypes.Method:								
+								if (def != null) {
+									MethodDef method = see.Member.FindIn(def) as MethodDef;
+
+									if (method != null) {
+										writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly, method).ToString());
+										displayName = method.GetDisplayName(false);
+									}
+								}
+								break;
+							case CRefTypes.Type:
+								if (def != null) {
+									writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly, def).ToString());
+									displayName = def.GetDisplayName(false);
+								}
+								break;
+						}
+
+						writer.WriteString(displayName);
+						writer.WriteEndElement();	// element
 					}
 				}
-				else {
-					writer.WriteString(comment.Text);
+				else if (comment is XmlContainerCodeElement) {
+					writer.WriteStartElement(comment.Element.ToString().ToLower());
+					foreach (XmlCodeElement element in ((XmlContainerCodeElement)comment).Elements) {
+						this.Serialize(element, writer, assembly);
+					}
+					writer.WriteEndElement();
 				}
-				writer.WriteEndElement();
+				else {
+					writer.WriteStartElement(comment.Element.ToString().ToLower());
+					writer.WriteString(comment.Text);
+					writer.WriteEndElement();
+				}
 			}
 		}
 	}

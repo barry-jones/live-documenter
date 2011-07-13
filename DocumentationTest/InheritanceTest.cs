@@ -17,4 +17,10 @@ namespace DocumentationTest {
 		public static class StaticClass {
 		}
 	}
+
+	public class InheritanceTest_FirstChild : InheritanceTest {
+	}
+
+	public class InheritanceTest_SecondChild : InheritanceTest {
+	}
 }

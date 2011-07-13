@@ -57,7 +57,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			typeUniqueId = 0;
 
 			if (path.PathType != CRefTypes.Error) {
-
 				foreach (DocumentedAssembly ass in this.CurrentFiles) {
 					type = ass.LoadedAssembly.FindType(path.Namespace, path.TypeName);
 					if (type != null)
@@ -107,7 +106,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <param name="assembly">The assembly</param>
 		/// <param name="member">The member</param>
 		/// <returns>A long that is unique in the application</returns>
-		protected long GetUniqueKey(AssemblyDef assembly, ReflectedMember member) {
+		internal long GetUniqueKey(AssemblyDef assembly, ReflectedMember member) {
 			long id = ((long)assembly.UniqueId) << 32;
 			id += member.UniqueId;
 			return id;
@@ -119,7 +118,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <param name="assembly">The assembly to get the unique identifier for</param>
 		/// <returns>A long that is unique in the application</returns>
-		protected long GetUniqueKey(AssemblyDef assembly) {
+		internal long GetUniqueKey(AssemblyDef assembly) {
 			return ((long)assembly.UniqueId) << 32;
 		}
 

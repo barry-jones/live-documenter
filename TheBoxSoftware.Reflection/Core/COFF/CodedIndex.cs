@@ -49,6 +49,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF {
 		}
 		#endregion
 
+		public static bool operator ==(CodedIndex first, CodedIndex second)
+		{
+			return (first.Table == second.Table && first.Index == second.Index);
+		}
+
+		public static bool operator !=(CodedIndex first, CodedIndex second) {
+			return (first.Table != second.Table || first.Index != second.Index);
+		}
+
 		#region Methods
 		/// <summary>
 		/// Obtains the size of the specified <paramref name="codedIndex"/>.

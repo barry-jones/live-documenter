@@ -14,6 +14,8 @@ namespace TheBoxSoftware.Reflection {
 	[System.Diagnostics.DebuggerDisplay("Type={ToString()}")]
 	public class TypeDef : TypeRef {
 		private CodedIndex extends;
+		private MetadataTables table;
+		private int index;
 
 		#region Methods
 		/// <summary>
@@ -26,6 +28,9 @@ namespace TheBoxSoftware.Reflection {
 		internal static TypeDef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, TypeDefMetadataTableRow row) {
 			MetadataToDefinitionMap map = assembly.File.Map;
 			TypeDef typeDef = new TypeDef();
+
+			typeDef.index = ((MetadataStream)metadata.Streams[Streams.MetadataStream]).Tables[MetadataTables.TypeDef].ToList().IndexOf(row) + 1;
+			typeDef.table = MetadataTables.TypeDef;
 
 			typeDef.UniqueId = assembly.GetUniqueId();
 			typeDef.Name = assembly.StringStream.GetString(row.Name.Value);
@@ -145,11 +150,33 @@ namespace TheBoxSoftware.Reflection {
 					// we need the type to have a reference to its container.
 					if (inheritsFrom is TypeSpec) {
 						((TypeSpec)inheritsFrom).ImplementingType = this;
+						inheritsFrom = ((TypeSpec)inheritsFrom).TypeDetails.Type;
 					}
 				}
 
 				return inheritsFrom;
 			}
+		}
+
+		public List<TypeRef> GetExtendingTypes() {
+			MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
+			MetadataToDefinitionMap map = this.Assembly.File.Map;
+			CodedIndex ciForThisType = new CodedIndex(this.table, (uint)this.index);
+			List<TypeRef> inheritingTypes = new List<TypeRef>();
+
+			MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
+			for (int i = 0; i < typeDefs.Length; i++) {
+				if (((TypeDefMetadataTableRow)typeDefs[i]).Extends == ciForThisType) {
+					inheritingTypes.Add((TypeDef)map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i]));
+				}
+			}
+
+			if (inheritingTypes.Count == 0) {
+				// we may be defined in the typespec table, so extends may point to our reference
+				// here instead. How do we find out if we are defined here? generic types only?
+			}
+
+			return inheritingTypes;
 		}
 
 		/// <summary>

@@ -82,7 +82,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <param name="location">The location.</param>
 		public virtual void SaveOutputFilesTo(string location) {
-			using (ZipFile file = new ZipFile(this.ConfigFile)) {
+			using (ZipFile file = new ZipFile(this.ConfigFile))
+			{
 				// get the config file
 				XmlDocument doc = new XmlDocument();
 				Stream ms = new MemoryStream();
@@ -91,19 +92,29 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				doc.LoadXml(new StreamReader(ms).ReadToEnd());
 
 				XmlNodeList files = doc.SelectNodes("/export/outputfiles/file");
-				foreach (XmlNode current in files) {
+				foreach (XmlNode current in files)
+				{
 					string from = current.Attributes["internal"] == null ? string.Empty : current.Attributes["internal"].Value;
 					string to = current.Attributes["output"] == null ? string.Empty : current.Attributes["output"].Value;
 
-					if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to)) {
+					if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
+					{
 						continue;
 					}
 
-					if (file[from] == null || file[from].IsDirectory) {
+					if (file[from] == null)
+					{
 						continue;
 					}
 
-					file[from].Extract(location);
+					if (file[from].IsDirectory)
+					{
+						file.ExtractSelectedEntries("name = *.*", file[from].FileName, location, ExtractExistingFileAction.OverwriteSilently);
+					}
+					else
+					{
+						file[from].Extract(location);
+					}
 				}
 			}
 		}

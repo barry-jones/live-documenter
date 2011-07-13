@@ -124,6 +124,7 @@
     <Compile Include="Exporting\Rendering\MethodXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\NamespaceXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\PropertyXmlRenderer.cs" />
+    <Compile Include="Exporting\Rendering\ReflectionHelper.cs" />
     <Compile Include="Exporting\Rendering\TypeMembersXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\TypeXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\XmlRenderer.cs" />

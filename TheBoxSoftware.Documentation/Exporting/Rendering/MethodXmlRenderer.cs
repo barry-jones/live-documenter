@@ -27,15 +27,26 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteStartElement("member");
 			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
+			writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
 			writer.WriteStartElement("name");
 			writer.WriteString(this.member.GetDisplayName(false));
+			writer.WriteEndElement();
+
+			writer.WriteStartElement("namespace");
+			writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(this.member.Assembly).ToString());
+			writer.WriteAttributeString("name", this.member.Type.Namespace);
+			writer.WriteString(this.member.Type.Namespace);
+			writer.WriteEndElement();
+			writer.WriteStartElement("assembly");
+			writer.WriteAttributeString("file", System.IO.Path.GetFileName(this.member.Assembly.File.FileName));
+			writer.WriteString(this.member.Assembly.Name);
 			writer.WriteEndElement();
 
 			// find and output the summary
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
 				if (summary != null) {
-					this.Serialize(summary, writer);
+					this.Serialize(summary, writer, this.member.Assembly);
 				}
 			}
 
@@ -45,7 +56,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
 				if (remarks != null) {
-					this.Serialize(remarks, writer);
+					this.Serialize(remarks, writer, this.member.Assembly);
 				}
 			}
 
@@ -53,11 +64,11 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is SeeAlsoXmlCodeElement);
 				if (remarks != null) {
-					this.Serialize(remarks, writer);
+					this.Serialize(remarks, writer, this.member.Assembly);
 				}
 			}
 
-			this.RenderSeeAlsoBlock(member, writer, comment);
+			this.RenderSeeAlsoBlock(member, writer, comment, this.member.Assembly);
 
 			writer.WriteEndElement();
 		}
