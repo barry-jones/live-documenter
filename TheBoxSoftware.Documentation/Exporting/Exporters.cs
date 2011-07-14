@@ -11,6 +11,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <summary>
 		/// The Website exporter
 		/// </summary>
-		Website
+		Website,
+
+		/// <summary>
+		/// HTML Help version 1 exporter
+		/// </summary>
+		Html1
 	}
 }

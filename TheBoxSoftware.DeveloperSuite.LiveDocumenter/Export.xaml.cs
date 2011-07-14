@@ -62,6 +62,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						o
 						);
 					break;
+				case Exporters.Html1:
+					exporter = new Documentation.Exporting.HtmlHelp1Exporter(
+						LiveDocumentorFile.Singleton.Files,
+						new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+						o
+						);
+					break;
 			}
 
 			exporter.ExportCalculated += new ExportCalculatedEventHandler(exporter_ExportCalculated);

@@ -123,6 +123,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			switch (value) {
 				case "web":
 					return Exporters.Website;
+				case "html1":
+					return Exporters.Html1;
 				default:
 					return Exporters.Website;
 			}
