@@ -6,18 +6,32 @@ using System.Text;
 using System.Xml;
 using Saxon.Api;
 using System.IO;
+using System.Threading;
+using System.Runtime;
+using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace TheBoxSoftware.Documentation.Exporting {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 	using TheBoxSoftware.Documentation.Exporting.Rendering;
+	using TheBoxSoftware.Documentation.Exporting.HtmlHelp1;
 
+	/// <summary>
+	/// Exports the documentation to the HTML Help 1 format.
+	/// </summary>
 	public sealed class HtmlHelp1Exporter : Exporter {
 		private System.Text.RegularExpressions.Regex illegalFileCharacters;
 		private string tempdirectory = string.Empty;
 		private ExportConfigFile config = null;
 		private int currentExportStep = 1;
 
+		/// <summary>
+		/// Initialises a new instance of the HtmlHelp1Exporter.
+		/// </summary>
+		/// <param name="currentFiles">The files to be exported.</param>
+		/// <param name="settings">The settings for the export.</param>
+		/// <param name="config">The export config file, from the LDEC container.</param>
 		public HtmlHelp1Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings, ExportConfigFile config)
 			: base(currentFiles, settings) {
 			string regex = string.Format("{0}{1}",
@@ -29,7 +43,17 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			this.config = config;
 		}
 
+		#region Properties
+		/// <summary>
+		/// The path to the external HTML Help 1 compiler.
+		/// </summary>
+		protected string HtmlHelpCompilerFilePath { get; set; }
+		#endregion
+
 		public override void Export() {
+			if (!this.FindHtmlHelpCompiler()) {
+			}
+
 			// the temp output directory
 			this.tempdirectory = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetTempFileName()) + "\\";
 
@@ -37,7 +61,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				this.PrepareDirectory(tempdirectory);
 
 				this.GenerateDocumentMap();
-				this.OnExportCalculated(new ExportCalculatedEventArgs(6));
+				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
 				this.currentExportStep = 1;
 
 				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
@@ -118,7 +142,9 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					}
 				}
 
-				// compile the html help file			
+				// compile the html help file
+				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.currentExportStep));
+				this.CompileHelp(@"temp\output\project.hhp");
 			}
 			catch (Exception ex) {
 				ExportException exception = new ExportException(ex.Message, ex);
@@ -130,6 +156,78 @@ namespace TheBoxSoftware.Documentation.Exporting {
 #if !DEBUG
 				System.IO.Directory.Delete(this.tempdirectory, true);
 #endif
+			}
+		}
+
+		/// <summary>
+		/// Checks the locations the compiler could be and indicates if it was found. The
+		/// property <see cref="HtmlHelpCompilerFilePath"/> is set.
+		/// </summary>
+		/// <returns>Boolean indicating if the compiler was found.</returns>
+		private bool FindHtmlHelpCompiler() {
+			string compiler = Path.Combine(
+					Environment.GetFolderPath(
+						Environment.SpecialFolder.ProgramFiles),
+					@"HTML Help Workshop\hhc.exe");
+			if (File.Exists(compiler)) {
+				this.HtmlHelpCompilerFilePath = compiler;
+			}
+
+			// Not in default directory check in registry
+			RegistryKey key = Registry.ClassesRoot.OpenSubKey("hhc.file");
+			if (key != null) {
+				key = key.OpenSubKey("DefaultIcon");
+				if (key != null) {
+					object val = key.GetValue(null);
+					if (val != null) {
+						string hhw = (string)val;
+						if (hhw.Length > 0) {
+							hhw = hhw.Split(new Char[] { ',' })[0];
+							hhw = Path.GetDirectoryName(hhw);
+							compiler = Path.Combine(hhw, "hhc.exe");
+						}
+					}
+				}
+			}
+			if (File.Exists(compiler)) {
+				this.HtmlHelpCompilerFilePath = compiler;
+			}
+
+			return true;
+		}
+
+		private void CompileHelp(string projectFile) {
+			Process compileProcess = new Process();
+
+			ProcessStartInfo processStartInfo = new ProcessStartInfo();
+			processStartInfo.FileName = this.HtmlHelpCompilerFilePath;
+			processStartInfo.Arguments = "\"" + Path.GetFullPath(projectFile) + "\"";
+			processStartInfo.ErrorDialog = false;
+			// processStartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+			processStartInfo.UseShellExecute = false;
+			processStartInfo.CreateNoWindow = true;
+			processStartInfo.RedirectStandardError = false; //no point redirecting as HHC does not use stdErr
+			processStartInfo.RedirectStandardOutput = true;
+
+			compileProcess.StartInfo = processStartInfo;
+
+			// Start the help compile and bail if it takes longer than 10 minutes.
+			Trace.WriteLine("Compiling Html Help file");
+
+			string stdOut = string.Empty;
+
+			try {
+				compileProcess.Start();
+
+				// Read the standard output of the spawned process.
+				stdOut = compileProcess.StandardOutput.ReadToEnd();
+				// compiler std out includes a bunch of unneccessary line feeds + new lines
+				// remplace all the line feed and keep the new lines
+				stdOut = stdOut.Replace("\r", "");
+			}
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -386,55 +484,5 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 		}
 		#endregion
-
-		private class ProjectXmlRenderer : Rendering.XmlRenderer {
-			private List<Entry> documentMap = null;
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="IndexXmlRenderer"/> class.
-			/// </summary>
-			/// <param name="documentMap">The document map.</param>
-			public ProjectXmlRenderer(List<Entry> documentMap) {
-				this.documentMap = documentMap;
-			}
-
-			public override void Render(XmlWriter writer) {
-				writer.WriteStartDocument();
-				writer.WriteStartElement("project");
-
-				writer.WriteElementString("contentsfile", "toc.hhc");
-				writer.WriteElementString("indexfile", "index.hhk");
-				writer.WriteElementString("title", "Test");
-				Entry firstEntry = this.documentMap[0].Children.First();
-				writer.WriteElementString("defaulttopic", string.Format("{0}-{1}.htm", firstEntry.Key, firstEntry.SubKey));
-				
-				writer.WriteEndElement(); // project
-				writer.WriteEndDocument();
-			}
-		}
-
-		/// <summary>
-		/// A <see cref="XmlRenderer"/> that renders the only copy of the index page for the
-		/// output documentation.
-		/// </summary>
-		private class IndexXmlRenderer : Rendering.XmlRenderer {
-			private List<Entry> documentMap = null;
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="IndexXmlRenderer"/> class.
-			/// </summary>
-			/// <param name="documentMap">The document map.</param>
-			public IndexXmlRenderer(List<Entry> documentMap) {
-				this.documentMap = documentMap;
-			}
-
-			public override void Render(XmlWriter writer) {
-				writer.WriteStartDocument();
-				writer.WriteStartElement("index");
-
-				writer.WriteEndElement(); // project
-				writer.WriteEndDocument();
-			}
-		}
 	}
 }

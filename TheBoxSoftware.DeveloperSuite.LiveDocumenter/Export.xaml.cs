@@ -53,6 +53,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			Documentation.Exporting.Exporter exporter = null;
 			ExportConfigFile o = (ExportConfigFile)this.outputSelection.SelectedItem;
+			this.exportDescription.Text = o.Description;
 
 			switch (o.Exporter) {
 				case Exporters.Website:
@@ -61,9 +62,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
 						o
 						);
+					this.exportType.Text = "Website exporter";
 					break;
 				case Exporters.Html1:
 					exporter = new Documentation.Exporting.HtmlHelp1Exporter(
+						LiveDocumentorFile.Singleton.Files,
+						new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+						o
+						);
+					this.exportType.Text = "HTML Help 1 exporter";
+					break;
+				case Exporters.Html2:
+					exporter = new Documentation.Exporting.HtmlHelp2Exporter(
 						LiveDocumentorFile.Singleton.Files,
 						new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
 						o
@@ -216,5 +226,22 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 		#endregion
+
+		private void outputSelection_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			ExportConfigFile o = (ExportConfigFile)this.outputSelection.SelectedItem;
+			this.exportDescription.Text = o.Description;
+
+			switch (o.Exporter) {
+				case Exporters.Website:
+					this.exportType.Text = "Website exporter";
+					break;
+				case Exporters.Html1:
+					this.exportType.Text = "HTML Help 1 exporter";
+					break;
+				case Exporters.Html2:
+					this.exportType.Text = "HTML Help 2 exporter";
+					break;
+			}
+		}
 	}
 }

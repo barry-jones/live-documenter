@@ -34,6 +34,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				this.Name = doc.SelectSingleNode("/export/name").InnerText;
 				this.Exporter = this.UnpackExporter(doc.SelectSingleNode("/export/exporter").InnerText);
+				XmlNode descriptionNode = doc.SelectSingleNode("/export/description");
+				if (descriptionNode != null) {
+					this.Description = descriptionNode.InnerText;
+				}
 			}
 		}
 
@@ -54,6 +58,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <value>The exporter.</value>
 		public Exporters Exporter { get; set; }
+
+		/// <summary>
+		/// A description of the exporter.
+		/// </summary>
+		public string Description { get; set; }
 
 		/// <summary>
 		/// Gets the XSLT file from the export configuration file.

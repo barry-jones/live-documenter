@@ -10,6 +10,7 @@ using System.IO;
 namespace TheBoxSoftware.Documentation.Exporting {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
+	using TheBoxSoftware.Documentation.Exporting.Website;
 
 	public class WebsiteExporter : Exporter {
 		private System.Text.RegularExpressions.Regex illegalFileCharacters;
@@ -356,51 +357,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			else {
 				Directory.Delete(directory, true);
 				Directory.CreateDirectory(directory);
-			}
-		}
-
-		/// <summary>
-		/// A <see cref="XmlRenderer"/> that renders the only copy of the index page for the
-		/// output documentation.
-		/// </summary>
-		private class IndexXmlRenderer : Rendering.XmlRenderer {
-			private List<Entry> documentMap = null;
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="IndexXmlRenderer"/> class.
-			/// </summary>
-			/// <param name="documentMap">The document map.</param>
-			public IndexXmlRenderer(List<Entry> documentMap) {
-				this.documentMap = documentMap;
-			}
-
-			public override void Render(XmlWriter writer) {
-				writer.WriteStartDocument();
-				writer.WriteStartElement("frontpage");
-				writer.WriteAttributeString("id", "0");
-				writer.WriteAttributeString("subId", string.Empty);
-
-				writer.WriteStartElement("title");
-				writer.WriteString("Documentation produced by Live Documenter");
-				writer.WriteEndElement();
-
-				// write all the namespaces
-				writer.WriteStartElement("namespaces");
-				foreach (Entry current in this.documentMap[0].Children) {
-					writer.WriteStartElement("namespace");
-					writer.WriteAttributeString("key", current.Key.ToString());
-					writer.WriteAttributeString("subkey", current.SubKey);
-
-					writer.WriteStartElement("name");
-					writer.WriteString(current.Name);
-					writer.WriteEndElement();
-
-					writer.WriteEndElement();
-				}
-				writer.WriteEndElement();
-
-				writer.WriteEndElement();
-				writer.WriteEndDocument();
 			}
 		}
 	}

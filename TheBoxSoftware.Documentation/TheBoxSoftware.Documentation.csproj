@@ -117,6 +117,9 @@
     <Compile Include="Exporting\ExportStepEventArgs.cs" />
     <Compile Include="Exporting\ExportStepEventHandler.cs" />
     <Compile Include="Exporting\HtmlHelp1Exporter.cs" />
+    <Compile Include="Exporting\HtmlHelp1\IndexXmlRenderer.cs" />
+    <Compile Include="Exporting\HtmlHelp1\ProjectXmlRenderer.cs" />
+    <Compile Include="Exporting\HtmlHelp2Exporter.cs" />
     <Compile Include="Exporting\Rendering\DocumentMapXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\EventXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\FieldXmlRenderer.cs" />
@@ -130,6 +133,7 @@
     <Compile Include="Exporting\Rendering\XmlRenderer.cs" />
     <Compile Include="Exporting\VisibilityFlags.cs" />
     <Compile Include="Exporting\WebsiteExporter.cs" />
+    <Compile Include="Exporting\Website\IndexXmlRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
