@@ -16,6 +16,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	public partial class Export : Window {
 		private ManualResetEvent resetEvent = null;
 		protected List<ExportConfigFile> exportFiles = new List<ExportConfigFile>();
+		private Settings settingsWindow = new Settings();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Export"/> class.
@@ -55,11 +56,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			ExportConfigFile o = (ExportConfigFile)this.outputSelection.SelectedItem;
 			this.exportDescription.Text = o.Description;
 
+			ExportSettings settings = new ExportSettings();
+			foreach (Settings.PrivacyFilter filter in settingsWindow.PrivacyFilters) {
+				if (filter.IsSelected) {
+					settings.Visibility.Add(filter.Visibility);
+				}
+			}
+
 			switch (o.Exporter) {
 				case Exporters.Website:
 					exporter = new Documentation.Exporting.WebsiteExporter(
 						LiveDocumentorFile.Singleton.Files,
-						new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+						settings,
 						o
 						);
 					this.exportType.Text = "Website exporter";
@@ -67,7 +75,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				case Exporters.Html1:
 					exporter = new Documentation.Exporting.HtmlHelp1Exporter(
 						LiveDocumentorFile.Singleton.Files,
-						new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+						settings,
 						o
 						);
 					this.exportType.Text = "HTML Help 1 exporter";
@@ -75,7 +83,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				case Exporters.Html2:
 					exporter = new Documentation.Exporting.HtmlHelp2Exporter(
 						LiveDocumentorFile.Singleton.Files,
-						new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+						settings,
 						o
 						);
 					break;
@@ -167,6 +175,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Shows the settings dialoge and updates the settings for the export.
 		/// </summary>
 		private void ShowSettings() {
+			settingsWindow.ShowDialog();
 		}
 
 		/// <summary>

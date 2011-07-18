@@ -16,22 +16,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		}
 
 		public Visibility GetVisibility() {
-			switch (this.method.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
-				case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
-					return Visibility.Public;
-				case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
-					return Visibility.Internal;
-				case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
-					return Visibility.InternalProtected;
-				case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
-					return Visibility.Protected;
-				case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
-					return Visibility.Private;
-				case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
-					return Visibility.Internal;
-				default:
-					return Visibility.Internal;
-			}
+			return this.method.MemberAccess;
 		}
 
 		public Inheritance GetInheritance() {

@@ -55,6 +55,24 @@ namespace TheBoxSoftware.Reflection {
 		/// </summary>
 		public MethodDef SetMethod { get; set; }
 
+		public override Visibility MemberAccess {
+			get {
+				int setterVisibility = 0;
+				int getterVisibility = 0;
+				if (this.SetMethod != null) {
+					setterVisibility = (int)this.SetMethod.MemberAccess;
+				}
+				if (this.GetMethod != null) {
+					getterVisibility = (int)this.GetMethod.MemberAccess;
+				}
+
+				// The more public, the greater the number
+				return (setterVisibility > getterVisibility)
+					? (Visibility)setterVisibility
+					: (Visibility)getterVisibility;
+			}
+		}
+
 		#region Methods
 		/// <summary>
 		/// Returns a display name for the Property.

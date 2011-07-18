@@ -311,7 +311,7 @@
     <Compile Include="Syntax\VisualBasic\VBFormatter.cs" />
     <Compile Include="Syntax\VisualBasic\VBIndexorFormatter.cs" />
     <Compile Include="Syntax\VisualBasic\VBInterfaceFormatter.cs" />
-    <Compile Include="Syntax\Visibility.cs" />
+    <Compile Include="Visibility.cs" />
     <Compile Include="Syntax\VisualBasic\VBMethodFormatter.cs" />
     <Compile Include="Syntax\VisualBasic\VBOperatorFormatter.cs" />
     <Compile Include="Syntax\VisualBasic\VBPropertyFormatter.cs" />

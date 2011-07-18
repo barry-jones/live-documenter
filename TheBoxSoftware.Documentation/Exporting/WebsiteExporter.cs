@@ -96,7 +96,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					typeEntry.Key = this.GetUniqueKey(assembly, currentType);
 					typeEntry.IsSearchable = true;
 					typeEntry.FullName = currentType.GetFullyQualifiedName();
-					namespaceEntry.Children.Add(typeEntry);
 
 					// For some elements we will not want to load the child objects
 					// this is currently for System.Enum derived values.
@@ -109,9 +108,24 @@ namespace TheBoxSoftware.Documentation.Exporting {
 						this.GenerateTypeMap(currentType, typeEntry, xmlComments);
 						typeEntry.Children.Sort();
 					}
+
+					if (this.ShouldEntryBeAdded(typeEntry)) {
+						namespaceEntry.Children.Add(typeEntry);
+					}
+					else {
+						continue;
+					}
 				}
 				if (namespaceEntry.Children.Count > 0) {
 					namespaceEntry.Children.Sort();
+				}
+			}
+
+			// Make sure we dont display any empty namespaces
+			for (int i = this.DocumentMap[0].Children.Count - 1; i >= 0; i--) {
+				Entry entry = this.DocumentMap[0].Children[i];
+				if (namespaceEntry.Children.Count == 0) {
+					this.DocumentMap[0].Children.RemoveAt(i);
 				}
 			}
 
@@ -138,7 +152,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				constructorsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				constructorsEntry.SubKey = "Constructors";
 				constructorsEntry.IsSearchable = false;
-				typeEntry.Children.Add(constructorsEntry);
 
 				// Add the method pages child page entries to the map
 				int count = constructors.Count;
@@ -148,9 +161,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					Entry constructorEntry = new Entry(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
 					constructorEntry.IsSearchable = true;
 					constructorEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentMethod);
-					constructorsEntry.Children.Add(constructorEntry);
+					if(this.ShouldEntryBeAdded(constructorEntry)) {
+						constructorsEntry.Children.Add(constructorEntry);
+					}
 				}
-				constructorsEntry.Children.Sort();
+				if (constructorsEntry.Children.Count > 0) {
+					constructorsEntry.Children.Sort();
+					typeEntry.Children.Add(constructorsEntry);
+				}
 			}
 
 			// Add a methods containing page and the associated methods
@@ -159,8 +177,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				methodsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				methodsEntry.SubKey = "Methods";
 				methodsEntry.IsSearchable = false;
-				typeEntry.Children.Add(methodsEntry);
-
+				
 				// Add the method pages child page entries to the map
 				int count = methods.Count;
 				for (int i = 0; i < count; i++) {
@@ -168,9 +185,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					Entry methodEntry = new Entry(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
 					methodEntry.IsSearchable = true;
 					methodEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentMethod);
-					methodsEntry.Children.Add(methodEntry);
+					if (this.ShouldEntryBeAdded(methodEntry)) {
+						methodsEntry.Children.Add(methodEntry);
+					}
 				}
-				methodsEntry.Children.Sort();
+				if (methodsEntry.Children.Count > 0) {
+					methodsEntry.Children.Sort();
+					typeEntry.Children.Add(methodsEntry);
+				}
 			}
 
 			if (operators.Count > 0) {
@@ -178,7 +200,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				operatorsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				operatorsEntry.SubKey = "Operators";
 				operatorsEntry.IsSearchable = false;
-				typeEntry.Children.Add(operatorsEntry);
 
 				int count = operators.Count;
 				for (int i = 0; i < count; i++) {
@@ -186,9 +207,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					Entry operatorEntry = new Entry(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
 					operatorEntry.Key = this.GetUniqueKey(typeDef.Assembly, current);
 					operatorEntry.IsSearchable = true;
-					operatorsEntry.Children.Add(operatorEntry);
+					if (this.ShouldEntryBeAdded(operatorEntry)) {
+						operatorsEntry.Children.Add(operatorEntry);
+					}
 				}
-				operatorsEntry.Children.Sort();
+				if (operatorsEntry.Children.Count > 0) {
+					operatorsEntry.Children.Sort();
+					typeEntry.Children.Add(operatorsEntry);
+				}
 			}
 
 			// Add entries to allow the viewing of the types fields			
@@ -197,15 +223,19 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				fieldsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				fieldsEntry.SubKey = "Fields";
 				fieldsEntry.IsSearchable = false;
-				typeEntry.Children.Add(fieldsEntry);
 
 				foreach (FieldDef currentField in fields) {
 					Entry fieldEntry = new Entry(currentField, currentField.Name, commentsXml, fieldsEntry);
 					fieldEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentField);
 					fieldEntry.IsSearchable = true;
-					fieldsEntry.Children.Add(fieldEntry);
+					if (this.ShouldEntryBeAdded(fieldEntry)) {
+						fieldsEntry.Children.Add(fieldEntry);
+					}
 				}
-				fieldsEntry.Children.Sort();
+				if (fieldsEntry.Children.Count > 0) {
+					fieldsEntry.Children.Sort();
+					typeEntry.Children.Add(fieldsEntry);
+				}
 			}
 
 			// Display the properties defined in the current type
@@ -214,15 +244,19 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				propertiesEntry.IsSearchable = false;
 				propertiesEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				propertiesEntry.SubKey = "Properties";
-				typeEntry.Children.Add(propertiesEntry);
 
 				foreach (PropertyDef currentProperty in properties) {
 					Entry propertyEntry = new Entry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
 					propertyEntry.IsSearchable = true;
 					propertyEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentProperty);
-					propertiesEntry.Children.Add(propertyEntry);
+					if (this.ShouldEntryBeAdded(propertyEntry)) {
+						propertiesEntry.Children.Add(propertyEntry);
+					}
 				}
-				propertiesEntry.Children.Sort();
+				if (propertiesEntry.Children.Count > 0) {
+					propertiesEntry.Children.Sort();
+					typeEntry.Children.Add(propertiesEntry);
+				}
 			}
 
 			// Display the properties defined in the current type
@@ -237,9 +271,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					Entry propertyEntry = new Entry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
 					propertyEntry.IsSearchable = true;
 					propertyEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentProperty);
-					propertiesEntry.Children.Add(propertyEntry);
+					if (this.ShouldEntryBeAdded(propertyEntry)) {
+						propertiesEntry.Children.Add(propertyEntry);
+					}
 				}
-				propertiesEntry.Children.Sort();
+				if (propertiesEntry.Children.Count > 0) {
+					propertiesEntry.Children.Sort();
+					typeEntry.Children.Add(propertiesEntry);
+				}
 			}
 		}
 		#endregion

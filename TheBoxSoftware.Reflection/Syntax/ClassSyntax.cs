@@ -90,23 +90,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// </summary>
 		/// <returns>The visibility modifier for the class.</returns>
 		public Visibility GetVisibility() {
-			switch (this.type.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.VisibilityMask) {
-				case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPublic:
-				case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Public:
-					return Visibility.Public;
-				case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NotPublic:
-					return Visibility.Internal;
-				case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamAndAssem:
-					return Visibility.InternalProtected;
-				case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamily:
-					return Visibility.Protected;
-				case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPrivate:
-					return Visibility.Private;
-				case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamOrAssem:
-					return Visibility.Internal;
-				default:
-					return Visibility.Internal;
-			}
+			return this.type.MemberAccess;
 		}
 
 		/// <summary>

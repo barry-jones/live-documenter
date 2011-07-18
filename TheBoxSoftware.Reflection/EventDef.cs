@@ -47,6 +47,26 @@ namespace TheBoxSoftware.Reflection {
 		/// The type which contains this event.
 		/// </summary>
 		public TypeDef Type { get; set; }
+
+		public override Visibility MemberAccess {
+			get {
+				int addVisibility = 0;
+				int removeVisibility = 0;
+				MethodDef addMethod = this.GetAddEventMethod();
+				MethodDef removeMethod = this.GetRemoveEventMethod();
+				if (addMethod != null) {
+					addVisibility = (int)addMethod.MemberAccess;
+				}
+				if (removeMethod != null) {
+					removeVisibility = (int)removeMethod.MemberAccess;
+				}
+
+				// The more public, the greater the number
+				return (addVisibility > removeVisibility)
+					? (Visibility)addVisibility
+					: (Visibility)removeVisibility;
+			}
+		}
 		#endregion
 
 		#region Methods

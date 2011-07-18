@@ -337,7 +337,12 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					typeEntry.Key = this.GetUniqueKey(assembly, currentType);
 					typeEntry.IsSearchable = true;
 					typeEntry.FullName = currentType.GetFullyQualifiedName();
-					namespaceEntry.Children.Add(typeEntry);
+					if (this.ShouldEntryBeAdded(typeEntry)) {
+						namespaceEntry.Children.Add(typeEntry);
+					}
+					else {
+						continue;
+					}
 
 					// For some elements we will not want to load the child objects
 					// this is currently for System.Enum derived values.

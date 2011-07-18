@@ -17,5 +17,9 @@ namespace TheBoxSoftware.Reflection {
 		/// A reference to the assembly which defines this member.
 		/// </summary>
 		public AssemblyDef Assembly { get; set; }
+
+		public virtual Visibility MemberAccess {
+			get { return Visibility.NotApplicable; }
+		}
 	}
 }

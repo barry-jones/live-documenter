@@ -138,112 +138,27 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			if (member is AssemblyDef) {
 			}
-			else if (member is TypeDef) {
-				TypeDef typeDef = (TypeDef)member;
-				if (typeDef != null) {
-					if ((typeDef.Flags & TypeAttributes.NestedPublic) == TypeAttributes.NestedPublic) {
-					}
-					else if ((typeDef.Flags & TypeAttributes.NestedFamily) == TypeAttributes.NestedFamily) {
+			else if (member is TypeDef || member is EventDef || member is FieldDef || member is MethodDef || member is PropertyDef) {
+				switch (member.MemberAccess)
+				{
+					case Visibility.Protected:
 						name = "protected";
-					}
-					else if ((typeDef.Flags & TypeAttributes.NestedAssembly) == TypeAttributes.NestedAssembly) {
+						break;
+					case Visibility.Internal:
 						name = "sealed";
-					}
-					else if ((typeDef.Flags & TypeAttributes.NestedPrivate) == TypeAttributes.NestedPrivate) {
+						break;
+					case Visibility.InternalProtected:
+						name = "friend";
+						break;
+					case Visibility.Private:
 						name = "private";
-					}
-					else if ((typeDef.Flags & TypeAttributes.Public) == TypeAttributes.Public) {
-					}
-					else if ((typeDef.Flags & TypeAttributes.NotPublic) == TypeAttributes.NotPublic) {
-						name = "sealed";
-					}
+						break;
+					case Visibility.Public:
+						name = "public";
+						break;
 				}
 			}
-			else if (member is EventDef) {
-				EventDef eventDef = (EventDef)member;
 
-				if (eventDef != null) {
-					MethodDef addMethod = eventDef.GetAddEventMethod();
-					MethodDef removeMethod = eventDef.GetRemoveEventMethod();
-					MethodAttributes addVisibility = addMethod != null
-						? addMethod.Attributes & MethodAttributes.MemberAccessMask
-						: 0;
-					MethodAttributes removeVisibility = removeMethod != null
-						? removeMethod.Attributes & MethodAttributes.MemberAccessMask
-						: 0;
-					MethodAttributes visibility = (((int)addVisibility) > ((int)removeVisibility))
-						? addVisibility
-						: removeVisibility;
-					if ((visibility & MethodAttributes.Public) == MethodAttributes.Public) {
-					}
-					else if ((visibility & MethodAttributes.Family) == MethodAttributes.Family) {
-						name = "protected";
-					}
-					else if ((visibility & MethodAttributes.Assem) == MethodAttributes.Assem) {
-						name = "sealed";
-					}
-					else if ((visibility & MethodAttributes.Private) == MethodAttributes.Private) {
-						name = "private";
-					}
-				}
-			}
-			else if (member is FieldDef) {
-				FieldDef fieldDef = (FieldDef)member;
-
-				if ((fieldDef.Flags & FieldAttributes.Public) == FieldAttributes.Public) {
-				}
-				else if ((fieldDef.Flags & FieldAttributes.Family) == FieldAttributes.Family) {
-					name = "protected";
-				}
-				else if ((fieldDef.Flags & FieldAttributes.Assembly) == FieldAttributes.Assembly) {
-					name = "sealed";
-				}
-				else if ((fieldDef.Flags & FieldAttributes.Private) == FieldAttributes.Private) {
-					name = "private";
-				}
-			}
-			else if (member is MethodDef) {
-				MethodDef methodDef = (MethodDef)member;
-
-				if ((methodDef.Attributes & MethodAttributes.Public) == MethodAttributes.Public) {
-					// stay at method
-				}
-				else if ((methodDef.Attributes & MethodAttributes.Family) == MethodAttributes.Family) {
-					name = "protected";
-				}
-				else if ((methodDef.Attributes & MethodAttributes.Assem) == MethodAttributes.Assem) {
-					name = "sealed";
-				}
-				else if ((methodDef.Attributes & MethodAttributes.Private) == MethodAttributes.Private) {
-					name = "private";
-				}
-			}
-			else if (member is PropertyDef) {
-				PropertyDef propertyDef = (PropertyDef)member;
-
-				if (propertyDef != null) {
-					MethodAttributes getterVisibility = propertyDef.GetMethod != null
-						? propertyDef.GetMethod.Attributes & MethodAttributes.MemberAccessMask
-						: 0;
-					MethodAttributes setterVisibility = propertyDef.SetMethod != null
-						? propertyDef.SetMethod.Attributes & MethodAttributes.MemberAccessMask
-						: 0;
-					MethodAttributes visibility = (((int)getterVisibility) > ((int)setterVisibility))
-						? getterVisibility
-						: setterVisibility;
-					if ((visibility & MethodAttributes.Public) == MethodAttributes.Public) {
-					}
-					else if ((visibility & MethodAttributes.Family) == MethodAttributes.Family) {
-						name += "protected";
-					}
-					else if ((visibility & MethodAttributes.Assem) == MethodAttributes.Assem) {
-						name = "sealed";
-					}
-					else if ((visibility & MethodAttributes.Private) == MethodAttributes.Private) {
-						name = "private";
-					}
-				}
-			}
 			// TODO: Handle namespaces and assemblies
 
 			return name;

@@ -38,55 +38,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// determined by the most accessible method.
 		/// </remarks>
 		public Visibility GetVisbility() {
-			Visibility addVisibility = Visibility.Private;
-			Visibility removeVisibility = Visibility.Private;
-			if (add != null) {
-				switch (this.add.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
-						addVisibility = Visibility.Public;
-						break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
-						addVisibility = Visibility.Internal;
-						break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
-						addVisibility = Visibility.InternalProtected;
-						break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
-						addVisibility = Visibility.Protected;
-						break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
-						addVisibility = Visibility.Private;
-						break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
-						addVisibility = Visibility.Internal;
-						break;
-					default:
-						addVisibility = Visibility.Public;
-						break;
-				}
-			}
-			if (remove != null) {
-				switch (this.remove.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
-						removeVisibility = Visibility.Public; break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
-						removeVisibility = Visibility.Internal; break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
-						removeVisibility = Visibility.InternalProtected; break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
-						removeVisibility = Visibility.Protected; break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
-						removeVisibility = Visibility.Private; break;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
-						removeVisibility = Visibility.Internal; break;
-					default:
-						removeVisibility = Visibility.Public; break;
-				}
-			}
-
-			return ((int)addVisibility > (int)removeVisibility)
-				? addVisibility
-				: removeVisibility;
+			return this.eventDef.MemberAccess;
 		}
 
 		public Inheritance GetInheritance() {

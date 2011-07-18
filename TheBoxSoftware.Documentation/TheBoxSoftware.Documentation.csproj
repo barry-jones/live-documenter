@@ -131,7 +131,6 @@
     <Compile Include="Exporting\Rendering\TypeMembersXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\TypeXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\XmlRenderer.cs" />
-    <Compile Include="Exporting\VisibilityFlags.cs" />
     <Compile Include="Exporting\WebsiteExporter.cs" />
     <Compile Include="Exporting\Website\IndexXmlRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

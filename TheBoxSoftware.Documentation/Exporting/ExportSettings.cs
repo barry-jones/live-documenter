@@ -4,16 +4,25 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Documentation.Exporting {
+	using TheBoxSoftware.Reflection;
+
 	/// <summary>
 	/// Settings which govern where, when, how and all other information regarding
 	/// the export of documentation.
 	/// </summary>
 	public sealed class ExportSettings {
 		/// <summary>
+		/// Initialises a new instance of the ExportSettings class.
+		/// </summary>
+		public ExportSettings() {
+			this.Visibility = new List<Visibility>();
+		}
+
+		/// <summary>
 		/// A flag describing which library members are exported.
 		/// </summary>
 		/// <value>The visibility.</value>
-		public VisibilityFlags Visibility { get; set; }
+		public List<Visibility> Visibility { get; set; }
 
 		/// <summary>
 		/// The full filepath to the XSLT which will be executed on all of

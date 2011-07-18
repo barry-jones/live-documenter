@@ -289,6 +289,31 @@ namespace TheBoxSoftware.Reflection {
 		/// Collection of <see cref="TypeRef"/> instances defining the interfaces this class implements.
 		/// </summary>
 		public List<TypeRef> Implements { get; set; }
+
+		/// <summary>
+		/// Returns the <see cref="Visibility"/> of the TypeDef.
+		/// </summary>
+		public override Visibility MemberAccess {
+			get {
+				switch (this.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.VisibilityMask) {
+					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPublic:
+					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Public:
+						return Visibility.Public;
+					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NotPublic:
+						return Visibility.Internal;
+					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamAndAssem:
+						return Visibility.Internal;
+					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamily:
+						return Visibility.Protected;
+					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPrivate:
+						return Visibility.Private;
+					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamOrAssem:
+						return Visibility.InternalProtected;
+					default:
+						return Visibility.Internal;
+				};
+			}
+		}
 		#endregion
 
 		#region Methods

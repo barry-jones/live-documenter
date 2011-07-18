@@ -26,11 +26,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		}
 
 		public Visibility GetVisibility() {
-			Visibility getVisibility = this.GetGetterVisibility();
-			Visibility setVisibility = this.GetSetterVisibility();
-			return ((int)getVisibility > (int)setVisibility)
-				? getVisibility
-				: setVisibility;
+			return this.propertyDef.MemberAccess;
 		}
 
 		public Visibility GetGetterVisibility() {
@@ -44,22 +40,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 				return this.GetSetterVisibility();
 			}
 			else {
-				switch (this.get.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
-						return Visibility.Public;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
-						return Visibility.Internal;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
-						return Visibility.InternalProtected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
-						return Visibility.Protected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
-						return Visibility.Private;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
-						return Visibility.Internal;
-					default:
-						return Visibility.Internal;
-				}
+				return this.get.MemberAccess;
 			}
 		}
 
@@ -74,22 +55,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 				return this.GetGetterVisibility();
 			}
 			else {
-				switch (this.set.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
-						return Visibility.Public;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
-						return Visibility.Internal;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
-						return Visibility.InternalProtected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
-						return Visibility.Protected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
-						return Visibility.Private;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
-						return Visibility.Internal;
-					default:
-						return Visibility.Internal;
-				}
+				return this.set.MemberAccess;
 			}
 		}
 

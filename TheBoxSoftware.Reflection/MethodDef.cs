@@ -305,6 +305,27 @@ namespace TheBoxSoftware.Reflection {
 		/// </summary>
 		public MethodAttributes Attributes { get; set; }
 
+		public override Visibility MemberAccess {
+			get {
+				switch (this.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
+					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
+						return Visibility.Public;
+					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
+						return Visibility.Internal;
+					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
+						return Visibility.Internal;
+					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
+						return Visibility.Protected;
+					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
+						return Visibility.Private;
+					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
+						return Visibility.InternalProtected;
+					default:
+						return Visibility.Internal;
+				}
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets a set of flags detailing the implementation details of this
 		/// method.

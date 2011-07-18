@@ -28,22 +28,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// </summary>
 		/// <returns>A visibility enumerated value.</returns>
 		public Visibility GetVisibility() {
-			switch (this.field.Flags & TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FieldAccessMask) {
-				case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Public:
-					return Visibility.Public;
-				case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Assembly:
-					return Visibility.Internal;
-				case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FamANDAssem:
-					return Visibility.InternalProtected;
-				case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Family:
-					return Visibility.Protected;
-				case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Private:
-					return Visibility.Private;
-				case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FamORAssem:
-					return Visibility.Internal;
-				default:
-					return Visibility.Internal;
-			}
+			return this.field.MemberAccess;
 		}
 
 		/// <summary>

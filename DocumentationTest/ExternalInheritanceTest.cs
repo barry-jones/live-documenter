@@ -10,5 +10,10 @@ namespace DocumentationTest {
 	/// </summary>
 	public class ExternalInheritanceTest : TheBoxSoftware.Reflection.ReflectedMember {
 		public ExternalInheritanceTest() : base() { }
+
+		public override TheBoxSoftware.Reflection.Visibility MemberAccess
+		{
+			get { throw new NotImplementedException(); }
+		}
 	}
 }

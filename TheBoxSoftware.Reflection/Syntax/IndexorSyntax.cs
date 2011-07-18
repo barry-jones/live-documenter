@@ -17,7 +17,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// <summary>
 		/// Initialises a new instance of the EventSyntax class.
 		/// </summary>
-		/// <param name="eventDef">The details of the event to get the information from.</param>
+		/// <param name="propertyDef">The details of the event to get the information from.</param>
 		public IndexorSyntax(PropertyDef propertyDef) {
 			if (propertyDef.Name != "Item") {
 				throw new InvalidOperationException("The provided property is not an indexor");
@@ -33,11 +33,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// </summary>
 		/// <returns>An enumerated value representing the visibility of the member.</returns>
 		public Visibility GetVisibility() {
-			Visibility getVisibility = this.GetGetterVisibility();
-			Visibility setVisibility = this.GetSetterVisibility();
-			return ((int)getVisibility > (int)setVisibility)
-				? getVisibility
-				: setVisibility;
+			return this.propertyDef.MemberAccess;
 		}
 
 		/// <summary>
@@ -55,22 +51,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 				return this.GetSetterVisibility();
 			}
 			else {
-				switch (this.get.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
-						return Visibility.Public;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
-						return Visibility.Internal;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
-						return Visibility.InternalProtected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
-						return Visibility.Protected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
-						return Visibility.Private;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
-						return Visibility.Internal;
-					default:
-						return Visibility.Internal;
-				}
+				return this.get.MemberAccess;
 			}
 		}
 
@@ -89,22 +70,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 				return this.GetGetterVisibility();
 			}
 			else {
-				switch (this.set.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask) {
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
-						return Visibility.Public;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
-						return Visibility.Internal;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
-						return Visibility.InternalProtected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
-						return Visibility.Protected;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
-						return Visibility.Private;
-					case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
-						return Visibility.Internal;
-					default:
-						return Visibility.Internal;
-				}
+				return this.set.MemberAccess;
 			}
 		}
 

@@ -60,6 +60,27 @@ namespace TheBoxSoftware.Reflection{
 				return this.Constants.Count > 0;
 			}
 		}
+
+		public override Visibility MemberAccess {
+			get {
+				switch (this.Flags & TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FieldAccessMask) {
+					case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Public:
+						return Visibility.Public;
+					case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Assembly:
+						return Visibility.Internal;
+					case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FamANDAssem:
+						return Visibility.Internal;
+					case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Family:
+						return Visibility.Protected;
+					case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Private:
+						return Visibility.Private;
+					case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FamORAssem:
+						return Visibility.InternalProtected;
+					default:
+						return Visibility.Internal;
+				}
+			}
+		}
 		#endregion
 	}
 }
