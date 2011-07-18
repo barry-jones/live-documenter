@@ -19,6 +19,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	public partial class Settings : Window {
 		private EventHandler cancelled;
 		private EventHandler accepted;
+		private PrivacyFilterCollection originalFilters = new PrivacyFilterCollection();
 
 		/// <summary>
 		/// Initialises a new instance of the Settings form.
@@ -26,7 +27,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public Settings() {
 			InitializeComponent();
 
-			this.PrivacyFilters = new ObservableCollection<PrivacyFilter> {
+			this.PrivacyFilters = new PrivacyFilterCollection {
 				new PrivacyFilter("Document internal members", Reflection.Visibility.Internal),
 				new PrivacyFilter("Document private members", Reflection.Visibility.Private),
 				new PrivacyFilter("Document protected members", Reflection.Visibility.Protected),
@@ -38,6 +39,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 		private void Apply() {
 			this.OnAccepted();
+			this.Hide();
 		}
 
 		private void Cancel() {
@@ -66,7 +68,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			remove { accepted -= value; }
 		}
 
-		public ObservableCollection<PrivacyFilter> PrivacyFilters { get; set; }
+		public PrivacyFilterCollection PrivacyFilters { get; set; }
 
 		#region Event Handlers
 		private void button_Click(object sender, EventArgs e) {
@@ -76,15 +78,32 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			switch (clickedButton.Name) {
 				case "apply":
+					this.Apply();
 					break;
 				case "cancel":
+					this.Cancel();
 					break;
 			}
 		}
 		#endregion
 
-		public class PrivacyFilter
-		{
+		public class PrivacyFilterCollection : ObservableCollection<PrivacyFilter> {
+			public override string ToString() {
+				List<string> selectedNames = new List<string>();
+
+				foreach (PrivacyFilter current in this) {
+					if (current.IsSelected) {
+						selectedNames.Add(current.Visibility.ToString());
+					}
+				}
+
+				return selectedNames.Count > 0
+					? selectedNames.Count == this.Count ? "Document all members" : string.Format("Document {0} members", string.Join(", ", selectedNames.ToArray())) 
+					: string.Empty;
+			}
+		}
+
+		public class PrivacyFilter {
 			public PrivacyFilter(string title, TheBoxSoftware.Reflection.Visibility filter) {
 				this.Title = title;
 				this.Visibility = filter;

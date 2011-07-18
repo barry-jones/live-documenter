@@ -175,7 +175,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Shows the settings dialoge and updates the settings for the export.
 		/// </summary>
 		private void ShowSettings() {
-			settingsWindow.ShowDialog();
+			this.settingsWindow.ShowDialog();
+			this.settingsWindow.Owner = this;
 		}
 
 		/// <summary>
