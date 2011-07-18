@@ -102,7 +102,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyFirstDocumentMapper.cs" />
     <Compile Include="DocumentedAssembly.cs" />
+    <Compile Include="DocumentMap.cs" />
+    <Compile Include="DocumentMapper.cs" />
     <Compile Include="EmptyEntry.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Exporting\ExportCalculatedEventArgs.cs" />
@@ -133,6 +136,8 @@
     <Compile Include="Exporting\Rendering\XmlRenderer.cs" />
     <Compile Include="Exporting\WebsiteExporter.cs" />
     <Compile Include="Exporting\Website\IndexXmlRenderer.cs" />
+    <Compile Include="Mappers.cs" />
+    <Compile Include="NamespaceFirstDocumentMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
