@@ -38,9 +38,5 @@ namespace TheBoxSoftware.Documentation.Exporting {
 							);
 			this.config = config;
 		}
-
-		protected override void GenerateDocumentMap() {
-			throw new NotImplementedException();
-		}
 	}
 }

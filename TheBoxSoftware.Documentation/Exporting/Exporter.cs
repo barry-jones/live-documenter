@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </para>
 	/// </remarks>
 	public abstract class Exporter {
-		public List<Entry> DocumentMap { get; set; }
+		public DocumentMap DocumentMap { get; set; }
 		public List<DocumentedAssembly> CurrentFiles { get; set; }
 		protected ExportSettings Settings { get; set; }
 		private ExportCalculatedEventHandler exportCalculated;
@@ -39,34 +39,34 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		public virtual void Export() {
 		}
 
-		protected abstract void GenerateDocumentMap();
+		//protected abstract void GenerateDocumentMap();
 
-		protected bool ShouldEntryBeAdded(Entry entryToTest) {
-			bool shouldBeAdded = true;
+		//protected bool ShouldEntryBeAdded(Entry entryToTest) {
+		//    bool shouldBeAdded = true;
 
-			if (shouldBeAdded &&
-				(entryToTest.Item is MethodDef ||
-				entryToTest.Item is PropertyDef ||
-				entryToTest.Item is FieldDef ||
-				entryToTest.Item is TypeDef)) {
-				ReflectedMember member = entryToTest.Item as ReflectedMember;
-				bool publicVisibility = member.MemberAccess == Visibility.Public;
-				if (!publicVisibility)
-				{
-					shouldBeAdded = false;
-					foreach (Visibility current in this.Settings.Visibility)
-					{
-						if (member.MemberAccess == current)
-						{
-							shouldBeAdded = true;
-							break;
-						}
-					}
-				}
-			}
+		//    if (shouldBeAdded &&
+		//        (entryToTest.Item is MethodDef ||
+		//        entryToTest.Item is PropertyDef ||
+		//        entryToTest.Item is FieldDef ||
+		//        entryToTest.Item is TypeDef)) {
+		//        ReflectedMember member = entryToTest.Item as ReflectedMember;
+		//        bool publicVisibility = member.MemberAccess == Visibility.Public;
+		//        if (!publicVisibility)
+		//        {
+		//            shouldBeAdded = false;
+		//            foreach (Visibility current in this.Settings.Visibility)
+		//            {
+		//                if (member.MemberAccess == current)
+		//                {
+		//                    shouldBeAdded = true;
+		//                    break;
+		//                }
+		//            }
+		//        }
+		//    }
 
-			return shouldBeAdded;
-		}
+		//    return shouldBeAdded;
+		//}
 
 		/// <summary>
 		/// Gets a unique id across this exported live document

@@ -10,13 +10,13 @@ namespace TheBoxSoftware.Documentation.Exporting.Website {
 	/// output documentation.
 	/// </summary>
 	internal sealed class IndexXmlRenderer : Rendering.XmlRenderer {
-		private List<Entry> documentMap = null;
+		private DocumentMap documentMap = null;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="IndexXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="documentMap">The document map.</param>
-		public IndexXmlRenderer(List<Entry> documentMap) {
+		public IndexXmlRenderer(DocumentMap documentMap) {
 			this.documentMap = documentMap;
 		}
 

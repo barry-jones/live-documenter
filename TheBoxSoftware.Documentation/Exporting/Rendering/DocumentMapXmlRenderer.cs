@@ -7,13 +7,13 @@ using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	class DocumentMapXmlRenderer : XmlRenderer {
-		private List<Entry> documentMap;
+		private DocumentMap documentMap;
 		
 		/// <summary>
 		/// Initialises a new LiveDocument
 		/// </summary>
 		/// <param name="files">The files to be managed by this LiveDocument.</param>
-		public DocumentMapXmlRenderer(List<Entry> documentMap) {
+		public DocumentMapXmlRenderer(DocumentMap documentMap) {
 			this.documentMap = documentMap;
 		}
 

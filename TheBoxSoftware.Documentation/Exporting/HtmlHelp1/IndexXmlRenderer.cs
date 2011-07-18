@@ -9,13 +9,13 @@ namespace TheBoxSoftware.Documentation.Exporting.HtmlHelp1 {
 	/// A <see cref="XmlRenderer"/> which renders the XML for the html index file.
 	/// </summary>
 	internal sealed class IndexXmlRenderer : Rendering.XmlRenderer {
-		private List<Entry> documentMap = null;
+		private DocumentMap documentMap = null;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="IndexXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="documentMap">The document map.</param>
-		public IndexXmlRenderer(List<Entry> documentMap) {
+		public IndexXmlRenderer(DocumentMap documentMap) {
 			this.documentMap = documentMap;
 		}
 

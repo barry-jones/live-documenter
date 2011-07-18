@@ -100,12 +100,14 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyFirstDocumentMapper.cs" />
     <Compile Include="DocumentedAssembly.cs" />
     <Compile Include="DocumentMap.cs" />
     <Compile Include="DocumentMapper.cs" />
+    <Compile Include="DocumentSettings.cs" />
     <Compile Include="EmptyEntry.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Exporting\ExportCalculatedEventArgs.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Exporting\HtmlHelp1\IndexXmlRenderer.cs" />
     <Compile Include="Exporting\HtmlHelp1\ProjectXmlRenderer.cs" />
     <Compile Include="Exporting\HtmlHelp2Exporter.cs" />
+    <Compile Include="Exporting\Rendering\AssemblyXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\DocumentMapXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\EventXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\FieldXmlRenderer.cs" />
@@ -138,6 +141,7 @@
     <Compile Include="Exporting\Website\IndexXmlRenderer.cs" />
     <Compile Include="Mappers.cs" />
     <Compile Include="NamespaceFirstDocumentMapper.cs" />
+    <Compile Include="ObservableDocumentMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

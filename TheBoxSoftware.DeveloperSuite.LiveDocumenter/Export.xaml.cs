@@ -59,7 +59,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			ExportSettings settings = new ExportSettings();
 			foreach (Settings.PrivacyFilter filter in settingsWindow.PrivacyFilters) {
 				if (filter.IsSelected) {
-					settings.Visibility.Add(filter.Visibility);
+					settings.DocumentSettings.VisibilityFilters.Add(filter.Visibility);
 				}
 			}
 

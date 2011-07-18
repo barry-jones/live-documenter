@@ -15,14 +15,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Initialises a new instance of the ExportSettings class.
 		/// </summary>
 		public ExportSettings() {
-			this.Visibility = new List<Visibility>();
+			this.DocumentSettings = new DocumentSettings();
 		}
 
 		/// <summary>
-		/// A flag describing which library members are exported.
+		/// The settings for the produced/exported document.
 		/// </summary>
-		/// <value>The visibility.</value>
-		public List<Visibility> Visibility { get; set; }
+		public DocumentSettings DocumentSettings { get; set; }
 
 		/// <summary>
 		/// The full filepath to the XSLT which will be executed on all of

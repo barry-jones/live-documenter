@@ -10,13 +10,13 @@ namespace TheBoxSoftware.Documentation.Exporting.HtmlHelp1 {
 	/// HTML Help 1 project file.
 	/// </summary>
 	internal sealed class ProjectXmlRenderer : Rendering.XmlRenderer {
-		private List<Entry> documentMap = null;
+		private DocumentMap documentMap = null;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="IndexXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="documentMap">The document map.</param>
-		public ProjectXmlRenderer(List<Entry> documentMap) {
+		public ProjectXmlRenderer(DocumentMap documentMap) {
 			this.documentMap = documentMap;
 		}
 
