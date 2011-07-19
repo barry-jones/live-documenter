@@ -91,8 +91,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <param name="location">The location.</param>
 		public virtual void SaveOutputFilesTo(string location) {
-			using (ZipFile file = new ZipFile(this.ConfigFile))
-			{
+			using (ZipFile file = new ZipFile(this.ConfigFile)) {
 				// get the config file
 				XmlDocument doc = new XmlDocument();
 				Stream ms = new MemoryStream();
@@ -101,31 +100,62 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				doc.LoadXml(new StreamReader(ms).ReadToEnd());
 
 				XmlNodeList files = doc.SelectNodes("/export/outputfiles/file");
-				foreach (XmlNode current in files)
-				{
+				foreach (XmlNode current in files) {
 					string from = current.Attributes["internal"] == null ? string.Empty : current.Attributes["internal"].Value;
 					string to = current.Attributes["output"] == null ? string.Empty : current.Attributes["output"].Value;
 
-					if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
-					{
+					if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to)) {
 						continue;
 					}
 
-					if (file[from] == null)
-					{
+					if (file[from] == null) {
 						continue;
 					}
 
-					if (file[from].IsDirectory)
-					{
+					if (file[from].IsDirectory) {
 						file.ExtractSelectedEntries("name = *.*", file[from].FileName, location, ExtractExistingFileAction.OverwriteSilently);
 					}
-					else
-					{
+					else {
 						file[from].Extract(location);
 					}
 				}
 			}
+		}
+
+		public virtual List<string> GetOutputFileURLs() {
+			List<string> urls = new List<string>();
+
+			using (ZipFile file = new ZipFile(this.ConfigFile)) {
+				// get the config file
+				XmlDocument doc = new XmlDocument();
+				Stream ms = new MemoryStream();
+				file["export.config"].Extract(ms);
+				ms.Seek(0, SeekOrigin.Begin);
+				doc.LoadXml(new StreamReader(ms).ReadToEnd());
+
+				XmlNodeList files = doc.SelectNodes("/export/outputfiles/file");
+				foreach (XmlNode current in files) {
+					string from = current.Attributes["internal"] == null ? string.Empty : current.Attributes["internal"].Value;
+					string to = current.Attributes["output"] == null ? string.Empty : current.Attributes["output"].Value;
+
+					if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to)) {
+						continue;
+					}
+
+					if (file[from] == null) {
+						continue;
+					}
+
+					if (file[from].IsDirectory) {
+						urls.Add(file[from].FileName + "*.*");
+					}
+					else {
+						urls.Add(file[from].FileName);
+					}
+				}
+			}
+
+			return urls;
 		}
 
 		private Exporters UnpackExporter(string value) {
@@ -134,6 +164,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					return Exporters.Website;
 				case "html1":
 					return Exporters.Html1;
+				case "html2":
+					return Exporters.Html2;
 				default:
 					return Exporters.Website;
 			}

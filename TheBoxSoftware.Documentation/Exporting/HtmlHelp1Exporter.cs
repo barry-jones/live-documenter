@@ -22,7 +22,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </summary>
 	public sealed class HtmlHelp1Exporter : Exporter {
 		private System.Text.RegularExpressions.Regex illegalFileCharacters;
-		private string tempdirectory = string.Empty;
 		private ExportConfigFile config = null;
 		private int currentExportStep = 1;
 
@@ -55,10 +54,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 
 			// the temp output directory
-			this.tempdirectory = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetTempFileName()) + "\\";
+			this.TempDirectory = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetTempFileName()) + "\\";
+			this.OutputDirectory = @"temp\output\";
 
 			try {
-				this.PrepareDirectory(tempdirectory);
+				this.PrepareDirectory(this.TempDirectory);
 
 				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false);
 				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
@@ -70,19 +70,19 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				// export the document map
 				this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.currentExportStep));
-				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.tempdirectory))) {
+				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory))) {
 					map.Render(writer);
 				}
 
 				// export the project xml
 				ProjectXmlRenderer projectXml = new ProjectXmlRenderer(this.DocumentMap);
-				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/project.xml", this.tempdirectory))) {
+				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/project.xml", this.TempDirectory))) {
 					projectXml.Render(writer);
 				}
 
 				//// export the index xml
 				IndexXmlRenderer indexXml = new IndexXmlRenderer(this.DocumentMap);
-				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.tempdirectory))) {
+				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
 					indexXml.Render(writer);
 				}
 
@@ -94,57 +94,58 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				Processor p = new Processor();
 				Uri xsltLocation = new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), "ApplicationData/livexmltohtml.xslt");
 				XsltTransformer transform = p.NewXsltCompiler().Compile(this.config.GetXslt()).Load();
-				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(tempdirectory)));
+				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
 				// Finally perform the user selected output xslt
 				this.OnExportStep(new ExportStepEventArgs("Preparing output directory", ++this.currentExportStep));
-				this.PrepareDirectory(@"temp\output");
+				this.PrepareDirectory(this.OutputDirectory);
 
 				// set output files
 				this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.currentExportStep));
-				this.config.SaveOutputFilesTo(@"temp\output");
+				this.config.SaveOutputFilesTo(this.OutputDirectory);
 
 				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.currentExportStep));
 				
 				// export the project file
-				using (FileStream fs = File.OpenRead(string.Format("{0}/project.xml", this.tempdirectory))) {
+				using (FileStream fs = File.OpenRead(string.Format("{0}/project.xml", this.TempDirectory))) {
 					Serializer s = new Serializer();
-					s.SetOutputFile(@"temp\output\project.hhp");
-					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), @"temp\output\"));
+					s.SetOutputFile(this.OutputDirectory + "project.hhp");
+					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 					transform.Run(s);
 				}
 
 				// export the index file
-				using (FileStream fs = File.OpenRead(string.Format("{0}/index.xml", this.tempdirectory))) {
+				using (FileStream fs = File.OpenRead(string.Format("{0}/index.xml", this.TempDirectory))) {
 					Serializer s = new Serializer();
-					s.SetOutputFile(@"temp\output\index.hhk");
-					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), @"temp\output\"));
+					s.SetOutputFile(this.OutputDirectory + "index.hhk");
+					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 					transform.Run(s);
 				}
 
 				// export the content file
-				using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.tempdirectory))) {
+				using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
 					Serializer s = new Serializer();
-					s.SetOutputFile(@"temp\output\toc.hhc");
-					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), @"temp\output\"));
+					s.SetOutputFile(this.OutputDirectory + "toc.hhc");
+					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 					transform.Run(s);
 				}
 
 				// export the content files
-				foreach (string current in Directory.GetFiles(this.tempdirectory)) {
-					if (current == "toc.xml")
+				string[] exclude = { "toc.xml", "index.xml", "project.xml" };
+				foreach (string current in Directory.GetFiles(this.TempDirectory)) {
+					if (exclude.Contains(current.Substring(this.TempDirectory.Length)))
 						continue;
 					using (FileStream fs = File.OpenRead(current)) {
 						Serializer s = new Serializer();
-						s.SetOutputFile(@"temp\output\" + Path.GetFileNameWithoutExtension(current) + ".htm");
-						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), @"temp\output\"));
+						s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 						transform.Run(s);
 					}
 				}
 
 				// compile the html help file
 				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.currentExportStep));
-				this.CompileHelp(@"temp\output\project.hhp");
+				this.CompileHelp(this.OutputDirectory + "project.hhp");
 			}
 			catch (Exception ex) {
 				ExportException exception = new ExportException(ex.Message, ex);
@@ -228,49 +229,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 			catch (Exception) {
 				throw;
-			}
-		}
-
-		/// <summary>
-		/// A method that recursively, through the documentation tree, exports all of the
-		/// found pages for each of the entries in the documentation.
-		/// </summary>
-		/// <param name="currentEntry">The current entry to export</param>
-		private void RecursiveEntryExport(Entry currentEntry) {
-			this.Export(currentEntry);
-			for (int i = 0; i < currentEntry.Children.Count; i++) {
-				this.RecursiveEntryExport(currentEntry.Children[i]);
-			}
-		}
-
-		private void Export(Entry current) {
-			System.Diagnostics.Debug.WriteLine("SaveXaml: " + current.Name + "[" + current.Key + ", " + current.SubKey + "]");
-			System.Diagnostics.Debug.Indent();
-
-			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
-
-			if (r != null) {
-				string filename = string.Format("{0}{1}{2}.xml", this.tempdirectory, current.Key, string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.illegalFileCharacters.Replace(current.SubKey, string.Empty));
-				System.Diagnostics.Debug.WriteLine("filename: " + filename);
-				using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
-					r.Render(writer);
-				}
-				System.Diagnostics.Debug.WriteLine("File: " + filename);
-			}
-
-			System.Diagnostics.Debug.Unindent();
-		}
-
-		/// <summary>
-		/// Ensures there is an empty temp directory to proccess the documentation in.
-		/// </summary>
-		private void PrepareDirectory(string directory) {
-			if (!Directory.Exists(directory)) {
-				Directory.CreateDirectory(directory);
-			}
-			else {
-				Directory.Delete(directory, true);
-				Directory.CreateDirectory(directory);
 			}
 		}
 	}

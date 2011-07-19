@@ -110,6 +110,7 @@
     <Compile Include="DocumentSettings.cs" />
     <Compile Include="EmptyEntry.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="Exporting\HtmlHelp2\CollectionXmlRenderer.cs" />
     <Compile Include="Exporting\ExportCalculatedEventArgs.cs" />
     <Compile Include="Exporting\ExportCalculatedEventHandler.cs" />
     <Compile Include="Exporting\ExportConfigFile.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Exporting\HtmlHelp1\IndexXmlRenderer.cs" />
     <Compile Include="Exporting\HtmlHelp1\ProjectXmlRenderer.cs" />
     <Compile Include="Exporting\HtmlHelp2Exporter.cs" />
+    <Compile Include="Exporting\HtmlHelp2\IncludeFileXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\AssemblyXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\DocumentMapXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\EventXmlRenderer.cs" />

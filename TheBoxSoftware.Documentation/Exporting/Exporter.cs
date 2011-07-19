@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
+using System.IO;
+using System.Xml;
 
 namespace TheBoxSoftware.Documentation.Exporting {
+	using TheBoxSoftware.Reflection;
+	using TheBoxSoftware.Reflection.Comments;
+
 	/// <summary>
 	/// 
 	/// </summary>
@@ -34,39 +37,82 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		protected Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings) {
 			this.CurrentFiles = currentFiles;
 			this.Settings = settings;
+
+			string regex = string.Format("{0}{1}",
+				 new string(Path.GetInvalidFileNameChars()),
+				 new string(Path.GetInvalidPathChars()));
+			this.IllegalFileCharacters = new System.Text.RegularExpressions.Regex(
+				string.Format("[{0}]", System.Text.RegularExpressions.Regex.Escape(regex))
+				);
 		}
+
+		#region Properties
+		/// <summary>
+		/// The directory used to output the first rendered output to, this is not the output or publishing directory.
+		/// </summary>
+		protected string TempDirectory { get; set; }
+
+		/// <summary>
+		/// The first staging folder where all the files come together to be completed or compiled.
+		/// </summary>
+		protected string OutputDirectory { get; set; }
+
+		/// <summary>
+		/// The final stage output folder specified by the user to publish the final content files to.
+		/// </summary>
+		protected string PublishDirectory { get; set; }
+
+		/// <summary>
+		/// The regular expression to check for illegal file characters before creating files.
+		/// </summary>
+		protected System.Text.RegularExpressions.Regex IllegalFileCharacters { get; private set; }
+		#endregion
 
 		public virtual void Export() {
 		}
 
-		//protected abstract void GenerateDocumentMap();
+		/// <summary>
+		/// Ensures there is an empty temp directory to proccess the documentation in.
+		/// </summary>
+		protected void PrepareDirectory(string directory) {
+			if (!Directory.Exists(directory)) {
+				Directory.CreateDirectory(directory);
+			}
+			else {
+				Directory.Delete(directory, true);
+				Directory.CreateDirectory(directory);
+			}
+		}
 
-		//protected bool ShouldEntryBeAdded(Entry entryToTest) {
-		//    bool shouldBeAdded = true;
+		/// <summary>
+		/// A method that recursively, through the documentation tree, exports all of the
+		/// found pages for each of the entries in the documentation.
+		/// </summary>
+		/// <param name="currentEntry">The current entry to export</param>
+		protected virtual void RecursiveEntryExport(Entry currentEntry) {
+			this.Export(currentEntry);
+			for (int i = 0; i < currentEntry.Children.Count; i++) {
+				this.RecursiveEntryExport(currentEntry.Children[i]);
+			}
+		}
 
-		//    if (shouldBeAdded &&
-		//        (entryToTest.Item is MethodDef ||
-		//        entryToTest.Item is PropertyDef ||
-		//        entryToTest.Item is FieldDef ||
-		//        entryToTest.Item is TypeDef)) {
-		//        ReflectedMember member = entryToTest.Item as ReflectedMember;
-		//        bool publicVisibility = member.MemberAccess == Visibility.Public;
-		//        if (!publicVisibility)
-		//        {
-		//            shouldBeAdded = false;
-		//            foreach (Visibility current in this.Settings.Visibility)
-		//            {
-		//                if (member.MemberAccess == current)
-		//                {
-		//                    shouldBeAdded = true;
-		//                    break;
-		//                }
-		//            }
-		//        }
-		//    }
+		protected virtual void Export(Entry current) {
+			System.Diagnostics.Debug.WriteLine("SaveXaml: " + current.Name + "[" + current.Key + ", " + current.SubKey + "]");
+			System.Diagnostics.Debug.Indent();
 
-		//    return shouldBeAdded;
-		//}
+			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
+
+			if (r != null) {
+				string filename = string.Format("{0}{1}{2}.xml", this.TempDirectory, current.Key, string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty));
+				System.Diagnostics.Debug.WriteLine("filename: " + filename);
+				using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
+					r.Render(writer);
+				}
+				System.Diagnostics.Debug.WriteLine("File: " + filename);
+			}
+
+			System.Diagnostics.Debug.Unindent();
+		}
 
 		/// <summary>
 		/// Gets a unique id across this exported live document
