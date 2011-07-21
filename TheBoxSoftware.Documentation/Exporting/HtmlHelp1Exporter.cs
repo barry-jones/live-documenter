@@ -22,8 +22,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </summary>
 	public sealed class HtmlHelp1Exporter : Exporter {
 		private System.Text.RegularExpressions.Regex illegalFileCharacters;
-		private ExportConfigFile config = null;
-		private int currentExportStep = 1;
 
 		/// <summary>
 		/// Initialises a new instance of the HtmlHelp1Exporter.
@@ -32,14 +30,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <param name="settings">The settings for the export.</param>
 		/// <param name="config">The export config file, from the LDEC container.</param>
 		public HtmlHelp1Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings, ExportConfigFile config)
-			: base(currentFiles, settings) {
+			: base(currentFiles, settings, config) {
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
 				 new string(Path.GetInvalidPathChars()));
 						illegalFileCharacters = new System.Text.RegularExpressions.Regex(
 							string.Format("[{0}]", System.Text.RegularExpressions.Regex.Escape(regex))
 							);
-			this.config = config;
 		}
 
 		#region Properties
@@ -67,14 +64,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false, new EntryCreator());
 				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
-				this.currentExportStep = 1;
+				this.CurrentExportStep = 1;
 
 				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
 					this.DocumentMap
 					);
 
 				// export the document map
-				this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.currentExportStep));
+				this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
 				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory))) {
 					map.Render(writer);
 				}
@@ -98,18 +95,18 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				Processor p = new Processor();
 				Uri xsltLocation = new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), "ApplicationData/livexmltohtml.xslt");
-				XsltTransformer transform = p.NewXsltCompiler().Compile(this.config.GetXslt()).Load();
+				XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
 				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
 				// Finally perform the user selected output xslt
-				this.OnExportStep(new ExportStepEventArgs("Preparing output directory", ++this.currentExportStep));
+				this.OnExportStep(new ExportStepEventArgs("Preparing output directory", ++this.CurrentExportStep));
 				this.PrepareDirectory(this.OutputDirectory);
 
 				// set output files
-				this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.currentExportStep));
-				this.config.SaveOutputFilesTo(this.OutputDirectory);
+				this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+				this.Config.SaveOutputFilesTo(this.OutputDirectory);
 
-				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.currentExportStep));
+				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 				
 				// export the project file
 				using (FileStream fs = File.OpenRead(string.Format("{0}/project.xml", this.TempDirectory))) {
@@ -149,7 +146,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				}
 
 				// compile the html help file
-				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.currentExportStep));
+				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
 				this.CompileHelp(this.OutputDirectory + "project.hhp");
 			}
 			catch (Exception ex) {
@@ -158,7 +155,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 			finally {
 				// clean up the temp directory
-				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.currentExportStep));
+				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
 #if !DEBUG
 				System.IO.Directory.Delete(this.tempdirectory, true);
 #endif

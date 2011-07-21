@@ -177,6 +177,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					return Exporters.Html1;
 				case "html2":
 					return Exporters.Html2;
+				case "helpviewer1":
+					return Exporters.HelpViewer1;
 				default:
 					return Exporters.Website;
 			}

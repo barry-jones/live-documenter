@@ -53,8 +53,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			System.Windows.Forms.Application.DoEvents();
 
 			Documentation.Exporting.Exporter exporter = null;
-			ExportConfigFile o = (ExportConfigFile)this.outputSelection.SelectedItem;
-			this.exportDescription.Text = o.Description;
+			ExportConfigFile config = (ExportConfigFile)this.outputSelection.SelectedItem;
+			this.exportDescription.Text = config.Description;
 
 			ExportSettings settings = new ExportSettings();
 			foreach (Settings.PrivacyFilter filter in settingsWindow.PrivacyFilters) {
@@ -63,32 +63,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				}
 			}
 
-			switch (o.Exporter) {
-				case Exporters.Website:
-					exporter = new Documentation.Exporting.WebsiteExporter(
-						LiveDocumentorFile.Singleton.Files,
-						settings,
-						o
-						);
-					this.exportType.Text = "Website exporter";
-					break;
-				case Exporters.Html1:
-					exporter = new Documentation.Exporting.HtmlHelp1Exporter(
-						LiveDocumentorFile.Singleton.Files,
-						settings,
-						o
-						);
-					this.exportType.Text = "HTML Help 1 exporter";
-					break;
-				case Exporters.Html2:
-					exporter = new Documentation.Exporting.HtmlHelp2Exporter(
-						LiveDocumentorFile.Singleton.Files,
-						settings,
-						o
-						);
-					break;
-			}
-
+			exporter = Documentation.Exporting.Exporter.Create(LiveDocumentorFile.Singleton.Files, settings, config);
+			
 			exporter.ExportCalculated += new ExportCalculatedEventHandler(exporter_ExportCalculated);
 			exporter.ExportStep += new ExportStepEventHandler(exporter_ExportStep);
 			exporter.ExportException += new ExportExceptionHandler(exporter_ExportException);

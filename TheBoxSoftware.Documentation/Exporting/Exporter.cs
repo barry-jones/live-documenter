@@ -23,9 +23,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </para>
 	/// </remarks>
 	public abstract class Exporter {
-		public DocumentMap DocumentMap { get; set; }
-		public List<DocumentedAssembly> CurrentFiles { get; set; }
-		protected ExportSettings Settings { get; set; }
 		private ExportCalculatedEventHandler exportCalculated;
 		private ExportStepEventHandler exportStep;
 		private ExportExceptionHandler exportException;
@@ -35,9 +32,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
 		/// </summary>
 		/// <param name="currentFiles">The current files.</param>
-		protected Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings) {
+		protected Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings, ExportConfigFile config) {
 			this.CurrentFiles = currentFiles;
 			this.Settings = settings;
+			this.Config = config;
 
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
@@ -47,7 +45,57 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				);
 		}
 
+		/// <summary>
+		/// Factory method for creating new Exporter instances.
+		/// </summary>
+		/// <param name="files">The files to export documentation for.</param>
+		/// <param name="settings">The export settings.</param>
+		/// <param name="config">The export configuration.</param>
+		/// <returns>A valid instance of an Exporter.</returns>
+		/// <exception cref="ArgumentNullException">
+		/// All of the parameters are required so provided a null reference will cause this exception
+		/// please see the parameter name in the exception for more information.
+		/// </exception>
+		public static Exporter Create(List<DocumentedAssembly> files, ExportSettings settings, ExportConfigFile config) {
+			if (files == null || files.Count == 0) throw new ArgumentNullException("files");
+			if (settings == null) throw new ArgumentNullException("settings");
+			if (config == null) throw new ArgumentNullException("config");
+
+			Exporter createdExporter = null;
+
+			switch (config.Exporter) {
+				case Exporters.Html1:
+					createdExporter = new HtmlHelp1Exporter(files, settings, config);
+					break;
+
+				case Exporters.Html2:
+					createdExporter = new HtmlHelp2Exporter(files, settings, config);
+					break;
+
+				case Exporters.HelpViewer1:
+					createdExporter = new HelpViewer1Exporter(files, settings, config);
+					break;
+
+				case Exporters.Website:
+				default:
+					createdExporter = new WebsiteExporter(files, settings, config);
+					break;
+			}
+
+			return createdExporter;
+		}
+
 		#region Properties
+		/// <summary>
+		/// The document map to be exported.
+		/// </summary>
+		public DocumentMap DocumentMap { get; set; }
+
+		/// <summary>
+		///  The files that are to be documented.
+		/// </summary>
+		protected List<DocumentedAssembly> CurrentFiles { get; set; }
+
 		/// <summary>
 		/// The directory used to output the first rendered output to, this is not the output or publishing directory.
 		/// </summary>
@@ -67,10 +115,28 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// The regular expression to check for illegal file characters before creating files.
 		/// </summary>
 		protected System.Text.RegularExpressions.Regex IllegalFileCharacters { get; private set; }
+
+		/// <summary>
+		/// The export settings.
+		/// </summary>
+		protected ExportSettings Settings { get; set; }
+
+		/// <summary>
+		/// The export configuration details.
+		/// </summary>
+		protected ExportConfigFile Config { get; set; }
+
+		/// <summary>
+		/// Counter indicating the current export step in the export process.
+		/// </summary>
+		protected int CurrentExportStep { get; set; }
 		#endregion
 
-		public virtual void Export() {
-		}
+		/// <summary>
+		/// Performs the export steps necessary to produce the final exported documentation in the
+		/// implementing type.
+		/// </summary>
+		public abstract void Export();
 
 		/// <summary>
 		/// Ensures there is an empty temp directory to proccess the documentation in.
