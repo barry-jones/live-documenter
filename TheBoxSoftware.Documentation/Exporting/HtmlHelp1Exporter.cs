@@ -46,11 +46,16 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <summary>
 		/// The path to the external HTML Help 1 compiler.
 		/// </summary>
-		protected string HtmlHelpCompilerFilePath { get; set; }
+		private string HtmlHelpCompilerFilePath { get; set; }
 		#endregion
 
+		/// <summary>
+		/// Exports the documentation as HTML Help 1 compiled help.
+		/// </summary>
 		public override void Export() {
 			if (!this.FindHtmlHelpCompiler()) {
+				this.OnExportFailed(new ExportFailedEventArgs("The HTML Help 1 compiler could not be located, please check that it is installed."));
+				return;	// can not continue
 			}
 
 			// the temp output directory
@@ -194,9 +199,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				this.HtmlHelpCompilerFilePath = compiler;
 			}
 
-			return true;
+			return !string.IsNullOrEmpty(this.HtmlHelpCompilerFilePath);
 		}
 
+		/// <summary>
+		/// Compiles the HTML Help 1 project file.
+		/// </summary>
+		/// <param name="projectFile">The project file.</param>
 		private void CompileHelp(string projectFile) {
 			Process compileProcess = new Process();
 

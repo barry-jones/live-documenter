@@ -17,6 +17,9 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	using TheBoxSoftware.Documentation.Exporting.Rendering;
 	using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
 
+	/// <summary>
+	/// Produces HTML Help 2 compiled help documentation.
+	/// </summary>
 	public sealed class HtmlHelp2Exporter : Exporter {
 		private System.Text.RegularExpressions.Regex illegalFileCharacters;
 		private ExportConfigFile config = null;
@@ -41,13 +44,18 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 		#region Properties
 		/// <summary>
-		/// The path to the external HTML Help 1 compiler.
+		/// The path to the external HTML Help 2 compiler.
 		/// </summary>
-		protected string HtmlHelpCompilerFilePath { get; set; }
+		private string HtmlHelpCompilerFilePath { get; set; }
 		#endregion
 
+		/// <summary>
+		/// Performs the export to HTML Help 2.
+		/// </summary>
 		public override void Export() {
 			if (!this.FindHtmlHelpCompiler()) {
+				this.OnExportFailed(new ExportFailedEventArgs("The HTML Help 2 compiler could not be located, please check that it is installed."));
+				return;	// can not continue
 			}
 
 			// the temp output directory
@@ -124,7 +132,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				// compile the html help file
 				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.currentExportStep));
-				// this.CompileHelp(this.OutputDirectory + "project.hhp");
+				this.CompileHelp(this.OutputDirectory + "/Documentation.HxC");
 			}
 			catch (Exception ex) {
 				ExportException exception = new ExportException(ex.Message, ex);
@@ -148,32 +156,74 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			string compiler = Path.Combine(
 					Environment.GetFolderPath(
 						Environment.SpecialFolder.ProgramFiles),
-					@"HTML Help Workshop\hhc.exe");
+					@"Common Files\microsoft shared\Help 2.0 Compiler\hxcomp.exe");
 			if (File.Exists(compiler)) {
 				this.HtmlHelpCompilerFilePath = compiler;
 			}
 
 			// Not in default directory check in registry
-			RegistryKey key = Registry.ClassesRoot.OpenSubKey("hhc.file");
-			if (key != null) {
-				key = key.OpenSubKey("DefaultIcon");
+			if (string.IsNullOrEmpty(this.HtmlHelpCompilerFilePath)) {
+				RegistryKey key = Registry.ClassesRoot.OpenSubKey("MSHelp.hxs.2.5");
 				if (key != null) {
-					object val = key.GetValue(null);
-					if (val != null) {
-						string hhw = (string)val;
-						if (hhw.Length > 0) {
-							hhw = hhw.Split(new Char[] { ',' })[0];
-							hhw = Path.GetDirectoryName(hhw);
-							compiler = Path.Combine(hhw, "hhc.exe");
+					key = key.OpenSubKey("DefaultIcon");
+					if (key != null) {
+						object val = key.GetValue(null);
+						if (val != null) {
+							string hhw = (string)val;
+							if (hhw.Length > 0) {
+								hhw = hhw.Split(new Char[] { ',' })[0];
+								hhw = Path.GetDirectoryName(hhw);
+								compiler = Path.Combine(hhw, "hxcomp.exe");
+							}
 						}
 					}
 				}
-			}
-			if (File.Exists(compiler)) {
-				this.HtmlHelpCompilerFilePath = compiler;
+				if (File.Exists(compiler)) {
+					this.HtmlHelpCompilerFilePath = compiler;
+				}
 			}
 
-			return true;
+			return !string.IsNullOrEmpty(this.HtmlHelpCompilerFilePath);
+		}
+
+		/// <summary>
+		/// Compiles the HTML Help 2 project file.
+		/// </summary>
+		/// <param name="projectFile">The HxC file.</param>
+		private void CompileHelp(string projectFile) {
+			Process compileProcess = new Process();
+
+			ProcessStartInfo processStartInfo = new ProcessStartInfo();
+			processStartInfo.FileName = this.HtmlHelpCompilerFilePath;
+			processStartInfo.Arguments = "-p \"" + Path.GetFullPath(projectFile) + "\" -r \"" + Directory.GetParent(projectFile) + "\" -l \"I:\\current\\log.log\"";
+			processStartInfo.ErrorDialog = false;
+			// processStartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			processStartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+			processStartInfo.UseShellExecute = false;
+			processStartInfo.CreateNoWindow = false;
+			processStartInfo.RedirectStandardError = false; //no point redirecting as HHC does not use stdErr
+			processStartInfo.RedirectStandardOutput = true;
+
+			compileProcess.StartInfo = processStartInfo;
+
+			// Start the help compile and bail if it takes longer than 10 minutes.
+			Trace.WriteLine("Compiling Html Help file");
+
+			string stdOut = string.Empty;
+
+			try {
+				bool ok = compileProcess.Start();
+				compileProcess.WaitForExit();
+
+				// Read the standard output of the spawned process.
+				stdOut = compileProcess.StandardOutput.ReadToEnd();
+				// compiler std out includes a bunch of unneccessary line feeds + new lines
+				// remplace all the line feed and keep the new lines
+				stdOut = stdOut.Replace("\r", "");
+			}
+			catch (Exception) {
+				throw;
+			}
 		}
 	}
 }

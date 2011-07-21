@@ -29,6 +29,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		private ExportCalculatedEventHandler exportCalculated;
 		private ExportStepEventHandler exportStep;
 		private ExportExceptionHandler exportException;
+		private ExportFailedEventHandler exportFailure;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
@@ -223,7 +224,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
-		/// Raises the <see cref="E:ExportCalculated"/> event.
+		/// Raises the <see cref="ExportCalculated"/> event.
 		/// </summary>
 		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportCalculatedEventArgs"/> instance containing the event data.</param>
 		protected void OnExportCalculated(ExportCalculatedEventArgs e) {
@@ -241,12 +242,30 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
-		/// Raises the <see cref="E:ExportException"/> event.
+		/// Raises the <see cref="ExportException"/> event.
 		/// </summary>
 		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
 		protected void OnExportException(ExportExceptionEventArgs e) {
 			if (this.exportException != null) {
 				this.exportException(this, e);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an expected non-terminal failure occurs during an export run.
+		/// </summary>
+		public event ExportFailedEventHandler ExportFailed {
+			add { this.exportFailure += value; }
+			remove { this.exportFailure -= value; }
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ExportFailure"/> event.
+		/// </summary>
+		/// <param name="e">The details of the failure.</param>
+		protected void OnExportFailed(ExportFailedEventArgs e) {
+			if (this.exportFailure != null) {
+				this.exportFailure(e);
 			}
 		}
 		#endregion

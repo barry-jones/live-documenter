@@ -12,11 +12,20 @@ namespace TheBoxSoftware.Documentation.Exporting.HtmlHelp2 {
 		private string outputFileName;
 		private const string documentation = "Documentation";
 
+		/// <summary>
+		/// Initialises a new instance of the CollectionXmlRenderer.
+		/// </summary>
+		/// <param name="documentMap">The document map to render.</param>
+		/// <param name="outputFileName">The filename to output the HxC file as.</param>
 		public CollectionXmlRenderer(DocumentMap documentMap, string outputFileName) {
 			this.documentMap = documentMap;
 			this.outputFileName = outputFileName;
 		}
 
+		/// <summary>
+		/// Renders the contents of the HxC file that describes the HTML Help 2 documentation.
+		/// </summary>
+		/// <param name="writer">The XML writer.</param>
 		public override void Render(System.Xml.XmlWriter writer) {
 			writer.WriteStartDocument();
 			writer.WriteRaw("<!DOCTYPE HelpCollection SYSTEM \"MS-Help://Hx/Resources/HelpCollection.DTD\">");
