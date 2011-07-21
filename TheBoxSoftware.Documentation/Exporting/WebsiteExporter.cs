@@ -75,12 +75,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				this.config.SaveOutputFilesTo(this.OutputDirectory);
 
 				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.currentExportStep));
+				string extension = this.config.Properties.ContainsKey("extension") ? this.config.Properties["extension"] : "htm";
 				foreach (string current in Directory.GetFiles(this.TempDirectory)) {
 					if (current.Substring(this.TempDirectory.Length) == "toc.xml")
 						continue;
 					using (FileStream fs = File.OpenRead(current)) {
 						Serializer s = new Serializer();
-						s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+						s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension);
 						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 						transform.Run(s);
 					}

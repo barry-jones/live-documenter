@@ -23,6 +23,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <param name="file">The file.</param>
 		private ExportConfigFile(string filename) {
+			this.Properties = new Dictionary<string, string>();
 			this.ConfigFile = filename;
 			using (ZipFile file = new ZipFile(filename)) {
 				// get the config file
@@ -37,6 +38,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				XmlNode descriptionNode = doc.SelectSingleNode("/export/description");
 				if (descriptionNode != null) {
 					this.Description = descriptionNode.InnerText;
+				}
+
+				XmlNodeList properties = doc.SelectNodes("/export/properties/property");
+				foreach (XmlNode currentProperty in properties) {
+					this.Properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
 				}
 			}
 		}
@@ -63,6 +69,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// A description of the exporter.
 		/// </summary>
 		public string Description { get; set; }
+
+		/// <summary>
+		/// The custom properties defined in the config file.
+		/// </summary>
+		public Dictionary<string, string> Properties { get; set; }
 
 		/// <summary>
 		/// Gets the XSLT file from the export configuration file.
