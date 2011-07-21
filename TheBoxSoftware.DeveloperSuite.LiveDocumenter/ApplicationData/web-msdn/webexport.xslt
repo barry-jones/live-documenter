@@ -20,10 +20,10 @@
                 <xsl:call-template name="header" />
                 <div class="navigation">
                     <ul>
-                        <li><a href="index.htm"><xsl:value-of select="document($toc)/toc/parent/@name" /></a></li>
+                        <li><a href="index.htm">Documentation</a></li>
                     </ul>
                     <ul>
-                        <xsl:for-each select="document($toc)/toc/parent/item">
+                        <xsl:for-each select="document($toc)/toc/item">
                             <xsl:if test="not(@subkey = '')">
                                 <li><a href="{@key}-{@subkey}.htm"><xsl:value-of select="@name"/></a></li>
                             </xsl:if>
@@ -61,7 +61,7 @@
                 <xsl:call-template name="header" />
                 <div class="navigation">
                     <ul>
-                        <li><a href="index.htm"><xsl:value-of select="document($toc)/toc/parent/@name" /></a></li>
+                        <li><a href="index.htm">Documentation</a></li>
                     </ul>
                     <xsl:apply-templates select="document($toc)" />
                 </div>
@@ -85,7 +85,7 @@
                 <xsl:call-template name="header" />
                 <div class="navigation">
                     <ul>
-                        <li><a href="index.htm"><xsl:value-of select="document($toc)/toc/parent/@name" /></a></li>
+                        <li><a href="index.htm">Documentation</a></li>
                     </ul>
                     <xsl:apply-templates select="document($toc)" />
                 </div>
@@ -172,7 +172,7 @@
                 <xsl:call-template name="header" />
                 <div class="navigation">
                     <ul>
-                        <li><a href="index.htm"><xsl:value-of select="document($toc)/toc/parent/@name" /></a></li>
+                        <li><a href="index.htm">Documentation</a></li>
                     </ul>
                     <xsl:apply-templates select="document($toc)" />
                 </div>

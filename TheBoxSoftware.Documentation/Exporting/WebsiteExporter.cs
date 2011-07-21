@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			try {
 				this.PrepareDirectory(this.TempDirectory);
 
-				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false); ;
+				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false, new EntryCreator());
 				this.OnExportCalculated(new ExportCalculatedEventArgs(6));
 				this.currentExportStep = 1;
 

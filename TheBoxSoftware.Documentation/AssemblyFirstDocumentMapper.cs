@@ -42,11 +42,11 @@ namespace TheBoxSoftware.Documentation {
 		/// <param name="assemblies">The assemblies to be mapped.</param>
 		/// <param name="settings">The settings to use while producing the map.</param>
 		/// <param name="useObservableCollection">Is an observable collection required.</param>
-		public AssemblyFirstDocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection)
-			: base(assemblies, settings, useObservableCollection) {
+		public AssemblyFirstDocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection, EntryCreator creator)
+			: base(assemblies, settings, useObservableCollection, creator) {
 		}
 
-		protected override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
+		public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
 			AssemblyDef assembly = AssemblyDef.Create(current.FileName);
 			current.LoadedAssembly = assembly;
 
@@ -59,7 +59,7 @@ namespace TheBoxSoftware.Documentation {
 				xmlComments = new XmlCodeCommentFile();
 			}
 
-			Entry assemblyEntry = new Entry(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
+			Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
 			assembly.UniqueId = fileCounter++;
 			assemblyEntry.Key = this.GetUniqueKey(assembly);
 			assemblyEntry.IsSearchable = false;
@@ -73,7 +73,7 @@ namespace TheBoxSoftware.Documentation {
 				Entry namespaceEntry = assemblyEntry.FindByKey(assemblyEntry.Key, currentNamespace.Key, false);
 				//namespaceEntry.Item = currentNamespace;
 				if (namespaceEntry == null) {
-					namespaceEntry = new Entry(currentNamespace, currentNamespace.Key, xmlComments, assemblyEntry);
+					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments, assemblyEntry);
 					namespaceEntry.Key = assemblyEntry.Key;
 					namespaceEntry.SubKey = currentNamespace.Key;
 					namespaceEntry.IsSearchable = false;
@@ -85,7 +85,7 @@ namespace TheBoxSoftware.Documentation {
 					if (currentType.Name.StartsWith("<")) {
 						continue;
 					}
-					Entry typeEntry = new Entry(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
+					Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
 					typeEntry.Key = this.GetUniqueKey(assembly, currentType);
 					typeEntry.IsSearchable = true;
 					typeEntry.FullName = currentType.GetFullyQualifiedName();

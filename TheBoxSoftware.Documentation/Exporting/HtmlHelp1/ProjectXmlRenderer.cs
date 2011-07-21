@@ -27,7 +27,7 @@ namespace TheBoxSoftware.Documentation.Exporting.HtmlHelp1 {
 			writer.WriteElementString("contentsfile", "toc.hhc");
 			writer.WriteElementString("indexfile", "index.hhk");
 			writer.WriteElementString("title", "Test");
-			Entry firstEntry = this.documentMap[0].Children.First();
+			Entry firstEntry = this.documentMap.First();
 			writer.WriteElementString("defaulttopic", string.Format("{0}-{1}.htm", firstEntry.Key, firstEntry.SubKey));
 
 			writer.WriteEndElement(); // project

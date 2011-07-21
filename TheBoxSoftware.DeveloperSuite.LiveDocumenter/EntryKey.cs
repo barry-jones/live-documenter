@@ -11,14 +11,35 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// which is unique across all properties, methods, parameters etc in a library.
 	/// </summary>
 	public class EntryKey {
+		/// <summary>
+		/// Initialises a new instance of the EntryKey class.
+		/// </summary>
 		protected EntryKey() { }
+
+		/// <summary>
+		/// Initialises a new instance of the EntryKey class.
+		/// </summary>
+		/// <param name="key">The key for the entry.</param>
 		public EntryKey(long key) { this.Key = key; }
+
+		/// <summary>
+		/// Initialises a new instance of the EntryKey class.
+		/// </summary>
+		/// <param name="key">The key for the entry.</param>
+		/// <param name="subKey">The subkey for the entry.</param>
 		public EntryKey(long key, string subKey) {
 			this.Key = key;
 			this.SubKey = subKey;
 		}
 
+		/// <summary>
+		/// The unique key.
+		/// </summary>
 		public long Key;
+
+		/// <summary>
+		/// The unique subkey.
+		/// </summary>
 		public string SubKey;
 	}
 
@@ -27,11 +48,24 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// assembly.
 	/// </summary>
 	public class CrefEntryKey : EntryKey {
+		/// <summary>
+		/// Initialises a new instance of the CrefEntryKey class.
+		/// </summary>
+		/// <param name="assembly">The assembly the cref points to.</param>
+		/// <param name="cref">The cref path to the entry.</param>
 		public CrefEntryKey(AssemblyDef assembly, string cref) {
 			this.Assembly = assembly;
 			this.CRef = cref;
 		}
+
+		/// <summary>
+		/// The assembly the cref points to.
+		/// </summary>
 		public AssemblyDef Assembly;
+		
+		/// <summary>
+		/// The CRef describing the entry.
+		/// </summary>
 		public string CRef;
 	}
 }

@@ -11,33 +11,48 @@ namespace TheBoxSoftware.Documentation {
 	public abstract class DocumentMapper {
 		protected System.Text.RegularExpressions.Regex illegalFileCharacters;
 
-		public static DocumentMap Generate(List<DocumentedAssembly> assemblies, Mappers typeOfMapper, DocumentSettings settings, bool useObservableCollection) {
+		public static DocumentMapper Create(List<DocumentedAssembly> assemblies,
+			Mappers typeOfMapper,
+			DocumentSettings settings,
+			bool useObservableCollection,
+			EntryCreator creator) {
+
 			DocumentMapper mapper = null;
 
 			switch (typeOfMapper) {
 				case Mappers.AssemblyFirst:
-					mapper = new AssemblyFirstDocumentMapper(assemblies, settings, useObservableCollection);
+					mapper = new AssemblyFirstDocumentMapper(assemblies, settings, useObservableCollection, creator);
 					break;
 				case Mappers.NamespaceFirst:
 				default:
-					mapper = new NamespaceFirstDocumentMapper(assemblies, settings, useObservableCollection);
+					mapper = new NamespaceFirstDocumentMapper(assemblies, settings, useObservableCollection, creator);
 					break;
 			}
 
 			if (mapper == null)
 				throw new InvalidOperationException("No document mapper was created.");
 
-			mapper.GenerateMap();
+			return mapper;
+		}
 
-			return mapper.DocumentMap;
+		public static DocumentMap Generate(
+			List<DocumentedAssembly> assemblies, 
+			Mappers typeOfMapper, 
+			DocumentSettings settings, 
+			bool useObservableCollection, 
+			EntryCreator creator) {
+				DocumentMapper mapper = DocumentMapper.Create(assemblies, typeOfMapper, settings, useObservableCollection, creator);
+				mapper.GenerateMap();
+				return mapper.DocumentMap;
 		}
 
 		protected List<DocumentedAssembly> CurrentFiles { get; set; }
-		protected DocumentMap DocumentMap { get; set; }
+		public DocumentMap DocumentMap { get; set; }
 		protected bool UseObservableCollection { get; set; }
 		protected DocumentSettings Settings { get; set; }
+		protected EntryCreator EntryCreator { get; set; }
 
-		protected DocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection) {
+		protected DocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection, EntryCreator creator) {
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
 				 new string(Path.GetInvalidPathChars()));
@@ -47,14 +62,12 @@ namespace TheBoxSoftware.Documentation {
 			this.CurrentFiles = assemblies;
 			this.Settings = settings;
 			this.UseObservableCollection = useObservableCollection;
+			this.EntryCreator = creator;
 		}
 
 		public virtual void GenerateMap() {
 			this.DocumentMap = this.UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
 			int fileCounter = 1;
-
-			Entry parentEntry = new Entry(null, "Title provided by user", null);
-			this.DocumentMap.Add(parentEntry);
 
 			// For each of the documentedfiles generate the document map and add
 			// it to the parent node of the document map
@@ -63,10 +76,10 @@ namespace TheBoxSoftware.Documentation {
 					this.CurrentFiles[i], ref fileCounter
 					);
 				if (assemblyEntry.Children.Count > 0) {
-					parentEntry.Children.Add(assemblyEntry);
+					this.DocumentMap.Add(assemblyEntry);
 				}
 			}
-			parentEntry.Children.Sort();
+			this.DocumentMap.OrderBy(e => e.Name);
 		}
 
 		/// <summary>
@@ -138,7 +151,7 @@ namespace TheBoxSoftware.Documentation {
 			return found;
 		}
 
-		protected virtual Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
+		public virtual Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
 			AssemblyDef assembly = AssemblyDef.Create(current.FileName);
 			current.LoadedAssembly = assembly;
 
@@ -151,7 +164,7 @@ namespace TheBoxSoftware.Documentation {
 				xmlComments = new XmlCodeCommentFile();
 			}
 
-			Entry assemblyEntry = new Entry(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
+			Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
 			assembly.UniqueId = fileCounter++;
 			assemblyEntry.Key = this.GetUniqueKey(assembly);
 			assemblyEntry.IsSearchable = false;
@@ -166,7 +179,7 @@ namespace TheBoxSoftware.Documentation {
 				namespaceEntry = this.FindByKey(assemblyEntry.Key, currentNamespace.Key, false);
 				//namespaceEntry.Item = currentNamespace;
 				if (namespaceEntry == null) {
-					namespaceEntry = new Entry(currentNamespace, currentNamespace.Key, xmlComments);
+					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
 					namespaceEntry.Key = assemblyEntry.Key;
 					namespaceEntry.SubKey = this.illegalFileCharacters.Replace(currentNamespace.Key, "_");
 					namespaceEntry.IsSearchable = false;
@@ -179,7 +192,7 @@ namespace TheBoxSoftware.Documentation {
 					if (currentType.Name.StartsWith("<")) {
 						continue;
 					}
-					Entry typeEntry = new Entry(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
+					Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
 					typeEntry.Key = this.GetUniqueKey(assembly, currentType);
 					typeEntry.IsSearchable = true;
 					typeEntry.FullName = currentType.GetFullyQualifiedName();
@@ -235,7 +248,7 @@ namespace TheBoxSoftware.Documentation {
 			List<MethodDef> operators = typeDef.GetOperators();
 
 			if (constructors.Count > 0) {
-				Entry constructorsEntry = new Entry(constructors, "Constructors", commentsXml, typeEntry);
+				Entry constructorsEntry = this.EntryCreator.Create(constructors, "Constructors", commentsXml, typeEntry);
 				constructorsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				constructorsEntry.SubKey = "Constructors";
 				constructorsEntry.IsSearchable = false;
@@ -245,7 +258,7 @@ namespace TheBoxSoftware.Documentation {
 				for (int i = 0; i < count; i++) {
 					// foreach (MethodDef currentMethod in constructors) {
 					MethodDef currentMethod = constructors[i];
-					Entry constructorEntry = new Entry(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
+					Entry constructorEntry = this.EntryCreator.Create(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
 					constructorEntry.IsSearchable = true;
 					constructorEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentMethod);
 					if (this.PreEntryAdded(constructorEntry)) {
@@ -260,7 +273,7 @@ namespace TheBoxSoftware.Documentation {
 
 			// Add a methods containing page and the associated methods
 			if (methods.Count > 0) {
-				Entry methodsEntry = new Entry(methods, "Methods", commentsXml, typeEntry);
+				Entry methodsEntry = this.EntryCreator.Create(methods, "Methods", commentsXml, typeEntry);
 				methodsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				methodsEntry.SubKey = "Methods";
 				methodsEntry.IsSearchable = false;
@@ -269,7 +282,7 @@ namespace TheBoxSoftware.Documentation {
 				int count = methods.Count;
 				for (int i = 0; i < count; i++) {
 					MethodDef currentMethod = methods[i];
-					Entry methodEntry = new Entry(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
+					Entry methodEntry = this.EntryCreator.Create(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
 					methodEntry.IsSearchable = true;
 					methodEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentMethod);
 					if (this.PreEntryAdded(methodEntry)) {
@@ -283,7 +296,7 @@ namespace TheBoxSoftware.Documentation {
 			}
 
 			if (operators.Count > 0) {
-				Entry operatorsEntry = new Entry(operators, "Operators", commentsXml, typeEntry);
+				Entry operatorsEntry = this.EntryCreator.Create(operators, "Operators", commentsXml, typeEntry);
 				operatorsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				operatorsEntry.SubKey = "Operators";
 				operatorsEntry.IsSearchable = false;
@@ -291,7 +304,7 @@ namespace TheBoxSoftware.Documentation {
 				int count = operators.Count;
 				for (int i = 0; i < count; i++) {
 					MethodDef current = operators[i];
-					Entry operatorEntry = new Entry(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
+					Entry operatorEntry = this.EntryCreator.Create(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
 					operatorEntry.Key = this.GetUniqueKey(typeDef.Assembly, current);
 					operatorEntry.IsSearchable = true;
 					if (this.PreEntryAdded(operatorEntry)) {
@@ -306,13 +319,13 @@ namespace TheBoxSoftware.Documentation {
 
 			// Add entries to allow the viewing of the types fields			
 			if (fields.Count > 0) {
-				Entry fieldsEntry = new Entry(fields, "Fields", commentsXml, typeEntry);
+				Entry fieldsEntry = this.EntryCreator.Create(fields, "Fields", commentsXml, typeEntry);
 				fieldsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				fieldsEntry.SubKey = "Fields";
 				fieldsEntry.IsSearchable = false;
 
 				foreach (FieldDef currentField in fields) {
-					Entry fieldEntry = new Entry(currentField, currentField.Name, commentsXml, fieldsEntry);
+					Entry fieldEntry = this.EntryCreator.Create(currentField, currentField.Name, commentsXml, fieldsEntry);
 					fieldEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentField);
 					fieldEntry.IsSearchable = true;
 					if (this.PreEntryAdded(fieldEntry)) {
@@ -327,13 +340,13 @@ namespace TheBoxSoftware.Documentation {
 
 			// Display the properties defined in the current type
 			if (properties.Count > 0) {
-				Entry propertiesEntry = new Entry(properties, "Properties", commentsXml, typeEntry);
+				Entry propertiesEntry = this.EntryCreator.Create(properties, "Properties", commentsXml, typeEntry);
 				propertiesEntry.IsSearchable = false;
 				propertiesEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				propertiesEntry.SubKey = "Properties";
 
 				foreach (PropertyDef currentProperty in properties) {
-					Entry propertyEntry = new Entry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
+					Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
 					propertyEntry.IsSearchable = true;
 					propertyEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentProperty);
 					if (this.PreEntryAdded(propertyEntry)) {
@@ -348,14 +361,14 @@ namespace TheBoxSoftware.Documentation {
 
 			// Display the properties defined in the current type
 			if (events.Count > 0) {
-				Entry propertiesEntry = new Entry(events, "Events", commentsXml, typeEntry);
+				Entry propertiesEntry = this.EntryCreator.Create(events, "Events", commentsXml, typeEntry);
 				propertiesEntry.IsSearchable = false;
 				propertiesEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
 				propertiesEntry.SubKey = "Events";
 				typeEntry.Children.Add(propertiesEntry);
 
 				foreach (EventDef currentProperty in events) {
-					Entry propertyEntry = new Entry(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
+					Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
 					propertyEntry.IsSearchable = true;
 					propertyEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentProperty);
 					if (this.PreEntryAdded(propertyEntry)) {

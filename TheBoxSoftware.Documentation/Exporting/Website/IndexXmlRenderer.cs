@@ -32,7 +32,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Website {
 
 			// write all the namespaces
 			writer.WriteStartElement("namespaces");
-			foreach (Entry current in this.documentMap[0].Children) {
+			foreach (Entry current in this.documentMap) {
 				writer.WriteStartElement("namespace");
 				writer.WriteAttributeString("key", current.Key.ToString());
 				writer.WriteAttributeString("subkey", current.SubKey);

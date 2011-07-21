@@ -65,7 +65,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			try {
 				this.PrepareDirectory(this.TempDirectory);
 
-				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false);
+				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false, new EntryCreator());
 				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
 				this.currentExportStep = 1;
 
@@ -198,9 +198,9 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			processStartInfo.Arguments = "-p \"" + Path.GetFullPath(projectFile) + "\" -r \"" + Directory.GetParent(projectFile) + "\" -l \"I:\\current\\log.log\"";
 			processStartInfo.ErrorDialog = false;
 			// processStartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			processStartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+			processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			processStartInfo.UseShellExecute = false;
-			processStartInfo.CreateNoWindow = false;
+			processStartInfo.CreateNoWindow = true;
 			processStartInfo.RedirectStandardError = false; //no point redirecting as HHC does not use stdErr
 			processStartInfo.RedirectStandardOutput = true;
 

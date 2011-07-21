@@ -8,11 +8,11 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection.Comments;
 
 	public class NamespaceFirstDocumentMapper : DocumentMapper {
-		public NamespaceFirstDocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection)
-			: base(assemblies, settings, useObservableCollection) {
+		public NamespaceFirstDocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection, EntryCreator creator)
+			: base(assemblies, settings, useObservableCollection, creator) {
 		}
 
-		protected override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
+		public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
 			AssemblyDef assembly = AssemblyDef.Create(current.FileName);
 			current.LoadedAssembly = assembly;
 
@@ -25,7 +25,7 @@ namespace TheBoxSoftware.Documentation {
 				xmlComments = new XmlCodeCommentFile();
 			}
 
-			Entry assemblyEntry = new Entry(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
+			Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
 			assembly.UniqueId = fileCounter++;
 			assemblyEntry.Key = this.GetUniqueKey(assembly);
 			assemblyEntry.IsSearchable = false;
@@ -40,7 +40,7 @@ namespace TheBoxSoftware.Documentation {
 				namespaceEntry = this.FindByKey(assemblyEntry.Key, currentNamespace.Key, false);
 				//namespaceEntry.Item = currentNamespace;
 				if (namespaceEntry == null) {
-					namespaceEntry = new Entry(currentNamespace, currentNamespace.Key, xmlComments);
+					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
 					namespaceEntry.Key = assemblyEntry.Key;
 					namespaceEntry.SubKey = this.illegalFileCharacters.Replace(currentNamespace.Key, "_");
 					namespaceEntry.IsSearchable = false;
@@ -52,7 +52,7 @@ namespace TheBoxSoftware.Documentation {
 					if (currentType.Name.StartsWith("<")) {
 						continue;
 					}
-					Entry typeEntry = new Entry(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
+					Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
 					typeEntry.Key = this.GetUniqueKey(assembly, currentType);
 					typeEntry.IsSearchable = true;
 					typeEntry.FullName = currentType.GetFullyQualifiedName();
@@ -78,12 +78,12 @@ namespace TheBoxSoftware.Documentation {
 				}
 				if (namespaceEntry.Children.Count > 0) {
 					namespaceEntry.Children.Sort();
-					this.DocumentMap[0].Children.Add(namespaceEntry);
+					this.DocumentMap.Add(namespaceEntry);
 				}
 			}
 
 			// we are not interested in assemblies being used here so make them childless
-			return new Entry(null, string.Empty, null);
+			return this.EntryCreator.Create(null, string.Empty, null);
 		}
 	}
 }

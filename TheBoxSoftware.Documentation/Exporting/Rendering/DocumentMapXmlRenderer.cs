@@ -25,7 +25,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteStartElement("toc");
 
 			foreach (Entry current in this.documentMap) {
-				writer.WriteStartElement("parent");
+				writer.WriteStartElement("item");
 				writer.WriteAttributeString("name", current.Name);
 				writer.WriteAttributeString("key", current.Key.ToString());
 				writer.WriteAttributeString("subkey", current.SubKey);

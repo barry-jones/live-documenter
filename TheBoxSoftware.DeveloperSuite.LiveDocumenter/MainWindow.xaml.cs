@@ -284,28 +284,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					if (current.HasAssemblyBeenModified()) {
 						hasBeenReloaded = true;
 
-						// The assembly has been modified, find the existing node
-						// and generate the new one
-						Entry existingEntry = null;
-						int entryAtIndex = -1;
-						for (int i = 0; i < LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count; i++) {
-							Entry currentEntry = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap[i];
-							if (currentEntry.Name == System.IO.Path.GetFileName(current.FileName)) {
-								existingEntry = currentEntry;
-								entryAtIndex = i;
-								break;
-							}
-						}
-
-						// Remove the old entry, we need to do this now so any searches performed in the
-						// generate method do not return values from here.
-						LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.RemoveAt(entryAtIndex);
-
-						int fileCounter = ((TheBoxSoftware.Reflection.AssemblyDef)existingEntry.Item).UniqueId;
-						Entry assemblyEntry = LiveDocumentorFile.Singleton.LiveDocument.GenerateDocumentForAssembly(current, ref fileCounter);
-
-						// Insert the newly generated entry in the same location as the old one
-						LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Insert(entryAtIndex, assemblyEntry);
+						LiveDocumentorFile.Singleton.LiveDocument.RefreshAssembly(current);
 					}
 				}
 

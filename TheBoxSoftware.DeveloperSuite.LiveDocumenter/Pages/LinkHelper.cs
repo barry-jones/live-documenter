@@ -23,7 +23,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 			if (e.Source is System.Windows.Documents.Hyperlink) {
 				System.Windows.Documents.Hyperlink sourceLink = e.Source as System.Windows.Documents.Hyperlink;
 				LiveDocument document = LiveDocumentorFile.Singleton.LiveDocument;
-				System.Collections.ObjectModel.ObservableCollection<Entry> items = document.DocumentMap;
+				DocumentMap items = document.DocumentMap;
 				Entry entry = null;
 				sourceLink.Cursor = Cursors.Wait;
 

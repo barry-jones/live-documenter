@@ -110,6 +110,7 @@
     <Compile Include="DocumentSettings.cs" />
     <Compile Include="EmptyEntry.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="EntryCreator.cs" />
     <Compile Include="Exporting\ExportFailedEventArgs.cs" />
     <Compile Include="Exporting\ExportFailedEventHandler.cs" />
     <Compile Include="Exporting\HtmlHelp2\CollectionXmlRenderer.cs" />
