@@ -305,6 +305,9 @@
     <None Include="ApplicationData\export.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ApplicationData\exported.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ApplicationData\helpviewer1-msdn\export.config" />
     <None Include="ApplicationData\htmlhelp1-msdn.ldec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
