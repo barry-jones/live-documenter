@@ -20,7 +20,7 @@
                 <xsl:call-template name="header" />
                 <div class="navigation">
                     <ul>
-                        <li><a href="index.htm">Documentation</a></li>
+                        <li><a class="current" href="index.htm">Documentation</a></li>
                     </ul>
                     <ul>
                         <xsl:for-each select="document($toc)/toc/item">
@@ -308,6 +308,32 @@
                 </tbody>
             </table>
         </xsl:if>
+      <xsl:if test="count(entries/entry[@type='constant']) > 0">
+        <h2>Constants</h2>
+        <table>
+          <thead>
+            <th class="icon"></th>
+            <th>Name</th>
+            <th>Description</th>
+          </thead>
+          <tbody>
+            <xsl:apply-templates select="entries/entry[@type='constant']" />
+          </tbody>
+        </table>
+      </xsl:if>
+      <xsl:if test="count(entries/entry[@type='operator']) > 0">
+        <h2>Operators</h2>
+        <table>
+          <thead>
+            <th class="icon"></th>
+            <th>Name</th>
+            <th>Description</th>
+          </thead>
+          <tbody>
+            <xsl:apply-templates select="entries/entry[@type='operator']" />
+          </tbody>
+        </table>
+      </xsl:if>
     </xsl:template>
     
     <xsl:template name="type-display-name">

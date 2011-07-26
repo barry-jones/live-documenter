@@ -302,9 +302,13 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="ApplicationData\htmlhelp1-msdn.ldec" />
+    <None Include="ApplicationData\htmlhelp1-msdn.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ApplicationData\htmlhelp1-msdn\export.config" />
-    <None Include="ApplicationData\htmlhelp2-msdn.ldec" />
+    <None Include="ApplicationData\htmlhelp2-msdn.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ApplicationData\htmlhelp2-msdn\Documentation_S.HxK" />
     <None Include="ApplicationData\htmlhelp2-msdn\Documentation_NamedUrl.HxK" />
     <None Include="ApplicationData\htmlhelp2-msdn\Documentation_K.HxK" />
@@ -454,7 +458,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ApplicationData\web-msdn.ldec">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Service References\BoxSoftwareServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
