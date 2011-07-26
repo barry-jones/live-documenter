@@ -302,6 +302,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ApplicationData\export.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ApplicationData\helpviewer1-msdn\export.config" />
     <None Include="ApplicationData\htmlhelp1-msdn.ldec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -571,6 +575,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="ApplicationData\helpviewer1-msdn\webexport.xslt" />
     <Content Include="ApplicationData\htmlhelp1-msdn\styles\default.css" />
     <Resource Include="ApplicationData\htmlhelp2-msdn\stopwords.txt" />
     <Content Include="ApplicationData\htmlhelp2-msdn\styles\default.css" />
@@ -792,9 +797,7 @@
     <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\vsobject_structure_sealed.png" />
     <Resource Include="ApplicationData\htmlhelp1-msdn\webexport.xslt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ApplicationData\helpviewer1-msdn\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
