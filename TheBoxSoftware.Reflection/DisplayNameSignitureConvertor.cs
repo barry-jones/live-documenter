@@ -106,7 +106,18 @@ namespace TheBoxSoftware.Reflection {
 					this.GetTypeName(converted, this.type);
 				}
 				else if (method.IsOperator && property == null) {
-					converted.Append(method.Name.Substring(3));
+					if (method.IsConversionOperator) {
+						converted.Append(method.Name.Substring(3));
+						converted.Append("(");
+						TypeRef convertToRef = method.Signiture.GetReturnTypeToken().ResolveType(method.Assembly, method);
+						converted.Append(convertToRef.Name);
+						converted.Append(" to ");
+						converted.Append(method.Type.GetDisplayName(false));
+						converted.Append(")");
+					}
+					else {
+						converted.Append(method.Name.Substring(3));
+					}
 				}
 				else if (property == null) {
 					converted.Append(method.Name);
@@ -129,7 +140,7 @@ namespace TheBoxSoftware.Reflection {
 					converted.Append(this.GenericEnd);
 				}
 
-				if (this.includeParameters) {
+				if (this.includeParameters && !method.IsConversionOperator) {
 					string parameters = this.Convert(method);
 					if (string.IsNullOrEmpty(parameters) && property == null) {
 						parameters = "()";
