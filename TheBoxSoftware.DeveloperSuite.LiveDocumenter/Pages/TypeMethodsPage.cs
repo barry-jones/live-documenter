@@ -53,6 +53,32 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					this.Blocks.Add(methods);
 				}
 
+				if (definingType != null && definingType.ExtensionMethods.Count > 0) {
+					SummaryTable methods = new SummaryTable();
+
+					var sortedMethods = from method in definingType.ExtensionMethods
+										where !method.IsConstructor
+										orderby method.Name
+										select method;
+					foreach (MethodDef currentMethod in sortedMethods) {
+						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
+						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
+						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+
+						CRefPath path = new CRefPath(currentMethod);
+
+						System.Windows.Documents.Block description = this.GetSummaryFor(comments,
+							currentMethod.Assembly,
+							"/doc/members/member[@name='" + path.ToString() + "']/summary"
+							);
+
+						methods.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
+					}
+					this.Blocks.Add(new Header2("Extension Methods"));
+					this.Blocks.Add(methods);
+				}
+
 				this.IsGenerated = true;
 			}
 		}

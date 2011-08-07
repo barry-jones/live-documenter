@@ -248,6 +248,33 @@ namespace TheBoxSoftware.Reflection {
 				}
 			}
 
+			if (metadataStream.Tables.ContainsKey(MetadataTables.CustomAttribute)) {
+				MetadataRow[] customAttributes = metadataStream.Tables[MetadataTables.CustomAttribute];
+				for (int i = 0; i < customAttributes.Length; i++) {
+					CustomAttributeMetadataTableRow customAttributeRow = customAttributes[i] as CustomAttributeMetadataTableRow;
+
+					ReflectedMember attributeTo = map.GetDefinition(customAttributeRow.Parent.Table,
+						metadataStream.GetEntryFor(customAttributeRow.Parent)
+						);
+					MemberRef ofType = (MemberRef)map.GetDefinition(customAttributeRow.Type.Table,
+						metadataStream.GetEntryFor(customAttributeRow.Type)
+						);
+
+					if (attributeTo != null) {
+						CustomAttribute attribute = new CustomAttribute(ofType);
+						attributeTo.Attributes.Add(attribute);
+
+						if (ofType.Type.Name == "ExtensionAttribute" && attributeTo is MethodDef) {
+							MethodDef extensionMethod = attributeTo as MethodDef;
+							if (extensionMethod != null) {
+								TypeDef def = (TypeDef)extensionMethod.Parameters[0].GetTypeRef();
+								def.ExtensionMethods.Add(extensionMethod);
+							}
+						}
+					}
+				}
+			}
+
 			return assembly;
 		}
 
@@ -370,14 +397,15 @@ namespace TheBoxSoftware.Reflection {
 			MetadataDirectory metadata = this.File.GetMetadataDirectory();
 			MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
 			if (metadataStream.Tables.ContainsKey(index.Table)) {
-				if (metadataStream.Tables[index.Table].Length > index.Index) {
+				if (metadataStream.Tables[index.Table].Length + 1 > index.Index) {
 					MetadataToDefinitionMap map = this.File.Map;
-					resolvedReference = map.GetDefinition(index.Table, metadataStream.Tables[index.Table][index.Index]);
+					MetadataRow metadataRow = metadataStream.GetEntryFor(index);
+					resolvedReference = map.GetDefinition(index.Table, metadataRow);
 				}
 			}
 
 			return resolvedReference;
-		}
+		} 
 		#endregion
 
 		#region Properties

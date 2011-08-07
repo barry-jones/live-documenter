@@ -353,6 +353,23 @@ namespace TheBoxSoftware.Reflection {
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Indicates if this method is an extension method or not.
+		/// </summary>
+		public bool IsExtensionMethod {
+			get {
+				List<CustomAttribute> attributes = ((MemberRef)this).Attributes;
+				if (attributes.Count > 0) {
+					for (int i = 0; i < attributes.Count; i++) {
+						if (attributes[i].Name == "ExtensionAttribute") {
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
 		#endregion
 	}
 }

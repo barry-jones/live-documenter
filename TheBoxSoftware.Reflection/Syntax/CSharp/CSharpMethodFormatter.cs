@@ -38,6 +38,9 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 				}
 				else {
 					tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
+					if (syntax.Method.IsExtensionMethod) {
+						tokens.Add(new SyntaxToken("this ", SyntaxTokens.Keyword));
+					}
 				}
 				tokens.AddRange(this.FormatTypeDetails(parameters[i].TypeDetails));
 				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));

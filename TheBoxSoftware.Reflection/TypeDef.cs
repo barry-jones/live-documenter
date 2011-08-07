@@ -108,6 +108,9 @@ namespace TheBoxSoftware.Reflection {
 			}
 			#endregion
 
+			// Initialise other collection/properties
+			typeDef.ExtensionMethods = new List<MethodDef>();
+
 			return typeDef;
 		}
 		#endregion
@@ -117,7 +120,7 @@ namespace TheBoxSoftware.Reflection {
 		/// The methods this type contains
 		/// </summary>
 		public List<MethodDef> Methods { get; set; }
-
+		
 		/// <summary>
 		/// The fields this type contains
 		/// </summary>

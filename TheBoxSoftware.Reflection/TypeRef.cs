@@ -35,6 +35,10 @@ namespace TheBoxSoftware.Reflection {
 			typeRef.resolutionScope = row.ResolutionScope;
 			typeRef.IsGeneric = typeRef.Name.IndexOf('`') != -1;	// Must be a better way :/
 			typeRef.Assembly = assembly;
+
+			// Initialise other collection/properties
+			typeRef.ExtensionMethods = new List<MethodDef>();
+
 		    return typeRef;
 		}
 		#endregion
@@ -93,6 +97,11 @@ namespace TheBoxSoftware.Reflection {
 				return inheritsFrom;
 			}
 		}
+
+		/// <summary>
+		/// Extension methods associated with this type.
+		/// </summary>
+		public List<MethodDef> ExtensionMethods { get; set; }
 		#endregion
 
 		/// <summary>

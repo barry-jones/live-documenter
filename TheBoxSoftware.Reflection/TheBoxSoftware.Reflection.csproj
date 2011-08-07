@@ -192,6 +192,7 @@
     <Compile Include="Core\PE\SectionCharacteristics.cs" />
     <Compile Include="Core\PE\SectionHeader.cs" />
     <Compile Include="Core\Version.cs" />
+    <Compile Include="CustomAttribute.cs" />
     <Compile Include="DisplayNameSignitureConvertor.cs" />
     <Compile Include="EventDef.cs" />
     <Compile Include="FieldDef.cs" />

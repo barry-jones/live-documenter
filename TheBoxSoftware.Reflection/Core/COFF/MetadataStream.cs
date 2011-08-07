@@ -267,6 +267,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF {
 		/// <summary>
 		/// Obtains an entry in the specified table at the specified index
 		/// </summary>
+		/// <param name="codedIndex">The coded index decribing the metadata location.</param>
+		/// <returns>The MetadataTableRow or null if not found</returns>
+		public MetadataRow GetEntryFor(CodedIndex codedIndex) {
+			return this.GetEntryFor(codedIndex.Table, codedIndex.Index);
+		}
+
+		/// <summary>
+		/// Obtains an entry in the specified table at the specified index
+		/// </summary>
 		/// <param name="table">The table to get the metadata for</param>
 		/// <param name="index">The index in the table</param>
 		/// <returns>The MetadataTableRow or null if not found</returns>
