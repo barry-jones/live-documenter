@@ -71,16 +71,6 @@
     <Style TargetType="{x:Type local:Header3}" BasedOn="{StaticResource Header}">
         <Setter Property="FontSize" Value="12" />
     </Style>
-
-    <Style TargetType="{x:Type local:Code}" BasedOn="{StaticResource Paragraph}">
-        <Setter Property="TextElement.FontFamily" Value="Courier New" />
-        <Setter Property="Background" Value="#efefef" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="5" />
-        <Setter Property="Margin" Value="0,3,0,3" />
-        <Setter Property="BorderBrush" Value="#dddddd" />
-        <Setter Property="BorderThickness" Value="1" />
-    </Style>
     
     <Style TargetType="{x:Type local:Keyword}">
         <Setter Property="Foreground" Value="#003DF5" />
@@ -90,9 +80,19 @@
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="0" />
     </Style>
-    
-    <Style TargetType="{x:Type local:C}">
+
+    <Style x:Key="C" TargetType="{x:Type local:C}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style x:Key="Code" TargetType="{x:Type local:Code}">
+        <Setter Property="TextElement.FontFamily" Value="Courier New" />
+        <Setter Property="Background" Value="#efefef" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="5, 10, 10, 10" />
+        <Setter Property="BorderBrush" Value="#dddddd" />
+        <Setter Property="BorderThickness" Value="1" />
     </Style>
 </ResourceDictionary>
