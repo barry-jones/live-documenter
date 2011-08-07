@@ -82,6 +82,7 @@
     <Compile Include="DocumentedDelegate.cs" />
     <Compile Include="DocumentedInterface.cs" />
     <Compile Include="EnumerationTest.cs" />
+    <Compile Include="ExtensionMethodTest.cs" />
     <Compile Include="ExternalInheritanceTest.cs" />
     <Compile Include="GeneratedConstructorTest.cs" />
     <Compile Include="GenericArrayTest.cs" />
