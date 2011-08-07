@@ -18,6 +18,9 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </list>
 	/// </remarks>
 	public class ExportConfigFile {
+		private XmlDocument xmlDocument;
+		private XmlNamespaceManager namespaceManager;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ExportConfigFile"/> class.
 		/// </summary>
@@ -27,20 +30,20 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			this.ConfigFile = filename;
 			using (ZipFile file = new ZipFile(filename)) {
 				// get the config file
-				XmlDocument doc = new XmlDocument();
+				this.xmlDocument = new XmlDocument();
 				Stream ms = new MemoryStream();
 				file["export.config"].Extract(ms);
 				ms.Seek(0, SeekOrigin.Begin);
-				doc.LoadXml(new StreamReader(ms).ReadToEnd());
+				xmlDocument.LoadXml(new StreamReader(ms).ReadToEnd());
 
-				this.Name = doc.SelectSingleNode("/export/name").InnerText;
-				this.Exporter = this.UnpackExporter(doc.SelectSingleNode("/export/exporter").InnerText);
-				XmlNode descriptionNode = doc.SelectSingleNode("/export/description");
+				this.Name = xmlDocument.SelectSingleNode("/export/name").InnerText;
+				this.Exporter = this.UnpackExporter(xmlDocument.SelectSingleNode("/export/exporter").InnerText);
+				XmlNode descriptionNode = xmlDocument.SelectSingleNode("/export/description");
 				if (descriptionNode != null) {
 					this.Description = descriptionNode.InnerText;
 				}
 
-				XmlNodeList properties = doc.SelectNodes("/export/properties/property");
+				XmlNodeList properties = xmlDocument.SelectNodes("/export/properties/property");
 				foreach (XmlNode currentProperty in properties) {
 					this.Properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
 				}
@@ -81,14 +84,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <returns></returns>
 		public virtual Stream GetXslt() {
 			using (ZipFile file = new ZipFile(this.ConfigFile)) {
-				// get the config file
-				XmlDocument doc = new XmlDocument();
-				Stream ms = new MemoryStream();
-				file["export.config"].Extract(ms);
-				ms.Seek(0, SeekOrigin.Begin);
-				doc.LoadXml(new StreamReader(ms).ReadToEnd());
-
-				string xslt = doc.SelectSingleNode("/export/xslt").InnerText;
+				string xslt = xmlDocument.SelectSingleNode("/export/xslt").InnerText;
 				MemoryStream xsltStream = new MemoryStream();
 				file[xslt].Extract(xsltStream);
 				xsltStream.Seek(0, SeekOrigin.Begin);
@@ -103,14 +99,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <param name="location">The location.</param>
 		public virtual void SaveOutputFilesTo(string location) {
 			using (ZipFile file = new ZipFile(this.ConfigFile)) {
-				// get the config file
-				XmlDocument doc = new XmlDocument();
-				Stream ms = new MemoryStream();
-				file["export.config"].Extract(ms);
-				ms.Seek(0, SeekOrigin.Begin);
-				doc.LoadXml(new StreamReader(ms).ReadToEnd());
-
-				XmlNodeList files = doc.SelectNodes("/export/outputfiles/file");
+				XmlNodeList files = this.xmlDocument.SelectNodes("export/outputfiles/file");
 				foreach (XmlNode current in files) {
 					string from = current.Attributes["internal"] == null ? string.Empty : current.Attributes["internal"].Value;
 					string to = current.Attributes["output"] == null ? string.Empty : current.Attributes["output"].Value;
@@ -137,14 +126,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			List<string> urls = new List<string>();
 
 			using (ZipFile file = new ZipFile(this.ConfigFile)) {
-				// get the config file
-				XmlDocument doc = new XmlDocument();
-				Stream ms = new MemoryStream();
-				file["export.config"].Extract(ms);
-				ms.Seek(0, SeekOrigin.Begin);
-				doc.LoadXml(new StreamReader(ms).ReadToEnd());
-
-				XmlNodeList files = doc.SelectNodes("/export/outputfiles/file");
+				XmlNodeList files = this.xmlDocument.SelectNodes("/export/outputfiles/file");
 				foreach (XmlNode current in files) {
 					string from = current.Attributes["internal"] == null ? string.Empty : current.Attributes["internal"].Value;
 					string to = current.Attributes["output"] == null ? string.Empty : current.Attributes["output"].Value;

@@ -124,71 +124,81 @@ Language=0x809 English (United Kingdom)
                 <xsl:call-template name="header" />
                 <div class="content">
                     <h1><xsl:apply-templates select="name" /></h1>
-                    <xsl:if test="count(/namespace/parent[@type='class']) > 0">
-                        <h2>Classes</h2>
-                        <table>
-                            <thead>
-                                <th class="icon"></th>
-                                <th>Class</th>
-                                <th>Summary</th>
-                            </thead>
-                            <tbody>
-                                <xsl:apply-templates select="/namespace/parent[@type = 'class']" />
-                            </tbody>
-                        </table>
-                    </xsl:if>
-                    <xsl:if test="count(/namespace/parent[@type='struct']) > 0">
-                        <h2>Structures</h2>
-                        <table>
-                            <thead>
-                                <th class="icon"></th>
-                                <th>Name</th>
-                                <th>Summary</th>
-                            </thead>
-                            <tbody>
-                                <xsl:apply-templates select="/namespace/parent[@type = 'struct']" />
-                            </tbody>
-                        </table>
-                    </xsl:if>
-                    <xsl:if test="count(/namespace/parent[@type='interface']) > 0">
-                        <h2>Interfaces</h2>
-                        <table>
-                            <thead>
-                                <th class="icon"></th>
-                                <th>Name</th>
-                                <th>Summary</th>
-                            </thead>
-                            <tbody>
-                                <xsl:apply-templates select="/namespace/parent[@type = 'interface']" />
-                            </tbody>
-                        </table>
-                    </xsl:if>
-                    <xsl:if test="count(/namespace/parent[@type='delegate']) > 0">
-                        <h2>Delegates</h2>
-                        <table>
-                            <thead>
-                                <th class="icon"></th>
-                                <th>Delegate</th>
-                                <th>Description</th>
-                            </thead>
-                            <tbody>
-                                <xsl:apply-templates select="/namespace/parent[@type = 'delegate']" />
-                            </tbody>
-                        </table>
-                    </xsl:if>
-                    <xsl:if test="count(/namespace/parent[@type='enum']) > 0">
-                        <h2>Enumerations</h2>
-                        <table>
-                            <thead>
-                                <th class="icon"></th>
-                                <th>Name</th>
-                                <th>Summary</th>
-                            </thead>
-                            <tbody>
-                                <xsl:apply-templates select="/namespace/parent[@type = 'enum']" />
-                            </tbody>
-                        </table>
-                    </xsl:if>
+					<xsl:if test="count(/namespace/parent[@type='class']) > 0">
+						<h2>Classes</h2>
+						<table>
+							<thead>
+								<tr>
+									<th class="icon"></th>
+									<th>Class</th>
+									<th>Summary</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:apply-templates select="/namespace/parent[@type = 'class']" />
+							</tbody>
+						</table>
+					</xsl:if>
+					<xsl:if test="count(/namespace/parent[@type='struct']) > 0">
+						<h2>Structures</h2>
+						<table>
+							<thead>
+								<tr>
+									<th class="icon"></th>
+									<th>Name</th>
+									<th>Summary</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:apply-templates select="/namespace/parent[@type = 'struct']" />
+							</tbody>
+						</table>
+					</xsl:if>
+					<xsl:if test="count(/namespace/parent[@type='interface']) > 0">
+						<h2>Interfaces</h2>
+						<table>
+							<thead>
+								<tr>
+									<th class="icon"></th>
+									<th>Name</th>
+									<th>Summary</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:apply-templates select="/namespace/parent[@type = 'interface']" />
+							</tbody>
+						</table>
+					</xsl:if>
+					<xsl:if test="count(/namespace/parent[@type='delegate']) > 0">
+						<h2>Delegates</h2>
+						<table>
+							<thead>
+								<tr>
+									<th class="icon"></th>
+									<th>Delegate</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:apply-templates select="/namespace/parent[@type = 'delegate']" />
+							</tbody>
+						</table>
+					</xsl:if>
+					<xsl:if test="count(/namespace/parent[@type='enum']) > 0">
+						<h2>Enumerations</h2>
+						<table>
+							<thead>
+								<tr>
+									<th class="icon"></th>
+									<th>Name</th>
+									<th>Summary</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:apply-templates select="/namespace/parent[@type = 'enum']" />
+							</tbody>
+						</table>
+					</xsl:if>
                 </div>
                 <xsl:call-template name="footer" />
             </body>
@@ -265,103 +275,119 @@ Language=0x809 English (United Kingdom)
             </tbody>
         </table>
     </xsl:template>
-    
-    <xsl:template name="member-lists">
-        <xsl:if test="count(entries/entry)">
-        <p>The <xsl:value-of select="/member/name" /> type exposes the following members.</p>
-        </xsl:if>
-        <xsl:if test="count(entries/entry[@type='constructor']) > 0">
-            <h2>Constructors</h2>
-            <table>
-                <thead>
-                    <th class="icon"></th>
-                    <th>Class</th>
-                    <th>Summary</th>
-                </thead>
-                <tbody>
-                    <xsl:apply-templates select="entries/entry[@type='constructor']" />
-                </tbody>
-            </table>
-        </xsl:if>
-        <xsl:if test="count(entries/entry[@type='method']) > 0">
-            <h2>Methods</h2>
-            <table>
-                <thead>
-                    <th class="icon"></th>
-                    <th>Name</th>
-                    <th>Summary</th>
-                </thead>
-                <tbody>
-                    <xsl:apply-templates select="entries/entry[@type='method']" />
-                </tbody>
-            </table>
-        </xsl:if>
-        <xsl:if test="count(entries/entry[@type='properties']) > 0">
-            <h2>Properties</h2>
-            <table>
-                <thead>
-                    <th class="icon"></th>
-                    <th>Name</th>
-                    <th>Summary</th>
-                </thead>
-                <tbody>
-                    <xsl:apply-templates select="entries/entry[@type='properties']" />
-                </tbody>
-            </table>
-        </xsl:if>
-        <xsl:if test="count(entries/entry[@type='event']) > 0">
-            <h2>Events</h2>
-            <table>
-                <thead>
-                    <th class="icon"></th>
-                    <th>Delegate</th>
-                    <th>Description</th>
-                </thead>
-                <tbody>
-                    <xsl:apply-templates select="entries/entry[@type='event']" />
-                </tbody>
-            </table>
-        </xsl:if>
-        <xsl:if test="count(entries/entry[@type='field']) > 0">
-            <h2>Fields</h2>
-            <table>
-                <thead>
-                    <th class="icon"></th>
-                    <th>Name</th>
-                    <th>Description</th>
-                </thead>
-                <tbody>
-                    <xsl:apply-templates select="entries/entry[@type='field']" />
-                </tbody>
-            </table>
-        </xsl:if>
-      <xsl:if test="count(entries/entry[@type='constant']) > 0">
-        <h2>Constants</h2>
-        <table>
-          <thead>
-            <th class="icon"></th>
-            <th>Name</th>
-            <th>Description</th>
-          </thead>
-          <tbody>
-            <xsl:apply-templates select="entries/entry[@type='constant']" />
-          </tbody>
-        </table>
-      </xsl:if>
-      <xsl:if test="count(entries/entry[@type='operator']) > 0">
-        <h2>Operators</h2>
-        <table>
-          <thead>
-            <th class="icon"></th>
-            <th>Name</th>
-            <th>Description</th>
-          </thead>
-          <tbody>
-            <xsl:apply-templates select="entries/entry[@type='operator']" />
-          </tbody>
-        </table>
-      </xsl:if>
-    </xsl:template>
+
+	<xsl:template name="member-lists">
+		<xsl:if test="count(entries/entry)">
+			<p>
+				The <xsl:value-of select="/member/name" /> type exposes the following members.
+			</p>
+		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='constructor']) > 0">
+			<h2>Constructors</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Class</th>
+						<th>Summary</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='constructor']" />
+				</tbody>
+			</table>
+		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='method']) > 0">
+			<h2>Methods</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Summary</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='method']" />
+				</tbody>
+			</table>
+		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='properties']) > 0">
+			<h2>Properties</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Summary</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='properties']" />
+				</tbody>
+			</table>
+		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='event']) > 0">
+			<h2>Events</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Delegate</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='event']" />
+				</tbody>
+			</table>
+		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='field']) > 0">
+			<h2>Fields</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='field']" />
+				</tbody>
+			</table>
+		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='constant']) > 0">
+			<h2>Constants</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='constant']" />
+				</tbody>
+			</table>
+		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='operator']) > 0">
+			<h2>Operators</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='operator']" />
+				</tbody>
+			</table>
+		</xsl:if>
+	</xsl:template>
     
     <xsl:template name="type-display-name">
         <xsl:choose>

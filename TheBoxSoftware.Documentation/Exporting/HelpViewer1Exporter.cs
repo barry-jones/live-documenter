@@ -80,12 +80,12 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				//}
 
 				// export the content file
-				using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
-					Serializer s = new Serializer();
-					s.SetOutputFile(this.OutputDirectory + "Documentation.HxT");
-					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-					transform.Run(s);
-				}
+				//using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
+				//    Serializer s = new Serializer();
+				//    s.SetOutputFile(this.OutputDirectory + "Documentation.HxT");
+				//    transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+				//    transform.Run(s);
+				//}
 
 				// export the content files
 				foreach (string current in Directory.GetFiles(this.TempDirectory)) {

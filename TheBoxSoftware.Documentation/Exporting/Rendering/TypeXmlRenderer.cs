@@ -39,8 +39,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteEndElement();
 
 			writer.WriteStartElement("namespace");
-			writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(this.member.Assembly).ToString());
-			writer.WriteAttributeString("name", this.member.Namespace);
+			Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Namespace);
+			writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
+			writer.WriteAttributeString("name", namespaceEntry.SubKey);
 			writer.WriteString(this.member.Namespace);
 			writer.WriteEndElement();
 

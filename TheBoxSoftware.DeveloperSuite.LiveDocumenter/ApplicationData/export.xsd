@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://theboxsoftware.com/xsd" attributeFormDefault="unqualified"
-    elementFormDefault="unqualified" version="1.0" xmlns:tbs="http://theboxsoftware.com/xsd">
+    targetNamespace="http://theboxsoftware.com/xsd/export" attributeFormDefault="unqualified"
+    elementFormDefault="unqualified" version="1.0">
     <xs:simpleType name="exporters">
         <xs:restriction base="xs:string">
             <xs:enumeration value="web"/>

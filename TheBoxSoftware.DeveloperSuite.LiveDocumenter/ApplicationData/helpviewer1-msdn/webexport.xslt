@@ -10,142 +10,215 @@
 	<xsl:param name="directory" />
 	<xsl:variable name="toc" select="concat($directory,'toc.xml')"/>
 
+	<xsl:template name="start">
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">]]></xsl:text>
+		<xsl:text disable-output-escaping="yes"><![CDATA[<html xmlns="http://www.w3.org/1999/xhtml">]]></xsl:text>
+	</xsl:template>
+	<xsl:template name="end">
+		<xsl:text disable-output-escaping="yes"><![CDATA[</html>]]></xsl:text>
+	</xsl:template>
+
 	<xsl:template match="/frontpage">
-		<html>
-			<head>
-				<title>Class Library Documentation</title>
-				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
-				<xsl:call-template name="mshelpviewer1-head">
-					<xsl:with-param name="top-level" select="'true'" />
-				</xsl:call-template>
-			</head>
-			<body>
-				<xsl:call-template name="header" />
-				<div class="content">
-					<h1>Class Library Documentation</h1>
-					<h2>Namespaces</h2>
-					<table>
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Description</th>
-							</tr>
-						</thead>
-						<xsl:apply-templates select="namespaces/namespace" />
-					</table>
-				</div>
-				<xsl:call-template name="footer" />
-			</body>
-		</html>
+		<xsl:call-template name="start" />
+		<head>
+			<title>Class Library Documentation</title>
+			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
+			<xsl:call-template name="mshelpviewer1-head">
+				<xsl:with-param name="top-level" select="'true'" />
+			</xsl:call-template>
+		</head>
+		<body>
+			<xsl:call-template name="header" />
+			<div class="content">
+				<h1>Class Library Documentation</h1>
+				<h2>Namespaces</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<xsl:apply-templates select="namespaces/namespace" />
+				</table>
+			</div>
+			<xsl:call-template name="footer" />
+		</body>
+		<xsl:call-template name="end" />
 	</xsl:template>
 
 	<xsl:template match="/members">
-		<html>
-			<head>
-				<title>
-					<xsl:value-of select="/*/name"/>
-				</title>
-				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
-				<xsl:call-template name="mshelpviewer1-head" />
-			</head>
-			<body>
-				<xsl:call-template name="header" />
-				<div class="content">
-					<xsl:apply-templates select="name" />
-					<p>
-						The <xsl:value-of select="name" /> type exposes the following members.
-					</p>
-					<xsl:call-template name="member-lists" />
-				</div>
-				<xsl:call-template name="footer" />
-			</body>
-		</html>
+		<xsl:call-template name="start" />
+		<head>
+			<title>
+				<xsl:value-of select="replace(replace(/*/name, '&lt;', '&#60;'), '&gt;', '&#61;')"/>
+			</title>
+			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
+			<xsl:call-template name="mshelpviewer1-head" />
+		</head>
+		<body>
+			<xsl:call-template name="header" />
+			<div class="content">
+				<xsl:apply-templates select="name" />
+				<p>
+					The <xsl:value-of select="name" /> type exposes the following members.
+				</p>
+				<xsl:call-template name="member-lists" />
+			</div>
+			<xsl:call-template name="footer" />
+		</body>
+		<xsl:call-template name="end" />
 	</xsl:template>
 
 	<xsl:template match="/namespace">
-		<html>
-			<head>
-				<title>
-					<xsl:value-of select="/namespace/name"/>
-				</title>
-				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
-				<xsl:call-template name="mshelpviewer1-head" />
-			</head>
-			<body>
-				<xsl:call-template name="header" />
-				<div class="content">
-					<h1>
-						<xsl:apply-templates select="name" />
-					</h1>
-					<xsl:if test="count(/namespace/parent[@type='class']) > 0">
-						<h2>Classes</h2>
-						<table>
-							<thead>
+		<xsl:call-template name="start" />
+		<head>
+			<title>
+				<xsl:value-of select="replace(replace(/*/name, '&lt;', '&#60;'), '&gt;', '&#61;')"/>
+			</title>
+			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
+			<xsl:call-template name="mshelpviewer1-head" />
+		</head>
+		<body>
+			<xsl:call-template name="header" />
+			<div class="content">
+				<h1>
+					<xsl:apply-templates select="name" />
+				</h1>
+				<xsl:if test="count(/namespace/parent[@type='class']) > 0">
+					<h2>Classes</h2>
+					<table>
+						<thead>
+							<tr>
 								<th class="icon"></th>
 								<th>Class</th>
 								<th>Summary</th>
-							</thead>
-							<tbody>
-								<xsl:apply-templates select="/namespace/parent[@type = 'class']" />
-							</tbody>
-						</table>
-					</xsl:if>
-					<xsl:if test="count(/namespace/parent[@type='struct']) > 0">
-						<h2>Structures</h2>
-						<table>
-							<thead>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:apply-templates select="/namespace/parent[@type = 'class']" />
+						</tbody>
+					</table>
+				</xsl:if>
+				<xsl:if test="count(/namespace/parent[@type='struct']) > 0">
+					<h2>Structures</h2>
+					<table>
+						<thead>
+							<tr>
 								<th class="icon"></th>
 								<th>Name</th>
 								<th>Summary</th>
-							</thead>
-							<tbody>
-								<xsl:apply-templates select="/namespace/parent[@type = 'struct']" />
-							</tbody>
-						</table>
-					</xsl:if>
-					<xsl:if test="count(/namespace/parent[@type='interface']) > 0">
-						<h2>Interfaces</h2>
-						<table>
-							<thead>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:apply-templates select="/namespace/parent[@type = 'struct']" />
+						</tbody>
+					</table>
+				</xsl:if>
+				<xsl:if test="count(/namespace/parent[@type='interface']) > 0">
+					<h2>Interfaces</h2>
+					<table>
+						<thead>
+							<tr>
 								<th class="icon"></th>
 								<th>Name</th>
 								<th>Summary</th>
-							</thead>
-							<tbody>
-								<xsl:apply-templates select="/namespace/parent[@type = 'interface']" />
-							</tbody>
-						</table>
-					</xsl:if>
-					<xsl:if test="count(/namespace/parent[@type='delegate']) > 0">
-						<h2>Delegates</h2>
-						<table>
-							<thead>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:apply-templates select="/namespace/parent[@type = 'interface']" />
+						</tbody>
+					</table>
+				</xsl:if>
+				<xsl:if test="count(/namespace/parent[@type='delegate']) > 0">
+					<h2>Delegates</h2>
+					<table>
+						<thead>
+							<tr>
 								<th class="icon"></th>
 								<th>Delegate</th>
 								<th>Description</th>
-							</thead>
-							<tbody>
-								<xsl:apply-templates select="/namespace/parent[@type = 'delegate']" />
-							</tbody>
-						</table>
-					</xsl:if>
-					<xsl:if test="count(/namespace/parent[@type='enum']) > 0">
-						<h2>Enumerations</h2>
-						<table>
-							<thead>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:apply-templates select="/namespace/parent[@type = 'delegate']" />
+						</tbody>
+					</table>
+				</xsl:if>
+				<xsl:if test="count(/namespace/parent[@type='enum']) > 0">
+					<h2>Enumerations</h2>
+					<table>
+						<thead>
+							<tr>
 								<th class="icon"></th>
 								<th>Name</th>
 								<th>Summary</th>
-							</thead>
-							<tbody>
-								<xsl:apply-templates select="/namespace/parent[@type = 'enum']" />
-							</tbody>
-						</table>
-					</xsl:if>
-				</div>
-				<xsl:call-template name="footer" />
-			</body>
-		</html>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:apply-templates select="/namespace/parent[@type = 'enum']" />
+						</tbody>
+					</table>
+				</xsl:if>
+			</div>
+			<xsl:call-template name="footer" />
+		</body>
+		<xsl:call-template name="end" />
+	</xsl:template>
+
+	<xsl:template match="/member">
+		<xsl:call-template name="start" />
+		<head>
+			<title>
+				<xsl:value-of select="replace(replace(/*/name, '&lt;', '&#60;'), '&gt;', '&#61;')"/>
+			</title>
+			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
+			<xsl:call-template name="mshelpviewer1-head" />
+		</head>
+		<body>
+			<xsl:call-template name="header" />
+			<div class="content">
+				<h1>
+					<xsl:value-of select="/member/name" />
+					<xsl:text> </xsl:text>
+					<xsl:call-template name="type-display-name" />
+				</h1>
+
+				<xsl:apply-templates select="/member/summary" />
+
+				<xsl:apply-templates select="/member/inheritance" />
+
+				<xsl:if test="(namespace or assembly)">
+					<div class="details">
+						<xsl:if test="namespace">
+							<span class="namespace">
+								<em>Namespace:</em>
+								<xsl:text> </xsl:text>
+								<a href="ms-xhelp://?Id={/member/namespace/@id}-{/member/namespace/@name}">
+									<xsl:value-of select="/member/namespace" />
+								</a>
+							</span>
+						</xsl:if>
+						<xsl:if test="assembly">
+							<span class="assembly">
+								<em>Assembly:</em><xsl:text> </xsl:text><xsl:value-of select="/member/assembly" /> in (<xsl:value-of select="/member/assembly/@file" />)
+							</span>
+						</xsl:if>
+					</div>
+				</xsl:if>
+
+				<xsl:apply-templates select="/member/*/syntax" />
+
+				<xsl:call-template name="member-lists" />
+				<xsl:apply-templates select="/member/values" />
+
+				<xsl:apply-templates select="/member/remarks" />
+
+				<xsl:apply-templates select="/member/seealsolist" />
+			</div>
+			<xsl:call-template name="footer" />
+		</body>
+		<xsl:call-template name="end" />
 	</xsl:template>
 
 	<xsl:template name="mshelpviewer1-head">
@@ -157,7 +230,7 @@
 			<meta name="Microsoft.Help.TocParent" content="-1" />
 		</xsl:if>
 		<xsl:if test="$top-level != 'true'">
-			<xsl:for-each select="document($toc)/toc/descendant::element()[@key=$id and @subkey=$subId]/parent::node()">
+			<xsl:for-each select="document($toc)/toc/descendant::*[@key=$id and @subkey=$subId]/parent::node()">
 				<xsl:if test="self::toc">
 					<meta name="Microsoft.Help.TocParent" content="0" />
 				</xsl:if>
@@ -180,61 +253,6 @@
 		<meta name="Microsoft.Help.SelfBranded" content="true" />
 		<meta name="Microsoft.Help.TocOrder" content="1"/>
 		<!-- end ms help viewer tags -->
-	</xsl:template>
-
-	<xsl:template match="/member">
-		<html>
-			<head>
-				<title>
-					<xsl:value-of select="/member/name"/>
-				</title>
-				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
-				<xsl:call-template name="mshelpviewer1-head" />
-			</head>
-			<body>
-				<xsl:call-template name="header" />
-				<div class="content">
-					<h1>
-						<xsl:value-of select="/member/name" />
-						<xsl:text> </xsl:text>
-						<xsl:call-template name="type-display-name" />
-					</h1>
-
-					<xsl:apply-templates select="/member/summary" />
-
-					<xsl:apply-templates select="/member/inheritance" />
-
-					<xsl:if test="(namespace or assembly)">
-						<div class="details">
-							<xsl:if test="namespace">
-								<span class="namespace">
-									<em>Namespace:</em>
-									<xsl:text> </xsl:text>
-									<a href="{/member/namespace/@id}-{/member/namespace/@name}.htm">
-										<xsl:value-of select="/member/namespace" />
-									</a>
-								</span>
-							</xsl:if>
-							<xsl:if test="assembly">
-								<span class="assembly">
-									<em>Assembly:</em><xsl:text> </xsl:text><xsl:value-of select="/member/assembly" /> in (<xsl:value-of select="/member/assembly/@file" />)
-								</span>
-							</xsl:if>
-						</div>
-					</xsl:if>
-
-					<xsl:apply-templates select="/member/*/syntax" />
-
-					<xsl:call-template name="member-lists" />
-					<xsl:apply-templates select="/member/values" />
-
-					<xsl:apply-templates select="/member/remarks" />
-
-					<xsl:apply-templates select="/member/seealsolist" />
-				</div>
-				<xsl:call-template name="footer" />
-			</body>
-		</html>
 	</xsl:template>
 
 	<xsl:template name="footer">
@@ -282,9 +300,11 @@
 			<h2>Constructors</h2>
 			<table>
 				<thead>
-					<th class="icon"></th>
-					<th>Class</th>
-					<th>Summary</th>
+					<tr>
+						<th class="icon"></th>
+						<th>Class</th>
+						<th>Summary</th>
+					</tr>
 				</thead>
 				<tbody>
 					<xsl:apply-templates select="entries/entry[@type='constructor']" />
@@ -295,9 +315,11 @@
 			<h2>Methods</h2>
 			<table>
 				<thead>
-					<th class="icon"></th>
-					<th>Name</th>
-					<th>Summary</th>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Summary</th>
+					</tr>
 				</thead>
 				<tbody>
 					<xsl:apply-templates select="entries/entry[@type='method']" />
@@ -308,9 +330,11 @@
 			<h2>Properties</h2>
 			<table>
 				<thead>
-					<th class="icon"></th>
-					<th>Name</th>
-					<th>Summary</th>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Summary</th>
+					</tr>
 				</thead>
 				<tbody>
 					<xsl:apply-templates select="entries/entry[@type='properties']" />
@@ -321,9 +345,11 @@
 			<h2>Events</h2>
 			<table>
 				<thead>
-					<th class="icon"></th>
-					<th>Delegate</th>
-					<th>Description</th>
+					<tr>
+						<th class="icon"></th>
+						<th>Delegate</th>
+						<th>Description</th>
+					</tr>
 				</thead>
 				<tbody>
 					<xsl:apply-templates select="entries/entry[@type='event']" />
@@ -334,9 +360,11 @@
 			<h2>Fields</h2>
 			<table>
 				<thead>
-					<th class="icon"></th>
-					<th>Name</th>
-					<th>Description</th>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
 				</thead>
 				<tbody>
 					<xsl:apply-templates select="entries/entry[@type='field']" />
@@ -347,9 +375,11 @@
 			<h2>Constants</h2>
 			<table>
 				<thead>
-					<th class="icon"></th>
-					<th>Name</th>
-					<th>Description</th>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
 				</thead>
 				<tbody>
 					<xsl:apply-templates select="entries/entry[@type='constant']" />
@@ -360,9 +390,11 @@
 			<h2>Operators</h2>
 			<table>
 				<thead>
-					<th class="icon"></th>
-					<th>Name</th>
-					<th>Description</th>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
 				</thead>
 				<tbody>
 					<xsl:apply-templates select="entries/entry[@type='operator']" />
@@ -403,7 +435,7 @@
 				<xsl:call-template name="icons" />
 			</td>
 			<td>
-				<a href="{@id}.htm">
+				<a href="ms-xhelp://?Id={@id}">
 					<xsl:value-of select="name" />
 				</a>
 			</td>
@@ -419,7 +451,7 @@
 				<xsl:call-template name="icons" />
 			</td>
 			<td>
-				<a href="{@key}.htm">
+				<a href="ms-xhelp://?Id={@key}">
 					<xsl:value-of select="@name" />
 				</a>
 			</td>
@@ -432,7 +464,7 @@
 	<xsl:template match="namespaces/namespace">
 		<tr>
 			<td>
-				<a href="{@key}-{@subkey}.htm">
+				<a href="ms-xhelp://?id={@key}-{@subkey}">
 					<xsl:value-of select="name" />
 				</a>
 			</td>
@@ -440,62 +472,6 @@
 				<xsl:apply-templates select="summary" />
 			</td>
 		</tr>
-	</xsl:template>
-
-	<xsl:template match="/toc">
-		<xsl:for-each select="key('itemBykey',concat($id, '-', $subId))">
-			<xsl:call-template name="chain">
-				<xsl:with-param name="parents" select="ancestor-or-self::item"/>
-				<xsl:with-param name="childs" select="item"/>
-			</xsl:call-template>
-		</xsl:for-each>
-	</xsl:template>
-
-	<xsl:template name="chain">
-		<xsl:param name="parents"/>
-		<xsl:param name="childs"/>
-		<xsl:if test="$parents">
-			<xsl:variable name="parentCurrent" select="if (concat($parents[1]/@key,$parents[1]/@subkey) = concat($id,$subId)) then 'current' else ''" />
-			<ul>
-				<li>
-					<xsl:if test="not($parents[1]/@subkey = '')">
-						<a class="{$parentCurrent}" href="{$parents[1]/@key}-{$parents[1]/@subkey}.htm">
-							<xsl:value-of select="$parents[1]/@name"/>
-						</a>
-					</xsl:if>
-					<xsl:if test="not(not($parents[1]/@subkey = ''))">
-						<a class="{$parentCurrent}" href="{$parents[1]/@key}.htm">
-							<xsl:value-of select="$parents[1]/@name"/>
-						</a>
-					</xsl:if>
-					<xsl:call-template name="chain">
-						<xsl:with-param name="parents" select="$parents[position()!=1]"/>
-						<xsl:with-param name="childs" select="$childs"/>
-					</xsl:call-template>
-					<xsl:if test="count($parents)=1">
-						<ul>
-							<xsl:for-each select="$childs">
-								<xsl:variable name="current" select="if (concat(@key,@subkey) = concat($id,$subId)) then 'current' else ''" />
-								<xsl:if test="not(@subkey = '')">
-									<li>
-										<a class="{$current}" href="{@key}-{@subkey}.htm">
-											<xsl:value-of select="@name"/>
-										</a>
-									</li>
-								</xsl:if>
-								<xsl:if test="not(not(@subkey = ''))">
-									<li>
-										<a class="{$current}" href="{@key}.htm">
-											<xsl:value-of select="@name"/>
-										</a>
-									</li>
-								</xsl:if>
-							</xsl:for-each>
-						</ul>
-					</xsl:if>
-				</li>
-			</ul>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="/member/inheritance">
@@ -537,7 +513,7 @@
 			<xsl:value-of select="@name" />
 		</xsl:if>
 		<xsl:if test="@id">
-			<a href="{@id}.htm">
+			<a href="ms-xhelp://?Id={@id}">
 				<xsl:value-of select="@name" />
 			</a>
 		</xsl:if>
@@ -587,7 +563,7 @@
 
 	<xsl:template match="see">
 		<xsl:if test="@type='namespace'">
-			<a href="{@id}-{@name}.htm">
+			<a href="ms-xhelp://?Id={@id}-{@name}">
 				<xsl:apply-templates />
 			</a>
 		</xsl:if>
@@ -596,7 +572,7 @@
 				<xsl:apply-templates />
 			</xsl:if>
 			<xsl:if test="@id">
-				<a href="{@id}.htm">
+				<a href="ms-xhelp://?Id={@id}">
 					<xsl:apply-templates />
 				</a>
 			</xsl:if>
@@ -616,7 +592,7 @@
 				<xsl:apply-templates />
 			</xsl:if>
 			<xsl:if test="@id">
-				<a href="{@id}.htm">
+				<a href="ms-xhelp://?Id={@id}">
 					<xsl:apply-templates />
 				</a>
 			</xsl:if>

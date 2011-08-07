@@ -106,6 +106,22 @@ namespace TheBoxSoftware.Documentation {
 			return results;
 		}
 
+		/// <summary>
+		/// Finds the namespace in the document map based on the name provided.
+		/// </summary>
+		/// <param name="name">The fully qualified namespace name.</param>
+		/// <returns>The found namespace entry or null if not found.</returns>
+		public Entry FindNamespace(string name) {
+			// a namespace entry is an entry with a List<TypeDef> member, the required namespace should be
+			// a parent of this type (provided it was a type of member of a type).
+			Entry parent = this;
+			while (parent.Parent != null && !(this.Item is List<TypeDef>)) {
+				parent = parent.Parent;
+			}
+
+			return parent;
+		}
+
 		#region Properties
 		/// <summary>
 		/// The display name for this entry, this will be used foremost to
