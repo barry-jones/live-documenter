@@ -36,8 +36,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 					reader.Close();
 
 					// We are opening or creating, we could have no file present.
-					if (!string.IsNullOrEmpty(preferenceData)) {
-						UserApplicationStore.store = (Model.UserApplicationStore)UserApplicationStore.DeSerialize(preferenceData, typeof(Model.UserApplicationStore));
+					if (!string.IsNullOrEmpty(preferenceData.Trim())) {
+						UserApplicationStore.store = (Model.UserApplicationStore)UserApplicationStore.DeSerialize(
+							preferenceData, typeof(Model.UserApplicationStore)
+							);
 					}
 				}
 			}
