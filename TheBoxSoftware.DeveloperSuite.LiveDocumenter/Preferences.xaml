@@ -4,6 +4,7 @@
     xmlns:cb="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Preferences"
     x:Name="preferences"
+    UseLayoutRounding="True"
     Title="Preferences" Height="334" Width="416" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" mc:Ignorable="d">
 	
     <Window.Resources>

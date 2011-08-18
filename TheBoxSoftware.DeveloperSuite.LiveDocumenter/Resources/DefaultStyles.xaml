@@ -8,7 +8,11 @@
     <Color x:Key="BorderDefault">#ffefefef</Color>
     <Color x:Key="Foreground">#ff000000</Color>
     <Color x:Key="Link">#FF788FFB</Color>
-    
+
+    <Style TargetType="{x:Type Image}">
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
+    </Style>
+
     <SolidColorBrush x:Key="DarkGrayGradientBrush" Color="#FF222222"/>
     <SolidColorBrush x:Key="BlueGradientBrush" Color="#FF1F668B"/>
     <LinearGradientBrush x:Key="MenuBackground" EndPoint="0,1" StartPoint="0,0">

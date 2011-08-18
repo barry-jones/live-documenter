@@ -12,6 +12,7 @@
     Title="Live Documenter - FREE NON-COMMERCIAL VERSION" 
     Height="639" 
     Width="969" 
+    UseLayoutRounding="True"
     PreviewKeyDown="mainWindow_PreviewKeyDown"
     Loaded="mainWindow_Loaded" 
     Closing="mainWindow_Closing" 
@@ -25,11 +26,7 @@
         <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
     </Window.InputBindings>
 
-    <Window.Resources>
-        <Style TargetType="{x:Type Image}">
-            <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
-        </Style>
-        
+    <Window.Resources>        
         <model:TreeViewItemDataTemplateSelector x:Key="treeViewDataTemplateSelector" />
         <HierarchicalDataTemplate x:Key="documentMapItemTemplate" ItemsSource="{Binding Children}">
             <StackPanel Orientation="Horizontal">
