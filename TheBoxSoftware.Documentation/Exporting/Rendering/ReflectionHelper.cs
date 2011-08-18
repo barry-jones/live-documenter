@@ -32,6 +32,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		}
 
 		public static string GetType(ReflectedMember member) {
+			// NOTE: This code is duplicated in LiveDocumenter.Model.ElementIconConstants.GetIconFor
+
 			string name = string.Empty;
 
 			if (member is AssemblyDef) {
@@ -72,6 +74,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 			else if (member is MethodDef) {
 				name = "method";
+				MethodDef method = (MethodDef)member;
+				if (method.IsOperator) {
+					name = "operator";
+				}
 			}
 			else if (member is PropertyDef) {
 				name = "properties";
@@ -79,7 +85,6 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			return name;
 		}
-
 
 		/// <summary>
 		/// Obtains a name to display for the reflected member.

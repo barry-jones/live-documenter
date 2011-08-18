@@ -141,6 +141,27 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					this.Blocks.Add(members);
 				}
 
+				List<MethodDef> operators = this.representedType.GetOperators();
+				if (operators != null && operators.Count > 0) {
+					this.Blocks.Add(new Header2("Operators"));
+					members = new SummaryTable();
+					var sortedMethods = from method in operators
+										orderby method.Name
+										select method;
+					foreach (MethodDef currentMethod in sortedMethods) {
+						crefPath = new CRefPath(currentMethod);
+						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
+						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
+						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+
+						Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+
+						members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
+					}
+					this.Blocks.Add(members);
+				}
+
 				if (this.representedType != null && this.representedType.ExtensionMethods.Count > 0) {
 					members = new SummaryTable();
 

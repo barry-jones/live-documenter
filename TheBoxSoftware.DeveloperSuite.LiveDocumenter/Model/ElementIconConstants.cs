@@ -46,8 +46,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 		/// they use the first 3 bits of the flag, and they can use the first bit to
 		/// represent private and the 3 and 1st bit to represent public.
 		/// </remarks>
-		private static string GetIconPathFor(ReflectedMember member)
-		{
+		private static string GetIconPathFor(ReflectedMember member) {
+			// NOTE: This code is duplicated in Documentation.Rendering.ReflectionHelper
 			string name = string.Empty;
 
 			if (member is AssemblyDef) {
@@ -86,6 +86,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 			}
 			else if (member is MethodDef) {
 				name = "method";
+				MethodDef method = (MethodDef)member;
+				if (method.IsOperator) {
+					name = "operator";
+				}
 			}
 			else if (member is PropertyDef) {
 				name = "properties";

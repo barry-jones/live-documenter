@@ -51,7 +51,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 							"/doc/members/member[@name='" + path.ToString() + "']/summary"
 							);
 
-						methods.AddItem(link, description);
+						methods.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
 					}
 					this.Blocks.Add(methods);
 				}
