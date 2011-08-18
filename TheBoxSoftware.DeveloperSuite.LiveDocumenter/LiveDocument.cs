@@ -30,7 +30,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="files">The files to be managed by this LiveDocument.</param>
 		public LiveDocument(List<DocumentedAssembly> files) {
 			this.DocumentedFiles = files;
-			this.documentMapper = DocumentMapper.Create(files, Mappers.AssemblyFirst, new DocumentSettings(), true, new LiveDocumenterEntryCreator());
+
+			DocumentSettings settings = new DocumentSettings();
+			settings.VisibilityFilters.AddRange(new Visibility[] { 
+				Visibility.Private,
+				Visibility.Protected,
+				Visibility.Public,
+				Visibility.InternalProtected,
+				Visibility.Internal
+				});
+
+			this.documentMapper = DocumentMapper.Create(files, Mappers.AssemblyFirst, settings, true, new LiveDocumenterEntryCreator());
 			this.Update();
 		}
 
@@ -40,7 +50,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		public void Update() {
 			if (this.documentMapper == null) {
-				this.documentMapper = DocumentMapper.Create(this.DocumentedFiles, Mappers.AssemblyFirst, new DocumentSettings(), true, new LiveDocumenterEntryCreator());
+				DocumentSettings settings = new DocumentSettings();
+				settings.VisibilityFilters.AddRange(new Visibility[] { 
+					Visibility.Private,
+					Visibility.Protected,
+					Visibility.Public,
+					Visibility.InternalProtected,
+					Visibility.Internal
+					});
+
+				this.documentMapper = DocumentMapper.Create(this.DocumentedFiles, Mappers.AssemblyFirst, settings, true, new LiveDocumenterEntryCreator());
 			}
 			this.documentMapper.GenerateMap();
 			this.DocumentMap = this.documentMapper.DocumentMap;
