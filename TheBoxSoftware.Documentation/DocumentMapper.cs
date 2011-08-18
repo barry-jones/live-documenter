@@ -380,6 +380,15 @@ namespace TheBoxSoftware.Documentation {
 					typeEntry.Children.Add(propertiesEntry);
 				}
 			}
+
+			// Add the all members node
+			if (methods.Count > 0 || properties.Count > 0 || events.Count > 0 || fields.Count > 0 || constructors.Count > 0 || operators.Count > 0) {
+				Entry membersEntry = this.EntryCreator.Create(typeDef, "Members", commentsXml);
+				membersEntry.IsSearchable = false;
+				membersEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
+				membersEntry.SubKey = "Members";
+				typeEntry.Children.Add(membersEntry);
+			}
 		}
 	}
 }

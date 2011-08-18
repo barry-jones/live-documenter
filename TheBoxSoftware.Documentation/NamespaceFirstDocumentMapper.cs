@@ -8,6 +8,13 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection.Comments;
 
 	public class NamespaceFirstDocumentMapper : DocumentMapper {
+		/// <summary>
+		/// Initialises a new instance of the NamespaceFirstDocumentMapper.
+		/// </summary>
+		/// <param name="assemblies">The assemblies being documented.</param>
+		/// <param name="settings">Documentation settings.</param>
+		/// <param name="useObservableCollection">Indicates if an observable collection should be used instead of a normal one.</param>
+		/// <param name="creator">The factory class for creating new <see cref="Entry"/> instances.</param>
 		public NamespaceFirstDocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection, EntryCreator creator)
 			: base(assemblies, settings, useObservableCollection, creator) {
 		}
