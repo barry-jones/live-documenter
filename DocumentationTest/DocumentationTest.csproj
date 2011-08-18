@@ -90,6 +90,7 @@
     <Compile Include="InheritanceTest.cs" />
     <Compile Include="InterfaceTest.cs" />
     <Compile Include="InternalDocumentedClass.cs" />
+    <Compile Include="Issues\Issue11.cs" />
     <Compile Include="Issues\Issue120.cs" />
     <Compile Include="Issues\Issue130.cs" />
     <Compile Include="Issues\Issue135.cs" />
