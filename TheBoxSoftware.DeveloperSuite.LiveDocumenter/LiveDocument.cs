@@ -58,11 +58,22 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Refreshes the specified assemblies documentation in the UI.
 		/// </summary>
 		/// <param name="documentedAssembly">The assembly whose documentation needs updating.</param>
+		/// <remarks>
+		/// <para>
+		/// When an assembly is refreshed the <see cref="DocumentMapper"/> is used to regenerate the
+		/// document map for that assembly.
+		/// </para>
+		/// <para>
+		/// If the assembly was not compiled before the refresh, is has its document map generated
+		/// and is then inserted in to the current <see cref="DocumentMap"/>.
+		/// </para>
+		/// </remarks>
 		public void RefreshAssembly(DocumentedAssembly documentedAssembly) {
 			// The assembly has been modified, find the existing node
 			// and generate the new one
 			Entry existingEntry = null;
 			int entryAtIndex = -1;
+			int fileCounter = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count;
 			for (int i = 0; i < LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count; i++) {
 				Entry currentEntry = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap[i];
 				if (currentEntry.Name == System.IO.Path.GetFileName(documentedAssembly.FileName)) {
@@ -72,15 +83,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				}
 			}
 
-			// Remove the old entry, we need to do this now so any searches performed in the
-			// generate method do not return values from here.
-			this.DocumentMap.RemoveAt(entryAtIndex);
+			// only remove and reset if the assembly already exists in the document map
+			if (entryAtIndex != -1) {
+				// Remove the old entry, we need to do this now so any searches performed in the
+				// generate method do not return values from here.
+				this.DocumentMap.RemoveAt(entryAtIndex);
 
-			int fileCounter = ((TheBoxSoftware.Reflection.AssemblyDef)existingEntry.Item).UniqueId;
+				fileCounter = ((TheBoxSoftware.Reflection.AssemblyDef)existingEntry.Item).UniqueId;
+			}
 			Entry assemblyEntry = this.documentMapper.GenerateDocumentForAssembly(documentedAssembly, ref fileCounter);
 
-			// Insert the newly generated entry in the same location as the old one
-			this.DocumentMap.Insert(entryAtIndex, assemblyEntry);
+			// insert the newly generated entry in the same location as the old one or make it the first entry
+			this.DocumentMap.Insert(entryAtIndex == -1 ? 0 : entryAtIndex, assemblyEntry);
 		}
 
 		/// <summary>

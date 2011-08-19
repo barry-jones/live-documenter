@@ -288,6 +288,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					}
 				}
 
+				// update the view if we are refreshing, especially since libraries may have been newly
+				// compiled.
+				if (hasBeenReloaded) {
+					this.UpdateView();
+				}
+
 				// Tries to reselect a node in the tree that was selected before the window was
 				// activated. That is before we tried to reload the project.
 				if (hasBeenReloaded && (preUpdateSelectionParent != null && preUpdateSelection != null)) {

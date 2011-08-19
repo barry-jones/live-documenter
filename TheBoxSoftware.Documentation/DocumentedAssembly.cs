@@ -74,7 +74,8 @@ namespace TheBoxSoftware.Documentation {
 		/// </summary>
 		/// <returns>True if it has changed else false.</returns>
 		public bool HasAssemblyBeenModified() {
-			return this.TimeLoaded < System.IO.File.GetLastWriteTime(this.FileName);
+			DateTime lastWriteTime = System.IO.File.GetLastWriteTime(this.FileName);
+			return this.IsCompiled && this.TimeLoaded < lastWriteTime;
 		}
 		#endregion
 
@@ -106,6 +107,11 @@ namespace TheBoxSoftware.Documentation {
 		/// to be queried for its references.
 		/// </summary>
 		public List<string> ReferencedAssemblies { get; set; }
+
+		/// <summary>
+		/// Indicates that the file exists on disk and is compiled.
+		/// </summary>
+		public bool IsCompiled { get { return System.IO.File.Exists(this.FileName); } }
 
 		/// <summary>
 		/// A reference to the assembly after it has been loaded.

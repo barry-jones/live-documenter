@@ -65,6 +65,9 @@ namespace TheBoxSoftware.Documentation {
 			this.EntryCreator = creator;
 		}
 
+		/// <summary>
+		/// Generates the document map based on the <see cref="CurrentFiles"/>.
+		/// </summary>
 		public virtual void GenerateMap() {
 			this.DocumentMap = this.UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
 			int fileCounter = 1;
@@ -72,6 +75,8 @@ namespace TheBoxSoftware.Documentation {
 			// For each of the documentedfiles generate the document map and add
 			// it to the parent node of the document map
 			for (int i = 0; i < this.CurrentFiles.Count; i++) {
+				if (!this.CurrentFiles[i].IsCompiled)
+					continue;
 				Entry assemblyEntry = this.GenerateDocumentForAssembly(
 					this.CurrentFiles[i], ref fileCounter
 					);

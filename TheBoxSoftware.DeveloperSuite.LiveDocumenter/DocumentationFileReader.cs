@@ -233,14 +233,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						}
 					}
 
-					if (System.IO.File.Exists(outputFile)) {
-						return new List<DocumentedAssembly>() {
-							new DocumentedAssembly(outputFile, documentation)
-							};
-					}
-					else {
-						return new List<DocumentedAssembly>();
-					}
+					return new List<DocumentedAssembly>() {
+						new DocumentedAssembly(outputFile, documentation)
+						};
 				}
 				else {
 					throw new InvalidOperationException();
