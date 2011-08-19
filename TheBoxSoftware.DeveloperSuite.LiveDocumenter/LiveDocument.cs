@@ -30,17 +30,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="files">The files to be managed by this LiveDocument.</param>
 		public LiveDocument(List<DocumentedAssembly> files) {
 			this.DocumentedFiles = files;
-
-			DocumentSettings settings = new DocumentSettings();
-			settings.VisibilityFilters.AddRange(new Visibility[] { 
-				Visibility.Private,
-				Visibility.Protected,
-				Visibility.Public,
-				Visibility.InternalProtected,
-				Visibility.Internal
-				});
-
-			this.documentMapper = DocumentMapper.Create(files, Mappers.AssemblyFirst, settings, true, new LiveDocumenterEntryCreator());
 			this.Update();
 		}
 
