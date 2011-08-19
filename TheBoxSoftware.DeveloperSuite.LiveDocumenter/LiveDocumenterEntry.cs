@@ -8,11 +8,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages;
 	using TheBoxSoftware.Reflection.Comments;
 
+	/// <summary>
+	/// An implementation of <see cref="Entry"/> specific for the LiveDocument DocumentMaps.
+	/// </summary>
 	public class LiveDocumenterEntry : Entry {
 		/// <summary>
 		/// Initialises a new Entry instance
 		/// </summary>
 		/// <param name="item">The item that represents this entry</param>
+		/// <param name="displayName">The display name for this Entry.</param>
 		/// <param name="xmlComments">The XmlComments file</param>
 		public LiveDocumenterEntry(object item, string displayName, XmlCodeCommentFile xmlComments)
 			: base(item, displayName, xmlComments) {

@@ -35,10 +35,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		#endregion
 
 		#region Methods
+		/// <summary>
+		/// Sets the current LiveDocument managed by the LiveDocumentor
+		/// </summary>
+		/// <param name="current">The LiveDocument to manage.</param>
 		public static void SetLiveDocumentorFile(LiveDocumentorFile current) {
 			LiveDocumentorFile.current = current;
 		}
 
+		/// <summary>
+		/// Update the list of DocumentedAssembly files and refreshes the document map.
+		/// </summary>
+		/// <returns>The updated LiveDocument.</returns>
 		internal LiveDocument Update() {
 			this.liveDocument.DocumentedFiles = this.Files;
 			this.liveDocument.Update();
@@ -48,7 +56,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <summary>
 		/// Adds a range of assemblyPaths to the Live Documenter.
 		/// </summary>
-		/// <param name="assemblyPaths">The file path of the referenced assembly</param>
+		/// <param name="assemblies">The file path of the referenced assembly</param>
 		/// <param name="fromFile">The file these assemblies were parsed from</param>
 		public void Add(List<DocumentedAssembly> assemblies, string fromFile) {
 			assemblies.Sort((one, two) => one.Name.CompareTo(two.Name));
@@ -64,6 +72,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			get { return LiveDocumentorFile.current; }
 		}
 
+		/// <summary>
+		/// The collection of DocumentedAssembly files that are being documented.
+		/// </summary>
 		public List<DocumentedAssembly> Files {
 			get { return this.files; }
 		}
