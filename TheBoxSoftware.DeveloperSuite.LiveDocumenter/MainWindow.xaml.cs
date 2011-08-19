@@ -163,7 +163,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="sender">Calling object</param>
 		/// <param name="e">Event arguments</param>
         private void documentMap_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            if (e.NewValue != null && !(e.NewValue is EmptyEntry)) {
+            if (e.NewValue != null && !(e.NewValue is EmptyEntry) && e.NewValue is LiveDocumenterEntry) {
                 this.Cursor = Cursors.Wait;
 				TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Page page = ((LiveDocumenterEntry)e.NewValue).Page;
                 this.pageViewer.Document = page;
