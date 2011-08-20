@@ -43,6 +43,55 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteString(this.member.Assembly.Name);
 			writer.WriteEndElement();
 
+			if (this.member.IsGeneric) {
+				List<GenericTypeRef> genericTypes = this.member.GetGenericTypes();
+				writer.WriteStartElement("genericparameters");
+				for (int i = 0; i < genericTypes.Count; i++) {
+					writer.WriteStartElement("parameter");
+					writer.WriteAttributeString("name", genericTypes[i].Name);
+					// find and output the summary
+					if (comment != XmlCodeComment.Empty) {
+						XmlCodeElement paramEntry = comment.Elements.Find(currentBlock =>
+							currentBlock is TypeParamXmlCodeElement
+							&& ((TypeParamXmlCodeElement)currentBlock).Name == genericTypes[i].Name);
+						if (paramEntry != null) {
+							this.Serialize(paramEntry, writer, this.member.Assembly);
+						}
+					}
+					writer.WriteEndElement();
+				}
+				writer.WriteEndElement();
+			}
+
+			if (this.member.Parameters.Count > 0) {
+				writer.WriteStartElement("parameters");
+				for (int i = 0; i < this.member.Parameters.Count; i++) {
+					TypeRef parameterType = this.member.Parameters[i].GetTypeRef();
+					Entry foundEntry = this.AssociatedEntry.FindByKey(parameterType.UniqueId, string.Empty);
+
+					writer.WriteStartElement("parameter");
+					writer.WriteAttributeString("name", this.member.Parameters[i].Name);
+					writer.WriteStartElement("type");
+					writer.WriteAttributeString("name", parameterType.GetDisplayName(false));
+					if (foundEntry != null) {
+						writer.WriteAttributeString("key", foundEntry.Key.ToString());
+					}
+
+					if (comment != XmlCodeComment.Empty) {
+						XmlCodeElement paramEntry = comment.Elements.Find(currentBlock =>
+							currentBlock is ParamXmlCodeElement
+							&& ((ParamXmlCodeElement)currentBlock).Name == this.member.Parameters[i].Name);
+						if (paramEntry != null) {
+							this.Serialize(paramEntry, writer, this.member.Assembly);
+						}
+					}
+
+					writer.WriteEndElement(); // type
+					writer.WriteEndElement(); // parameter
+				}
+				writer.WriteEndElement();
+			}
+
 			// find and output the summary
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
