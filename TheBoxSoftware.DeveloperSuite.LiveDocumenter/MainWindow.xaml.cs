@@ -35,6 +35,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		public MainWindow() {
 			InitializeComponent();
+			this.DataContext = this;
 			this.forward.DataContext = this.back.DataContext = this.userViewingHistory;
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
 
@@ -111,6 +112,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			else if (e.Command == ApplicationCommands.Find) {
 				e.CanExecute = true;
 			}
+			else if (e.Command == Commands.Export) {
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument.DocumentedFiles != null
+					&& LiveDocumentorFile.Singleton.LiveDocument.DocumentedFiles.Count > 0;
+			}
 		}
 
 		/// <summary>
@@ -134,6 +139,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 			else if (e.Command == ApplicationCommands.Find) {
 				this.searchBox.Focus();
+			}
+			else if (e.Command == Commands.Export) {
+				this.exportClick(sender, e);
 			}
 		}
 		#endregion
@@ -427,6 +435,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 
+		#region Properties
 		/// <summary>
 		/// Informs the window if it is allowed to refresh the file list.
 		/// </summary>
@@ -434,5 +443,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			get { return this.allowFileRefreshing; }
 			set { this.allowFileRefreshing = value; }
 		}
+		#endregion
 	}
 }

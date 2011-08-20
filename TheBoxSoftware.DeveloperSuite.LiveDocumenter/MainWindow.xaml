@@ -315,6 +315,7 @@
         <CommandBinding Command="ApplicationCommands.Open" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
         <CommandBinding Command="ApplicationCommands.Print" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
         <CommandBinding Command="ApplicationCommands.Find" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
+        <CommandBinding Command="local:Commands.Export" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
     </Window.CommandBindings>
 	
     <DockPanel>
@@ -322,7 +323,7 @@
             <MenuItem Header="File" x:Name="fileMenu">
                 <MenuItem Header="_Open..." Command="ApplicationCommands.Open" />
                 <MenuItem x:Name="recentFiles" Header="Recent Files" Click="recentFiles_Click" ItemsSource="{Binding ''}" ItemTemplate="{StaticResource RecentFileMenuItem}" />
-                <MenuItem Header="Export..." x:Name="export" Click="exportClick" />
+                <MenuItem Header="Export..." x:Name="export" Command="local:Commands.Export" />
                 <MenuItem Header="E_xit" Command="ApplicationCommands.Close" />
                 <!--<MenuItem Click="MenuItem_Click" Header="Test Exporting" />
                 <MenuItem Name="TestException" Click="MenuItem_Click" Header="Test Exception Handling" />-->
@@ -367,7 +368,7 @@
                 </Button.ToolTip>
                 <Image Source="resources\open_24.png" Height="24" Width="24" />
             </Button>
-            <Button Style="{DynamicResource ForwardBackButtonStyle}" Click="exportClick">
+            <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Export">
                 <Button.ToolTip>
                     <TextBlock Text="Export (Ctrl + E)" />
                 </Button.ToolTip>
