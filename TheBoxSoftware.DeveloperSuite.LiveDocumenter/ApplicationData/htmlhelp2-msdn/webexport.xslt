@@ -101,7 +101,7 @@
 							</tbody>
 						</table>
 					</xsl:if>
-					<xsl:if test="count(/namespace/parent[@type='struct']) > 0">
+					<xsl:if test="count(/namespace/parent[@type='structure']) > 0">
 						<h2>Structures</h2>
 						<table>
 							<thead>
@@ -112,7 +112,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<xsl:apply-templates select="/namespace/parent[@type = 'struct']" />
+								<xsl:apply-templates select="/namespace/parent[@type = 'structure']" />
 							</tbody>
 						</table>
 					</xsl:if>
