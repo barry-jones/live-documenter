@@ -28,8 +28,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
 
+			string displayName = this.containingType.GetDisplayName(false);
 			writer.WriteStartElement("name");
-			writer.WriteString(string.Format("{0} {1}", this.containingType.GetDisplayName(false), this.AssociatedEntry.Name));
+			writer.WriteAttributeString("safename", Exporter.CreateSafeName(displayName));
+			writer.WriteString(string.Format("{0} {1}", displayName, this.AssociatedEntry.Name));
 			writer.WriteEndElement();
 
 			// we need to write the entries that appear as children to this document map

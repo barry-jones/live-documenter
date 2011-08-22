@@ -34,8 +34,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteString(this.member.Assembly.Name);
 			writer.WriteEndElement();
 
+			string displayName = this.member.GetDisplayName(false);
 			writer.WriteStartElement("name");
-			writer.WriteString(this.member.GetDisplayName(false));
+			writer.WriteAttributeString("safename", Exporter.CreateSafeName(displayName));
+			writer.WriteString(displayName);
 			writer.WriteEndElement();
 
 			writer.WriteStartElement("namespace");

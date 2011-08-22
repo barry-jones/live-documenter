@@ -23,13 +23,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		public override void Render(System.Xml.XmlWriter writer) {
 			CRefPath crefPath = new CRefPath(this.member);
 			XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
+			string displayName = this.member.GetDisplayName(false);
 
 			writer.WriteStartElement("member");
 			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
 			writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
 			writer.WriteStartElement("name");
-			writer.WriteString(this.member.GetDisplayName(false));
+			writer.WriteAttributeString("safename", displayName);
+			writer.WriteString(displayName);
 			writer.WriteEndElement();
 
 			writer.WriteStartElement("namespace");

@@ -262,6 +262,19 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			return ((long)assembly.UniqueId) << 32;
 		}
 
+		/// <summary>
+		/// In some exporters generic types using angle brackets cause problems. This method creates
+		/// a safe version of the name provided.
+		/// </summary>
+		/// <param name="name">The name to convert.</param>
+		/// <returns>A safe version of <paramref name="name"/>.</returns>
+		/// <remarks>
+		/// A generic type GenericClass&lt;T&gt; will be output as GenericClass(T).
+		/// </remarks>
+		public static string CreateSafeName(string name) {
+			return name.Replace('<', '(').Replace('>', ')');
+		}
+
 		#region Events
 		/// <summary>
 		/// Occurs when a step has been performed during the export operation.

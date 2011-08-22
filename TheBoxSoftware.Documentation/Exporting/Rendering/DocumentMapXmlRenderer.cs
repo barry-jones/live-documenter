@@ -6,7 +6,10 @@ using TheBoxSoftware.Reflection.Comments;
 using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.Documentation.Exporting.Rendering {
-	class DocumentMapXmlRenderer : XmlRenderer {
+	/// <summary>
+	/// Renders the <see cref="DocumentMap"/> to XML for exporting clients.
+	/// </summary>
+	internal class DocumentMapXmlRenderer : XmlRenderer {
 		private DocumentMap documentMap;
 		
 		/// <summary>
@@ -18,15 +21,16 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		}
 
 		/// <summary>
-		/// 
+		/// Renders the DocumentMap to the provided <paramref name="writer"/>.
 		/// </summary>
-		/// <param name="writer"></param>
+		/// <param name="writer">The XML writer.</param>
 		public override void Render(System.Xml.XmlWriter writer) {
 			writer.WriteStartElement("toc");
 
 			foreach (Entry current in this.documentMap) {
 				writer.WriteStartElement("item");
 				writer.WriteAttributeString("name", current.Name);
+				writer.WriteAttributeString("safename", Exporter.CreateSafeName(current.Name));
 				writer.WriteAttributeString("key", current.Key.ToString());
 				writer.WriteAttributeString("subkey", current.SubKey);
 
@@ -40,9 +44,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteEndElement();
 		}
 
+		/// <summary>
+		/// Renders an individual element in the DocumentMap.
+		/// </summary>
+		/// <param name="entry">The entry to render.</param>
+		/// <param name="writer">The writer to write to.</param>
 		private void Render(Entry entry, System.Xml.XmlWriter writer) {
 			writer.WriteStartElement("item");
 			writer.WriteAttributeString("name", entry.Name);
+			writer.WriteAttributeString("safename", Exporter.CreateSafeName(entry.Name));
 			writer.WriteAttributeString("key", entry.Key .ToString());
 			writer.WriteAttributeString("subkey", entry.SubKey);
 

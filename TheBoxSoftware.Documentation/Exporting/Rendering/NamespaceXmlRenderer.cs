@@ -33,6 +33,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
 
 			writer.WriteStartElement("name");
+			writer.WriteAttributeString("safename", Exporter.CreateSafeName(this.member.Key));
 			writer.WriteString(string.Format("{0} Namespace", this.member.Key));
 			writer.WriteEndElement();
 

@@ -51,7 +51,7 @@
 		<xsl:call-template name="start" />
 		<head>
 			<title>
-				<xsl:value-of select="replace(replace(/*/name, '&lt;', '&#60;'), '&gt;', '&#61;')"/>
+				<xsl:value-of select="/*/name/@safename"/>
 			</title>
 			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
 			<xsl:call-template name="mshelpviewer1-head" />
@@ -74,7 +74,7 @@
 		<xsl:call-template name="start" />
 		<head>
 			<title>
-				<xsl:value-of select="replace(replace(/*/name, '&lt;', '&#60;'), '&gt;', '&#61;')"/>
+				<xsl:value-of select="/*/name/@safename"/>
 			</title>
 			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
 			<xsl:call-template name="mshelpviewer1-head" />
@@ -170,7 +170,7 @@
 		<xsl:call-template name="start" />
 		<head>
 			<title>
-				<xsl:value-of select="replace(replace(/*/name, '&lt;', '&#60;'), '&gt;', '&#61;')"/>
+				<xsl:value-of select="/*/name/@safename"/>
 			</title>
 			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
 			<xsl:call-template name="mshelpviewer1-head" />

@@ -29,6 +29,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
 			writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
 			writer.WriteStartElement("name");
+			writer.WriteAttributeString("safename", Exporter.CreateSafeName(this.member.Name));
 			writer.WriteString(this.member.Name);
 			writer.WriteEndElement();
 
