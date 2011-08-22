@@ -152,7 +152,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 
 		protected List<SyntaxToken> FormatGenericParameters(List<GenericTypeRef> genericTypes) {
 			List<SyntaxToken> tokens = new List<SyntaxToken>();
-			tokens.Add(new SyntaxToken("<", SyntaxTokens.Keyword));
+			tokens.Add(new SyntaxToken("<", SyntaxTokens.Text));
 
 			for (int i = 0; i < genericTypes.Count; i++) {
 				if (i != 0) {
