@@ -366,33 +366,23 @@ namespace TheBoxSoftware.Documentation {
 
 			// Display the properties defined in the current type
 			if (events.Count > 0) {
-				Entry propertiesEntry = this.EntryCreator.Create(events, "Events", commentsXml, typeEntry);
-				propertiesEntry.IsSearchable = false;
-				propertiesEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
-				propertiesEntry.SubKey = "Events";
-				typeEntry.Children.Add(propertiesEntry);
+				Entry eventsEntry = this.EntryCreator.Create(events, "Events", commentsXml, typeEntry);
+				eventsEntry.IsSearchable = false;
+				eventsEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
+				eventsEntry.SubKey = "Events";
 
 				foreach (EventDef currentProperty in events) {
-					Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
+					Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, eventsEntry);
 					propertyEntry.IsSearchable = true;
 					propertyEntry.Key = this.GetUniqueKey(typeDef.Assembly, currentProperty);
 					if (this.PreEntryAdded(propertyEntry)) {
-						propertiesEntry.Children.Add(propertyEntry);
+						eventsEntry.Children.Add(propertyEntry);
 					}
 				}
-				if (propertiesEntry.Children.Count > 0) {
-					propertiesEntry.Children.Sort();
-					typeEntry.Children.Add(propertiesEntry);
+				if (eventsEntry.Children.Count > 0) {
+					eventsEntry.Children.Sort();
+					typeEntry.Children.Add(eventsEntry);
 				}
-			}
-
-			// Add the all members node
-			if (methods.Count > 0 || properties.Count > 0 || events.Count > 0 || fields.Count > 0 || constructors.Count > 0 || operators.Count > 0) {
-				Entry membersEntry = this.EntryCreator.Create(typeDef, "Members", commentsXml);
-				membersEntry.IsSearchable = false;
-				membersEntry.Key = this.GetUniqueKey(typeDef.Assembly, typeDef);
-				membersEntry.SubKey = "Members";
-				typeEntry.Children.Add(membersEntry);
 			}
 		}
 	}
