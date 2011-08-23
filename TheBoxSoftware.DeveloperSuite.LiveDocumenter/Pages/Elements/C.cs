@@ -18,12 +18,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		}
 
 		private void Initialise() {
-			ResourceDictionary dict = new ResourceDictionary();
-			Uri uri = new Uri("../Resources/DefaultDocumentationStyle.xaml", UriKind.Relative);
-			dict.Source = uri;
-			this.Resources.MergedDictionaries.Add(dict);
-
-			this.Style = (Style)this.FindResource("C");
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
+			this.Style = this.TryFindResource("C") as Style;
 		}
 	}
 }

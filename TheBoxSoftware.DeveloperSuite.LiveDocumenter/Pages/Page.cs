@@ -37,14 +37,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// Initialises basic details for the page
 		/// </summary>
 		private void Initialise() {
-			this.Style = null; // (Style)this.FindResource("PageStyle");
-			this.OverridesDefaultStyle = true;
-
-			ResourceDictionary dict = new ResourceDictionary();
-			Uri uri = new Uri("../Resources/DefaultDocumentationStyle.xaml", UriKind.Relative);
-			dict.Source = uri;
-			this.Resources.MergedDictionaries.Add(dict);
-
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Style = (Style)this.FindResource("PageStyle");
 		}
 

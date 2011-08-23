@@ -1,0 +1,102 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:pages="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages"
+    xmlns:local="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements"
+    xmlns:doc="clr-namespace:System.Windows.Documents;assembly=PresentationFramework"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="PageStyle" TargetType="{x:Type pages:Page}">
+        <Setter Property="IsOptimalParagraphEnabled" Value="False" />
+        <Setter Property="IsHyphenationEnabled" Value="True" />
+        <Setter Property="IsColumnWidthFlexible" Value="True" />
+        <Setter Property="ColumnWidth" Value="400" />
+        <Setter Property="ColumnGap" Value="20" />
+        <Setter Property="TextElement.FontFamily" Value="Segoe UI, Verdana, Arial" />
+        <Setter Property="TextElement.FontSize" Value="13" />
+    </Style>
+    
+    <Style x:Key="Paragraph" TargetType="{x:Type doc:Paragraph}">
+        <Setter Property="Margin" Value="0,0,0,12" />
+    </Style>
+
+    <Style TargetType="{x:Type doc:Paragraph}" BasedOn="{StaticResource Paragraph}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style TargetType="{x:Type local:Para}" BasedOn="{StaticResource Paragraph}">
+        <Setter Property="Margin" Value="0,0,0,12" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style x:Key="BaseListStyle" TargetType="{x:Type doc:List}" >
+        <Setter Property="MarkerStyle" Value="None" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MarkerOffset" Value="0" />
+    </Style>
+
+    <Style TargetType="{x:Type doc:ListItem}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style TargetType="{x:Type doc:List}" BasedOn="{StaticResource BaseListStyle}">
+    </Style>
+
+    <Style x:Key="ChildList" TargetType="{x:Type doc:List}"  BasedOn="{StaticResource BaseListStyle}">
+        <Setter Property="Padding" Value="10,0,0,0" />
+    </Style>
+
+    <Style x:Key="UnorderdListStyle" TargetType="{x:Type local:UnorderedList}">
+        <Setter Property="MarkerStyle" Value="Disc" />
+        <Setter Property="Margin" Value="0,5,0,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MarkerOffset" Value="0" />
+    </Style>
+
+    <Style x:Key="Header" TargetType="{x:Type doc:Paragraph}">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0,12,6,3" />
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="TextElement.FontFamily" Value="Segoe UI, Verdana, Arial" />
+        <Setter Property="TextElement.FontSize" Value="13" />
+    </Style>
+
+    <Style TargetType="{x:Type local:Header1}" BasedOn="{StaticResource Header}">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Foreground" Value="#3F529C" />
+    </Style>
+
+    <Style TargetType="{x:Type local:Header2}" BasedOn="{StaticResource Header}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Foreground" Value="#3F529C" />
+    </Style>
+
+    <Style TargetType="{x:Type local:Header3}" BasedOn="{StaticResource Header}">
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style TargetType="{x:Type local:Keyword}">
+        <Setter Property="Foreground" Value="#003DF5" />
+    </Style>
+
+    <Style TargetType="{x:Type local:TypeHeaderSection}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style x:Key="C" TargetType="{x:Type local:C}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Courier New" />
+    </Style>
+
+    <Style x:Key="Code" TargetType="{x:Type local:Code}">
+        <Setter Property="TextElement.FontFamily" Value="Courier New" />
+        <Setter Property="Background" Value="#efefef" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="5, 10, 10, 10" />
+        <Setter Property="BorderBrush" Value="#dddddd" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+</ResourceDictionary>
