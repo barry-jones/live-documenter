@@ -38,7 +38,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						crefPath = new CRefPath(currentMethod);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block description = this.GetSummaryFor(xmlFile, 
@@ -61,7 +61,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						crefPath = new CRefPath(currentField);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentField.Name));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentField.Assembly, currentField));
+						link.Tag = new EntryKey(currentField.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block description = this.GetSummaryFor(xmlFile, 
@@ -91,7 +91,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						crefPath = new CRefPath(currentProperty);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentProperty.GetDisplayName(false, true)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentProperty.Type.Assembly, currentProperty));
+						link.Tag = new EntryKey(currentProperty.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block description = this.GetSummaryFor(xmlFile, currentProperty.Type.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
@@ -111,7 +111,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						crefPath = new CRefPath(currentEvent);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentEvent.Name));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentEvent.Type.Assembly, currentEvent));
+						link.Tag = new EntryKey(currentEvent.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block description = this.GetSummaryFor(xmlFile, currentEvent.Type.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
@@ -131,7 +131,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						crefPath = new CRefPath(currentMethod);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
@@ -152,7 +152,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						crefPath = new CRefPath(currentMethod);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
@@ -170,9 +170,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 										orderby method.Name
 										select method;
 					foreach (MethodDef currentMethod in sortedMethods) {
+						DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
-						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Inlines.Add(new System.Windows.Documents.Run(displayNameSig.Convert()));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						CRefPath path = new CRefPath(currentMethod);

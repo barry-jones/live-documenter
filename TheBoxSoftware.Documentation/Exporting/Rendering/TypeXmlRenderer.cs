@@ -113,45 +113,82 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				writer.WriteEndElement();
 			}
 			else {
-				if (this.AssociatedEntry.Children.Count > 0) {
-					// we need to write the entries that appear as children to this document map
-					// entry. it is going to be easier to use the Entry elements
-					writer.WriteStartElement("entries");
-					foreach (Entry parent in this.AssociatedEntry.Children) {
-						// each child is a container for properties/constructors etc we are only interested in the children
-						foreach (Entry current in parent.Children) {
-							ReflectedMember m = current.Item as ReflectedMember;
-							CRefPath currentPath = CRefPath.Create(m);
-							XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
-
-							writer.WriteStartElement("entry");
-							writer.WriteAttributeString("id", current.Key.ToString());
-							writer.WriteAttributeString("subId", current.SubKey);
-							writer.WriteAttributeString("type", ReflectionHelper.GetType(m));
-							writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(m));
-
-							writer.WriteStartElement("name");
-							writer.WriteString(ReflectionHelper.GetDisplayName(m));
-							writer.WriteEndElement();
-
-							// find and output the summary
-							if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null) {
-								XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
-								if (summary != null) {
-									this.Serialize(summary, writer, this.member.Assembly);
-								}
-							}
-							writer.WriteEndElement();
-						}
-
-					}
-					writer.WriteEndElement();
+				if(this.member.HasMembers) {
+					this.OutputMembers(writer);
 				}
 			}
 
 			this.AddInheritanceTree(this.member, writer);
 
 			writer.WriteEndElement();	// member
+		}
+
+		private void OutputMembers(System.Xml.XmlWriter writer) {
+			writer.WriteStartElement("entries");
+			var constructors = from method in this.member.GetConstructors() orderby method.Name select method;
+			foreach (MethodDef currentMethod in constructors) {
+				this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true));
+			}
+
+			var fields = from field in this.member.GetFields() orderby field.Name select field;
+			foreach (FieldDef currentField in fields) {
+				this.WriteEntry(writer, currentField, currentField.Name);
+			}
+
+			var properties = from property in this.member.GetProperties() orderby property.Name select property;
+			foreach (PropertyDef currentProperty in properties) {
+				this.WriteEntry(writer, currentProperty, currentProperty.GetDisplayName(false, true));
+			}
+
+			var events = from ev in this.member.GetEvents() orderby ev.Name select ev;
+			foreach (EventDef currentEvent in events) {
+				this.WriteEntry(writer, currentEvent, currentEvent.Name);
+			}
+
+			var methods = from method in this.member.GetMethods() orderby method.Name select method;
+			foreach (MethodDef currentMethod in methods) {
+				this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true));
+			}
+
+			var operators = from op in this.member.GetOperators() orderby op.Name select op;
+			foreach (MethodDef currentMethod in operators) {
+				this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false));
+			}
+
+			var extensionMethods = from method in this.member.ExtensionMethods orderby method.Name select method;
+			foreach (MethodDef currentMethod in extensionMethods) {
+				DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
+				this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
+			}
+			writer.WriteEndElement();
+		}
+
+		private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type) {
+			CRefPath currentPath = CRefPath.Create(entryMember);
+			XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
+
+			writer.WriteStartElement("entry");
+			writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());
+			writer.WriteAttributeString("subId", string.Empty);
+			writer.WriteAttributeString("type", type);
+			writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(entryMember));
+
+			writer.WriteStartElement("name");
+			writer.WriteString(displayName);
+			writer.WriteEndElement();
+
+			// find and output the summary
+			if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null) {
+				XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
+				if (summary != null) {
+					this.Serialize(summary, writer, this.member.Assembly);
+				}
+			}
+			writer.WriteEndElement();
+		}
+
+		private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName) {
+			this.WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
 		}
 
 		/// <summary>
@@ -189,7 +226,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				writer.WriteStartElement("type");
 				TypeRef current = tree[index];
 				if (current is TypeDef) {	// only provide ids for internal classes
-					writer.WriteAttributeString("id", ReflectionHelper.GetUniqueKey(current.Assembly, current).ToString());
+					writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
 				}
 				writer.WriteAttributeString("name", current.GetDisplayName(true));
 
@@ -207,7 +244,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				foreach (TypeRef current in this.member.GetExtendingTypes()) {
 					writer.WriteStartElement("type");
 					if (current is TypeDef) {	// only provide ids for internal classes
-						writer.WriteAttributeString("id", ReflectionHelper.GetUniqueKey(current.Assembly, current).ToString());
+						writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
 					}
 					writer.WriteAttributeString("name", current.GetDisplayName(true));
 					writer.WriteEndElement();

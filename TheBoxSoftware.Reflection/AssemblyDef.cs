@@ -253,7 +253,7 @@ namespace TheBoxSoftware.Reflection {
 							MethodDef extensionMethod = attributeTo as MethodDef;
 							if (extensionMethod != null) {
 								TypeRef type = extensionMethod.Parameters[0].GetTypeRef();
-								if (!type.IsGeneric is GenericTypeRef) {
+								if (!(type is GenericTypeRef)) {
 									type.ExtensionMethods.Add(extensionMethod);
 								}
 							}
@@ -392,7 +392,15 @@ namespace TheBoxSoftware.Reflection {
 			}
 
 			return resolvedReference;
-		} 
+		}
+
+		/// <summary>
+		/// Returns a unique identifier for this AssemblyDef.
+		/// </summary>
+		/// <returns></returns>
+		public override long GetGloballyUniqueId() {
+			return ((long)this.UniqueId) << 32;
+		}
 		#endregion
 
 		#region Properties

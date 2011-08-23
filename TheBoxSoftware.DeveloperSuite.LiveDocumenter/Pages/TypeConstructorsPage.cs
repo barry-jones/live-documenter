@@ -39,7 +39,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						CRefPath crefPath = new CRefPath(currentMethod);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block constructorSummary = this.GetSummaryFor(comments, currentMethod.Assembly, 

@@ -47,7 +47,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						CRefPath crefPath = new CRefPath(currentField);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentField.Name));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentField.Assembly, currentField));
+						link.Tag = new EntryKey(currentField.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						// First we check if there is a summary for the field, then if not we check for a

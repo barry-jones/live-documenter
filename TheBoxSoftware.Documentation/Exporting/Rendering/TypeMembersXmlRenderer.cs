@@ -37,35 +37,63 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			// we need to write the entries that appear as children to this document map
 			// entry. it is going to be easier to use the Entry elements
 			writer.WriteStartElement("entries");
-			foreach (Entry current in this.AssociatedEntry.Children) {
-				ReflectedMember m = current.Item as ReflectedMember;
-				CRefPath crefPath = CRefPath.Create(m);
-				XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
-
-				writer.WriteStartElement("entry");
-				writer.WriteAttributeString("id", current.Key.ToString());
-				writer.WriteAttributeString("subId", current.SubKey);
-				writer.WriteAttributeString("type", ReflectionHelper.GetType(m));
-				writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(m));
-
-				writer.WriteStartElement("name");
-				writer.WriteString(ReflectionHelper.GetDisplayName(m));
-				writer.WriteEndElement();
-
-				// find and output the summary
-				if (comment != XmlCodeComment.Empty) {
-					XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
-					if (summary != null) {
-						this.Serialize(summary, writer, this.containingType.Assembly);
+			switch (this.AssociatedEntry.SubKey.ToLower()) {
+				case "properties":
+				case "fields":
+				case "constants":
+				case "operators":
+				case "constructors":
+					foreach (Entry current in this.AssociatedEntry.Children) {
+						ReflectedMember m = current.Item as ReflectedMember;
+						this.WriteEntry(writer, m, ReflectionHelper.GetDisplayName(m));
 					}
-				}
+					break;
 
-				writer.WriteEndElement();
+				case "methods":
+					// write normal methods
+					foreach (Entry current in this.AssociatedEntry.Children) {
+						ReflectedMember m = current.Item as ReflectedMember;
+						this.WriteEntry(writer, m, ReflectionHelper.GetDisplayName(m));
+					}
+					// write extension methods
+					var extensionMethods = from method in ((TypeRef)this.AssociatedEntry.Parent.Item).ExtensionMethods orderby method.Name select method;
+					foreach (MethodDef currentMethod in extensionMethods) {
+						DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
+						this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
+					}
+					break;
 			}
-			writer.WriteEndElement();
-
+			writer.WriteEndElement(); // entries
 			writer.WriteEndElement();
 			writer.WriteEndDocument();
+		}
+
+		private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type) {
+			CRefPath currentPath = CRefPath.Create(entryMember);
+			XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
+
+			writer.WriteStartElement("entry");
+			writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());
+			writer.WriteAttributeString("subId", string.Empty);
+			writer.WriteAttributeString("type", type);
+			writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(entryMember));
+
+			writer.WriteStartElement("name");
+			writer.WriteString(displayName);
+			writer.WriteEndElement();
+
+			// find and output the summary
+			if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null) {
+				XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
+				if (summary != null) {
+					this.Serialize(summary, writer, entryMember.Assembly);
+				}
+			}
+			writer.WriteEndElement();
+		}
+
+		private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName) {
+			this.WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
 		}
 	}
 }

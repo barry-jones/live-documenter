@@ -52,7 +52,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					// Find the description for the type
 					Block description = this.GetSummaryFor(xmlFile, currentType.Assembly, "/doc/members/member[@name='" + crefPath + "']/summary");
 					Hyperlink nameLink = new Hyperlink(new Run(currentType.GetDisplayName(false)));
-					nameLink.Tag = new EntryKey(Helper.GetUniqueKey(currentType.Assembly, currentType));
+					nameLink.Tag = new EntryKey(currentType.GetGloballyUniqueId());
 					nameLink.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 					classTable.AddItem(nameLink, description, Model.ElementIconConstants.GetIconPathFor(currentType));
 				}

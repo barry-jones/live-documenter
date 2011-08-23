@@ -45,7 +45,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					foreach (EventDef currentMethod in sortedMethods) {
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.Name));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Type.Assembly, currentMethod));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						CRefPath path = new CRefPath(currentMethod);

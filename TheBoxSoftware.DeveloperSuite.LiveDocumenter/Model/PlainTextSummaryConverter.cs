@@ -26,8 +26,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 
 			if (comment != XmlCodeComment.Empty) {
 				SummaryXmlCodeElement summary = (SummaryXmlCodeElement)comment.Elements.Find(o => o is SummaryXmlCodeElement);
-				foreach (XmlCodeElement current in summary.Elements) {
-					PlainTextSummaryConverter.ConvertElement(assembly, current, text);
+				if (summary != null) {
+					foreach (XmlCodeElement current in summary.Elements) {
+						PlainTextSummaryConverter.ConvertElement(assembly, current, text);
+					}
 				}
 			}
 

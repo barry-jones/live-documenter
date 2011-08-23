@@ -83,7 +83,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 											typeKey = null;
 										}
 										else {
-											typeKey = new EntryKey(Helper.GetUniqueKey(typeRef.Assembly, typeRef));
+											typeKey = new EntryKey(typeRef.GetGloballyUniqueId());
 										}
 									}
 									else {

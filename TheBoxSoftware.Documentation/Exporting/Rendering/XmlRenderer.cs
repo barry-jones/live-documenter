@@ -97,7 +97,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 							if (def != null) displayName = def.GetDisplayName(false);
 
 							if (def != null) {
-								writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly, def).ToString());
+								writer.WriteAttributeString("id", def.GetGloballyUniqueId().ToString());
 							}
 							else if (memberId != 0) {
 								writer.WriteAttributeString("id", memberId.ToString());
@@ -136,7 +136,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 								break;
 
 							case CRefTypes.Namespace:
-								writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly).ToString());
+								writer.WriteAttributeString("id", assembly.GetGloballyUniqueId().ToString());
 								writer.WriteAttributeString("type", "namespace");
 								writer.WriteAttributeString("name", displayName);
 								break;
@@ -148,14 +148,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 									MethodDef method = see.Member.FindIn(def) as MethodDef;
 
 									if (method != null) {
-										writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly, method).ToString());
+										writer.WriteAttributeString("id", method.GetGloballyUniqueId().ToString());
 										displayName = method.GetDisplayName(false);
 									}
 								}
 								break;
 							case CRefTypes.Type:
 								if (def != null) {
-									writer.WriteAttributeString("id", this.Exporter.GetUniqueKey(assembly, def).ToString());
+									writer.WriteAttributeString("id", def.GetGloballyUniqueId().ToString());
 									displayName = def.GetDisplayName(false);
 								}
 								break;

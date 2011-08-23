@@ -8,29 +8,6 @@ using TheBoxSoftware.Reflection.Core.COFF;
 
 namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	public static class ReflectionHelper {
-		/// <summary>
-		/// Obtains a key that uniquely identifies the member in the library, for all libraries
-		/// loaded in to the documenter.
-		/// </summary>
-		/// <param name="assembly">The assembly</param>
-		/// <param name="member">The member</param>
-		/// <returns>A long that is unique in the application</returns>
-		public static long GetUniqueKey(AssemblyDef assembly, ReflectedMember member) {
-			long id = ((long)assembly.UniqueId) << 32;
-			id += member.UniqueId;
-			return id;
-		}
-
-		/// <summary>
-		/// Obtains a key that uniquely identifies the assembly in the library, for all libraries
-		/// and members loaded in to the documenter.
-		/// </summary>
-		/// <param name="assembly">The assembly to get the unique identifier for</param>
-		/// <returns>A long that is unique in the application</returns>
-		public static long GetUniqueKey(AssemblyDef assembly) {
-			return ((long)assembly.UniqueId) << 32;
-		}
-
 		public static string GetType(ReflectedMember member) {
 			// NOTE: This code is duplicated in LiveDocumenter.Model.ElementIconConstants.GetIconFor
 

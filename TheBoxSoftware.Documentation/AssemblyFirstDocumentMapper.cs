@@ -61,7 +61,7 @@ namespace TheBoxSoftware.Documentation {
 
 			Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
 			assembly.UniqueId = fileCounter++;
-			assemblyEntry.Key = this.GetUniqueKey(assembly);
+			assemblyEntry.Key = assembly.GetGloballyUniqueId();
 			assemblyEntry.IsSearchable = false;
 			assemblyEntry.HasXmlComments = fileExists;
 
@@ -86,7 +86,7 @@ namespace TheBoxSoftware.Documentation {
 						continue;
 					}
 					Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
-					typeEntry.Key = this.GetUniqueKey(assembly, currentType);
+					typeEntry.Key = currentType.GetGloballyUniqueId();
 					typeEntry.IsSearchable = true;
 					typeEntry.FullName = currentType.GetFullyQualifiedName();
 

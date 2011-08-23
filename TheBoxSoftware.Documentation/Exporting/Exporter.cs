@@ -212,8 +212,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					}
 
 					if (member != null) {
-						memberUniqueId = this.GetUniqueKey(type.Assembly, member);
-						typeUniqueId = this.GetUniqueKey(type.Assembly, type);
+						memberUniqueId = member.GetGloballyUniqueId();
+						typeUniqueId = type.GetGloballyUniqueId();
 					}
 				}
 			}
@@ -237,29 +237,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				}
 			}
 			return found;
-		}
-
-		/// <summary>
-		/// Obtains a key that uniquely identifies the member in the library, for all libraries
-		/// loaded in to the documenter.
-		/// </summary>
-		/// <param name="assembly">The assembly</param>
-		/// <param name="member">The member</param>
-		/// <returns>A long that is unique in the application</returns>
-		internal long GetUniqueKey(AssemblyDef assembly, ReflectedMember member) {
-			long id = ((long)assembly.UniqueId) << 32;
-			id += member.UniqueId;
-			return id;
-		}
-
-		/// <summary>
-		/// Obtains a key that uniquely identifies the assembly in the library, for all libraries
-		/// and members loaded in to the documenter.
-		/// </summary>
-		/// <param name="assembly">The assembly to get the unique identifier for</param>
-		/// <returns>A long that is unique in the application</returns>
-		internal long GetUniqueKey(AssemblyDef assembly) {
-			return ((long)assembly.UniqueId) << 32;
 		}
 
 		/// <summary>

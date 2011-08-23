@@ -100,7 +100,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						link.Tag = new CrefEntryKey(parent.Assembly, parentCrefPath.ToString());
 					}
 					else {
-						link.Tag = new EntryKey(Helper.GetUniqueKey(parent.Assembly, typeDef));
+						link.Tag = new EntryKey(typeDef.GetGloballyUniqueId());
 					}
 					link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 					links.Add(link);

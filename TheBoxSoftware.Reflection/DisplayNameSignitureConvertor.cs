@@ -34,6 +34,18 @@ namespace TheBoxSoftware.Reflection {
 		}
 
 		/// <summary>
+		/// Initialises a new instance of the DisplayNameSignitureConvertor.
+		/// </summary>
+		/// <param name="method">The method to obtain a display name for.</param>
+		/// <param name="includeNamespace">Should the details of the namespace be included.</param>
+		/// <param name="includeParamaters">Should the methods parameters be included.</param>
+		/// <param name="isFromExtendedType">Indicates this is an extension method from the type it is extending.</param>
+		public DisplayNameSignitureConvertor(MethodDef method, bool includeNamespace, bool includeParameters, bool isFromExtendedType)
+			: this(method, includeNamespace, includeParameters) {
+				this.IncludeFirstParameter = false;
+		}
+
+		/// <summary>
 		/// Initialises a new instance of the DisplayNameSignitureConvertor
 		/// </summary>
 		/// <param name="property">The property to obtain the display name for.</param>

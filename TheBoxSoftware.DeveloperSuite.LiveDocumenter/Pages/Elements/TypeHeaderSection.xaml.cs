@@ -54,7 +54,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			viewingTable.Columns.Add(new TableColumn());
 			viewingTable.Columns.Add(new TableColumn());
 
-			long key = Helper.GetUniqueKey(type.Assembly, type);
+			long key = type.GetGloballyUniqueId();
 			int numberOfBlankColumns = 0;
 
 			row.Cells.Add(this.CreateColumn(new EntryKey(key, string.Empty), "Class"));

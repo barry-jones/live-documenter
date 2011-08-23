@@ -38,7 +38,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					foreach(MethodDef currentMethod in sortedMethods) {
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						CRefPath path = new CRefPath(currentMethod);
@@ -61,9 +61,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 										orderby method.Name
 										select method;
 					foreach (MethodDef currentMethod in sortedMethods) {
+						DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
-						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentMethod.Assembly, currentMethod));
+						link.Inlines.Add(new System.Windows.Documents.Run(displayNameSig.Convert()));
+						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						CRefPath path = new CRefPath(currentMethod);

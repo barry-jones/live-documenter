@@ -50,7 +50,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						CRefPath path = new CRefPath(currentProperty);
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 						link.Inlines.Add(new System.Windows.Documents.Run(currentProperty.GetDisplayName(false, true)));
-						link.Tag = new EntryKey(Helper.GetUniqueKey(currentProperty.Type.Assembly, currentProperty));
+						link.Tag = new EntryKey(currentProperty.GetGloballyUniqueId());
 						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
 						Block description = this.GetSummaryFor(comments,

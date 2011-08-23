@@ -251,14 +251,24 @@ namespace TheBoxSoftware.Reflection {
 			return il.ToArray();
 		}
 
+		/// <summary>
+		/// Obtains a display ready version of the method name.
+		/// </summary>
+		/// <param name="includeNamespace">Indicates if the namespace should be included, this will include the type name.</param>
+		/// <param name="includeParameters">Indicates if the parameters should be included.</param>
+		/// <returns>A string representing a display ready version of the MethodDef name.</returns>
 		public string GetDisplayName(bool includeNamespace, bool includeParameters) {
 			DisplayNameSignitureConvertor convertor = new DisplayNameSignitureConvertor(this, includeNamespace, includeParameters);
 			return convertor.Convert();
 		}
 
+		/// <summary>
+		/// Obtains a display ready version of the method name, which includes the parameters of the MethodDef.
+		/// </summary>
+		/// <param name="includeNamespace">Indicates if the namespace should be included, this will include the type name.</param>
+		/// <returns>A string representing a display ready version of the MethodDef name.</returns>
 		public string GetDisplayName(bool includeNamespace) {
-			DisplayNameSignitureConvertor convertor = new DisplayNameSignitureConvertor(this, includeNamespace, true);
-			return convertor.Convert();
+			return this.GetDisplayName(includeNamespace, true);
 		}
 		#endregion
 
@@ -349,10 +359,7 @@ namespace TheBoxSoftware.Reflection {
 		/// <summary>
 		/// A boolean value indicating if this method is a conversion operator.
 		/// </summary>
-		public bool IsConversionOperator {
-			get;
-			set;
-		}
+		public bool IsConversionOperator { get; set; }
 
 		/// <summary>
 		/// Indicates if this method is an extension method or not.

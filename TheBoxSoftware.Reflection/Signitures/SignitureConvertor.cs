@@ -16,6 +16,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		protected string ParameterSeperater = ",";
 		protected string ByRef = "@";
 		protected bool ByRefAtFront = false;
+		protected bool IncludeFirstParameter = true;
 
 		#region Method
 		/// <summary>
@@ -42,6 +43,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 						hadReturnParameter = true;
 						continue;
 					}
+					if (!this.IncludeFirstParameter && (i == 0 || hadReturnParameter && i == 1)) continue;
+
 					ParamSignitureToken currentToken = parametersToConvert[hadReturnParameter ? i - 1 : i];
 					TypeRef typeRef = currentToken.ResolveParameter(method.Assembly, currentParameter);
 

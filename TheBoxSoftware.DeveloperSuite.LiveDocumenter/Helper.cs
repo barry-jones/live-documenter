@@ -12,29 +12,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// Class that contains helper methods for this application
 	/// </summary>
 	internal static class Helper {
-		/// <summary>
-		/// Obtains a key that uniquely identifies the member in the library, for all libraries
-		/// loaded in to the documenter.
-		/// </summary>
-		/// <param name="assembly">The assembly</param>
-		/// <param name="member">The member</param>
-		/// <returns>A long that is unique in the application</returns>
-		public static long GetUniqueKey(AssemblyDef assembly, ReflectedMember member) {
-			long id = ((long)assembly.UniqueId) << 32;
-			id += member.UniqueId;
-			return id;
-		}
-
-		/// <summary>
-		/// Obtains a key that uniquely identifies the assembly in the library, for all libraries
-		/// and members loaded in to the documenter.
-		/// </summary>
-		/// <param name="assembly">The assembly to get the unique identifier for</param>
-		/// <returns>A long that is unique in the application</returns>
-		public static long GetUniqueKey(AssemblyDef assembly) {
-			return ((long)assembly.UniqueId) << 32;
-		}
-
 		internal static EntryKey ResolveTypeAndGetUniqueIdFromCref(CrefEntryKey type) {
 			// TODO: IMplement assembly reference links to external types, gettype and then
 			// check if assembly is loaded - goto entry (maybe ask to load)
@@ -43,7 +20,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			CRefPath crefPath = CRefPath.Parse(type.CRef);
 
 			if (crefPath.PathType == CRefTypes.Namespace) {
-				return new EntryKey(Helper.GetUniqueKey(type.Assembly), crefPath.Namespace);
+				return new EntryKey(type.Assembly.GetGloballyUniqueId(), crefPath.Namespace);
 			}
 			else {
 				// Check if any of the referenced namespaces have been loaded by the documentation
@@ -75,16 +52,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				if (resolvedType != null) {
 					switch (crefPath.PathType) {
 						case CRefTypes.Type:
-							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, resolvedType));
+							resolvedKey = new EntryKey(resolvedType.GetGloballyUniqueId());
 							break;
 						case CRefTypes.Field:
-							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, crefPath.FindIn(resolvedType)));
+							resolvedKey = new EntryKey(crefPath.FindIn(resolvedType).GetGloballyUniqueId());
 							break;
 						case CRefTypes.Property:
-							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, crefPath.FindIn(resolvedType)));
+							resolvedKey = new EntryKey(crefPath.FindIn(resolvedType).GetGloballyUniqueId());
 							break;
 						case CRefTypes.Method:
-							resolvedKey = new EntryKey(Helper.GetUniqueKey(resolvedType.Assembly, crefPath.FindIn(resolvedType)));
+							resolvedKey = new EntryKey(crefPath.FindIn(resolvedType).GetGloballyUniqueId());
 							break;
 					}
 				}

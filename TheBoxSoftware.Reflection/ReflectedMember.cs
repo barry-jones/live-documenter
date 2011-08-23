@@ -11,7 +11,8 @@ namespace TheBoxSoftware.Reflection {
 		private List<CustomAttribute> attributes = new List<CustomAttribute>();
 
 		/// <summary>
-		/// Represents an identifier that uniquly identifies this reflected element.
+		/// Represents an identifier that uniquly identifies this reflected element inside 
+		/// its containing <see cref="AssemblyDef"/>.
 		/// </summary>
 		public virtual int UniqueId { get; set; }
 
@@ -30,6 +31,16 @@ namespace TheBoxSoftware.Reflection {
 		public List<CustomAttribute> Attributes {
 			get { return this.attributes; }
 			set { this.attributes = value; }
+		}
+
+		/// <summary>
+		/// Returns an identifier which can uniquely identify this member across many <see cref="AssemblyDef"/>s.
+		/// </summary>
+		/// <returns>A globally unique identifier</returns>
+		public virtual long GetGloballyUniqueId() {
+			long id = ((long)this.Assembly.UniqueId) << 32;
+			id += this.UniqueId;
+			return id;
 		}
 	}
 }
