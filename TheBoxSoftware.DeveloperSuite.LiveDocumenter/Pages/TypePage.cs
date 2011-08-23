@@ -48,6 +48,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
                     }
                 }
 
+				this.AddInheritanceTree(this.representedType);
                 this.AddNamespace(this.representedType);
                 this.AddSyntaxBlock(this.representedType);
 
@@ -78,12 +79,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					}
 				}
 
-				// Add the inheritance tree
-				this.AddInheritanceTree(this.representedType);
-
 				this.OutputMembersLists();
-
-				// Add the seealso list if it exists
 				this.AddSeeAlso(parsedBlocks);
 
 				// Inform the application the page has been generated

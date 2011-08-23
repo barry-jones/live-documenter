@@ -60,7 +60,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 		}
 
 		public static ResourceDictionary BaseResources {
-			get { return DocumentationResources.GetResourceDictionary("DefaultDocumentationStyle"); }
+			get { return DocumentationResources.GetResourceDictionary("Flow.MSDN"); }
 		}
 
 		private static Dictionary<string, WeakReference> sharedDictionaries = new Dictionary<string, WeakReference>();

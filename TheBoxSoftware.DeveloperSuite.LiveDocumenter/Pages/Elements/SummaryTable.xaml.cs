@@ -47,6 +47,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		}
 
 		private void Initilialise() {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			if (headerGroup == null) {
 				headerGroup = new TableRowGroup();
 				headerGroup.Style = (Style)this.FindResource("SummaryTableHeader");
@@ -71,9 +72,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					TableCell icon = new TableCell(new Paragraph(new Run("")));
 					row.Cells.Add(icon);
 				}
-				row.Cells.Add(new TableCell(new Paragraph(new Bold(new Run(firstHeader)))));
+
+				TableCell first = new TableCell(new Paragraph(new Run(firstHeader)));
+				TableCell second = new TableCell(new Paragraph(new Run(secondHeader)));
 				if (this.showSecondColumn) {
-					row.Cells.Add(new TableCell(new Paragraph(new Bold(new Run(secondHeader)))));
+					second.Style = (Style)this.FindResource("CellRight");
+					row.Cells.Add(first);
+					row.Cells.Add(second);
+				}
+				else {
+					first.Style = (Style)this.FindResource("CellRight");
+					row.Cells.Add(first);
 				}
 				headerGroup.Rows.Add(row);
 
@@ -95,6 +104,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		public void AddItem(string name, Block block) {
 			this.AddItem(name, block, string.Empty);
 		}
+
 		public void AddItem(string name, Block block, string icon) {
 			TableRow row = new TableRow();
 			if (this.showIconColumn) {
@@ -105,14 +115,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					row.Cells.Add(new TableCell(this.BuildImage(icon)));
 				}
 			}
+
+			TableCell first = new TableCell(new Paragraph(new Run(name)));
+			TableCell second = block == null ? new TableCell() : new TableCell(block);
 			row.Cells.Add(new TableCell(new Paragraph(new Run(name))));
 			if (this.showSecondColumn) {
-				if (block == null) {
-					row.Cells.Add(new TableCell());
-				}
-				else {
-					row.Cells.Add(new TableCell(block));
-				}
+				second.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
+				row.Cells.Add(second);
+			}
+			else {
+				first.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
 			}
 			itemGroup.Rows.Add(row);
 		}
@@ -120,6 +134,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		public void AddItem(string name, string description) {
 			this.AddItem(name, description, string.Empty);
 		}
+
 		public void AddItem(string name, string description, string icon) {
 			TableRow row = new TableRow();
 			if (this.showIconColumn) {
@@ -130,9 +145,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					row.Cells.Add(new TableCell(this.BuildImage(icon)));
 				}
 			}
-			row.Cells.Add(new TableCell(new Paragraph(new Run(name))));
+
+			TableCell first = new TableCell(new Paragraph(new Run(name)));
+			TableCell second = new TableCell(new Paragraph(new Run(description)));
 			if (this.showSecondColumn) {
-				row.Cells.Add(new TableCell(new Paragraph(new Run(description))));
+				second.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
+				row.Cells.Add(second);
+			}
+			else {
+				first.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
 			}
 			itemGroup.Rows.Add(row);
 		}
@@ -140,6 +163,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		public void AddItem(Hyperlink name, Block description) {
 			this.AddItem(name, description, string.Empty);
 		}
+
 		public void AddItem(Hyperlink name, Block description, string icon) {
 			TableRow row = new TableRow();
 			if (this.showIconColumn) {
@@ -150,14 +174,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					row.Cells.Add(new TableCell(this.BuildImage(icon)));
 				}
 			}
-			row.Cells.Add(new TableCell(new Paragraph(name)));
+
+			TableCell first = new TableCell(new Paragraph(name));
+			TableCell second = description == null ? new TableCell() : new TableCell(description);
 			if (this.showSecondColumn) {
-				if (description == null) {
-					row.Cells.Add(new TableCell());
-				}
-				else {
-					row.Cells.Add(new TableCell(description));
-				}
+				second.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
+				row.Cells.Add(second);
+			}
+			else {
+				first.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
 			}
 			itemGroup.Rows.Add(row);
 		}
@@ -165,14 +192,23 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		public void AddItem(Hyperlink name, string description) {
 			this.AddItem(name, description, string.Empty);
 		}
+
 		public void AddItem(Hyperlink name, string description, string icon) {
 			TableRow row = new TableRow();
 			if (this.showIconColumn) {
 				row.Cells.Add(new TableCell(new Paragraph(new Run(""))));
 			}
-			row.Cells.Add(new TableCell(new Paragraph(name)));
+
+			TableCell first = new TableCell(new Paragraph(name));
+			TableCell second = new TableCell(new Paragraph(new Run(description)));
 			if (this.showSecondColumn) {
-				row.Cells.Add(new TableCell(new Paragraph(new Run(description))));
+				second.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
+				row.Cells.Add(second);
+			}
+			else {
+				first.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
 			}
 			itemGroup.Rows.Add(row);
 		}

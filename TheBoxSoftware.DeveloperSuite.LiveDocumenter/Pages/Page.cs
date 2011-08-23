@@ -82,7 +82,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		protected void AddInheritanceTree(TypeDef type) {
 			// Add the inheritance tree
 			if (type.InheritsFrom != null) {
-				List inheritanceList = new List(new Header2("Inherits From"));
+				List inheritanceList = new List();
 				
 				// Build a list of parents for the current type
 				TypeRef parent = type.InheritsFrom;
@@ -124,6 +124,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					}
 				}
 
+				this.Blocks.Add(new Header2("Inheritance Hierarchy"));
 				this.Blocks.Add(inheritanceList);
 			}
 		}
