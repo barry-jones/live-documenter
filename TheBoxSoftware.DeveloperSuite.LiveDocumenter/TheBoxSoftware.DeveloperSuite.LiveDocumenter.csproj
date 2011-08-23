@@ -509,7 +509,7 @@
     <Resource Include="Resources\ElementIcons\vsobject_enumitem_private.png" />
     <Resource Include="Resources\ElementIcons\vsobject_enumitem_protected.png" />
     <Resource Include="Resources\ElementIcons\vsobject_enumitem_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enumprivate.png" />
+    <Resource Include="Resources\ElementIcons\vsobject_enum_private.png" />
     <Resource Include="Resources\ElementIcons\vsobject_enum_friend.png" />
     <Resource Include="Resources\ElementIcons\vsobject_enum_protected.png" />
     <Resource Include="Resources\ElementIcons\vsobject_enum_sealed.png" />

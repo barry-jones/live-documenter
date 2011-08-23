@@ -69,6 +69,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				writer.WriteStartElement("parameters");
 				for (int i = 0; i < this.member.Parameters.Count; i++) {
 					TypeRef parameterType = this.member.Parameters[i].GetTypeRef();
+					if (parameterType == null)
+					{
+						int x = 0;
+					}
 					Entry foundEntry = this.AssociatedEntry.FindByKey(parameterType.UniqueId, string.Empty);
 
 					writer.WriteStartElement("parameter");

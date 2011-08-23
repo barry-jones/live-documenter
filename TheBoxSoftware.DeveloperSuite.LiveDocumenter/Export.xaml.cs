@@ -30,8 +30,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Loads all of teh ldec files and updates the view with the names of the files.
 		/// </summary>
 		private void LoadConfigFiles() {
-			//Uri applocation = new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location);
-			foreach (string file in System.IO.Directory.GetFiles(@"ApplicationData/", "*.ldec")) {
+			string appFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+			foreach (string file in System.IO.Directory.GetFiles(appFolder + @"/ApplicationData/", "*.ldec")) {
 				exportFiles.Add(ExportConfigFile.Create(file));
 			}
 			exportFiles.Sort((f1, f2) => f1.Name.CompareTo(f2.Name));

@@ -58,13 +58,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				".NET Libraries and Executables (.dll, .exe)|*.dll;*.exe"
 				};
 			ofd.Filter = string.Join("|", filters);
+			ofd.Multiselect = true;
 			if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				this.Cursor = Cursors.Wait;
 				LiveDocumentorFile.Singleton.Files.Clear();
-
+				
 				try {
-					List<DocumentedAssembly> readFiles = DocumentationFileReader.Read(ofd.FileName);
-					if (readFiles != null) {
+					List<DocumentedAssembly> readFiles = new List<DocumentedAssembly>();
+					foreach (string filename in ofd.FileNames) {
+						readFiles.AddRange(DocumentationFileReader.Read(filename));
+					}
+
+					if (readFiles != null && readFiles.Count > 0) {
 						LiveDocumentorFile.Singleton.Add(readFiles, ofd.FileName);
 
 						this.UpdateView();

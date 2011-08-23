@@ -252,8 +252,10 @@ namespace TheBoxSoftware.Reflection {
 						if (ofType.Type.Name == "ExtensionAttribute" && attributeTo is MethodDef) {
 							MethodDef extensionMethod = attributeTo as MethodDef;
 							if (extensionMethod != null) {
-								TypeDef def = (TypeDef)extensionMethod.Parameters[0].GetTypeRef();
-								def.ExtensionMethods.Add(extensionMethod);
+								TypeRef type = extensionMethod.Parameters[0].GetTypeRef();
+								if (!type.IsGeneric is GenericTypeRef) {
+									type.ExtensionMethods.Add(extensionMethod);
+								}
 							}
 						}
 					}
