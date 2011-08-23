@@ -112,6 +112,12 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 		}
 
+		/// <summary>
+		/// Serializes an <see cref="XmlCodeElement"/> to XML.
+		/// </summary>
+		/// <param name="comment">The XML code comment to serialize.</param>
+		/// <param name="writer">The XmlWriter to serialize to.</param>
+		/// <param name="assembly">The assembly associated with the commented type.</param>
 		protected void Serialize(XmlCodeElement comment, System.Xml.XmlWriter writer, AssemblyDef assembly) {
 			if (comment != XmlCodeComment.Empty) {
 				if (comment.Element == XmlCodeElements.See) {

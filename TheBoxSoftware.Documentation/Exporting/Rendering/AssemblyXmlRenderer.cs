@@ -7,6 +7,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 
+	/// <summary>
+	/// Renders an <see cref="AssemblyDef"/> via a <see cref="DocumentMap"/> in XML.
+	/// </summary>
 	internal class AssemblyXmlRenderer : XmlRenderer {
 		private AssemblyDef member;
 		private XmlCodeCommentFile xmlComments;
@@ -15,10 +18,17 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// Initializes a new instance of the <see cref="NamespaceXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="entry">The associated entry.</param>
+		/// <exception cref="InvalidOperationException">Thrown when an Entry with an invalid Item is provided.</exception>
 		public AssemblyXmlRenderer(Entry entry) {
-			this.member = (AssemblyDef)entry.Item;
+			this.member = entry.Item as AssemblyDef;
 			this.xmlComments = entry.XmlCommentFile;
 			this.AssociatedEntry = entry;
+
+			if (member == null) {
+				throw new InvalidOperationException(
+					string.Format("Entry in DocumentMap is being exported as AssemblyDef when type is '{0}'", entry.Item.GetType())
+					);
+			}
 		}
 
 		/// <summary>
@@ -38,20 +48,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				writer.WriteAttributeString("name", current.Name);
 				writer.WriteAttributeString("key", current.Key.ToString());
 				writer.WriteAttributeString("type", "namespace");
-
-				// at the moment there is no xml comments for namespaces
-				//XmlCodeComment comment = this.xmlComments.ReadComment(new CRefPath((TypeDef)current.Item));
-				//if (comment != null && comment.Elements != null) {
-				//    Reflection.Comments.SummaryXmlCodeElement summary = comment.Elements.First(p => p is Reflection.Comments.SummaryXmlCodeElement) as Reflection.Comments.SummaryXmlCodeElement;
-				//    if (summary != null) {
-				//        this.Serialize(summary, writer, this.member);
-				//    }
-				//}
-
-				writer.WriteEndElement();
+				writer.WriteEndElement(); // parent
 			}
 
-			writer.WriteEndElement();
+			writer.WriteEndElement(); // assembly
 		}
 	}
 }
