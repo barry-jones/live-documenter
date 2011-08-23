@@ -161,27 +161,6 @@ namespace TheBoxSoftware.Reflection {
 			}
 		}
 
-		public List<TypeRef> GetExtendingTypes() {
-			MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
-			MetadataToDefinitionMap map = this.Assembly.File.Map;
-			CodedIndex ciForThisType = new CodedIndex(this.table, (uint)this.index);
-			List<TypeRef> inheritingTypes = new List<TypeRef>();
-
-			MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
-			for (int i = 0; i < typeDefs.Length; i++) {
-				if (((TypeDefMetadataTableRow)typeDefs[i]).Extends == ciForThisType) {
-					inheritingTypes.Add((TypeDef)map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i]));
-				}
-			}
-
-			if (inheritingTypes.Count == 0) {
-				// we may be defined in the typespec table, so extends may point to our reference
-				// here instead. How do we find out if we are defined here? generic types only?
-			}
-
-			return inheritingTypes;
-		}
-
 		/// <summary>
 		/// Collection of all the generic types that are relevant for this member, this
 		/// includes the types defined in parent and containing classes.
@@ -320,6 +299,41 @@ namespace TheBoxSoftware.Reflection {
 		#endregion
 
 		#region Methods
+		public List<TypeRef> GetExtendingTypes()
+		{
+			MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
+			MetadataToDefinitionMap map = this.Assembly.File.Map;
+			CodedIndex ciForThisType = new CodedIndex(this.table, (uint)this.index);
+			List<TypeRef> inheritingTypes = new List<TypeRef>();
+
+			// if our type is generic all children will point to an entry in the typespec table,
+			// we need to find out reference in the typespec table and search for that in typedef.extends.
+			//if (this.IsGeneric) {
+			//    MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
+			//    for (int i = 0; i < typeSpecs.Length; i++) {
+			//        TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
+			//        if (row != null)
+			//        {
+			//            TypeSpec spec = (TypeSpec)this.Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row);
+			//            if (spec.TypeDetails.Type == this)
+			//            {
+			//                ciForThisType = new CodedIndex(MetadataTables.TypeSpec, (uint)i+1);
+			//                break;
+			//            }
+			//        }
+			//    }
+			//}
+
+			MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
+			for (int i = 0; i < typeDefs.Length; i++) {
+				if (((TypeDefMetadataTableRow)typeDefs[i]).Extends == ciForThisType) {
+					inheritingTypes.Add((TypeDef)map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i]));
+				}
+			}
+
+			return inheritingTypes;
+		}
+
 		/// <summary>
 		/// Obtains the list of generic types that are defined and owned only by this member.
 		/// </summary>

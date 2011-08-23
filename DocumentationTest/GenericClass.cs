@@ -79,6 +79,6 @@ namespace DocumentationTest {
 	/// generic classes in documentation. <see cref="GenericClass{T}" />
 	/// </summary>
 	/// <seealso cref="GenericClass{T}" />
-	public class InheritedGenericClass :GenericClass<string> {
+	public class InheritedGenericClass : GenericClass<string> {
 	}
 }
