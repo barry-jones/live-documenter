@@ -88,11 +88,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			this.internalList.ListItems.Add(new ListItem(new Paragraph(item)));
 		}
 
-		public void AddChildList(List child) {
+		public List AddChildList(List child) {
 			ListItem item = new ListItem();
 			child.internalList.Style = (Style)this.FindResource("ChildList");
 			item.Blocks.Add(child);
 			this.internalList.ListItems.Add(item);
+			return child;
 		}
 
 		internal System.Windows.Documents.List InternalList {

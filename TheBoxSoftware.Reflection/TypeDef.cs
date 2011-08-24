@@ -299,8 +299,11 @@ namespace TheBoxSoftware.Reflection {
 		#endregion
 
 		#region Methods
-		public List<TypeRef> GetExtendingTypes()
-		{
+		/// <summary>
+		/// Obtains all of the <see cref="TypeRef"/>s that extend this TypeDef.
+		/// </summary>
+		/// <returns>A collection of derived types.</returns>
+		public List<TypeRef> GetExtendingTypes() {
 			MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
 			MetadataToDefinitionMap map = this.Assembly.File.Map;
 			CodedIndex ciForThisType = new CodedIndex(this.table, (uint)this.index);
@@ -308,21 +311,23 @@ namespace TheBoxSoftware.Reflection {
 
 			// if our type is generic all children will point to an entry in the typespec table,
 			// we need to find out reference in the typespec table and search for that in typedef.extends.
-			//if (this.IsGeneric) {
-			//    MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
-			//    for (int i = 0; i < typeSpecs.Length; i++) {
-			//        TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
-			//        if (row != null)
-			//        {
-			//            TypeSpec spec = (TypeSpec)this.Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row);
-			//            if (spec.TypeDetails.Type == this)
-			//            {
-			//                ciForThisType = new CodedIndex(MetadataTables.TypeSpec, (uint)i+1);
-			//                break;
-			//            }
-			//        }
-			//    }
-			//}
+			if (this.IsGeneric) {
+				MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
+				for (int i = 0; i < typeSpecs.Length; i++) {
+					TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
+					if (row != null) {
+						TypeSpec spec = (TypeSpec)this.Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row);
+						try {
+							if (spec.TypeDetails.Type == this) {
+								ciForThisType = new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1);
+								break;
+							}
+						}
+						catch (Exception) { }
+						finally { } // just swallow these errors for now
+					}
+				}
+			}
 
 			MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
 			for (int i = 0; i < typeDefs.Length; i++) {

@@ -80,30 +80,34 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// </summary>
 		/// <param name="type">The type to parse and display the tree for.</param>
 		protected void AddInheritanceTree(TypeDef type) {
+			Func<TypeRef, Hyperlink> createLink = delegate(TypeRef forType) {
+				string displayName = forType.GetDisplayName(true);	// get a default name to display
+				TypeDef typeDef = forType as TypeDef;
+				if (typeDef != null) {
+					displayName = typeDef.GetDisplayName(true);
+				}
+
+				Hyperlink link = new Hyperlink(new Run(displayName));
+				if (forType.IsExternalReference || typeDef == null) {
+					CRefPath parentCrefPath = new CRefPath(forType);
+					link.Tag = new CrefEntryKey(forType.Assembly, parentCrefPath.ToString());
+				}
+				else {
+					link.Tag = new EntryKey(typeDef.GetGloballyUniqueId());
+				}
+				link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+				return link;
+				};
+
 			// Add the inheritance tree
-			if (type.InheritsFrom != null) {
-				List inheritanceList = new List();
-				
-				// Build a list of parents for the current type
+			List inheritanceList = new List();
+			List lastList = inheritanceList;
+			if (type.InheritsFrom != null) {				
+				// build a list of parents for the current type
 				TypeRef parent = type.InheritsFrom;
 				List<Hyperlink> links = new List<Hyperlink>();
 				while (parent != null) {
-					string displayName = parent.GetDisplayName(true);	// get a default name to display
-					TypeDef typeDef = parent as TypeDef;
-					if (typeDef != null) {
-						displayName = typeDef.GetDisplayName(true);
-					}
-
-					Hyperlink link = new Hyperlink(new Run(displayName));
-					if (parent.IsExternalReference || typeDef == null) {
-						CRefPath parentCrefPath = new CRefPath(parent);
-						link.Tag = new CrefEntryKey(parent.Assembly, parentCrefPath.ToString());
-					}
-					else {
-						link.Tag = new EntryKey(typeDef.GetGloballyUniqueId());
-					}
-					link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
-					links.Add(link);
+					links.Add(createLink(parent));
 
 					if (parent is TypeDef) {
 						parent = ((TypeDef)parent).InheritsFrom;
@@ -114,19 +118,29 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				}
 
 				// Reverse the list and build the inheritance tree
-				List lastList = inheritanceList;
+				lastList = inheritanceList;
 				for (int i = links.Count - 1; i >= 0; i--) {
 					lastList.AddListItem(links[i]);
 					if (i > 0) {
-						List nextList = new List();
-						lastList.AddChildList(nextList);
-						lastList = nextList;
+						lastList = lastList.AddChildList(new List());
 					}
 				}
-
-				this.Blocks.Add(new Header2("Inheritance Hierarchy"));
-				this.Blocks.Add(inheritanceList);
 			}
+
+			// add the current type
+			lastList = lastList.AddChildList(new List());
+			lastList.AddListItem(type.GetDisplayName(true));
+
+			// add all the derived types
+			lastList = lastList.AddChildList(new List());
+			List<TypeRef> derivedTypes = type.GetExtendingTypes();
+			derivedTypes.Sort((a, b) => a.GetFullyQualifiedName().CompareTo(b.GetFullyQualifiedName()));
+			for (int i = 0; i < derivedTypes.Count; i++) {
+				lastList.AddListItem(createLink(derivedTypes[i]));
+			}
+
+			this.Blocks.Add(new Header2("Inheritance Hierarchy"));
+			this.Blocks.Add(inheritanceList);
 		}
 
 		/// <summary>
