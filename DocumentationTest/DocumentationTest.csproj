@@ -77,9 +77,13 @@
     <Compile Include="AllOutputTypesClass.cs" />
     <Compile Include="AllXmlCommentsClass.cs" />
     <Compile Include="ClassAsNamespaceBug.cs" />
+    <Compile Include="CommentTests\CElement.cs" />
+    <Compile Include="CommentTests\ExampleElement.cs" />
+    <Compile Include="CommentTests\IncludeElement.cs" />
     <Compile Include="CommentTests\InvalidElements.cs" />
     <Compile Include="CommentTests\InvalidTopLevelElements.cs" />
     <Compile Include="CommentTests\ListElement.cs" />
+    <Compile Include="CommentTests\SeeElement.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DocumentedClass.cs" />
     <Compile Include="DocumentedDelegate.cs" />
@@ -131,6 +135,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CommentTests\includedfile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
