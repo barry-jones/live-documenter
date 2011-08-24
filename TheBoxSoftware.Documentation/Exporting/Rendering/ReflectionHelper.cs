@@ -55,6 +55,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				if (method.IsOperator) {
 					name = "operator";
 				}
+				else if (method.IsConstructor) {
+					name = "constructor";
+				}
 			}
 			else if (member is PropertyDef) {
 				name = "properties";

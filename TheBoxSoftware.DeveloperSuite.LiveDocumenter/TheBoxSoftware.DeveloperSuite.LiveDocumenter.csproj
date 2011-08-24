@@ -581,6 +581,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationData\helpviewer1-msdn\styles\default.css" />
+    <Resource Include="ApplicationData\web-msdn\styles\images\vsobject_constructor.png" />
+    <Resource Include="ApplicationData\web-msdn\styles\images\vsobject_constructor_friend.png" />
+    <Resource Include="ApplicationData\web-msdn\styles\images\vsobject_constructor_private.png" />
+    <Resource Include="ApplicationData\web-msdn\styles\images\vsobject_constructor_protected.png" />
+    <Resource Include="ApplicationData\web-msdn\styles\images\vsobject_constructor_sealed.png" />
     <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_assembly.png" />
     <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_class.png" />
     <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_class_friend.png" />
@@ -652,8 +657,18 @@
     <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_structure_private.png" />
     <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_structure_protected.png" />
     <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_structure_sealed.png" />
+    <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_constructor.png" />
+    <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_constructor_friend.png" />
+    <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_constructor_private.png" />
+    <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_constructor_protected.png" />
+    <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\vsobject_constructor_sealed.png" />
     <Content Include="ApplicationData\htmlhelp1-msdn\styles\default.css" />
     <Resource Include="ApplicationData\htmlhelp2-msdn\stopwords.txt" />
+    <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\vsobject_constructor.png" />
+    <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\vsobject_constructor_friend.png" />
+    <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\vsobject_constructor_private.png" />
+    <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\vsobject_constructor_protected.png" />
+    <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\vsobject_constructor_sealed.png" />
     <Content Include="ApplicationData\htmlhelp2-msdn\styles\default.css" />
     <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_assembly.png" />
     <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_class.png" />
@@ -727,6 +742,11 @@
     <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_structure_protected.png" />
     <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_structure_sealed.png" />
     <Resource Include="ApplicationData\htmlhelp2-msdn\webexport.xslt" />
+    <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_constructor.png" />
+    <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_constructor_friend.png" />
+    <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_constructor_private.png" />
+    <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_constructor_protected.png" />
+    <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\vsobject_constructor_sealed.png" />
     <Content Include="ApplicationData\web-msdn\styles\default.css" />
     <Resource Include="ApplicationData\web-msdn\styles\images\vsobject_assembly.png" />
     <Resource Include="ApplicationData\web-msdn\styles\images\vsobject_class.png" />
