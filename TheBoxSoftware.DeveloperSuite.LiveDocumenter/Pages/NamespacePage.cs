@@ -39,14 +39,55 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 				this.Blocks.Add(new Header1(item.Key + " Namespace"));
 
-				// Add class diagram
+				// classes
+				IOrderedEnumerable<TypeDef> allClasses = from type in item.Value
+								 where !type.IsDelegate && !type.IsEnumeration && !type.IsInterface && !type.IsStructure
+								 orderby type.Name
+								 select type;
+				this.OutputTypes("Classes", allClasses, xmlFile);
 
-				// Add the table of classes to the page
+				// structures
+				IOrderedEnumerable<TypeDef> allStructures = from type in item.Value
+								 where type.IsStructure
+								 orderby type.Name
+								 select type;
+				this.OutputTypes("Structures", allStructures, xmlFile);
+
+				// delegates
+				IOrderedEnumerable<TypeDef> allDelegates = from type in item.Value
+								 where type.IsDelegate
+								 orderby type.Name
+								 select type;
+				this.OutputTypes("Delegates", allDelegates, xmlFile);
+
+				// enumerations
+				IOrderedEnumerable<TypeDef> allEnumerations = from type in item.Value
+								 where type.IsEnumeration
+								 orderby type.Name
+								 select type;
+				this.OutputTypes("Enumerations", allEnumerations, xmlFile);
+
+				// interfaces
+				IOrderedEnumerable<TypeDef> allInterfaces = from type in item.Value
+								 where type.IsInterface
+								 orderby type.Name
+								 select type;
+				this.OutputTypes("Interfaces", allInterfaces, xmlFile);
+
+				this.IsGenerated = true;
+			}
+		}
+
+		/// <summary>
+		/// Adds a table of the <paramref name="types"/> to the document with a header <paramref name="name"/>.
+		/// </summary>
+		/// <param name="name">The header text.</param>
+		/// <param name="types">The types to add to the table.</param>
+		/// <param name="xmlFile">The XML file to read comments from.</param>
+		private void OutputTypes(string name, IOrderedEnumerable<TypeDef> types, XmlCodeCommentFile xmlFile) {
+			if (types.Count() != 0) {
 				SummaryTable classTable = new SummaryTable();
-				var sortedTypes = from type in item.Value
-								  orderby type.Name
-								  select type;
-				foreach (TypeDef currentType in sortedTypes) {
+				foreach (TypeDef currentType in types) {
 					CRefPath crefPath = new CRefPath(currentType);
 
 					// Find the description for the type
@@ -56,9 +97,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					nameLink.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 					classTable.AddItem(nameLink, description, Model.ElementIconConstants.GetIconPathFor(currentType));
 				}
+				this.Blocks.Add(new Header2(name));
 				this.Blocks.Add(classTable);
-
-				this.IsGenerated = true;
 			}
 		}
 		#endregion
