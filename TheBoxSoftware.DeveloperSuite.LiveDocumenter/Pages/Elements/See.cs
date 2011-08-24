@@ -13,6 +13,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	public sealed class See : Hyperlink {
 		public See(CrefEntryKey key, string name)
 			: base() {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Inlines.Add(new Run(name));
 			this.Tag = key;
 			this.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);

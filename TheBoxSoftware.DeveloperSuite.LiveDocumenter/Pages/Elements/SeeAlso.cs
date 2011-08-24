@@ -20,6 +20,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// <param name="assembly">The assembly the currently being documented</param>
 		/// <param name="type">The <see cref="CRefPath"/> to the type being refered to</param>
 		public SeeAlso(AssemblyDef assembly, CRefPath type) {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			TypeDef def = assembly.FindType(type.Namespace, type.TypeName);
 			string displayName = type.TypeName;
 			if (def != null) displayName = def.GetDisplayName(false);

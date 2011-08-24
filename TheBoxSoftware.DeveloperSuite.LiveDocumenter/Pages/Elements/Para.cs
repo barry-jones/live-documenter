@@ -7,6 +7,7 @@ using System.Windows.Documents;
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	public sealed class Para : Paragraph {
 		public Para(List<Inline> elements) {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Inlines.AddRange(elements);
 		}
 	}

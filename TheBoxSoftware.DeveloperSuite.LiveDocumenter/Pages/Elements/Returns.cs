@@ -12,6 +12,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	/// </summary>
 	public sealed class Returns : Section {
 		public Returns(List<Block> children) {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Blocks.Add(new Header3("Returns"));
 			this.Blocks.AddRange(children);
 		}

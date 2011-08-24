@@ -12,7 +12,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	/// </summary>
 	public sealed class Value : Section {
 		public Value(List<Block> blocks) {
-			this.Blocks.Add(new Header2("Summary"));
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
+			this.Blocks.Add(new Header2("Value"));
 			this.Blocks.AddRange(blocks);
 		}
 	}

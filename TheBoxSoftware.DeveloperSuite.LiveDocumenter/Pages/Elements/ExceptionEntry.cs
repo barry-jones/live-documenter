@@ -18,6 +18,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// <param name="link">The hyperlink to navigate to the exception details.</param>
 		/// <param name="description">The collection of parsed code elements describing the exception.</param>
 		public ExceptionEntry(Hyperlink link, List<Block> description) {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Link = link;
 			this.Description = description;
 		}

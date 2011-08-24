@@ -10,6 +10,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	/// </summary>
 	public class TypeParamEntry : Block {
 		public TypeParamEntry(string name, string description) {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Param = name;
 			this.Description = description;
 		}

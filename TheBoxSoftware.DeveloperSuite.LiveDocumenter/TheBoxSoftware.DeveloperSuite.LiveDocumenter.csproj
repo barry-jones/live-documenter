@@ -213,7 +213,6 @@
     <Compile Include="Pages\DeploymentDiagram.cs" />
     <Compile Include="Pages\Elements\C.cs" />
     <Compile Include="Pages\Elements\Code.cs" />
-    <Compile Include="Pages\Elements\CommentParagraph.cs" />
     <Compile Include="Pages\Elements\Example.cs" />
     <Compile Include="Pages\Elements\ExceptionEntry.cs" />
     <Compile Include="Pages\Elements\ExceptionList.xaml.cs">
@@ -222,14 +221,11 @@
     <Compile Include="Pages\Elements\Header1.cs" />
     <Compile Include="Pages\Elements\Header2.cs" />
     <Compile Include="Pages\Elements\Header3.cs" />
-    <Compile Include="Pages\Elements\Include.cs" />
     <Compile Include="Pages\Elements\Keyword.cs" />
     <Compile Include="Pages\Elements\List.xaml.cs">
       <DependentUpon>List.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Elements\ListTypes.cs" />
-    <Compile Include="Pages\Elements\ListXmlElement.cs" />
-    <Compile Include="Pages\Elements\Note.cs" />
     <Compile Include="Pages\Elements\Para.cs" />
     <Compile Include="Pages\Elements\Param.cs" />
     <Compile Include="Pages\Elements\ParameterList.xaml.cs">

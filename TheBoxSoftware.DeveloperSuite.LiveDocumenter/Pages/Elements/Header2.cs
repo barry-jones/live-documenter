@@ -6,6 +6,8 @@ using System.Windows.Documents;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	public class Header2 : Paragraph {
-		public Header2(string title) : base(new Run(title)) { }
+		public Header2(string title) : base(new Run(title)) {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
+		}
 	}
 }

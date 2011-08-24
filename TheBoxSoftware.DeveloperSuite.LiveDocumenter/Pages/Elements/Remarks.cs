@@ -15,6 +15,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// </summary>
 		/// <param name="children">The child elements of the section</param>
 		public Remarks(List<Block> children) {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Blocks.Add(new Header2("Remarks"));
 			this.Blocks.AddRange(children);
 		}
