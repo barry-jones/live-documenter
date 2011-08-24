@@ -11,7 +11,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	/// </summary>
 	public sealed class Summary : Section {
 		public Summary(List<Block> blocks) {
-			//this.Blocks.Add(new Header2("Summary"));
 			this.Blocks.AddRange(blocks);
 		}
 	}

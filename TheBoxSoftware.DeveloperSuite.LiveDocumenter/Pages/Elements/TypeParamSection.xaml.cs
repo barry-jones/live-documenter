@@ -22,6 +22,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 		public TypeParamSection() {
 			this.InitializeComponent();
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Blocks.Add(new Header3("Type Parameters"));
 
 			exceptionTable = new Table();

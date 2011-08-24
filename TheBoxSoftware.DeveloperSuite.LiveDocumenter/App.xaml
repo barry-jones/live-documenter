@@ -9,7 +9,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/DefaultStyles.xaml" />
-                <ResourceDictionary Source="Resources/SummaryTable.xaml" x:Name="SummaryTableResources" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

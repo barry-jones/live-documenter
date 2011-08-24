@@ -40,6 +40,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// within.
 		/// </remarks>
 		public ExceptionList() {
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			InitializeComponent();
 
 			this.Blocks.Add(new Header2("Exceptions"));

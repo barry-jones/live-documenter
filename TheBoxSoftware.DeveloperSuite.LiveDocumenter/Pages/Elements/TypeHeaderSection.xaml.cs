@@ -21,6 +21,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	public partial class TypeHeaderSection : Section {
 		public TypeHeaderSection() {
 			InitializeComponent();
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 		}
 
 		RoutedEventHandler linkResolver = new RoutedEventHandler(LinkHelper.Resolve);

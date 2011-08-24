@@ -4,11 +4,4 @@
     xmlns:page="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages"
     xmlns:local="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements"
     xmlns:doc="clr-namespace:System.Windows.Documents;assembly=PresentationFramework">
-    <Section.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Resources/DefaultDocumentationStyle.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Section.Resources>
 </Section>

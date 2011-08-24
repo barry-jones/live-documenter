@@ -26,7 +26,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// Initialises a new instance of a ParameterList class.
 		/// </summary>
 		public ParameterList() {
-			InitializeComponent();
+			this.InitializeComponent();
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 
 			this.Blocks.Add(new Header3("Parameters"));
 

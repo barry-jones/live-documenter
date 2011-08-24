@@ -21,14 +21,19 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 		#region Constructors
 		public List() : this(ListTypes.None) {
-			this.InitializeComponent();
+			this.Initialise();
 			this.Blocks.Add(internalList);
 		}
 
 		public List(Block title) : this(title, ListTypes.None) {
-			this.InitializeComponent();
+			this.Initialise();
 			this.Blocks.Add(title);
 			this.Blocks.Add(internalList);
+		}
+
+		private void Initialise() {
+			this.InitializeComponent();
+			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 		}
 
 		public List(ListTypes type) {
