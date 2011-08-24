@@ -75,9 +75,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				this.Blocks.Add(new Header2("Members"));
 				this.Blocks.Add(classTable);
 
-				// Add the inheritance tree
-				this.AddInheritanceTree(this.representedType);
-
 				// Add the seealso list if it exists
 				this.AddSeeAlso(parsedBlocks);
 

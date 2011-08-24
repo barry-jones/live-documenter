@@ -101,32 +101,40 @@
     </Style>
 
     <Style TargetType="{x:Type Table}">
+        <Setter Property="Table.BorderThickness" Value="0.5, 0.5, 0.5, 0" />
+        <Setter Property="Table.BorderBrush" Value="#bbb" />
         <Setter Property="CellSpacing" Value="0" />
         <Setter Property="Margin" Value="0,0,0,12" />
     </Style>
+
+    <Style TargetType="{x:Type TableCell}">
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="BorderThickness" Value="0, 0, 0.5, 0.5" />
+        <Setter Property="BorderBrush" Value="#bbb" />
+    </Style>
+
     <Style TargetType="{x:Type local:SummaryTable}">
         <Setter Property="Table.BorderThickness" Value="0.5, 0.5, 0.5, 0" />
         <Setter Property="Table.BorderBrush" Value="#bbb" />
         <Setter Property="Table.CellSpacing" Value="0" />
         <Setter Property="CellSpacing" Value="0" />
         <Setter Property="Margin" Value="0" />
-    </Style>
-    <Style TargetType="{x:Type TableCell}">
-        <Setter Property="Padding" Value="3" />
-        <Setter Property="BorderThickness" Value="0, 0, 0.5, 0.5" />
-        <Setter Property="BorderBrush" Value="#bbb" />
-    </Style>
+    </Style>    
+    
     <Style x:Key="CellRight" TargetType="{x:Type TableCell}">
         <Setter Property="Padding" Value="3" />
         <Setter Property="BorderBrush" Value="#bbb" />
-        <Setter Property="TableCell.BorderThickness" Value="0, 0, 0, 0.5" />
+        <Setter Property="BorderThickness" Value="0, 0, 0, 0.5" />
     </Style>
+    
     <Style x:Key="SummaryTableIconColumn" TargetType="{x:Type TableColumn}">
         <Setter Property="Width" Value="24" />
     </Style>
+    
     <Style x:Key="SummaryTableColumn" TargetType="{x:Type TableColumn}">
         <Setter Property="Paragraph.Margin" Value="0" />
     </Style>
+    
     <Style x:Key="SummaryTableHeader">
         <Setter Property="TableRowGroup.Background" Value="#e5e5e5" />
     </Style>

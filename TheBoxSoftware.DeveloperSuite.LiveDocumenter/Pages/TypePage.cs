@@ -48,7 +48,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
                     }
                 }
 
-				this.AddInheritanceTree(this.representedType);
+				if (!this.representedType.IsInterface && !this.representedType.IsStructure) {
+					this.AddInheritanceTree(this.representedType);
+				}
                 this.AddNamespace(this.representedType);
                 this.AddSyntaxBlock(this.representedType);
 

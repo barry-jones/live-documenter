@@ -112,10 +112,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					}
 				}
 
-				// Add the inheritance tree
-				this.AddInheritanceTree(this.representedType);
-
-				// Add the seealso list if it exists
 				this.AddSeeAlso(parsedBlocks);
 
 				this.IsGenerated = true;

@@ -118,7 +118,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				}
 			}
 
-			this.AddInheritanceTree(this.member, writer);
+			if (!this.member.IsDelegate && !this.member.IsEnumeration && !this.member.IsInterface && !this.member.IsStructure) {
+				this.AddInheritanceTree(this.member, writer);
+			}
 
 			writer.WriteEndElement();	// member
 		}
