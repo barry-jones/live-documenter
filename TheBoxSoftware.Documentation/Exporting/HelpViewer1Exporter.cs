@@ -48,6 +48,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					map.Render(writer);
 				}
 
+				Website.IndexXmlRenderer indexPage = new Website.IndexXmlRenderer(this.DocumentMap);
+				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
+					indexPage.Render(writer);
+				}
+
 				// export each of the members
 				foreach (Entry current in this.DocumentMap) {
 					this.RecursiveEntryExport(current);
@@ -67,26 +72,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
-				// export the project xml, we cant render the XML because the DTD protocol causes loads of probs with Saxon
-				//CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.DocumentMap, string.Empty);
-				//using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", this.OutputDirectory))) {
-				//    collectionXml.Render(writer);
-				//}
-
-				// export the incldue file xml
-				//IncludeFileXmlRenderer includeXml = new IncludeFileXmlRenderer(this.Config);
-				//using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxF", this.OutputDirectory))) {
-				//    includeXml.Render(writer);
-				//}
-
-				// export the content file
-				//using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
-				//    Serializer s = new Serializer();
-				//    s.SetOutputFile(this.OutputDirectory + "Documentation.HxT");
-				//    transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-				//    transform.Run(s);
-				//}
-
 				// export the content files
 				foreach (string current in Directory.GetFiles(this.TempDirectory)) {
 					if (current.Substring(this.TempDirectory.Length) == "toc.xml")
@@ -101,7 +86,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				// compile the html help file
 				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
-				this.CompileHelp(this.OutputDirectory + "/Documentation.HxC");
+				this.CompileHelp(this.OutputDirectory + "/Documentation.mshc");
 			}
 			catch (Exception ex) {
 				ExportException exception = new ExportException(ex.Message, ex);
@@ -121,7 +106,12 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <param name="projectFile">The HxC file.</param>
 		private void CompileHelp(string projectFile) {
-			
+			// zip up the content director and rename it
+			Ionic.Zip.ZipFile outputFile = new Ionic.Zip.ZipFile();
+			outputFile.AddDirectory(this.OutputDirectory);
+			outputFile.Save(projectFile);
+
+			// drop the installer files
 		}
 	}
 }
