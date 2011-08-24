@@ -73,6 +73,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					}
 				}
 
+				this.OutputMembersLists();
+
 				// Add the remarks if it exists
 				if (parsedBlocks != null) {
 					Block remarks = parsedBlocks.Find(currentBlock => currentBlock is Remarks);
@@ -80,8 +82,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						this.Blocks.Add(remarks);
 					}
 				}
-
-				this.OutputMembersLists();
+				
 				this.AddSeeAlso(parsedBlocks);
 
 				// Inform the application the page has been generated
