@@ -118,7 +118,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 			TableCell first = new TableCell(new Paragraph(new Run(name)));
 			TableCell second = block == null ? new TableCell() : new TableCell(block);
-			row.Cells.Add(new TableCell(new Paragraph(new Run(name))));
 			if (this.showSecondColumn) {
 				second.Style = (Style)this.FindResource("CellRight");
 				row.Cells.Add(first);
