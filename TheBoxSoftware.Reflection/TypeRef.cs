@@ -150,9 +150,15 @@ namespace TheBoxSoftware.Reflection {
 					name = this.Name;
 				}
 				if (this.IsGeneric) {
-					int count = int.Parse(name.Substring(name.IndexOf('`') + 1));
-					name = name.Substring(0, name.IndexOf('`'));
-					name += "<" + new String(',', count - 1) + ">";
+					if (this is TypeSpec) {
+						TypeRef def = ((TypeSpec)this).TypeDetails.Type;
+						name = def.GetDisplayName(includeNamespace);
+					}
+					else {
+						int count = int.Parse(name.Substring(name.IndexOf('`') + 1));
+						name = name.Substring(0, name.IndexOf('`'));
+						name += "<" + new String(',', count - 1) + ">";
+					}
 				}
 			}
 			return name;

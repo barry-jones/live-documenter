@@ -153,7 +153,6 @@ namespace TheBoxSoftware.Reflection {
 					// we need the type to have a reference to its container.
 					if (inheritsFrom is TypeSpec) {
 						((TypeSpec)inheritsFrom).ImplementingType = this;
-						inheritsFrom = ((TypeSpec)inheritsFrom).TypeDetails.Type;
 					}
 				}
 
