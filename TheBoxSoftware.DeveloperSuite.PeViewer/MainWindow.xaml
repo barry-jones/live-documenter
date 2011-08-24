@@ -1,7 +1,6 @@
 ﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:TheBoxSoftware.DeveloperSuite.PEViewer.Controls"
     x:Class="TheBoxSoftware.DeveloperSuite.PEViewer.MainWindow"
     Title="PE Viewer" Height="677" Width="1049" xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit">
     <Window.Resources>
@@ -47,7 +46,9 @@
                 </Grid.ColumnDefinitions>
                 <TreeView x:Name="peViewMap" Grid.Column="0" Background="{x:Null}" BorderBrush="{x:Null}" ItemTemplate="{DynamicResource BasicItemTemplate}" />
                 <GridSplitter Grid.Column="1" ResizeBehavior="PreviousAndNext" Width="5" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1,0,1,0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                <my:DataGrid xmlns:my="http://schemas.microsoft.com/wpf/2008/toolkit" Grid.Column="2" x:Name="dataGrid1" ItemsSource="{Binding Path=SelectedItem.Data, ElementName=peViewMap}" BorderBrush="{x:Null}" />
+                
+                <DataGrid Grid.Column="2" ItemsSource="{Binding Path=SelectedItem.Data, ElementName=peViewMap}" BorderBrush="{x:Null}">
+                </DataGrid>
             </Grid>
         </Border>
     </DockPanel>

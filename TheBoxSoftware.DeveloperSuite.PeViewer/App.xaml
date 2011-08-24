@@ -2,18 +2,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="TheBoxSoftware.DeveloperSuite.PEViewer.App"
-    xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit" 
     StartupUri="MainWindow.xaml" xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit">
     <Application.Resources>
         <SolidColorBrush x:Key="DataGrid_Style0_Header" Color="#FF4F81BD"/>
         <SolidColorBrush x:Key="DataGrid_Style0_Alt0" Color="#FFD0D8E8"/>
         <SolidColorBrush x:Key="DataGrid_Style0_Alt1" Color="#FFE9EDF4"/>
 
-        <Style x:Key="ColumnHeaderStyle" TargetType="{x:Type dg:DataGridColumnHeader}">
+        <Style x:Key="ColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="Background" Value="{StaticResource DataGrid_Style0_Header}" />
             <Setter Property="Foreground" Value="White" />
         </Style>
-        <Style x:Key="RowStyle" TargetType="dg:DataGridRow" >
+        <Style x:Key="RowStyle" TargetType="DataGridRow" >
             <Style.Triggers>
                 <Trigger Property="AlternationIndex" Value="1" >
                     <Setter Property="Background" Value="{StaticResource DataGrid_Style0_Alt1}" />

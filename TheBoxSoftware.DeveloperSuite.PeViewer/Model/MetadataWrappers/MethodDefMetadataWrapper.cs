@@ -18,8 +18,9 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer.Model.MetadataWrappers {
 		/// <param name="methods">The methods to wrap.</param>
 		public MethodDefMetadataWrapper(MetadataStream file, List<MetadataRow> methods) {
 			this.Items = new List<MethodDefEntry>();
+			int counter = 1;
 			foreach (MethodMetadataTableRow current in methods) {
-				this.Items.Add(new MethodDefEntry(file.OwningFile.GetMetadataDirectory(), current));
+				this.Items.Add(new MethodDefEntry(counter++, file.OwningFile.GetMetadataDirectory(), current));
 			}
 		}
 
@@ -33,7 +34,8 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer.Model.MetadataWrappers {
 		/// individual <see cref="MethodMetadataTableRow"/> entries.
 		/// </summary>
 		public class MethodDefEntry {
-			public MethodDefEntry(MetadataDirectory directory, MethodMetadataTableRow row) {
+			public MethodDefEntry(int index, MetadataDirectory directory, MethodMetadataTableRow row) {
+				this.Index = index;
 				this.FileOffset = string.Format("0x{0:x}", row.FileOffset);
 				this.Flags = string.Format("0x{0:x}", row.Flags);
 				this.ImplFlags = string.Format("0x{0:x}", row.ImplFlags);
@@ -43,6 +45,7 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer.Model.MetadataWrappers {
 				this.Signiture = string.Format("0x{0:x}", row.Signiture.Value);
 			}
 
+			public int Index { get; set; }
 			public string FileOffset { get; set; }
 			public string Flags { get; set; }
 			public string ImplFlags { get; set; }
