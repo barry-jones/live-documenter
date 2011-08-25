@@ -119,12 +119,15 @@ namespace TheBoxSoftware.Reflection {
 				}
 				else if (method.IsOperator && property == null) {
 					if (method.IsConversionOperator) {
+						Signiture sig = method.Signiture;
+						TypeRef convertToRef = sig.GetReturnTypeToken().ResolveType(method.Assembly, method);
+						TypeRef convertFromRef = sig.GetParameterTokens()[0].ResolveParameter(method.Assembly, method.Parameters[0]);
+
 						converted.Append(method.Name.Substring(3));
 						converted.Append("(");
-						TypeRef convertToRef = method.Signiture.GetReturnTypeToken().ResolveType(method.Assembly, method);
-						converted.Append(convertToRef.Name);
+						converted.Append(convertToRef.GetDisplayName(false));
 						converted.Append(" to ");
-						converted.Append(method.Type.GetDisplayName(false));
+						converted.Append(convertFromRef.GetDisplayName(false));
 						converted.Append(")");
 					}
 					else {
