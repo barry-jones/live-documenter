@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="AllOutputTypesClass.cs" />
     <Compile Include="AllXmlCommentsClass.cs" />
+    <Compile Include="AttributeTargetsTest.cs" />
     <Compile Include="ClassAsNamespaceBug.cs" />
     <Compile Include="CommentTests\CElement.cs" />
     <Compile Include="CommentTests\ExampleElement.cs" />
@@ -102,10 +103,12 @@
     <Compile Include="Issues\Issue120.cs" />
     <Compile Include="Issues\Issue130.cs" />
     <Compile Include="Issues\Issue135.cs" />
+    <Compile Include="Issues\Issue148.cs" />
     <Compile Include="Issues\Issue2.cs" />
     <Compile Include="Issues\Issue6.cs" />
     <Compile Include="Issues\Issue9.cs" />
     <Compile Include="OperatorOverloads.cs" />
+    <Compile Include="PInvokeInterfaceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicDocumentedClass.cs" />
     <Compile Include="ReferenceInterfaceDocumentationTest.cs" />
