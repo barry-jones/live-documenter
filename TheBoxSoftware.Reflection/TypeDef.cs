@@ -316,14 +316,10 @@ namespace TheBoxSoftware.Reflection {
 					TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
 					if (row != null) {
 						TypeSpec spec = (TypeSpec)this.Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row);
-						try {
-							if (spec.TypeDetails.Type == this) {
-								ciForThisType = new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1);
-								break;
-							}
+						if (spec.TypeDetails != null) {
+							ciForThisType = new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1);
+							break;
 						}
-						catch (Exception) { }
-						finally { } // just swallow these errors for now
 					}
 				}
 			}
