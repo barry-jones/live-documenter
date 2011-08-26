@@ -5,10 +5,17 @@ using System.Text;
 using System.Windows.Documents;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
-	public sealed class Para : Paragraph {
-		public Para(List<Inline> elements) {
+	/// <summary>
+	/// Handles the display of the XML para tag.
+	/// </summary>
+	public sealed class Para : Section {
+		/// <summary>
+		/// Initialises a new instance of the Para class.
+		/// </summary>
+		/// <param name="elements">The block level elements to display in this para.</param>
+		public Para(List<Block> elements) {
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
-			this.Inlines.AddRange(elements);
+			this.Blocks.AddRange(elements);
 		}
 	}
 }

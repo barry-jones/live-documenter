@@ -23,7 +23,7 @@
         <Setter Property="Padding" Value="0" />
     </Style>
 
-    <Style TargetType="{x:Type local:Para}" BasedOn="{StaticResource Paragraph}">
+    <Style TargetType="{x:Type local:Para}">
         <Setter Property="Margin" Value="0,0,0,12" />
         <Setter Property="Padding" Value="0" />
     </Style>
