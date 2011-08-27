@@ -235,8 +235,10 @@ Language=0x809 English (United Kingdom)
 					<xsl:apply-templates select="/member/genericparameters" />
 					<xsl:apply-templates select="/member/parameters" />
 					<xsl:apply-templates select="/member/exceptions" />
-                                        
-                    <xsl:call-template name="member-lists" />
+
+					<xsl:if test="/member/@type != 'delegate'">
+						<xsl:call-template name="member-lists" />
+					</xsl:if>
                     <xsl:apply-templates select="/member/values" />
                     
                     <xsl:apply-templates select="/member/remarks" />
