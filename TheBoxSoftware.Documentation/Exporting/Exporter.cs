@@ -156,18 +156,18 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// found pages for each of the entries in the documentation.
 		/// </summary>
 		/// <param name="currentEntry">The current entry to export</param>
-		protected virtual void RecursiveEntryExport(Entry currentEntry) {
-			this.Export(currentEntry);
+		protected virtual void RecursiveEntryExport(Entry currentEntry, DocumentMap map) {
+			this.Export(currentEntry, map);
 			for (int i = 0; i < currentEntry.Children.Count; i++) {
-				this.RecursiveEntryExport(currentEntry.Children[i]);
+				this.RecursiveEntryExport(currentEntry.Children[i], map);
 			}
 		}
 
-		protected virtual void Export(Entry current) {
+		protected virtual void Export(Entry current, DocumentMap map) {
 			System.Diagnostics.Debug.WriteLine("SaveXaml: " + current.Name + "[" + current.Key + ", " + current.SubKey + "]");
 			System.Diagnostics.Debug.Indent();
 
-			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
+			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this, map);
 
 			if (r != null) {
 				string filename = string.Format("{0}{1}{2}.xml", this.TempDirectory, current.Key, string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty));

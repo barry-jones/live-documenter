@@ -55,7 +55,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				// export each of the members
 				foreach (Entry current in this.DocumentMap) {
-					this.RecursiveEntryExport(current);
+					this.RecursiveEntryExport(current, this.DocumentMap);
 				}
 
 				Processor p = new Processor();

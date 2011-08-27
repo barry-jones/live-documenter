@@ -12,12 +12,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	internal class MethodXmlRenderer : XmlRenderer {
 		private MethodDef member;
 		private XmlCodeCommentFile xmlComments;
+		private DocumentMap documentMap;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MethodXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="entry">The entry to initialise the renderer with.</param>
-		public MethodXmlRenderer(Entry entry) {
+		public MethodXmlRenderer(Entry entry, DocumentMap map) {
+			this.documentMap = map;
 			this.member = (MethodDef)entry.Item;
 			this.xmlComments = entry.XmlCommentFile;
 			this.AssociatedEntry = entry;
@@ -63,13 +65,13 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 						continue;
 
 					TypeRef parameterType = this.member.Parameters[i].GetTypeRef();
-					Entry foundEntry = this.AssociatedEntry.FindByKey(parameterType.UniqueId, string.Empty);
+					TypeDef foundEntry = this.member.Assembly.FindType(parameterType.Namespace, parameterType.Name);
 
 					writer.WriteStartElement("parameter");
 					writer.WriteAttributeString("name", this.member.Parameters[i].Name);
 					writer.WriteStartElement("type");
-					if (!parameterType.IsExternalReference) {
-						writer.WriteAttributeString("key", parameterType.GetGloballyUniqueId().ToString());
+					if (foundEntry != null) {
+						writer.WriteAttributeString("key", foundEntry.GetGloballyUniqueId().ToString());
 					}
 					writer.WriteString(parameterType.GetDisplayName(false));
 					writer.WriteEndElement(); // type

@@ -392,6 +392,21 @@
 				</tbody>
 			</table>
 		</xsl:if>
+		<xsl:if test="count(entries/entry[@type='extensionmethod']) > 0">
+			<h2>Extension Methods</h2>
+			<table>
+				<thead>
+					<tr>
+						<th class="icon"></th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="entries/entry[@type='extensionmethod']" />
+				</tbody>
+			</table>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="type-display-name">

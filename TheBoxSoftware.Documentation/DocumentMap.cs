@@ -29,6 +29,20 @@ namespace TheBoxSoftware.Documentation {
 			this.baseCollection = baseCollection;
 		}
 
+		/// <summary>
+		/// Searches the entire document map for the provided <paramref name="id"/>.
+		/// </summary>
+		/// <param name="id">The globally unique id to search for.</param>
+		/// <returns>The found entry or null if not found.</returns>
+		public Entry FindById(long id) {
+			Entry found = null;
+			for (int i = 0; i < this.Count; i++) {
+				found = this[i].FindByKey(id, string.Empty);
+				if (found != null) break;
+			}
+			return found;
+		}
+
 		#region IList<Entry> Members
 
 		public int IndexOf(Entry item) {

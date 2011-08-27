@@ -316,6 +316,7 @@ namespace TheBoxSoftware.Reflection {
 		/// <param name="theTypeName">The name of the type</param>
 		/// <returns>The resolved type definition or null if not found.</returns>
 		public TypeDef FindType(string theNamespace, string theTypeName) {
+			if (string.IsNullOrEmpty(theTypeName) || string.IsNullOrEmpty(theNamespace)) return null;
 			return this.namspaceMap.FindTypeInNamespace(theNamespace, theTypeName);
 		}
 

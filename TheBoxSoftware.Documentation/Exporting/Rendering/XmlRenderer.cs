@@ -23,15 +23,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// <param name="entry">The entry in the document map to render.</param>
 		/// <param name="exporter">The exporter.</param>
 		/// <returns>A valid renderer or null.</returns>
-		public static XmlRenderer Create(Entry entry, Exporter exporter) {
+		public static XmlRenderer Create(Entry entry, Exporter exporter, DocumentMap map) {
 			XmlRenderer renderer = null;
 
 			if (entry.Item is ReflectedMember) {
 				if (entry.Item is TypeDef && string.IsNullOrEmpty(entry.SubKey)) {
-					renderer = new TypeXmlRenderer(entry);
+					renderer = new TypeXmlRenderer(entry, map);
 				}
 				else if (entry.Item is MethodDef) {
-					renderer = new MethodXmlRenderer(entry);
+					renderer = new MethodXmlRenderer(entry, map);
 				}
 				else if (entry.Item is FieldDef) {
 					renderer = new FieldXmlRenderer(entry);
