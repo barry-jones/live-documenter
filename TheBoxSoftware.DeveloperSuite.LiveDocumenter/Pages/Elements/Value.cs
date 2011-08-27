@@ -11,9 +11,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	/// the value element. This refers to the value xml code comment element.
 	/// </summary>
 	public sealed class Value : Section {
+		/// <summary>
+		/// Initialises a new instance of the Value section.
+		/// </summary>
+		/// <param name="blocks">The child block elements to add.</param>
 		public Value(List<Block> blocks) {
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
-			this.Blocks.Add(new Header2("Value"));
+			this.Blocks.Add(new Header3("Value"));
 			this.Blocks.AddRange(blocks);
 		}
 	}

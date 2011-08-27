@@ -50,7 +50,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			if (headerGroup == null) {
 				headerGroup = new TableRowGroup();
-				headerGroup.Style = (Style)this.FindResource("SummaryTableHeader");
+				headerGroup.Style = (Style)this.FindResource("TableHeader");
 				TableRow row = new TableRow();
 
 				//

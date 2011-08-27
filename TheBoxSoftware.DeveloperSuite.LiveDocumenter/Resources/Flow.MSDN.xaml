@@ -73,7 +73,8 @@
     </Style>
 
     <Style TargetType="{x:Type local:Header3}" BasedOn="{StaticResource Header}">
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="#3F529C" />
     </Style>
 
     <Style TargetType="{x:Type local:Keyword}">
@@ -135,7 +136,7 @@
         <Setter Property="Paragraph.Margin" Value="0" />
     </Style>
     
-    <Style x:Key="SummaryTableHeader">
+    <Style x:Key="TableHeader">
         <Setter Property="TableRowGroup.Background" Value="#e5e5e5" />
     </Style>
 </ResourceDictionary>

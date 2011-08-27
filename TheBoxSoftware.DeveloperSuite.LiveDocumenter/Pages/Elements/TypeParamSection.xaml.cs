@@ -28,8 +28,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			exceptionTable = new Table();
 			TableRowGroup headerGroup = new TableRowGroup();
 			TableRow row = new TableRow();
-			row.Cells.Add(new TableCell(new Paragraph(new Bold(new Run("Name")))));
-			row.Cells.Add(new TableCell(new Paragraph(new Bold(new Run("Description")))));
+			row.Cells.Add(new TableCell(new Paragraph(new Run("Name"))));
+			row.Cells.Add(new TableCell(new Paragraph(new Run("Description"))));
 			headerGroup.Rows.Add(row);
 
 			this.exceptionTable.RowGroups.Add(headerGroup);

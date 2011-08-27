@@ -47,9 +47,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 			exceptionTable = new Table();
 			TableRowGroup headerGroup = new TableRowGroup();
+			headerGroup.Style = (Style)this.FindResource("TableHeader");
 			TableRow row = new TableRow();
-			row.Cells.Add(new TableCell(new Paragraph(new Bold(new Run("Exception")))));
-			row.Cells.Add(new TableCell(new Paragraph(new Bold(new Run("Condition")))));
+			row.Cells.Add(new TableCell(new Paragraph(new Run("Exception"))));
+			row.Cells.Add(new TableCell(new Paragraph(new Run("Condition"))));
 			headerGroup.Rows.Add(row);
 
 			this.exceptionTable.RowGroups.Add(headerGroup);

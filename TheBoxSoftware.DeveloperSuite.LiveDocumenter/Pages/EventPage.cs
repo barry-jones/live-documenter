@@ -62,6 +62,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					}
 				}
 
+				// Add the example if it exists
+				if (parsedBlocks != null) {
+					Block summary = parsedBlocks.Find(currentBlock => currentBlock is Example);
+					if (summary != null) {
+						this.Blocks.Add(new Header2("Examples"));
+						this.Blocks.Add(summary);
+					}
+				}
+
 				// Add the seealso list if it exists
 				this.AddSeeAlso(parsedBlocks);
 
