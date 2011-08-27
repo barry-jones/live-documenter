@@ -68,7 +68,7 @@
                 <xsl:call-template name="header" />
                 <div class="content">
                     <xsl:apply-templates select="name" />
-                    <p>The <xsl:value-of select="name" /> type exposes the following members.</p>
+                    <p>The <xsl:value-of select="name/@type" /> type exposes the following members.</p>
                     <xsl:call-template name="member-lists" />
                 </div>
                 <xsl:call-template name="footer" />
@@ -245,7 +245,7 @@
     </xsl:template>
 
 	<xsl:template name="member-lists">
-		<xsl:if test="count(entries/entry)">
+		<xsl:if test="count(entries/entry) and /member/name != ''">
 			<p>
 				The <xsl:value-of select="/member/name" /> type exposes the following members.
 			</p>
