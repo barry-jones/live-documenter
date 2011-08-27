@@ -364,7 +364,7 @@
 				</tbody>
 			</table>
 		</xsl:if>
-		<xsl:if test="count(entries/entry[@type='field']) > 0">
+		<xsl:if test="count(entries/entry[@type='field']) > 0 or count(entries/entry[@type='constant']) > 0">
 			<h2>Fields</h2>
 			<table>
 				<thead>
@@ -375,22 +375,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<xsl:apply-templates select="entries/entry[@type='field']" />
-				</tbody>
-			</table>
-		</xsl:if>
-		<xsl:if test="count(entries/entry[@type='constant']) > 0">
-			<h2>Constants</h2>
-			<table>
-				<thead>
-					<tr>
-						<th class="icon"></th>
-						<th>Name</th>
-						<th>Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					<xsl:apply-templates select="entries/entry[@type='constant']" />
+					<xsl:apply-templates select="entries/entry[@type='field' or @type='constant']" />
 				</tbody>
 			</table>
 		</xsl:if>
