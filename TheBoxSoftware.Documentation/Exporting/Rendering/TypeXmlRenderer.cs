@@ -48,23 +48,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteEndElement();
 
 			if (this.member.IsGeneric) {
-				List<GenericTypeRef> genericTypes = this.member.GetGenericTypes();
-				writer.WriteStartElement("genericparameters");
-				for(int i = 0; i < genericTypes.Count; i++) {
-					writer.WriteStartElement("parameter");
-					writer.WriteAttributeString("name", genericTypes[i].Name);
-					// find and output the summary
-					if (comment != XmlCodeComment.Empty) {
-						XmlCodeElement paramEntry = comment.Elements.Find(currentBlock => 
-							currentBlock is TypeParamXmlCodeElement 
-							&& ((TypeParamXmlCodeElement)currentBlock).Name == genericTypes[i].Name);
-						if (paramEntry != null) {
-							this.Serialize(paramEntry, writer, this.member.Assembly);
-						}
-					}
-					writer.WriteEndElement();
-				}
-				writer.WriteEndElement();
+				this.RenderGenericTypeParameters(this.member.GetGenericTypes(), writer, comment);
 			}
 
 			// find and output the summary

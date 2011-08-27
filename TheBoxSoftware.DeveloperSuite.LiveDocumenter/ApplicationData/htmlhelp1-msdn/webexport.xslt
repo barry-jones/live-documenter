@@ -232,6 +232,9 @@ Language=0x809 English (United Kingdom)
                     </xsl:if>
                     
                     <xsl:apply-templates select="/member/*/syntax" />
+					<xsl:apply-templates select="/member/genericparameters" />
+					<xsl:apply-templates select="/member/parameters" />
+					<xsl:apply-templates select="/member/exceptions" />
                                         
                     <xsl:call-template name="member-lists" />
                     <xsl:apply-templates select="/member/values" />
@@ -514,11 +517,95 @@ Language=0x809 English (United Kingdom)
         </div>
     </xsl:template>
 
-	<xsl:template match="example">
+	<xsl:template match="/member/parameters">
+		<div class="parameters">
+			<h3>Parameters</h3>
+			<dl>
+				<xsl:apply-templates select="parameter" />
+			</dl>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="/member/parameters/parameter">
+		<dt>
+			<xsl:value-of select="@name" />
+		</dt>
+		<dd>
+			<div>
+				Type:
+				<xsl:if test="not(type[@key])">
+					<xsl:value-of select="type" />
+				</xsl:if>
+				<xsl:if test="type[@key]">
+					<a href="{type/@key}.htm">
+						<xsl:value-of select="type" />
+					</a>
+				</xsl:if>
+			</div>
+			<div>
+				<xsl:value-of select="description" />
+			</div>
+		</dd>
+	</xsl:template>
+
+	<xsl:template match="/member/genericparameters">
+		<div class="genericparameters">
+			<h3>Type Parameters</h3>
+			<dl>
+				<xsl:apply-templates select="parameter" />
+			</dl>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="/member/genericparameters/parameter">
+		<dt>
+			<xsl:value-of select="name" />
+		</dt>
+		<dd>
+			<xsl:value-of select="description" />
+		</dd>
+	</xsl:template>
+
+	<xsl:template match="/member/example">
 		<div class="examples">
 			<h2>Examples</h2>
 			<xsl:apply-templates />
 		</div>
+	</xsl:template>
+
+	<xsl:template match="exceptions">
+		<div class="exceptions">
+			<h2>Exceptions</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Exception</th>
+						<th>Condition</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="exception" />
+				</tbody>
+			</table>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="exception">
+		<tr>
+			<td>
+				<xsl:if test="name[@key]">
+					<a href="{name/@key}.htm">
+						<xsl:apply-templates select="name" />
+					</a>
+				</xsl:if>
+				<xsl:if test="not(name[@key])">
+					<xsl:apply-templates select="name" />
+				</xsl:if>
+			</td>
+			<td>
+				<xsl:apply-templates select="condition" />
+			</td>
+		</tr>
 	</xsl:template>
 	
     <xsl:template match="see">

@@ -53,6 +53,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				}
 			}
 
+			this.RenderExceptionBlock(this.member, writer, comment);
 			this.RenderSyntaxBlocks(this.member, writer);
 
 			// find and output the remarks

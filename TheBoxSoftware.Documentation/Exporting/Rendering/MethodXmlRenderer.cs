@@ -6,7 +6,10 @@ using TheBoxSoftware.Reflection.Comments;
 using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.Documentation.Exporting.Rendering {
-	class MethodXmlRenderer : XmlRenderer {
+	/// <summary>
+	/// Renders the XML for a method in the documentation.
+	/// </summary>
+	internal class MethodXmlRenderer : XmlRenderer {
 		private MethodDef member;
 		private XmlCodeCommentFile xmlComments;
 
@@ -20,6 +23,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			this.AssociatedEntry = entry;
 		}
 
+		/// <summary>
+		/// Renders the method XML to the <paramref name="writer."/>
+		/// </summary>
+		/// <param name="writer">The open valid writer to write to.</param>
 		public override void Render(System.Xml.XmlWriter writer) {
 			CRefPath crefPath = new CRefPath(this.member);
 			XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
@@ -46,23 +53,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteEndElement();
 
 			if (this.member.IsGeneric) {
-				List<GenericTypeRef> genericTypes = this.member.GetGenericTypes();
-				writer.WriteStartElement("genericparameters");
-				for (int i = 0; i < genericTypes.Count; i++) {
-					writer.WriteStartElement("parameter");
-					writer.WriteAttributeString("name", genericTypes[i].Name);
-					// find and output the summary
-					if (comment != XmlCodeComment.Empty) {
-						XmlCodeElement paramEntry = comment.Elements.Find(currentBlock =>
-							currentBlock is TypeParamXmlCodeElement
-							&& ((TypeParamXmlCodeElement)currentBlock).Name == genericTypes[i].Name);
-						if (paramEntry != null) {
-							this.Serialize(paramEntry, writer, this.member.Assembly);
-						}
-					}
-					writer.WriteEndElement();
-				}
-				writer.WriteEndElement();
+				this.RenderGenericTypeParameters(this.member.GetGenericTypes(), writer, comment);
 			}
 
 			if (this.member.Parameters.Count > 0) {
@@ -72,34 +63,37 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 						continue;
 
 					TypeRef parameterType = this.member.Parameters[i].GetTypeRef();
-					if (parameterType == null)
-					{
-						int x = 0;
-					}
 					Entry foundEntry = this.AssociatedEntry.FindByKey(parameterType.UniqueId, string.Empty);
 
 					writer.WriteStartElement("parameter");
 					writer.WriteAttributeString("name", this.member.Parameters[i].Name);
 					writer.WriteStartElement("type");
-					writer.WriteAttributeString("name", parameterType.GetDisplayName(false));
-					if (foundEntry != null) {
-						writer.WriteAttributeString("key", foundEntry.Key.ToString());
+					if (!parameterType.IsExternalReference) {
+						writer.WriteAttributeString("key", parameterType.GetGloballyUniqueId().ToString());
 					}
+					writer.WriteString(parameterType.GetDisplayName(false));
+					writer.WriteEndElement(); // type
 
 					if (comment != XmlCodeComment.Empty) {
 						XmlCodeElement paramEntry = comment.Elements.Find(currentBlock =>
 							currentBlock is ParamXmlCodeElement
 							&& ((ParamXmlCodeElement)currentBlock).Name == this.member.Parameters[i].Name);
 						if (paramEntry != null) {
-							this.Serialize(paramEntry, writer, this.member.Assembly);
+							writer.WriteStartElement("description");
+							ParamXmlCodeElement paraElement = (ParamXmlCodeElement)paramEntry;
+							for (int j = 0; j < paraElement.Elements.Count; j++) {
+								this.Serialize(paraElement.Elements[j], writer, this.member.Assembly);
+							}
+							writer.WriteEndElement();
 						}
 					}
 
-					writer.WriteEndElement(); // type
 					writer.WriteEndElement(); // parameter
 				}
 				writer.WriteEndElement();
 			}
+
+			this.RenderExceptionBlock(this.member, writer, comment);
 
 			// find and output the summary
 			if (comment != XmlCodeComment.Empty) {
