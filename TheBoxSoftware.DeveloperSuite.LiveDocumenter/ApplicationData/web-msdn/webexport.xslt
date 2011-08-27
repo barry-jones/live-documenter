@@ -210,6 +210,8 @@
                     <xsl:apply-templates select="/member/values" />
                     
                     <xsl:apply-templates select="/member/remarks" />
+
+                    <xsl:apply-templates select="/member/example" />
                     
                     <xsl:apply-templates select="/member/seealsolist" />
                 </div>
@@ -503,6 +505,13 @@
     <xsl:template match="summary">
         <div class="summary">
             <xsl:apply-templates />
+        </div>
+    </xsl:template>
+
+    <xsl:template match="example">
+        <div class="example">
+			<h2>Examples</h2>
+			<xsl:apply-templates />
         </div>
     </xsl:template>
     

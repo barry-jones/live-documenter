@@ -213,6 +213,7 @@
 				<xsl:apply-templates select="/member/values" />
 
 				<xsl:apply-templates select="/member/remarks" />
+				<xsl:apply-templates select="/member/example" />
 
 				<xsl:apply-templates select="/member/seealsolist" />
 			</div>
@@ -561,6 +562,13 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template match="example">
+		<div class="examples">
+			<h2>Examples</h2>
+			<xsl:apply-templates />
+		</div>
+	</xsl:template>
+	
 	<xsl:template match="see">
 		<xsl:if test="@type='namespace'">
 			<a href="ms-xhelp://?Id={@id}-{@name}">

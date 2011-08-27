@@ -119,6 +119,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				}
 			}
 
+			// find and output the examples
+			if (comment != XmlCodeComment.Empty) {
+				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement);
+				if (remarks != null) {
+					this.Serialize(remarks, writer, this.member.Assembly);
+				}
+			}
+
 			// find and output the see also
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is SeeAlsoXmlCodeElement);
