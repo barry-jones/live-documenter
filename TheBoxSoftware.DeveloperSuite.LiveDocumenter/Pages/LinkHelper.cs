@@ -8,6 +8,7 @@ using System.Windows.Controls;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 	using TheBoxSoftware.Documentation;
+	using TheBoxSoftware.Reflection.Comments;
 
 	/// <summary>
 	/// Helps links in the flow document resolve out to an item in the
@@ -23,25 +24,27 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 			if (e.Source is System.Windows.Documents.Hyperlink) {
 				System.Windows.Documents.Hyperlink sourceLink = e.Source as System.Windows.Documents.Hyperlink;
 				LiveDocument document = LiveDocumentorFile.Singleton.LiveDocument;
-				DocumentMap items = document.DocumentMap;
 				Entry entry = null;
 				sourceLink.Cursor = Cursors.Wait;
 
-				foreach (Entry item in items) {
-					EntryKey key = null;
-					if (sourceLink.Tag is CrefEntryKey) {
-						key = Helper.ResolveTypeAndGetUniqueIdFromCref((CrefEntryKey)sourceLink.Tag);
-					}
-					else if (sourceLink.Tag is EntryKey) {
-						key = (EntryKey)sourceLink.Tag;
-					}
+				EntryKey key = null;
+				if (sourceLink.Tag is CrefEntryKey) {
+					CrefEntryKey crefEntryKey = (CrefEntryKey)sourceLink.Tag;
+					CRefPath path = CRefPath.Parse(crefEntryKey.CRef);
+					entry = document.Find(path);
+				}
+				else if (sourceLink.Tag is EntryKey) {
+					key = (EntryKey)sourceLink.Tag;
 					if (key != null) {
-						entry = item.FindByKey(key.Key, key.SubKey);
-						if (entry != null) {
-							break;
+						entry = document.Find(key.Key, key.SubKey);
+
+						if (entry != null && entry.Parent != null) {
+							entry.IsSelected = true;
+							entry.Parent.IsExpanded = true;
 						}
 					}
 				}
+
 				if (entry != null && entry.Parent != null) {
 					entry.IsSelected = true;
 					entry.Parent.IsExpanded = true;

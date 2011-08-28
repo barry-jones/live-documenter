@@ -9,14 +9,12 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	class TypeXmlRenderer : XmlRenderer {
 		private TypeDef member;
 		private XmlCodeCommentFile xmlComments;
-		private DocumentMap documentMap;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TypeXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="entry">The entry in the document map to initialise the renderer with.</param>
-		public TypeXmlRenderer(Entry entry, DocumentMap map) {
-			this.documentMap = map;
+		public TypeXmlRenderer(Entry entry) {
 			this.member = (TypeDef)entry.Item;
 			this.xmlComments = entry.XmlCommentFile;
 			this.AssociatedEntry = entry;
@@ -127,7 +125,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			Entry constructors = children.Find(entry => entry.Name == "Constructors");
 			if (constructors != null) {
-				var s = from child in constructors.Children orderby child.FullName select child;
+				var s = from child in constructors.Children orderby child.Name select child;
 				foreach (Entry current in s) {
 					MethodDef currentMember = (MethodDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
@@ -136,7 +134,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			Entry fields = children.Find(entry => entry.Name == "Fields");
 			if (fields != null) {
-				var s = from child in fields.Children orderby child.FullName select child;
+				var s = from child in fields.Children orderby child.Name select child;
 				foreach (Entry current in s) {
 					FieldDef currentMember = (FieldDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.Name);
@@ -145,7 +143,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			Entry properties = children.Find(entry => entry.Name == "Properties");
 			if (properties != null) {
-				var s = from child in properties.Children orderby child.FullName select child;
+				var s = from child in properties.Children orderby child.Name select child;
 				foreach (Entry current in s) {
 					PropertyDef currentMember = (PropertyDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
@@ -154,7 +152,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			Entry events = children.Find(entry => entry.Name == "Events");
 			if (events != null) {
-				var s = from child in events.Children orderby child.FullName select child;
+				var s = from child in events.Children orderby child.Name select child;
 				foreach (Entry current in s) {
 					EventDef currentMember = (EventDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.Name);
@@ -163,7 +161,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			Entry methods = children.Find(entry => entry.Name == "Methods");
 			if (methods != null) {
-				var s = from child in methods.Children orderby child.FullName select child;
+				var s = from child in methods.Children orderby child.Name select child;
 				foreach (Entry current in s) {
 					MethodDef currentMember = (MethodDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
@@ -172,7 +170,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			Entry operators = children.Find(entry => entry.Name == "Operators");
 			if (operators != null) {
-				var s = from child in operators.Children orderby child.FullName select child;
+				var s = from child in operators.Children orderby child.Name select child;
 				foreach (Entry current in s) {
 					MethodDef currentMember = (MethodDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false));
@@ -181,7 +179,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			var extensionMethods = from method in this.member.ExtensionMethods orderby method.Name select method;
 			foreach (MethodDef currentMethod in extensionMethods) {
-				if (documentMap.FindById(currentMethod.GetGloballyUniqueId()) != null) {
+				if (!this.Exporter.Document.IsMemberFiltered(currentMethod)) {
 					DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
 					this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
 				}

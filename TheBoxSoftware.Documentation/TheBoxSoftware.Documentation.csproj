@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyFirstDocumentMapper.cs" />
+    <Compile Include="Document.cs" />
     <Compile Include="DocumentedAssembly.cs" />
     <Compile Include="DocumentMap.cs" />
     <Compile Include="DocumentMapper.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Mappers.cs" />
     <Compile Include="NamespaceFirstDocumentMapper.cs" />
     <Compile Include="ObservableDocumentMap.cs" />
+    <Compile Include="PreEntryAddedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

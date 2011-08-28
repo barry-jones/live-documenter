@@ -32,10 +32,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
 		/// </summary>
 		/// <param name="currentFiles">The current files.</param>
-		protected Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings, ExportConfigFile config) {
-			this.CurrentFiles = currentFiles;
-			this.Settings = settings;
+		protected Exporter(Document document, ExportSettings settings, ExportConfigFile config) {
 			this.Config = config;
+			this.Settings = settings;
+			this.Document = document;
 
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
@@ -48,37 +48,36 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <summary>
 		/// Factory method for creating new Exporter instances.
 		/// </summary>
-		/// <param name="files">The files to export documentation for.</param>
-		/// <param name="settings">The export settings.</param>
+		/// <param name="document">The document to export.</param>
 		/// <param name="config">The export configuration.</param>
 		/// <returns>A valid instance of an Exporter.</returns>
 		/// <exception cref="ArgumentNullException">
 		/// All of the parameters are required so provided a null reference will cause this exception
 		/// please see the parameter name in the exception for more information.
 		/// </exception>
-		public static Exporter Create(List<DocumentedAssembly> files, ExportSettings settings, ExportConfigFile config) {
-			if (files == null || files.Count == 0) throw new ArgumentNullException("files");
-			if (settings == null) throw new ArgumentNullException("settings");
+		public static Exporter Create(Document document, ExportSettings settings, ExportConfigFile config) {
+			//if (files == null || files.Count == 0) throw new ArgumentNullException("files");
+			//if (settings == null) throw new ArgumentNullException("settings");
 			if (config == null) throw new ArgumentNullException("config");
 
 			Exporter createdExporter = null;
 
 			switch (config.Exporter) {
 				case Exporters.Html1:
-					createdExporter = new HtmlHelp1Exporter(files, settings, config);
+					createdExporter = new HtmlHelp1Exporter(document, settings, config);
 					break;
 
 				case Exporters.Html2:
-					createdExporter = new HtmlHelp2Exporter(files, settings, config);
+					createdExporter = new HtmlHelp2Exporter(document, settings, config);
 					break;
 
 				case Exporters.HelpViewer1:
-					createdExporter = new HelpViewer1Exporter(files, settings, config);
+					createdExporter = new HelpViewer1Exporter(document, settings, config);
 					break;
 
 				case Exporters.Website:
 				default:
-					createdExporter = new WebsiteExporter(files, settings, config);
+					createdExporter = new WebsiteExporter(document, settings, config);
 					break;
 			}
 
@@ -86,15 +85,17 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		#region Properties
-		/// <summary>
-		/// The document map to be exported.
-		/// </summary>
-		public DocumentMap DocumentMap { get; set; }
+		public Document Document { get; set; }
 
-		/// <summary>
-		///  The files that are to be documented.
-		/// </summary>
-		protected List<DocumentedAssembly> CurrentFiles { get; set; }
+		///// <summary>
+		///// The document map to be exported.
+		///// </summary>
+		//public DocumentMap DocumentMap { get; set; }
+
+		///// <summary>
+		/////  The files that are to be documented.
+		///// </summary>
+		//protected List<DocumentedAssembly> CurrentFiles { get; set; }
 
 		/// <summary>
 		/// The directory used to output the first rendered output to, this is not the output or publishing directory.
@@ -156,18 +157,18 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// found pages for each of the entries in the documentation.
 		/// </summary>
 		/// <param name="currentEntry">The current entry to export</param>
-		protected virtual void RecursiveEntryExport(Entry currentEntry, DocumentMap map) {
-			this.Export(currentEntry, map);
+		protected virtual void RecursiveEntryExport(Entry currentEntry) {
+			this.Export(currentEntry);
 			for (int i = 0; i < currentEntry.Children.Count; i++) {
-				this.RecursiveEntryExport(currentEntry.Children[i], map);
+				this.RecursiveEntryExport(currentEntry.Children[i]);
 			}
 		}
 
-		protected virtual void Export(Entry current, DocumentMap map) {
+		protected virtual void Export(Entry current) {
 			System.Diagnostics.Debug.WriteLine("SaveXaml: " + current.Name + "[" + current.Key + ", " + current.SubKey + "]");
 			System.Diagnostics.Debug.Indent();
 
-			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this, map);
+			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
 
 			if (r != null) {
 				string filename = string.Format("{0}{1}{2}.xml", this.TempDirectory, current.Key, string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty));
@@ -187,7 +188,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <param name="path">The path.</param>
 		/// <param name="memberUniqueId">The member unique id.</param>
 		/// <param name="typeUniqueId">The type unique id.</param>
-		internal void GetUniqueId(CRefPath path, out long memberUniqueId, out long typeUniqueId) {
+		internal void ResolveCRef(CRefPath path, out long memberUniqueId, out long typeUniqueId) {
 			System.Diagnostics.Debug.WriteLine("GetUniqueId: " + path.ToString());
 			System.Diagnostics.Debug.Indent();
 
@@ -196,48 +197,55 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			memberUniqueId = 0;
 			typeUniqueId = 0;
 
-			if (path.PathType != CRefTypes.Error) {
-				foreach (DocumentedAssembly ass in this.CurrentFiles) {
-					type = ass.LoadedAssembly.FindType(path.Namespace, path.TypeName);
-					if (type != null)
-						break;
-				}
-
-				if (type != null) {
-					if (path.PathType == CRefTypes.Type) {
-						member = type;
-					}
-					else if (path.PathType == CRefTypes.Property || path.PathType == CRefTypes.Method || path.PathType == CRefTypes.Field || path.PathType == CRefTypes.Event) {
-						member = path.FindIn(type);
-					}
-
-					if (member != null) {
-						memberUniqueId = member.GetGloballyUniqueId();
-						typeUniqueId = type.GetGloballyUniqueId();
-					}
-				}
+			Entry entry = this.Document.Find(path);
+			if (entry != null) {
+				member = (ReflectedMember)entry.Item;
+				memberUniqueId = member.GetGloballyUniqueId();
+				typeUniqueId = type.GetGloballyUniqueId();
 			}
+
+			//if (path.PathType != CRefTypes.Error) {
+			//    foreach (DocumentedAssembly ass in this.CurrentFiles) {
+			//        type = ass.LoadedAssembly.FindType(path.Namespace, path.TypeName);
+			//        if (type != null)
+			//            break;
+			//    }
+
+			//    if (type != null) {
+			//        if (path.PathType == CRefTypes.Type) {
+			//            member = type;
+			//        }
+			//        else if (path.PathType == CRefTypes.Property || path.PathType == CRefTypes.Method || path.PathType == CRefTypes.Field || path.PathType == CRefTypes.Event) {
+			//            member = path.FindIn(type);
+			//        }
+
+			//        if (member != null) {
+			//            memberUniqueId = member.GetGloballyUniqueId();
+			//            typeUniqueId = type.GetGloballyUniqueId();
+			//        }
+			//    }
+			//}
 
 			System.Diagnostics.Debug.WriteLine("tId: " + typeUniqueId.ToString() + " - mId: " + memberUniqueId.ToString());
 			System.Diagnostics.Debug.Unindent();
 		}
 
-		/// <summary>
-		/// Finds the entry in the document map with the specified key.
-		/// </summary>
-		/// <param name="key">The key to search for.</param>
-		/// <param name="checkChildren">Wether or not to check the child entries</param>
-		/// <returns>The entry that relates to the key or null if not found</returns>
-		protected Entry FindByKey(long key, string subKey, bool checkChildren) {
-			Entry found = null;
-			for (int i = 0; i < this.DocumentMap.Count; i++) {
-				found = this.DocumentMap[i].FindByKey(key, subKey, checkChildren);
-				if (found != null) {
-					break;
-				}
-			}
-			return found;
-		}
+		///// <summary>
+		///// Finds the entry in the document map with the specified key.
+		///// </summary>
+		///// <param name="key">The key to search for.</param>
+		///// <param name="checkChildren">Wether or not to check the child entries</param>
+		///// <returns>The entry that relates to the key or null if not found</returns>
+		//protected Entry FindByKey(long key, string subKey, bool checkChildren) {
+		//    Entry found = null;
+		//    for (int i = 0; i < this.DocumentMap.Count; i++) {
+		//        found = this.DocumentMap[i].FindByKey(key, subKey, checkChildren);
+		//        if (found != null) {
+		//            break;
+		//        }
+		//    }
+		//    return found;
+		//}
 
 		/// <summary>
 		/// In some exporters generic types using angle brackets cause problems. This method creates

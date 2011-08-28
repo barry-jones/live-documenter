@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 
-	public class NamespaceFirstDocumentMapper : DocumentMapper {
+	internal class NamespaceFirstDocumentMapper : DocumentMapper {
 		/// <summary>
 		/// Initialises a new instance of the NamespaceFirstDocumentMapper.
 		/// </summary>
@@ -15,8 +15,8 @@ namespace TheBoxSoftware.Documentation {
 		/// <param name="settings">Documentation settings.</param>
 		/// <param name="useObservableCollection">Indicates if an observable collection should be used instead of a normal one.</param>
 		/// <param name="creator">The factory class for creating new <see cref="Entry"/> instances.</param>
-		public NamespaceFirstDocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection, EntryCreator creator)
-			: base(assemblies, settings, useObservableCollection, creator) {
+		public NamespaceFirstDocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator)
+			: base(assemblies, useObservableCollection, creator) {
 		}
 
 		public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
@@ -41,17 +41,17 @@ namespace TheBoxSoftware.Documentation {
 
 			// Add the namespaces to the document map
 			foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in assembly.GetTypesInNamespaces()) {
-				if (string.IsNullOrEmpty(currentNamespace.Key)) {
+				if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0) {
 					continue;
 				}
-				namespaceEntry = this.FindByKey(assemblyEntry.Key, currentNamespace.Key, false);
-				//namespaceEntry.Item = currentNamespace;
+				string namespaceSubKey = this.BuildSubkey(currentNamespace);
+
+				namespaceEntry = this.FindByKey(assemblyEntry.Key, namespaceSubKey, false);
 				if (namespaceEntry == null) {
 					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
 					namespaceEntry.Key = assemblyEntry.Key;
-					namespaceEntry.SubKey = this.illegalFileCharacters.Replace(currentNamespace.Key, "_");
+					namespaceEntry.SubKey = namespaceSubKey;
 					namespaceEntry.IsSearchable = false;
-					namespaceEntry.FullName = currentNamespace.Key;
 				}
 
 				// Add the types from that namespace to its map
@@ -59,28 +59,25 @@ namespace TheBoxSoftware.Documentation {
 					if (currentType.Name.StartsWith("<")) {
 						continue;
 					}
-					Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
-					typeEntry.Key = currentType.GetGloballyUniqueId();
-					typeEntry.IsSearchable = true;
-					typeEntry.FullName = currentType.GetFullyQualifiedName();
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentType);
+					if (!e.Filter) {
+						Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
+						typeEntry.Key = currentType.GetGloballyUniqueId();
+						typeEntry.IsSearchable = true;
 
-					// For some elements we will not want to load the child objects
-					// this is currently for System.Enum derived values.
-					if (
-						currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
-						currentType.IsDelegate) {
-						// Ignore children
-					}
-					else {
-						this.GenerateTypeMap(currentType, typeEntry, xmlComments);
-						typeEntry.Children.Sort();
-					}
+						// For some elements we will not want to load the child objects
+						// this is currently for System.Enum derived values.
+						if (
+							currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
+							currentType.IsDelegate) {
+							// Ignore children
+						}
+						else {
+							this.GenerateTypeMap(currentType, typeEntry, xmlComments);
+							typeEntry.Children.Sort();
+						}
 
-					if (this.PreEntryAdded(typeEntry)) {
 						namespaceEntry.Children.Add(typeEntry);
-					}
-					else {
-						continue;
 					}
 				}
 				if (namespaceEntry.Children.Count > 0) {

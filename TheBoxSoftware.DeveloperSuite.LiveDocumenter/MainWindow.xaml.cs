@@ -111,15 +111,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				e.CanExecute = true;
 			}
 			else if (e.Command == ApplicationCommands.Print) {
-				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument.DocumentedFiles != null 
-					&& LiveDocumentorFile.Singleton.LiveDocument.DocumentedFiles.Count > 0;
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles;
 			}
 			else if (e.Command == ApplicationCommands.Find) {
 				e.CanExecute = true;
 			}
 			else if (e.Command == Commands.Export) {
-				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument.DocumentedFiles != null
-					&& LiveDocumentorFile.Singleton.LiveDocument.DocumentedFiles.Count > 0;
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null && 
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles;
 			}
 		}
 
@@ -157,9 +157,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		public void UpdateView() {
 			LiveDocument document = LiveDocumentorFile.Singleton.Update();
-			this.documentMap.ItemsSource = document.DocumentMap;
-			if (document.DocumentMap.Count > 0) {
-				this.pageViewer.Document = ((LiveDocumenterEntry)document.DocumentMap[0]).Page;
+			this.documentMap.ItemsSource = document.Map;
+			if (document.Map.Count > 0) {
+				this.pageViewer.Document = ((LiveDocumenterEntry)document.Map[0]).Page;
 			}
 			else {
                 // There are no entries in this project/solution
@@ -203,13 +203,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		private void MenuItem_Click(object sender, RoutedEventArgs e) {
-			// test
-			Documentation.Exporting.WebsiteExporter exp = new TheBoxSoftware.Documentation.Exporting.WebsiteExporter(
-				LiveDocumentorFile.Singleton.Files,
-				new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
-				Documentation.Exporting.ExportConfigFile.Create(@"ApplicationData/web-msdn.ldec")
-				);
-			exp.Export();
+			//// test
+			//Documentation.Exporting.WebsiteExporter exp = new TheBoxSoftware.Documentation.Exporting.WebsiteExporter(
+			//    LiveDocumentorFile.Singleton.Files,
+			//    new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+			//    Documentation.Exporting.ExportConfigFile.Create(@"ApplicationData/web-msdn.ldec")
+			//    );
+			//exp.Export();
 		}
 
 		/// <summary>
@@ -311,8 +311,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				// activated. That is before we tried to reload the project.
 				if (hasBeenReloaded && (preUpdateSelectionParent != null && preUpdateSelection != null)) {
 					// We need something in the document map to search on
-					if (LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.Count >= 1) {
-						Entry foundParent = LiveDocumentorFile.Singleton.LiveDocument.DocumentMap.First<Entry>(
+					if (LiveDocumentorFile.Singleton.LiveDocument.Map.Count >= 1) {
+						Entry foundParent = LiveDocumentorFile.Singleton.LiveDocument.Map.First<Entry>(
 							entry => entry.Key == preUpdateSelectionParent.Key
 							);
 						Entry foundEntry = foundParent.FindByKey(preUpdateSelection.Key, preUpdateSelection.SubKey);

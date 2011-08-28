@@ -59,11 +59,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			ExportSettings settings = new ExportSettings();
 			foreach (Settings.PrivacyFilter filter in settingsWindow.PrivacyFilters) {
 				if (filter.IsSelected) {
-					settings.DocumentSettings.VisibilityFilters.Add(filter.Visibility);
+					settings.Settings.VisibilityFilters.Add(filter.Visibility);
 				}
 			}
 
-			exporter = Documentation.Exporting.Exporter.Create(LiveDocumentorFile.Singleton.Files, settings, config);
+			TheBoxSoftware.Documentation.Document document = new Documentation.Document(LiveDocumenter.LiveDocumentorFile.Singleton.Files);
+			document.Settings = settings.Settings;
+
+			exporter = Documentation.Exporting.Exporter.Create(document, settings, config);
 			
 			exporter.ExportCalculated += new ExportCalculatedEventHandler(exporter_ExportCalculated);
 			exporter.ExportStep += new ExportStepEventHandler(exporter_ExportStep);

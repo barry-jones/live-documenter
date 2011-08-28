@@ -276,7 +276,23 @@ namespace TheBoxSoftware.Reflection.Comments {
 					foundMembers.AddRange(type.Fields.FindAll(e => e.Name == this.ElementName).ToArray());
 					break;
 				case CRefTypes.Method:
-					foundMembers.AddRange(type.Methods.FindAll(e => e.Name == this.ElementName.Replace('#', '.')).ToArray());
+					string elementName = this.ElementName.Replace('#', '.');
+					int genParameters = 0;
+					if (elementName.Contains('`')) {
+						genParameters = int.Parse(elementName.Substring(elementName.Length - 1, 1));
+						elementName = elementName.Substring(0, elementName.IndexOf('`'));
+					}
+					MethodDef[] foundMethods = type.Methods.FindAll(e => e.Name == elementName).ToArray();
+					if (foundMethods.Length > 1 && genParameters > 0) {
+						for (int i = 0; i < foundMethods.Length; i++) {
+							if (foundMethods[i].GenericTypes != null && foundMethods[i].GenericTypes.Count == genParameters) {
+								foundMembers.Add(foundMethods[i]);
+							}
+						}
+					}
+					else {
+						foundMembers.AddRange(foundMethods);
+					}
 					break;
 				case CRefTypes.Property:
 					foundMembers.AddRange(type.Properties.FindAll(e => e.Name == this.ElementName).ToArray());

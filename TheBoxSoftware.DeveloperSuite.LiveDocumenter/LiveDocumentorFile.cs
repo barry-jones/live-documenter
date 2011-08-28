@@ -30,7 +30,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		private LiveDocumentorFile() {
 			this.files = new List<DocumentedAssembly>();
-			this.liveDocument = new LiveDocument();
+			// this.liveDocument = new LiveDocument();
 		}
 		#endregion
 
@@ -48,7 +48,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		/// <returns>The updated LiveDocument.</returns>
 		internal LiveDocument Update() {
-			this.liveDocument.DocumentedFiles = this.Files;
+			if (this.liveDocument == null) {
+				this.liveDocument = new LiveDocument(this.Files);
+			}
+			this.liveDocument.Assemblies = this.Files;
 			this.liveDocument.Update();
 			return this.liveDocument;
 		}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.Reflection;
@@ -56,6 +57,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public CrefEntryKey(AssemblyDef assembly, string cref) {
 			this.Assembly = assembly;
 			this.CRef = cref;
+
+			// NOTE: we are fixing crappy names back to correct cref formats.
+			if (cref.Contains('<')) {
+				MatchCollection matches = Regex.Matches(cref, "<[a-zA-Z](,[a-zA-Z])*>");
+				for (int i = 0; i < matches.Count; i++) {
+					string replacement = string.Format("`{0}", matches[i].Value.Split(',').Length);
+					cref = cref.Replace(matches[i].Value, replacement);
+				}
+				this.CRef = cref;
+			}
 		}
 
 		/// <summary>

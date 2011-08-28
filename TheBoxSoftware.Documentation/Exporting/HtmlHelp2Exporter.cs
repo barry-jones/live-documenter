@@ -26,11 +26,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <summary>
 		/// Initialises a new instance of the HtmlHelp1Exporter.
 		/// </summary>
-		/// <param name="currentFiles">The files to be exported.</param>
-		/// <param name="settings">The settings for the export.</param>
+		/// <param name="document">The document to be exported.</param>
 		/// <param name="config">The export config file, from the LDEC container.</param>
-		public HtmlHelp2Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings, ExportConfigFile config)
-			: base(currentFiles, settings, config) {
+		public HtmlHelp2Exporter(Document document, ExportSettings settings, ExportConfigFile config)
+			: base(document, settings, config) {
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
 				 new string(Path.GetInvalidPathChars()));
@@ -62,12 +61,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			try {
 				this.PrepareDirectory(this.TempDirectory);
 
-				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false, new EntryCreator());
 				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
 				this.CurrentExportStep = 1;
 
 				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
-					this.DocumentMap
+					this.Document.Map
 					);
 
 				// export the document map
@@ -77,8 +75,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				}
 
 				// export each of the members
-				foreach (Entry current in this.DocumentMap) {
-					this.RecursiveEntryExport(current, this.DocumentMap);
+				foreach (Entry current in this.Document.Map) {
+					this.RecursiveEntryExport(current);
 				}
 
 				Processor p = new Processor();
@@ -96,7 +94,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
 				// export the project xml, we cant render the XML because the DTD protocol causes loads of probs with Saxon
-				CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.DocumentMap, string.Empty);
+				CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.Document.Map, string.Empty);
 				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", this.OutputDirectory))) {
 					collectionXml.Render(writer);
 				}

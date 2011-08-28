@@ -26,11 +26,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <summary>
 		/// Initialises a new instance of the HtmlHelp1Exporter.
 		/// </summary>
-		/// <param name="currentFiles">The files to be exported.</param>
-		/// <param name="settings">The settings for the export.</param>
+		/// <param name="document">The document to be exported.</param>
 		/// <param name="config">The export config file, from the LDEC container.</param>
-		public HtmlHelp1Exporter(List<DocumentedAssembly> currentFiles, ExportSettings settings, ExportConfigFile config)
-			: base(currentFiles, settings, config) {
+		public HtmlHelp1Exporter(Document document, ExportSettings settings, ExportConfigFile config)
+			: base(document, settings, config) {
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
 				 new string(Path.GetInvalidPathChars()));
@@ -62,12 +61,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			try {
 				this.PrepareDirectory(this.TempDirectory);
 
-				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false, new EntryCreator());
 				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
 				this.CurrentExportStep = 1;
 
 				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
-					this.DocumentMap
+					this.Document.Map
 					);
 
 				// export the document map
@@ -77,20 +75,20 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				}
 
 				// export the project xml
-				ProjectXmlRenderer projectXml = new ProjectXmlRenderer(this.DocumentMap);
+				ProjectXmlRenderer projectXml = new ProjectXmlRenderer(this.Document.Map);
 				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/project.xml", this.TempDirectory))) {
 					projectXml.Render(writer);
 				}
 
 				//// export the index xml
-				IndexXmlRenderer indexXml = new IndexXmlRenderer(this.DocumentMap);
+				IndexXmlRenderer indexXml = new IndexXmlRenderer(this.Document.Map);
 				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
 					indexXml.Render(writer);
 				}
 
 				// export each of the members
-				foreach (Entry current in this.DocumentMap) {
-					this.RecursiveEntryExport(current, this.DocumentMap);
+				foreach (Entry current in this.Document.Map) {
+					this.RecursiveEntryExport(current);
 				}
 
 				Processor p = new Processor();

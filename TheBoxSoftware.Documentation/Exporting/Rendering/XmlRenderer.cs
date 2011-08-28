@@ -23,15 +23,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// <param name="entry">The entry in the document map to render.</param>
 		/// <param name="exporter">The exporter.</param>
 		/// <returns>A valid renderer or null.</returns>
-		public static XmlRenderer Create(Entry entry, Exporter exporter, DocumentMap map) {
+		public static XmlRenderer Create(Entry entry, Exporter exporter) {
 			XmlRenderer renderer = null;
 
 			if (entry.Item is ReflectedMember) {
 				if (entry.Item is TypeDef && string.IsNullOrEmpty(entry.SubKey)) {
-					renderer = new TypeXmlRenderer(entry, map);
+					renderer = new TypeXmlRenderer(entry);
 				}
 				else if (entry.Item is MethodDef) {
-					renderer = new MethodXmlRenderer(entry, map);
+					renderer = new MethodXmlRenderer(entry);
 				}
 				else if (entry.Item is FieldDef) {
 					renderer = new FieldXmlRenderer(entry);
@@ -185,25 +185,19 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				if (elements != null && elements.Count > 0) {
 					writer.WriteStartElement("seealsolist");
 					foreach (SeeAlsoXmlCodeElement current in elements) {
-						if (current.Member.PathType != CRefTypes.Error) {
-							long memberId, typeId;
-							this.Exporter.GetUniqueId(current.Member, out memberId, out typeId);
-							writer.WriteStartElement("seealso");
+						string displayName = current.Member.TypeName;
+						Entry entry = this.Exporter.Document.Find(current.Member);
 
-							TypeDef def = assembly.FindType(current.Member.Namespace, current.Member.TypeName);
-							string displayName = current.Member.TypeName;
-							if (def != null) displayName = def.GetDisplayName(false);
-
-							if (def != null) {
-								writer.WriteAttributeString("id", def.GetGloballyUniqueId().ToString());
+						writer.WriteStartElement("seealso");
+						if (entry != null) {
+							displayName = entry.Name;
+							ReflectedMember foundMember = entry.Item as ReflectedMember;
+							if (foundMember != null) {
+								writer.WriteAttributeString("id", foundMember.GetGloballyUniqueId().ToString());
 							}
-							else if (memberId != 0) {
-								writer.WriteAttributeString("id", memberId.ToString());
-							}
-
-							writer.WriteString(displayName);
-							writer.WriteEndElement(); // seealso
 						}
+						writer.WriteString(displayName);
+						writer.WriteEndElement(); // seealso
 					}
 					writer.WriteEndElement(); // seealsolist
 				}
@@ -220,46 +214,30 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			if (comment != XmlCodeComment.Empty) {
 				if (comment.Element == XmlCodeElements.See) {
 					SeeXmlCodeElement see = (SeeXmlCodeElement)comment;
-					long mId, tId;
-					this.Exporter.GetUniqueId(see.Member, out mId, out tId);
+					Entry entry = this.Exporter.Document.Find(see.Member);
 					string displayName = see.Text;
 
-					if (see.Member.PathType != CRefTypes.Error) {
+					if (entry != null && see.Member.PathType != CRefTypes.Error) {
+						displayName = entry.Name;
 						writer.WriteStartElement(comment.Element.ToString().ToLower());
-						TypeDef def = assembly.FindType(see.Member.Namespace, see.Member.TypeName);
+						writer.WriteAttributeString("id", entry.Key.ToString());
 
 						switch (see.Member.PathType) {
-							// these elements are named and the type of element will
-							// not modify how it should be displayed
-							case CRefTypes.Field:
-							case CRefTypes.Property:
-							case CRefTypes.Event:
-								if (mId != 0) {
-									writer.WriteAttributeString("id", mId.ToString());
-								}
-								break;
-
 							case CRefTypes.Namespace:
-								writer.WriteAttributeString("id", assembly.GetGloballyUniqueId().ToString());
 								writer.WriteAttributeString("type", "namespace");
 								writer.WriteAttributeString("name", displayName);
 								break;
-
 							// these could be generic and so will need to modify to
 							// a more appropriate display name
-							case CRefTypes.Method:								
-								if (def != null) {
-									MethodDef method = see.Member.FindIn(def) as MethodDef;
-
-									if (method != null) {
-										writer.WriteAttributeString("id", method.GetGloballyUniqueId().ToString());
-										displayName = method.GetDisplayName(false);
-									}
+							case CRefTypes.Method:
+								MethodDef method = entry.Item as MethodDef;
+								if (method != null) {
+									displayName = method.GetDisplayName(false);
 								}
 								break;
 							case CRefTypes.Type:
+								TypeDef def = entry.Item as TypeDef;
 								if (def != null) {
-									writer.WriteAttributeString("id", def.GetGloballyUniqueId().ToString());
 									displayName = def.GetDisplayName(false);
 								}
 								break;

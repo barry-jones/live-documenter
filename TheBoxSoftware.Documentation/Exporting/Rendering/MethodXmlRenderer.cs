@@ -12,14 +12,12 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	internal class MethodXmlRenderer : XmlRenderer {
 		private MethodDef member;
 		private XmlCodeCommentFile xmlComments;
-		private DocumentMap documentMap;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MethodXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="entry">The entry to initialise the renderer with.</param>
-		public MethodXmlRenderer(Entry entry, DocumentMap map) {
-			this.documentMap = map;
+		public MethodXmlRenderer(Entry entry) {
 			this.member = (MethodDef)entry.Item;
 			this.xmlComments = entry.XmlCommentFile;
 			this.AssociatedEntry = entry;

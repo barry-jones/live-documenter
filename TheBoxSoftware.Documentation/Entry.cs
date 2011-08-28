@@ -33,7 +33,6 @@ namespace TheBoxSoftware.Documentation {
 			this.item = item;
 			this.xmlComments = xmlComments;
 			this.Name = displayName;
-			this.FullName = displayName; // Defautls to display name, should be changed by caller later
 			this.Children = new List<Entry>();
 		}
 
@@ -144,12 +143,6 @@ namespace TheBoxSoftware.Documentation {
 		/// creating entries for property, member and method pages.
 		/// </summary>
 		public string SubKey { get; set; }
-
-		/// <summary>
-		/// Gets or sets a string representing the full name of the entries associated
-		/// item for searching.
-		/// </summary>
-		public string FullName { get; set; }
 
 		/// <summary>
 		/// Indicates if the entry is searchable.

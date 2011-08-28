@@ -10,10 +10,10 @@ namespace TheBoxSoftware.Documentation {
 
 	public abstract class DocumentMapper {
 		protected System.Text.RegularExpressions.Regex illegalFileCharacters;
+		private EventHandler<PreEntryAddedEventArgs> preEntryAddedEvent;
 
 		public static DocumentMapper Create(List<DocumentedAssembly> assemblies,
 			Mappers typeOfMapper,
-			DocumentSettings settings,
 			bool useObservableCollection,
 			EntryCreator creator) {
 
@@ -21,11 +21,11 @@ namespace TheBoxSoftware.Documentation {
 
 			switch (typeOfMapper) {
 				case Mappers.AssemblyFirst:
-					mapper = new AssemblyFirstDocumentMapper(assemblies, settings, useObservableCollection, creator);
+					mapper = new AssemblyFirstDocumentMapper(assemblies, useObservableCollection, creator);
 					break;
 				case Mappers.NamespaceFirst:
 				default:
-					mapper = new NamespaceFirstDocumentMapper(assemblies, settings, useObservableCollection, creator);
+					mapper = new NamespaceFirstDocumentMapper(assemblies, useObservableCollection, creator);
 					break;
 			}
 
@@ -36,23 +36,22 @@ namespace TheBoxSoftware.Documentation {
 		}
 
 		public static DocumentMap Generate(
-			List<DocumentedAssembly> assemblies, 
-			Mappers typeOfMapper, 
-			DocumentSettings settings, 
-			bool useObservableCollection, 
+			List<DocumentedAssembly> assemblies,
+			Mappers typeOfMapper,
+			DocumentSettings settings,
+			bool useObservableCollection,
 			EntryCreator creator) {
-				DocumentMapper mapper = DocumentMapper.Create(assemblies, typeOfMapper, settings, useObservableCollection, creator);
-				mapper.GenerateMap();
-				return mapper.DocumentMap;
+			DocumentMapper mapper = DocumentMapper.Create(assemblies, typeOfMapper, useObservableCollection, creator);
+			mapper.GenerateMap();
+			return mapper.DocumentMap;
 		}
 
 		protected List<DocumentedAssembly> CurrentFiles { get; set; }
 		public DocumentMap DocumentMap { get; set; }
 		protected bool UseObservableCollection { get; set; }
-		protected DocumentSettings Settings { get; set; }
 		protected EntryCreator EntryCreator { get; set; }
 
-		protected DocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection, EntryCreator creator) {
+		protected DocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator) {
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
 				 new string(Path.GetInvalidPathChars()));
@@ -60,7 +59,6 @@ namespace TheBoxSoftware.Documentation {
 				string.Format("[{0}]", System.Text.RegularExpressions.Regex.Escape(regex))
 				);
 			this.CurrentFiles = assemblies;
-			this.Settings = settings;
 			this.UseObservableCollection = useObservableCollection;
 			this.EntryCreator = creator;
 		}
@@ -85,35 +83,6 @@ namespace TheBoxSoftware.Documentation {
 				}
 			}
 			this.DocumentMap.OrderBy(e => e.Name);
-		}
-
-		/// <summary>
-		/// Method that is called be
-		/// </summary>
-		/// <param name="entry"></param>
-		/// <returns></returns>
-		public virtual bool PreEntryAdded(Entry entry) {
-			bool shouldBeAdded = true;
-
-			if (shouldBeAdded &&
-				(entry.Item is MethodDef ||
-				entry.Item is PropertyDef ||
-				entry.Item is FieldDef ||
-				entry.Item is TypeDef)) {
-					ReflectedMember member = entry.Item as ReflectedMember;
-				bool publicVisibility = member.MemberAccess == Visibility.Public;
-				if (!publicVisibility) {
-					shouldBeAdded = false;
-					foreach (Visibility current in this.Settings.VisibilityFilters) {
-						if (member.MemberAccess == current) {
-							shouldBeAdded = true;
-							break;
-						}
-					}
-				}
-			}
-
-			return shouldBeAdded;
 		}
 
 		/// <summary>
@@ -155,17 +124,17 @@ namespace TheBoxSoftware.Documentation {
 
 			// Add the namespaces to the document map
 			foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in assembly.GetTypesInNamespaces()) {
-				if (string.IsNullOrEmpty(currentNamespace.Key)) {
+				if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0) {
 					continue;
 				}
-				namespaceEntry = this.FindByKey(assemblyEntry.Key, currentNamespace.Key, false);
-				//namespaceEntry.Item = currentNamespace;
+				string namespaceSubKey = this.BuildSubkey(currentNamespace);
+
+				namespaceEntry = this.FindByKey(assemblyEntry.Key, namespaceSubKey, false);
 				if (namespaceEntry == null) {
 					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
 					namespaceEntry.Key = assemblyEntry.Key;
-					namespaceEntry.SubKey = this.illegalFileCharacters.Replace(currentNamespace.Key, "_");
+					namespaceEntry.SubKey = namespaceSubKey;
 					namespaceEntry.IsSearchable = false;
-					namespaceEntry.FullName = currentNamespace.Key;
 					this.DocumentMap[0].Children.Add(namespaceEntry);
 				}
 
@@ -174,28 +143,27 @@ namespace TheBoxSoftware.Documentation {
 					if (currentType.Name.StartsWith("<")) {
 						continue;
 					}
-					Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
-					typeEntry.Key = currentType.GetGloballyUniqueId();
-					typeEntry.IsSearchable = true;
-					typeEntry.FullName = currentType.GetFullyQualifiedName();
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentType);
+					this.OnPreEntryAdded(e);
 
-					// For some elements we will not want to load the child objects
-					// this is currently for System.Enum derived values.
-					if (
-						currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
-						currentType.IsDelegate) {
-						// Ignore children
-					}
-					else {
-						this.GenerateTypeMap(currentType, typeEntry, xmlComments);
-						typeEntry.Children.Sort();
-					}
+					if (!e.Filter) {
+						Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
+						typeEntry.Key = currentType.GetGloballyUniqueId();
+						typeEntry.IsSearchable = true;
 
-					if (this.PreEntryAdded(typeEntry)) {
+						// For some elements we will not want to load the child objects
+						// this is currently for System.Enum derived values.
+						if (
+							currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
+							currentType.IsDelegate) {
+							// Ignore children
+						}
+						else {
+							this.GenerateTypeMap(currentType, typeEntry, xmlComments);
+							typeEntry.Children.Sort();
+						}
+
 						namespaceEntry.Children.Add(typeEntry);
-					}
-					else {
-						continue;
 					}
 				}
 				if (namespaceEntry.Children.Count > 0) {
@@ -212,6 +180,30 @@ namespace TheBoxSoftware.Documentation {
 			}
 
 			return namespaceEntry;
+		}
+
+		protected string BuildSubkey(KeyValuePair<string, List<TypeDef>> namespaceEntry) {
+			TypeDef def = namespaceEntry.Value[0];
+			if (def.IsNested) {
+				TypeDef container = def.ContainingClass;
+				string baseNamespace = container.Namespace;
+				List<string> containingClassNames = new List<string>();
+				do {
+					containingClassNames.Add(container.Name);
+					container = container.ContainingClass;
+					if (container != null) {
+						baseNamespace = container.Namespace;
+					}
+				}
+				while (container != null);
+				containingClassNames.Add(baseNamespace);
+				containingClassNames.Reverse();
+
+				return string.Join(".", containingClassNames.ToArray());
+			}
+			else {
+				return def.Namespace;
+			}
 		}
 
 		/// <summary>
@@ -238,13 +230,13 @@ namespace TheBoxSoftware.Documentation {
 				// Add the method pages child page entries to the map
 				int count = constructors.Count;
 				for (int i = 0; i < count; i++) {
-					// foreach (MethodDef currentMethod in constructors) {
 					MethodDef currentMethod = constructors[i];
-					Entry constructorEntry = this.EntryCreator.Create(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
-					constructorEntry.IsSearchable = true;
-					constructorEntry.Key = currentMethod.GetGloballyUniqueId();
-					if (this.PreEntryAdded(constructorEntry)) {
-						constructorsEntry.Children.Add(constructorEntry);
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentMethod);
+					if (!e.Filter) {
+						Entry constructorEntry = this.EntryCreator.Create(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
+						constructorEntry.IsSearchable = true;
+						constructorEntry.Key = currentMethod.GetGloballyUniqueId();
+						constructorsEntry.Children.Add(constructorEntry);					
 					}
 				}
 				if (constructorsEntry.Children.Count > 0) {
@@ -264,10 +256,11 @@ namespace TheBoxSoftware.Documentation {
 				int count = methods.Count;
 				for (int i = 0; i < count; i++) {
 					MethodDef currentMethod = methods[i];
-					Entry methodEntry = this.EntryCreator.Create(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
-					methodEntry.IsSearchable = true;
-					methodEntry.Key = currentMethod.GetGloballyUniqueId();
-					if (this.PreEntryAdded(methodEntry)) {
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentMethod);
+					if (!e.Filter) {
+						Entry methodEntry = this.EntryCreator.Create(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
+						methodEntry.IsSearchable = true;
+						methodEntry.Key = currentMethod.GetGloballyUniqueId();
 						methodsEntry.Children.Add(methodEntry);
 					}
 				}
@@ -286,10 +279,11 @@ namespace TheBoxSoftware.Documentation {
 				int count = operators.Count;
 				for (int i = 0; i < count; i++) {
 					MethodDef current = operators[i];
-					Entry operatorEntry = this.EntryCreator.Create(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
-					operatorEntry.Key = current.GetGloballyUniqueId();
-					operatorEntry.IsSearchable = true;
-					if (this.PreEntryAdded(operatorEntry)) {
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(current);
+					if (!e.Filter) {
+						Entry operatorEntry = this.EntryCreator.Create(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
+						operatorEntry.Key = current.GetGloballyUniqueId();
+						operatorEntry.IsSearchable = true;
 						operatorsEntry.Children.Add(operatorEntry);
 					}
 				}
@@ -307,10 +301,11 @@ namespace TheBoxSoftware.Documentation {
 				fieldsEntry.IsSearchable = false;
 
 				foreach (FieldDef currentField in fields) {
-					Entry fieldEntry = this.EntryCreator.Create(currentField, currentField.Name, commentsXml, fieldsEntry);
-					fieldEntry.Key = currentField.GetGloballyUniqueId();
-					fieldEntry.IsSearchable = true;
-					if (this.PreEntryAdded(fieldEntry)) {
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentField);
+					if (!e.Filter) {
+						Entry fieldEntry = this.EntryCreator.Create(currentField, currentField.Name, commentsXml, fieldsEntry);
+						fieldEntry.Key = currentField.GetGloballyUniqueId();
+						fieldEntry.IsSearchable = true;
 						fieldsEntry.Children.Add(fieldEntry);
 					}
 				}
@@ -328,10 +323,11 @@ namespace TheBoxSoftware.Documentation {
 				propertiesEntry.SubKey = "Properties";
 
 				foreach (PropertyDef currentProperty in properties) {
-					Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
-					propertyEntry.IsSearchable = true;
-					propertyEntry.Key = currentProperty.GetGloballyUniqueId();
-					if (this.PreEntryAdded(propertyEntry)) {
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentProperty);
+					if (!e.Filter) {
+						Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
+						propertyEntry.IsSearchable = true;
+						propertyEntry.Key = currentProperty.GetGloballyUniqueId();
 						propertiesEntry.Children.Add(propertyEntry);
 					}
 				}
@@ -349,10 +345,11 @@ namespace TheBoxSoftware.Documentation {
 				eventsEntry.SubKey = "Events";
 
 				foreach (EventDef currentProperty in events) {
-					Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, eventsEntry);
-					propertyEntry.IsSearchable = true;
-					propertyEntry.Key = currentProperty.GetGloballyUniqueId();
-					if (this.PreEntryAdded(propertyEntry)) {
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentProperty);
+					if (!e.Filter) {
+						Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, eventsEntry);
+						propertyEntry.IsSearchable = true;
+						propertyEntry.Key = currentProperty.GetGloballyUniqueId();
 						eventsEntry.Children.Add(propertyEntry);
 					}
 				}
@@ -361,6 +358,24 @@ namespace TheBoxSoftware.Documentation {
 					typeEntry.Children.Add(eventsEntry);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Fires before a member is added to the document map.
+		/// </summary>
+		/// <param name="e">The event arguments</param>
+		protected void OnPreEntryAdded(PreEntryAddedEventArgs e) {
+			if (this.preEntryAddedEvent != null) {
+				this.preEntryAddedEvent(this, e);
+			}
+		}
+
+		/// <summary>
+		/// Event fired before a MemberRef is added to the DocumentMap.
+		/// </summary>
+		public event EventHandler<PreEntryAddedEventArgs> PreEntryAdded { 
+			add { this.preEntryAddedEvent += value;  }
+			remove { this.preEntryAddedEvent -= value; }
 		}
 	}
 }

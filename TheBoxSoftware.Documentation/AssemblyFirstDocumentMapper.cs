@@ -35,15 +35,15 @@ namespace TheBoxSoftware.Documentation {
 	///   Namespace.Fourth
 	/// </pre>
 	/// </remarks>
-	public class AssemblyFirstDocumentMapper : DocumentMapper {
+	internal class AssemblyFirstDocumentMapper : DocumentMapper {
 		/// <summary>
 		/// Initialises a new instance of the AssemblyFirstDocumentMapper.
 		/// </summary>
 		/// <param name="assemblies">The assemblies to be mapped.</param>
 		/// <param name="settings">The settings to use while producing the map.</param>
 		/// <param name="useObservableCollection">Is an observable collection required.</param>
-		public AssemblyFirstDocumentMapper(List<DocumentedAssembly> assemblies, DocumentSettings settings, bool useObservableCollection, EntryCreator creator)
-			: base(assemblies, settings, useObservableCollection, creator) {
+		public AssemblyFirstDocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator)
+			: base(assemblies, useObservableCollection, creator) {
 		}
 
 		public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
@@ -67,17 +67,17 @@ namespace TheBoxSoftware.Documentation {
 
 			// Add the namespaces to the document map
 			foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in assembly.GetTypesInNamespaces()) {
-				if (string.IsNullOrEmpty(currentNamespace.Key)) {
+				if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0) {
 					continue;
 				}
-				Entry namespaceEntry = assemblyEntry.FindByKey(assemblyEntry.Key, currentNamespace.Key, false);
-				//namespaceEntry.Item = currentNamespace;
+				string namespaceSubKey = this.BuildSubkey(currentNamespace);
+
+				Entry namespaceEntry = this.FindByKey(assemblyEntry.Key, namespaceSubKey, false);
 				if (namespaceEntry == null) {
 					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments, assemblyEntry);
 					namespaceEntry.Key = assemblyEntry.Key;
-					namespaceEntry.SubKey = currentNamespace.Key;
+					namespaceEntry.SubKey = namespaceSubKey;
 					namespaceEntry.IsSearchable = false;
-					namespaceEntry.FullName = currentNamespace.Key;
 				}
 
 				// Add the types from that namespace to its map
@@ -85,28 +85,26 @@ namespace TheBoxSoftware.Documentation {
 					if (currentType.Name.StartsWith("<")) {
 						continue;
 					}
-					Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
-					typeEntry.Key = currentType.GetGloballyUniqueId();
-					typeEntry.IsSearchable = true;
-					typeEntry.FullName = currentType.GetFullyQualifiedName();
+					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentType);
+					if (!e.Filter) {
 
-					// For some elements we will not want to load the child objects
-					// this is currently for System.Enum derived values.
-					if (
-							currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
-							currentType.IsDelegate) {
-						// Ignore children
-					}
-					else {
-						this.GenerateTypeMap(currentType, typeEntry, xmlComments);
-						typeEntry.Children.Sort();
-					}
+						Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
+						typeEntry.Key = currentType.GetGloballyUniqueId();
+						typeEntry.IsSearchable = true;
 
-					if (this.PreEntryAdded(typeEntry)) {
+						// For some elements we will not want to load the child objects
+						// this is currently for System.Enum derived values.
+						if (
+								currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
+								currentType.IsDelegate) {
+							// Ignore children
+						}
+						else {
+							this.GenerateTypeMap(currentType, typeEntry, xmlComments);
+							typeEntry.Children.Sort();
+						}
+
 						namespaceEntry.Children.Add(typeEntry);
-					}
-					else {
-						continue;
 					}
 				}
 				if (namespaceEntry.Children.Count > 0) {

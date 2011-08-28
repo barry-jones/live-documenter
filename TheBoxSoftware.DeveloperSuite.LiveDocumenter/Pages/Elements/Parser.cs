@@ -300,6 +300,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				case XmlCodeElements.ParamRef:
 					return new Italic(new Run(element.Text));
 				case XmlCodeElements.See:
+					// NOTE: Fix this, we currently find the type in our loaded libraries and dont bother to reuse that information.
+					// We cant link to elements that dont exist inside our map so we may aswell just show them as text.
 					SeeXmlCodeElement seeElement = element as SeeXmlCodeElement;
 					CrefEntryKey key = new CrefEntryKey(assembly, seeElement.Member.ToString());
 
@@ -313,30 +315,34 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
                         return new Run();
                     }
 
-					TypeDef def = assembly.FindType(seeElement.Member.Namespace, seeElement.Member.TypeName);
 					string displayName = seeElement.Text;
+					TheBoxSoftware.Documentation.Entry relatedEntry = LiveDocumentorFile.Singleton.LiveDocument.Find(seeElement.Member);
 
-					if (def != null) {
+					if (relatedEntry != null) {
+						displayName = relatedEntry.Name;
+
 						switch (seeElement.Member.PathType) {
-								// these elements are named and the type of element will
-								// not modify how it should be displayed
+							// these elements are named and the type of element will
+							// not modify how it should be displayed
 							case CRefTypes.Field:
-							case CRefTypes.Property:	
+							case CRefTypes.Property:
 							case CRefTypes.Event:
 							case CRefTypes.Namespace:
 								break;
 
-								// these could be generic and so will need to modify to
-								// a more appropriate display name
+							// these could be generic and so will need to modify to
+							// a more appropriate display name
 							case CRefTypes.Method:
-								MethodDef method = seeElement.Member.FindIn(def) as MethodDef;
-
+								MethodDef method = relatedEntry.Item as MethodDef;
 								if (method != null) {
 									displayName = method.GetDisplayName(false);
 								}
 								break;
 							case CRefTypes.Type:
-								displayName = def.GetDisplayName(false);
+								TypeDef def = relatedEntry.Item as TypeDef;
+								if (def != null) {
+									displayName = def.GetDisplayName(false);
+								}
 								break;
 						}
 					}

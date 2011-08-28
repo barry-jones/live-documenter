@@ -16,11 +16,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <summary>
 		/// Initialises a new instance of the HelpViewer1Exporter class.
 		/// </summary>
-		/// <param name="files">The files to document.</param>
-		/// <param name="settings">The export settings.</param>
+		/// <param name="document">The document to export.</param>
 		/// <param name="config">The export configuration.</param>
-		public HelpViewer1Exporter(List<DocumentedAssembly> files, ExportSettings settings, ExportConfigFile config)
-			: base(files, settings, config) {
+		public HelpViewer1Exporter(Document document, ExportSettings settings, ExportConfigFile config)
+			: base(document, settings, config) {
 		}
 
 		/// <summary>
@@ -34,12 +33,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			try {
 				this.PrepareDirectory(this.TempDirectory);
 
-				this.DocumentMap = DocumentMapper.Generate(this.CurrentFiles, Mappers.NamespaceFirst, this.Settings.DocumentSettings, false, new EntryCreator());
 				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
 				this.CurrentExportStep = 1;
 
 				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
-					this.DocumentMap
+					this.Document.Map
 					);
 
 				// export the document map
@@ -48,14 +46,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					map.Render(writer);
 				}
 
-				Website.IndexXmlRenderer indexPage = new Website.IndexXmlRenderer(this.DocumentMap);
+				Website.IndexXmlRenderer indexPage = new Website.IndexXmlRenderer(this.Document.Map);
 				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
 					indexPage.Render(writer);
 				}
 
 				// export each of the members
-				foreach (Entry current in this.DocumentMap) {
-					this.RecursiveEntryExport(current, this.DocumentMap);
+				foreach (Entry current in this.Document.Map) {
+					this.RecursiveEntryExport(current);
 				}
 
 				Processor p = new Processor();
