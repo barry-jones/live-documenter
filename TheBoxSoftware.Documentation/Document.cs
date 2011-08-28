@@ -171,8 +171,10 @@ namespace TheBoxSoftware.Documentation {
 							// find the type and do the quick type search to find the related
 							// entry. this is the quickest way.
 							ReflectedMember member = path.FindIn(currentType);
-							found = currentTypeEntry.FindByKey(member.GetGloballyUniqueId(), string.Empty);
-							break;	// if its not found now it doesnt exist
+							if (member != null) {	// someone could have misspelled the member in the crefpath
+								found = currentTypeEntry.FindByKey(member.GetGloballyUniqueId(), string.Empty);
+								break;
+							}
 						}
 					}
 				}
