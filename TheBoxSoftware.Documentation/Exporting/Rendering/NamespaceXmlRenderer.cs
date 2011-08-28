@@ -47,12 +47,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				// write the summary text for the current member
 				XmlCodeComment comment = this.xmlComments.ReadComment(new CRefPath((TypeDef)current.Item));
 				if (comment != null && comment.Elements != null) {
-					Reflection.Comments.SummaryXmlCodeElement summary = comment.Elements.First(p => p is Reflection.Comments.SummaryXmlCodeElement) as Reflection.Comments.SummaryXmlCodeElement;
+					Reflection.Comments.SummaryXmlCodeElement summary = comment.Elements.Find(
+						p => p is Reflection.Comments.SummaryXmlCodeElement
+						) as Reflection.Comments.SummaryXmlCodeElement;
 					if (summary != null) {
 						this.Serialize(summary, writer, this.member.Value[0].Assembly);
 					}
 				}
-				
+
 				writer.WriteEndElement();
 			}
 

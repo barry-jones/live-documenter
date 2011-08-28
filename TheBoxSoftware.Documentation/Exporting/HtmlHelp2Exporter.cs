@@ -137,7 +137,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				// clean up the temp directory
 				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
 #if !DEBUG
-				System.IO.Directory.Delete(this.tempdirectory, true);
+				System.IO.Directory.Delete(this.TempDirectory, true);
 #endif
 			}
 		}

@@ -84,6 +84,7 @@
     <Compile Include="CommentTests\InvalidElements.cs" />
     <Compile Include="CommentTests\InvalidTopLevelElements.cs" />
     <Compile Include="CommentTests\ListElement.cs" />
+    <Compile Include="CommentTests\Remarks.cs" />
     <Compile Include="CommentTests\SeeElement.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DocumentedClass.cs" />

@@ -12,10 +12,21 @@ namespace TheBoxSoftware.Documentation {
 	/// </summary>
 	public class Document {
 		#region Constructors
+		/// <summary>
+		/// Initialises a new instance of the Document class.
+		/// </summary>
+		/// <param name="assemblies">The assemblies being documented.</param>
 		public Document(List<DocumentedAssembly> assemblies)
 			: this(assemblies, Mappers.NamespaceFirst, false, new EntryCreator()) {
 		}
 
+		/// <summary>
+		/// Initialises a new instance of the Document class.
+		/// </summary>
+		/// <param name="assemblies">The assemblies being documented.</param>
+		/// <param name="mapperType">The type of document mapper to use to create the document map</param>
+		/// <param name="useObservableCollection">Should the document map use an observable collection.</param>
+		/// <param name="creator">The EntryCreator to use to create new Entries in the Map</param>
 		public Document(List<DocumentedAssembly> assemblies, Mappers mapperType, bool useObservableCollection, EntryCreator creator) {
 			this.Mapper = DocumentMapper.Create(assemblies, mapperType, useObservableCollection, creator);
 			this.Mapper.PreEntryAdded += new EventHandler<PreEntryAddedEventArgs>(PreEntryAdded);
@@ -59,7 +70,6 @@ namespace TheBoxSoftware.Documentation {
 		/// </summary>
 		public void UpdateDocumentMap() {
 			this.Mapper.GenerateMap();
-
 			this.Map = this.Mapper.DocumentMap;
 		}
 
@@ -171,6 +181,13 @@ namespace TheBoxSoftware.Documentation {
 			return found;
 		}
 
+		/// <summary>
+		/// Searches a tree and returns all of the entries at a specific level.
+		/// </summary>
+		/// <param name="fromLevel">The level to return elements from.</param>
+		/// <param name="currentLevel">The current level we are at.</param>
+		/// <param name="fromEntry">The entry to get entries from.</param>
+		/// <returns>A flattened list of all entries at <paramref name="fromLevel"/>.</returns>
 		private List<Entry> GetAllEntriesFromLevel(int fromLevel, int currentLevel, Entry fromEntry) {
 			if (currentLevel > fromLevel) return new List<Entry>();
 
@@ -186,6 +203,12 @@ namespace TheBoxSoftware.Documentation {
 			}
 		}
 
+		/// <summary>
+		/// Searches the entire document tree and returns all elements that match the search
+		/// <paramref name="criteria"/>.
+		/// </summary>
+		/// <param name="criteria">The search criteria.</param>
+		/// <returns>The found entries.</returns>
 		public List<Entry> Search(string criteria) {
 			List<Entry> results = new List<Entry>();
 			if (this.Map != null) {
