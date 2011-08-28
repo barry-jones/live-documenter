@@ -9,10 +9,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 
+	/// <summary>
+	/// Renders Delegates in the documentation in a FlowDocument.
+	/// </summary>
 	public sealed class DelegatePage : Page {
 		private TypeDef representedType;
 		private XmlCodeCommentFile commentsXml;
 
+		/// <summary>
+		/// Initialises a new instance of the Delegate page.
+		/// </summary>
+		/// <param name="type">The TypeDef representing the delegate.</param>
+		/// <param name="xmlComments">The XmlComments file.</param>
 		public DelegatePage(TypeDef type, XmlCodeCommentFile xmlComments) {
 			this.representedType = type;
 			this.commentsXml = xmlComments;
