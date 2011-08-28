@@ -27,6 +27,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		private ExportStepEventHandler exportStep;
 		private ExportExceptionHandler exportException;
 		private ExportFailedEventHandler exportFailure;
+		private string baseTempDirectory;	// base working directory for output and temp
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
@@ -91,17 +92,22 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		public Document Document { get; set; }
 
 		/// <summary>
+		/// The directory the application is executing from and installed.
+		/// </summary>
+		protected string ApplicationDirectory { get; private set; }
+
+		/// <summary>
 		/// The directory used to output the first rendered output to, this is not the output or publishing directory.
 		/// </summary>
-		protected string TempDirectory { get; set; }
+		protected string TempDirectory { get; private set; }
 
 		/// <summary>
 		/// The first staging folder where all the files come together to be completed or compiled.
 		/// </summary>
-		protected string OutputDirectory { get; set; }
+		protected string OutputDirectory { get; private set; }
 
 		/// <summary>
-		/// The final stage output folder specified by the user to publish the final content files to.
+		/// Area to copy the final output to.
 		/// </summary>
 		protected string PublishDirectory { get; set; }
 
@@ -131,19 +137,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// implementing type.
 		/// </summary>
 		public abstract void Export();
-
-		/// <summary>
-		/// Ensures there is an empty temp directory to proccess the documentation in.
-		/// </summary>
-		protected void PrepareDirectory(string directory) {
-			if (!Directory.Exists(directory)) {
-				Directory.CreateDirectory(directory);
-			}
-			else {
-				Directory.Delete(directory, true);
-				Directory.CreateDirectory(directory);
-			}
-		}
 
 		/// <summary>
 		/// A method that recursively, through the documentation tree, exports all of the
@@ -186,6 +179,45 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </remarks>
 		public static string CreateSafeName(string name) {
 			return name.Replace('<', '(').Replace('>', ')');
+		}
+
+		/// <summary>
+		/// Performs all the tasks necessary before starting the export process.
+		/// </summary>
+		protected void PrepareForExport() {
+			// create the working directory
+			string tempFileName = Path.GetTempFileName();
+			this.baseTempDirectory = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(tempFileName));
+			File.Delete(tempFileName);	// dont leave zero byte files all over the place.
+
+			this.TempDirectory = Path.Combine(this.baseTempDirectory, "XML\\");
+			Directory.CreateDirectory(this.TempDirectory);
+			this.OutputDirectory = Path.Combine(this.baseTempDirectory, "Output\\");
+			Directory.CreateDirectory(this.OutputDirectory);
+
+			// get the publish path and clean/create the directory
+			if (string.IsNullOrEmpty(this.Settings.PublishDirectory)) {
+				// no output directory set, default to my documents live document folder
+				string publishPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Live Documenter\\Published\\");
+				this.PublishDirectory = publishPath;
+			}
+			else {
+				this.PublishDirectory = this.Settings.PublishDirectory;
+			}
+			if (Directory.Exists(this.PublishDirectory)) {
+				Directory.Delete(this.PublishDirectory, true);
+			}
+			Directory.CreateDirectory(this.PublishDirectory);
+			
+			// read the current application directory
+			this.ApplicationDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+		}
+
+		/// <summary>
+		/// Cleans up any working directories and files from the export operation.
+		/// </summary>
+		protected void Cleanup() {
+			Directory.Delete(this.baseTempDirectory, true);
 		}
 
 		#region Events

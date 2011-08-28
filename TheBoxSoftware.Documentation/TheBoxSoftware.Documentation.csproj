@@ -116,6 +116,7 @@
     <Compile Include="Exporting\ExportFailedEventArgs.cs" />
     <Compile Include="Exporting\ExportFailedEventHandler.cs" />
     <Compile Include="Exporting\HelpViewer1Exporter.cs" />
+    <Compile Include="Exporting\HelpViewer1\MshaProperties.cs" />
     <Compile Include="Exporting\HtmlHelp2\CollectionXmlRenderer.cs" />
     <Compile Include="Exporting\ExportCalculatedEventArgs.cs" />
     <Compile Include="Exporting\ExportCalculatedEventHandler.cs" />
@@ -176,9 +177,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exporting\HelpViewer1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

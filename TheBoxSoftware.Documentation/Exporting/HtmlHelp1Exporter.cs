@@ -54,12 +54,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				return;	// can not continue
 			}
 
-			// the temp output directory
-			this.TempDirectory = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetTempFileName()) + "\\";
-			this.OutputDirectory = @"temp\output\";
-
 			try {
-				this.PrepareDirectory(this.TempDirectory);
+				this.PrepareForExport();
 
 				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
 				this.CurrentExportStep = 1;
@@ -95,10 +91,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				Uri xsltLocation = new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), "ApplicationData/livexmltohtml.xslt");
 				XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
 				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
-
-				// Finally perform the user selected output xslt
-				this.OnExportStep(new ExportStepEventArgs("Preparing output directory", ++this.CurrentExportStep));
-				this.PrepareDirectory(this.OutputDirectory);
 
 				// set output files
 				this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
@@ -146,6 +138,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				// compile the html help file
 				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
 				this.CompileHelp(this.OutputDirectory + "project.hhp");
+
+				// publish the compiled help file
+				this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
+				File.Copy(this.OutputDirectory + "project.chm", this.PublishDirectory + "documentation.chm");
 			}
 			catch (Exception ex) {
 				ExportException exception = new ExportException(ex.Message, ex);
@@ -154,9 +150,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			finally {
 				// clean up the temp directory
 				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
-#if !DEBUG
-				System.IO.Directory.Delete(this.TempDirectory, true);
-#endif
+				this.Cleanup();
 			}
 		}
 
@@ -217,11 +211,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 			compileProcess.StartInfo = processStartInfo;
 
-			// Start the help compile and bail if it takes longer than 10 minutes.
-			Trace.WriteLine("Compiling Html Help file");
-
 			string stdOut = string.Empty;
-
 			try {
 				compileProcess.Start();
 

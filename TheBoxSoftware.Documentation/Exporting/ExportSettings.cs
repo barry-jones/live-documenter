@@ -23,15 +23,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		public DocumentSettings Settings { get; set; }
 
 		/// <summary>
-		/// 
+		/// The directory where all final output should be copied after export.
 		/// </summary>
-		public string TempDirectory { get; set; }
-
-		/// <summary>
-		/// The full file path to the directory where all of the final files will
-		/// be output to. 
-		/// </summary>
-		/// <value>The output directory.</value>
-		public string OutputDirectory { get; set; }
+		public string PublishDirectory { get; set; }
 	}
 }

@@ -26,14 +26,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Exports the full contained documentation.
 		/// </summary>
 		public override void Export() {
-			// the temp output directory
-			this.TempDirectory = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetTempFileName()) + "\\";
-			this.OutputDirectory = @"temp\output\";
-
+			// we do not need the temp staging folder with this export so write direct from temp to publish.
 			try {
-				this.PrepareDirectory(this.TempDirectory);
+				this.PrepareForExport();
 
-				this.OnExportCalculated(new ExportCalculatedEventArgs(6));
+				this.OnExportCalculated(new ExportCalculatedEventArgs(5));
 				this.CurrentExportStep = 1;
 
 				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
@@ -56,18 +53,15 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				foreach (Entry current in this.Document.Map) {
 					this.RecursiveEntryExport(current);
 				}
+				GC.Collect();
 
 				Processor p = new Processor();
 				XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
 				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
-				// Finally perform the user selected output xslt
-				this.OnExportStep(new ExportStepEventArgs("Preparing output directory", ++this.CurrentExportStep));
-				this.PrepareDirectory(this.OutputDirectory);
-
 				// set output files
 				this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-				this.Config.SaveOutputFilesTo(this.OutputDirectory);
+				this.Config.SaveOutputFilesTo(this.PublishDirectory);
 
 				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 				string extension = this.Config.Properties.ContainsKey("extension") ? this.Config.Properties["extension"] : "htm";
@@ -76,8 +70,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 						continue;
 					using (FileStream fs = File.OpenRead(current)) {
 						Serializer s = new Serializer();
-						s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension);
-						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+						s.SetOutputFile(this.PublishDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension);
+						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.TempDirectory));
 						transform.Run(s);
 					}
 				}
@@ -89,9 +83,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			finally {
 				// clean up the temp directory
 				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
-#if !DEBUG
-				System.IO.Directory.Delete(this.TempDirectory, true);
-#endif
+				this.Cleanup();
 			}
 		}
 	}

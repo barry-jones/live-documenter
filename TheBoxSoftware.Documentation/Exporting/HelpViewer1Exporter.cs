@@ -26,14 +26,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Exports the documentation to the MS Help Viewer 1 documention type.
 		/// </summary>
 		public override void Export() {
-			// the temp output directory
-			this.TempDirectory = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetTempFileName()) + "\\";
-			this.OutputDirectory = @"temp\output\";
-
 			try {
-				this.PrepareDirectory(this.TempDirectory);
+				this.PrepareForExport();
 
-				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
+				this.OnExportCalculated(new ExportCalculatedEventArgs(6));
 				this.CurrentExportStep = 1;
 
 				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
@@ -60,10 +56,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
 				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
-				// Finally perform the user selected output xslt
-				this.OnExportStep(new ExportStepEventArgs("Preparing output directory", ++this.CurrentExportStep));
-				this.PrepareDirectory(this.OutputDirectory);
-
 				// set output files
 				this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
 				this.Config.SaveOutputFilesTo(this.OutputDirectory);
@@ -84,7 +76,18 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				// compile the html help file
 				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
-				this.CompileHelp(this.OutputDirectory + "/Documentation.mshc");
+				this.CompileHelp(this.OutputDirectory + "\\Documentation.mshc");
+				File.Copy(this.ApplicationDirectory + "\\ApplicationData\\Documentation.msha", this.OutputDirectory + "\\Documentation.msha");
+
+				// publish the documentation
+				this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
+				string[] files = { "Documentation.mshc", "Documentation.msha" };
+				for (int i = 0; i < files.Length; i++) {
+					File.Move(
+						Path.Combine(this.OutputDirectory, files[i]),
+						Path.Combine(this.PublishDirectory, files[i])
+						); ;
+				}
 			}
 			catch (Exception ex) {
 				ExportException exception = new ExportException(ex.Message, ex);
@@ -93,9 +96,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			finally {
 				// clean up the temp directory
 				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
-#if !DEBUG
-				System.IO.Directory.Delete(this.TempDirectory, true);
-#endif
+				this.Cleanup();
 			}
 		}
 

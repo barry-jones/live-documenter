@@ -309,6 +309,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="ApplicationData\documentation.msha">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="ApplicationData\export.xsd">
       <SubType>Designer</SubType>
     </None>
