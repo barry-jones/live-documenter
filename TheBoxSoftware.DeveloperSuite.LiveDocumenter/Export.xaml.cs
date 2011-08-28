@@ -57,6 +57,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.exportDescription.Text = config.Description;
 
 			ExportSettings settings = new ExportSettings();
+			settings.Settings = new Documentation.DocumentSettings();
 			foreach (Settings.PrivacyFilter filter in settingsWindow.PrivacyFilters) {
 				if (filter.IsSelected) {
 					settings.Settings.VisibilityFilters.Add(filter.Visibility);
@@ -65,6 +66,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			TheBoxSoftware.Documentation.Document document = new Documentation.Document(LiveDocumenter.LiveDocumentorFile.Singleton.Files);
 			document.Settings = settings.Settings;
+			document.UpdateDocumentMap();
 
 			exporter = Documentation.Exporting.Exporter.Create(document, settings, config);
 			

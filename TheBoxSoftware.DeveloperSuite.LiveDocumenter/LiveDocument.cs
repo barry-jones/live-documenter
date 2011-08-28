@@ -26,12 +26,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			DocumentSettings settings = new DocumentSettings();
 			settings.VisibilityFilters.AddRange(new Visibility[] { 
-					Visibility.Private,
-					Visibility.Protected,
-					Visibility.Public,
-					Visibility.InternalProtected,
-					Visibility.Internal
-					});
+			        Visibility.Private,
+			        Visibility.Protected,
+			        Visibility.Public,
+			        Visibility.InternalProtected,
+			        Visibility.Internal
+			        });
+			//settings.VisibilityFilters.AddRange(new Visibility[] { 
+			//        Visibility.Public
+			//        });
+			this.Settings = settings;
 		}
 
 		/// <summary>

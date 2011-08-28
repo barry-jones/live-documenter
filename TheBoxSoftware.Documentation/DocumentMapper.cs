@@ -232,6 +232,7 @@ namespace TheBoxSoftware.Documentation {
 				for (int i = 0; i < count; i++) {
 					MethodDef currentMethod = constructors[i];
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentMethod);
+					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
 						Entry constructorEntry = this.EntryCreator.Create(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
 						constructorEntry.IsSearchable = true;
@@ -257,6 +258,7 @@ namespace TheBoxSoftware.Documentation {
 				for (int i = 0; i < count; i++) {
 					MethodDef currentMethod = methods[i];
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentMethod);
+					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
 						Entry methodEntry = this.EntryCreator.Create(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
 						methodEntry.IsSearchable = true;
@@ -280,6 +282,7 @@ namespace TheBoxSoftware.Documentation {
 				for (int i = 0; i < count; i++) {
 					MethodDef current = operators[i];
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(current);
+					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
 						Entry operatorEntry = this.EntryCreator.Create(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
 						operatorEntry.Key = current.GetGloballyUniqueId();
@@ -302,6 +305,7 @@ namespace TheBoxSoftware.Documentation {
 
 				foreach (FieldDef currentField in fields) {
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentField);
+					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
 						Entry fieldEntry = this.EntryCreator.Create(currentField, currentField.Name, commentsXml, fieldsEntry);
 						fieldEntry.Key = currentField.GetGloballyUniqueId();
@@ -324,6 +328,7 @@ namespace TheBoxSoftware.Documentation {
 
 				foreach (PropertyDef currentProperty in properties) {
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentProperty);
+					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
 						Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
 						propertyEntry.IsSearchable = true;
@@ -346,6 +351,7 @@ namespace TheBoxSoftware.Documentation {
 
 				foreach (EventDef currentProperty in events) {
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentProperty);
+					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
 						Entry propertyEntry = this.EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, eventsEntry);
 						propertyEntry.IsSearchable = true;

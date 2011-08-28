@@ -60,6 +60,7 @@ namespace TheBoxSoftware.Documentation {
 						continue;
 					}
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentType);
+					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
 						Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
 						typeEntry.Key = currentType.GetGloballyUniqueId();

@@ -19,9 +19,7 @@ namespace TheBoxSoftware.Documentation {
 		public Document(List<DocumentedAssembly> assemblies, Mappers mapperType, bool useObservableCollection, EntryCreator creator) {
 			this.Mapper = DocumentMapper.Create(assemblies, mapperType, useObservableCollection, creator);
 			this.Mapper.PreEntryAdded += new EventHandler<PreEntryAddedEventArgs>(PreEntryAdded);
-			this.Mapper.GenerateMap();
 
-			this.Map = this.Mapper.DocumentMap;
 			this.Assemblies = assemblies;
 		}
 		#endregion
@@ -56,6 +54,15 @@ namespace TheBoxSoftware.Documentation {
 		#endregion
 
 		#region Methods
+		/// <summary>
+		/// Updates the document map based on the current <see cref="Assemblies"/> and <see cref="Settings"/>.
+		/// </summary>
+		public void UpdateDocumentMap() {
+			this.Mapper.GenerateMap();
+
+			this.Map = this.Mapper.DocumentMap;
+		}
+
 		/// <summary>
 		/// Indicates if the member should be filtered from the document.
 		/// </summary>
