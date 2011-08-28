@@ -15,8 +15,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			: base() {
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Inlines.Add(new Run(name));
-			this.Tag = key;
-			this.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+			if (key != null) {
+				this.Tag = key;
+				this.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+			}
+			else {
+				this.IsEnabled = false;
+			}
 		}
 	}
 }

@@ -76,49 +76,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				}
 
 				// Add the parameter information if available
-				List<Param> parameterComments = Parser.ParseElement<Param>(parsedBlocks);
-				if (this.method.Parameters != null && this.method.Parameters.Count > 0) {
-					ParameterList parameters = null;
-					foreach (ParamDef methodParam in this.method.Parameters) {
-						if (methodParam.Sequence != 0) {
-							// Find the parameter comments
-							Param paramComment = null;
-							foreach (Param current in parameterComments) {
-								if(current.Name == methodParam.Name) {
-									paramComment = current;
-									break;
-								}
-							}
-							
-							TypeRef typeRef = methodParam.GetTypeRef();
-							EntryKey typeKey = null;
-							string typeName = string.Empty;
-							if (parameters == null) { parameters = new ParameterList(); }
-							if (typeRef != null) {
-								if (!typeRef.IsExternalReference) {
-									if (typeRef is GenericTypeRef) {
-										typeKey = null;
-									}
-									else {
-										typeKey = new EntryKey(typeRef.GetGloballyUniqueId());
-									}
-								}
-								else {
-									typeKey = new CrefEntryKey(typeRef.Assembly, new CRefPath(typeRef).ToString());
-								}
-								typeName = typeRef.GetDisplayName(false);
-							}
-							List<Block> paramDescription = new List<Block>();
-							if (paramComment != null && paramComment.Description != null) {
-								paramDescription = paramComment.Description;
-							}
-							parameters.Add(methodParam.Name, typeName, method.Assembly, typeKey, paramDescription);
-						}
-					}
-					if (parameters != null) {
-						this.Blocks.Add(parameters);
-					}
-				}
+				this.AddParametersForMethod(this.method, parsedBlocks);
 				
 				// add the returns comment if it is found
 				if (parsedBlocks != null) {

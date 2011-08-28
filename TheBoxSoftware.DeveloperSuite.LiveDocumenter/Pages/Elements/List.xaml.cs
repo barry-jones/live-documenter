@@ -84,7 +84,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			this.internalList.ListItems.Add(new ListItem(new Paragraph(new Run(item))));
 		}
 
-		public void AddListItem(Hyperlink item) {
+		public void AddListItem(Inline item) {
 			this.internalList.ListItems.Add(new ListItem(new Paragraph(item)));
 		}
 

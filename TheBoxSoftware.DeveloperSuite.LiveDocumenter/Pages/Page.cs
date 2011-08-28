@@ -80,7 +80,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// </summary>
 		/// <param name="type">The type to parse and display the tree for.</param>
 		protected void AddInheritanceTree(TypeDef type) {
-			Func<TypeRef, Hyperlink> createLink = delegate(TypeRef forType) {
+			Func<TypeRef, Inline> createLink = delegate(TypeRef forType) {
 				string displayName = forType.GetDisplayName(true);	// get a default name to display
 				TypeDef typeDef = forType as TypeDef;
 				if (typeDef != null) {
@@ -88,9 +88,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				}
 
 				Hyperlink link = new Hyperlink(new Run(displayName));
-				if (forType.IsExternalReference || typeDef == null) {
+				if (typeDef == null) {					
 					CRefPath parentCrefPath = new CRefPath(forType);
-					link.Tag = new CrefEntryKey(forType.Assembly, parentCrefPath.ToString());
+					Documentation.Entry found = LiveDocumentorFile.Singleton.LiveDocument.Find(parentCrefPath);
+					if (found != null) {
+						link.Tag = new EntryKey(found.Key);
+					}
+					else {
+						return new Run(displayName);
+					}
 				}
 				else {
 					link.Tag = new EntryKey(typeDef.GetGloballyUniqueId());
@@ -105,7 +111,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 			if (type.InheritsFrom != null) {				
 				// build a list of parents for the current type
 				TypeRef parent = type.InheritsFrom;
-				List<Hyperlink> links = new List<Hyperlink>();
+				List<Inline> links = new List<Inline>();
 				while (parent != null) {
 					links.Add(createLink(parent));
 
@@ -141,6 +147,61 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 			this.Blocks.Add(new Header2("Inheritance Hierarchy"));
 			this.Blocks.Add(inheritanceList);
+		}
+
+		/// <summary>
+		/// Add the parameters section for the provided <paramref name="mathod"/>.
+		/// </summary>
+		/// <param name="method">The method to add the parameters for.</param>
+		/// <param name="parsedBlocks">The parsed comments.</param>
+		protected void AddParametersForMethod(MethodDef method, List<Block> parsedBlocks) {
+			// Add the parameter information if available
+			List<Param> parameterComments = Parser.ParseElement<Param>(parsedBlocks);
+			if (method.Parameters != null && method.Parameters.Count > 0) {
+				ParameterList parameters = null;
+				foreach (ParamDef methodParam in method.Parameters) {
+					if (methodParam.Sequence != 0) {
+						// Find the parameter comments
+						Param paramComment = null;
+						foreach (Param current in parameterComments) {
+							if (current.Name == methodParam.Name) {
+								paramComment = current;
+								break;
+							}
+						}
+
+						TypeRef typeRef = methodParam.GetTypeRef();
+						EntryKey typeKey = null;
+						string typeName = typeRef.Name;
+						if (parameters == null) { parameters = new ParameterList(); }
+						if (typeRef != null) {
+							if (typeRef is TypeDef) {
+								typeName = typeRef.GetDisplayName(false);
+								typeKey = new EntryKey(typeRef.GetGloballyUniqueId());
+							}
+							else {
+								CRefPath path = new CRefPath(typeRef);
+								Documentation.Entry found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+								if (found != null) {
+									typeKey = new EntryKey(found.Key);
+									typeName = found.Name;
+								}
+								else {
+									typeKey = null;
+								}
+							}
+						}
+						List<Block> paramDescription = new List<Block>();
+						if (paramComment != null && paramComment.Description != null) {
+							paramDescription = paramComment.Description;
+						}
+						parameters.Add(methodParam.Name, typeName, method.Assembly, typeKey, paramDescription);
+					}
+				}
+				if (parameters != null) {
+					this.Blocks.Add(parameters);
+				}
+			}
 		}
 
 		/// <summary>

@@ -345,9 +345,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 								}
 								break;
 						}
+						return new See(key, displayName);
 					}
-
-					return new See(key, displayName);
+					else {
+						return new Run(displayName);	// we dont create links to references we dont have in our document
+					}					
 				case XmlCodeElements.Text:
 					return new Run(element.Text);
 				case XmlCodeElements.TypeParamRef:

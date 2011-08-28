@@ -57,52 +57,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				
 				// Show the delegate parameters, this comes from the invoke method
 				// Add the parameter information if available
-				List<Param> parameterComments = Parser.ParseElement<Param>(parsedBlocks);
+				//List<Param> parameterComments = Parser.ParseElement<Param>(parsedBlocks);
 				MethodDef invokeMethod = this.representedType.GetMethods().Find(m => m.Name == "Invoke");
-				if (invokeMethod != null) {
-					if (invokeMethod.Parameters != null && invokeMethod.Parameters.Count > 0) {
-						ParameterList parameters = null;
-						foreach (ParamDef methodParam in invokeMethod.Parameters) {
-							if (methodParam.Sequence != 0) {
-								// Find the parameter comments
-								Param paramComment = null;
-								foreach (Param current in parameterComments) {
-									if (current.Name == methodParam.Name) {
-										paramComment = current;
-										break;
-									}
-								}
-
-								TypeRef typeRef = methodParam.GetTypeRef();
-								EntryKey typeKey = null;
-								string typeName = string.Empty;
-								if (parameters == null) { parameters = new ParameterList(); }
-								if (typeRef != null) {
-									if (!typeRef.IsExternalReference) {
-										if (typeRef is GenericTypeRef) {
-											typeKey = null;
-										}
-										else {
-											typeKey = new EntryKey(typeRef.GetGloballyUniqueId());
-										}
-									}
-									else {
-										typeKey = new CrefEntryKey(typeRef.Assembly, new CRefPath(typeRef).ToString());
-									}
-									typeName = typeRef.GetDisplayName(false);
-								}
-								List<Block> description = new List<Block>();
-								if (paramComment != null) {
-									description = paramComment.Description;
-								}
-								parameters.Add(methodParam.Name, typeName, invokeMethod.Assembly, typeKey, description);
-							}
-						}
-						if (parameters != null) {
-							this.Blocks.Add(parameters);
-						}
-					}
-				}
+				this.AddParametersForMethod(invokeMethod, parsedBlocks);
 
 				// Add the remarks if it exists
 				if (parsedBlocks != null) {
