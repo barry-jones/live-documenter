@@ -1,13 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace TheBoxSoftware.Documentation
-{
-	public enum Mappers
-	{
+namespace TheBoxSoftware.Documentation {
+	/// <summary>
+	/// Enumeration of the available document mappers.
+	/// </summary>
+	public enum Mappers {
+		/// <summary>
+		/// DocumentMapper that creates maps starting from the Assembly.
+		/// </summary>
 		AssemblyFirst,
+
+		/// <summary>
+		/// DocumentMaper that creates maps starting from the namespace.
+		/// </summary>
 		NamespaceFirst
 	}
 }

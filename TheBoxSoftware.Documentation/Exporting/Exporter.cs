@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	using TheBoxSoftware.Reflection.Comments;
 
 	/// <summary>
-	/// 
+	/// Exports a Document using ExportSettings and an ExportConfigFile.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -56,8 +56,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// please see the parameter name in the exception for more information.
 		/// </exception>
 		public static Exporter Create(Document document, ExportSettings settings, ExportConfigFile config) {
-			//if (files == null || files.Count == 0) throw new ArgumentNullException("files");
-			//if (settings == null) throw new ArgumentNullException("settings");
+			if (document == null) throw new ArgumentNullException("document");
+			if (settings == null) throw new ArgumentNullException("settings");
 			if (config == null) throw new ArgumentNullException("config");
 
 			Exporter createdExporter = null;
@@ -85,17 +85,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		#region Properties
+		/// <summary>
+		/// The Document being exported.
+		/// </summary>
 		public Document Document { get; set; }
-
-		///// <summary>
-		///// The document map to be exported.
-		///// </summary>
-		//public DocumentMap DocumentMap { get; set; }
-
-		///// <summary>
-		/////  The files that are to be documented.
-		///// </summary>
-		//protected List<DocumentedAssembly> CurrentFiles { get; set; }
 
 		/// <summary>
 		/// The directory used to output the first rendered output to, this is not the output or publishing directory.
@@ -164,88 +157,23 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 		}
 
+		/// <summary>
+		/// Exports the current entry.
+		/// </summary>
+		/// <param name="current">The current entry to export.</param>
 		protected virtual void Export(Entry current) {
-			System.Diagnostics.Debug.WriteLine("SaveXaml: " + current.Name + "[" + current.Key + ", " + current.SubKey + "]");
-			System.Diagnostics.Debug.Indent();
-
 			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
-
 			if (r != null) {
-				string filename = string.Format("{0}{1}{2}.xml", this.TempDirectory, current.Key, string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty));
-				System.Diagnostics.Debug.WriteLine("filename: " + filename);
+				string filename = string.Format("{0}{1}{2}.xml",
+					this.TempDirectory,
+					current.Key,
+					string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty)
+					);
 				using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
 					r.Render(writer);
 				}
-				System.Diagnostics.Debug.WriteLine("File: " + filename);
 			}
-
-			System.Diagnostics.Debug.Unindent();
 		}
-
-		/// <summary>
-		/// Gets a unique id across this exported live document
-		/// </summary>
-		/// <param name="path">The path.</param>
-		/// <param name="memberUniqueId">The member unique id.</param>
-		/// <param name="typeUniqueId">The type unique id.</param>
-		internal void ResolveCRef(CRefPath path, out long memberUniqueId, out long typeUniqueId) {
-			System.Diagnostics.Debug.WriteLine("GetUniqueId: " + path.ToString());
-			System.Diagnostics.Debug.Indent();
-
-			TypeDef type = null;
-			ReflectedMember member = null;
-			memberUniqueId = 0;
-			typeUniqueId = 0;
-
-			Entry entry = this.Document.Find(path);
-			if (entry != null) {
-				member = (ReflectedMember)entry.Item;
-				memberUniqueId = member.GetGloballyUniqueId();
-				typeUniqueId = type.GetGloballyUniqueId();
-			}
-
-			//if (path.PathType != CRefTypes.Error) {
-			//    foreach (DocumentedAssembly ass in this.CurrentFiles) {
-			//        type = ass.LoadedAssembly.FindType(path.Namespace, path.TypeName);
-			//        if (type != null)
-			//            break;
-			//    }
-
-			//    if (type != null) {
-			//        if (path.PathType == CRefTypes.Type) {
-			//            member = type;
-			//        }
-			//        else if (path.PathType == CRefTypes.Property || path.PathType == CRefTypes.Method || path.PathType == CRefTypes.Field || path.PathType == CRefTypes.Event) {
-			//            member = path.FindIn(type);
-			//        }
-
-			//        if (member != null) {
-			//            memberUniqueId = member.GetGloballyUniqueId();
-			//            typeUniqueId = type.GetGloballyUniqueId();
-			//        }
-			//    }
-			//}
-
-			System.Diagnostics.Debug.WriteLine("tId: " + typeUniqueId.ToString() + " - mId: " + memberUniqueId.ToString());
-			System.Diagnostics.Debug.Unindent();
-		}
-
-		///// <summary>
-		///// Finds the entry in the document map with the specified key.
-		///// </summary>
-		///// <param name="key">The key to search for.</param>
-		///// <param name="checkChildren">Wether or not to check the child entries</param>
-		///// <returns>The entry that relates to the key or null if not found</returns>
-		//protected Entry FindByKey(long key, string subKey, bool checkChildren) {
-		//    Entry found = null;
-		//    for (int i = 0; i < this.DocumentMap.Count; i++) {
-		//        found = this.DocumentMap[i].FindByKey(key, subKey, checkChildren);
-		//        if (found != null) {
-		//            break;
-		//        }
-		//    }
-		//    return found;
-		//}
 
 		/// <summary>
 		/// In some exporters generic types using angle brackets cause problems. This method creates

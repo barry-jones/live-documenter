@@ -7,6 +7,9 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 
+	/// <summary>
+	/// DocumentMapper that creats maps with the main focus being the namespace.
+	/// </summary>
 	internal class NamespaceFirstDocumentMapper : DocumentMapper {
 		/// <summary>
 		/// Initialises a new instance of the NamespaceFirstDocumentMapper.
