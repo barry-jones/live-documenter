@@ -220,6 +220,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// Adds the inheritance tree for the specified <paramref name="type"/>.
 		/// </summary>
 		/// <param name="type">The type to parse and display the tree for.</param>
+		/// <param name="writer">The writer to write the XML to.</param>
 		private void AddInheritanceTree(TypeDef type, System.Xml.XmlWriter writer) {
 			List<TypeRef> reverseInheritanceTree = new List<TypeRef>();
 			TypeRef parent = type.InheritsFrom;

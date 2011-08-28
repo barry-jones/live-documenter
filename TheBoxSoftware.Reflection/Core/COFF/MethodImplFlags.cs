@@ -2,7 +2,7 @@
 
 namespace TheBoxSoftware.Reflection.Core.COFF {
 	/// <summary>
-	/// Flags describing a <see cref="MethodMetadataRow"/>s implementation.
+	/// Flags describing a <see cref="MethodMetadataTableRow"/>s implementation.
 	/// </summary>
 	/// <seealso cref="MethodMetadataRow"/>
 	[Flags]

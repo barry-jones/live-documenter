@@ -19,7 +19,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </remarks>
 	public class ExportConfigFile {
 		private XmlDocument xmlDocument;
-		private XmlNamespaceManager namespaceManager;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ExportConfigFile"/> class.

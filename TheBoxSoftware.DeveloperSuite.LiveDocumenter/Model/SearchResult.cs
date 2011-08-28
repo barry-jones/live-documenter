@@ -9,8 +9,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 	using TheBoxSoftware.Documentation;
 
 	/// <summary>
-	/// Represents an individual result from a search across the
-	/// <see cref="LiveDocument.DocumentMap" />.
+	/// Represents an individual result from a search across the <see cref="LiveDocument.Map" />.
 	/// </summary>
 	internal sealed class SearchResult {
 		private string summary;
@@ -23,42 +22,37 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 		public SearchResult(Entry relatedEntry) {
 			this.RelatedEntry = relatedEntry;
 
-			try {
-				member = null;
-				if (this.RelatedEntry.Item is List<ReflectedMember>) {
-					// ignore these are list entries e.g. Properties
-				}
-				else if (this.RelatedEntry.Item is KeyValuePair<string, List<TypeDef>>) {
-					// namespace
-				}
-				else {
-					member = (ReflectedMember)this.RelatedEntry.Item;
-				}
+			member = null;
+			if (this.RelatedEntry.Item is List<ReflectedMember>) {
+				// ignore these are list entries e.g. Properties
+			}
+			else if (this.RelatedEntry.Item is KeyValuePair<string, List<TypeDef>>) {
+				// namespace
+			}
+			else {
+				member = (ReflectedMember)this.RelatedEntry.Item;
+			}
 
-				if (member != null) {
-					if (member is PropertyDef) {
-						this.Name = new DisplayNameSignitureConvertor(
-							(PropertyDef)member, false, true
-							).Convert();
-					}
-					else if (member is TypeDef) {
-						this.Name = new DisplayNameSignitureConvertor(
-							(TypeDef)member, false
-							).Convert();
-					}
-					else if (member is MethodDef) {
-						this.Name = new DisplayNameSignitureConvertor(
-							(MethodDef)member, false, true
-							).Convert();
-					}
+			if (member != null) {
+				if (member is PropertyDef) {
+					this.Name = new DisplayNameSignitureConvertor(
+						(PropertyDef)member, false, true
+						).Convert();
 				}
-
-				if (string.IsNullOrEmpty(this.Name)) {
-					this.Name = this.RelatedEntry.Name;
+				else if (member is TypeDef) {
+					this.Name = new DisplayNameSignitureConvertor(
+						(TypeDef)member, false
+						).Convert();
+				}
+				else if (member is MethodDef) {
+					this.Name = new DisplayNameSignitureConvertor(
+						(MethodDef)member, false, true
+						).Convert();
 				}
 			}
-			catch (Exception ex) {
-				int x = 0;
+
+			if (string.IsNullOrEmpty(this.Name)) {
+				this.Name = this.RelatedEntry.Name;
 			}
 		}
 

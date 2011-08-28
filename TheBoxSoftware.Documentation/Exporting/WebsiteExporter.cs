@@ -13,8 +13,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	using TheBoxSoftware.Documentation.Exporting.Website;
 
 	public class WebsiteExporter : Exporter {
-		private System.Text.RegularExpressions.Regex illegalFileCharacters;
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebsiteExporter"/> class.
 		/// </summary>
