@@ -19,8 +19,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	public partial class SummaryTable : Table {
 		private TableRowGroup headerGroup;
 		private TableRowGroup itemGroup;
-		string firstHeader = "Name";
-		string secondHeader = "Description";
+		Block firstHeader = new Paragraph(new Run("Name"));
+		Block secondHeader = new Paragraph(new Run("Description"));
 		bool showIconColumn = true;
 		private bool showSecondColumn = true;
 
@@ -31,18 +31,27 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 		public SummaryTable(string firstColumnHeader, string secondColumnHeader, bool showIconColumn) {
 			this.InitializeComponent();
-			this.firstHeader = firstColumnHeader;
-			this.secondHeader = secondColumnHeader;
+			this.firstHeader = new Paragraph(new Run(firstColumnHeader));
+			this.secondHeader = new Paragraph(new Run(secondColumnHeader));
 			this.showIconColumn = false;
 			this.Initilialise();
 		}
 
 		public SummaryTable(string firstColumnHeader, string secondColumnHeader, bool showIconColumn, bool showSecondColumn) {
 			this.InitializeComponent();
+			this.firstHeader = new Paragraph(new Run(firstColumnHeader));
+			this.secondHeader = new Paragraph(new Run(secondColumnHeader));
+			this.showIconColumn = showIconColumn;
+			this.showSecondColumn = showSecondColumn;
+			this.Initilialise();
+		}
+
+		public SummaryTable(Block firstColumnHeader, Block secondColumnHeader, bool showIconColumn) {
+			this.InitializeComponent();
 			this.firstHeader = firstColumnHeader;
 			this.secondHeader = secondColumnHeader;
 			this.showIconColumn = showIconColumn;
-			this.showSecondColumn = showSecondColumn;
+			this.showSecondColumn = true;
 			this.Initilialise();
 		}
 
@@ -73,8 +82,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					row.Cells.Add(icon);
 				}
 
-				TableCell first = new TableCell(new Paragraph(new Run(firstHeader)));
-				TableCell second = new TableCell(new Paragraph(new Run(secondHeader)));
+				TableCell first = new TableCell(firstHeader);
+				TableCell second = new TableCell(secondHeader);
 				if (this.showSecondColumn) {
 					second.Style = (Style)this.FindResource("CellRight");
 					row.Cells.Add(first);
@@ -118,6 +127,26 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 			TableCell first = new TableCell(new Paragraph(new Run(name)));
 			TableCell second = block == null ? new TableCell() : new TableCell(block);
+			if (this.showSecondColumn) {
+				second.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
+				row.Cells.Add(second);
+			}
+			else {
+				first.Style = (Style)this.FindResource("CellRight");
+				row.Cells.Add(first);
+			}
+			itemGroup.Rows.Add(row);
+		}
+
+		public void AddItem(Block term, Block description) {
+			TableRow row = new TableRow();
+			if (this.showIconColumn) {
+				row.Cells.Add(new TableCell(new Paragraph(new Run(""))));
+			}
+
+			TableCell first = new TableCell(term);
+			TableCell second = description == null ? new TableCell() : new TableCell(description);
 			if (this.showSecondColumn) {
 				second.Style = (Style)this.FindResource("CellRight");
 				row.Cells.Add(first);

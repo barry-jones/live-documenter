@@ -204,11 +204,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
                         return new Paragraph();
                     }
 					SeeAlsoXmlCodeElement seeAlso = (SeeAlsoXmlCodeElement)element;
-					
-					TraceHelper.Indent();
-					TraceHelper.WriteLine("seealso({0})", seeAlso.Member.ToString());
-					TraceHelper.Unindent();
-
 					return new SeeAlso(assembly, seeAlso.Member);
 				case XmlCodeElements.TypeParam:
 					TypeParamXmlCodeElement typeParamElement = (TypeParamXmlCodeElement)element;
@@ -216,42 +211,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 				case XmlCodeElements.List:
 					ListXmlCodeElement listElement = (ListXmlCodeElement)element;
-					List tempList = new List();
-					List currentList = null;
-					session.Add(tempList);
-
-					Parser.Parse(assembly, listElement, session);
-
-					if (session.Count > 1) {
-						currentList = new List((Section)session[1], ListTypes.Unordered);
-					}
-					else {
-						currentList = new List(ListTypes.Unordered);
-					}
-
-					List<ListItem> list_items = tempList.InternalList.ListItems.ToList<ListItem>();
-					foreach (ListItem list_current in list_items) {
-						currentList.InternalList.ListItems.Add(list_current);
-					}
-
-					return currentList;
-				case XmlCodeElements.ListHeader:
-					ListHeaderXmlCodeElement listHeader_element = (ListHeaderXmlCodeElement)element;
-					Section s = new Section();
-					s.Blocks.AddRange(Parser.Parse(assembly, listHeader_element, session));
-					session.Add(s);
-					return s;
-				case XmlCodeElements.ListItem:
-					ListItemXmlCodeElement xmlCodeElements_listItem = (ListItemXmlCodeElement)element;
-					List xmlCodeElements_currentList = (List)session[0];
-					ListItem item = new ListItem();
-					item.Blocks.AddRange(Parser.Parse(assembly, xmlCodeElements_listItem, session));
-					xmlCodeElements_currentList.InternalList.ListItems.Add(item);
-					return null;
-
+					return Parser.ParseList(assembly, listElement);
 
 				case XmlCodeElements.Term:
 				case XmlCodeElements.Description:
+					Section termOrDescription = new Section();
+					termOrDescription.Blocks.AddRange(Parser.Parse(assembly, (XmlContainerCodeElement)element));
+					return termOrDescription;
+					break;
+
 				case XmlCodeElements.Permission:
 					//PermissionXmlCodeElement permissionElement = element as PermissionXmlCodeElement;
 					//crefEntryKey = new CrefEntryKey(assembly, permissionElement.Member.ToString());
@@ -380,6 +348,72 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// be still access its parents.</para>
 		/// </remarks>
 		private class ParsingSession : System.Collections.Generic.List<object> {
+		}
+
+		/// <summary>
+		/// Parses the ListXmlCodeElement in to its correct FlowDocument representation.
+		/// </summary>
+		/// <param name="assembly"></param>
+		/// <param name="element"></param>
+		/// <returns></returns>
+		private static Block ParseList(AssemblyDef assembly, ListXmlCodeElement element) {
+			Block parsedBlock = null;
+			switch (element.ListType) {
+				case Reflection.Comments.ListTypes.Bullet:
+				case Reflection.Comments.ListTypes.Number:
+					List list = new List();
+					if (element.ListType == Reflection.Comments.ListTypes.Number) {
+						list.InternalList.MarkerStyle = System.Windows.TextMarkerStyle.Decimal;
+					}
+					else {
+						list.InternalList.MarkerStyle = System.Windows.TextMarkerStyle.Disc;
+					}
+
+					// only use list items, headers, even if defined, are not used in normal lists
+					foreach (ListItemXmlCodeElement listItem in element.Elements.FindAll(e => e is ListItemXmlCodeElement)) {
+						ListItem item = new ListItem();
+						item.Blocks.AddRange(Parser.Parse(assembly, listItem));
+						list.InternalList.ListItems.Add(item);
+					}
+
+					parsedBlock = list;
+					break;
+				case Reflection.Comments.ListTypes.Table:
+					SummaryTable table;
+
+					// find the header item and use the titles or use defaults
+					ListHeaderXmlCodeElement headerElement = (ListHeaderXmlCodeElement)element.Elements.Find(e => e is ListHeaderXmlCodeElement);
+					if (headerElement != null && headerElement.Elements.Count == 2) {
+						TermXmlCodeElement termElement = (TermXmlCodeElement)headerElement.Elements.Find(e => e is TermXmlCodeElement);
+						DescriptionXmlCodeElement descriptionElement = (DescriptionXmlCodeElement)headerElement.Elements.Find(e => e is DescriptionXmlCodeElement);
+						
+						Section term = new Section();
+						Section description = new Section();
+						term.Blocks.AddRange(Parser.Parse(assembly, termElement));
+						description.Blocks.AddRange(Parser.Parse(assembly, descriptionElement));
+
+						table = new SummaryTable(term, description, false);
+					}
+					else {
+						table = new SummaryTable("Term", "Description", false);
+					}
+
+					foreach (ListItemXmlCodeElement listItem in element.Elements.FindAll(e => e is ListItemXmlCodeElement)) {
+						TermXmlCodeElement termElement = (TermXmlCodeElement)listItem.Elements.Find(e => e is TermXmlCodeElement);
+						DescriptionXmlCodeElement descriptionElement = (DescriptionXmlCodeElement)listItem.Elements.Find(e => e is DescriptionXmlCodeElement);
+
+						Section term = new Section();
+						Section description = new Section();
+						term.Blocks.AddRange(Parser.Parse(assembly, termElement));
+						description.Blocks.AddRange(Parser.Parse(assembly, descriptionElement));
+
+						table.AddItem(term, description);
+					}
+
+					parsedBlock = table;
+					break;
+			}
+			return parsedBlock;
 		}
 	}
 }

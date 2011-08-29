@@ -86,9 +86,9 @@
     <Compile Include="Comments\ExampleXmlCodeElement.cs" />
     <Compile Include="Comments\ExceptionXmlCodeElement.cs" />
     <Compile Include="Comments\ItalicXmlCodeElement.cs" />
-    <Compile Include="Comments\ListBulletStyles.cs" />
     <Compile Include="Comments\ListHeaderXmlCodeElement.cs" />
     <Compile Include="Comments\ListItemXmlCodeElement.cs" />
+    <Compile Include="Comments\ListTypes.cs" />
     <Compile Include="Comments\ListXmlCodeElement.cs" />
     <Compile Include="Comments\ParamRefXmlCodeElement.cs" />
     <Compile Include="Comments\ParamXmlCodeElement.cs" />

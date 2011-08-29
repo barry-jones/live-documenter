@@ -30,14 +30,14 @@
 
     <Style x:Key="BaseListStyle" TargetType="{x:Type doc:List}" >
         <Setter Property="MarkerStyle" Value="None" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="10,0,0,0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="MarkerOffset" Value="0" />
     </Style>
 
     <Style TargetType="{x:Type doc:ListItem}">
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="Padding" Value="5, 1, 1, 1" />
     </Style>
 
     <Style TargetType="{x:Type doc:List}" BasedOn="{StaticResource BaseListStyle}">
