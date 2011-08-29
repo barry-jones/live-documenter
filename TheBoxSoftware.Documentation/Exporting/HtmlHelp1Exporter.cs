@@ -100,7 +100,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					GC.Collect();
 				}
 
-				if (this.IsCancelled) {
+				if (!this.IsCancelled) {
 					Processor p = new Processor();
 					Uri xsltLocation = new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), "ApplicationData/livexmltohtml.xslt");
 					XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
