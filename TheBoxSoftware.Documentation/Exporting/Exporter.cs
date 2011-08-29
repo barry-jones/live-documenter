@@ -28,6 +28,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		private ExportExceptionHandler exportException;
 		private ExportFailedEventHandler exportFailure;
 		private string baseTempDirectory;	// base working directory for output and temp
+		protected readonly int XmlExportStep = 10;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
@@ -130,6 +131,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Counter indicating the current export step in the export process.
 		/// </summary>
 		protected int CurrentExportStep { get; set; }
+
+		/// <summary>
+		/// Indicates if this export has been cancelled.
+		/// </summary>
+		protected bool IsCancelled { get; private set; }
 		#endregion
 
 		/// <summary>
@@ -137,6 +143,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// implementing type.
 		/// </summary>
 		public abstract void Export();
+
+		/// <summary>
+		/// Cancels the current export and cleans up.
+		/// </summary>
+		public virtual void Cancel() {
+			this.IsCancelled = true;
+		}
 
 		/// <summary>
 		/// A method that recursively, through the documentation tree, exports all of the

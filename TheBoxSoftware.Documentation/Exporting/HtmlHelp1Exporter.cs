@@ -57,100 +57,123 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			try {
 				this.PrepareForExport();
 
-				this.OnExportCalculated(new ExportCalculatedEventArgs(7));
+				// calculate the export steps
+				int numberOfSteps = 0;
+				numberOfSteps += 1; // toc and index steps
+				numberOfSteps += this.Document.Map.Count; // top level entries for recursive export
+				numberOfSteps += 1; // output files
+				numberOfSteps += ((this.Document.Map.NumberOfEntries / this.XmlExportStep) * 3); // xml export stage
+				numberOfSteps += 1; // publish files
+				numberOfSteps += 1; // cleanup files
+
+				this.OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
 				this.CurrentExportStep = 1;
 
-				Documentation.Exporting.Rendering.DocumentMapXmlRenderer map = new Documentation.Exporting.Rendering.DocumentMapXmlRenderer(
-					this.Document.Map
-					);
+				if (!this.IsCancelled) {
+					// export the document map
+					this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
+					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory))) {
+						Rendering.DocumentMapXmlRenderer map = new Rendering.DocumentMapXmlRenderer(
+							this.Document.Map
+							);
+						map.Render(writer);
+					}
 
-				// export the document map
-				this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory))) {
-					map.Render(writer);
+					// export the project xml
+					ProjectXmlRenderer projectXml = new ProjectXmlRenderer(this.Document.Map);
+					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/project.xml", this.TempDirectory))) {
+						projectXml.Render(writer);
+					}
+
+					// export the index xml
+					IndexXmlRenderer indexXml = new IndexXmlRenderer(this.Document.Map);
+					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
+						indexXml.Render(writer);
+					}
+
+					// export each of the members
+					foreach (Entry current in this.Document.Map) {
+						this.RecursiveEntryExport(current);
+						this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
+						if (this.IsCancelled) break;
+					}
+					GC.Collect();
 				}
 
-				// export the project xml
-				ProjectXmlRenderer projectXml = new ProjectXmlRenderer(this.Document.Map);
-				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/project.xml", this.TempDirectory))) {
-					projectXml.Render(writer);
-				}
+				if (this.IsCancelled) {
+					Processor p = new Processor();
+					Uri xsltLocation = new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), "ApplicationData/livexmltohtml.xslt");
+					XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
+					transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
-				//// export the index xml
-				IndexXmlRenderer indexXml = new IndexXmlRenderer(this.Document.Map);
-				using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
-					indexXml.Render(writer);
-				}
+					// set output files
+					this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+					this.Config.SaveOutputFilesTo(this.OutputDirectory);
 
-				// export each of the members
-				foreach (Entry current in this.Document.Map) {
-					this.RecursiveEntryExport(current);
-				}
+					this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
-				Processor p = new Processor();
-				Uri xsltLocation = new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), "ApplicationData/livexmltohtml.xslt");
-				XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
-				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
-
-				// set output files
-				this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-				this.Config.SaveOutputFilesTo(this.OutputDirectory);
-
-				this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
-				
-				// export the project file
-				using (FileStream fs = File.OpenRead(string.Format("{0}/project.xml", this.TempDirectory))) {
-					Serializer s = new Serializer();
-					s.SetOutputFile(this.OutputDirectory + "project.hhp");
-					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-					transform.Run(s);
-				}
-
-				// export the index file
-				using (FileStream fs = File.OpenRead(string.Format("{0}/index.xml", this.TempDirectory))) {
-					Serializer s = new Serializer();
-					s.SetOutputFile(this.OutputDirectory + "index.hhk");
-					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-					transform.Run(s);
-				}
-
-				// export the content file
-				using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
-					Serializer s = new Serializer();
-					s.SetOutputFile(this.OutputDirectory + "toc.hhc");
-					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-					transform.Run(s);
-				}
-
-				// export the content files
-				string[] exclude = { "toc.xml", "index.xml", "project.xml" };
-				foreach (string current in Directory.GetFiles(this.TempDirectory)) {
-					if (exclude.Contains(current.Substring(this.TempDirectory.Length)))
-						continue;
-					using (FileStream fs = File.OpenRead(current)) {
+					// export the project file
+					using (FileStream fs = File.OpenRead(string.Format("{0}/project.xml", this.TempDirectory))) {
 						Serializer s = new Serializer();
-						s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+						s.SetOutputFile(this.OutputDirectory + "project.hhp");
 						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 						transform.Run(s);
 					}
+
+					// export the index file
+					using (FileStream fs = File.OpenRead(string.Format("{0}/index.xml", this.TempDirectory))) {
+						Serializer s = new Serializer();
+						s.SetOutputFile(this.OutputDirectory + "index.hhk");
+						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+						transform.Run(s);
+					}
+
+					// export the content file
+					using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
+						Serializer s = new Serializer();
+						s.SetOutputFile(this.OutputDirectory + "toc.hhc");
+						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+						transform.Run(s);
+					}
+
+					// export the content files
+					int counter = 0;
+					string[] exclude = { "toc.xml", "index.xml", "project.xml" };
+					foreach (string current in Directory.GetFiles(this.TempDirectory)) {
+						if (exclude.Contains(current.Substring(this.TempDirectory.Length)))
+							continue;
+						using (FileStream fs = File.OpenRead(current)) {
+							Serializer s = new Serializer();
+							s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+							transform.Run(s);
+						}
+						counter++;
+						if (counter % this.XmlExportStep == 0) {
+							this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+						}
+						if (this.IsCancelled) break;
+					}
 				}
 
-				// compile the html help file
-				this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
-				this.CompileHelp(this.OutputDirectory + "project.hhp");
+				if (!this.IsCancelled) {
+					// compile the html help file
+					this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
+					this.CompileHelp(this.OutputDirectory + "project.hhp");
 
-				// publish the compiled help file
-				this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
-				File.Copy(this.OutputDirectory + "project.chm", this.PublishDirectory + "documentation.chm");
-			}
-			catch (Exception ex) {
-				ExportException exception = new ExportException(ex.Message, ex);
-				this.OnExportException(new ExportExceptionEventArgs(exception));
-			}
-			finally {
+					// publish the compiled help file
+					this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
+					File.Copy(this.OutputDirectory + "project.chm", this.PublishDirectory + "documentation.chm");
+				}
+
 				// clean up the temp directory
 				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
 				this.Cleanup();
+			}
+			catch (Exception ex) {
+				this.Cleanup(); // attempt to clean up our mess before dying
+				ExportException exception = new ExportException(ex.Message, ex);
+				this.OnExportException(new ExportExceptionEventArgs(exception));
 			}
 		}
 

@@ -43,6 +43,14 @@ namespace TheBoxSoftware.Documentation {
 			return found;
 		}
 
+		/// <summary>
+		/// The number of entries in this document map.
+		/// </summary>
+		/// <remarks>
+		/// This is not a calculated property but is set after the document mapper has completed.
+		/// </remarks>
+		public int NumberOfEntries { get; set; }
+
 		#region IList<Entry> Members
 
 		public int IndexOf(Entry item) {

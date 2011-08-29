@@ -188,7 +188,7 @@
                         Focusable="True" 
                         Background="Transparent"
                         Visibility="Hidden"
-                        IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                        IsReadOnly="{TemplateBinding IsReadOnly}" />
                     <Popup 
                         Name="Popup"
                         Placement="Bottom"

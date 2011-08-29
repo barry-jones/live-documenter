@@ -22,6 +22,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		public DocumentSettings Settings { get; set; }
 
+		public string Title { get; set; }
+
 		/// <summary>
 		/// The directory where all final output should be copied after export.
 		/// </summary>

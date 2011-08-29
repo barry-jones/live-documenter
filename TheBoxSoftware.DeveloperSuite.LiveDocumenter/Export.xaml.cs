@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Threading;
 using System.Windows.Threading;
+using System.Windows.Media.Animation;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.Documentation.Exporting;
@@ -17,12 +19,22 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private ManualResetEvent resetEvent = null;
 		protected List<ExportConfigFile> exportFiles = new List<ExportConfigFile>();
 		private Settings settingsWindow = new Settings();
+		private Exporter threadedExporter;
+		private bool exportComplete = false;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Export"/> class.
 		/// </summary>
 		public Export() {
 			InitializeComponent();
+
+			this.PrivacyFilters = new PrivacyFilterCollection {
+				new PrivacyFilter("Document internal members", Reflection.Visibility.Internal),
+				new PrivacyFilter("Document private members", Reflection.Visibility.Private),
+				new PrivacyFilter("Document protected members", Reflection.Visibility.Protected),
+				new PrivacyFilter("Document protected internal members", Reflection.Visibility.InternalProtected)
+														  };
+			this.DataContext = this;
 			this.LoadConfigFiles();
 		}
 
@@ -45,11 +57,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private void ExportDocumentation() {
 			this.Cursor = Cursors.AppStarting;
 
-			this.exportSelection.Visibility = Visibility.Hidden;
-			this.exportProgress.Visibility = Visibility.Visible;
+			//this.exportSelection.Visibility = Visibility.Hidden;
 			this.settings.Visibility = Visibility.Collapsed;
 			this.export.Visibility = Visibility.Collapsed;
 			this.finish.Visibility = Visibility.Visible;
+			System.Windows.Forms.Application.DoEvents();
+			
+			this.exportSelection.BeginAnimation(OpacityProperty, (AnimationTimeline)this.FindResource("OptionsHide"));
+			this.BeginAnimation(HeightProperty, (AnimationTimeline)this.FindResource("ShrinkWindow"));
+			this.exportProgress.BeginAnimation(OpacityProperty, (AnimationTimeline)this.FindResource("OptionsShow"));
 			System.Windows.Forms.Application.DoEvents();
 
 			Documentation.Exporting.Exporter exporter = null;
@@ -57,8 +73,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.exportDescription.Text = config.Description;
 
 			ExportSettings settings = new ExportSettings();
+			settings.Title = this.title.Text;
+			settings.PublishDirectory = this.publishTo.Text;
 			settings.Settings = new Documentation.DocumentSettings();
-			foreach (Settings.PrivacyFilter filter in settingsWindow.PrivacyFilters) {
+			foreach (PrivacyFilter filter in this.PrivacyFilters) {
 				if (filter.IsSelected) {
 					settings.Settings.VisibilityFilters.Add(filter.Visibility);
 				}
@@ -101,54 +119,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 
-		/// <summary>
-		/// Handles the ExportException event of the exporter control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
-		void exporter_ExportException(object sender, ExportExceptionEventArgs e) {
-			// this.resetEvent.WaitOne();
-			throw e.Exception;
-		}
-
-		/// <summary>
-		/// Handles the ExportStep event of the exporter.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportStepEventArgs"/> instance containing the event data.</param>
-		private void exporter_ExportStep(object sender, ExportStepEventArgs e) {
-			DispatcherOperation op = this.Dispatcher.BeginInvoke(
-				DispatcherPriority.Normal,
-				new Action<ExportStepEventArgs>(
-					p => {
-						this.progressIndicator.Value = p.Step;
-						this.progressText.Text = p.Description;
-					}),
-				e);
-		}
-
-		/// <summary>
-		/// Handles the ExportCalculated event of the exporter control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportCalculatedEventArgs"/> instance containing the event data.</param>
-		private void exporter_ExportCalculated(object sender, ExportCalculatedEventArgs e) {
-			DispatcherOperation op = this.Dispatcher.BeginInvoke(
-				DispatcherPriority.Normal,
-				new Action<ExportCalculatedEventArgs>(
-					p => {
-						this.progressIndicator.Value = 0;
-						this.progressIndicator.Minimum = 0;
-						this.progressIndicator.Maximum = p.NumberOfSteps;
-						this.progressText.Text = "Started export";
-					}),
-				e);
-		}
-
 		private void ThreadedExport(object state) {
-			Documentation.Exporting.Exporter exporter = state as Documentation.Exporting.Exporter;
-			if (exporter != null) {
-				exporter.Export();
+			this.threadedExporter = state as Documentation.Exporting.Exporter;
+			if (this.threadedExporter!= null) {
+				this.threadedExporter.Export();
+				GC.Collect();
+				this.exportComplete = true;
 			}
 		}
 
@@ -164,8 +140,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Cancels the export operation and closes the Export window.
 		/// </summary>
 		private void Cancel() {
+			this.Cursor = Cursors.Wait;
+			this.threadedExporter.Cancel();
+			while (!this.exportComplete) {
+				Thread.Sleep(60);
+			}
+			this.Cursor = null;
 			this.Close();
 		}
+
+		#region Properties
+		public PrivacyFilterCollection PrivacyFilters { get; set; }
+		#endregion
 
 		#region Event Handlers
 		/// <summary>
@@ -216,7 +202,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.Cancel();
 			}
 		}
-		#endregion
 
 		private void outputSelection_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ExportConfigFile o = (ExportConfigFile)this.outputSelection.SelectedItem;
@@ -234,5 +219,93 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					break;
 			}
 		}
+
+		/// <summary>
+		/// Handles the ExportException event of the exporter control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
+		void exporter_ExportException(object sender, ExportExceptionEventArgs e) {
+			// this.resetEvent.WaitOne();
+			throw e.Exception;
+		}
+
+		/// <summary>
+		/// Handles the ExportStep event of the exporter.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportStepEventArgs"/> instance containing the event data.</param>
+		private void exporter_ExportStep(object sender, ExportStepEventArgs e) {
+			DispatcherOperation op = this.Dispatcher.BeginInvoke(
+				DispatcherPriority.Normal,
+				new Action<ExportStepEventArgs>(
+					p => {
+						this.progressIndicator.Value = p.Step;
+						this.progressText.Text = p.Description;
+					}),
+				e);
+		}
+
+		/// <summary>
+		/// Handles the ExportCalculated event of the exporter control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportCalculatedEventArgs"/> instance containing the event data.</param>
+		private void exporter_ExportCalculated(object sender, ExportCalculatedEventArgs e) {
+			DispatcherOperation op = this.Dispatcher.BeginInvoke(
+				DispatcherPriority.Normal,
+				new Action<ExportCalculatedEventArgs>(
+					p => {
+						this.progressIndicator.Value = 0;
+						this.progressIndicator.Minimum = 0;
+						this.progressIndicator.Maximum = p.NumberOfSteps;
+						this.progressText.Text = "Started export";
+					}),
+				e);
+		}
+
+		private void fileDialogOpen_Click(object sender, System.Windows.RoutedEventArgs e) {
+			System.Windows.Forms.FolderBrowserDialog ofd = new System.Windows.Forms.FolderBrowserDialog();
+			string[] filters = new string[] {
+				"All Files (.sln, .csproj, .vbproj, .vcproj, .dll, .exe)|*.sln;*.csproj;*.vbproj;*.vcproj;*.dll;*.exe",
+				"VS.NET Solution (.sln)|*.sln",
+				"All VS Project Files (.csproj, .vbproj, .vcproj)|*.csproj;*.vbproj;*.vcproj",
+				".NET Libraries and Executables (.dll, .exe)|*.dll;*.exe"
+				};
+			ofd.ShowNewFolderButton = true;
+			if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+				this.publishTo.Text = ofd.SelectedPath;
+			}
+		}
+		#endregion
+
+		#region Internal Classes
+		public class PrivacyFilterCollection : ObservableCollection<PrivacyFilter> {
+			public override string ToString() {
+				List<string> selectedNames = new List<string>();
+
+				foreach (PrivacyFilter current in this) {
+					if (current.IsSelected) {
+						selectedNames.Add(current.Visibility.ToString());
+					}
+				}
+
+				return selectedNames.Count > 0
+					? selectedNames.Count == this.Count ? "Document all members" : string.Format("Document Public, {0} members", string.Join(", ", selectedNames.ToArray()))
+					: "Document Public members";
+			}
+		}
+
+		public class PrivacyFilter {
+			public PrivacyFilter(string title, TheBoxSoftware.Reflection.Visibility filter) {
+				this.Title = title;
+				this.Visibility = filter;
+			}
+
+			public string Title { get; set; }
+			public TheBoxSoftware.Reflection.Visibility Visibility { get; set; }
+			public bool IsSelected { get; set; }
+		}
+		#endregion
 	}
 }

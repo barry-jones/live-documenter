@@ -95,6 +95,7 @@ namespace TheBoxSoftware.Documentation {
 		/// Generates the document map based on the <see cref="CurrentFiles"/>.
 		/// </summary>
 		public virtual void GenerateMap() {
+			this.EntryCreator.Created = 0;
 			this.DocumentMap = this.UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
 			int fileCounter = 1;
 
@@ -111,6 +112,7 @@ namespace TheBoxSoftware.Documentation {
 				}
 			}
 			this.DocumentMap.OrderBy(e => e.Name);
+			this.DocumentMap.NumberOfEntries = this.EntryCreator.Created;
 		}
 
 		/// <summary>
