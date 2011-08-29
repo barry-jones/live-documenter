@@ -8,9 +8,24 @@ using System.Text.RegularExpressions;
 
 namespace TheBoxSoftware.Documentation {
 	/// <summary>
-	/// Helper class for reading and parsing file types to get the referenced
-	/// libraries.
+	/// Class that reads solutions, projects and libraries and converts them in to
+	/// DocumentedAssembly lists.
 	/// </summary>
+	/// <remarks>
+	/// <see cref="Document"/>s are collections of DocumentedAssembly files, this class
+	/// parses input files and returns the correctly instantiated DocumentAssembly instances.
+	/// </remarks>
+	/// <example>
+	/// The filename and build configuration are required.
+	/// <code>
+	/// List&lt;DocumentedAssembly&gt; assemblies = InputFileReader.Read(
+	///     "c:\projects\mysolution.sln", "Debug"
+	///     );
+	/// Document doc = new Document(assemblies);
+	/// </code>
+	/// </example>
+	/// <seealso cref="Document"/>
+	/// <seealso cref="DocumentedAssembly"/>
 	public static class InputFileReader {
 		/// <summary>
 		/// Reads and parses the file and returns all of the associated library
