@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.IO;
 using System.Xml;
-using System.Xml.XPath;
+using System.Text.RegularExpressions;
 
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
-	using TheBoxSoftware.Diagnostics;
-	using TheBoxSoftware.Documentation;
-
+namespace TheBoxSoftware.Documentation {
 	/// <summary>
 	/// Helper class for reading and parsing file types to get the referenced
 	/// libraries.
 	/// </summary>
-	public static class DocumentationFileReader {
+	public static class InputFileReader {
 		/// <summary>
 		/// Reads and parses the file and returns all of the associated library
 		/// references
@@ -27,10 +23,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Thrown when the <paramref name="fileName"/> provided is null or an
 		/// empty string.
 		/// </exception>
-		public static List<DocumentedAssembly> Read(string fileName) {
-			TraceHelper.WriteLine("reading file: {0}", fileName);
-			TraceHelper.Indent();
-
+		public static List<DocumentedAssembly> Read(string fileName, string buildConfiguration) {
 			if (string.IsNullOrEmpty(fileName)) {
 				throw new ArgumentNullException("fileName");
 			}
@@ -55,10 +48,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					break;
 			}
 
+			reader.BuildConfiguration = string.IsNullOrEmpty(buildConfiguration) ? "Debug" : buildConfiguration;
 			files = reader.Read();
-
-			TraceHelper.Unindent();
-
 			return files;
 		}
 
@@ -72,14 +63,19 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			/// Initialises a new instance of the FileReader class
 			/// </summary>
 			/// <param name="fileName">The filename of the file being read</param>
-			protected FileReader(string fileName) { 
-				this.FileName = fileName; 
+			protected FileReader(string fileName) {
+				this.FileName = fileName;
 			}
 
 			/// <summary>
 			/// The original file name that was read by this FileReader
 			/// </summary>
 			protected string FileName { get; set; }
+
+			/// <summary>
+			/// The build configuration to use when searching project and solution files.
+			/// </summary>
+			public string BuildConfiguration { get; set; }
 
 			/// <summary>
 			/// Reads the file to get all the referenced libraries for the documentor
@@ -97,7 +93,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private class SolutionFileReader : FileReader {
 			private const string VersionPattern = @"Microsoft Visual Studio Solution File, Format Version ([\d\.]*)";
 			private const string V10ProjectPattern = "Project.*\\\".*\\\".*\\\".*\\\".*\\\"(.*)\\\".*\\\".*\\\"";
-			private string[] ValidExtensions = new string[] {".csproj", ".vbproj", ".vcproj"};
+			private string[] ValidExtensions = new string[] { ".csproj", ".vbproj", ".vcproj" };
 
 			/// <summary>
 			/// Initialises a new instance of the SolutionFileReader class.
@@ -119,29 +115,25 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 				// Find the version number
 				Match versionMatch = Regex.Match(solutionFile, VersionPattern);
-				TraceHelper.WriteLine("solution version: {0}", versionMatch.Value);
 
 				// Find all the project files
 				MatchCollection projectFileMatches = Regex.Matches(solutionFile, V10ProjectPattern);
-				TraceHelper.WriteLine("number of projects: {0}", projectFileMatches.Count);
-				TraceHelper.Indent();
 				foreach (Match current in projectFileMatches) {
 					if (current.Groups.Count == 2) {
 						string projectFile = current.Groups[1].Value;
-						TraceHelper.WriteLine("project: {0}", projectFile);
 						if (ValidExtensions.Contains(System.IO.Path.GetExtension(projectFile))) {
 							projectFiles.Add(projectFile);
 						}
 					}
 				}
-				TraceHelper.Unindent();
-
+				
 				foreach (string project in projectFiles) {
 					string fullProjectPath = System.IO.Path.GetDirectoryName(this.FileName) + "\\" + project;
 					if (System.IO.File.Exists(fullProjectPath)) {
 						ProjectFileReader reader = ProjectFileReader.Create(fullProjectPath);
+						reader.BuildConfiguration = this.BuildConfiguration;
 						references.AddRange(reader.Read());
-					}					
+					}
 				}
 
 				return references;
@@ -189,12 +181,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 				// should find a nice way of figuring out the schema version numbers and loading a reader based on that
 				// but speed is of the essance! [#94]
-				if (doc.FirstChild.Name == "Project" || (doc.FirstChild.Name=="xml" && doc.FirstChild.NextSibling.Name == "Project")) {
-					TraceHelper.WriteLine("reading with 05 > ProjectFileReader");
+				if (doc.FirstChild.Name == "Project" || (doc.FirstChild.Name == "xml" && doc.FirstChild.NextSibling.Name == "Project")) {
 					return new VS2005ProjectFileReader(filename);
 				}
 				else {
-					TraceHelper.WriteLine("reading with 03 < VS2003ProjectFileReader");
 					return new VS2003ProjectFileReader(filename);
 				}
 			}
@@ -225,10 +215,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 							documentation = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(this.FileName) + "\\" + properties.DocumentationFile);
 							if (!System.IO.File.Exists(documentation)) {
 								documentation = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(this.FileName) + "\\" + properties.OutputPath + "\\" + properties.DocumentationFile);
-
-								TraceHelper.WriteLineIf(!System.IO.File.Exists(documentation),
-									"Reading project properties and '{0}' documentation file was not found.",
-									documentation);
 							}
 						}
 					}
@@ -341,7 +327,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 				foreach (XmlNode currentNode in conditionalGroups) {
 					foreach (XmlAttribute attribute in currentNode.Attributes) {
-						if (attribute.Name == "Condition" && (attribute.Value.IndexOf(Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString(), StringComparison.InvariantCultureIgnoreCase) != -1)) {
+						if (attribute.Name == "Condition" && (attribute.Value.IndexOf(this.BuildConfiguration, StringComparison.InvariantCultureIgnoreCase) != -1)) {
 							XmlNode outPath = currentNode.SelectSingleNode("pr:OutputPath", namespaceManager);
 							XmlNode docPath = currentNode.SelectSingleNode("pr:DocumentationFile", namespaceManager);
 
@@ -391,7 +377,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				// DocumentationFile
 				XmlNode settings = projectFile.SelectSingleNode(@"/VisualStudioProject/*/Build/Settings");
 				XmlNode debugNode = projectFile.SelectSingleNode(@"/VisualStudioProject/*/Build/Settings/Config[@Name='" +
-						Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString() + "']");
+						this.BuildConfiguration + "']");
 
 				string outputExtension = string.Empty;
 				string libraryName = settings.Attributes["AssemblyName"].Value;

@@ -179,7 +179,6 @@
     <Compile Include="Diagramming\SequenceObject.xaml.cs">
       <DependentUpon>SequenceObject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DocumentationFileReader.cs" />
     <Compile Include="EntryKey.cs" />
     <Compile Include="Export.xaml.cs">
       <DependentUpon>Export.xaml</DependentUpon>

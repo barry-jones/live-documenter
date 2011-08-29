@@ -66,7 +66,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				try {
 					List<DocumentedAssembly> readFiles = new List<DocumentedAssembly>();
 					foreach (string filename in ofd.FileNames) {
-						readFiles.AddRange(DocumentationFileReader.Read(filename));
+						readFiles.AddRange(InputFileReader.Read(filename, Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString()));
 					}
 
 					if (readFiles != null && readFiles.Count > 0) {
@@ -271,7 +271,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			if (System.IO.File.Exists(file.Filename)) {
 				this.Cursor = Cursors.Wait;
 				LiveDocumentorFile.Singleton.Files.Clear();
-				LiveDocumentorFile.Singleton.Add(DocumentationFileReader.Read(file.Filename), file.Filename);
+				LiveDocumentorFile.Singleton.Add(
+					InputFileReader.Read(file.Filename, Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString()), 
+					file.Filename
+					);
 				Model.UserApplicationStore.Store.RecentFiles.AddFile(file);
 				this.UpdateView();
 				this.userViewingHistory.ClearHistory();
