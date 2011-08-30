@@ -88,7 +88,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null) {
 				XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
 				if (summary != null) {
-					this.Serialize(summary, writer, entryMember.Assembly);
+					this.Serialize(summary, writer);
 				}
 			}
 			writer.WriteEndElement();

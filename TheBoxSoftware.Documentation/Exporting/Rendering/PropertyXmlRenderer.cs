@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
 				if (summary != null) {
-					this.Serialize(summary, writer, this.member.Assembly);
+					this.Serialize(summary, writer);
 				}
 			}
 
@@ -60,7 +60,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
 				if (remarks != null) {
-					this.Serialize(remarks, writer, this.member.Assembly);
+					this.Serialize(remarks, writer);
 				}
 			}
 
@@ -68,11 +68,11 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement);
 				if (remarks != null) {
-					this.Serialize(remarks, writer, this.member.Assembly);
+					this.Serialize(remarks, writer);
 				}
 			}
 
-			this.RenderSeeAlsoBlock(member, writer, comment, this.member.Assembly);
+			this.RenderSeeAlsoBlock(member, writer, comment);
 
 			writer.WriteEndElement();
 		}

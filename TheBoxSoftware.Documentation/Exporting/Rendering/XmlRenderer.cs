@@ -113,7 +113,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 						writer.WriteEndElement();
 						writer.WriteStartElement("condition");
 						for (int j = 0; j < current.Elements.Count; j++) {
-							this.Serialize(current.Elements[j], writer, member.Assembly);
+							this.Serialize(current.Elements[j], writer);
 						}
 						writer.WriteEndElement();
 						writer.WriteEndElement();
@@ -179,7 +179,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// <param name="member">The member to render the block for.</param>
 		/// <param name="writer">The writer to write the xml to.</param>
 		/// <param name="comment">The associated xml comments.</param>
-		protected void RenderSeeAlsoBlock(ReflectedMember member, System.Xml.XmlWriter writer, XmlCodeComment comment, AssemblyDef assembly) {
+		protected void RenderSeeAlsoBlock(ReflectedMember member, System.Xml.XmlWriter writer, XmlCodeComment comment) {
 			if (comment != XmlCodeComment.Empty) {
 				List<XmlCodeElement> elements = comment.Elements.FindAll(e => e.Element == XmlCodeElements.SeeAlso);
 				if (elements != null && elements.Count > 0) {
@@ -209,55 +209,25 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// </summary>
 		/// <param name="comment">The XML code comment to serialize.</param>
 		/// <param name="writer">The XmlWriter to serialize to.</param>
-		/// <param name="assembly">The assembly associated with the commented type.</param>
-		protected void Serialize(XmlCodeElement comment, System.Xml.XmlWriter writer, AssemblyDef assembly) {
+		protected void Serialize(XmlCodeElement comment, System.Xml.XmlWriter writer) {
 			if (comment != XmlCodeComment.Empty) {
-				if (comment.Element == XmlCodeElements.See) {
-					SeeXmlCodeElement see = (SeeXmlCodeElement)comment;
-					Entry entry = this.Exporter.Document.Find(see.Member);
-					string displayName = see.Text;
-
-					if (entry != null && see.Member.PathType != CRefTypes.Error) {
-						displayName = entry.Name;
-						writer.WriteStartElement(comment.Element.ToString().ToLower());
-						writer.WriteAttributeString("id", entry.Key.ToString());
-
-						switch (see.Member.PathType) {
-							case CRefTypes.Namespace:
-								writer.WriteAttributeString("type", "namespace");
-								writer.WriteAttributeString("name", displayName);
-								break;
-							// these could be generic and so will need to modify to
-							// a more appropriate display name
-							case CRefTypes.Method:
-								MethodDef method = entry.Item as MethodDef;
-								if (method != null) {
-									displayName = method.GetDisplayName(false);
-								}
-								break;
-							case CRefTypes.Type:
-								TypeDef def = entry.Item as TypeDef;
-								if (def != null) {
-									displayName = def.GetDisplayName(false);
-								}
-								break;
-						}
-
-						writer.WriteString(displayName);
-						writer.WriteEndElement();	// element
-					}
-				}
-				else if (comment is XmlContainerCodeElement) {
-					writer.WriteStartElement(comment.Element.ToString().ToLower());
-					foreach (XmlCodeElement element in ((XmlContainerCodeElement)comment).Elements) {
-						this.Serialize(element, writer, assembly);
-					}
-					writer.WriteEndElement();
+				if (XmlElementRenderer.IsHandled(comment)) {
+					XmlRenderer renderer = XmlElementRenderer.Create(this.AssociatedEntry, comment);
+					renderer.Render(writer);
 				}
 				else {
-					writer.WriteStartElement(comment.Element.ToString().ToLower());
-					writer.WriteString(comment.Text);
-					writer.WriteEndElement();
+					if (comment is XmlContainerCodeElement) {
+						writer.WriteStartElement(comment.Element.ToString().ToLower());
+						foreach (XmlCodeElement element in ((XmlContainerCodeElement)comment).Elements) {
+							this.Serialize(element, writer);
+						}
+						writer.WriteEndElement();
+					}
+					else {
+						writer.WriteStartElement(comment.Element.ToString().ToLower());
+						writer.WriteString(comment.Text);
+						writer.WriteEndElement();
+					}
 				}
 			}
 		}

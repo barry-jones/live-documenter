@@ -51,7 +51,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 						p => p is Reflection.Comments.SummaryXmlCodeElement
 						) as Reflection.Comments.SummaryXmlCodeElement;
 					if (summary != null) {
-						this.Serialize(summary, writer, this.member.Value[0].Assembly);
+						this.Serialize(summary, writer);
 					}
 				}
 
