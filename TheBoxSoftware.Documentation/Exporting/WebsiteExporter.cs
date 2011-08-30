@@ -95,7 +95,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				// clean up the temp directory
 				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
-				this.Cleanup();
+				//this.Cleanup();
 			}
 			catch (Exception ex) {
 				this.Cleanup(); // attempt to clean up our mess before dying

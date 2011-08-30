@@ -36,7 +36,75 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 		private void RenderTable(System.Xml.XmlWriter writer) {
 			writer.WriteStartElement("table");
 
+			// create the table header
+			ListHeaderXmlCodeElement header = (ListHeaderXmlCodeElement)this.element.Elements.Find(
+				e => e.Element == XmlCodeElements.ListHeader);
+			writer.WriteStartElement("header");
+			
+			
+			if (header != null) {
+				XmlContainerCodeElement description = (XmlContainerCodeElement)this.element.Elements.Find(
+					e => e.Element == XmlCodeElements.Description);
+				XmlContainerCodeElement term = (XmlContainerCodeElement)this.element.Elements.Find(
+					e => e.Element == XmlCodeElements.Term);
+				
+				writer.WriteStartElement("cell");
+				if (term != null) {
+					foreach (XmlCodeElement child in term.Elements) { // miss out the listitem and just focus on children
+						this.Serialize(child, writer);
+					}
+				}
+				else {
+					writer.WriteElementString("text", "Term");
+				}
+				writer.WriteEndElement(); // column
 
+				writer.WriteStartElement("cell");
+				if (description != null) {
+					foreach (XmlCodeElement child in description.Elements) { // miss out the listitem and just focus on children
+						this.Serialize(child, writer);
+					}
+				}
+				else {
+					writer.WriteElementString("text", "Description");
+				}
+				writer.WriteEndElement(); // column
+			}
+			else {
+				writer.WriteStartElement("cell");
+				writer.WriteElementString("text", "Term");
+				writer.WriteEndElement(); // column
+				writer.WriteStartElement("cell");
+				writer.WriteElementString("text", "Description");
+				writer.WriteEndElement(); // column
+			}			
+			writer.WriteEndElement(); // header
+
+			// rows
+			List<XmlCodeElement> items = this.element.Elements.FindAll(e => e.Element == XmlCodeElements.ListItem);
+			foreach (ListItemXmlCodeElement currentItem in items) {
+				if (currentItem.Elements.Count == 2) {
+					XmlContainerCodeElement description = (XmlContainerCodeElement)this.element.Elements.Find(
+					e => e.Element == XmlCodeElements.Description);
+					XmlContainerCodeElement term = (XmlContainerCodeElement)this.element.Elements.Find(
+						e => e.Element == XmlCodeElements.Term);
+
+					writer.WriteStartElement("cell");
+					if (term != null) {
+						foreach (XmlCodeElement child in description.Elements) { // miss out the listitem and just focus on children
+							this.Serialize(child, writer);
+						}
+					}
+					writer.WriteEndElement();
+					writer.WriteStartElement("cell");
+					if (description != null) {						
+						foreach (XmlCodeElement child in term.Elements) { // miss out the listitem and just focus on children
+							this.Serialize(child, writer);
+						}
+					}
+					writer.WriteEndElement();
+				}
+			}
 
 			writer.WriteEndElement(); // table
 		}
