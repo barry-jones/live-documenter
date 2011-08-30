@@ -35,6 +35,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 
 		private void RenderTable(System.Xml.XmlWriter writer) {
 			writer.WriteStartElement("table");
+
+
+
 			writer.WriteEndElement(); // table
 		}
 
@@ -43,9 +46,12 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 			// listtype can be bullet or number
 			writer.WriteAttributeString("type", this.element.ListType.ToString().ToLower());
 
-			foreach (ListItemXmlCodeElement item in this.element.Elements) {
+			List<XmlCodeElement> elements = this.element.Elements.FindAll(e => e.Element == XmlCodeElements.ListItem);
+			foreach (ListItemXmlCodeElement item in elements) {
 				writer.WriteStartElement("item");
-				this.Serialize(item, writer);
+				foreach (XmlCodeElement child in item.Elements) { // miss out the listitem and just focus on children
+					this.Serialize(child, writer);
+				}
 				writer.WriteEndElement(); // item
 			}
 

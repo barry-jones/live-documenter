@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// <param name="associatedEntry">The entry this comment element was taken from.</param>
 		/// <param name="element">The XML code comment element to handle.</param>
 		/// <returns>A valid XmlRenderer for the <paramref name="element"/>.</returns>
-		public static XmlRenderer Create(Entry associatedEntry, XmlCodeElement element) {
+		public static XmlRenderer Create(XmlRenderer from, Entry associatedEntry, XmlCodeElement element) {
 			XmlElementRenderer renderer = null;
 
 			switch (element.Element) {
@@ -48,6 +48,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 					renderer = new ListXmlElementRenderer(associatedEntry, (ListXmlCodeElement)element);
 					break;
 			}
+			renderer.Exporter = from.Exporter; // need to pass the reference over
 
 			return renderer;
 		}

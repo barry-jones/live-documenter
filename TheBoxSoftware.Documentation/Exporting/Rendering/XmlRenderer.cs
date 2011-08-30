@@ -212,7 +212,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		protected void Serialize(XmlCodeElement comment, System.Xml.XmlWriter writer) {
 			if (comment != XmlCodeComment.Empty) {
 				if (XmlElementRenderer.IsHandled(comment)) {
-					XmlRenderer renderer = XmlElementRenderer.Create(this.AssociatedEntry, comment);
+					XmlRenderer renderer = XmlElementRenderer.Create(this, this.AssociatedEntry, comment);
 					renderer.Render(writer);
 				}
 				else {
