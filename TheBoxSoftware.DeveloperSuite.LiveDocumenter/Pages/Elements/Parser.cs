@@ -404,8 +404,20 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 
 						Section term = new Section();
 						Section description = new Section();
-						term.Blocks.AddRange(Parser.Parse(assembly, termElement));
-						description.Blocks.AddRange(Parser.Parse(assembly, descriptionElement));
+
+						if (termElement != null) {
+							term.Blocks.AddRange(Parser.Parse(assembly, termElement));
+						}
+						else if (element.Elements != null && element.Elements.Count > 0) {
+							term.Blocks.Add(new Paragraph(new Run(element.Elements[0].Text)));
+						}
+
+						if (descriptionElement != null) {
+							description.Blocks.AddRange(Parser.Parse(assembly, descriptionElement));
+						}
+						else if (element.Elements != null && element.Elements.Count > 1) {
+							term.Blocks.Add(new Paragraph(new Run(element.Elements[1].Text)));
+						}
 
 						table.AddItem(term, description);
 					}

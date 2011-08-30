@@ -241,5 +241,20 @@ namespace DocumentationTest.CommentTests {
 		/// Tests how the appliction handles a quick defined list with lists children
 		/// </summary>
 		void QuickChildLists() { }
+
+		/// <summary>
+		/// Test of different invalid ways of declaring lists, to make sure the application fails gracefully
+		/// </summary>
+		/// Badly declared list header followed by list items that are not a term/description
+		/// <list>
+		///		<listheader>This is the header for the list!</listheader>
+		///		<item>A plain item with text</item>
+		///		<item><code>string x = "testing code";</code></item>
+		///		<item>
+		///			<para>A couple of paragraphs of information in a list.</para>
+		///			<para>This will look shit. Does para = paragraph or parameter??</para>
+		///		</item>
+		/// </list>
+		void BadDeclerations() { }
 	}
 }
