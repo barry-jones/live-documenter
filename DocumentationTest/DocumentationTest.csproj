@@ -86,6 +86,7 @@
     <Compile Include="CommentTests\ListElement.cs" />
     <Compile Include="CommentTests\Remarks.cs" />
     <Compile Include="CommentTests\SeeElement.cs" />
+    <Compile Include="CommentTests\SummaryElement.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DocumentedClass.cs" />
     <Compile Include="DocumentedDelegate.cs" />
