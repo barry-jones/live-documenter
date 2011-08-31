@@ -82,7 +82,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				}
 			}
 
-			TheBoxSoftware.Documentation.Document document = new Documentation.Document(LiveDocumenter.LiveDocumentorFile.Singleton.Files);
+			TheBoxSoftware.Documentation.Document document = new Documentation.Document(LiveDocumenter.LiveDocumentorFile.Singleton.LiveDocument.Assemblies);
 			document.Settings = settings.Settings;
 			document.UpdateDocumentMap();
 

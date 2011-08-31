@@ -44,44 +44,41 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		#region Menu Actions
-		/// <summary>
-		/// Adds a documentation file to the current live document.
-		/// </summary>
-		/// <param name="sender">Calling object.</param>
-		/// <param name="e">Event arguments</param>
-		private void AddDocumentationFile(object sender, RoutedEventArgs e) {
+		private void OpenDocumentationFile() {
 			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
 			string[] filters = new string[] {
-				"All Files (.sln, .csproj, .vbproj, .vcproj, .dll, .exe)|*.sln;*.csproj;*.vbproj;*.vcproj;*.dll;*.exe",
+				"All Files (.ldp, .sln, .csproj, .vbproj, .vcproj, .dll, .exe)|*.ldp;*.sln;*.csproj;*.vbproj;*.vcproj;*.dll;*.exe",
+				"Live Documenter Project (.ldp)|*.ldp",
 				"VS.NET Solution (.sln)|*.sln",
 				"All VS Project Files (.csproj, .vbproj, .vcproj)|*.csproj;*.vbproj;*.vcproj",
 				".NET Libraries and Executables (.dll, .exe)|*.dll;*.exe"
 				};
 			ofd.Filter = string.Join("|", filters);
-			ofd.Multiselect = true;
+			ofd.AutoUpgradeEnabled = true;
+			ofd.Multiselect = false;
 			if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				this.Cursor = Cursors.Wait;
-				LiveDocumentorFile.Singleton.Files.Clear();
-				
 				try {
-					List<DocumentedAssembly> readFiles = new List<DocumentedAssembly>();
-					foreach (string filename in ofd.FileNames) {
-						readFiles.AddRange(InputFileReader.Read(filename, Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString()));
-					}
-
-					if (readFiles != null && readFiles.Count > 0) {
-						LiveDocumentorFile.Singleton.Add(readFiles, ofd.FileName);
+					if(!string.IsNullOrEmpty(ofd.FileName)) {
+						if(System.IO.Path.GetExtension(ofd.FileName) == ".ldp") {
+							LiveDocumentorFile.Load(ofd.FileName);
+						}
+						else {
+							LiveDocumentorFile.Singleton.Open(ofd.FileName);
+						}
 
 						this.UpdateView();
 
 						this.userViewingHistory.ClearHistory();
-						Model.UserApplicationStore.Store.RecentFiles.AddFile(new TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.RecentFile(
-							ofd.FileName, System.IO.Path.GetFileName(ofd.FileName)
-							));
+						if(ofd.FileNames.Length == 1) { // only add histories for named files
+							Model.UserApplicationStore.Store.RecentFiles.AddFile(new TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.RecentFile(
+								ofd.FileName, System.IO.Path.GetFileName(ofd.FileName)
+								));
+						}
 					}
 				}
 				catch (TheBoxSoftware.Reflection.Core.NotAManagedLibraryException) {
-					LiveDocumentorFile.Singleton.Files.Clear();	// Clear it again, we already did that before loading
+					LiveDocumentorFile.Singleton.Clear();	// Clear it again, we already did that before loading
 					MessageBox.Show(
 						string.Format(ResourcesExceptionText.NOT_A_MANAGED_LIBRARY, ofd.FileName),
 						"Unsupported File Type",
@@ -94,6 +91,100 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				finally {
 					this.Cursor = null;
 				}
+			}
+		}
+
+		private void AddDocumentationFile() {
+			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+			string[] filters = new string[] {
+				"All Files (.sln, .csproj, .vbproj, .vcproj, .dll, .exe)|*.sln;*.csproj;*.vbproj;*.vcproj;*.dll;*.exe",
+				"VS.NET Solution (.sln)|*.sln",
+				"All VS Project Files (.csproj, .vbproj, .vcproj)|*.csproj;*.vbproj;*.vcproj",
+				".NET Libraries and Executables (.dll, .exe)|*.dll;*.exe"
+				};
+			ofd.Filter = string.Join("|", filters);
+			ofd.AutoUpgradeEnabled = true;
+			ofd.Multiselect = true;
+			if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+				this.Cursor = Cursors.Wait;
+
+				try {
+					if(ofd.FileNames != null && ofd.FileNames.Length > 0) {
+						LiveDocumentorFile.Singleton.Add(ofd.FileNames);
+
+						this.UpdateView();
+					}
+				}
+				catch (TheBoxSoftware.Reflection.Core.NotAManagedLibraryException) {
+					LiveDocumentorFile.Singleton.Clear();	// Clear it again, we already did that before loading
+					MessageBox.Show(
+						string.Format(ResourcesExceptionText.NOT_A_MANAGED_LIBRARY, ofd.FileName),
+						"Unsupported File Type",
+						MessageBoxButton.OK,
+						MessageBoxImage.Information
+						);
+					this.pageViewer.Document = new Pages.WelcomePage();
+					this.pageViewer.Focus(); // [#98] need to reset focus or commands are all greyed out
+				}
+				finally {
+					this.Cursor = null;
+				}
+			}
+		}
+
+		private void Save(bool saveAs) {
+			this.Cursor = Cursors.Wait;
+			try {
+				if(!saveAs && !string.IsNullOrEmpty(LiveDocumentorFile.Singleton.Filename)) {
+					// save the changes to the existing file
+					LiveDocumentorFile.Singleton.Save();
+				}
+				else {
+					System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
+					sfd.AddExtension = true;
+					sfd.AutoUpgradeEnabled = true;
+					sfd.CreatePrompt = false;
+					sfd.DefaultExt = "ldp";
+					sfd.Filter = "Live Documenter Project (.ldp)|*.ldp";
+					sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+					if(sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+						if(!string.IsNullOrEmpty(sfd.FileName)) {
+							LiveDocumentorFile.Singleton.SavaAs(sfd.FileName);
+						}
+					}
+				}
+			}
+			finally {
+				this.Cursor = null;
+			}
+		}
+
+		/// <summary>
+		/// Loads up the recent file
+		/// </summary>
+		/// <param name="file"></param>
+		internal void LoadRecentFile(Model.RecentFile file) {
+			if (System.IO.File.Exists(file.Filename)) {
+				this.Cursor = Cursors.Wait;
+				
+				if(System.IO.Path.GetExtension(file.Filename) == ".ldp") {
+					LiveDocumentorFile.Load(file.Filename);
+				}
+				else {
+					LiveDocumentorFile.Singleton.Open(file.Filename);
+				}
+
+				Model.UserApplicationStore.Store.RecentFiles.AddFile(file);
+				this.UpdateView();
+				this.userViewingHistory.ClearHistory();
+
+				this.Cursor = null;
+			}
+			else {
+				MessageBox.Show(string.Format(
+					"The {0} does not exist at the specified location.", System.IO.Path.GetFileName(file.Filename)),
+					"File Not Found"
+					);
 			}
 		}
 
@@ -110,16 +201,35 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			else if (e.Command == ApplicationCommands.Open || e.Command == ApplicationCommands.Close) {
 				e.CanExecute = true;
 			}
+			else if (e.Command == ApplicationCommands.SaveAs) {
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles;
+			}
+			else if (e.Command == ApplicationCommands.Save) {
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles &&
+					LiveDocumentorFile.Singleton.HasChanged;
+			}
 			else if (e.Command == ApplicationCommands.Print) {
 				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
 					LiveDocumentorFile.Singleton.LiveDocument.HasFiles;
 			}
 			else if (e.Command == ApplicationCommands.Find) {
-				e.CanExecute = true;
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles;
 			}
 			else if (e.Command == Commands.Export) {
 				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null && 
 					LiveDocumentorFile.Singleton.LiveDocument.HasFiles;
+			}
+			else if (e.Command == Commands.Add) {
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null;
+			}
+			else if (e.Command == Commands.Remove) {
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles && 
+					LiveDocumentorFile.Singleton.LiveDocument.Assemblies.Count > 1 &&
+					LiveDocumentorFile.Singleton.LiveDocument.SelectedAssembly != null;
 			}
 		}
 
@@ -134,7 +244,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.userViewingHistory.ExecuteCommand(sender, e);
 			}
 			else if (e.Command == ApplicationCommands.Open) {
-				this.AddDocumentationFile(sender, e);
+				this.OpenDocumentationFile();
+			}
+			else if (e.Command == Commands.Add) {
+				this.AddDocumentationFile();
 			}
 			else if (e.Command == ApplicationCommands.Close) {
 				this.CloseApplication(sender, e);
@@ -145,8 +258,21 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			else if (e.Command == ApplicationCommands.Find) {
 				this.searchBox.Focus();
 			}
+			else if (e.Command == ApplicationCommands.Save) {
+				this.Save(false);
+			}
+			else if(e.Command == ApplicationCommands.SaveAs) {
+				this.Save(true);
+			}
 			else if (e.Command == Commands.Export) {
 				this.exportClick(sender, e);
+			}
+			else if (e.Command == Commands.Remove) {
+				DocumentedAssembly selectedAssembly = LiveDocumentorFile.Singleton.LiveDocument.SelectedAssembly;
+				if(selectedAssembly != null) {
+					LiveDocumentorFile.Singleton.Remove(selectedAssembly);
+					this.UpdateView();
+				}
 			}
 		}
 		#endregion
@@ -263,40 +389,19 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 
-		/// <summary>
-		/// Loads up the recent file
-		/// </summary>
-		/// <param name="file"></param>
-		internal void LoadRecentFile(Model.RecentFile file) {
-			if (System.IO.File.Exists(file.Filename)) {
-				this.Cursor = Cursors.Wait;
-				LiveDocumentorFile.Singleton.Files.Clear();
-				LiveDocumentorFile.Singleton.Add(
-					InputFileReader.Read(file.Filename, Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString()), 
-					file.Filename
-					);
-				Model.UserApplicationStore.Store.RecentFiles.AddFile(file);
-				this.UpdateView();
-				this.userViewingHistory.ClearHistory();
-				this.Cursor = null;
-			}
-			else {
-				MessageBox.Show(string.Format(
-					"The {0} does not exist at the specified location.", System.IO.Path.GetFileName(file.Filename)),
-					"File Not Found"
-					);
-			}
-		}
-
 		private void mainWindow_Activated(object sender, EventArgs e) {
-			if (this.AllowFileRefreshing) {
+			if (this.AllowFileRefreshing && 
+				LiveDocumentorFile.Singleton != null && 
+				LiveDocumentorFile.Singleton.LiveDocument != null && 
+				LiveDocumentorFile.Singleton.LiveDocument.Assemblies != null) {
+
 				this.Cursor = Cursors.Wait;
 				Entry preUpdateSelection = this.currentSelection;
 				Entry preUpdateSelectionParent = this.currentSelectionParent;
 				bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
 				bool hasBeenReloaded = false;
 
-				foreach (DocumentedAssembly current in LiveDocumentorFile.Singleton.Files) {
+				foreach (DocumentedAssembly current in LiveDocumentorFile.Singleton.LiveDocument.Assemblies) {
 					if (current.HasAssemblyBeenModified()) {
 						hasBeenReloaded = true;
 

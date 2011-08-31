@@ -17,7 +17,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		}
 
 		public override void Generate() {
-			List<DocumentedAssembly> assemblies = LiveDocumentorFile.Singleton.Files;
+			List<DocumentedAssembly> assemblies = LiveDocumentorFile.Singleton.LiveDocument.Assemblies;
 
 			this.Blocks.Add(new Elements.Header1("Deployment Diagram"));
 			Diagram diagram = new Diagram();

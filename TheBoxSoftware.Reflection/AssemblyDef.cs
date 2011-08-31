@@ -402,6 +402,14 @@ namespace TheBoxSoftware.Reflection {
 		public override long GetGloballyUniqueId() {
 			return ((long)this.UniqueId) << 32;
 		}
+
+		/// <summary>
+		/// Returns the unique identifier of the AssemblyDef
+		/// </summary>
+		/// <returns>The assembly unique id</returns>
+		public override long GetAssemblyId() {
+			return this.UniqueId;
+		}
 		#endregion
 
 		#region Properties

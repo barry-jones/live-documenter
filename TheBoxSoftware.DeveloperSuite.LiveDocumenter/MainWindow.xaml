@@ -24,6 +24,9 @@
         <KeyBinding Key="O" Modifiers="Control" Command="ApplicationCommands.Open" />
         <KeyBinding Key="P" Modifiers="Control" Command="ApplicationCommands.Print" />
         <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
+        <KeyBinding Key="A" Modifiers="Control" Command="local:Commands.Add" />
+        <KeyBinding Key="R" Modifiers="Control" Command="local:Commands.Remove" />
+        <KeyBinding Key="E" Modifiers="Control" Command="local:Commands.Export" />
     </Window.InputBindings>
 
     <Window.Resources>        
@@ -315,7 +318,11 @@
         <CommandBinding Command="ApplicationCommands.Open" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
         <CommandBinding Command="ApplicationCommands.Print" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
         <CommandBinding Command="ApplicationCommands.Find" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
+        <CommandBinding Command="ApplicationCommands.Save" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
+        <CommandBinding Command="ApplicationCommands.SaveAs" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
         <CommandBinding Command="local:Commands.Export" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
+        <CommandBinding Command="local:Commands.Add" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
+        <CommandBinding Command="local:Commands.Remove" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
     </Window.CommandBindings>
 	
     <DockPanel>
@@ -323,6 +330,12 @@
             <MenuItem Header="File" x:Name="fileMenu">
                 <MenuItem Header="_Open..." Command="ApplicationCommands.Open" />
                 <MenuItem x:Name="recentFiles" Header="Recent Files" Click="recentFiles_Click" ItemsSource="{Binding ''}" ItemTemplate="{StaticResource RecentFileMenuItem}" />
+                <Separator />
+                <MenuItem Header="_Add..." Command="local:Commands.Add" />
+                <MenuItem Header="_Remove" Command="local:Commands.Remove" />
+                <MenuItem Header="_Save" Command="ApplicationCommands.Save" />
+                <MenuItem Header="_Save As..." Command="ApplicationCommands.SaveAs" />
+                <Separator />
                 <MenuItem Header="Export..." x:Name="export" Command="local:Commands.Export" />
                 <MenuItem Header="E_xit" Command="ApplicationCommands.Close" />
                 <!--<MenuItem Click="MenuItem_Click" Header="Test Exporting" />
@@ -337,6 +350,32 @@
         </Menu>
         
         <ToolBar DockPanel.Dock="Top">
+            <Button Command="ApplicationCommands.Open" Style="{DynamicResource ForwardBackButtonStyle}">
+                <Button.ToolTip>
+                    <TextBlock Text="Open (Ctrl + O)" />
+                </Button.ToolTip>
+                <Image Source="resources\open_24.png" Height="24" Width="24" />
+            </Button>
+            <Button Command="ApplicationCommands.Save" Style="{DynamicResource ForwardBackButtonStyle}">
+                <Button.ToolTip>
+                    <TextBlock Text="Save (Ctrl + S)" />
+                </Button.ToolTip>
+                <Image Source="resources\open_24.png" Height="24" Width="24" />
+            </Button>
+            <Separator />
+            <Button Command="ApplicationCommands.Print" Style="{DynamicResource ForwardBackButtonStyle}">
+                <Button.ToolTip>
+                    <TextBlock Text="Print (Ctrl + P)" />
+                </Button.ToolTip>
+                <Image Source="resources\print_24.png" Height="24" Width="24"/>
+            </Button>
+            <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Export">
+                <Button.ToolTip>
+                    <TextBlock Text="Export (Ctrl + E)" />
+                </Button.ToolTip>
+                <Image Source="resources\open_24.png" Height="24" Width="24" />
+            </Button>
+            <Separator />
             <Button Command="NavigationCommands.BrowseBack"
                     x:Name="back"
                     IsEnabled="{Binding CanMoveBackward, Mode=TwoWay}" 
@@ -355,22 +394,16 @@
                 </Button.ToolTip>
                 <Image Source="resources\forwd_24.png" Height="24" Width="24"/>
             </Button>
-            <Button Command="ApplicationCommands.Print" Style="{DynamicResource ForwardBackButtonStyle}">
+            <Separator />
+            <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Add">
                 <Button.ToolTip>
-                    <TextBlock Text="Print (Ctrl + P)" />
-                </Button.ToolTip>
-                <Image Source="resources\print_24.png" Height="24" Width="24"/>
-            </Button>
-			<Separator />
-            <Button Command="ApplicationCommands.Open" Style="{DynamicResource ForwardBackButtonStyle}">
-                <Button.ToolTip>
-                    <TextBlock Text="Open (Ctrl + O)" />
+                    <TextBlock Text="Add (Ctrl + A)" />
                 </Button.ToolTip>
                 <Image Source="resources\open_24.png" Height="24" Width="24" />
             </Button>
-            <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Export">
+            <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
                 <Button.ToolTip>
-                    <TextBlock Text="Export (Ctrl + E)" />
+                    <TextBlock Text="Remove (Ctrl + R)" />
                 </Button.ToolTip>
                 <Image Source="resources\open_24.png" Height="24" Width="24" />
             </Button>

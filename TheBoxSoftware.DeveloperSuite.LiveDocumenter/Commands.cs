@@ -13,5 +13,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Command for exporting documentation in the <see cref="MainWindow"/>.
 		/// </summary>
 		public static readonly RoutedUICommand Export = new RoutedUICommand("Export", "export", typeof(MainWindow));
+
+		/// <summary>
+		/// Command for adding new files to the LiveDocumenterFile
+		/// </summary>
+		public static readonly RoutedUICommand Add = new RoutedUICommand("Add", "add", typeof(MainWindow));
+
+		/// <summary>
+		/// Command for removing files from the LiveDocumenterFile
+		/// </summary>
+		public static readonly RoutedUICommand Remove = new RoutedUICommand("Remove", "remove", typeof(MainWindow));
 	}
 }

@@ -42,5 +42,22 @@ namespace TheBoxSoftware.Reflection {
 			id += this.UniqueId;
 			return id;
 		}
+
+		/// <summary>
+		/// Returns the unique id of the Assembly
+		/// </summary>
+		/// <returns></returns>
+		public virtual long GetAssemblyId() {
+			return this.Assembly.UniqueId;
+		}
+
+		/// <summary>
+		/// Returns the unique assembly identifier from a global id.
+		/// </summary>
+		/// <param name="id">The global identifier</param>
+		/// <returns>The id of the assembly</returns>
+		public static long GetAssemblyId(long id) {
+			return id >> 32;
+		}
 	}
 }
