@@ -25,6 +25,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			System.Diagnostics.BooleanSwitch ts = new System.Diagnostics.BooleanSwitch("TRACE", string.Empty);
 			TraceHelper.IsTraceEnabled = ts.Enabled;
 			TraceHelper.WriteLine(new string('#', 25));
+
+			if(e.Args.Length > 0) {
+				if(e.Args[0] == "open") {
+					LiveDocumentorFile.Load(e.Args[1]);
+				}
+			}
         }
 
         /// <summary>
