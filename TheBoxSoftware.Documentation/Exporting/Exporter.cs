@@ -77,6 +77,10 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					createdExporter = new HelpViewer1Exporter(document, settings, config);
 					break;
 
+				case Exporters.XML:
+					createdExporter = new XmlExporter(document, settings, config);
+					break;
+
 				case Exporters.Website:
 				default:
 					createdExporter = new WebsiteExporter(document, settings, config);

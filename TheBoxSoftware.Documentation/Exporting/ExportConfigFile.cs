@@ -151,7 +151,9 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		private Exporters UnpackExporter(string value) {
-			switch (value) {
+			if (value == null) value = string.Empty;
+
+			switch (value.ToLower()) {
 				case "web":
 					return Exporters.Website;
 				case "html1":
@@ -160,6 +162,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					return Exporters.Html2;
 				case "helpviewer1":
 					return Exporters.HelpViewer1;
+				case "xml":
+					return Exporters.XML;
 				default:
 					return Exporters.Website;
 			}

@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using Saxon.Api;
 using System.IO;
+using System.Xml;
+using TheBoxSoftware.Documentation.Exporting.Website;
 
 namespace TheBoxSoftware.Documentation.Exporting {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Comments;
-	using TheBoxSoftware.Documentation.Exporting.Website;
-
-	public class WebsiteExporter : Exporter {
+	/// <summary>
+	/// Exporter that exports the docuementation to XML.
+	/// </summary>
+	public class XmlExporter : Exporter {
 		/// <summary>
-		/// Initializes a new instance of the <see cref="WebsiteExporter"/> class.
+		/// Initializes a new instance of the XmlExporter class.
 		/// </summary>
 		/// <param name="document">The document to be exported.</param>
+		/// <param name="settings">Any settings for the export.</param>
 		/// <param name="config">The export configuration.</param>
-		public WebsiteExporter(Document document, ExportSettings settings, ExportConfigFile config) 
+		public XmlExporter(Document document, ExportSettings settings, ExportConfigFile config) 
 			: base(document, settings, config) {
 		}
 
@@ -29,7 +25,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			// we do not need the temp staging folder with this export so write direct from temp to publish.
 			try {
 				this.PrepareForExport();
-				
+
 				// calculate the export steps
 				int numberOfSteps = 0;
 				numberOfSteps += 1; // toc and index steps
@@ -37,7 +33,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				numberOfSteps += 1; // output files
 				numberOfSteps += ((this.Document.Map.NumberOfEntries / this.XmlExportStep) * 3); // xml export stage
 				numberOfSteps += 1; // cleanup files
-				
+
 				this.OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
 				this.CurrentExportStep = 1;
 
@@ -65,31 +61,17 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				}
 
 				if (!this.IsCancelled) {
-					Processor p = new Processor();
-					XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
-					transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
-
 					// set output files
 					this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
 					this.Config.SaveOutputFilesTo(this.PublishDirectory);
 
-					this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
-					string extension = this.Config.Properties.ContainsKey("extension") ? this.Config.Properties["extension"] : "htm";
+					// move all the temporary export files to the publish directory
 					int counter = 0;
-					foreach (string current in Directory.GetFiles(this.TempDirectory)) {
-						if (current.Substring(this.TempDirectory.Length) == "toc.xml")
-							continue;
-						using (FileStream fs = File.OpenRead(current)) {
-							Serializer s = new Serializer();
-							s.SetOutputFile(this.PublishDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension);
-							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.TempDirectory));
-							transform.Run(s);
-							counter++;
-							if (counter % this.XmlExportStep == 0) {
-								this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
-							}
+					foreach (string file in Directory.GetFiles(this.TempDirectory)) {
+						File.Copy(file, string.Format("{0}\\{1}", this.PublishDirectory, Path.GetFileName(file)));
+						if (counter % this.XmlExportStep == 0) {
+							this.OnExportStep(new ExportStepEventArgs("Publishing XML files...", this.CurrentExportStep += 3));
 						}
-						if (this.IsCancelled) break;
 					}
 				}
 

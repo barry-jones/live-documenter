@@ -657,4 +657,58 @@ Language=0x809 English (United Kingdom)
             <xsl:apply-templates />
         </span>
     </xsl:template>
+
+	<xsl:template match="list">
+		<xsl:if test="@type = 'number'">
+			<ol>
+				<xsl:apply-templates />
+			</ol>
+		</xsl:if>
+		<xsl:if test="@type != 'number'">
+			<ul>
+				<xsl:apply-templates />
+			</ul>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="list/item">
+		<li>
+			<xsl:apply-templates />
+		</li>
+	</xsl:template>
+
+	<xsl:template match="table">
+		<table>
+			<xsl:apply-templates select="header" />
+			<xsl:if test="count(row) > 0">
+				<tbody>
+					<xsl:apply-templates select="row" />
+				</tbody>
+			</xsl:if>
+		</table>
+	</xsl:template>
+	<xsl:template match="table/header">
+		<thead>
+			<tr>
+				<th>
+					<xsl:apply-templates select="cell[1]" />
+				</th>
+				<th>
+					<xsl:apply-templates select="cell[2]" />
+				</th>
+			</tr>
+		</thead>
+	</xsl:template>
+	<xsl:template match="row">
+		<tr>
+			<td>
+				<xsl:apply-templates select="cell[1]" />
+			</td>
+			<td>
+				<xsl:apply-templates select="cell[2]" />
+			</td>
+		</tr>
+	</xsl:template>
+	<xsl:template match="cell">
+		<xsl:apply-templates />
+	</xsl:template>
 </xsl:stylesheet>

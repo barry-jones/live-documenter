@@ -9,6 +9,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </summary>
 	public enum Exporters {
 		/// <summary>
+		/// Straight to XML exporter.
+		/// </summary>
+		XML,
+
+		/// <summary>
 		/// The Website exporter
 		/// </summary>
 		Website,

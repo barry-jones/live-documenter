@@ -25,8 +25,13 @@
     	<Border BorderBrush="#FFB7ABAB" BorderThickness="0,0,0,1" Background="#FF212120" Margin="0,0,0,-0.04" Height="67.9">
     		<TextBlock Margin="16,28,0,-1" Text="Export" TextWrapping="Wrap" FontFamily="Georgia" FontSize="24" Foreground="#FFA67D3D"/>
     	</Border>
-		
-		<Border Grid.Row="1" x:Name="exportSelection" Opacity="1" >
+
+        <Canvas x:Name="exportProgress" Grid.Row="1" Opacity="0" Margin="0,0.055,0,54.865">
+            <ProgressBar x:Name="progressIndicator" Width="421" Height="27" Canvas.Left="8" Canvas.Top="40"/>
+            <TextBlock x:Name="progressText" Width="421" Height="28" Text="Starting export" Canvas.Left="8" Canvas.Top="8"/>
+        </Canvas>
+
+        <Border Grid.Row="1" x:Name="exportSelection" Opacity="1" >
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="0.536*" />
@@ -93,10 +98,5 @@
     			</StackPanel>
     		</Grid>
     	</Border>
-		
-    	<Canvas x:Name="exportProgress" Grid.Row="1" Opacity="0" Margin="0,0.055,0,54.865">
-    		<ProgressBar x:Name="progressIndicator" Width="421" Height="27" Canvas.Left="8" Canvas.Top="40"/>
-    		<TextBlock x:Name="progressText" Width="421" Height="28" Text="Starting export" Canvas.Left="8" Canvas.Top="8"/>
-    	</Canvas>
     </Grid>
 </Window>

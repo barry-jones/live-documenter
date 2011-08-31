@@ -338,6 +338,10 @@
     <None Include="ApplicationData\htmlhelp2-msdn\sampledef.HxE" />
     <None Include="ApplicationData\htmlhelp2-msdn\virtualtopic.HxV" />
     <None Include="ApplicationData\web-msdn\export.config" />
+    <Content Include="ApplicationData\xml.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="ApplicationData\xml\export.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

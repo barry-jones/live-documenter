@@ -141,9 +141,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		private void Cancel() {
 			this.Cursor = Cursors.Wait;
-			this.threadedExporter.Cancel();
-			while (!this.exportComplete) {
-				Thread.Sleep(60);
+			if (this.threadedExporter != null) {
+				this.threadedExporter.Cancel();
+				while (!this.exportComplete) {
+					Thread.Sleep(60);
+				}
 			}
 			this.Cursor = null;
 			this.Close();

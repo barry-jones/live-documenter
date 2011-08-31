@@ -44,15 +44,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <returns>True if the displayer should display a table.</returns>
 		public bool IsTable() {
-			bool isTable = false;
-			int count = this.Elements.Count;
-			for (int i = 0; i < count; i++) {
-				if (this.Elements[i].Element == XmlCodeElements.ListHeader) {
-					isTable = true;
-					break;
-				}
-			}
-			return isTable;
+			return this.ListType == ListTypes.Table;
 		}
 
 		/// <summary>
