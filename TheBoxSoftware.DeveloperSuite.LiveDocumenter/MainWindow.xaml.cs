@@ -41,6 +41,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			this.searchEntryTimer.AutoReset = true;
 			this.searchEntryTimer.Elapsed += new System.Timers.ElapsedEventHandler(PerformSearch);
+
+			if(LiveDocumentorFile.Singleton != null) {
+				this.UpdateView();
+			}
 		}
 
 		#region Menu Actions
