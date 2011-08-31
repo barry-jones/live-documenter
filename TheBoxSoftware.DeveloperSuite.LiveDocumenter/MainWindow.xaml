@@ -9,7 +9,7 @@
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
     xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
     x:Name="mainWindow"
-    Title="Live Documenter - FREE NON-COMMERCIAL VERSION" 
+    Title="Live Documenter - Alpha Release - Expires 31-09-2011" 
     Height="639" 
     Width="969" 
     UseLayoutRounding="True"
@@ -360,7 +360,7 @@
                 <Button.ToolTip>
                     <TextBlock Text="Save (Ctrl + S)" />
                 </Button.ToolTip>
-                <Image Source="resources\open_24.png" Height="24" Width="24" />
+                <Image Source="resources\save_24.png" Height="24" Width="24" />
             </Button>
             <Separator />
             <Button Command="ApplicationCommands.Print" Style="{DynamicResource ForwardBackButtonStyle}">
@@ -373,7 +373,7 @@
                 <Button.ToolTip>
                     <TextBlock Text="Export (Ctrl + E)" />
                 </Button.ToolTip>
-                <Image Source="resources\open_24.png" Height="24" Width="24" />
+                <Image Source="resources\exp_24.png" Height="24" Width="24" />
             </Button>
             <Separator />
             <Button Command="NavigationCommands.BrowseBack"
@@ -399,13 +399,13 @@
                 <Button.ToolTip>
                     <TextBlock Text="Add (Ctrl + A)" />
                 </Button.ToolTip>
-                <Image Source="resources\open_24.png" Height="24" Width="24" />
+                <Image Source="resources\add_24.png" Height="24" Width="24" />
             </Button>
             <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
                 <Button.ToolTip>
                     <TextBlock Text="Remove (Ctrl + R)" />
                 </Button.ToolTip>
-                <Image Source="resources\open_24.png" Height="24" Width="24" />
+                <Image Source="resources\del_24.png" Height="24" Width="24" />
             </Button>
         </ToolBar>
         

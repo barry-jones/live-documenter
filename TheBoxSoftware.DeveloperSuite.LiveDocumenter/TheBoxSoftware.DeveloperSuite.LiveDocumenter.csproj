@@ -297,6 +297,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Resource Include="Resources\add_24.png" />
+    <Resource Include="Resources\del_24.png" />
+    <Resource Include="Resources\exp_24.png" />
+    <Resource Include="Resources\save_24.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

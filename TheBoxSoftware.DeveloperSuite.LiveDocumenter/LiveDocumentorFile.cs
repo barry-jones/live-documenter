@@ -80,6 +80,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			readFiles.Sort((one, two) => one.Name.CompareTo(two.Name));
 			this.files.Clear();
 			this.files.AddRange(readFiles);
+			this.HasChanged = true;
 		}
 
 		/// <summary>
