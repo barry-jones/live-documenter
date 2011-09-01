@@ -113,6 +113,7 @@
     <Compile Include="EmptyEntry.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="EntryCreator.cs" />
+    <Compile Include="EntryTypes.cs" />
     <Compile Include="Exporting\ExportFailedEventArgs.cs" />
     <Compile Include="Exporting\ExportFailedEventHandler.cs" />
     <Compile Include="Exporting\HelpViewer1Exporter.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Exporting\WebsiteExporter.cs" />
     <Compile Include="Exporting\Website\IndexXmlRenderer.cs" />
     <Compile Include="Exporting\XmlExporter.cs" />
+    <Compile Include="GroupedNamespaceDocumentMapper.cs" />
     <Compile Include="InputFileReader.cs" />
     <Compile Include="Mappers.cs" />
     <Compile Include="NamespaceFirstDocumentMapper.cs" />

@@ -69,6 +69,7 @@
     <Compile Include="DocumentationResources.cs" />
     <Compile Include="LiveDocumenterEntryCreator.cs" />
     <Compile Include="Model\DocumentSettings.cs" />
+    <Compile Include="Pages\NamespaceContainerPage.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

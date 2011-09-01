@@ -111,7 +111,7 @@ namespace TheBoxSoftware.Documentation {
 					this.DocumentMap.Add(assemblyEntry);
 				}
 			}
-			this.DocumentMap.OrderBy(e => e.Name);
+			this.DocumentMap.Sort();
 			this.DocumentMap.NumberOfEntries = this.EntryCreator.Created;
 		}
 

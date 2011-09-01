@@ -41,10 +41,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			get {
 				Page toLoad = null;
 				if (this.Name == "Members" || this.Name == "Constructors" || this.Name == "Component Diagram" || this.Name == "Operators") {
-					toLoad = Page.Create(this.Item, this.Name, this.XmlCommentFile);
+					toLoad = Page.Create(this, this.Name, this.XmlCommentFile);
 				}
 				else {
-					toLoad = Page.Create(this.Item, this.XmlCommentFile);
+					toLoad = Page.Create(this, this.XmlCommentFile);
 				}
 				toLoad.Generate();
 				return toLoad;

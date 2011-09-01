@@ -11,6 +11,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 	using TheBoxSoftware.Reflection.Comments;
 	using TheBoxSoftware.Reflection.Syntax;
 	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
+	using TheBoxSoftware.Documentation;
 
 	/// <summary>
 	/// Represents a single page in the LiveDocumentor.
@@ -256,9 +257,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// <param name="commentsXml">The comments file where the code comments can be obtained</param>
 		/// <param name="mapReference">The DocumentMap to use and to add to</param>
 		/// <returns>A new Page instance that can be displayed in the LiveDocumentor</returns>
-		public static Page Create(object forItem, XmlCodeCommentFile commentsXml) {
+		public static Page Create(Entry entry, XmlCodeCommentFile commentsXml) {
 			TraceHelper.WriteLine("create page");
 			TraceHelper.Indent();
+			object forItem = entry.Item;
 
 			Page created = null;
 			if (forItem is AssemblyDef) {
@@ -319,6 +321,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				TraceHelper.WriteLine("event ({0}.{1}.{2})", ev.Type.Namespace, ev.Type.Name, ev.Name);
 				created = new EventPage(ev, commentsXml);
 			}
+			else if(forItem is TheBoxSoftware.Documentation.EntryTypes) {
+				TheBoxSoftware.Documentation.EntryTypes type = (Documentation.EntryTypes)forItem;
+				switch(type) {
+					case Documentation.EntryTypes.NamespaceContainer:
+						created = new NamespaceContainerPage(entry);
+						break;
+				}
+			}
 			else {
 				created = new Page(forItem.ToString());
 			}
@@ -328,7 +338,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 			return created;
 		}
 
-		public static Page Create(object forItem, string type, XmlCodeCommentFile xmlComments) {
+		public static Page Create(Entry entry, string type, XmlCodeCommentFile xmlComments) {
+			object forItem = entry.Item;
 			Page created = null;
 			switch (type) {
 				case "Members":
