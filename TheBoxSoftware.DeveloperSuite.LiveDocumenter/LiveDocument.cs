@@ -101,7 +101,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						if (entry.IsSelected) {
 							long assemblyId = ReflectedMember.GetAssemblyId(entry.Key);
 							foreach (DocumentedAssembly assembly in this.Assemblies) {
-								if (assembly.LoadedAssembly.UniqueId == assemblyId) {
+								if (assembly.UniqueId == assemblyId) {
 									selected = assembly;
 									break;
 								}

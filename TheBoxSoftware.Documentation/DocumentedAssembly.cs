@@ -114,6 +114,11 @@ namespace TheBoxSoftware.Documentation {
 		public bool IsCompiled { get { return System.IO.File.Exists(this.FileName); } }
 
 		/// <summary>
+		/// The unique id for this Assembly
+		/// </summary>
+		public long UniqueId { get; set; }
+
+		/// <summary>
 		/// A reference to the assembly after it has been loaded.
 		/// </summary>
 		public AssemblyDef LoadedAssembly {

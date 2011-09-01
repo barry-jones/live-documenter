@@ -9,7 +9,7 @@
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
     xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
     x:Name="mainWindow"
-    Title="Live Documenter - Alpha Release - Expires 31-09-2011" 
+    Title="Live Documenter - Alpha Release" 
     Height="639" 
     Width="969" 
     UseLayoutRounding="True"

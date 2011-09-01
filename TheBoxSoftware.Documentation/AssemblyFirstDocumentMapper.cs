@@ -60,7 +60,7 @@ namespace TheBoxSoftware.Documentation {
 			}
 
 			Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
-			assembly.UniqueId = fileCounter++;
+			current.UniqueId = assembly.UniqueId = fileCounter++;
 			assemblyEntry.Key = assembly.GetGloballyUniqueId();
 			assemblyEntry.IsSearchable = false;
 			assemblyEntry.HasXmlComments = fileExists;
