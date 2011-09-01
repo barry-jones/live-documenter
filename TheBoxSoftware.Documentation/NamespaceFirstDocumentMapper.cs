@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Documentation {
 				}
 				string namespaceSubKey = this.BuildSubkey(currentNamespace);
 
-				namespaceEntry = this.FindByKey(assemblyEntry.Key, namespaceSubKey, false);
+				namespaceEntry = this.Find(namespaceSubKey);
 				if (namespaceEntry == null) {
 					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
 					namespaceEntry.Key = assemblyEntry.Key;
@@ -86,12 +86,37 @@ namespace TheBoxSoftware.Documentation {
 				}
 				if (namespaceEntry.Children.Count > 0) {
 					namespaceEntry.Children.Sort();
-					this.DocumentMap.Add(namespaceEntry);
+					// we still need to add here otherwise we get duplicate namespaces.
+					assemblyEntry.Children.Add(namespaceEntry);
+					if(!this.DocumentMap.Contains(namespaceEntry)) {
+						this.DocumentMap.Add(namespaceEntry);
+					}
+					else {
+						// update the type list is the contianing namespace
+						KeyValuePair<string, List<TypeDef>> original = (KeyValuePair<string, List<TypeDef>>)namespaceEntry.Item;
+						original.Value.AddRange(currentNamespace.Value);
+					}
 				}
 			}
 
+			this.DocumentMap.Sort();
+
 			// we are not interested in assemblies being used here so make them childless
 			return this.EntryCreator.Create(null, string.Empty, null);
+		}
+
+		/// <summary>
+		/// Searches the top level elements for the specified <paramref name="name"/>.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <returns>The Entry if found else null.</returns>
+		private Entry Find(string name) {
+			Entry found = null;
+			for (int i = 0; i < this.DocumentMap.Count; i++) {
+				found = this.DocumentMap[i].Name == name ? this.DocumentMap[i] : null;
+				if (found != null) break;
+			}
+			return found;
 		}
 	}
 }

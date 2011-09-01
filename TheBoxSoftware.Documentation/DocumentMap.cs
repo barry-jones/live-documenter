@@ -44,6 +44,19 @@ namespace TheBoxSoftware.Documentation {
 		}
 
 		/// <summary>
+		/// Sorts the top level document map entries by Entry.Name
+		/// </summary>
+		public void Sort() {
+			List<Entry> temp = this.baseCollection.ToList();
+			temp.Sort();
+
+			this.baseCollection.Clear();
+			foreach(Entry current in temp) {
+				this.baseCollection.Add(current);
+			}
+		}
+
+		/// <summary>
 		/// The number of entries in this document map.
 		/// </summary>
 		/// <remarks>
