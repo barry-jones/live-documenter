@@ -36,6 +36,7 @@ namespace TheBoxSoftware.Documentation {
 			}
 			this.DocumentMap.Sort();
 
+			int counter = 1;
 			List<Entry> namespaceContainers = new List<Entry>();
 			foreach(Entry current in this.DocumentMap) {
 				bool isChild = false;
@@ -50,16 +51,20 @@ namespace TheBoxSoftware.Documentation {
 					Entry namespaceContainer = this.EntryCreator.Create(
 						EntryTypes.NamespaceContainer, current.Name, null
 						);
+					namespaceContainer.Key = counter++; ;
+					namespaceContainer.SubKey = current.Name + "Namespaces";
 					current.Parent = namespaceContainer;
 					namespaceContainer.Children.Add(current);
 					namespaceContainers.Add(namespaceContainer);
 				}
 			}
 
-			this.DocumentMap.Clear();
-			for(int i = 0; i < namespaceContainers.Count; i++) {
-				namespaceContainers[i].Name += " Namespaces";
-				this.DocumentMap.Add(namespaceContainers[i]);
+			if (namespaceContainers.Count > 1) {
+				this.DocumentMap.Clear();
+				for (int i = 0; i < namespaceContainers.Count; i++) {
+					namespaceContainers[i].Name += " Namespaces";
+					this.DocumentMap.Add(namespaceContainers[i]);
+				}
 			}
 			this.DocumentMap.NumberOfEntries = this.EntryCreator.Created;
 		}

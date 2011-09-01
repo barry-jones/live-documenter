@@ -142,6 +142,7 @@
     <Compile Include="Exporting\Rendering\IRenderer.cs" />
     <Compile Include="Exporting\Rendering\ListXmlElementRenderer.cs" />
     <Compile Include="Exporting\Rendering\MethodXmlRenderer.cs" />
+    <Compile Include="Exporting\Rendering\NamespaceContainerXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\NamespaceXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\PropertyXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\ReflectionHelper.cs" />

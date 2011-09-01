@@ -36,8 +36,12 @@ namespace TheBoxSoftware.Documentation {
 					mapper = new AssemblyFirstDocumentMapper(assemblies, useObservableCollection, creator);
 					break;
 				case Mappers.NamespaceFirst:
-				default:
 					mapper = new NamespaceFirstDocumentMapper(assemblies, useObservableCollection, creator);
+					break;
+
+				case Mappers.GroupedNamespaceFirst:
+				default:
+					mapper = new GroupedNamespaceDocumentMapper(assemblies, useObservableCollection, creator);
 					break;
 			}
 

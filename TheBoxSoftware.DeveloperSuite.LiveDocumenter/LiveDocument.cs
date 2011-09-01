@@ -22,7 +22,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		/// <param name="assemblies">The assemblies to document.</param>
 		public LiveDocument(List<DocumentedAssembly> assemblies)
-			: base(assemblies, Mappers.NamespaceFirst, true, new LiveDocumenterEntryCreator()) {
+			: base(assemblies, Mappers.GroupedNamespaceFirst, true, new LiveDocumenterEntryCreator()) {
 
 			DocumentSettings settings = new DocumentSettings();
 			settings.VisibilityFilters.AddRange(new Visibility[] { 

@@ -354,26 +354,26 @@
                 <Button.ToolTip>
                     <TextBlock Text="Open (Ctrl + O)" />
                 </Button.ToolTip>
-                <Image Source="resources\open_24.png" Height="24" Width="24" />
+                <Image Source="resources\open_24x24.png" Height="24" Width="24" />
             </Button>
             <Button Command="ApplicationCommands.Save" Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
                     <TextBlock Text="Save (Ctrl + S)" />
                 </Button.ToolTip>
-                <Image Source="resources\save_24.png" Height="24" Width="24" />
+                <Image Source="resources\save_24x24.png" Height="24" Width="24" />
             </Button>
             <Separator />
             <Button Command="ApplicationCommands.Print" Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
                     <TextBlock Text="Print (Ctrl + P)" />
                 </Button.ToolTip>
-                <Image Source="resources\print_24.png" Height="24" Width="24"/>
+                <Image Source="resources\print_24x24.png" Height="24" Width="24"/>
             </Button>
             <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Export">
                 <Button.ToolTip>
                     <TextBlock Text="Export (Ctrl + E)" />
                 </Button.ToolTip>
-                <Image Source="resources\exp_24.png" Height="24" Width="24" />
+                <Image Source="resources\exp_24x24.png" Height="24" Width="24" />
             </Button>
             <Separator />
             <Button Command="NavigationCommands.BrowseBack"
@@ -383,7 +383,7 @@
                 <Button.ToolTip>
                     <TextBlock Text="Navigate Backward (Alt + Left)" />
                 </Button.ToolTip>
-                <Image Source="resources\back_24.png" Height="24" Width="24"/>
+                <Image Source="resources\back_24x24.png" Height="24" Width="24"/>
             </Button>
             <Button Command="NavigationCommands.BrowseForward"
                     x:Name="forward"
@@ -392,20 +392,20 @@
                 <Button.ToolTip>
                     <TextBlock Text="Navigate Forward (Alt + Right)" />
                 </Button.ToolTip>
-                <Image Source="resources\forwd_24.png" Height="24" Width="24"/>
+                <Image Source="resources\forwd_24x24.png" Height="24" Width="24"/>
             </Button>
             <Separator />
             <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Add">
                 <Button.ToolTip>
                     <TextBlock Text="Add (Ctrl + A)" />
                 </Button.ToolTip>
-                <Image Source="resources\add_24.png" Height="24" Width="24" />
+                <Image Source="resources\add_24x24.png" Height="24" Width="24" />
             </Button>
             <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
                 <Button.ToolTip>
                     <TextBlock Text="Remove (Ctrl + R)" />
                 </Button.ToolTip>
-                <Image Source="resources\del_24.png" Height="24" Width="24" />
+                <Image Source="resources\remov_24x24.png" Height="24" Width="24" />
             </Button>
         </ToolBar>
         

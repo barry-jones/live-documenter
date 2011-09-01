@@ -17,7 +17,7 @@ namespace TheBoxSoftware.Documentation {
 		/// </summary>
 		/// <param name="assemblies">The assemblies being documented.</param>
 		public Document(List<DocumentedAssembly> assemblies)
-			: this(assemblies, Mappers.NamespaceFirst, false, new EntryCreator()) {
+			: this(assemblies, Mappers.GroupedNamespaceFirst, false, new EntryCreator()) {
 		}
 
 		/// <summary>

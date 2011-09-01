@@ -70,6 +70,46 @@
 		<xsl:call-template name="end" />
 	</xsl:template>
 
+	<xsl:template match="/namespaces">
+		<html>
+			<head>
+				<title>
+					<xsl:value-of select="name"/>
+				</title>
+				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
+			</head>
+			<body>
+				<xsl:call-template name="header" />
+				<div class="content">
+					<h1>
+						<xsl:apply-templates select="name" />
+					</h1>
+					<table>
+						<thead>
+							<tr>
+								<th>Namespace</th>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:apply-templates select="entry" />
+						</tbody>
+					</table>
+				</div>
+				<xsl:call-template name="footer" />
+			</body>
+		</html>
+	</xsl:template>
+
+	<xsl:template match="/namespaces/entry">
+		<tr>
+			<td>
+				<a href="{@key}-{@subkey}.htm">
+					<xsl:value-of select="@name" />
+				</a>
+			</td>
+		</tr>
+	</xsl:template>
+
 	<xsl:template match="/namespace">
 		<xsl:call-template name="start" />
 		<head>

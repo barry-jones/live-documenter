@@ -298,10 +298,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Resource Include="Resources\add_24.png" />
-    <Resource Include="Resources\del_24.png" />
-    <Resource Include="Resources\exp_24.png" />
-    <Resource Include="Resources\save_24.png" />
+    <Resource Include="Resources\add_24x24.png" />
+    <Resource Include="Resources\back_24x24.png" />
+    <Resource Include="Resources\exp_24x24.png" />
+    <Resource Include="Resources\forwd_24x24.png" />
+    <Resource Include="Resources\open_24x24.png" />
+    <Resource Include="Resources\print_24x24.png" />
+    <Resource Include="Resources\remov_24x24.png" />
+    <Resource Include="Resources\save_24x24.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -559,11 +563,6 @@
     <Resource Include="Resources\ElementIcons\vsobject_properties.png" />
     <Resource Include="Resources\ElementIcons\vsobject_assembly.png" />
     <Resource Include="Resources\ElementIcons\vsobject_class.png" />
-    <Resource Include="Resources\srch_16.png" />
-    <Resource Include="Resources\open_24.png" />
-    <Resource Include="Resources\back_24.png" />
-    <Resource Include="Resources\forwd_24.png" />
-    <Resource Include="Resources\print_24.png" />
     <Resource Include="Resources\about.png" />
     <Resource Include="win.ico" />
   </ItemGroup>

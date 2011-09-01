@@ -13,6 +13,8 @@ namespace TheBoxSoftware.Documentation {
 		/// <summary>
 		/// DocumentMaper that creates maps starting from the namespace.
 		/// </summary>
-		NamespaceFirst
+		NamespaceFirst,
+
+		GroupedNamespaceFirst
 	}
 }

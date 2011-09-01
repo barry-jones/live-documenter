@@ -49,6 +49,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			else if (entry.Item is List<PropertyDef> || entry.Item is List<MethodDef> || entry.Item is List<FieldDef> || entry.Item is List<EventDef>) {
 				renderer = new TypeMembersXmlRenderer(entry);
 			}
+			else if (entry.Item is EntryTypes) {
+				EntryTypes type = (EntryTypes)entry.Item;
+				switch (type) {
+					case EntryTypes.NamespaceContainer:
+						renderer = new NamespaceContainerXmlRenderer(entry);
+						break;
+				}
+			}
 
 			if (renderer != null) {
 				renderer.Exporter = exporter;
