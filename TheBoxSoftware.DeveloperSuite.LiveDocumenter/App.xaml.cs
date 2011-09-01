@@ -25,6 +25,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			System.Diagnostics.BooleanSwitch ts = new System.Diagnostics.BooleanSwitch("TRACE", string.Empty);
 			TraceHelper.IsTraceEnabled = ts.Enabled;
 			TraceHelper.WriteLine(new string('#', 25));
+
+			this.Arguments = e.Args;
         }
 
         /// <summary>
@@ -50,6 +52,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <summary>
 		/// A file specified on the command line for the application to load
 		/// </summary>
-		public string CommandLineFile { get; set; }
+		public string[] Arguments { get; set; }
     }
 }

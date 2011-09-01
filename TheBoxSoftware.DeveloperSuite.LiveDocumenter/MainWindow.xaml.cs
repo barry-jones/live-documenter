@@ -41,14 +41,26 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			this.searchEntryTimer.AutoReset = true;
 			this.searchEntryTimer.Elapsed += new System.Timers.ElapsedEventHandler(PerformSearch);
+
+			string[] args = ((App)App.Current).Arguments;
+			if (args != null && args.Length > 0) {
+				// validate this is a file we are looking for
+				if (System.IO.File.Exists(args[0])) {
+					// we only allow ldproj files to open here
+					if (System.IO.Path.GetExtension(args[0]) == ".ldproj") {
+						LiveDocumentorFile.Load(args[0]);
+						this.UpdateView();
+					}
+				}
+			}
 		}
 
 		#region Menu Actions
 		private void OpenDocumentationFile() {
 			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
 			string[] filters = new string[] {
-				"All Files (.ldp, .sln, .csproj, .vbproj, .vcproj, .dll, .exe)|*.ldp;*.sln;*.csproj;*.vbproj;*.vcproj;*.dll;*.exe",
-				"Live Documenter Project (.ldp)|*.ldp",
+				"All Files (.ldproj, .sln, .csproj, .vbproj, .vcproj, .dll, .exe)|*.ldproj;*.sln;*.csproj;*.vbproj;*.vcproj;*.dll;*.exe",
+				"Live Documenter Project (.ldproj)|*.ldproj",
 				"VS.NET Solution (.sln)|*.sln",
 				"All VS Project Files (.csproj, .vbproj, .vcproj)|*.csproj;*.vbproj;*.vcproj",
 				".NET Libraries and Executables (.dll, .exe)|*.dll;*.exe"
@@ -60,7 +72,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.Cursor = Cursors.Wait;
 				try {
 					if(!string.IsNullOrEmpty(ofd.FileName)) {
-						if(System.IO.Path.GetExtension(ofd.FileName) == ".ldp") {
+						if(System.IO.Path.GetExtension(ofd.FileName) == ".ldproj") {
 							LiveDocumentorFile.Load(ofd.FileName);
 						}
 						else {
@@ -144,8 +156,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					sfd.AddExtension = true;
 					sfd.AutoUpgradeEnabled = true;
 					sfd.CreatePrompt = false;
-					sfd.DefaultExt = "ldp";
-					sfd.Filter = "Live Documenter Project (.ldp)|*.ldp";
+					sfd.DefaultExt = "ldproj";
+					sfd.Filter = "Live Documenter Project (.ldproj)|*.ldproj";
 					sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 					if(sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 						if(!string.IsNullOrEmpty(sfd.FileName)) {
@@ -167,7 +179,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			if (System.IO.File.Exists(file.Filename)) {
 				this.Cursor = Cursors.Wait;
 				
-				if(System.IO.Path.GetExtension(file.Filename) == ".ldp") {
+				if(System.IO.Path.GetExtension(file.Filename) == ".ldproj") {
 					LiveDocumentorFile.Load(file.Filename);
 				}
 				else {

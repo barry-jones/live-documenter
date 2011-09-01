@@ -159,7 +159,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="filename">The filename of the project file.</param>
 		/// <returns>The instantiated LiveDocumenterFile</returns>
 		public static LiveDocumentorFile Load(string filename) {
-			if(System.IO.Path.GetExtension(filename) != ".ldp")
+			if(System.IO.Path.GetExtension(filename) != ".ldproj")
 				throw new ArgumentException("Was only expecting an Live Documenter Project file.");
 			if(!System.IO.File.Exists(filename))
 				throw new ArgumentException(string.Format("File '{0}' was expected but did not exist.", filename));
