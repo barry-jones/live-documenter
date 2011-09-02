@@ -10,7 +10,7 @@
         <Setter Property="IsColumnWidthFlexible" Value="True" />
         <Setter Property="ColumnWidth" Value="400" />
         <Setter Property="ColumnGap" Value="20" />
-        <Setter Property="TextElement.FontFamily" Value="Segoe UI, Verdana, Arial" />
+        <Setter Property="TextElement.FontFamily" Value="'Segoe UI', Verdana, Arial" />
         <Setter Property="TextElement.FontSize" Value="12" />
     </Style>
     
