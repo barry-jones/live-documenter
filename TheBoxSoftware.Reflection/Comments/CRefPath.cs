@@ -177,10 +177,15 @@ namespace TheBoxSoftware.Reflection.Comments {
 						this.Namespace = string.Join(".", items, 0, items.Length - 1);
 						break;
 					default:
-						// -2 because the last element is the element name
-						this.TypeName = items[items.Length - 2];
-						this.ElementName = items[items.Length - 1];
-						this.Namespace = string.Join(".", items, 0, items.Length - 2);
+						if (items.Length - 2 <= 0) {
+							this.PathType = CRefTypes.Error;
+						}
+						else {
+							// -2 because the last element is the element name
+							this.TypeName = items[items.Length - 2];
+							this.ElementName = items[items.Length - 1];
+							this.Namespace = string.Join(".", items, 0, items.Length - 2);
+						}
 						break;
 				}
 			}

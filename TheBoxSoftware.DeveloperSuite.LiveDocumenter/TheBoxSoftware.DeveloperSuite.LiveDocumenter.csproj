@@ -70,6 +70,8 @@
     <Compile Include="DocumentationResources.cs" />
     <Compile Include="LiveDocumenterEntryCreator.cs" />
     <Compile Include="Model\DocumentSettings.cs" />
+    <Compile Include="Model\PrivacyFilter.cs" />
+    <Compile Include="Model\PrivacyFilterCollection.cs" />
     <Compile Include="Pages\NamespaceContainerPage.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -205,7 +207,6 @@
     <Compile Include="Model\SearchResultCollection.cs" />
     <Compile Include="Model\TreeViewItemDataTemplateSelector.cs" />
     <Compile Include="Model\UserApplicationStore.cs" />
-    <Compile Include="Model\UserPreferences.cs" />
     <Compile Include="Model\UserViewingHistory.cs" />
     <Compile Include="Pages\AssemblyPage.xaml.cs">
       <DependentUpon>AssemblyPage.xaml</DependentUpon>

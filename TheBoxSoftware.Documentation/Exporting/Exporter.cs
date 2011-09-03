@@ -247,7 +247,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
-		/// Raises the <see cref="E:ExportStep"/> event.
+		/// Raises the <see cref="ExportStep" /> event.
 		/// </summary>
 		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportStepEventArgs"/> instance containing the event data.</param>
 		protected void OnExportStep(ExportStepEventArgs e) {

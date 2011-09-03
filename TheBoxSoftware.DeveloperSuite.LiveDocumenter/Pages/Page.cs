@@ -68,7 +68,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// </summary>
 		/// <param name="member">The member to produce the syntax for.</param>
 		protected void AddSyntaxBlock(ReflectedMember member) {
-			IFormatter formatter = SyntaxFactory.Create(member, Model.UserApplicationStore.Store.Preferences.Language);
+			IFormatter formatter = SyntaxFactory.Create(member, LiveDocumentorFile.Singleton.Language);
 			if (formatter != null) {
 				this.Blocks.Add(new Header2("Syntax"));
 				Code c = Parser.ParseSyntax(formatter.Format());

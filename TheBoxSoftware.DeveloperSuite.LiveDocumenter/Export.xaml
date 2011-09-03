@@ -60,7 +60,7 @@
 						</WrapPanel>
 						
 						<TextBlock Grid.Column="0" Grid.Row="2" Text="Visibility" Height="22" VerticalAlignment="Center" />
-			            <controls:ComboWithCheckboxes x:Name="visibility" DefaultText="Document Public members" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding PrivacyFilters}" Height="22" Margin="0,0,0,4" />
+			            <controls:ComboWithCheckboxes x:Name="visibility" DefaultText="Document Public members" Grid.Column="1" Grid.Row="2" Height="22" Margin="0,0,0,4" />
 						
 						<TextBlock Grid.Column="0" Grid.Row="3" Text="Export" Height="22" VerticalAlignment="Center" />
 						<ComboBox Grid.Column="1" Grid.Row="3" Height="22" x:Name="outputSelection" SelectedIndex="0" SelectionChanged="outputSelection_SelectionChanged" Margin="0,0,0,4">

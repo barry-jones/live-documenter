@@ -7,10 +7,10 @@ using System.Windows.Input;
 using System.Threading;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
+using TheBoxSoftware.Documentation.Exporting;
+using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
-	using TheBoxSoftware.Documentation.Exporting;
-
 	/// <summary>
 	/// Window that allows the user to export the documentation. Allows for selection of
 	/// export to and settings controlling the way it is exported.
@@ -34,6 +34,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				new PrivacyFilter("Document protected members", Reflection.Visibility.Protected),
 				new PrivacyFilter("Document protected internal members", Reflection.Visibility.InternalProtected)
 														  };
+			this.PrivacyFilters.SetFilters(LiveDocumentorFile.Singleton.Filters); // set defaults
+			this.visibility.ItemsSource = this.PrivacyFilters;
+
 			this.DataContext = this;
 			this.LoadConfigFiles();
 		}
@@ -152,7 +155,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		#region Properties
-		public PrivacyFilterCollection PrivacyFilters { get; set; }
+		internal PrivacyFilterCollection PrivacyFilters { get; set; }
 		#endregion
 
 		#region Event Handlers
@@ -278,35 +281,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				this.publishTo.Text = ofd.SelectedPath;
 			}
-		}
-		#endregion
-
-		#region Internal Classes
-		public class PrivacyFilterCollection : ObservableCollection<PrivacyFilter> {
-			public override string ToString() {
-				List<string> selectedNames = new List<string>();
-
-				foreach (PrivacyFilter current in this) {
-					if (current.IsSelected) {
-						selectedNames.Add(current.Visibility.ToString());
-					}
-				}
-
-				return selectedNames.Count > 0
-					? selectedNames.Count == this.Count ? "Document all members" : string.Format("Document Public, {0} members", string.Join(", ", selectedNames.ToArray()))
-					: "Document Public members";
-			}
-		}
-
-		public class PrivacyFilter {
-			public PrivacyFilter(string title, TheBoxSoftware.Reflection.Visibility filter) {
-				this.Title = title;
-				this.Visibility = filter;
-			}
-
-			public string Title { get; set; }
-			public TheBoxSoftware.Reflection.Visibility Visibility { get; set; }
-			public bool IsSelected { get; set; }
 		}
 		#endregion
 	}

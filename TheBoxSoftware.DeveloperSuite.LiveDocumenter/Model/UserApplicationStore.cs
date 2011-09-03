@@ -20,7 +20,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 		/// </summary>
 		public UserApplicationStore() {
 			this.RecentFiles = new RecentFileList();
-			this.Preferences = new UserPreferences();
 		}
 
 		/// <summary>
@@ -106,7 +105,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 		}
 
 		public RecentFileList RecentFiles { get; set; }
-		public UserPreferences Preferences { get; set; }
 		#endregion
 	}
 }

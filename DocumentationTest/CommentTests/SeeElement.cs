@@ -33,6 +33,29 @@ namespace DocumentationTest.CommentTests {
 		public void ParameterisedGenericMethod<T>(T s) { }
 
 		/// <summary>
+		/// You can specify the cref path explicitly and the compiler will not attempt to resolve it. This
+		/// causes issues with our cref parser.
+		/// </summary>
+		/// <remarks>
+		/// <list type="bullet">
+		///		<item>Type which is a method: <see cref="T:DocumentationTest.CommentTests.InvalidCasing"/>.</item>
+		///		<item>Not existent: <see cref="E:InvalidCasing"/>.</item>
+		/// </list>
+		/// </remarks>
+		public void InvalidSelfCreatedCRef() { }
+
+		/// <summary>
+		/// You can specify the cref path explicitly and the compiler will not attempt to resolve it. This
+		/// causes issues with our cref parser.
+		/// </summary>
+		/// <remarks>
+		/// <list type="bullet">
+		///		<item>Type: <see cref="T:DocumentationTest.CommentTests.SeeElement"/>.</item>
+		/// </list>
+		/// </remarks>
+		public void ValidSelfCreatedCRef() { }
+
+		/// <summary>
 		/// Tests the see element against different method visibility modifiers. This is to enable
 		/// testing of the filters.
 		/// </summary>

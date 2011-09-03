@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model;
+using TheBoxSoftware.Reflection.Syntax;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
-	using TheBoxSoftware.Reflection.Syntax;
-	using System.Collections.ObjectModel;
-
 	/// <summary>
 	/// Document settings allows the user to modify the settings for the current <see cref="LiveDocumentorFile"/>.
 	/// </summary>
@@ -45,14 +38,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				new PrivacyFilter("Document protected members", Reflection.Visibility.Protected),
 				new PrivacyFilter("Document protected internal members", Reflection.Visibility.InternalProtected)
 				};
-
-			// set the currently selected filters
-			foreach(Reflection.Visibility filter in LiveDocumentorFile.Singleton.Filters) {
-				PrivacyFilter p = this.PrivacyFilters.ToList().Find(c => c.Visibility == filter);
-				if (p != null) {
-					p.IsSelected = true;
-				}
-			}
+			this.PrivacyFilters.SetFilters(LiveDocumentorFile.Singleton.Filters);
 
 			this.privacyFilters.ItemsSource = this.PrivacyFilters;
 		}
@@ -87,7 +73,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			get { return this.languages; }
 		}
 
-		protected PrivacyFilterCollection PrivacyFilters { get; set; }
+		internal PrivacyFilterCollection PrivacyFilters { get; set; }
 
 		/// <summary>
 		/// Command binding event handler, checks if a command executed by the user can be
@@ -110,41 +96,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			if (e.Command == ApplicationCommands.Close) {
 				this.Cancel(sender, e);
 			}
-		}
-
-		protected class PrivacyFilterCollection : ObservableCollection<PrivacyFilter> {
-			public override string ToString() {
-				List<string> selectedNames = new List<string>();
-
-				foreach (PrivacyFilter current in this) {
-					if (current.IsSelected) {
-						selectedNames.Add(current.Visibility.ToString());
-					}
-				}
-
-				return selectedNames.Count > 0
-					? selectedNames.Count == this.Count ? "Document all members" : string.Format("Document {0} members", string.Join(", ", selectedNames.ToArray()))
-					: string.Empty;
-			}
-
-			public List<Reflection.Visibility> GetFilters() {
-				List<Reflection.Visibility> filters = new List<Reflection.Visibility>();
-				foreach (PrivacyFilter filter in this) {
-					if (filter.IsSelected) filters.Add(filter.Visibility);
-				}
-				return filters;
-			}
-		}
-
-		protected class PrivacyFilter {
-			public PrivacyFilter(string title, TheBoxSoftware.Reflection.Visibility filter) {
-				this.Title = title;
-				this.Visibility = filter;
-			}
-
-			public string Title { get; set; }
-			public TheBoxSoftware.Reflection.Visibility Visibility { get; set; }
-			public bool IsSelected { get; set; }
 		}
 	}
 }
