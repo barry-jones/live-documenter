@@ -16,14 +16,22 @@
                 <meta name="GENERATOR" content="Microsoft HTML Help Workshop 4.1" />
                     <!-- Sitemap 1.0 -->
             </HEAD><BODY>&#160;
-<OBJECT type="text/site properties">&#160;
-<param name="ImageType" value="Folder" />&#160;
-</OBJECT>&#160;
                 <UL>
                     <xsl:apply-templates />
         </UL>
             </BODY></HTML>
     </xsl:template>
+
+	<xsl:template match="/index">
+		<HTML>
+			<BODY>
+				&#160;
+				<UL>
+					<xsl:apply-templates />
+				</UL>
+			</BODY>
+		</HTML>
+	</xsl:template>
     
     <xsl:template match="item">
         <LI><OBJECT type="text/sitemap">
@@ -49,25 +57,15 @@ Compatibility=1.1 or later
 Compiled file=<xsl:value-of select="compiledfile" />
 Contents file=<xsl:value-of select="contentsfile" />
 Default topic=<xsl:value-of select="defaulttopic" />
+Title=A Live Documenter Documented Class Library
 Display compile progress=No
+Full-text search=Yes
+Error log file=Documentation.log
 Index file=<xsl:value-of select="indexfile" />
 Language=0x809 English (United Kingdom)
-
+Auto Index=Yes
 
 [INFOTYPES]
-    </xsl:template>
-    
-    <xsl:template match="/index">
-        <![CDATA[<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
-        <HTML>
-            <HEAD>
-                <meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-                    <!-- Sitemap 1.0 -->
-            </HEAD><BODY>
-                <UL>
-                </UL>
-            </BODY></HTML>
-            ]]>
     </xsl:template>
     
     <xsl:template match="/frontpage">
@@ -77,7 +75,6 @@ Language=0x809 English (United Kingdom)
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <h1>Class Library Documentation</h1>
                     <h2>Namespaces</h2>
@@ -105,7 +102,6 @@ Language=0x809 English (United Kingdom)
 				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
 			</head>
 			<body>
-				<xsl:call-template name="header" />
 				<div class="content">
 					<h1>
 						<xsl:apply-templates select="name" />
@@ -143,7 +139,6 @@ Language=0x809 English (United Kingdom)
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <xsl:apply-templates select="name" />
                     <p>The <xsl:value-of select="name/@type" /> type exposes the following members.</p>
@@ -161,7 +156,6 @@ Language=0x809 English (United Kingdom)
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <h1><xsl:apply-templates select="name" /></h1>
 					<xsl:if test="count(/namespace/parent[@type='class']) > 0">
@@ -252,7 +246,6 @@ Language=0x809 English (United Kingdom)
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <h1><xsl:value-of select="/member/name" /><xsl:text> </xsl:text><xsl:call-template name="type-display-name" /></h1>
                     
@@ -295,13 +288,6 @@ Language=0x809 English (United Kingdom)
         <div class="footer">
             Produced by the <a href="http://theboxsoftware.com/products/live-documenter/">Live Documenter</a> developed by <a href="http://theboxsoftware.com">The Box Software</a>.
         </div>
-    </xsl:template>
-    
-    <xsl:template name="header">
-        <div class="header">
-            <xsl:text> </xsl:text>
-        </div>
-        <br class="clear" />
     </xsl:template>
     
     <xsl:template match="/member/values">

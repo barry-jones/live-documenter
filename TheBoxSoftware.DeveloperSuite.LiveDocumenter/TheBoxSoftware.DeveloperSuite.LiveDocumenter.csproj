@@ -333,10 +333,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ApplicationData\helpviewer1-msdn\export.config" />
+    <Resource Include="ApplicationData\helpviewer1-msdn\styles\images\theboxsoftware-logo.png" />
     <Content Include="ApplicationData\htmlhelp1-msdn.ldec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ApplicationData\htmlhelp1-msdn\export.config" />
+    <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\theboxsoftware-logo.png" />
     <Content Include="ApplicationData\htmlhelp2-msdn.ldec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -351,6 +353,8 @@
     <None Include="ApplicationData\htmlhelp2-msdn\virtualtopic.HxV" />
     <None Include="ApplicationData\web-msdn\export.config" />
     <Resource Include="ApplicationData\web-msdn\screenshot.png" />
+    <Resource Include="ApplicationData\web-msdn\styles\images\theboxsoftware-logo.png" />
+    <Resource Include="ApplicationData\htmlhelp2-msdn\styles\images\theboxsoftware-logo.png" />
     <Content Include="ApplicationData\xml.ldec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

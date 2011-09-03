@@ -132,11 +132,9 @@ table .icon {
 }
 
 .header {
-	background-color: #362B60;
-	display: block;
-	clear: both;
-	height: 2em;
-}body { margin: 0; padding: 0; }
+	display: none;
+}
+body { margin: 0; padding: 0; }
 body, td, th {
 	color: #000000;
 	font-family: 'Segoe UI',Verdana,Arial;
@@ -216,6 +214,7 @@ h2 {
 
 .details {
 	padding-bottom: 1em;
+	padding-top: 1em;
 }
 .details span {
 	display: block;
@@ -269,25 +268,17 @@ table .icon {
 	list-style-type: none;
 	padding: 0;
 }
-.inheritance ul li {
-	padding-left: 1em;
+.inheritance ul>li {
+	margin: 0;
+	padding: 0;
+}
+.inheritance ul>li>ul>li {
+	margin-left: 1em;
 }
 
-.header {
-	background-color: #362B60;
-	display: block;
-	height: 40px;
-	border-bottom: 1px solid black;
-	margin: 0 0 -17px 0;
-	padding: 10px 0 0 10px;
-	color: #fff;
-	font-size: 1.5em;
-	font-weight: normal;
-}
 .clear { clear: both; }
 
 .footer {
-	background-color: #E5E5E5;
 	display: block;
 	height: 2em;
 	border-top: 1px solid #BBBBBB;
@@ -295,6 +286,8 @@ table .icon {
 	padding: 10px;
 	vertical-align: middle;
 	font-style: italic;
+	background: #E5E5E5 url("images/theboxsoftware-logo.png") top right no-repeat;
+	background-position: top 99%;
 }
 .footer a {
 	color: #666;
