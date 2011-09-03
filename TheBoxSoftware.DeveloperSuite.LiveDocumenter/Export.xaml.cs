@@ -211,6 +211,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private void outputSelection_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ExportConfigFile o = (ExportConfigFile)this.outputSelection.SelectedItem;
 			this.exportDescription.Text = o.Description;
+			this.exportVersion.Text = "v " + o.Version;
 
 			switch (o.Exporter) {
 				case Exporters.Website:
@@ -222,6 +223,23 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				case Exporters.Html2:
 					this.exportType.Text = "HTML Help 2 exporter";
 					break;
+				case Exporters.HelpViewer1:
+					this.exportType.Text = "MS Help Viewer 1";
+					break;
+				case Exporters.XML:
+					this.exportType.Text = "XML";
+					break;
+			}
+
+			if (o.HasScreenshot) {
+				System.Windows.Media.Imaging.BitmapImage image = new System.Windows.Media.Imaging.BitmapImage();
+				image.BeginInit();
+				image.StreamSource = o.GetScreenshot();
+				image.EndInit();
+				this.exportImage.Source = image;
+			}
+			else {
+				this.exportImage.Source = null;
 			}
 		}
 

@@ -73,9 +73,15 @@
 					</Grid>
 				</Border>
 				<Canvas Grid.Row="1">
-					<Border HorizontalAlignment="Left" Background="#FFCDB0B0" BorderBrush="#FFB1A6A6" Width="100" BorderThickness="1" Grid.Row="1" Height="100" Canvas.Left="8"/>
-					<TextBlock x:Name="exportType" Width="317" Canvas.Left="112">Export type</TextBlock>
-					<TextBlock x:Name="exportDescription" Width="317" Canvas.Left="112" Canvas.Top="20" Height="87">Description</TextBlock>
+					<Border HorizontalAlignment="Left" Background="White" BorderBrush="#FFEFEFEF" Width="100" BorderThickness="1" Grid.Row="1" Height="100" Canvas.Left="8">
+                        <Grid>
+                            <Image Source="resources\exp_48x48.png" Opacity="0.5" Width="48" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Image x:Name="exportImage" HorizontalAlignment="Center" VerticalAlignment="Center" />                            
+                        </Grid>
+                    </Border>
+					<TextBlock x:Name="exportType" Width="317" Canvas.Left="112" FontWeight="Bold">Export type</TextBlock>
+					<TextBlock x:Name="exportDescription" Width="317" Canvas.Left="112" Canvas.Top="20" Height="60" TextWrapping="Wrap">Description</TextBlock>
+					<TextBlock x:Name="exportVersion" Canvas.Left="112" Canvas.Top="84">v</TextBlock>
 				</Canvas>				
 			</Grid>
 		</Border>

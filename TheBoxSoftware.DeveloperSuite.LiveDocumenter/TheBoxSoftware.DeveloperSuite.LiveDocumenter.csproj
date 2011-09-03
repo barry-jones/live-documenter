@@ -300,6 +300,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Resource Include="Resources\exp_48x48.png" />
     <Resource Include="Resources\add_24x24.png" />
     <Resource Include="Resources\back_24x24.png" />
     <Resource Include="Resources\exp_24x24.png" />
@@ -349,6 +350,7 @@
     <None Include="ApplicationData\htmlhelp2-msdn\sampledef.HxE" />
     <None Include="ApplicationData\htmlhelp2-msdn\virtualtopic.HxV" />
     <None Include="ApplicationData\web-msdn\export.config" />
+    <Resource Include="ApplicationData\web-msdn\screenshot.png" />
     <Content Include="ApplicationData\xml.ldec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Xml;
 
+
 namespace TheBoxSoftware.Documentation.Exporting {
 	using Ionic.Zip;
 
@@ -36,10 +37,15 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				xmlDocument.LoadXml(new StreamReader(ms).ReadToEnd());
 
 				this.Name = xmlDocument.SelectSingleNode("/export/name").InnerText;
+				this.Version = xmlDocument.SelectSingleNode("/export/version").InnerText;
 				this.Exporter = this.UnpackExporter(xmlDocument.SelectSingleNode("/export/exporter").InnerText);
 				XmlNode descriptionNode = xmlDocument.SelectSingleNode("/export/description");
 				if (descriptionNode != null) {
 					this.Description = descriptionNode.InnerText;
+				}
+				XmlNode screenshotNode = xmlDocument.SelectSingleNode("/export/screenshot");
+				if (screenshotNode != null) {
+					this.HasScreenshot = true;
 				}
 
 				XmlNodeList properties = xmlDocument.SelectNodes("/export/properties/property");
@@ -73,6 +79,16 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		public string Description { get; set; }
 
 		/// <summary>
+		/// The version number of the export config file.
+		/// </summary>
+		public string Version { get; set; }
+		
+		/// <summary>
+		/// Indicates if the file contains a screenshot.
+		/// </summary>
+		public bool HasScreenshot { get; set; }
+
+		/// <summary>
 		/// The custom properties defined in the config file.
 		/// </summary>
 		public Dictionary<string, string> Properties { get; set; }
@@ -88,6 +104,21 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				file[xslt].Extract(xsltStream);
 				xsltStream.Seek(0, SeekOrigin.Begin);
 				return xsltStream;
+			}
+		}
+
+		/// <summary>
+		/// If the file <see cref="HasScreenshot"/> then this method returns that
+		/// screen shot as a Bitmap file.
+		/// </summary>
+		/// <returns>The Bitmap</returns>
+		public Stream GetScreenshot() {
+			using (ZipFile file = new ZipFile(this.ConfigFile)) {
+				string filename = xmlDocument.SelectSingleNode("/export/screenshot").InnerText;
+				MemoryStream imageStream = new MemoryStream();
+				file[filename].Extract(imageStream);
+				imageStream.Seek(0, SeekOrigin.Begin);
+				return imageStream;
 			}
 		}
 
