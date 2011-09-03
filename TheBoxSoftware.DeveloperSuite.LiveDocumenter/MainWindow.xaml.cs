@@ -448,10 +448,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 
-		private void ShowPreferences(object sender, RoutedEventArgs e) {
+		private void ShowDocumentSettings(object sender, RoutedEventArgs e) {
+			// this has been renamed to document settings as it now applies only to a document
+			// and not the application.
 			Preferences p = new Preferences();
 			p.Owner = this;
-			p.ShowDialog();
+
+			bool? result = p.ShowDialog();
+
+			if (result.HasValue && result.Value) {
+				this.UpdateView();
+			}
 		}
 
 		private void ShowAbout(object sender, RoutedEventArgs e) {

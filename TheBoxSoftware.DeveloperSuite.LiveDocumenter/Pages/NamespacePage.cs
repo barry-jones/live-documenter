@@ -41,35 +41,40 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 				// classes
 				IOrderedEnumerable<TypeDef> allClasses = from type in item.Value
-								 where !type.IsDelegate && !type.IsEnumeration && !type.IsInterface && !type.IsStructure
+								 where !type.IsDelegate && !type.IsEnumeration && !type.IsInterface && !type.IsStructure &&
+									!LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
 								 orderby type.Name
 								 select type;
 				this.OutputTypes("Classes", allClasses, xmlFile);
 
 				// structures
 				IOrderedEnumerable<TypeDef> allStructures = from type in item.Value
-								 where type.IsStructure
+								 where type.IsStructure &&
+									!LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
 								 orderby type.Name
 								 select type;
 				this.OutputTypes("Structures", allStructures, xmlFile);
 
 				// delegates
 				IOrderedEnumerable<TypeDef> allDelegates = from type in item.Value
-								 where type.IsDelegate
+								 where type.IsDelegate &&
+									!LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
 								 orderby type.Name
 								 select type;
 				this.OutputTypes("Delegates", allDelegates, xmlFile);
 
 				// enumerations
 				IOrderedEnumerable<TypeDef> allEnumerations = from type in item.Value
-								 where type.IsEnumeration
+								 where type.IsEnumeration &&
+									!LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
 								 orderby type.Name
 								 select type;
 				this.OutputTypes("Enumerations", allEnumerations, xmlFile);
 
 				// interfaces
 				IOrderedEnumerable<TypeDef> allInterfaces = from type in item.Value
-								 where type.IsInterface
+								 where type.IsInterface &&
+									!LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
 								 orderby type.Name
 								 select type;
 				this.OutputTypes("Interfaces", allInterfaces, xmlFile);

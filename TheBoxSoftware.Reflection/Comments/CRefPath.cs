@@ -205,6 +205,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 				case CRefConstants.MethodTypeIndicator: this.PathType = CRefTypes.Method; break;
 				case CRefConstants.FieldTypeIndicator: this.PathType = CRefTypes.Field; break;
 				case CRefConstants.ErrorTypeIndicator: this.PathType = CRefTypes.Error; break;
+				case CRefConstants.NamespaceTypeIndicator: this.PathType = CRefTypes.Namespace; break;
+				case CRefConstants.EventTypeIndicator: this.PathType = CRefTypes.Event; break;
 				default:
 					TraceHelper.WriteLine("Parsing for cref paths of type " + typePortion + " has not been implemented");
 					break;

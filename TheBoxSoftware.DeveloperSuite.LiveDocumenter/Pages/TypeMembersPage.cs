@@ -33,6 +33,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					members = new SummaryTable();
 					var sortedMethods = from method in constructors
 										orderby method.Name
+										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										select method;
 					foreach (MethodDef currentMethod in sortedMethods) {
 						crefPath = new CRefPath(currentMethod);
@@ -56,6 +57,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					members = new SummaryTable();
 					var sortedFields = from field in fields
 									   orderby field.Name
+									   where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(field)
 									   select field;
 					foreach (FieldDef currentField in sortedFields) {
 						crefPath = new CRefPath(currentField);
@@ -86,6 +88,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					members = new SummaryTable();
 					var sortedProperties = from property in properties
 										   orderby property.GetDisplayName(false, true)
+										   where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(property)
 										   select property;
 					foreach (PropertyDef currentProperty in sortedProperties) {
 						crefPath = new CRefPath(currentProperty);
@@ -106,6 +109,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					members = new SummaryTable();
 					var sortedEvents = from c in events
 										   orderby c.Name
+									   where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(c)
 										   select c;
 					foreach (EventDef currentEvent in sortedEvents) {
 						crefPath = new CRefPath(currentEvent);
@@ -126,6 +130,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					members = new SummaryTable();
 					var sortedMethods = from method in methods
 										orderby method.Name
+										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										select method;
 					foreach (MethodDef currentMethod in sortedMethods) {
 						crefPath = new CRefPath(currentMethod);
@@ -147,6 +152,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					members = new SummaryTable();
 					var sortedMethods = from method in operators
 										orderby method.Name
+										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										select method;
 					foreach (MethodDef currentMethod in sortedMethods) {
 						crefPath = new CRefPath(currentMethod);
@@ -168,6 +174,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					var sortedMethods = from method in this.representedType.ExtensionMethods
 										where !method.IsConstructor
 										orderby method.Name
+										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										select method;
 					foreach (MethodDef currentMethod in sortedMethods) {
 						DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);

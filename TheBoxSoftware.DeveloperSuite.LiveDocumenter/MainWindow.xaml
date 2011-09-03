@@ -342,7 +342,7 @@
                 <MenuItem Name="TestException" Click="MenuItem_Click" Header="Test Exception Handling" />-->
             </MenuItem>
             <MenuItem Header="Tools">
-                <MenuItem Header="Preferences" Click="ShowPreferences" />
+                <MenuItem Header="Document Settings" Click="ShowDocumentSettings" />
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About" Click="ShowAbout" />

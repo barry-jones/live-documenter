@@ -41,6 +41,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 					var sortedMethods = from method in this.typesEvents
 										orderby method.Name
+										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										select method;
 					foreach (EventDef currentMethod in sortedMethods) {
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();

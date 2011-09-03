@@ -42,6 +42,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 					var sortedFields = from field in this.fields
 									   orderby field.Name
+									   where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(field)
 									   select field;
 					foreach (FieldDef currentField in sortedFields) {
 						CRefPath crefPath = new CRefPath(currentField);

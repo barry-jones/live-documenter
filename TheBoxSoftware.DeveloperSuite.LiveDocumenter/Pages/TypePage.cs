@@ -106,20 +106,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 			SummaryTable members;
 			CRefPath crefPath;			
 			XmlCodeCommentFile xmlFile = this.commentsXml.GetReusableFile();
+			List<Block> tempContainer = new List<Block>();
 
-			if (this.representedType.HasMembers) {
-				this.Blocks.Add(new Paragraph());
-				this.Blocks.Add(new Paragraph(new Run(string.Format("The {0} type exposes the following members.", this.representedType.GetDisplayName(false)))));
-			}
-
-			List<MethodDef> constructors = this.representedType.GetConstructors();
-			if (constructors != null && constructors.Count > 0) {
-				this.Blocks.Add(new Header2("Constructors"));
+			var constructors = from method in this.representedType.GetConstructors()
+							   orderby method.Name
+							   where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
+							   select method;
+			if (constructors != null && constructors.Count() > 0) {
+				tempContainer.Add(new Header2("Constructors"));
 				members = new SummaryTable();
-				var sortedMethods = from method in constructors
-									orderby method.Name
-									select method;
-				foreach (MethodDef currentMethod in sortedMethods) {
+				foreach (MethodDef currentMethod in constructors) {
 					crefPath = new CRefPath(currentMethod);
 					System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 					link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
@@ -132,17 +128,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 					members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
 				}
-				this.Blocks.Add(members);
+				tempContainer.Add(members);
 			}
 
-			List<FieldDef> fields = this.representedType.GetFields();
-			if (fields != null && fields.Count > 0) {
-				this.Blocks.Add(new Header2("Fields"));
+			var fields = from field in this.representedType.GetFields()
+						 orderby field.Name
+						 where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(field)
+						 select field;
+			if (fields != null && fields.Count() > 0) {
+				tempContainer.Add(new Header2("Fields"));
 				members = new SummaryTable();
-				var sortedFields = from field in fields
-								   orderby field.Name
-								   select field;
-				foreach (FieldDef currentField in sortedFields) {
+				foreach (FieldDef currentField in fields) {
 					crefPath = new CRefPath(currentField);
 					System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 					link.Inlines.Add(new System.Windows.Documents.Run(currentField.Name));
@@ -162,17 +158,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						members.AddItem(link, value, Model.ElementIconConstants.GetIconPathFor(currentField));
 					}
 				}
-				this.Blocks.Add(members);
+				tempContainer.Add(members);
 			}
 
-			List<PropertyDef> properties = this.representedType.GetProperties();
-			if (properties != null && properties.Count > 0) {
-				this.Blocks.Add(new Header2("Properties"));
+			var properties = from property in this.representedType.GetProperties()
+							 orderby property.GetDisplayName(false, true)
+							 where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(property)
+							 select property;
+			if (properties != null && properties.Count() > 0) {
+				tempContainer.Add(new Header2("Properties"));
 				members = new SummaryTable();
-				var sortedProperties = from property in properties
-									   orderby property.GetDisplayName(false, true)
-									   select property;
-				foreach (PropertyDef currentProperty in sortedProperties) {
+				foreach (PropertyDef currentProperty in properties) {
 					crefPath = new CRefPath(currentProperty);
 					System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 					link.Inlines.Add(new System.Windows.Documents.Run(currentProperty.GetDisplayName(false, true)));
@@ -182,17 +178,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					Block description = this.GetSummaryFor(xmlFile, currentProperty.Type.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
 					members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentProperty));
 				}
-				this.Blocks.Add(members);
+				tempContainer.Add(members);
 			}
 
-			List<EventDef> events = this.representedType.GetEvents();
-			if (events != null && events.Count > 0) {
-				this.Blocks.Add(new Header2("Events"));
+			var events = from c in this.representedType.GetEvents()
+						 orderby c.Name
+						 where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(c)
+						 select c;
+			if (events != null && events.Count() > 0) {
+				tempContainer.Add(new Header2("Events"));
 				members = new SummaryTable();
-				var sortedEvents = from c in events
-								   orderby c.Name
-								   select c;
-				foreach (EventDef currentEvent in sortedEvents) {
+				foreach (EventDef currentEvent in events) {
 					crefPath = new CRefPath(currentEvent);
 					System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 					link.Inlines.Add(new System.Windows.Documents.Run(currentEvent.Name));
@@ -202,17 +198,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					Block description = this.GetSummaryFor(xmlFile, currentEvent.Type.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
 					members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentEvent));
 				}
-				this.Blocks.Add(members);
+				tempContainer.Add(members);
 			}
 
-			List<MethodDef> methods = this.representedType.GetMethods();
-			if (methods != null && methods.Count > 0) {
-				this.Blocks.Add(new Header2("Methods"));
-				members = new SummaryTable();
-				var sortedMethods = from method in methods
-									orderby method.Name
-									select method;
-				foreach (MethodDef currentMethod in sortedMethods) {
+			var methods = from method in this.representedType.GetMethods()
+						  orderby method.Name
+						  where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
+						  select method;
+			if (methods != null && methods.Count() > 0) {
+				tempContainer.Add(new Header2("Methods"));
+				members = new SummaryTable();				
+				foreach (MethodDef currentMethod in methods) {
 					crefPath = new CRefPath(currentMethod);
 					System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 					link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
@@ -223,17 +219,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 					members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
 				}
-				this.Blocks.Add(members);
+				tempContainer.Add(members);
 			}
 
-			List<MethodDef> operators = this.representedType.GetOperators();
-			if (operators != null && operators.Count > 0) {
-				this.Blocks.Add(new Header2("Operators"));
-				members = new SummaryTable();
-				var sortedMethods = from method in operators
-									orderby method.Name
-									select method;
-				foreach (MethodDef currentMethod in sortedMethods) {
+			var operators = from method in this.representedType.GetOperators()
+								orderby method.Name
+								where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
+								select method;
+			if (operators != null && operators.Count() > 0) {
+				tempContainer.Add(new Header2("Operators"));
+				members = new SummaryTable();				
+				foreach (MethodDef currentMethod in operators) {
 					crefPath = new CRefPath(currentMethod);
 					System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
 					link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
@@ -244,7 +240,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 					members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
 				}
-				this.Blocks.Add(members);
+				tempContainer.Add(members);
 			}
 
 			if (this.representedType != null && this.representedType.ExtensionMethods.Count > 0) {
@@ -253,6 +249,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				var sortedMethods = from method in this.representedType.ExtensionMethods
 									where !method.IsConstructor
 									orderby method.Name
+									where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 									select method;
 				foreach (MethodDef currentMethod in sortedMethods) {
 					DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
@@ -270,8 +267,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
 					members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
 				}
-				this.Blocks.Add(new Header2("Extension Methods"));
-				this.Blocks.Add(members);
+				tempContainer.Add(new Header2("Extension Methods"));
+				tempContainer.Add(members);
+			}
+
+			if (tempContainer.Count > 0) {
+				this.Blocks.Add(new Paragraph());
+				this.Blocks.Add(new Paragraph(new Run(string.Format("The {0} type exposes the following members.", this.representedType.GetDisplayName(false)))));
+				this.Blocks.AddRange(tempContainer);
 			}
 		}
 	}

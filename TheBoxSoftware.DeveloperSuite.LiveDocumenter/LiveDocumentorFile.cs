@@ -19,6 +19,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private static LiveDocumentorFile current;
 		private LiveDocument liveDocument;
 		private List<DocumentedAssembly> files;
+		private List<Reflection.Visibility> filters;
+		private Reflection.Syntax.Languages language;
+		private Model.BuildConfigurations configuration;
 
 		#region Constructors
 		/// <summary>
@@ -33,7 +36,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		private LiveDocumentorFile() {
 			this.files = new List<DocumentedAssembly>();
-			// this.liveDocument = new LiveDocument();
+			this.filters = new List<Visibility>();
+			this.language = Reflection.Syntax.Languages.CSharp;
+			this.configuration = Model.BuildConfigurations.Debug;
 		}
 		#endregion
 
@@ -52,9 +57,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <returns>The updated LiveDocument.</returns>
 		internal LiveDocument Update() {
 			if (this.liveDocument == null) {
-				this.liveDocument = new LiveDocument(this.files);
+				this.liveDocument = new LiveDocument(this.Files, this.Filters);
 			}
 			this.liveDocument.Assemblies = this.files;
+			this.liveDocument.Settings.VisibilityFilters = this.Filters;
 			this.liveDocument.Update();
 			return this.liveDocument;
 		}
@@ -73,7 +79,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			readFiles.AddRange(
 				InputFileReader.Read(
 					filename, 
-					Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString()
+					this.Configuration.ToString()
 					)
 				);
 
@@ -102,7 +108,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				readFiles.AddRange(
 					InputFileReader.Read(
 						filename, 
-						Model.UserApplicationStore.Store.Preferences.BuildConfiguration.ToString()
+						this.Configuration.ToString()
 						)
 					);
 			}
@@ -146,9 +152,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public void SavaAs(string filename) {
 			// convert the LDF to a LDP
 			LiveDocumenterProject project = new LiveDocumenterProject();
+
 			foreach(DocumentedAssembly assembly in this.files) {
 				project.Files.Add(assembly.FileName);
 			}
+			foreach (Visibility filter in this.filters) {
+				project.VisibilityFilters.Add(filter);
+			}
+			project.Configuration = this.Configuration;
+			project.Language = this.Language;
 
 			project.Serialize(filename);
 			this.HasChanged = false;
@@ -175,7 +187,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			foreach(string file in project.Files) {
 				ldFile.files.Add(new DocumentedAssembly(file));
 			}
+			foreach(Visibility filter in project.VisibilityFilters){
+				ldFile.filters.Add(filter);
+			}
+			ldFile.configuration = project.Configuration;
+			ldFile.language = project.Language;
 			ldFile.Filename = filename;
+
 			LiveDocumentorFile.SetLiveDocumentorFile(ldFile);
 			return ldFile;
 		}
@@ -215,6 +233,47 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public List<DocumentedAssembly> Files {
 			get { return this.files; }
 		}
+
+		/// <summary>
+		/// The visibility filters
+		/// </summary>
+		public List<Visibility> Filters {
+			get { return this.filters; }
+			set {
+				Visibility[] current = this.filters.ToArray();
+				Visibility[] newFilters = value.ToArray();
+				if (!current.SequenceEqual(newFilters)) {
+					this.HasChanged = true;
+					this.filters = value;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Specified the syntax language
+		/// </summary>
+		public Reflection.Syntax.Languages Language {
+			get { return this.language; }
+			set {
+				if (this.language != value) {
+					this.language = value;
+					this.HasChanged = true;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Specified the build configuration
+		/// </summary>
+		public Model.BuildConfigurations Configuration {
+			get { return this.configuration; }
+			set {
+				if (this.configuration != value) {
+					this.HasChanged = true;
+					this.configuration = value;
+				}
+			}
+		}
 		#endregion
 
 		#region Inernals
@@ -228,6 +287,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			[XmlArray("files")]
 			[XmlArrayItem("file")]
 			public List<string> Files { get; set; }
+
+			[XmlArray("visibilityfilters")]
+			[XmlArrayItem("visibility")]
+			public List<Visibility> VisibilityFilters { get; set; }
+
+			[XmlElement("configuration")]
+			public Model.BuildConfigurations Configuration { get; set; }
+
+			[XmlElement("language")]
+			public Reflection.Syntax.Languages Language { get; set; }
 
 			public void Serialize(string toFile) {
 				using(FileStream fs = new FileStream(toFile, FileMode.OpenOrCreate)) {

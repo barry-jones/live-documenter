@@ -34,6 +34,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					var sortedMethods = from method in this.typesMethods
 										where !method.IsConstructor
 										orderby method.Name
+										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										select method;
 					foreach(MethodDef currentMethod in sortedMethods) {
 						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
@@ -59,6 +60,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					var sortedMethods = from method in definingType.ExtensionMethods
 										where !method.IsConstructor
 										orderby method.Name
+										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										select method;
 					foreach (MethodDef currentMethod in sortedMethods) {
 						DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);

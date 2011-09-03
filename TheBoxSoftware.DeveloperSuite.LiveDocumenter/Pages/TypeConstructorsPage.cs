@@ -32,7 +32,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					SummaryTable methods = new SummaryTable();
 
 					var sortedMethods = from method in this.typesMethods
-										where method.IsConstructor
+										where method.IsConstructor &&
+											!LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
 										orderby method.Name
 										select method;
 					foreach(MethodDef currentMethod in sortedMethods) {

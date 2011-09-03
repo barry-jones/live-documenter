@@ -90,7 +90,8 @@ namespace TheBoxSoftware.Documentation {
 				(member is MethodDef ||
 				member is PropertyDef ||
 				member is FieldDef ||
-				member is TypeDef)) {
+				member is TypeDef ||
+				member is EventDef)) {
 				bool publicVisibility = member.MemberAccess == Visibility.Public;
 				if (!publicVisibility) {
 					shouldBeAdded = false;

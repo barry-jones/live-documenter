@@ -21,20 +21,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Initialises a new instance of the LiveDocument class.
 		/// </summary>
 		/// <param name="assemblies">The assemblies to document.</param>
-		public LiveDocument(List<DocumentedAssembly> assemblies)
+		/// <param name="filters">The visibility filters.</param>
+		public LiveDocument(List<DocumentedAssembly> assemblies, List<Reflection.Visibility> filters)
 			: base(assemblies, Mappers.GroupedNamespaceFirst, true, new LiveDocumenterEntryCreator()) {
 
 			DocumentSettings settings = new DocumentSettings();
-			settings.VisibilityFilters.AddRange(new Visibility[] { 
-			        Visibility.Private,
-			        Visibility.Protected,
-			        Visibility.Public,
-			        Visibility.InternalProtected,
-			        Visibility.Internal
-			        });
-			//settings.VisibilityFilters.AddRange(new Visibility[] { 
-			//        Visibility.Public
-			//        });
+			settings.VisibilityFilters.AddRange(filters);
 			this.Settings = settings;
 		}
 
