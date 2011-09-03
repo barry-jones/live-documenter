@@ -76,7 +76,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.exportDescription.Text = config.Description;
 
 			ExportSettings settings = new ExportSettings();
-			settings.Title = this.title.Text;
 			settings.PublishDirectory = this.publishTo.Text;
 			settings.Settings = new Documentation.DocumentSettings();
 			foreach (PrivacyFilter filter in this.PrivacyFilters) {

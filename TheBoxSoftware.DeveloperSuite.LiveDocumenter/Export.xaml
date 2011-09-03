@@ -4,9 +4,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="window" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Export"
     xmlns:controls="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Controls"
 	UseLayoutRounding="True"
-    Title="Export" Height="387" Width="443" mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False">
+    Title="Export" Height="368" Width="443" mc:Ignorable="d" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
 	<Window.Resources>
-        <DoubleAnimation x:Key="ShrinkWindow" Duration="0:0:0.240" From="443" To="240" />
+        <DoubleAnimation x:Key="ShrinkWindow" Duration="0:0:0.240" From="365" To="240" />
         <DoubleAnimation x:Key="OptionsHide" Duration="0:0:0.240" From="1" To="0" />
         <DoubleAnimation x:Key="OptionsShow" Duration="0:0:0.480" From="0" To="1" />
 	</Window.Resources>
@@ -34,8 +34,8 @@
         <Border Grid.Row="1" x:Name="exportSelection" Opacity="1" >
 			<Grid>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="0.536*" />
-					<RowDefinition Height="0.464*" />
+					<RowDefinition Height="105" />
+					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
 				<Border Grid.Row="0" Padding="10">
 					<Grid>
@@ -47,23 +47,19 @@
 							<RowDefinition Height="26" />
 							<RowDefinition Height="26" />
 							<RowDefinition Height="26" />
-							<RowDefinition Height="26" />
 						</Grid.RowDefinitions>
-						
-						<TextBlock Grid.Column="0" Grid.Row="0" Text="Title" Height="22" VerticalAlignment="Center" />
-						<TextBox x:Name="title" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Height="22" Margin="0,0,0,4" />
-							
-						<TextBlock Grid.Column="0" Grid.Row="1" Text="Publish To" Height="22" VerticalAlignment="Center" />
-						<WrapPanel Grid.Column="1" Grid.Row="1" Margin="0,0,0,4">
-							<TextBox x:Name="publishTo" TextWrapping="Wrap" Height="22" Width="319" />
+												
+						<TextBlock Grid.Column="0" Grid.Row="0" Text="Publish To" Height="22" VerticalAlignment="Center" />
+						<WrapPanel Grid.Column="1" Grid.Row="0" Margin="0,0,0,4">
+							<TextBox x:Name="publishTo" TextWrapping="Wrap" Height="22" Width="310" />
 							<Button x:Name="fileDialogOpen" Content="..." Width="22" Margin="3,0,0,0" Click="fileDialogOpen_Click" />
 						</WrapPanel>
 						
-						<TextBlock Grid.Column="0" Grid.Row="2" Text="Visibility" Height="22" VerticalAlignment="Center" />
-			            <controls:ComboWithCheckboxes x:Name="visibility" DefaultText="Document Public members" Grid.Column="1" Grid.Row="2" Height="22" Margin="0,0,0,4" />
+						<TextBlock Grid.Column="0" Grid.Row="1" Text="Visibility" Height="22" VerticalAlignment="Center" />
+			            <controls:ComboWithCheckboxes x:Name="visibility" DefaultText="Document Public members" Grid.Column="1" Grid.Row="1" Height="22" Margin="0,0,0,4" />
 						
-						<TextBlock Grid.Column="0" Grid.Row="3" Text="Export" Height="22" VerticalAlignment="Center" />
-						<ComboBox Grid.Column="1" Grid.Row="3" Height="22" x:Name="outputSelection" SelectedIndex="0" SelectionChanged="outputSelection_SelectionChanged" Margin="0,0,0,4">
+						<TextBlock Grid.Column="0" Grid.Row="2" Text="Export" Height="22" VerticalAlignment="Center" />
+						<ComboBox Grid.Column="1" Grid.Row="2" Height="22" x:Name="outputSelection" SelectedIndex="0" SelectionChanged="outputSelection_SelectionChanged" Margin="0,0,0,4">
 							<ComboBox.ItemTemplate>
 								<DataTemplate>
 									<TextBlock Text="{Binding Name}" />
@@ -79,9 +75,9 @@
                             <Image x:Name="exportImage" HorizontalAlignment="Center" VerticalAlignment="Center" />                            
                         </Grid>
                     </Border>
-					<TextBlock x:Name="exportType" Width="317" Canvas.Left="112" FontWeight="Bold">Export type</TextBlock>
-					<TextBlock x:Name="exportDescription" Width="317" Canvas.Left="112" Canvas.Top="20" Height="60" TextWrapping="Wrap">Description</TextBlock>
-					<TextBlock x:Name="exportVersion" Canvas.Left="112" Canvas.Top="84">v</TextBlock>
+					<TextBlock x:Name="exportType" Width="294" Canvas.Left="114" FontWeight="Bold">Export type</TextBlock>
+					<TextBlock x:Name="exportDescription" Width="294" Canvas.Left="114" Canvas.Top="20" Height="60" TextWrapping="Wrap">Description</TextBlock>
+					<TextBlock x:Name="exportVersion" Canvas.Left="114" Canvas.Top="84">v</TextBlock>
 				</Canvas>				
 			</Grid>
 		</Border>

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.Documentation.Exporting {
-	using TheBoxSoftware.Reflection;
-
 	/// <summary>
 	/// Settings which govern where, when, how and all other information regarding
 	/// the export of documentation.
@@ -18,10 +17,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
-		/// 
+		/// The export overridden settings for exporting documentation
 		/// </summary>
 		public DocumentSettings Settings { get; set; }
 
+		/// <summary>
+		/// The user configured title for the documentation
+		/// </summary>
 		public string Title { get; set; }
 
 		/// <summary>
