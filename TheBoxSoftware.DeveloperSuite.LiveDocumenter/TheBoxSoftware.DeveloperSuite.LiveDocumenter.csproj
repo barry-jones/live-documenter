@@ -66,6 +66,7 @@
     <Compile Include="Controls\ComboWithCheckboxes.xaml.cs">
       <DependentUpon>ComboWithCheckboxes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="DocumentationResources.cs" />
     <Compile Include="LiveDocumenterEntryCreator.cs" />
     <Compile Include="Model\DocumentSettings.cs" />

@@ -77,6 +77,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					)
 				);
 
+			this.Filename = string.Empty;
 			readFiles.Sort((one, two) => one.Name.CompareTo(two.Name));
 			this.files.Clear();
 			this.files.AddRange(readFiles);
@@ -119,11 +120,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		/// <summary>
-		/// Removes the specified <paramref name="assembly"/> from the LiveDocumentorFile.
+		/// Removes the assembly with the <paramref name="uniqueId"/>.
 		/// </summary>
-		/// <param name="assembly">The assembly to remove.</param>
-		public void Remove(DocumentedAssembly assembly) {
-			if(this.files.Contains(assembly)) {
+		/// <param name="uniqueId">The assembly to remove.</param>
+		public void Remove(long uniqueId) {
+			DocumentedAssembly assembly = this.files.Find(a => a.UniqueId == uniqueId);
+
+			if(assembly != null && this.files.Contains(assembly)) {
 				this.files.Remove(assembly);
 				this.HasChanged = true;
 			}
@@ -208,6 +211,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// live document.
 		/// </summary>
 		public LiveDocument LiveDocument { get { return this.liveDocument; } }
+
+		public List<DocumentedAssembly> Files {
+			get { return this.files; }
+		}
 		#endregion
 
 		#region Inernals

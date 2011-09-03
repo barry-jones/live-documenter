@@ -38,6 +38,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.DataContext = this;
 			this.forward.DataContext = this.back.DataContext = this.userViewingHistory;
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
+			this.removeAssemblies.DataContext = LiveDocumentorFile.Singleton;
 
 			this.searchEntryTimer.AutoReset = true;
 			this.searchEntryTimer.Elapsed += new System.Timers.ElapsedEventHandler(PerformSearch);
@@ -240,8 +241,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			else if (e.Command == Commands.Remove) {
 				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
 					LiveDocumentorFile.Singleton.LiveDocument.HasFiles && 
-					LiveDocumentorFile.Singleton.LiveDocument.Assemblies.Count > 1 &&
-					LiveDocumentorFile.Singleton.LiveDocument.SelectedAssembly != null;
+					LiveDocumentorFile.Singleton.LiveDocument.Assemblies.Count > 1;
 			}
 		}
 
@@ -280,11 +280,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.exportClick(sender, e);
 			}
 			else if (e.Command == Commands.Remove) {
-				DocumentedAssembly selectedAssembly = LiveDocumentorFile.Singleton.LiveDocument.SelectedAssembly;
-				if(selectedAssembly != null) {
-					LiveDocumentorFile.Singleton.Remove(selectedAssembly);
-					this.UpdateView();
-				}
+				LiveDocumentorFile.Singleton.Remove((long)e.Parameter);
+				this.UpdateView();
 			}
 		}
 		#endregion
@@ -296,6 +293,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public void UpdateView() {
 			LiveDocument document = LiveDocumentorFile.Singleton.Update();
 			this.documentMap.ItemsSource = document.Map;
+			this.removeAssemblies.DataContext = null;
+			this.removeAssemblies.DataContext = LiveDocumentorFile.Singleton;
+
 			if (document.Map.Count > 0) {
 				this.pageViewer.Document = ((LiveDocumenterEntry)document.Map[0]).Page;
 			}
@@ -567,6 +567,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		internal bool AllowFileRefreshing {
 			get { return this.allowFileRefreshing; }
 			set { this.allowFileRefreshing = value; }
+		}
+
+		protected List<DocumentedAssembly> Assemblies {
+			get { 
+
+				return LiveDocumentorFile.Singleton.LiveDocument.Assemblies; 
+			}
 		}
 		#endregion
 	}

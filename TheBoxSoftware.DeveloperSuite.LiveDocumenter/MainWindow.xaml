@@ -29,7 +29,7 @@
         <KeyBinding Key="E" Modifiers="Control" Command="local:Commands.Export" />
     </Window.InputBindings>
 
-    <Window.Resources>        
+    <Window.Resources>
         <model:TreeViewItemDataTemplateSelector x:Key="treeViewDataTemplateSelector" />
         <HierarchicalDataTemplate x:Key="documentMapItemTemplate" ItemsSource="{Binding Children}">
             <StackPanel Orientation="Horizontal">
@@ -309,7 +309,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-	</Window.Resources>
+    </Window.Resources>
 	
     <Window.CommandBindings>
         <CommandBinding Command="NavigationCommands.BrowseForward" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
@@ -401,18 +401,36 @@
                 </Button.ToolTip>
                 <Image Source="resources\add_24x24.png" Height="24" Width="24" />
             </Button>
-            <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
-                <Button.ToolTip>
-                    <TextBlock Text="Remove (Ctrl + R)" />
-                </Button.ToolTip>
+            <controls:DropDownButton x:Name="removeAssemblies" Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
                 <Image Source="resources\remov_24x24.png" Height="24" Width="24" />
-            </Button>
+                <Button.ToolTip>
+                    <TextBlock Text="Remove assembly (Ctrl + R)" />
+                </Button.ToolTip>
+                <controls:DropDownButton.DropDownContextMenu>
+                    <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.DataContext}" ItemsSource="{Binding Files}">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="MenuItem.Header" Value="{Binding Path=Name}"/>
+                                <Setter Property="MenuItem.Command" Value="local:Commands.Remove" />
+                                <Setter Property="MenuItem.CommandParameter" Value="{Binding Path=UniqueId}" />
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </controls:DropDownButton.DropDownContextMenu>
+            </controls:DropDownButton>
         </ToolBar>
         
 		<StatusBar DockPanel.Dock="Bottom">
 			<StatusBarItem>
                 <TextBlock />
             </StatusBarItem>
+            <StatusBar.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Icon="">
+                        
+                    </MenuItem>
+                </ContextMenu>
+            </StatusBar.ContextMenu>
 		</StatusBar>
 		
         <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="0,1,0,1">
