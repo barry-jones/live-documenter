@@ -352,7 +352,11 @@ namespace TheBoxSoftware.Reflection {
 		/// </remarks>
 		public bool IsCompilerGenerated {
 			get {
-				return (this.IsSpecialName || this.Name.StartsWith("<"));
+				bool isSpecial = this.IsSpecialName && !this.IsConstructor;
+				bool crap = this.Name.StartsWith("<");
+				bool isCompilerAttribute = ((MemberRef)this).Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
+
+				return (isSpecial || crap) || isCompilerAttribute;
 			}
 		}
 

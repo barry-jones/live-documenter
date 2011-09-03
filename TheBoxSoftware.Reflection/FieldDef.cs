@@ -39,7 +39,9 @@ namespace TheBoxSoftware.Reflection{
 		/// in certain situations.
 		/// </summary>
 		public bool IsSystemGenerated {
-			get { return this.Name == "value__"; }
+			get {
+				return this.Name == "value__" || this.Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
+			}
 		}
 
 		/// <summary>

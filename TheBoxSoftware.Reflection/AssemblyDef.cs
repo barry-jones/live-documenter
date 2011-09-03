@@ -273,7 +273,7 @@ namespace TheBoxSoftware.Reflection {
 			// REVIEW: see this.namespaceMap. Also appears to be wasteful
 			List<string> orderedNamespaces = new List<string>();
 			Dictionary<string, List<TypeDef>> temp = new Dictionary<string, List<TypeDef>>();
-			foreach (TypeDef current in this.Types) {
+			foreach (TypeDef current in this.Types.FindAll(t => !t.IsCompilerGenerated)) {
 				if (!orderedNamespaces.Contains(current.Namespace)) {
 					orderedNamespaces.Add(current.Namespace);
 				}
@@ -283,7 +283,9 @@ namespace TheBoxSoftware.Reflection {
 				temp.Add(current, new List<TypeDef>());
 			}
 			foreach (TypeDef current in this.Types) {
-				temp[current.Namespace].Add(current);
+				if (temp.ContainsKey(current.Namespace)) {
+					temp[current.Namespace].Add(current);
+				}
 			}
 			return temp;
 		}

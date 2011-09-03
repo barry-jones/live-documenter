@@ -295,6 +295,17 @@ namespace TheBoxSoftware.Reflection {
 				};
 			}
 		}
+
+		/// <summary>
+		/// Indicates if this type is compiler generated.
+		/// </summary>
+		public bool IsCompilerGenerated {
+			get {
+				// a type is generated if it is a child of generated type.
+				bool parentGenerated = this.ContainingClass != null ? this.ContainingClass.IsCompilerGenerated : false;
+				return parentGenerated || this.Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
+			}
+		}
 		#endregion
 
 		#region Methods
@@ -358,15 +369,24 @@ namespace TheBoxSoftware.Reflection {
 		}
 
 		/// <summary>
-		/// Obtains only the fields explicitly defined by the developer of the assembly, the fields
-		/// property in this class will also return compiler generated backing fields.
+		/// Obtains the fields that are defined in this type. System generated fields will not be
+		/// returned.
 		/// </summary>
-		/// <returns>The fields in the type without backing fields</returns>
+		/// <returns>The fields in the type.</returns>
 		public List<FieldDef> GetFields() {
+			return this.GetFields(false);
+		}
+
+		/// <summary>
+		/// Obtains the fields that are defined in this TypeDef.
+		/// </summary>
+		/// <param name="includeSystemGenerated">Indicates if system generated fields should be returned.</param>
+		/// <returns>The fields in the type.</returns>
+		public List<FieldDef> GetFields(bool includeSystemGenerated) {
 			List<FieldDef> fields = new List<FieldDef>();
 			for (int i = 0; i < this.Fields.Count; i++) {
 				FieldDef currentField = this.Fields[i];
-				if (!currentField.Name.StartsWith("<")) {
+				if (includeSystemGenerated || (!includeSystemGenerated && !currentField.IsSystemGenerated)) {
 					fields.Add(currentField);
 				}
 			}
@@ -378,13 +398,24 @@ namespace TheBoxSoftware.Reflection {
 		/// </summary>
 		/// <returns>A collection of MethodDefs representing the methods for this type</returns>
 		public List<MethodDef> GetMethods() {
+			return this.GetMethods(false);
+		}
+
+		/// <summary>
+		/// Obtains the methods defined in this type.
+		/// </summary>
+		/// <param name="includeSystemGenerated">Indicates if system generated methods should be returned.</param>
+		/// <returns>The methods defined in this type.</returns>
+		public List<MethodDef> GetMethods(bool includeSystemGenerated) {
 			List<MethodDef> methods = new List<MethodDef>();
-			for(int i = 0; i < this.Methods.Count; i++) {
+			for (int i = 0; i < this.Methods.Count; i++) {
 				// IsSpecialName denotes (or appears to) that the method is a compiler
 				// generated get|set for properties. Compiler generated code for linq
 				// expressions are not 'special name' so need to be checked for seperately.
-				if (!this.Methods[i].IsCompilerGenerated) {
-					methods.Add(this.Methods[i]);
+				if (!this.Methods[i].IsSpecialName) {
+					if (includeSystemGenerated || (!includeSystemGenerated && !this.Methods[i].IsCompilerGenerated)) {
+						methods.Add(this.Methods[i]);
+					}
 				}
 			}
 			return methods;
@@ -393,11 +424,20 @@ namespace TheBoxSoftware.Reflection {
 		/// <summary>
 		/// Returns a collection of constructor methods defined for this type.
 		/// </summary>
-		/// <returns>A collection of zero or more constructors defined in this TypeDef.</returns>
+		/// <returns>The collection of constructors.</returns>
 		public List<MethodDef> GetConstructors() {
+			return this.GetConstructors(false);
+		}
+
+		/// <summary>
+		/// Returns a collection of constructors defined for this type.
+		/// </summary>
+		/// <param name="includeSystemGenerated">Indicates if system generated methods should be included.</param>
+		/// <returns>The collection of constructors.</returns>
+		public List<MethodDef> GetConstructors(bool includeSystemGenerated) {
 			List<MethodDef> methods = new List<MethodDef>();
-			for(int i = 0; i < this.Methods.Count; i++) {
-				if (this.Methods[i].IsConstructor) {
+			for (int i = 0; i < this.Methods.Count; i++) {
+				if (this.Methods[i].IsConstructor && (includeSystemGenerated || (!includeSystemGenerated && !this.Methods[i].IsCompilerGenerated))) {
 					methods.Add(this.Methods[i]);
 				}
 			}
@@ -409,9 +449,18 @@ namespace TheBoxSoftware.Reflection {
 		/// </summary>
 		/// <returns>A collection of zero or more operators defined in this TypeDef.</returns>
 		public List<MethodDef> GetOperators() {
+			return this.GetOperators(false);
+		}
+
+		/// <summary>
+		/// Returns a collection of operator methods defined for this type.
+		/// </summary>
+		/// <param name="includeSystemGenerated">Indicates if system generated operators should be included.</param>
+		/// <returns>A collection of zero or more operators defined in this TypeDef.</returns>
+		public List<MethodDef> GetOperators(bool includeSystemGenerated) {
 			List<MethodDef> methods = new List<MethodDef>();
 			for (int i = 0; i < this.Methods.Count; i++) {
-				if (this.Methods[i].IsOperator) {
+				if (this.Methods[i].IsOperator && (includeSystemGenerated || (!includeSystemGenerated && !this.Methods[i].IsCompilerGenerated))) {
 					methods.Add(this.Methods[i]);
 				}
 			}
