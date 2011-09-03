@@ -39,7 +39,6 @@
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <h1>Class Library Documentation</h1>
                     <h2>Namespaces</h2>
@@ -67,7 +66,6 @@
 				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
 			</head>
 			<body>
-				<xsl:call-template name="header" />
 				<div class="content">
 					<h1>
 						<xsl:apply-templates select="name" />
@@ -105,7 +103,6 @@
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <xsl:apply-templates select="name" />
                     <p>The <xsl:value-of select="name/@type" /> type exposes the following members.</p>
@@ -123,7 +120,6 @@
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <h1><xsl:apply-templates select="name" /></h1>
 					<xsl:if test="count(/namespace/parent[@type='class']) > 0">
@@ -214,7 +210,6 @@
                 <link href="styles/default.css" type="text/css" rel="stylesheet"></link>
             </head>
             <body>
-                <xsl:call-template name="header" />
                 <div class="content">
                     <h1><xsl:value-of select="/member/name" /><xsl:text> </xsl:text><xsl:call-template name="type-display-name" /></h1>
                     
@@ -258,14 +253,7 @@
             Produced by the <a href="http://theboxsoftware.com/products/live-documenter/">Live Documenter</a> developed by <a href="http://theboxsoftware.com">The Box Software</a>.
         </div>
     </xsl:template>
-    
-    <xsl:template name="header">
-        <div class="header">
-            <xsl:text> </xsl:text>
-        </div>
-        <br class="clear" />
-    </xsl:template>
-    
+
     <xsl:template match="/member/values">
         <h2>Members</h2>
         <table>

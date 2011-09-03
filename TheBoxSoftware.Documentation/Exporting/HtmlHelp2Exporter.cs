@@ -145,10 +145,17 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 					// publish the help
 					this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
-					string[] files = { "Documentation.HxC", "Documentation.HxF", "Documentation.HxT", "Documentation.HxS" };
+					string[] files = { 
+										 "Documentation.HxC", "Documentation.HxF", "Documentation.HxT", "Documentation.HxS", 
+										 "Documentation_A.HxK", "Documentation_B.HxK", "Documentation_F.HxK", "Documentation_K.HxK",
+										 "Documentation_NamedUrl.HxK", "Documentation_S.HxK","stopwords.txt"
+									 };
 					for (int i = 0; i < files.Length; i++) {
+						string from = Path.Combine(this.OutputDirectory, files[i]);
+
+						if (!File.Exists(from)) continue;
 						File.Move(
-							Path.Combine(this.OutputDirectory, files[i]),
+							from,
 							Path.Combine(this.PublishDirectory, files[i])
 							); ;
 					}
