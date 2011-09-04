@@ -6,7 +6,7 @@
 	UseLayoutRounding="True"
     Title="Export" Height="368" Width="443" mc:Ignorable="d" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
 	<Window.Resources>
-        <DoubleAnimation x:Key="ShrinkWindow" Duration="0:0:0.240" From="365" To="240" />
+        <DoubleAnimation x:Key="ShrinkWindow" Duration="0:0:0.240" From="368" To="240" />
         <DoubleAnimation x:Key="OptionsHide" Duration="0:0:0.240" From="1" To="0" />
         <DoubleAnimation x:Key="OptionsShow" Duration="0:0:0.480" From="0" To="1" />
 	</Window.Resources>
@@ -27,8 +27,8 @@
     	</Border>
 
         <Canvas x:Name="exportProgress" Grid.Row="1" Opacity="0" Margin="0,0.055,0,54.865">
-            <ProgressBar x:Name="progressIndicator" Width="421" Height="27" Canvas.Left="8" Canvas.Top="40"/>
-            <TextBlock x:Name="progressText" Width="421" Height="28" Text="Starting export" Canvas.Left="8" Canvas.Top="8"/>
+            <ProgressBar x:Name="progressIndicator" Width="408" Height="27" Canvas.Left="8" Canvas.Top="40"/>
+            <TextBlock x:Name="progressText" Width="408" Height="28" Text="Starting export" Canvas.Left="8" Canvas.Top="8"/>
         </Canvas>
 
         <Border Grid.Row="1" x:Name="exportSelection" Opacity="1" >
