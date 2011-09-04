@@ -106,6 +106,7 @@
     <Compile Include="Issues\Issue130.cs" />
     <Compile Include="Issues\Issue135.cs" />
     <Compile Include="Issues\Issue148.cs" />
+    <Compile Include="Issues\Issue149.cs" />
     <Compile Include="Issues\Issue2.cs" />
     <Compile Include="Issues\Issue6.cs" />
     <Compile Include="Issues\Issue9.cs" />

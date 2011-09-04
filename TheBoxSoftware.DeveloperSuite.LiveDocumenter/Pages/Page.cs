@@ -176,8 +176,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 						string typeName = typeRef.Name;
 						if (parameters == null) { parameters = new ParameterList(); }
 						if (typeRef != null) {
-							if (typeRef is TypeDef) {
-								typeName = typeRef.GetDisplayName(false);
+							if (typeRef is TypeDef) {								
 								typeKey = new EntryKey(typeRef.GetGloballyUniqueId());
 							}
 							else {
@@ -191,6 +190,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 									typeKey = null;
 								}
 							}
+							typeName = typeRef.GetDisplayName(false);
 						}
 						List<Block> paramDescription = new List<Block>();
 						if (paramComment != null && paramComment.Description != null) {
