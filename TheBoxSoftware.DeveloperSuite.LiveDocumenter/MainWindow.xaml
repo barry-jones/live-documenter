@@ -336,8 +336,8 @@
                 <MenuItem Header="_Remove" Command="local:Commands.Remove" />
                 <MenuItem Header="_Save" Command="ApplicationCommands.Save" />
                 <MenuItem Header="_Save As..." Command="ApplicationCommands.SaveAs" />
-                <Separator />
                 <MenuItem Header="Export..." x:Name="export" Command="local:Commands.Export" />
+                <Separator />                
                 <MenuItem Header="E_xit" Command="ApplicationCommands.Close" />
                 <!--<MenuItem Click="MenuItem_Click" Header="Test Exporting" />
                 <MenuItem Name="TestException" Click="MenuItem_Click" Header="Test Exception Handling" />-->
