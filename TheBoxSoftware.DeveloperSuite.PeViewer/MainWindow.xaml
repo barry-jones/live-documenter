@@ -1,0 +1,55 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="TheBoxSoftware.DeveloperSuite.PEViewer.MainWindow"
+    Title="PE Viewer" Height="677" Width="1049" xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit">
+    <Window.Resources>
+        <HierarchicalDataTemplate x:Key="BasicItemTemplate" ItemsSource="{Binding Path=Children}">
+            <TextBlock Text="{Binding Path=DisplayName}"/>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Background="#FF98B4D0">
+            <MenuItem Header="File">
+                <MenuItem Header="Load Assembly..." Click="LoadAssembly_Click" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About" Click="ShowAbout" />
+            </MenuItem>
+        </Menu>
+        <ToolBar DockPanel.Dock="Top">
+            <ToolBar.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                    <GradientStop Color="#FFFFFBFF" Offset="0.5"/>
+                    <GradientStop Color="#FFF7F7F7" Offset="1"/>
+                </LinearGradientBrush>
+            </ToolBar.Background>
+            <Button Click="LoadAssembly_Click">
+                <TextBlock><Run Text="Open"/></TextBlock>
+            </Button>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock><Run Text="Something"/></TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+        <Border BorderThickness="0,1,0,1">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+            </Border.BorderBrush>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <TreeView x:Name="peViewMap" Grid.Column="0" Background="{x:Null}" BorderBrush="{x:Null}" ItemTemplate="{DynamicResource BasicItemTemplate}" />
+                <GridSplitter Grid.Column="1" ResizeBehavior="PreviousAndNext" Width="5" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1,0,1,0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                
+                <DataGrid Grid.Column="2" ItemsSource="{Binding Path=SelectedItem.Data, ElementName=peViewMap}" BorderBrush="{x:Null}">
+                </DataGrid>
+            </Grid>
+        </Border>
+    </DockPanel>
+</Window>
