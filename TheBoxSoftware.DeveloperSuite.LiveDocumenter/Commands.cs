@@ -23,5 +23,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Command for removing files from the LiveDocumenterFile
 		/// </summary>
 		public static readonly RoutedUICommand Remove = new RoutedUICommand("Remove", "remove", typeof(MainWindow));
+
+		/// <summary>
+		/// Command for viewing/opening the document settings dialogue
+		/// </summary>
+		public static readonly RoutedUICommand DocumentSettings = new RoutedUICommand("DocumentSettings", "documentsettings", typeof(MainWindow));
 	}
 }

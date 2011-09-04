@@ -243,6 +243,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					LiveDocumentorFile.Singleton.LiveDocument.HasFiles && 
 					LiveDocumentorFile.Singleton.LiveDocument.Assemblies.Count > 1;
 			}
+			else if (e.Command == Commands.DocumentSettings) {
+				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles;
+			}
 		}
 
 		/// <summary>
@@ -282,6 +286,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			else if (e.Command == Commands.Remove) {
 				LiveDocumentorFile.Singleton.Remove((long)e.Parameter);
 				this.UpdateView();
+			}
+			else if (e.Command == Commands.DocumentSettings) {
+				Preferences p = new Preferences();
+				p.Owner = this;
+
+				bool? result = p.ShowDialog();
+
+				if (result.HasValue && result.Value) {
+					this.UpdateView();
+				}
 			}
 		}
 		#endregion
@@ -445,19 +459,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				}
 
 				this.Cursor = null;
-			}
-		}
-
-		private void ShowDocumentSettings(object sender, RoutedEventArgs e) {
-			// this has been renamed to document settings as it now applies only to a document
-			// and not the application.
-			Preferences p = new Preferences();
-			p.Owner = this;
-
-			bool? result = p.ShowDialog();
-
-			if (result.HasValue && result.Value) {
-				this.UpdateView();
 			}
 		}
 

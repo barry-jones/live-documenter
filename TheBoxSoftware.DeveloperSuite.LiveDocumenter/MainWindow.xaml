@@ -323,6 +323,7 @@
         <CommandBinding Command="local:Commands.Export" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
         <CommandBinding Command="local:Commands.Add" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
         <CommandBinding Command="local:Commands.Remove" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
+        <CommandBinding Command="local:Commands.DocumentSettings" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
     </Window.CommandBindings>
 	
     <DockPanel>
@@ -342,7 +343,7 @@
                 <MenuItem Name="TestException" Click="MenuItem_Click" Header="Test Exception Handling" />-->
             </MenuItem>
             <MenuItem Header="Tools">
-                <MenuItem Header="Document Settings" Click="ShowDocumentSettings" />
+                <MenuItem Header="Document Settings" Command="local:Commands.DocumentSettings" />
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About" Click="ShowAbout" />
