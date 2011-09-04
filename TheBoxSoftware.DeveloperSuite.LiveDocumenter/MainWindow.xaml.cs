@@ -505,7 +505,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// unecessary searches.
 		/// </remarks>
 		private void PerformSearch(object sender, System.Timers.ElapsedEventArgs e) {
-			this.Dispatcher.Invoke((System.Threading.ThreadStart)delegate() {
+			if (LiveDocumentorFile.Singleton.LiveDocument != null &&
+					LiveDocumentorFile.Singleton.LiveDocument.HasFiles) {
+				this.Dispatcher.Invoke((System.Threading.ThreadStart)delegate() {
 					if (string.IsNullOrEmpty(this.searchBox.Text)) {
 						this.searchBox.PopulateComplete();
 					}
@@ -517,6 +519,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					}
 					this.searchEntryTimer.Stop();
 				});
+			}
 		}
 
 		/// <summary>
