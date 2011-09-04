@@ -114,7 +114,7 @@ namespace TheBoxSoftware.Documentation {
 			// a namespace entry is an entry with a List<TypeDef> member, the required namespace should be
 			// a parent of this type (provided it was a type of member of a type).
 			Entry parent = this;
-			while (parent.Parent != null && !(this.Item is List<TypeDef>)) {
+			while (parent.Parent != null && !(parent.Item is KeyValuePair<string, List<TypeDef>>)) {
 				parent = parent.Parent;
 			}
 

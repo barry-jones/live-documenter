@@ -28,7 +28,6 @@
 			</xsl:call-template>
 		</head>
 		<body>
-			<xsl:call-template name="header" />
 			<div class="content">
 				<h1>Class Library Documentation</h1>
 				<h2>Namespaces</h2>
@@ -57,7 +56,6 @@
 			<xsl:call-template name="mshelpviewer1-head" />
 		</head>
 		<body>
-			<xsl:call-template name="header" />
 			<div class="content">
 				<xsl:apply-templates select="name" />
 				<p>
@@ -71,39 +69,39 @@
 	</xsl:template>
 
 	<xsl:template match="/namespaces">
-		<html>
-			<head>
-				<title>
-					<xsl:value-of select="name"/>
-				</title>
-				<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
-			</head>
-			<body>
-				<xsl:call-template name="header" />
-				<div class="content">
-					<h1>
-						<xsl:apply-templates select="name" />
-					</h1>
-					<table>
-						<thead>
-							<tr>
-								<th>Namespace</th>
-							</tr>
-						</thead>
-						<tbody>
-							<xsl:apply-templates select="entry" />
-						</tbody>
-					</table>
-				</div>
-				<xsl:call-template name="footer" />
-			</body>
-		</html>
+		<xsl:call-template name="start" />
+		<head>
+			<title>
+				<xsl:value-of select="name"/>
+			</title>
+			<link href="styles/default.css" type="text/css" rel="stylesheet"></link>
+			<xsl:call-template name="mshelpviewer1-head" />
+		</head>
+		<body>
+			<div class="content">
+				<h1>
+					<xsl:apply-templates select="name" />
+				</h1>
+				<table>
+					<thead>
+						<tr>
+							<th>Namespace</th>
+						</tr>
+					</thead>
+					<tbody>
+						<xsl:apply-templates select="entry" />
+					</tbody>
+				</table>
+			</div>
+			<xsl:call-template name="footer" />
+		</body>
+		<xsl:call-template name="end" />
 	</xsl:template>
 
 	<xsl:template match="/namespaces/entry">
 		<tr>
 			<td>
-				<a href="{@key}-{@subkey}.htm">
+				<a href="ms-xhelp://?id={@key}-{@subkey}">
 					<xsl:value-of select="@name" />
 				</a>
 			</td>
@@ -120,7 +118,6 @@
 			<xsl:call-template name="mshelpviewer1-head" />
 		</head>
 		<body>
-			<xsl:call-template name="header" />
 			<div class="content">
 				<h1>
 					<xsl:apply-templates select="name" />
@@ -216,7 +213,6 @@
 			<xsl:call-template name="mshelpviewer1-head" />
 		</head>
 		<body>
-			<xsl:call-template name="header" />
 			<div class="content">
 				<h1>
 					<xsl:value-of select="/member/name" />
@@ -305,13 +301,6 @@
 		<div class="footer">
 			Produced by the <a href="http://theboxsoftware.com/products/live-documenter/">Live Documenter</a> developed by <a href="http://theboxsoftware.com">The Box Software</a>.
 		</div>
-	</xsl:template>
-
-	<xsl:template name="header">
-		<div class="header">
-			<xsl:text> </xsl:text>
-		</div>
-		<br class="clear" />
 	</xsl:template>
 
 	<xsl:template match="/member/values">
@@ -697,7 +686,7 @@
 			</td>
 		</tr>
 	</xsl:template>
-	
+
 	<xsl:template match="see">
 		<xsl:if test="@type='namespace'">
 			<a href="ms-xhelp://?Id={@id}-{@name}">
