@@ -268,12 +268,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 			else if (index > tree.Count) {
 				foreach (TypeRef current in this.member.GetExtendingTypes()) {
-					writer.WriteStartElement("type");
-					if (current is TypeDef) {	// only provide ids for internal classes
-						writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
+					Entry found = this.Exporter.Document.Find(CRefPath.Create(current));
+					if(found != null) {
+						writer.WriteStartElement("type");
+						if (current is TypeDef) {	// only provide ids for internal classes not filtered
+							writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
+						}
+						writer.WriteAttributeString("name", current.GetDisplayName(true));
+						writer.WriteEndElement();
 					}
-					writer.WriteAttributeString("name", current.GetDisplayName(true));
-					writer.WriteEndElement();
 				}
 			}
 		}

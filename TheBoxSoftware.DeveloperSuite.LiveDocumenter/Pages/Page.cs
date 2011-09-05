@@ -143,7 +143,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 			List<TypeRef> derivedTypes = type.GetExtendingTypes();
 			derivedTypes.Sort((a, b) => a.GetFullyQualifiedName().CompareTo(b.GetFullyQualifiedName()));
 			for (int i = 0; i < derivedTypes.Count; i++) {
-				lastList.AddListItem(createLink(derivedTypes[i]));
+				Entry forType = LiveDocumentorFile.Singleton.LiveDocument.Find(
+					CRefPath.Create(derivedTypes[i])
+					);
+				if(forType != null) {
+					lastList.AddListItem(createLink(derivedTypes[i]));
+				}
 			}
 
 			this.Blocks.Add(new Header2("Inheritance Hierarchy"));
