@@ -178,22 +178,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		/// <param name="assemblyUniqueId">The unqiue id of the assembly.</param>
 		private void RemoveAssembly(long assemblyUniqueId) {
-			Entry preUpdateSelection = this.currentSelection;
-			bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
+			SelectionStateManager state = new SelectionStateManager();
+			state.Save(this.currentSelection);
 
 			LiveDocumentorFile.Singleton.Remove(assemblyUniqueId);
 			this.UpdateView();
 
-			if (preUpdateSelection != null) {
-				Entry foundEntry = LiveDocumentorFile.Singleton.LiveDocument.Find(
-					preUpdateSelection.Key, preUpdateSelection.SubKey
-					);
-				if (foundEntry != null) {
-					foundEntry.IsSelected = true;
-					foundEntry.IsExpanded = true;
-					foundEntry.IsExpanded = wasExpanded;
-				}
-			}
+			state.Restore();
 		}
 
 		/// <summary>
@@ -313,11 +304,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			else if (e.Command == Commands.DocumentSettings) {
 				Preferences p = new Preferences();
 				p.Owner = this;
+				SelectionStateManager state = new SelectionStateManager();
+				state.Save(this.currentSelection);
 
 				bool? result = p.ShowDialog();
 
 				if (result.HasValue && result.Value) {
 					this.UpdateView();
+					state.Restore();
 				}
 			}
 		}
@@ -445,8 +439,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				LiveDocumentorFile.Singleton.LiveDocument.Assemblies != null) {
 
 				this.Cursor = Cursors.Wait;
-				Entry preUpdateSelection = this.currentSelection;
-				bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
+				SelectionStateManager state = new SelectionStateManager();
+				state.Save(this.currentSelection);
 				bool hasBeenReloaded = false;
 
 				foreach (DocumentedAssembly current in LiveDocumentorFile.Singleton.LiveDocument.Assemblies) {
@@ -461,17 +455,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				// compiled.
 				if (hasBeenReloaded) {
 					this.UpdateView();
-				}
-
-				if (hasBeenReloaded && preUpdateSelection != null) {
-					Entry foundEntry = LiveDocumentorFile.Singleton.LiveDocument.Find(
-						preUpdateSelection.Key, preUpdateSelection.SubKey
-						);
-					if (foundEntry != null) {
-						foundEntry.IsSelected = true;
-						foundEntry.IsExpanded = true;
-						foundEntry.IsExpanded = wasExpanded;
-					}
+					state.Restore();
 				}
 
 				this.Cursor = null;
@@ -599,6 +583,74 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			get { 
 
 				return LiveDocumentorFile.Singleton.LiveDocument.Assemblies; 
+			}
+		}
+		#endregion
+
+		#region Internals
+		/// <summary>
+		/// Manages the current user selection state in the UI.
+		/// </summary>
+		/// <remarks>
+		/// This allows the current entry to be recorded and restored around
+		/// updates to the document map.
+		/// <para>
+		/// This does nor currently work with namespace and namespace container
+		/// entries.
+		/// </para>
+		/// </remarks>
+		private class SelectionStateManager {
+			private Entry previousEntry;
+			private bool isExpanded;
+
+			/// <summary>
+			/// Saves the state.
+			/// </summary>
+			/// <param name="current">The users curretnly selected entry.</param>
+			public void Save(Entry current) {
+				if(current != null) {
+					this.previousEntry = current;
+					this.isExpanded = current.IsExpanded;
+				}
+			}
+
+			/// <summary>
+			/// Restores the users state.
+			/// </summary>
+			public void Restore() {
+				Entry found = null;
+				Entry parent = this.previousEntry.Parent;
+				
+				if(this.previousEntry.Item is Reflection.ReflectedMember) {
+					Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
+						this.previousEntry.Item as Reflection.ReflectedMember
+						);
+					found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+				}
+				else if(parent != null && parent.Item is Reflection.ReflectedMember) {
+					Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
+						parent.Item as Reflection.ReflectedMember
+						);
+					found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+
+					// test method/field member collection pages in a type
+					for(int i = 0; i < found.Children.Count; i++) {
+						if(found.Children[i].Name == this.previousEntry.Name) {
+							found = found.Children[i];
+							break;
+						}
+					}
+				}
+				else {
+					// now its a namespace or namespace collection page and we will ignore
+					// it for now
+				}
+
+				if(found != null) {
+					found.IsSelected = true;
+					found.IsExpanded = true;
+					found.IsExpanded = this.isExpanded;
+				}
 			}
 		}
 		#endregion
