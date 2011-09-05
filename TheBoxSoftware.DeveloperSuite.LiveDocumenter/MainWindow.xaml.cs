@@ -56,7 +56,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 
-		#region Menu Actions
+		#region Commands
 		private void OpenDocumentationFile() {
 			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
 			string[] filters = new string[] {
@@ -173,9 +173,33 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		/// <summary>
+		/// Remove the assembly with the <paramref name="assemblyUniqueId"/> from
+		/// the document and update.
+		/// </summary>
+		/// <param name="assemblyUniqueId">The unqiue id of the assembly.</param>
+		private void RemoveAssembly(long assemblyUniqueId) {
+			Entry preUpdateSelection = this.currentSelection;
+			bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
+
+			LiveDocumentorFile.Singleton.Remove(assemblyUniqueId);
+			this.UpdateView();
+
+			if (preUpdateSelection != null) {
+				Entry foundEntry = LiveDocumentorFile.Singleton.LiveDocument.Find(
+					preUpdateSelection.Key, preUpdateSelection.SubKey
+					);
+				if (foundEntry != null) {
+					foundEntry.IsSelected = true;
+					foundEntry.IsExpanded = true;
+					foundEntry.IsExpanded = wasExpanded;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Loads up the recent file
 		/// </summary>
-		/// <param name="file"></param>
+		/// <param name="file">The recent file information to load.</param>
 		internal void LoadRecentFile(Model.RecentFile file) {
 			if (System.IO.File.Exists(file.Filename)) {
 				this.Cursor = Cursors.Wait;
@@ -284,8 +308,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.exportClick(sender, e);
 			}
 			else if (e.Command == Commands.Remove) {
-				LiveDocumentorFile.Singleton.Remove((long)e.Parameter);
-				this.UpdateView();
+				this.RemoveAssembly((long)e.Parameter);
 			}
 			else if (e.Command == Commands.DocumentSettings) {
 				Preferences p = new Preferences();
@@ -423,7 +446,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 				this.Cursor = Cursors.Wait;
 				Entry preUpdateSelection = this.currentSelection;
-				Entry preUpdateSelectionParent = this.currentSelectionParent;
 				bool wasExpanded = preUpdateSelection == null ? false : preUpdateSelection.IsExpanded;
 				bool hasBeenReloaded = false;
 
@@ -441,20 +463,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					this.UpdateView();
 				}
 
-				// Tries to reselect a node in the tree that was selected before the window was
-				// activated. That is before we tried to reload the project.
-				if (hasBeenReloaded && (preUpdateSelectionParent != null && preUpdateSelection != null)) {
-					// We need something in the document map to search on
-					if (LiveDocumentorFile.Singleton.LiveDocument.Map.Count >= 1) {
-						Entry foundParent = LiveDocumentorFile.Singleton.LiveDocument.Map.First<Entry>(
-							entry => entry.Key == preUpdateSelectionParent.Key
-							);
-						Entry foundEntry = foundParent.FindByKey(preUpdateSelection.Key, preUpdateSelection.SubKey);
-						if (foundEntry != null) {
-							foundEntry.IsSelected = true;
-							foundEntry.IsExpanded = true;
-							foundEntry.IsExpanded = wasExpanded;
-						}
+				if (hasBeenReloaded && preUpdateSelection != null) {
+					Entry foundEntry = LiveDocumentorFile.Singleton.LiveDocument.Find(
+						preUpdateSelection.Key, preUpdateSelection.SubKey
+						);
+					if (foundEntry != null) {
+						foundEntry.IsSelected = true;
+						foundEntry.IsExpanded = true;
+						foundEntry.IsExpanded = wasExpanded;
 					}
 				}
 
@@ -491,8 +507,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.searchEntryTimer.Start();
 			}
 		}
-
-
+		
 		/// <summary>
 		/// Performs a search based on the users entered search text, or clears the
 		/// search results if the search box has been emptied.
