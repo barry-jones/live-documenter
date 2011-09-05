@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<member name="Document">
+	<remarks>
+		<para>The Document class accepts as a <see cref="Filename" /> a ldproj,
+		sln, csproj, vbproj, dll etc as the basis for a documentation set.</para>
+	</remarks>
+</member>
