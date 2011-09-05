@@ -151,7 +151,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="filename">The filename to save this to.</param>
 		public void SavaAs(string filename) {
 			// convert the LDF to a LDP
-			LiveDocumenterProject project = new LiveDocumenterProject();
+			Project project = new Project();
 
 			foreach(DocumentedAssembly assembly in this.files) {
 				project.Files.Add(assembly.FileName);
@@ -159,7 +159,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			foreach (Visibility filter in this.filters) {
 				project.VisibilityFilters.Add(filter);
 			}
-			project.Configuration = this.Configuration;
+			project.Configuration = this.Configuration.ToString();
 			project.Language = this.Language;
 
 			project.Serialize(filename);
@@ -180,7 +180,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				throw new ArgumentException(string.Format("File '{0}' was expected but did not exist.", filename));
 			
 			// deserialize it
-			LiveDocumenterProject project = LiveDocumenterProject.Deserialize(filename);
+			Project project = Project.Deserialize(filename);
 
 			// convert it and set the LDF as current
 			LiveDocumentorFile ldFile = new LiveDocumentorFile();
@@ -190,7 +190,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			foreach(Visibility filter in project.VisibilityFilters){
 				ldFile.filters.Add(filter);
 			}
-			ldFile.configuration = project.Configuration;
+			if(!string.IsNullOrEmpty(project.Configuration)) {
+				ldFile.configuration = (Model.BuildConfigurations)Enum.Parse(
+					typeof(Model.BuildConfigurations), project.Configuration
+					);
+			}
 			ldFile.language = project.Language;
 			ldFile.Filename = filename;
 
@@ -271,45 +275,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				if (this.configuration != value) {
 					this.HasChanged = true;
 					this.configuration = value;
-				}
-			}
-		}
-		#endregion
-
-		#region Inernals
-		[Serializable]
-		[XmlRoot("project")]
-		public sealed class LiveDocumenterProject {
-			public LiveDocumenterProject() {
-				this.Files = new List<string>();
-			}
-
-			[XmlArray("files")]
-			[XmlArrayItem("file")]
-			public List<string> Files { get; set; }
-
-			[XmlArray("visibilityfilters")]
-			[XmlArrayItem("visibility")]
-			public List<Visibility> VisibilityFilters { get; set; }
-
-			[XmlElement("configuration")]
-			public Model.BuildConfigurations Configuration { get; set; }
-
-			[XmlElement("language")]
-			public Reflection.Syntax.Languages Language { get; set; }
-
-			public void Serialize(string toFile) {
-				using(FileStream fs = new FileStream(toFile, FileMode.OpenOrCreate)) {
-					fs.SetLength(0); // clean up all contents
-					XmlSerializer serializer = new XmlSerializer(typeof(LiveDocumenterProject));
-					serializer.Serialize(fs, this);
-				}
-			}
-
-			public static LiveDocumenterProject Deserialize(string fromFile) {
-				using(FileStream fs = new FileStream(fromFile, FileMode.Open)) {
-					XmlSerializer serializer = new XmlSerializer(typeof(LiveDocumenterProject));
-					return (LiveDocumenterProject)serializer.Deserialize(fs);
 				}
 			}
 		}
