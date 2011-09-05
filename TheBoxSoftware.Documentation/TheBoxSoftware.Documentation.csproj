@@ -160,6 +160,7 @@
     <Compile Include="NamespaceFirstDocumentMapper.cs" />
     <Compile Include="ObservableDocumentMap.cs" />
     <Compile Include="PreEntryAddedEventArgs.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
