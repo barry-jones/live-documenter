@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Xml;
 using Saxon.Api;
-using System.IO;
+using TheBoxSoftware.Documentation.Exporting.Website;
 
 namespace TheBoxSoftware.Documentation.Exporting {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Comments;
-	using TheBoxSoftware.Documentation.Exporting.Website;
-
 	public class WebsiteExporter : Exporter {
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WebsiteExporter"/> class.

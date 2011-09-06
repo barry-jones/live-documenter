@@ -132,8 +132,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			Ionic.Zip.ZipFile outputFile = new Ionic.Zip.ZipFile();
 			outputFile.AddDirectory(this.OutputDirectory);
 			outputFile.Save(projectFile);
-
-			// drop the installer files
 		}
 	}
 }

@@ -4,10 +4,8 @@ using System.Text;
 using System.Windows;
 using System.Reflection;
 
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
-{
-	internal static class DocumentationResources
-	{
+namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
+	internal static class DocumentationResources {
 		#region MergedDictionaries
 
 		public static readonly DependencyProperty MergedDictionariesProperty =

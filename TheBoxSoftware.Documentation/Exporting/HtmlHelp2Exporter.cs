@@ -1,22 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using Saxon.Api;
-using System.IO;
-using System.Threading;
-using System.Runtime;
 using System.Diagnostics;
+using System.IO;
+using System.Xml;
 using Microsoft.Win32;
+using Saxon.Api;
+using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
 
 namespace TheBoxSoftware.Documentation.Exporting {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Comments;
-	using TheBoxSoftware.Documentation.Exporting.Rendering;
-	using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
-
 	/// <summary>
 	/// Produces HTML Help 2 compiled help documentation.
 	/// </summary>
