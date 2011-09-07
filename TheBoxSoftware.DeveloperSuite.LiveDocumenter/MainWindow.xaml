@@ -367,20 +367,20 @@
             </Button>
             <Button Command="ApplicationCommands.Save" Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
-                    <TextBlock Text="Save Documentation Set (Ctrl + S)" />
+                    <TextBlock Text="Save documentation set (Ctrl + S)" />
                 </Button.ToolTip>
                 <Image Source="resources\save_24x24.png" Height="24" Width="24" />
             </Button>
             <Separator />
             <Button Command="ApplicationCommands.Print" Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
-                    <TextBlock Text="Print (Ctrl + P)" />
+                    <TextBlock Text="Print current page (Ctrl + P)" />
                 </Button.ToolTip>
                 <Image Source="resources\print_24x24.png" Height="24" Width="24"/>
             </Button>
             <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Export">
                 <Button.ToolTip>
-                    <TextBlock Text="Export (Ctrl + E)" />
+                    <TextBlock Text="Export documentation set (Ctrl + E)" />
                 </Button.ToolTip>
                 <Image Source="resources\exp_24x24.png" Height="24" Width="24" />
             </Button>
@@ -390,7 +390,7 @@
                     IsEnabled="{Binding CanMoveBackward, Mode=TwoWay}" 
                     Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
-                    <TextBlock Text="Navigate Backward (Alt + Left)" />
+                    <TextBlock Text="Navigate backward (Alt + Left)" />
                 </Button.ToolTip>
                 <Image Source="resources\back_24x24.png" Height="24" Width="24"/>
             </Button>
@@ -399,7 +399,7 @@
                     IsEnabled="{Binding CanMoveForward, Mode=TwoWay}" 
                     Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
-                    <TextBlock Text="Navigate Forward (Alt + Right)" />
+                    <TextBlock Text="Navigate forward (Alt + Right)" />
                 </Button.ToolTip>
                 <Image Source="resources\forwd_24x24.png" Height="24" Width="24"/>
             </Button>
@@ -478,15 +478,15 @@
 			<DockPanel x:Name="startpage" Visibility="Hidden">
 				<Grid>
 			    	<Grid.RowDefinitions>
-			    		<RowDefinition Height="130" />
+			    		<RowDefinition Height="67.9" />
 			    		<RowDefinition Height="*"/>
 			    	</Grid.RowDefinitions>
-					
-					<Border Height="280" Margin="0" Grid.Row="0" Background="#FF212120">
-	                    		<Image Source="Resources/about.png" Width="900" HorizontalAlignment="Left" />						
-	                    	</Border>
-					
-	                    	<Grid Grid.Row="1">
+
+                    <Border Grid.Row="0" BorderBrush="#FFB7ABAB" BorderThickness="0,0,0,1" Background="#FF212120" Margin="0,0,0,-0.04" Height="67.9">
+                        <TextBlock Margin="16,28,0,-1" Text="Live Documenter" TextWrapping="Wrap" FontFamily="Georgia" FontSize="24" Foreground="#FFA67D3D"/>
+                    </Border>
+
+                    <Grid Grid.Row="1">
 	                    		<Grid.ColumnDefinitions>
 	                    			<ColumnDefinition />
 	                    			<ColumnDefinition />
