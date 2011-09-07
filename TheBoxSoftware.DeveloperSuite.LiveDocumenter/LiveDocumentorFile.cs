@@ -150,6 +150,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		/// <param name="filename">The filename to save this to.</param>
 		public void SavaAs(string filename) {
+			// remove the last recent file which will be this
+			if (Model.UserApplicationStore.Store.RecentFiles.Count > 0) {
+				Model.UserApplicationStore.Store.RecentFiles.RemoveAt(0);
+			}
+
 			// convert the LDF to a LDP
 			Project project = new Project();
 
@@ -165,6 +170,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			project.Serialize(filename);
 			this.HasChanged = false;
 			this.Filename = filename;
+
+			Model.UserApplicationStore.Store.RecentFiles.Insert(0,
+				new Model.RecentFile(filename, System.IO.Path.GetFileName(filename))
+				);
 		}
 		
 		/// <summary>
