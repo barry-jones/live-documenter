@@ -359,7 +359,7 @@
             </Button>
             <Button Command="ApplicationCommands.Save" Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
-                    <TextBlock Text="Save (Ctrl + S)" />
+                    <TextBlock Text="Save Documentation Set (Ctrl + S)" />
                 </Button.ToolTip>
                 <Image Source="resources\save_24x24.png" Height="24" Width="24" />
             </Button>

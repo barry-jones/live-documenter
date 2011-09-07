@@ -14,6 +14,7 @@ namespace DocumentationTest.CommentTests {
 		/// <remarks>
 		/// <example>
 		/// This example is a child of the remarks element.
+		/// List<PerformanceReviewSummary> reviewDetails = this.facade.GetReviews();
 		/// </example>
 		/// <para>
 		/// This para element has an example.
@@ -30,6 +31,7 @@ namespace DocumentationTest.CommentTests {
 		/// </summary>
 		/// <example>
 		/// This is an example, the first example.
+		/// List&lt;PerformanceReviewSummary> reviewDetails = this.facade.GetReviews();
 		/// </example>
 		void AsATopLevelElement() { }
 
@@ -38,6 +40,7 @@ namespace DocumentationTest.CommentTests {
 		/// </summary>
 		/// <example>
 		/// Example one!
+		/// List&lt;PerformanceReviewSummary&gt; reviewDetails = this.facade.GetReviews();
 		/// </example>
 		/// <example>
 		/// Example two!
