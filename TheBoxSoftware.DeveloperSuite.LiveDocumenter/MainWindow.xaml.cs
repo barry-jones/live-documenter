@@ -63,6 +63,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.searchEntryTimer.AutoReset = true;
 			this.searchEntryTimer.Elapsed += new System.Timers.ElapsedEventHandler(PerformSearch);
 
+			this.InitialiseStartScreen();
+
 			string[] args = ((App)App.Current).Arguments;
 			if (args != null && args.Length > 0) {
 				// validate this is a file we are looking for
@@ -598,6 +600,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 
+		/// <summary>
+		/// Configures the start up screen.
+		/// </summary>
+		private void InitialiseStartScreen() {
+			this.start_recentFileList.ItemsSource = Model.UserApplicationStore.Store.RecentFiles;
+
+			if (Model.UserApplicationStore.Store.RecentFiles.Count == 0) {
+				this.start_recentFiles.Visibility = Visibility.Hidden;
+			}
+		}
+
 		#region Properties
 		/// <summary>
 		/// Informs the window if it is allowed to refresh the file list.
@@ -682,5 +695,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 		#endregion
+
+		private void Hyperlink_RequestNavigate(object sender, EventArgs e) {
+			Button b = sender as Button;
+			this.LoadRecentFile((Model.RecentFile)b.Tag);
+
+			this.startpage.Visibility = Visibility.Hidden;
+			this.documentpage.Visibility = Visibility.Visible;
+		}
 	}
 }

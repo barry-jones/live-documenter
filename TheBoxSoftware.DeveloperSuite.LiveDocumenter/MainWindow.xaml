@@ -309,6 +309,14 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+        
+		<DataTemplate x:Key="RecentFileItemTemplate">
+			<Grid>
+                <Button Tag="{Binding}" Click="Hyperlink_RequestNavigate" Background="{x:Null}">
+                    <TextBlock Text="{Binding DisplayName}" />
+                </Button>
+			</Grid>
+		</DataTemplate>
     </Window.Resources>
 	
     <Window.CommandBindings>
@@ -433,37 +441,75 @@
                 </ContextMenu>
             </StatusBar.ContextMenu>
 		</StatusBar>
-		
-        <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="0,1,0,1">
-	        <Grid>
-	            <Grid.ColumnDefinitions>
-	                <ColumnDefinition Width="*" />
-	                <ColumnDefinition Width="3" />
-	                <ColumnDefinition Width="3*" />
-	            </Grid.ColumnDefinitions>
-	            <DockPanel Grid.Column="0">
-                    <toolkit:AutoCompleteBox ItemTemplate="{DynamicResource searchResultDataTemplate}"
-                       x:Name="searchBox" DockPanel.Dock="Top"
-                       Populating="searchBox_Populating" FilterMode="None"                                             
-                       MaxDropDownHeight="300" MinimumPrefixLength="4" BorderThickness="1"
-                       SelectionChanged="searchBox_SelectionChanged" IsTextCompletionEnabled="False"
-                       Style="{DynamicResource SearchBoxStyle}" BorderBrush="{DynamicResource ToolBarGripper}"
-                       />
-                    <TreeView x:Name="documentMap" 
-						SelectedItemChanged="documentMap_SelectedItemChanged" 
-						BorderBrush="{x:Null}"
-                        ItemContainerStyle="{DynamicResource TreeViewItemStyle}" 
-                        ItemTemplateSelector="{DynamicResource treeViewDataTemplateSelector}"
-                              />
-                </DockPanel>            
-	            <GridSplitter Grid.Column="1" Width="3" 
-                              ResizeBehavior="PreviousAndNext" 
-                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" 
-                              BorderThickness="1,0,1,0" />
-                <DockPanel Grid.Column="3">
-                    <FlowDocumentReader x:Name="pageViewer" IsFindEnabled="False" />
-                </DockPanel>
-	        </Grid>
-		</Border>
+		<Grid>
+			<DockPanel x:Name="documentpage" Visibility="Visible">
+				<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="0,1,0,1">
+		        <Grid>
+		            <Grid.ColumnDefinitions>
+		                <ColumnDefinition Width="*" />
+		                <ColumnDefinition Width="3" />
+		                <ColumnDefinition Width="3*" />
+		            </Grid.ColumnDefinitions>
+		            <DockPanel Grid.Column="0">
+	                    <toolkit:AutoCompleteBox ItemTemplate="{DynamicResource searchResultDataTemplate}"
+	                       x:Name="searchBox" DockPanel.Dock="Top"
+	                       Populating="searchBox_Populating" FilterMode="None"                                             
+	                       MaxDropDownHeight="300" MinimumPrefixLength="4" BorderThickness="1"
+	                       SelectionChanged="searchBox_SelectionChanged" IsTextCompletionEnabled="False"
+	                       Style="{DynamicResource SearchBoxStyle}" BorderBrush="{DynamicResource ToolBarGripper}"
+	                       />
+	                    <TreeView x:Name="documentMap" 
+							SelectedItemChanged="documentMap_SelectedItemChanged" 
+							BorderBrush="{x:Null}"
+	                        ItemContainerStyle="{DynamicResource TreeViewItemStyle}" 
+	                        ItemTemplateSelector="{DynamicResource treeViewDataTemplateSelector}"
+	                              />
+	                </DockPanel>            
+		            <GridSplitter Grid.Column="1" Width="3" 
+	                              ResizeBehavior="PreviousAndNext" 
+	                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" 
+	                              BorderThickness="1,0,1,0" />
+	                <DockPanel Grid.Column="3">
+	                    <FlowDocumentReader x:Name="pageViewer" IsFindEnabled="False" />
+	                </DockPanel>
+		        </Grid>
+			</Border>
+			</DockPanel>
+			<DockPanel x:Name="startpage" Visibility="Hidden">
+				<Grid>
+			    	<Grid.RowDefinitions>
+			    		<RowDefinition Height="130" />
+			    		<RowDefinition Height="*"/>
+			    	</Grid.RowDefinitions>
+					
+					<Border Height="280" Margin="0" Grid.Row="0" Background="#FF212120">
+	                    		<Image Source="Resources/about.png" Width="900" HorizontalAlignment="Left" />						
+	                    	</Border>
+					
+	                    	<Grid Grid.Row="1">
+	                    		<Grid.ColumnDefinitions>
+	                    			<ColumnDefinition />
+	                    			<ColumnDefinition />
+	                    		</Grid.ColumnDefinitions>
+	                    		<Grid.RowDefinitions>
+	                    			<RowDefinition Height="0.184*"/>
+	                    			<RowDefinition Height="0.816*"/>
+	                    		</Grid.RowDefinitions>
+						
+	                    		<StackPanel Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
+	                    			<TextBlock Style="{DynamicResource header}"><Run Text="Welcome to the Live Documenter"/></TextBlock>
+	                    			<TextBlock><Run Text="To start you can open a solution, project or library. Or select a recent file from the recent file list."/></TextBlock>
+	                    		</StackPanel>
+						
+	                    		<StackPanel Margin="10" Grid.Row="1" Grid.Column="0" x:Name="start_recentFiles">
+	                    			<TextBlock Style="{DynamicResource header}"><Run Text="Recent files"/></TextBlock>
+	                    			<TextBlock/>
+	                    			<ListView Height="Auto" x:Name="start_recentFileList" ItemTemplate="{DynamicResource RecentFileItemTemplate}" BorderBrush="{x:Null}" Background="{x:Null}" />
+	                    		</StackPanel>
+						
+	                    	</Grid>						
+				</Grid>
+			</DockPanel>
+		</Grid>
     </DockPanel>
 </Window>
