@@ -21,6 +21,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private Settings settingsWindow = new Settings();
 		private Exporter threadedExporter;
 		private bool exportComplete = false;
+		private DateTime exportStartTime;
+		System.ComponentModel.BackgroundWorker worker;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Export"/> class.
@@ -79,7 +81,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.exportDescription.Text = config.Description;
 
 			ExportSettings settings = new ExportSettings();
-			settings.PublishDirectory = this.publishTo.Text.EndsWith("\\") ? this.publishTo.Text : this.publishTo.Text + "\\";
+			settings.PublishDirectory = this.publishTo.Text.EndsWith("\\") || string.IsNullOrEmpty(this.publishTo.Text) 
+				? this.publishTo.Text 
+				: this.publishTo.Text + "\\";
 			settings.Settings = new Documentation.DocumentSettings();
 			foreach (PrivacyFilter filter in this.PrivacyFilters) {
 				if (filter.IsSelected) {
@@ -98,34 +102,35 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			exporter.ExportException += new ExportExceptionHandler(exporter_ExportException);
 
 			if (exporter != null) {
-				this.resetEvent = new ManualResetEvent(false);
-				Exception e = null;	// holder for exceptions that occur in the thread
+				worker = new System.ComponentModel.BackgroundWorker();
+				worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ThreadedExport);
+				worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
 
-				ThreadPool.QueueUserWorkItem(state => {
-					DateTime start = DateTime.Now;
-					this.ThreadedExport(exporter);
-
-					// set cursor back to normal
-					DateTime end = DateTime.Now;
-					TimeSpan duration = end.Subtract(start);
-					DispatcherOperation op = this.Dispatcher.BeginInvoke(
-						DispatcherPriority.Normal,
-						new Action<ExportStepEventArgs>(
-							p => {
-								this.progressIndicator.Value = this.progressIndicator.Maximum;
-								this.progressText.Text = string.Format("Complete in {0}:{1}s", (int)duration.TotalMinutes, duration.Seconds);
-								this.finish.IsEnabled = true;
-								this.Cursor = null;
-							}),
-						e);
-
-					this.resetEvent.Set();
-				});
+				this.exportStartTime = DateTime.Now;
+				worker.RunWorkerAsync(exporter);
 			}
 		}
 
-		private void ThreadedExport(object state) {
-			this.threadedExporter = state as Documentation.Exporting.Exporter;
+		void worker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+			TimeSpan duration = DateTime.Now.Subtract(this.exportStartTime);
+			if (e.Error == null) {
+				this.progressIndicator.Value = this.progressIndicator.Maximum;
+				this.progressText.Text = string.Format("Complete in {0}:{1}s", (int)duration.TotalMinutes, duration.Seconds);
+			}
+			else {
+				this.progressText.Text = "Error exporting documentation";
+				this.progressIndicator.Value = this.progressIndicator.Maximum;
+
+				Diagnostics.ErrorReporting errorReport = new Diagnostics.ErrorReporting();
+				errorReport.SetException(e.Error);
+				errorReport.ShowDialog();
+			}
+			this.finish.IsEnabled = true;
+			this.Cursor = null;
+		}
+
+		private void ThreadedExport(object state, System.ComponentModel.DoWorkEventArgs e) {
+			this.threadedExporter = e.Argument as Documentation.Exporting.Exporter;
 			if (this.threadedExporter!= null) {
 				this.threadedExporter.Export();
 				GC.Collect();
@@ -251,7 +256,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
 		void exporter_ExportException(object sender, ExportExceptionEventArgs e) {
-			// this.resetEvent.WaitOne();
+			this.exportComplete = true;
 			throw e.Exception;
 		}
 
