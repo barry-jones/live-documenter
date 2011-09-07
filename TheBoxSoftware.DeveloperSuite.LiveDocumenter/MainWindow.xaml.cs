@@ -35,6 +35,26 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		public MainWindow() {
 			InitializeComponent();
+
+			Model.UserApplicationStore.Load();
+
+			// restore the user preferences
+			Size lastSize = Model.UserApplicationStore.Store.LastWindowSize;
+			Point lastPosition = Model.UserApplicationStore.Store.LastWindowPosition;
+			FlowDocumentReaderViewingMode mode = Model.UserApplicationStore.Store.ViewingMode;
+			if (lastSize != null && !lastSize.IsEmpty && lastSize != new Size(0, 0)) {
+				this.Height = lastSize.Height;
+				this.Width = lastSize.Width;
+			}
+			if (lastPosition != null && !(lastPosition.X == 0 && lastPosition.Y == 0)) {
+				this.Top = lastPosition.X;
+				this.Left = lastPosition.Y;
+			}
+			this.pageViewer.ViewingMode = mode;
+			if (Model.UserApplicationStore.Store.IsMaximized) {
+				this.WindowState = System.Windows.WindowState.Maximized;
+			}
+
 			this.DataContext = this;
 			this.forward.DataContext = this.back.DataContext = this.userViewingHistory;
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
@@ -388,10 +408,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="e">Event arguments</param>
 		private void mainWindow_Loaded(object sender, RoutedEventArgs e) {
 			this.Cursor = Cursors.AppStarting;
-			Model.UserApplicationStore.Load();
+
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
             this.pageViewer.Document = new Pages.WelcomePage();
 			this.Cursor = null;
+			this.Opacity = 1;
+			this.Visibility = System.Windows.Visibility.Visible;
 		}
 
 		/// <summary>
@@ -401,6 +423,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="sender">The calling object</param>
 		/// <param name="e">The event arguments</param>
 		private void mainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+			// store the users current selections
+			Model.UserApplicationStore.Store.LastWindowSize = new Size(this.Width, this.Height);
+			Model.UserApplicationStore.Store.LastWindowPosition = new Point(this.Top, this.Left);
+			Model.UserApplicationStore.Store.ViewingMode = this.pageViewer.ViewingMode;
+			Model.UserApplicationStore.Store.IsMaximized = this.WindowState == System.Windows.WindowState.Maximized;
+
 			Model.UserApplicationStore.Save();
 			App.Current.Shutdown();
 		}

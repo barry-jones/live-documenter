@@ -104,7 +104,30 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 			}
 		}
 
+		/// <summary>
+		/// The users list of files they have recently accessed.
+		/// </summary>
 		public RecentFileList RecentFiles { get; set; }
+
+		/// <summary>
+		/// The last position the window was in when the user exited the application
+		/// </summary>
+		public System.Windows.Point LastWindowPosition { get; set; }
+
+		/// <summary>
+		/// The last size the user had the window when the application was closed.
+		/// </summary>
+		public System.Windows.Size LastWindowSize { get; set; }
+
+		/// <summary>
+		/// The users selected viewing mode
+		/// </summary>
+		public System.Windows.Controls.FlowDocumentReaderViewingMode ViewingMode { get; set; }
+
+		/// <summary>
+		/// Indicates if the user closed the application while the window was maximized
+		/// </summary>
+		public bool IsMaximized { get; set; }
 		#endregion
 	}
 }
