@@ -10,6 +10,10 @@
         <DoubleAnimation x:Key="OptionsHide" Duration="0:0:0.240" From="1" To="0" />
         <DoubleAnimation x:Key="OptionsShow" Duration="0:0:0.480" From="0" To="1" />
 	</Window.Resources>
+    
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="ApplicationCommands.Close" />
+    </Window.InputBindings>
 
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed" />
