@@ -47,6 +47,12 @@ namespace TheBoxSoftware.Documentation {
 		public Reflection.Syntax.Languages Language { get; set; }
 
 		/// <summary>
+		/// The output location used for this documentation set
+		/// </summary>
+		[XmlElement("outputlocation")]
+		public string OutputLocation { get; set; }
+
+		/// <summary>
 		/// Serializes the contents of this project to the <paramref name="toFile"/>.
 		/// </summary>
 		/// <param name="toFile">The file to replace or create.</param>

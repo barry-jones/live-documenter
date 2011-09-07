@@ -36,6 +36,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 														  };
 			this.PrivacyFilters.SetFilters(LiveDocumentorFile.Singleton.Filters); // set defaults
 			this.visibility.ItemsSource = this.PrivacyFilters;
+			this.publishTo.Text = LiveDocumentorFile.Singleton.OutputLocation;
 
 			this.DataContext = this;
 			this.LoadConfigFiles();
@@ -65,6 +66,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.export.Visibility = Visibility.Collapsed;
 			this.finish.Visibility = Visibility.Visible;
 			System.Windows.Forms.Application.DoEvents();
+
+			LiveDocumentorFile.Singleton.OutputLocation = this.publishTo.Text; // store the users output selection
 			
 			this.exportSelection.BeginAnimation(OpacityProperty, (AnimationTimeline)this.FindResource("OptionsHide"));
 			this.BeginAnimation(HeightProperty, (AnimationTimeline)this.FindResource("ShrinkWindow"));
@@ -76,7 +79,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.exportDescription.Text = config.Description;
 
 			ExportSettings settings = new ExportSettings();
-			settings.PublishDirectory = this.publishTo.Text;
+			settings.PublishDirectory = this.publishTo.Text.EndsWith("\\") ? this.publishTo.Text : this.publishTo.Text + "\\";
 			settings.Settings = new Documentation.DocumentSettings();
 			foreach (PrivacyFilter filter in this.PrivacyFilters) {
 				if (filter.IsSelected) {

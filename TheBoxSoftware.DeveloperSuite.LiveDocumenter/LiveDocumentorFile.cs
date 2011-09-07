@@ -22,6 +22,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private List<Reflection.Visibility> filters;
 		private Reflection.Syntax.Languages language;
 		private Model.BuildConfigurations configuration;
+		private string outputLocation;
 
 		#region Constructors
 		/// <summary>
@@ -166,6 +167,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 			project.Configuration = this.Configuration.ToString();
 			project.Language = this.Language;
+			project.OutputLocation = this.OutputLocation;
 
 			project.Serialize(filename);
 			this.HasChanged = false;
@@ -204,8 +206,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					typeof(Model.BuildConfigurations), project.Configuration
 					);
 			}
+			ldFile.outputLocation = project.OutputLocation;
 			ldFile.language = project.Language;
-			ldFile.Filename = filename;
+			ldFile.Filename = filename;			
 
 			LiveDocumentorFile.SetLiveDocumentorFile(ldFile);
 			return ldFile;
@@ -285,6 +288,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					this.HasChanged = true;
 					this.configuration = value;
 				}
+			}
+		}
+
+		/// <summary>
+		/// The users last output configuration for this project.
+		/// </summary>
+		public string OutputLocation {
+			get { return this.outputLocation; }
+			set {
+				this.HasChanged = this.HasChanged || this.outputLocation != value;
+				this.outputLocation = value;
 			}
 		}
 		#endregion
