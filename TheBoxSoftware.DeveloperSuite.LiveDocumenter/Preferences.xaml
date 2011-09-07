@@ -6,7 +6,7 @@
 	xmlns:controls="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Controls"
     x:Name="preferences"
     UseLayoutRounding="True"
-    Title="Preferences" Height="334" Width="416" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" mc:Ignorable="d">
+    Title="Document Settings" Height="334" Width="416" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" mc:Ignorable="d">
 	
     <Window.Resources>
         <Style x:Key="HeaderStyle">
