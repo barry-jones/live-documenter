@@ -23,10 +23,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	/// all references when we create links to these elements.</para>
 	/// </remarks>
 	internal static class Parser {
-		internal static string CleanWhitespace(string toClean) {
-			return Regex.Replace(toClean, @"\s+", " ").Trim();
-		}
-
+		/// <summary>
+		/// Parses the SyntaxToken list to a Code WPF Document element.
+		/// </summary>
+		/// <param name="tokens">The syntax tokens.</param>
+		/// <returns>The WPF Document element</returns>
 		public static Code ParseSyntax(List<SyntaxToken> tokens) {
 			Code container = new Code();
 			foreach (SyntaxToken current in tokens) {
@@ -41,33 +42,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			}
 			return container;
 		}
-
+		
 		/// <summary>
-		/// Retrieves all of the see also references from the provided node if
-		/// any exist.
+		/// Iterates over all of the provided <paramref name="parsedBlocks"/> and
+		/// returns all those of type <typeparamref name="T"/>.
 		/// </summary>
-		/// <param name="nodeToParse">The node to parse</param>
-		/// <returns>The list of see also references obtained from the node</returns>
-		public static List<SeeAlso> ParseSeeAlsoElements(List<Block> parsedBlocks) {
-			List<SeeAlso> list = new List<SeeAlso>();
-			foreach (Block current in parsedBlocks) {
-				if (current is SeeAlso) {
-					list.Add(current as SeeAlso);
-				}
-			}
-			return list;
-		}
-
-		public static List<Param> ParseBlockElements(List<Block> parsedBlocks) {
-			List<Param> list = new List<Param>();
-			foreach (Block current in parsedBlocks) {
-				if (current is Param) {
-					list.Add(current as Param);
-				}
-			}
-			return list;
-		}
-
+		/// <typeparam name="T">The type to extract from <paramref name="parsedBlocks"/></typeparam>
+		/// <param name="parsedBlocks">The Block level elements parsed from the memebers XML comment.</param>
+		/// <returns>A List of all the elements <typeparamref name="T"/> from <paramref name="parsedBlocks"/>.</returns>
 		public static List<T> ParseElement<T>(List<Block> parsedBlocks) where T: class {
 			List<T> list = new List<T>();
 			foreach (Block current in parsedBlocks) {
@@ -97,11 +79,23 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// <param name="assembly">The assembly the member is defined in.</param>
 		/// <param name="comment">The parsed XmlCodeComment to parse.</param>
 		/// <returns>A List of blocks for the members commentary.</returns>
+		/// <exception cref="Model.XmlCommentParserException">
+		/// Thrown when an error occurs when parsing WPF Document elements from the provided
+		/// <paramref name="comment"/>.
+		/// </exception>
 		public static List<Block> Parse(AssemblyDef assembly, XmlCodeComment comment) {
+			if(assembly == null) throw new ArgumentNullException("assembly");
+
 			List<Block> blocks = new List<Block>();
-			if (comment != XmlCodeComment.Empty && comment.Elements.Count > 0) {
-				blocks = Parser.Parse(assembly, (XmlContainerCodeElement)comment);
+			try {
+				if (comment != null && comment != XmlCodeComment.Empty && comment.Elements.Count > 0) {
+					blocks = Parser.Parse(assembly, (XmlContainerCodeElement)comment);
+				}
 			}
+			catch(Exception ex) {
+				throw new Model.XmlCommentParserException(comment, ex);
+			}
+
 			return blocks;
 		}
 

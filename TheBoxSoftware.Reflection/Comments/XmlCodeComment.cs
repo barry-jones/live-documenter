@@ -29,7 +29,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// <exception cref="ArgumentNullException">
 		/// Thrown when the <paramref name="node"/> is null.
 		/// </exception>
-		public XmlCodeComment(XmlNode node) {
+		internal XmlCodeComment(XmlNode node) {
 			if (node == null)
 				throw new ArgumentNullException("node");
 			this.Elements = XmlContainerCodeElement.ParseChildren(node);

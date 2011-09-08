@@ -220,7 +220,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// then output the seealso comment elements to a list.
 		/// </remarks>
 		protected void AddSeeAlso(List<Block> parsedBlocks) {
-			List<SeeAlso> seeAlsoList = Parser.ParseSeeAlsoElements(parsedBlocks);
+			List<SeeAlso> seeAlsoList = Parser.ParseElement<SeeAlso>(parsedBlocks);
 			if (seeAlsoList.Count > 0) {
 				SeeAlsoList seeAlso = new SeeAlsoList();
 				seeAlso.Blocks.Add(new Header2("See Also"));
@@ -232,19 +232,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				this.Blocks.Add(seeAlso);
 			}
 		}
-
-        protected void AddNamespace(TypeDef representedType) {
-            return;
-            Paragraph details = new Paragraph();
-            Hyperlink namespaceLink = new Hyperlink(new Run(representedType.Namespace));
-            namespaceLink.Tag = new CrefEntryKey(representedType.Assembly, "N:" + representedType.Namespace);
-            namespaceLink.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
-            details.Inlines.AddRange(new Inline[] {
-				  new Bold(new Run("Namespace: ")),
-				  namespaceLink
-				  });
-            this.Blocks.Add(details);
-        }
 		#endregion
 
 		#region Propeties

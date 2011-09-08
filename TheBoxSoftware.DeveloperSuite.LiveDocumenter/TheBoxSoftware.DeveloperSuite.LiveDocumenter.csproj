@@ -72,6 +72,7 @@
     <Compile Include="Model\DocumentSettings.cs" />
     <Compile Include="Model\PrivacyFilter.cs" />
     <Compile Include="Model\PrivacyFilterCollection.cs" />
+    <Compile Include="Model\XmlCommentParserException.cs" />
     <Compile Include="Pages\NamespaceContainerPage.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>

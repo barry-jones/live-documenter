@@ -51,7 +51,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				if (!this.representedType.IsInterface && !this.representedType.IsStructure) {
 					this.AddInheritanceTree(this.representedType);
 				}
-                this.AddNamespace(this.representedType);
                 this.AddSyntaxBlock(this.representedType);
 
 				// Add the type parameters if they exist

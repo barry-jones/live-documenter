@@ -41,7 +41,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
                     }
                 }
 
-                this.AddNamespace(this.representedType);
 				this.AddSyntaxBlock(this.representedType);
 
 				// Add the type parameters if they exist

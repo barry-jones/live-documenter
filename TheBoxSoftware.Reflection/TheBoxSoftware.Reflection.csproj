@@ -109,6 +109,7 @@
     <Compile Include="Comments\XmlCodeElement.cs" />
     <Compile Include="Comments\XmlCodeElementCollection.cs" />
     <Compile Include="Comments\XmlCodeElements.cs" />
+    <Compile Include="Comments\XmlCommentException.cs" />
     <Compile Include="Comments\XmlContainerCodeElement.cs" />
     <Compile Include="ConstantInfo.cs" />
     <Compile Include="Core\COFF\AssemblyFlags.cs" />

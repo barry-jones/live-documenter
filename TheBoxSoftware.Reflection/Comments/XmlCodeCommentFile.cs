@@ -75,7 +75,14 @@ namespace TheBoxSoftware.Reflection.Comments {
 				}
 
 				if (memberComment != null) {
-					parsedComment = new XmlCodeComment(memberComment);
+					try {
+						parsedComment = new XmlCodeComment(memberComment);
+					}
+					catch(Exception ex) {
+						// we cant fix this problem but we do need to add more details
+						// to the exception
+						throw new XmlCommentException(memberComment.InnerXml, "An error occurred while parsing XML comments", ex);
+					}
 				}
 			}
 
@@ -144,7 +151,14 @@ namespace TheBoxSoftware.Reflection.Comments {
 					}
 
 					if (memberComment != null) {
-						parsedComment = new XmlCodeComment(memberComment);
+						try {
+							parsedComment = new XmlCodeComment(memberComment);
+						}
+						catch(Exception ex) {
+							// we cant fix this problem but we do need to add more details
+							// to the exception
+							throw new XmlCommentException(memberComment.InnerXml, "An error occurred while parsing XML comments", ex);
+						}
 					}
 				}
 
