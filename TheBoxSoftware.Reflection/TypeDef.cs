@@ -17,104 +17,6 @@ namespace TheBoxSoftware.Reflection {
 		private MetadataTables table;
 		private int index;
 
-		#region Methods
-		/// <summary>
-		/// Creates a new TypeDef instance based on the provided metadata row.
-		/// </summary>
-		/// <param name="assembly">The assembly the type was defined in</param>
-		/// <param name="metadata">The metadata directory</param>
-		/// <param name="row">The metadata row which describes the type</param>
-		/// <returns></returns>
-		internal static TypeDef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, TypeDefMetadataTableRow row) {
-			MetadataToDefinitionMap map = assembly.File.Map;
-			TypeDef typeDef = new TypeDef();
-
-			typeDef.index = ((MetadataStream)metadata.Streams[Streams.MetadataStream]).Tables[MetadataTables.TypeDef].ToList().IndexOf(row) + 1;
-			typeDef.table = MetadataTables.TypeDef;
-
-			typeDef.UniqueId = assembly.GetUniqueId();
-			typeDef.Name = assembly.StringStream.GetString(row.Name.Value);
-			typeDef.Namespace = assembly.StringStream.GetString(row.Namespace.Value);
-			typeDef.Assembly = assembly;
-			typeDef.extends = row.Extends;
-			typeDef.GenericTypes = new List<GenericTypeRef>();
-			typeDef.Flags = row.Flags;
-			typeDef.IsInterface = (typeDef.Flags & TypeAttributes.ClassSemanticMask) == TypeAttributes.Interface;
-			typeDef.Implements = new List<TypeRef>();
-			typeDef.IsGeneric = typeDef.Name.Contains("`");	// Should be quicker then checking the genparam table
-
-			MetadataStream metadataStream = metadata.GetMetadataStream();
-			int indexOfTypeInMetadataTable = metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, row) + 1;
-
-			// Load the methods, first calculate the number of methods in this type
-			int rowIndex = metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, row);
-			int nextRow = rowIndex < metadataStream.Tables[MetadataTables.TypeDef].Length - 1
-				? rowIndex + 1
-				: -1;
-
-			// Check if this type is generic and load the generic parameters
-			if (true) {
-				List<GenericParamMetadataTableRow> genericParameters = metadataStream.Tables.GetGenericParametersFor(
-					MetadataTables.TypeDef, rowIndex + 1);
-				if (genericParameters.Count > 0) {
-					foreach (GenericParamMetadataTableRow genParam in genericParameters) {
-						typeDef.GenericTypes.Add(GenericTypeRef.CreateFromMetadata(
-							assembly, metadata, genParam
-							));
-					}
-				}
-			}
-
-			#region Load Methods
-			// The methodIndexes variable is used by subsequent loads of properties and events to,
-			// get back to the metedata index for the instantiated definition.
-			Dictionary<MethodDef, int> methodIndexes = new Dictionary<MethodDef, int>();
-			typeDef.Methods = new List<MethodDef>();
-			if (metadataStream.Tables.ContainsKey(MetadataTables.MethodDef)) {
-				MetadataRow[] table = metadataStream.Tables[MetadataTables.MethodDef];
-				int endOfMethodIndex = table.Length + 1;
-				if (nextRow != -1) {
-					endOfMethodIndex = ((TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][nextRow]).MethodList;
-				}
-				// Now load all the methods between our index and the endOfMethodIndex
-				for (int i = row.MethodList; i < endOfMethodIndex; i++) {
-					MethodMetadataTableRow methodDefRow = (MethodMetadataTableRow)table[i - 1];
-					MethodDef method = MethodDef.CreateFromMetadata(assembly, typeDef, metadata, methodDefRow);
-					map.Add(MetadataTables.MethodDef, methodDefRow, method);
-					methodIndexes.Add(method, i);
-					typeDef.Methods.Add(method);
-				}
-			}
-			#endregion
-
-			TypeDef.LoadProperties(assembly, metadata, map, typeDef, metadataStream, indexOfTypeInMetadataTable);
-			TypeDef.LoadEvents(assembly, metadata, map, typeDef, metadataStream, indexOfTypeInMetadataTable);
-
-			#region Load Fields
-			typeDef.Fields = new List<FieldDef>();
-			if (metadataStream.Tables.ContainsKey(MetadataTables.Field)) {
-				MetadataRow[] table = metadataStream.Tables[MetadataTables.Field];
-				int endOfFieldIndex = table.Length + 1;
-				if (nextRow != -1) {
-					endOfFieldIndex = ((TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][nextRow]).FieldList;
-				}
-				// Now load all the fields between our index and the endOfFieldIndex				
-				for (int i = row.FieldList; i < endOfFieldIndex; i++) {
-					FieldMetadataTableRow fieldDefRow = (FieldMetadataTableRow)table[i - 1];
-					FieldDef field = FieldDef.CreateFromMetadata(assembly, typeDef, fieldDefRow);
-					map.Add(MetadataTables.Field, fieldDefRow, field);
-					typeDef.Fields.Add(field);
-				}
-			}
-			#endregion
-
-			// Initialise other collection/properties
-			typeDef.ExtensionMethods = new List<MethodDef>();
-
-			return typeDef;
-		}
-		#endregion
-
 		#region Properties
 		/// <summary>
 		/// The methods this type contains
@@ -142,21 +44,26 @@ namespace TheBoxSoftware.Reflection {
 		/// </summary>
 		public TypeRef InheritsFrom {
 			get {
-				MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
-				MetadataToDefinitionMap map = this.Assembly.File.Map;
-				TypeRef inheritsFrom = null;
+				try {
+					MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
+					MetadataToDefinitionMap map = this.Assembly.File.Map;
+					TypeRef inheritsFrom = null;
 
-				if (this.extends.Index != 0) {
-					inheritsFrom = map.GetDefinition(this.extends.Table,
-						stream.Tables.GetEntryFor(this.extends.Table, this.extends.Index)) as TypeRef;
-					// We have to handle type spec based classes, as if they use the parent generic types
-					// we need the type to have a reference to its container.
-					if (inheritsFrom is TypeSpec) {
-						((TypeSpec)inheritsFrom).ImplementingType = this;
+					if (this.extends.Index != 0) {
+						inheritsFrom = map.GetDefinition(this.extends.Table,
+							stream.Tables.GetEntryFor(this.extends.Table, this.extends.Index)) as TypeRef;
+						// We have to handle type spec based classes, as if they use the parent generic types
+						// we need the type to have a reference to its container.
+						if (inheritsFrom is TypeSpec) {
+							((TypeSpec)inheritsFrom).ImplementingType = this;
+						}
 					}
-				}
 
-				return inheritsFrom;
+					return inheritsFrom;
+				}
+				catch (Exception ex) {
+					throw new ReflectionException(this, "Error caused determining the parent type.", ex);
+				}
 			}
 		}
 
@@ -486,6 +393,104 @@ namespace TheBoxSoftware.Reflection {
 		/// <returns>The collection of events.</returns>
 		public List<EventDef> GetEvents() {
 			return this.Events;
+		}
+		#endregion
+
+		#region Creational Methods
+		/// <summary>
+		/// Creates a new TypeDef instance based on the provided metadata row.
+		/// </summary>
+		/// <param name="assembly">The assembly the type was defined in</param>
+		/// <param name="metadata">The metadata directory</param>
+		/// <param name="row">The metadata row which describes the type</param>
+		/// <returns></returns>
+		internal static TypeDef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, TypeDefMetadataTableRow row) {
+			MetadataToDefinitionMap map = assembly.File.Map;
+			TypeDef typeDef = new TypeDef();
+
+			typeDef.index = ((MetadataStream)metadata.Streams[Streams.MetadataStream]).Tables[MetadataTables.TypeDef].ToList().IndexOf(row) + 1;
+			typeDef.table = MetadataTables.TypeDef;
+
+			typeDef.UniqueId = assembly.GetUniqueId();
+			typeDef.Name = assembly.StringStream.GetString(row.Name.Value);
+			typeDef.Namespace = assembly.StringStream.GetString(row.Namespace.Value);
+			typeDef.Assembly = assembly;
+			typeDef.extends = row.Extends;
+			typeDef.GenericTypes = new List<GenericTypeRef>();
+			typeDef.Flags = row.Flags;
+			typeDef.IsInterface = (typeDef.Flags & TypeAttributes.ClassSemanticMask) == TypeAttributes.Interface;
+			typeDef.Implements = new List<TypeRef>();
+			typeDef.IsGeneric = typeDef.Name.Contains("`");	// Should be quicker then checking the genparam table
+
+			MetadataStream metadataStream = metadata.GetMetadataStream();
+			int indexOfTypeInMetadataTable = metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, row) + 1;
+
+			// Load the methods, first calculate the number of methods in this type
+			int rowIndex = metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, row);
+			int nextRow = rowIndex < metadataStream.Tables[MetadataTables.TypeDef].Length - 1
+				? rowIndex + 1
+				: -1;
+
+			// Check if this type is generic and load the generic parameters
+			if (true) {
+				List<GenericParamMetadataTableRow> genericParameters = metadataStream.Tables.GetGenericParametersFor(
+					MetadataTables.TypeDef, rowIndex + 1);
+				if (genericParameters.Count > 0) {
+					foreach (GenericParamMetadataTableRow genParam in genericParameters) {
+						typeDef.GenericTypes.Add(GenericTypeRef.CreateFromMetadata(
+							assembly, metadata, genParam
+							));
+					}
+				}
+			}
+
+			#region Load Methods
+			// The methodIndexes variable is used by subsequent loads of properties and events to,
+			// get back to the metedata index for the instantiated definition.
+			Dictionary<MethodDef, int> methodIndexes = new Dictionary<MethodDef, int>();
+			typeDef.Methods = new List<MethodDef>();
+			if (metadataStream.Tables.ContainsKey(MetadataTables.MethodDef)) {
+				MetadataRow[] table = metadataStream.Tables[MetadataTables.MethodDef];
+				int endOfMethodIndex = table.Length + 1;
+				if (nextRow != -1) {
+					endOfMethodIndex = ((TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][nextRow]).MethodList;
+				}
+				// Now load all the methods between our index and the endOfMethodIndex
+				for (int i = row.MethodList; i < endOfMethodIndex; i++) {
+					MethodMetadataTableRow methodDefRow = (MethodMetadataTableRow)table[i - 1];
+					MethodDef method = MethodDef.CreateFromMetadata(assembly, typeDef, metadata, methodDefRow);
+					map.Add(MetadataTables.MethodDef, methodDefRow, method);
+					methodIndexes.Add(method, i);
+					typeDef.Methods.Add(method);
+				}
+			}
+			#endregion
+
+			TypeDef.LoadProperties(assembly, metadata, map, typeDef, metadataStream, indexOfTypeInMetadataTable);
+			TypeDef.LoadEvents(assembly, metadata, map, typeDef, metadataStream, indexOfTypeInMetadataTable);
+
+			#region Load Fields
+			typeDef.Fields = new List<FieldDef>();
+			if (metadataStream.Tables.ContainsKey(MetadataTables.Field)) {
+				MetadataRow[] table = metadataStream.Tables[MetadataTables.Field];
+				int endOfFieldIndex = table.Length + 1;
+				if (nextRow != -1) {
+					endOfFieldIndex = ((TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][nextRow]).FieldList;
+				}
+				// Now load all the fields between our index and the endOfFieldIndex				
+				for (int i = row.FieldList; i < endOfFieldIndex; i++) {
+					FieldMetadataTableRow fieldDefRow = (FieldMetadataTableRow)table[i - 1];
+					FieldDef field = FieldDef.CreateFromMetadata(assembly, typeDef, fieldDefRow);
+					map.Add(MetadataTables.Field, fieldDefRow, field);
+					typeDef.Fields.Add(field);
+				}
+			}
+			#endregion
+
+			// Initialise other collection/properties
+			typeDef.ExtensionMethods = new List<MethodDef>();
+
+			return typeDef;
 		}
 
 		/// <summary>

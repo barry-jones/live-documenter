@@ -50,6 +50,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// When implementing; this method will orchestrate the calling
 		/// and formatting of the individual Format methods.
 		/// </remarks>
-		List<SyntaxToken> Format(ClassSyntax syntax);
+		SyntaxTokenCollection Format(ClassSyntax syntax);
 	}
 }

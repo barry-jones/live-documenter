@@ -21,6 +21,11 @@ namespace TheBoxSoftware.Reflection {
 		/// </summary>
 		public AssemblyDef Assembly { get; set; }
 
+		/// <summary>
+		/// Gets or sets the name for this ReflectedMember.
+		/// </summary>
+		public virtual string Name { get; set; }
+
 		public virtual Visibility MemberAccess {
 			get { return Visibility.NotApplicable; }
 		}

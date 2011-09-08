@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			this.syntax = syntax;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -51,8 +51,8 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			return this.FormatVisibility(syntax.GetSetterVisibility());
 		}
 
-		public List<SyntaxToken> Format(IndexorSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(IndexorSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 			tokens.AddRange(this.FormatVisibility(syntax));
 			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
 			tokens.Add(new SyntaxToken("Property", SyntaxTokens.Keyword));

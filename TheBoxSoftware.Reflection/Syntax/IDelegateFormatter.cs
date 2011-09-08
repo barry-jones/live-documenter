@@ -8,6 +8,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		List<SyntaxToken> FormatVisibility(DelegateSyntax syntax);
 		List<SyntaxToken> FormatReturnType(DelegateSyntax syntax);
 		List<SyntaxToken> FormatParameters(MethodSyntax syntax);
-		List<SyntaxToken> Format(DelegateSyntax syntax);
+		SyntaxTokenCollection Format(DelegateSyntax syntax);
 	}
 }

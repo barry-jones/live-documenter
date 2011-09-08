@@ -20,6 +20,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// more strongly typed IFormatter interfaces format method while
 		/// passing in the private Syntax reference.
 		/// </remarks>
-		List<SyntaxToken> Format();
+		SyntaxTokenCollection Format();
 	}
 }

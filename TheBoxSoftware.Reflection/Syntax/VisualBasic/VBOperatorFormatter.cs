@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			this.signiture = syntax.Method.Signiture;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -103,8 +103,8 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			return new List<SyntaxToken>() { new SyntaxToken(representation, SyntaxTokens.Text) };
 		}
 
-		public List<SyntaxToken> Format(OperatorSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(OperatorSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 			string identifier = syntax.GetIdentifier();
 
 			SyntaxToken inheritanceModifier = this.FormatInheritance(syntax);

@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			this.signiture = syntax.Method.Signiture;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -57,8 +57,8 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			return this.FormatTypeDetails(syntax.GetReturnType());
 		}
 
-		public List<SyntaxToken> Format(MethodSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(MethodSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 			TypeDetails returnType = syntax.GetReturnType();
 			bool isFunction = this.IsMethodFunction(returnType);
 

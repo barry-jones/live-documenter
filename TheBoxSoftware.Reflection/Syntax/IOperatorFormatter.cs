@@ -14,6 +14,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		List<SyntaxToken> FormatParameters(OperatorSyntax syntax);
 		List<SyntaxToken> FormatReturnType(OperatorSyntax syntax);
 		List<SyntaxToken> FormatName(OperatorSyntax syntax);
-		List<SyntaxToken> Format(OperatorSyntax syntax);
+		SyntaxTokenCollection Format(OperatorSyntax syntax);
 	}
 }

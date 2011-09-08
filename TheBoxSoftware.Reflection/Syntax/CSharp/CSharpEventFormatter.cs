@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			this.syntax = syntax;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -31,8 +31,8 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			return this.FormatInheritance(syntax.GetInheritance());
 		}
 
-		public List<SyntaxToken> Format(EventSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(EventSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
 			SyntaxToken inheritanceModifier = this.FormatInheritance(syntax);
 

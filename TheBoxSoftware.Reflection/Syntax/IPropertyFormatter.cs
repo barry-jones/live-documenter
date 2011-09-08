@@ -11,6 +11,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		SyntaxToken FormatInheritance(PropertySyntax syntax);
 		List<SyntaxToken> FormatGetVisibility(PropertySyntax syntax);
 		List<SyntaxToken> FormatSetVisibility(PropertySyntax syntax);
-		List<SyntaxToken> Format(PropertySyntax syntax);
+		SyntaxTokenCollection Format(PropertySyntax syntax);
 	}
 }

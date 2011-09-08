@@ -11,6 +11,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		SyntaxToken FormatInheritance(MethodSyntax syntax);
 		List<SyntaxToken> FormatParameters(MethodSyntax syntax);
 		List<SyntaxToken> FormatReturnType(MethodSyntax syntax);
-		List<SyntaxToken> Format(MethodSyntax syntax);
+		SyntaxTokenCollection Format(MethodSyntax syntax);
 	}
 }

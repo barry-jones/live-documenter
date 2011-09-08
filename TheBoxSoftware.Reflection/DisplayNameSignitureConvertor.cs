@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Reflection.Signitures;
 
 namespace TheBoxSoftware.Reflection {
-	using TheBoxSoftware.Reflection.Signitures;
-
 	/// <summary>
 	/// A <see cref="SignitureConvertor"/> implementation that creates user
 	/// displayable names for types, methods and properties.
@@ -87,83 +86,100 @@ namespace TheBoxSoftware.Reflection {
 		/// version of the signiture this convertor has been instantiated with.
 		/// </summary>
 		/// <returns>The fully converted signiture as a string.</returns>
+		/// <exception cref="ReflectionException">
+		/// Thrown when an error occurs while processing the display name, see the exception
+		/// details for more information.
+		/// </exception>
 		public string Convert() {
-			StringBuilder converted = new StringBuilder();
+			try {
+				StringBuilder converted = new StringBuilder();
 
-			// Convert the type portion
-			if (this.includeTypeName) {
-				this.GetTypeName(converted, this.type);
-				if (this.type.IsGeneric) {
-					converted.Append(this.GenericStart);
-					bool first = true;
-					foreach (GenericTypeRef type in this.type.GetGenericTypes()) {
-						if (first) {
-							first = false;
+				// Convert the type portion
+				if (this.includeTypeName) {
+					this.GetTypeName(converted, this.type);
+					if (this.type.IsGeneric) {
+						converted.Append(this.GenericStart);
+						bool first = true;
+						foreach (GenericTypeRef type in this.type.GetGenericTypes()) {
+							if (first) {
+								first = false;
+							}
+							else {
+								converted.Append(", ");
+							}
+							converted.Append(type.Name);
+						}
+						converted.Append(this.GenericEnd);
+					}
+				}
+
+				// Fix to make sure properties are displayed correctly when
+				// they have parameters
+
+				// Convert the method portion
+				if (method != null) {
+					if (method.IsConstructor && property == null) {
+						this.GetTypeName(converted, this.type);
+					}
+					else if (method.IsOperator && property == null) {
+						if (method.IsConversionOperator) {
+							Signiture sig = method.Signiture;
+							TypeRef convertToRef = sig.GetReturnTypeToken().ResolveType(method.Assembly, method);
+							TypeRef convertFromRef = sig.GetParameterTokens()[0].ResolveParameter(method.Assembly, method.Parameters[0]);
+
+							converted.Append(method.Name.Substring(3));
+							converted.Append("(");
+							converted.Append(convertToRef.GetDisplayName(false));
+							converted.Append(" to ");
+							converted.Append(convertFromRef.GetDisplayName(false));
+							converted.Append(")");
 						}
 						else {
-							converted.Append(", ");
+							converted.Append(method.Name.Substring(3));
 						}
-						converted.Append(type.Name);
 					}
-					converted.Append(this.GenericEnd);
-				}
-			}
-
-			// Fix to make sure properties are displayed correctly when
-			// they have parameters
-
-			// Convert the method portion
-			if (method != null) {
-				if (method.IsConstructor && property == null) {
-					this.GetTypeName(converted, this.type);
-				}
-				else if (method.IsOperator && property == null) {
-					if (method.IsConversionOperator) {
-						Signiture sig = method.Signiture;
-						TypeRef convertToRef = sig.GetReturnTypeToken().ResolveType(method.Assembly, method);
-						TypeRef convertFromRef = sig.GetParameterTokens()[0].ResolveParameter(method.Assembly, method.Parameters[0]);
-
-						converted.Append(method.Name.Substring(3));
-						converted.Append("(");
-						converted.Append(convertToRef.GetDisplayName(false));
-						converted.Append(" to ");
-						converted.Append(convertFromRef.GetDisplayName(false));
-						converted.Append(")");
+					else if (property == null) {
+						converted.Append(method.Name);
 					}
 					else {
-						converted.Append(method.Name.Substring(3));
+						converted.Append(property.Name);
+					}
+					if (method.IsGeneric) {
+						converted.Append(this.GenericStart);
+						bool first = true;
+						foreach (GenericTypeRef type in method.GetGenericTypes()) {
+							if (first) {
+								first = false;
+							}
+							else {
+								converted.Append(", ");
+							}
+							converted.Append(type.Name);
+						}
+						converted.Append(this.GenericEnd);
+					}
+
+					if (this.includeParameters && !method.IsConversionOperator) {
+						string parameters = this.Convert(method);
+						if (string.IsNullOrEmpty(parameters) && property == null) {
+							parameters = "()";
+						}
+						converted.Append(parameters);
 					}
 				}
-				else if (property == null) {
-					converted.Append(method.Name);
+				return converted.ToString();
+			}
+			catch (Exception ex) {
+				if (this.property != null) {
+					throw new ReflectionException(this.property, "Error processing display name signiture for a property", ex);
+				}
+				else if (this.method != null) {
+					throw new ReflectionException(this.method, "Error processing display name signiture for a method", ex);
 				}
 				else {
-					converted.Append(property.Name);
-				}
-				if (method.IsGeneric) {
-					converted.Append(this.GenericStart);
-					bool first = true;
-					foreach (GenericTypeRef type in method.GetGenericTypes()) {
-						if (first) {
-							first = false;
-						}
-						else {
-							converted.Append(", ");
-						}
-						converted.Append(type.Name);
-					}
-					converted.Append(this.GenericEnd);
-				}
-
-				if (this.includeParameters && !method.IsConversionOperator) {
-					string parameters = this.Convert(method);
-					if (string.IsNullOrEmpty(parameters) && property == null) {
-						parameters = "()";
-					}
-					converted.Append(parameters);
+					throw new ReflectionException(this.type, "Error processing display name signiture for a type", ex);
 				}
 			}
-			return converted.ToString();
 		}
 
 		/// <summary>

@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			this.syntax = syntax;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -125,8 +125,8 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 		/// </summary>
 		/// <param name="syntax">The syntax for format.</param>
 		/// <returns>A fully formatted c# class decleration.</returns>
-		public List<SyntaxToken> Format(ClassSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(ClassSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
 			SyntaxToken inheritanceModifier = this.FormatInheritance(syntax);
 

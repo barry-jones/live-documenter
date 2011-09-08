@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 	/// to read XML code comments
 	/// </summary>
 	[Serializable]
-	public class XmlCommentException : Exception, ISerializable {
+	public class XmlCommentException : Exception, ISerializable, IExtendedException {
 		/// <summary>
 		/// Initialises a new instance of the XmlCommentException.
 		/// </summary>
@@ -79,5 +79,20 @@ namespace TheBoxSoftware.Reflection.Comments {
 
 			base.GetObjectData(info, context);
 		}
+
+		#region IExtendedException Members
+		/// <summary>
+		/// Extracts as much information from the exception as possible and returns it as
+		/// a formatted string.
+		/// </summary>
+		/// <returns>The formatted exception details.</returns>
+		public string GetExtendedInformation() {
+			StringBuilder builder = new StringBuilder();
+
+			builder.AppendLine(string.Format("XML: {0}", this.Xml));
+
+			return builder.ToString();
+		}
+		#endregion
 	}
 }

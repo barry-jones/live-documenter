@@ -36,6 +36,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// When implementing; this method will orchestrate the calling
 		/// and formatting of the individual Format methods.
 		/// </remarks>
-		List<SyntaxToken> Format(InterfaceSyntax syntax);
+		SyntaxTokenCollection Format(InterfaceSyntax syntax);
 	}
 }

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Reflection.Core.COFF;
+using TheBoxSoftware.Reflection.Core.PE;
+using TheBoxSoftware.Reflection.Core;
 
 namespace TheBoxSoftware.Reflection {
-	using TheBoxSoftware.Reflection.Core.COFF;
-	using TheBoxSoftware.Reflection.Core.PE;
-	using TheBoxSoftware.Reflection.Core;
-
 	/// <summary>
 	/// The AssemblyDef provides the top level information and entry point to
 	/// all types, methods etc reflected from a .NET executable.
@@ -89,13 +88,11 @@ namespace TheBoxSoftware.Reflection {
 		/// Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
 		/// does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
 		/// </exception>
-		public static AssemblyDef Create(PeCoffFile peCoffFile)
-		{
+		public static AssemblyDef Create(PeCoffFile peCoffFile) {
 			if (peCoffFile == null)
 				throw new ArgumentNullException("peCoffFile");
 
-			if (!peCoffFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
-			{
+			if (!peCoffFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader)) {
 				peCoffFile = null;	// would be nice to get the memory back
 				throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", peCoffFile.FileName));
 			}
@@ -433,14 +430,9 @@ namespace TheBoxSoftware.Reflection {
 		public TheBoxSoftware.Reflection.Core.PeCoffFile File { get; set; }
 
 		/// <summary>
-		/// The name of the assembly.
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
 		/// The version details for this assembly.
 		/// </summary>
-		public Version Version { get; set; }
+		public TheBoxSoftware.Reflection.Core.Version Version { get; set; }
 		#endregion
 	}
 }

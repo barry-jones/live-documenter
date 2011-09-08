@@ -15,6 +15,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		SyntaxToken FormatInheritance(IndexorSyntax syntax);
 		List<SyntaxToken> FormatGetVisibility(IndexorSyntax syntax);
 		List<SyntaxToken> FormatSetVisibility(IndexorSyntax syntax);
-		List<SyntaxToken> Format(IndexorSyntax syntax);
+		SyntaxTokenCollection Format(IndexorSyntax syntax);
 	}
 }

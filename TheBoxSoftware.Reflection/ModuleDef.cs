@@ -33,11 +33,6 @@ namespace TheBoxSoftware.Reflection{
 
 		#region Properties
 		/// <summary>
-		/// The name of the module
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
 		/// The GUID that represents the Modules version identifier.
 		/// </summary>
 		public Guid ModuleVersionId { get; set; }

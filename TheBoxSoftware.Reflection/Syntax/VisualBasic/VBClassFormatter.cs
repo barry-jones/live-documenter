@@ -50,8 +50,8 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			return tokens;
 		}
 
-		public List<SyntaxToken> Format(ClassSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(ClassSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 			SyntaxToken inheritanceModifier = this.FormatInheritance(syntax);
 
 			tokens.AddRange(this.FormatVisibility(syntax));
@@ -78,7 +78,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			return tokens;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 	}

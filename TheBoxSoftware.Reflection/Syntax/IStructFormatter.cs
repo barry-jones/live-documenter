@@ -7,6 +7,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	public interface IStructFormatter : IFormatter {
 		List<SyntaxToken> FormatVisibility(StructSyntax syntax);
 		List<SyntaxToken> FormatInterfaces(StructSyntax syntax);
-		List<SyntaxToken> Format(StructSyntax syntax);
+		SyntaxTokenCollection Format(StructSyntax syntax);
 	}
 }

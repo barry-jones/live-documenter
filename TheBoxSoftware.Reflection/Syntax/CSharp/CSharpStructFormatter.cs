@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			this.syntax = syntax;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -39,8 +39,8 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			return tokens;
 		}
 
-		public List<SyntaxToken> Format(StructSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(StructSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
 			tokens.AddRange(this.FormatVisibility(syntax));
 			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));

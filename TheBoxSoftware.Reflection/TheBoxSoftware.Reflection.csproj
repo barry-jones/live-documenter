@@ -216,6 +216,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDef.cs" />
     <Compile Include="ReflectedMember.cs" />
+    <Compile Include="ReflectionException.cs" />
     <Compile Include="Resources\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -302,6 +303,7 @@
     <Compile Include="Syntax\Syntax.cs" />
     <Compile Include="Syntax\SyntaxFactory.cs" />
     <Compile Include="Syntax\SyntaxToken.cs" />
+    <Compile Include="Syntax\SyntaxTokenCollection.cs" />
     <Compile Include="Syntax\SyntaxTokens.cs" />
     <Compile Include="Syntax\VisualBasic\VBClassFormatter.cs" />
     <Compile Include="Syntax\VisualBasic\VBConstantFormatter.cs" />

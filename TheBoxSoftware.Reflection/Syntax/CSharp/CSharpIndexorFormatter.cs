@@ -43,7 +43,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			this.syntax = syntax;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -77,8 +77,8 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 		/// </summary>
 		/// <param name="syntax">The syntax class that describes the indexer.</param>
 		/// <returns>The collection of tokens describing the indexer in the language</returns>
-		public List<SyntaxToken> Format(IndexorSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(IndexorSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 			tokens.AddRange(this.FormatVisibility(syntax));
 			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
 			tokens.AddRange(this.FormatType(syntax));

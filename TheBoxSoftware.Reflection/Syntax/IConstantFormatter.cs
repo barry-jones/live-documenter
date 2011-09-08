@@ -7,6 +7,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	public interface IConstantFormatter : IFormatter {
 		SyntaxToken GetType(ConstantSyntax syntax);
 		List<SyntaxToken> GetVisibility(ConstantSyntax syntax);
-		List<SyntaxToken> Format(ConstantSyntax syntax);
+		SyntaxTokenCollection Format(ConstantSyntax syntax);
 	}
 }

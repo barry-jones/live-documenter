@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			this.syntax = syntax;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -23,8 +23,8 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 			return this.FormatVisibility(syntax.GetVisibility());
 		}
 
-		public List<SyntaxToken> Format(ConstantSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(ConstantSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
 			// e.g. Protected Const MyConstant As Integer
 			tokens.AddRange(this.GetVisibility(syntax));

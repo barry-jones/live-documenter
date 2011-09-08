@@ -93,7 +93,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				}
 			}
 			catch(Exception ex) {
-				throw new Model.XmlCommentParserException(comment, ex);
+				throw new Model.XmlCommentParserException(comment, "An error converting the comment to document elements.", ex);
 			}
 
 			return blocks;

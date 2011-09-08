@@ -90,6 +90,40 @@ namespace TheBoxSoftware.Reflection.Comments {
 		}
 
 		/// <summary>
+		/// Obtains the original XML for the specified <paramref name="cref"/>.
+		/// </summary>
+		/// <param name="cref">The member to get the original XML for</param>
+		/// <returns>The original XML for the specified member</returns>
+		public string GetXmlFor(CRefPath cref) {
+			string xpath = string.Format(
+				"/doc/members/member[@name=\"{0}\"]",
+				cref.ToString()
+				);
+
+			string xml = string.Empty;
+
+			if (this.Exists) {
+				XPathDocument commentsDocument = new XPathDocument(this.xmlCommentFileName);
+				XPathNavigator n = commentsDocument.CreateNavigator();
+				XPathNodeIterator ni = n.Select(xpath);
+				XmlNode memberComment = null;
+				if (ni.MoveNext()) {
+					using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml)) {
+						XmlReader xmlReader = XmlTextReader.Create(reader);
+						XmlDocument tempD = new XmlDocument();
+						memberComment = tempD.ReadNode(xmlReader);
+					}
+				}
+
+				if (memberComment != null) {
+					xml = memberComment.InnerXml;
+				}
+			}
+
+			return xml;
+		}
+
+		/// <summary>
 		/// Obtains an instance of the <see cref="ReusableXmlCodeCommentFile"/>.
 		/// </summary>
 		/// <returns>The instance.</returns>

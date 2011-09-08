@@ -39,11 +39,6 @@ namespace TheBoxSoftware.Reflection {
 
 		#region Properties
 		/// <summary>
-		/// The name of the event as defined in the type.
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
 		/// The type which contains this event.
 		/// </summary>
 		public TypeDef Type { get; set; }

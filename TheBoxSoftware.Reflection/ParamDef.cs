@@ -70,14 +70,6 @@ namespace TheBoxSoftware.Reflection{
 			set;
 		}
 
-		/// <summary>
-		/// The name of the parameter
-		/// </summary>
-		public string Name {
-			get;
-			set;
-		}
-
 		/// <Summary>
 		/// A number that indicates the sequence in the parameter list this ParamDef
 		/// refers to on its parent method.

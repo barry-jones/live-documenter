@@ -17,7 +17,7 @@ namespace TheBoxSoftware.Reflection {
 		/// </field>
 		private CodedIndex resolutionScope;
 
-		#region Methods
+		#region Creational Methods
 		/// <summary>
 		/// Initialises a new instance of the TypeRef class.
 		/// </summary>
@@ -44,16 +44,6 @@ namespace TheBoxSoftware.Reflection {
 		#endregion
 
 		#region Properties
-		/// <summary>
-		/// The name of this type. As taken directly from the meta data's
-        /// string stream.
-		/// </summary>
-        /// <remarks>
-        /// Note that this name is not always nice, generic types for example
-        /// are displayed as Type'1 intead of Type&lt;T&gt;.
-        /// </remarks>
-		public virtual string Name { get; set; }
-
 		/// <summary>
 		/// The namespace in which this type resides.
 		/// </summary>

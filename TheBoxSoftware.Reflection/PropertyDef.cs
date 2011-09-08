@@ -32,11 +32,6 @@ namespace TheBoxSoftware.Reflection {
 		}
 
 		/// <summary>
-		/// Gets or sets a string which represents the nice name for the property
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
 		/// 
 		/// </summary>
 		public TypeDef Type { get; set; }

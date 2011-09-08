@@ -47,11 +47,6 @@ namespace TheBoxSoftware.Reflection {
 		/// The string representing the culture of the assembly.
 		/// </summary>
 		public string Culture { get; set; }
-
-		/// <summary>
-		/// The name of the referenced assembly.
-		/// </summary>
-		public string Name { get; set; }
 		#endregion
 	}
 }

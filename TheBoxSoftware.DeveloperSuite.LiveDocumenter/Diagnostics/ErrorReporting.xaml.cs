@@ -34,7 +34,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 		/// <param name="ex">The exception</param>
 		public void SetException(Exception ex) {
 			this.currentException = ex;
-			this.txtExceptionDetails.Text = ex.ToString();
+
+			Exception current = ex;
+			StringBuilder sb = new StringBuilder();
+			while (current != null) {
+				sb.AppendLine(this.FormatExceptionData(current));
+				current = current.InnerException;
+			}
+			this.txtExceptionDetails.Text = sb.ToString();
 		}
 
 		/// <summary>
@@ -67,7 +74,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 					BoxSoftwareServices.ExceptionReport exceptionReport = new BoxSoftwareServices.ExceptionReport();
 					exceptionReport.ExceptionType = current.GetType().ToString();
 					exceptionReport.Message = current.Message;
-					exceptionReport.StackTrace = current.StackTrace;
+					exceptionReport.StackTrace = this.FormatExceptionData(current);
 					exceptionReport.Data = this.WriteDictionary(current.Data);
 					exceptions.Add(exceptionReport);
 					current = current.InnerException;
@@ -123,6 +130,26 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 		/// <param name="e">Event arguments</param>
 		private void cancel_Click(object sender, RoutedEventArgs e) {
 			this.Close();
+		}
+
+		/// <summary>
+		/// Formats the exceptions details that are going to be sent by the user, giving them
+		/// the full details of what information is going to be provided.
+		/// </summary>
+		private string FormatExceptionData(Exception forException) {
+			StringBuilder sb = new StringBuilder();
+			if (forException != null) {
+				sb.AppendLine("----------------------------------------------------------");
+				sb.AppendLine(string.Format("Message: {0}", forException.Message));
+				sb.AppendLine();
+				if (forException is IExtendedException) {
+					sb.Append(((IExtendedException)forException).GetExtendedInformation());
+					sb.AppendLine();
+				}
+				sb.AppendLine(forException.StackTrace);
+			}
+
+			return sb.ToString();
 		}
 	}
 }

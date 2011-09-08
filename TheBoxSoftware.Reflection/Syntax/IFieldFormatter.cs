@@ -7,6 +7,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	public interface IFieldFormatter : IFormatter {
 		SyntaxToken GetType(FieldSyntax syntax);
 		List<SyntaxToken> GetVisibility(FieldSyntax syntax);
-		List<SyntaxToken> Format(FieldSyntax syntax);
+		SyntaxTokenCollection Format(FieldSyntax syntax);
 	}
 }

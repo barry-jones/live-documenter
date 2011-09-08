@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			this.signiture = syntax.Method.Signiture;
 		}
 
-		public List<SyntaxToken> Format() {
+		public SyntaxTokenCollection Format() {
 			return this.Format(this.syntax);
 		}
 
@@ -58,8 +58,8 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			return this.FormatTypeDetails(syntax.GetReturnType());
 		}
 
-		public List<SyntaxToken> Format(MethodSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+		public SyntaxTokenCollection Format(MethodSyntax syntax) {
+			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
 			SyntaxToken inheritanceModifier = this.FormatInheritance(syntax);
 

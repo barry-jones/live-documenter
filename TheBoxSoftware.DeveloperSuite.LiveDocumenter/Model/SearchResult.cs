@@ -35,19 +35,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 
 			if (member != null) {
 				if (member is PropertyDef) {
-					this.Name = new DisplayNameSignitureConvertor(
-						(PropertyDef)member, false, true
-						).Convert();
+					this.Name = ((PropertyDef)member).GetDisplayName(false, true);
 				}
 				else if (member is TypeDef) {
-					this.Name = new DisplayNameSignitureConvertor(
-						(TypeDef)member, false
-						).Convert();
+					this.Name = ((TypeDef)member).GetDisplayName(false);
 				}
 				else if (member is MethodDef) {
-					this.Name = new DisplayNameSignitureConvertor(
-						(MethodDef)member, false, true
-						).Convert();
+					this.Name = ((MethodDef)member).GetDisplayName(false, true);
 				}
 			}
 

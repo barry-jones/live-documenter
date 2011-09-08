@@ -71,11 +71,6 @@ namespace TheBoxSoftware.Reflection {
 		public TypeRef Type { get; set; }
 
 		/// <summary>
-		/// Gets or sets the name of the member
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
 		/// Obtains the index in the BlobStream where the methods signiture
 		/// is stored.
 		/// </summary>
