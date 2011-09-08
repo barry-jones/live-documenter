@@ -321,7 +321,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.exportClick(sender, e);
 			}
 			else if (e.Command == Commands.Remove) {
-				this.RemoveAssembly((long)e.Parameter);
+				if(e.Parameter != null) {
+					this.RemoveAssembly((long)e.Parameter);
+				}
 			}
 			else if (e.Command == Commands.DocumentSettings) {
 				Preferences p = new Preferences();

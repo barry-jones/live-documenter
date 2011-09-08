@@ -25,7 +25,6 @@
         <KeyBinding Key="P" Modifiers="Control" Command="ApplicationCommands.Print" />
         <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
         <KeyBinding Key="A" Modifiers="Control" Command="local:Commands.Add" />
-        <KeyBinding Key="R" Modifiers="Control" Command="local:Commands.Remove" />
         <KeyBinding Key="E" Modifiers="Control" Command="local:Commands.Export" />
     </Window.InputBindings>
 
@@ -413,7 +412,7 @@
             <controls:DropDownButton x:Name="removeAssemblies" Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
                 <Image Source="resources\remov_24x24.png" Height="24" Width="24" />
                 <Button.ToolTip>
-                    <TextBlock Text="Remove assembly (Ctrl + R)" />
+                    <TextBlock Text="Remove assembly" />
                 </Button.ToolTip>
                 <controls:DropDownButton.DropDownContextMenu>
                     <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.DataContext}" ItemsSource="{Binding Files}">
