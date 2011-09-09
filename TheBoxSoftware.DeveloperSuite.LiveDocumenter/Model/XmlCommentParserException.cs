@@ -106,7 +106,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 						try {
 							builder.AppendLine(string.Format("CRef: {0}", this.Comment.Member.ToString()));
 						}
-						finally { }
+						catch(Exception) {}
 
 						// if its not null lets just see if we can the base xml for this
 						try {
@@ -124,7 +124,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 								}
 							}
 						}
-						finally { }
+						catch(Exception) {}
 					}
 
 					builder.AppendLine("Formatted Comment");

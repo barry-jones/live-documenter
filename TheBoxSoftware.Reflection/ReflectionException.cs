@@ -83,13 +83,13 @@ namespace TheBoxSoftware.Reflection {
 					try {
 						builder.AppendLine(string.Format("Namespace: {0}", ((TypeRef)this.Member).Namespace));
 					}
-					finally { }
+					catch(Exception) {}
 				}
 				else if (memberRef != null) {
 					try { builder.AppendLine(string.Format("Containing Type: {0}", memberRef.Type.Name)); }
-					finally { }
+					catch(Exception) {}
 					try { builder.AppendLine(string.Format("Namespace: {0}", memberRef.Type.Namespace)); }
-					finally { }
+					catch(Exception) {}
 				}
 
 				// attempt to output the syntax for the member
@@ -99,7 +99,7 @@ namespace TheBoxSoftware.Reflection {
 						);
 					builder.AppendLine(string.Format("Syntax: {0}", formatter.Format().ToString()));
 				}
-				finally { } // ignore any errors here we know already we are walking on thin ice
+				catch(Exception) {} // ignore any errors here we know already we are walking on thin ice
 			}
 			else {
 				builder.Append("Member is null, so no further information is available.");
