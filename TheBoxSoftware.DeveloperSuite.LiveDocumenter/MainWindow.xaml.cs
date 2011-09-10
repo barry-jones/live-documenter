@@ -414,7 +414,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.Cursor = Cursors.AppStarting;
 
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
-            this.pageViewer.Document = new Pages.WelcomePage();
+			if (LiveDocumentorFile.Singleton.Files.Count == 0) {
+				this.pageViewer.Document = new Pages.WelcomePage();
+			}
 			this.Cursor = null;
 			this.Opacity = 1;
 			this.Visibility = System.Windows.Visibility.Visible;
