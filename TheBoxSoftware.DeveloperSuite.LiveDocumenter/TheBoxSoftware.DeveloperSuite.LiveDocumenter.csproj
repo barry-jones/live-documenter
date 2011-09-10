@@ -67,6 +67,12 @@
       <DependentUpon>ComboWithCheckboxes.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DropDownButton.cs" />
+    <Compile Include="CustomInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomInstaller.Designer.cs">
+      <DependentUpon>CustomInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="DocumentationResources.cs" />
     <Compile Include="LiveDocumenterEntryCreator.cs" />
     <Compile Include="Model\DocumentSettings.cs" />
@@ -93,10 +99,12 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -932,7 +940,17 @@
     <Resource Include="ApplicationData\htmlhelp1-msdn\styles\images\vsobject_structure_sealed.png" />
     <Resource Include="ApplicationData\htmlhelp1-msdn\webexport.xslt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
