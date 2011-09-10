@@ -221,11 +221,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			this.IsValid = this.xmlDocument != null;
 
 			// the xml config xml needs to have an xslt specified
-			XmlNode xsltNode = this.xmlDocument.SelectSingleNode("/export/xslt");
-			this.IsValid = this.IsValid && (xsltNode != null && !string.IsNullOrEmpty(xsltNode.InnerText));
+			if (this.Exporter != Exporters.XML) {
+				XmlNode xsltNode = this.xmlDocument.SelectSingleNode("/export/xslt");
+				this.IsValid = this.IsValid && (xsltNode != null && !string.IsNullOrEmpty(xsltNode.InnerText));
 
-			// does the xslt link point to a file in the zip
-			this.IsValid = this.IsValid && container.ContainsEntry(xsltNode.InnerText);
+				// does the xslt link point to a file in the zip
+				this.IsValid = this.IsValid && container.ContainsEntry(xsltNode.InnerText);
+			}
 		}
 		#endregion
 	}
