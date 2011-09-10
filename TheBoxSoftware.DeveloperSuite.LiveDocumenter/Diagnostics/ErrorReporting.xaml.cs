@@ -139,6 +139,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 		private string FormatExceptionData(Exception forException) {
 			StringBuilder sb = new StringBuilder();
 			if (forException != null) {
+				sb.AppendLine();
 				sb.AppendLine("----------------------------------------------------------");
 				sb.AppendLine(string.Format("Message: {0}", forException.Message));
 				sb.AppendLine();
