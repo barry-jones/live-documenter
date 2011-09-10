@@ -50,7 +50,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private void LoadConfigFiles() {
 			string appFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 			foreach (string file in System.IO.Directory.GetFiles(appFolder + @"/ApplicationData/", "*.ldec")) {
-				exportFiles.Add(ExportConfigFile.Create(file));
+				ExportConfigFile currentConfig = ExportConfigFile.Create(file);
+				if (currentConfig.IsValid) { // only add valid ldec files
+					exportFiles.Add(currentConfig);
+				}
 			}
 			exportFiles.Sort((f1, f2) => f1.Name.CompareTo(f2.Name));
 			this.outputSelection.Items.Clear();
@@ -247,6 +250,29 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 			else {
 				this.exportImage.Source = null;
+			}
+
+			// create an instance of the exporter in the dummy format to allow it to test if it
+			// is able to execute.
+			Documentation.Exporting.Exporter exporter = null;
+			TheBoxSoftware.Documentation.Document document = new Documentation.Document(LiveDocumenter.LiveDocumentorFile.Singleton.LiveDocument.Assemblies);
+			exporter = Documentation.Exporting.Exporter.Create(document, new ExportSettings(), o);
+			List<Issue> issues = exporter.GetIssues();
+			if (issues.Count > 0) {
+				this.exportLogo.Visibility = Visibility.Hidden;
+				this.warningImage.Visibility = Visibility.Visible;
+				this.exportDescription.Text = string.Empty;
+				foreach(Issue current in issues) {
+					this.exportDescription.Text += current.Description + "\n";
+				}
+				this.exportType.Text = "Information!";
+				this.exportVersion.Text = string.Empty;
+				this.export.IsEnabled = false;
+			}
+			else {
+				this.exportLogo.Visibility = Visibility.Visible;
+				this.warningImage.Visibility = Visibility.Hidden;
+				this.export.IsEnabled = true;
 			}
 		}
 

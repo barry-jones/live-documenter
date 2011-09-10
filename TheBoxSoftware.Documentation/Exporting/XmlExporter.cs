@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using TheBoxSoftware.Documentation.Exporting.Website;
+using System.Collections.Generic;
 
 namespace TheBoxSoftware.Documentation.Exporting {
 	/// <summary>
@@ -84,6 +85,15 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				ExportException exception = new ExportException(ex.Message, ex);
 				this.OnExportException(new ExportExceptionEventArgs(exception));
 			}
+		}
+
+		/// <summary>
+		/// Returns a collection of messages that describe any issues that this exporter has with
+		/// running.
+		/// </summary>
+		/// <returns>The issues.</returns>
+		public override List<Issue> GetIssues() {
+			return new List<Issue>();
 		}
 	}
 }

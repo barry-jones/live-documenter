@@ -124,6 +124,15 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
+		/// Returns a collection of messages that describe any issues that this exporter has with
+		/// running.
+		/// </summary>
+		/// <returns>The issues.</returns>
+		public override List<Issue> GetIssues() {
+			return new List<Issue>();
+		}
+
+		/// <summary>
 		/// Compiles and creates the Help Viewer 1 mshc file.
 		/// </summary>
 		/// <param name="projectFile">The HxC file.</param>

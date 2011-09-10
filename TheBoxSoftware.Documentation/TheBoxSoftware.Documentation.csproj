@@ -138,6 +138,7 @@
     <Compile Include="Exporting\HtmlHelp1\ProjectXmlRenderer.cs" />
     <Compile Include="Exporting\HtmlHelp2Exporter.cs" />
     <Compile Include="Exporting\HtmlHelp2\IncludeFileXmlRenderer.cs" />
+    <Compile Include="Exporting\Issue.cs" />
     <Compile Include="Exporting\Rendering\AssemblyXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\DocumentMapXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\EventXmlRenderer.cs" />

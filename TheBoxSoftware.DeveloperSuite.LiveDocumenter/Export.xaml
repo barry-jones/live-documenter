@@ -75,8 +75,9 @@
 				<Canvas Grid.Row="1">
 					<Border HorizontalAlignment="Left" Background="White" BorderBrush="#FFEFEFEF" Width="100" BorderThickness="1" Grid.Row="1" Height="100" Canvas.Left="8">
                         <Grid>
-                            <Image Source="resources\exp_48x48.png" Opacity="0.5" Width="48" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <Image x:Name="exportImage" HorizontalAlignment="Center" VerticalAlignment="Center" />                            
+                            <Image x:Name="exportLogo" Source="resources\exp_48x48.png" Opacity="0.5" Width="48" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Image x:Name="exportImage" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Image x:Name="warningImage" Source="resources\sinfo_48x48.png" Opacity="0.5" Width="48" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" />
                         </Grid>
                     </Border>
 					<TextBlock x:Name="exportType" Width="294" Canvas.Left="114" FontWeight="Bold">Export type</TextBlock>

@@ -149,6 +149,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		public abstract void Export();
 
 		/// <summary>
+		/// When implemented in a dervied class checks to see if there are any issues with running
+		/// the exporter.
+		/// </summary>
+		/// <returns>Should return a list of issues.</returns>
+		public abstract List<Issue> GetIssues();
+
+		/// <summary>
 		/// Cancels the current export and cleans up.
 		/// </summary>
 		public virtual void Cancel() {

@@ -5,6 +5,7 @@ using System.Xml;
 using Microsoft.Win32;
 using Saxon.Api;
 using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
+using System.Collections.Generic;
 
 namespace TheBoxSoftware.Documentation.Exporting {
 	/// <summary>
@@ -163,6 +164,20 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
+		/// Returns a collection of messages that describe any issues that this exporter has with
+		/// running.
+		/// </summary>
+		/// <returns>The issues.</returns>
+		public override List<Issue> GetIssues() {
+			List<Issue> issues = new List<Issue>();
+			if (!this.FindHtmlHelpCompiler()) {
+				issues.Add(new Issue { Description = "Could not locate the HTML Help 2.0 compiler 'hxcomp.exe'. Please check it is installed correctly." });
+			}
+			return issues;
+		}
+
+		#region Helper Methods
+		/// <summary>
 		/// Checks the locations the compiler could be and indicates if it was found. The
 		/// property <see cref="HtmlHelpCompilerFilePath"/> is set.
 		/// </summary>
@@ -240,5 +255,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				throw;
 			}
 		}
+		#endregion
 	}
 }

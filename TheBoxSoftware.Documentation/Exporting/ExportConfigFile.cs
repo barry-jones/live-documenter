@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Xml;
-
+using Ionic.Zip;
 
 namespace TheBoxSoftware.Documentation.Exporting {
-	using Ionic.Zip;
-
 	/// <summary>
 	/// Reads a file that contains all of the information needed to perform an export.
 	/// </summary>
@@ -30,28 +28,33 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			this.ConfigFile = filename;
 			using (ZipFile file = new ZipFile(filename)) {
 				// get the config file
-				this.xmlDocument = new XmlDocument();
+				this.xmlDocument = null;
 				Stream ms = new MemoryStream();
-				file["export.config"].Extract(ms);
-				ms.Seek(0, SeekOrigin.Begin);
-				xmlDocument.LoadXml(new StreamReader(ms).ReadToEnd());
+				if (file.ContainsEntry("export.config")) {
+					file["export.config"].Extract(ms);
+					ms.Seek(0, SeekOrigin.Begin);
+					xmlDocument = new XmlDocument();
+					xmlDocument.LoadXml(new StreamReader(ms).ReadToEnd());
 
-				this.Name = xmlDocument.SelectSingleNode("/export/name").InnerText;
-				this.Version = xmlDocument.SelectSingleNode("/export/version").InnerText;
-				this.Exporter = this.UnpackExporter(xmlDocument.SelectSingleNode("/export/exporter").InnerText);
-				XmlNode descriptionNode = xmlDocument.SelectSingleNode("/export/description");
-				if (descriptionNode != null) {
-					this.Description = descriptionNode.InnerText;
-				}
-				XmlNode screenshotNode = xmlDocument.SelectSingleNode("/export/screenshot");
-				if (screenshotNode != null) {
-					this.HasScreenshot = true;
+					this.Name = xmlDocument.SelectSingleNode("/export/name").InnerText;
+					this.Version = xmlDocument.SelectSingleNode("/export/version").InnerText;
+					this.Exporter = this.UnpackExporter(xmlDocument.SelectSingleNode("/export/exporter").InnerText);
+					XmlNode descriptionNode = xmlDocument.SelectSingleNode("/export/description");
+					if (descriptionNode != null) {
+						this.Description = descriptionNode.InnerText;
+					}
+					XmlNode screenshotNode = xmlDocument.SelectSingleNode("/export/screenshot");
+					if (screenshotNode != null) {
+						this.HasScreenshot = true;
+					}
+
+					XmlNodeList properties = xmlDocument.SelectNodes("/export/properties/property");
+					foreach (XmlNode currentProperty in properties) {
+						this.Properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
+					}					
 				}
 
-				XmlNodeList properties = xmlDocument.SelectNodes("/export/properties/property");
-				foreach (XmlNode currentProperty in properties) {
-					this.Properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
-				}
+				this.CheckIsValid(file);
 			}
 		}
 
@@ -92,6 +95,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// The custom properties defined in the config file.
 		/// </summary>
 		public Dictionary<string, string> Properties { get; set; }
+
+		/// <summary>
+		/// Indicates if this is a valid LDEC file.
+		/// </summary>
+		public bool IsValid { get; set; }
 
 		/// <summary>
 		/// Gets the XSLT file from the export configuration file.
@@ -203,5 +211,22 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		public static ExportConfigFile Create(string filename) {
 			return new ExportConfigFile(filename);
 		}
+
+		#region Internal Methods
+		/// <summary>
+		/// Checks if the file has all of the requisits met and sets the <see cref="IsValid"/> property.
+		/// </summary>
+		private void CheckIsValid(ZipFile container) {
+			// we need to have a config file
+			this.IsValid = this.xmlDocument != null;
+
+			// the xml config xml needs to have an xslt specified
+			XmlNode xsltNode = this.xmlDocument.SelectSingleNode("/export/xslt");
+			this.IsValid = this.IsValid && (xsltNode != null && !string.IsNullOrEmpty(xsltNode.InnerText));
+
+			// does the xslt link point to a file in the zip
+			this.IsValid = this.IsValid && container.ContainsEntry(xsltNode.InnerText);
+		}
+		#endregion
 	}
 }
