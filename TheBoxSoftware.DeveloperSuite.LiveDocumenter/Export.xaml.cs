@@ -119,6 +119,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			if (e.Error == null) {
 				this.progressIndicator.Value = this.progressIndicator.Maximum;
 				this.progressText.Text = string.Format("Complete in {0}:{1}s", (int)duration.TotalMinutes, duration.Seconds);
+
+				if (this.threadedExporter.ExportExceptions.Count > 0) {
+					this.progressText.Text = "Completed with errors";
+					this.progressIndicator.Value = this.progressIndicator.Maximum;
+					ExceptionsMessageBox messageBox = new ExceptionsMessageBox(this.threadedExporter.ExportExceptions);
+					messageBox.ShowDialog();
+				}
 			}
 			else {
 				this.progressText.Text = "Error exporting documentation";
@@ -129,6 +136,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				errorReport.ShowDialog();
 			}
 			this.finish.IsEnabled = true;
+			this.cancel.IsEnabled = false;
 			this.Cursor = null;
 		}
 

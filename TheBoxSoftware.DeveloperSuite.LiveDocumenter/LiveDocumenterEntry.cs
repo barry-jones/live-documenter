@@ -46,7 +46,20 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				else {
 					toLoad = Page.Create(this, this.XmlCommentFile);
 				}
-				toLoad.Generate();
+
+				Exception generateException = null;
+				try {
+					toLoad.Generate();
+				}
+				catch (Exception ex) {
+					generateException = ex;
+				}
+				if (generateException != null) {
+					toLoad = new ErrorPage();
+					Diagnostics.ErrorReporting reporting = new Diagnostics.ErrorReporting();
+					reporting.SetException(generateException);
+					reporting.Show();
+				}
 				return toLoad;
 			}
 		}

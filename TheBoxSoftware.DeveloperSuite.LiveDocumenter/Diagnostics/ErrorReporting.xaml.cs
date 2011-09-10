@@ -18,7 +18,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 	/// Interaction logic for ErrorReporting.xaml
 	/// </summary>
 	public partial class ErrorReporting : Window {
-		private Exception currentException;
+		private List<Exception> currentExceptions;
 		private const string template = "StandardErrorReport.xml";
 
 		/// <summary>
@@ -33,13 +33,24 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 		/// </summary>
 		/// <param name="ex">The exception</param>
 		public void SetException(Exception ex) {
-			this.currentException = ex;
+			this.SetExceptions(new List<Exception>() { ex });
+		}
 
-			Exception current = ex;
+		/// <summary>
+		/// Sets a number of exceptions which halted the application
+		/// </summary>
+		/// <param name="exceptions">The exceptions to be reported</param>
+		public void SetExceptions(List<Exception> exceptions) {
+			this.currentExceptions = exceptions;
+
 			StringBuilder sb = new StringBuilder();
-			while (current != null) {
-				sb.AppendLine(this.FormatExceptionData(current));
-				current = current.InnerException;
+			foreach (Exception exception in this.currentExceptions) {
+				Exception current = exception;
+				
+				while (current != null) {
+					sb.AppendLine(this.FormatExceptionData(current));
+					current = current.InnerException;
+				}
 			}
 			this.txtExceptionDetails.Text = sb.ToString();
 		}
@@ -68,18 +79,21 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 				errorReport.Email = emial;
 
 				// write out all of the exceptions
-				Exception current = this.currentException;
+				Exception current = null;
 				List<BoxSoftwareServices.ExceptionReport> exceptions = new List<BoxSoftwareServices.ExceptionReport>();
-				do {
-					BoxSoftwareServices.ExceptionReport exceptionReport = new BoxSoftwareServices.ExceptionReport();
-					exceptionReport.ExceptionType = current.GetType().ToString();
-					exceptionReport.Message = current.Message;
-					exceptionReport.StackTrace = this.FormatExceptionData(current);
-					exceptionReport.Data = this.WriteDictionary(current.Data);
-					exceptions.Add(exceptionReport);
-					current = current.InnerException;
+				foreach (Exception exception in this.currentExceptions) {
+					current = exception;
+					do {
+						BoxSoftwareServices.ExceptionReport exceptionReport = new BoxSoftwareServices.ExceptionReport();
+						exceptionReport.ExceptionType = current.GetType().ToString();
+						exceptionReport.Message = current.Message;
+						exceptionReport.StackTrace = this.FormatExceptionData(current);
+						exceptionReport.Data = this.WriteDictionary(current.Data);
+						exceptions.Add(exceptionReport);
+						current = current.InnerException;
 
-				} while (current != null);
+					} while (current != null);
+				}
 				errorReport.Exceptions = exceptions.ToArray();
 
 				// get the referenced assemblies and the details

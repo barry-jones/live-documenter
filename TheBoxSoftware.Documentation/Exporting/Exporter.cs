@@ -38,6 +38,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			this.Config = config;
 			this.Settings = settings;
 			this.Document = document;
+			this.ExportExceptions = new List<Exception>();
 
 			string regex = string.Format("{0}{1}",
 				 new string(Path.GetInvalidFileNameChars()),
@@ -140,6 +141,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Indicates if this export has been cancelled.
 		/// </summary>
 		protected bool IsCancelled { get; private set; }
+
+		/// <summary>
+		/// A collection of errors that have occurred during the export process.
+		/// </summary>
+		public List<Exception> ExportExceptions { get; set; }
 		#endregion
 
 		/// <summary>
@@ -179,16 +185,22 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <param name="current">The current entry to export.</param>
 		protected virtual void Export(Entry current) {
-			Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
-			if (r != null) {
-				string filename = string.Format("{0}{1}{2}.xml",
-					this.TempDirectory,
-					current.Key,
-					string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty)
-					);
-				using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
-					r.Render(writer);
+			try {
+				Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
+				if (r != null) {
+					string filename = string.Format("{0}{1}{2}.xml",
+						this.TempDirectory,
+						current.Key,
+						string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty)
+						);
+					using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
+						r.Render(writer);
+					}
 				}
+			}
+			catch (Exception ex) {
+				// we will deal with it later
+				this.ExportExceptions.Add(ex);
 			}
 		}
 

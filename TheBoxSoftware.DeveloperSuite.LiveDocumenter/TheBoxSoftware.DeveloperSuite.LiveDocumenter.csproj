@@ -77,17 +77,25 @@
       <DependentUpon>CustomInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="DocumentationResources.cs" />
+    <Compile Include="ExceptionsMessageBox.xaml.cs">
+      <DependentUpon>ExceptionsMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LiveDocumenterEntryCreator.cs" />
     <Compile Include="Model\DocumentSettings.cs" />
     <Compile Include="Model\PrivacyFilter.cs" />
     <Compile Include="Model\PrivacyFilterCollection.cs" />
     <Compile Include="Model\XmlCommentParserException.cs" />
     <Compile Include="Pages\Elements\NoXmlComments.cs" />
+    <Compile Include="Pages\ErrorPage.cs" />
     <Compile Include="Pages\NamespaceContainerPage.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\ComboWithCheckboxes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExceptionsMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
