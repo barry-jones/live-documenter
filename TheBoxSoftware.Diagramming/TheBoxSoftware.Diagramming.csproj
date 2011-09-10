@@ -82,6 +82,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\LibraryVersionInfo.cs">
+      <Link>LibraryVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UML\Class\Class.cs" />
     <Compile Include="UML\Class\ClassDiagram.cs" />

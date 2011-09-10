@@ -92,6 +92,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\LibraryVersionInfo.cs">
+      <Link>LibraryVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Package\Package.cs" />
     <Compile Include="Package\PackageDiagram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

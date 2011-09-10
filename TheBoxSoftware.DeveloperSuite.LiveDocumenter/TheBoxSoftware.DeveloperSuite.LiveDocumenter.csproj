@@ -62,6 +62,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\LiveDocumenterVersionInfo.cs">
+      <Link>LiveDocumenterVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Commands.cs" />
     <Compile Include="Controls\ComboWithCheckboxes.xaml.cs">
       <DependentUpon>ComboWithCheckboxes.xaml</DependentUpon>

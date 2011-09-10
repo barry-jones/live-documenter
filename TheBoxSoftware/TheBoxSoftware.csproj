@@ -70,6 +70,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\LibraryVersionInfo.cs">
+      <Link>LibraryVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Diagnostics\Logging.cs" />
     <Compile Include="Diagnostics\TraceHelper.cs" />
     <Compile Include="IExtendedException.cs" />

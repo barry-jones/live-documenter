@@ -104,6 +104,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\LibraryVersionInfo.cs">
+      <Link>LibraryVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="AssemblyFirstDocumentMapper.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocumentedAssembly.cs" />

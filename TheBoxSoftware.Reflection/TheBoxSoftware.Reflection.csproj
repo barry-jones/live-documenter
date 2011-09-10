@@ -72,6 +72,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\LibraryVersionInfo.cs">
+      <Link>LibraryVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="AssemblyDef.cs" />
     <Compile Include="AssemblyRef.cs" />
     <Compile Include="Comments\AttributeRequiredException.cs" />

@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Solution Items\ExporterVersionInfo.cs">
+      <Link>ExporterVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Document.cs" />
     <Compile Include="ExportConfiguration.cs" />
     <Compile Include="Program.cs" />
