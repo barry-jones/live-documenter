@@ -664,31 +664,34 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			/// </summary>
 			public void Restore() {
 				Entry found = null;
-				Entry parent = this.previousEntry.Parent;
 				
-				if(this.previousEntry.Item is Reflection.ReflectedMember) {
-					Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
-						this.previousEntry.Item as Reflection.ReflectedMember
-						);
-					found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
-				}
-				else if(parent != null && parent.Item is Reflection.ReflectedMember) {
-					Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
-						parent.Item as Reflection.ReflectedMember
-						);
-					found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+				if (this.previousEntry != null) { // only if something was previously selected
+					Entry parent = this.previousEntry.Parent;
 
-					// test method/field member collection pages in a type
-					for(int i = 0; i < found.Children.Count; i++) {
-						if(found.Children[i].Name == this.previousEntry.Name) {
-							found = found.Children[i];
-							break;
+					if (this.previousEntry.Item is Reflection.ReflectedMember) {
+						Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
+							this.previousEntry.Item as Reflection.ReflectedMember
+							);
+						found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+					}
+					else if (parent != null && parent.Item is Reflection.ReflectedMember) {
+						Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
+							parent.Item as Reflection.ReflectedMember
+							);
+						found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+
+						// test method/field member collection pages in a type
+						for (int i = 0; i < found.Children.Count; i++) {
+							if (found.Children[i].Name == this.previousEntry.Name) {
+								found = found.Children[i];
+								break;
+							}
 						}
 					}
-				}
-				else {
-					// now its a namespace or namespace collection page and we will ignore
-					// it for now
+					else {
+						// now its a namespace or namespace collection page and we will ignore
+						// it for now
+					}
 				}
 
 				if(found != null) {
