@@ -18,6 +18,13 @@
         <Setter Property="Margin" Value="0,0,0,12" />
     </Style>
 
+    <Style x:Key="NoComments" TargetType="{x:Type doc:Paragraph}">
+        <Setter Property="Margin" Value="0,0,0,12" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="BorderBrush" Value="#FFFDC155" />
+        <Setter Property="Background" Value="#FFFDC155" />
+    </Style>
+
     <Style TargetType="{x:Type doc:Paragraph}" BasedOn="{StaticResource Paragraph}">
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="0" />

@@ -25,6 +25,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				CRefPath crefPath = null;
 				SummaryTable members;
 
+				if (!this.xmlComments.Exists) {
+					this.Blocks.Add(new NoXmlComments(this.representedType));
+				}
+
 				this.Blocks.Add(new Header1(this.representedType.GetDisplayName(false) + " Members"));
 
 				List<MethodDef> constructors = this.representedType.GetConstructors();

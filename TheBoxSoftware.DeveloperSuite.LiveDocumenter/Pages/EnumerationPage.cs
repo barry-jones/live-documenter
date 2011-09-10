@@ -38,6 +38,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				XmlCodeCommentFile xmlComments = this.commentsXml.GetReusableFile();
 				List<Block> parsedBlocks = Elements.Parser.Parse(this.representedType.Assembly, xmlComments, crefPath);
 
+				if (!xmlComments.Exists) {
+					this.Blocks.Add(new NoXmlComments(this.representedType));
+				}
+
 				this.Blocks.Add(new Header1(this.representedType.Name + " Enumeration"));
 
                 // Add the summary if it exists

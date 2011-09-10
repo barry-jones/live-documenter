@@ -37,6 +37,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				CRefPath crefPath = new CRefPath(this.representedType);
 				List<Block> parsedBlocks = Elements.Parser.Parse(this.representedType.Assembly, commentsXml, crefPath);
 
+				if (!this.commentsXml.Exists) {
+					this.Blocks.Add(new NoXmlComments(this.representedType));
+				}
+
 				string classType = this.representedType.IsInterface ? " Interface" : " Class";
 				this.Blocks.Add(new Header1(this.representedType.GetDisplayName(false) + classType));
 

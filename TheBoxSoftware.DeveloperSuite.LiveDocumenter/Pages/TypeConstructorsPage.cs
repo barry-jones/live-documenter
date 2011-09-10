@@ -26,6 +26,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				}
 				XmlCodeCommentFile comments = this.xmlComments.GetReusableFile();
 
+				if (!this.xmlComments.Exists) {
+					this.Blocks.Add(new NoXmlComments(definingType));
+				}
+
 				this.Blocks.Add(new Header1(definingType.GetDisplayName(false) + " Constructors"));
 
 				if (this.typesMethods != null && this.typesMethods.Count > 0) {

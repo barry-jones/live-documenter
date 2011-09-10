@@ -52,9 +52,6 @@
             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
             <Setter Property="FontWeight" Value="Normal" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding HasXmlComments}" Value="False">
-                    <Setter Property="Foreground" Value="#999999" />
-                </DataTrigger>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="FontWeight" Value="Bold" />
                 </Trigger>

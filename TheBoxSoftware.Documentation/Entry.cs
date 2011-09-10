@@ -32,6 +32,7 @@ namespace TheBoxSoftware.Documentation {
 		public Entry(object item, string displayName, XmlCodeCommentFile xmlComments) {
 			this.item = item;
 			this.xmlComments = xmlComments;
+			this.hasXmlComments = xmlComments != null && xmlComments.Exists;
 			this.Name = displayName;
 			this.Children = new List<Entry>();
 		}

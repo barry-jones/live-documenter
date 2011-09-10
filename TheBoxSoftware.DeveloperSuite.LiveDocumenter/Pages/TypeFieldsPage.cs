@@ -32,10 +32,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// </summary>
 		public override void Generate() {
 			if (!this.IsGenerated) {
+				TypeRef definingType = null;
 				if (fields.Count > 0) {
-					this.Blocks.Add(new Header1(fields[0].Type.GetDisplayName(false) + " Fields"));
+					definingType = fields[0].Type;					
 				}
 				XmlCodeCommentFile comments = this.xmlComments.GetReusableFile();
+
+				if (!this.xmlComments.Exists) {
+					this.Blocks.Add(new NoXmlComments(definingType));
+				}
+
+				this.Blocks.Add(new Header1(definingType.GetDisplayName(false) + " Fields"));
 
 				if (this.fields != null && this.fields.Count > 0) {
 					SummaryTable displayedFields = new SummaryTable();
