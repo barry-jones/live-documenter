@@ -28,7 +28,6 @@ namespace TheBoxSoftware.Documentation {
 			this.EntryCreator.Created = 0;
 			this.DocumentMap = this.UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
 			int fileCounter = 1;
-			List<NamespacePart> namespaces = new List<NamespacePart>();
 
 			// For each of the documentedfiles generate the document map and add
 			// it to the parent node of the document map
@@ -46,6 +45,7 @@ namespace TheBoxSoftware.Documentation {
 			List<Entry> namespaceContainers = new List<Entry>();
 
 			if (this.DocumentMap.Count > 10) {
+				// calculate the best level to create groups from or if there is no best place
 				dontGroupNamespaces = false;
 				float parentPercentage = 0, currentPercentage = 0;
 				int currentLevel = 0;
@@ -200,18 +200,5 @@ namespace TheBoxSoftware.Documentation {
 			}
 			return found;
 		}
-
-		#region Internals
-		private class NamespacePart {
-			public NamespacePart(string name) {
-				this.Part = name;
-				this.Children = new List<NamespacePart>();
-			}
-
-			public int Count { get; set; }
-			public string Part { get; set; }
-			public List<NamespacePart> Children { get; set; }
-		}
-		#endregion
 	}
 }
