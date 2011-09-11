@@ -2,8 +2,8 @@
 <VSPerformanceSession Version="1.00">
   <Options>
     <Solution>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\The Box Software Developer Suite.sln</Solution>
-    <CollectionMethod>Sampling</CollectionMethod>
-    <AllocationMethod>None</AllocationMethod>
+    <CollectionMethod>Instrumentation</CollectionMethod>
+    <AllocationMethod>Life</AllocationMethod>
     <LaunchRuntimeControl>true</LaunchRuntimeControl>
     <AddReport>true</AddReport>
     <ResourceBasedAnalysisSelected>true</ResourceBasedAnalysisSelected>
@@ -15,6 +15,8 @@
     <SysCallCount>10</SysCallCount>
     <SamplingCounter Name="" ReloadValue="00000000000f4240" DisplayName="" />
     <RelocateBinaries>false</RelocateBinaries>
+    <AdditionalArgruments />
+    <TargetCLRVersion>Automatic</TargetCLRVersion>
     <CollectOnHpcCluster>false</CollectOnHpcCluster>
     <HPCSettings>
       <NumberOfProcesses>0</NumberOfProcesses>
@@ -49,8 +51,9 @@
   </PostinstrumentEvent>
   <Binaries>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\DocumentationTest\obj\Debug\DocumentationTest.dll</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\DocumentationTest\obj\Release\DocumentationTest.dll</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -59,7 +62,7 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\DocumentationTest\bin\Debug\</StartupDirectory>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\DocumentationTest\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -76,8 +79,9 @@
       <ProjName>DocumentationTest</ProjName>
     </ProjBinary>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\LiveDocumentor.Test.VBDocumentation\obj\Debug\LiveDocumentor.Test.VBDocumentation.dll</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\LiveDocumentor.Test.VBDocumentation\obj\Release\LiveDocumentor.Test.VBDocumentation.dll</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -86,7 +90,7 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\LiveDocumentor.Test.VBDocumentation\bin\Debug\</StartupDirectory>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\LiveDocumentor.Test.VBDocumentation\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -103,8 +107,9 @@
       <ProjName>LiveDocumentor.Test.VBDocumentation</ProjName>
     </ProjBinary>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware\obj\Debug\TheBoxSoftware.dll</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware\obj\Release\TheBoxSoftware.dll</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -113,7 +118,7 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware\bin\Debug\</StartupDirectory>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -130,8 +135,9 @@
       <ProjName>TheBoxSoftware</ProjName>
     </ProjBinary>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.DeveloperSuite.LiveDocumenter\obj\Debug\Live Documenter.exe</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.DeveloperSuite.LiveDocumenter\obj\Release\Live Documenter.exe</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -140,8 +146,8 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <ExecutablePath>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\Debug\Live Documenter.exe</ExecutablePath>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\Debug\</StartupDirectory>
+      <ExecutablePath>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\Release\Live Documenter.exe</ExecutablePath>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -158,8 +164,9 @@
       <ProjName>TheBoxSoftware.DeveloperSuite.LiveDocumenter</ProjName>
     </ProjBinary>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming\obj\Debug\TheBoxSoftware.Diagramming.dll</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming\obj\Release\TheBoxSoftware.Diagramming.dll</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -168,7 +175,7 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming\bin\Debug\</StartupDirectory>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -185,8 +192,9 @@
       <ProjName>TheBoxSoftware.Diagramming</ProjName>
     </ProjBinary>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming.WPF\obj\Debug\TheBoxSoftware.Diagramming.WPF.dll</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming.WPF\obj\Release\TheBoxSoftware.Diagramming.WPF.dll</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -195,7 +203,7 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming.WPF\bin\Debug\</StartupDirectory>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Diagramming.WPF\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -212,8 +220,9 @@
       <ProjName>TheBoxSoftware.Diagramming.WPF</ProjName>
     </ProjBinary>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Documentation\obj\Debug\TheBoxSoftware.Documentation.dll</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Documentation\obj\Release\TheBoxSoftware.Documentation.dll</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -222,7 +231,7 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Documentation\bin\Debug\</StartupDirectory>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Documentation\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -239,8 +248,9 @@
       <ProjName>TheBoxSoftware.Documentation</ProjName>
     </ProjBinary>
     <ProjBinary>
-      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Reflection\obj\Debug\TheBoxSoftware.Reflection.dll</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Reflection\obj\Release\TheBoxSoftware.Reflection.dll</Path>
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>09/11/2011 13:03:48</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -249,7 +259,7 @@
       <LaunchProject>true</LaunchProject>
       <OverrideProjectSettings>false</OverrideProjectSettings>
       <LaunchMethod>Executable</LaunchMethod>
-      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Reflection\bin\Debug\</StartupDirectory>
+      <StartupDirectory>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\TheBoxSoftware.Reflection\bin\Release\</StartupDirectory>
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
@@ -281,6 +291,9 @@
     </Report>
     <Report>
       <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\Report110903.vsp</Path>
+    </Report>
+    <Report>
+      <Path>C:\Users\Barry\Documents\Current Projects\The Box Software\Developer Suite\Report110911.vsp</Path>
     </Report>
   </Reports>
   <Launches>

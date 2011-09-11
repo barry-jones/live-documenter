@@ -94,57 +94,59 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				if (!this.IsCancelled) {
 					Processor p = new Processor();
-					Uri xsltLocation = new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), "ApplicationData/livexmltohtml.xslt");
-					XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
-					transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
+					using (Stream xsltStream = this.Config.GetXslt()) {
+						XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
+						transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
-					// set output files
-					this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-					this.Config.SaveOutputFilesTo(this.OutputDirectory);
+						// set output files
+						this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+						this.Config.SaveOutputFilesTo(this.OutputDirectory);
 
-					this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+						this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
-					// export the project file
-					using (FileStream fs = File.OpenRead(string.Format("{0}/project.xml", this.TempDirectory))) {
-						Serializer s = new Serializer();
-						s.SetOutputFile(this.OutputDirectory + "project.hhp");
-						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-						transform.Run(s);
-					}
-
-					// export the index file
-					using (FileStream fs = File.OpenRead(string.Format("{0}/index.xml", this.TempDirectory))) {
-						Serializer s = new Serializer();
-						s.SetOutputFile(this.OutputDirectory + "index.hhk");
-						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-						transform.Run(s);
-					}
-
-					// export the content file
-					using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
-						Serializer s = new Serializer();
-						s.SetOutputFile(this.OutputDirectory + "toc.hhc");
-						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-						transform.Run(s);
-					}
-
-					// export the content files
-					int counter = 0;
-					string[] exclude = { "toc.xml", "index.xml", "project.xml" };
-					foreach (string current in Directory.GetFiles(this.TempDirectory)) {
-						if (exclude.Contains(current.Substring(this.TempDirectory.Length)))
-							continue;
-						using (FileStream fs = File.OpenRead(current)) {
+						// export the project file
+						using (FileStream fs = File.OpenRead(string.Format("{0}/project.xml", this.TempDirectory))) {
 							Serializer s = new Serializer();
-							s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+							s.SetOutputFile(this.OutputDirectory + "project.hhp");
 							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 							transform.Run(s);
 						}
-						counter++;
-						if (counter % this.XmlExportStep == 0) {
-							this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+
+						// export the index file
+						using (FileStream fs = File.OpenRead(string.Format("{0}/index.xml", this.TempDirectory))) {
+							Serializer s = new Serializer();
+							s.SetOutputFile(this.OutputDirectory + "index.hhk");
+							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+							transform.Run(s);
 						}
-						if (this.IsCancelled) break;
+
+						// export the content file
+						using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
+							Serializer s = new Serializer();
+							s.SetOutputFile(this.OutputDirectory + "toc.hhc");
+							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+							transform.Run(s);
+						}
+
+						// export the content files
+						int counter = 0;
+						string[] exclude = { "toc.xml", "index.xml", "project.xml" };
+						foreach (string current in Directory.GetFiles(this.TempDirectory)) {
+							if (exclude.Contains(current.Substring(this.TempDirectory.Length)))
+								continue;
+							using (FileStream fs = File.OpenRead(current)) {
+								Serializer s = new Serializer();
+								s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+								transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+								transform.Run(s);
+								s.Close();
+							}
+							counter++;
+							if (counter % this.XmlExportStep == 0) {
+								this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+							}
+							if (this.IsCancelled) break;
+						}
 					}
 				}
 

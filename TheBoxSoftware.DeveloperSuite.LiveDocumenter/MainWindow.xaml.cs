@@ -379,6 +379,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
                 while (this.currentSelectionParent == null || this.currentSelectionParent.Parent != null) {
                     this.currentSelectionParent = this.currentSelectionParent.Parent;
                 };
+				GC.Collect();
                 this.Cursor = null;
             }
         }
@@ -511,6 +512,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			Export export = new Export();
 			export.Owner = this;
 			export.ShowDialog();
+			export = null;
+			GC.Collect();
 		}
 
 		/// <summary>

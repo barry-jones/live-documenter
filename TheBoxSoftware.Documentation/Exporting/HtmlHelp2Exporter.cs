@@ -81,51 +81,54 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				if (!this.IsCancelled) {
 					Processor p = new Processor();
-					XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
-					transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
+					using (Stream xsltStream = this.Config.GetXslt()) {
+						XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
+						transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
-					// set output files
-					this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-					this.Config.SaveOutputFilesTo(this.OutputDirectory);
+						// set output files
+						this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+						this.Config.SaveOutputFilesTo(this.OutputDirectory);
 
-					this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+						this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
-					// export the project xml, we cant render the XML because the DTD protocol causes loads of probs with Saxon
-					CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.Document.Map, string.Empty);
-					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", this.OutputDirectory))) {
-						collectionXml.Render(writer);
-					}
+						// export the project xml, we cant render the XML because the DTD protocol causes loads of probs with Saxon
+						CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.Document.Map, string.Empty);
+						using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", this.OutputDirectory))) {
+							collectionXml.Render(writer);
+						}
 
-					// export the incldue file xml
-					IncludeFileXmlRenderer includeXml = new IncludeFileXmlRenderer(this.Config);
-					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxF", this.OutputDirectory))) {
-						includeXml.Render(writer);
-					}
+						// export the incldue file xml
+						IncludeFileXmlRenderer includeXml = new IncludeFileXmlRenderer(this.Config);
+						using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxF", this.OutputDirectory))) {
+							includeXml.Render(writer);
+						}
 
-					// export the content file
-					using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
-						Serializer s = new Serializer();
-						s.SetOutputFile(this.OutputDirectory + "Documentation.HxT");
-						transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-						transform.Run(s);
-					}
-
-					// export the content files
-					int counter = 0;
-					foreach (string current in Directory.GetFiles(this.TempDirectory)) {
-						if (current.Substring(this.TempDirectory.Length) == "toc.xml")
-							continue;
-						using (FileStream fs = File.OpenRead(current)) {
+						// export the content file
+						using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory))) {
 							Serializer s = new Serializer();
-							s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+							s.SetOutputFile(this.OutputDirectory + "Documentation.HxT");
 							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
 							transform.Run(s);
 						}
-						counter++;
-						if (counter % this.XmlExportStep == 0) {
-							this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+
+						// export the content files
+						int counter = 0;
+						foreach (string current in Directory.GetFiles(this.TempDirectory)) {
+							if (current.Substring(this.TempDirectory.Length) == "toc.xml")
+								continue;
+							using (FileStream fs = File.OpenRead(current)) {
+								Serializer s = new Serializer();
+								s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+								transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+								transform.Run(s);
+								s.Close();
+							}
+							counter++;
+							if (counter % this.XmlExportStep == 0) {
+								this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+							}
+							if (this.IsCancelled) break;
 						}
-						if (this.IsCancelled) break;
 					}
 				}
 

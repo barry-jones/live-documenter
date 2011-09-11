@@ -67,31 +67,34 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				if (!this.IsCancelled) {
 					Processor p = new Processor();
-					XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
-					transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
+					using (Stream xsltStream = this.Config.GetXslt()) {
+						XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
+						transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
-					// set output files
-					this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-					this.Config.SaveOutputFilesTo(this.OutputDirectory);
+						// set output files
+						this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+						this.Config.SaveOutputFilesTo(this.OutputDirectory);
 
-					this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+						this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
-					// export the content files
-					int counter = 0;
-					foreach (string current in Directory.GetFiles(this.TempDirectory)) {
-						if (current.Substring(this.TempDirectory.Length) == "toc.xml")
-							continue;
-						using (FileStream fs = File.OpenRead(current)) {
-							Serializer s = new Serializer();
-							s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
-							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-							transform.Run(s);
+						// export the content files
+						int counter = 0;
+						foreach (string current in Directory.GetFiles(this.TempDirectory)) {
+							if (current.Substring(this.TempDirectory.Length) == "toc.xml")
+								continue;
+							using (FileStream fs = File.OpenRead(current)) {
+								Serializer s = new Serializer();
+								s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
+								transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
+								transform.Run(s);
+								s.Close();
+							}
+							counter++;
+							if (counter % this.XmlExportStep == 0) {
+								this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+							}
+							if (this.IsCancelled) break;
 						}
-						counter++;
-						if (counter % this.XmlExportStep == 0) {
-							this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
-						}
-						if (this.IsCancelled) break;
 					}
 				}
 

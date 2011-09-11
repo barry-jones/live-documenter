@@ -35,6 +35,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					ms.Seek(0, SeekOrigin.Begin);
 					xmlDocument = new XmlDocument();
 					xmlDocument.LoadXml(new StreamReader(ms).ReadToEnd());
+					ms.Close();
 
 					this.Name = xmlDocument.SelectSingleNode("/export/name").InnerText;
 					this.Version = xmlDocument.SelectSingleNode("/export/version").InnerText;

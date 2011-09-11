@@ -94,7 +94,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="cref">The member to get the original XML for</param>
 		/// <returns>The original XML for the specified member</returns>
-		public string GetXmlFor(CRefPath cref) {
+		public virtual string GetXmlFor(CRefPath cref) {
 			string xpath = string.Format(
 				"/doc/members/member[@name=\"{0}\"]",
 				cref.ToString()
@@ -145,9 +145,15 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// However it does speed up the process of reading many elements from
 		/// the xml file in iterations.
 		/// </summary>
-		public class ReusableXmlCodeCommentFile : XmlCodeCommentFile {
-			XPathDocument commentsDocument;
-			XPathNavigator navigator;
+		public sealed class ReusableXmlCodeCommentFile : XmlCodeCommentFile {
+			private XPathDocument commentsDocument;
+			private XPathNavigator navigator;
+
+			/// <summary>
+			/// Initialises a new instance of the ReusableXmlCodeCommentFile class.
+			/// </summary>
+			/// <param name="file">The filename of the xml comments file.</param>
+			/// <param name="exists">Indicates if the file exists.</param>
 			internal ReusableXmlCodeCommentFile(string file, bool exists) {
 				this.xmlCommentFileName = file;
 				this.Exists = exists;
@@ -197,6 +203,38 @@ namespace TheBoxSoftware.Reflection.Comments {
 				}
 
 				return parsedComment;
+			}
+
+			/// <summary>
+			/// Obtains the original XML for the specified <paramref name="cref"/>.
+			/// </summary>
+			/// <param name="cref">The member to get the original XML for</param>
+			/// <returns>The original XML for the specified member</returns>
+			public override string GetXmlFor(CRefPath cref) {
+				string xpath = string.Format(
+				"/doc/members/member[@name=\"{0}\"]",
+				cref.ToString()
+				);
+
+				string xml = string.Empty;
+
+				if (this.Exists) {
+					XPathNodeIterator ni = navigator.Select(xpath);
+					XmlNode memberComment = null;
+					if (ni.MoveNext()) {
+						using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml)) {
+							XmlReader xmlReader = XmlTextReader.Create(reader);
+							XmlDocument tempD = new XmlDocument();
+							memberComment = tempD.ReadNode(xmlReader);
+						}
+					}
+
+					if (memberComment != null) {
+						xml = memberComment.InnerXml;
+					}
+				}
+
+				return xml;
 			}
 		}
 		#endregion

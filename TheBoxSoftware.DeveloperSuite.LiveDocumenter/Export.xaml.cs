@@ -135,6 +135,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				errorReport.SetException(e.Error);
 				errorReport.ShowDialog();
 			}
+
+			if (worker != null) {
+				worker.Dispose();
+			}
+
 			this.finish.IsEnabled = true;
 			this.cancel.IsEnabled = false;
 			this.Cursor = null;

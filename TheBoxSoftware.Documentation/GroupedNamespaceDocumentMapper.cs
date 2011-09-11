@@ -7,6 +7,11 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 
+	/// <summary>
+	/// <para>A DocumentMapper that generates a map starting from namespaces. Where those namespaces
+	/// have been grouped together to simplify the starting point.</para
+	/// <para>See the MSDN library for an example of what this produces.</para>
+	/// </summary>
 	public class GroupedNamespaceDocumentMapper : DocumentMapper {
 		/// <summary>
 		/// Initialises a new instance of the NamespaceFirstDocumentMapper.
@@ -36,26 +41,58 @@ namespace TheBoxSoftware.Documentation {
 			}
 			this.DocumentMap.Sort();
 
-			int counter = 1;
+			bool dontGroupNamespaces = true;
+			List<string> counter = new List<string>();
 			List<Entry> namespaceContainers = new List<Entry>();
-			foreach(Entry current in this.DocumentMap) {
-				bool isChild = false;
-				foreach(Entry namespaceContainer in namespaceContainers) {
-					if(current.Name.Contains(namespaceContainer.Name)) {
-						current.Parent = namespaceContainer;
-						namespaceContainer.Children.Add(current);
-						isChild = true;
+
+			if (this.DocumentMap.Count > 10) {
+				dontGroupNamespaces = false;
+				float parentPercentage = 0, currentPercentage = 0;
+				int currentLevel = 0;
+				do {
+					counter.Clear();
+
+					for (int dmI = 0; dmI < this.DocumentMap.Count; dmI++) {
+						string[] parts = this.DocumentMap[dmI].Name.Split('.');
+						string currentNamespace = parts.Length > currentLevel ? string.Join(".", parts, 0, currentLevel + 1) : string.Join(".", parts);
+
+						if (!counter.Contains(currentNamespace)) {
+							counter.Add(currentNamespace);
+						}
 					}
-				}
-				if(!isChild) {
+
+					currentPercentage = ((float)counter.Count) / ((float)this.DocumentMap.Count);
+					if (parentPercentage < 0.1 && currentPercentage > 0.65 && currentLevel > 0) {
+						dontGroupNamespaces = true;
+						break;
+					}
+
+					currentLevel++;
+					parentPercentage = ((float)counter.Count) / ((float)this.DocumentMap.Count);
+				} while (((float)counter.Count) / ((float)this.DocumentMap.Count) < 0.1306);
+			}
+
+			if (!dontGroupNamespaces) {
+				// create all the top level groupings
+				int id = 0;
+				for (int cI = 0; cI < counter.Count; cI++) {
 					Entry namespaceContainer = this.EntryCreator.Create(
-						EntryTypes.NamespaceContainer, current.Name, null
+						EntryTypes.NamespaceContainer, counter[cI], null
 						);
-					namespaceContainer.Key = counter++; ;
-					namespaceContainer.SubKey = current.Name + "Namespaces";
-					current.Parent = namespaceContainer;
-					namespaceContainer.Children.Add(current);
+					namespaceContainer.Key = id++;
+					namespaceContainer.SubKey = counter[cI] + "Namespaces";
 					namespaceContainers.Add(namespaceContainer);
+				}
+
+				// add all the namespaces to the groupings
+				for (int namespaceI = 0; namespaceI < this.DocumentMap.Count; namespaceI++) {
+					for (int containersI = namespaceContainers.Count; containersI > 0; containersI--) {
+						if (this.DocumentMap[namespaceI].Name.Contains(namespaceContainers[containersI - 1].Name)) {
+							this.DocumentMap[namespaceI].Parent = namespaceContainers[containersI - 1];
+							namespaceContainers[containersI - 1].Children.Add(this.DocumentMap[namespaceI]);
+							break;
+						}
+					}
 				}
 			}
 

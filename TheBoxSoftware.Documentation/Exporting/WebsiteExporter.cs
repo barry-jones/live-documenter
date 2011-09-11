@@ -60,30 +60,33 @@ namespace TheBoxSoftware.Documentation.Exporting {
 
 				if (!this.IsCancelled) {
 					Processor p = new Processor();
-					XsltTransformer transform = p.NewXsltCompiler().Compile(this.Config.GetXslt()).Load();
-					transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
+					using (Stream xsltStream = this.Config.GetXslt()) {
+						XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
+						transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
-					// set output files
-					this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-					this.Config.SaveOutputFilesTo(this.PublishDirectory);
+						// set output files
+						this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+						this.Config.SaveOutputFilesTo(this.PublishDirectory);
 
-					this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
-					string extension = this.Config.Properties.ContainsKey("extension") ? this.Config.Properties["extension"] : "htm";
-					int counter = 0;
-					foreach (string current in Directory.GetFiles(this.TempDirectory)) {
-						if (current.Substring(this.TempDirectory.Length) == "toc.xml")
-							continue;
-						using (FileStream fs = File.OpenRead(current)) {
-							Serializer s = new Serializer();
-							s.SetOutputFile(this.PublishDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension);
-							transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.TempDirectory));
-							transform.Run(s);
-							counter++;
-							if (counter % this.XmlExportStep == 0) {
-								this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+						this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+						string extension = this.Config.Properties.ContainsKey("extension") ? this.Config.Properties["extension"] : "htm";
+						int counter = 0;
+						foreach (string current in Directory.GetFiles(this.TempDirectory)) {
+							if (current.Substring(this.TempDirectory.Length) == "toc.xml")
+								continue;
+							using (FileStream fs = File.OpenRead(current)) {
+								Serializer s = new Serializer();
+								s.SetOutputFile(this.PublishDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension);
+								transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.TempDirectory));
+								transform.Run(s);
+								counter++;
+								if (counter % this.XmlExportStep == 0) {
+									this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+								}
+								s.Close();
 							}
+							if (this.IsCancelled) break;
 						}
-						if (this.IsCancelled) break;
 					}
 				}
 
