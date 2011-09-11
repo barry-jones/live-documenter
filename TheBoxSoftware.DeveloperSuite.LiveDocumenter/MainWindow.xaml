@@ -7,7 +7,7 @@
     xmlns:extend="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Extensions"
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
-    xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
     x:Name="mainWindow"
     Title="Live Documenter - Alpha Release" 
     Height="639" 
@@ -17,16 +17,6 @@
     Loaded="mainWindow_Loaded" 
     Closing="mainWindow_Closing" 
     Activated="mainWindow_Activated">
-
-    <Window.InputBindings>
-        <KeyBinding Key="Left" Modifiers="Alt" Command="NavigationCommands.BrowseBack" />
-        <KeyBinding Key="Right" Modifiers="Alt" Command="NavigationCommands.BrowseForward" />
-        <KeyBinding Key="O" Modifiers="Control" Command="ApplicationCommands.Open" />
-        <KeyBinding Key="P" Modifiers="Control" Command="ApplicationCommands.Print" />
-        <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
-        <KeyBinding Key="A" Modifiers="Control" Command="local:Commands.Add" />
-        <KeyBinding Key="E" Modifiers="Control" Command="local:Commands.Export" />
-    </Window.InputBindings>
 
     <Window.Resources>
         <model:TreeViewItemDataTemplateSelector x:Key="treeViewDataTemplateSelector" />
@@ -294,8 +284,7 @@
                                                      ItemContainerStyle="{TemplateBinding ItemContainerStyle}" 
                                                      ItemTemplate="{TemplateBinding ItemTemplate}" 
                                                      ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
-                                                     ScrollViewer.VerticalScrollBarVisibility="Visible">
-											</ListBox>
+                                                     ScrollViewer.VerticalScrollBarVisibility="Visible"/>
 										</Border>
 									</Border>
 								</Grid>
@@ -313,7 +302,111 @@
                 </Button>
 			</Grid>
 		</DataTemplate>
+
+        <BitmapImage x:Shared="False" x:Key="AssemblyMenuItemIcon" UriSource="resources\elementicons\vsobject_assembly.png" />
+		
+    	<Style x:Key="RemoveAssemblyMenuItem" TargetType="{x:Type MenuItem}" x:Shared="False">
+    		<Setter Property="Icon">
+    			<Setter.Value>
+    				<Image Source="resources\elementicons\vsobject_assembly.png" Width="16" Height="16" />
+    			</Setter.Value>
+    		</Setter>
+    		<Setter Property="Header" Value="{Binding Name}" />
+    		<Setter Property="Command" Value="local:Commands.Remove" />
+    		<Setter Property="CommandParameter" Value="{Binding UniqueId}" />
+    		<Setter Property="Template" Value="{DynamicResource RemoveAssemblyMenuItemTemplate}"/>
+    	</Style>
+		
+    	<ControlTemplate x:Key="RemoveAssemblyMenuItemTemplate" TargetType="{x:Type MenuItem}">
+    		<Grid SnapsToDevicePixels="True">
+    			<Rectangle x:Name="Bg" Fill="{TemplateBinding Background}" RadiusY="2" RadiusX="2" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+    			<Rectangle x:Name="InnerBorder" Margin="1" RadiusY="2" RadiusX="2" Stroke="Transparent" StrokeThickness="1"/>
+    			<Grid>
+    				<Grid.ColumnDefinitions>
+    					<ColumnDefinition MinWidth="24" SharedSizeGroup="MenuItemIconColumnGroup" Width="Auto"/>
+    					<ColumnDefinition Width="4"/>
+    					<ColumnDefinition Width="*"/>
+    					<ColumnDefinition Width="37"/>
+    					<ColumnDefinition SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto"/>
+    					<ColumnDefinition Width="17"/>
+    				</Grid.ColumnDefinitions>
+					<Image x:Name="Icon" Source="resources\elementicons\vsobject_assembly.png" Width="16" Height="16" Margin="1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" />
+    				<Border x:Name="GlyphPanel" BorderBrush="#FFCDD3E6" BorderThickness="1" Background="#FFE6EFF4" CornerRadius="3" Height="22" Margin="1" Visibility="Hidden" Width="22">
+    					<Path x:Name="Glyph" Data="M0,5.1L1.7,5.2 3.4,7.1 8,0.4 9.2,0 3.3,10.8z" Fill="#FF0C12A1" FlowDirection="LeftToRight" Height="11" Width="9"/>
+    				</Border>
+    				<ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="2" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+    				<TextBlock Grid.Column="4" Margin="{TemplateBinding Padding}" Text="{TemplateBinding InputGestureText}" Visibility="Collapsed"/>
+    			</Grid>
+    			<Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" HorizontalOffset="-2" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Right" VerticalOffset="-3">
+    				<Microsoft_Windows_Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent">
+    					<Border x:Name="SubMenuBorder" BorderBrush="#FF959595" BorderThickness="1" Background="WhiteSmoke">
+    						<ScrollViewer x:Name="SubMenuScrollViewer" Margin="1,0" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+    							<Grid RenderOptions.ClearTypeHint="Enabled">
+    								<Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+    									<Rectangle x:Name="OpaqueRect" Fill="WhiteSmoke" Height="{Binding ActualHeight, ElementName=SubMenuBorder}" Width="{Binding ActualWidth, ElementName=SubMenuBorder}"/>
+    								</Canvas>
+    								<Rectangle Fill="#FFF1F1F1" HorizontalAlignment="Left" Margin="1,2" RadiusY="2" RadiusX="2" Width="28"/>
+    								<Rectangle Fill="#FFE2E3E3" HorizontalAlignment="Left" Margin="29,2,0,2" Width="1"/>
+    								<Rectangle Fill="White" HorizontalAlignment="Left" Margin="30,2,0,2" Width="1"/>
+    								<ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Cycle" Grid.IsSharedSizeScope="True" Margin="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.TabNavigation="Cycle"/>
+    							</Grid>
+    						</ScrollViewer>
+    					</Border>
+    				</Microsoft_Windows_Themes:SystemDropShadowChrome>
+    			</Popup>
+    		</Grid>
+    		<ControlTemplate.Triggers>
+    			<Trigger Property="IsSuspendingPopupAnimation" Value="True">
+    				<Setter Property="PopupAnimation" TargetName="PART_Popup" Value="None"/>
+    			</Trigger>
+    			<Trigger Property="IsHighlighted" Value="True">
+    				<Setter Property="Stroke" TargetName="InnerBorder" Value="#D1DBF4FF"/>
+    			</Trigger>
+    			<Trigger Property="Icon" Value="{x:Null}">
+    				<Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+    			</Trigger>
+    			<Trigger Property="IsChecked" Value="True">
+    				<Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+    				<Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+    			</Trigger>
+    			<Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="True">
+    				<Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+    				<Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+    			</Trigger>
+    			<Trigger Property="IsHighlighted" Value="True">
+    				<Setter Property="Fill" TargetName="Bg">
+    					<Setter.Value>
+    						<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+    							<GradientStop Color="#34C5EBFF" Offset="0"/>
+    							<GradientStop Color="#3481D8FF" Offset="1"/>
+    						</LinearGradientBrush>
+    					</Setter.Value>
+    				</Setter>
+    				<Setter Property="Stroke" TargetName="Bg" Value="#8571CBF1"/>
+    			</Trigger>
+    			<Trigger Property="IsEnabled" Value="False">
+    				<Setter Property="Foreground" Value="#FF9A9A9A"/>
+    				<Setter Property="Background" TargetName="GlyphPanel" Value="#FFEEE9E9"/>
+    				<Setter Property="BorderBrush" TargetName="GlyphPanel" Value="#FFDBD6D6"/>
+    				<Setter Property="Fill" TargetName="Glyph" Value="#FF848589"/>
+    			</Trigger>
+    			<Trigger Property="CanContentScroll" SourceName="SubMenuScrollViewer" Value="False">
+    				<Setter Property="Canvas.Top" TargetName="OpaqueRect" Value="{Binding VerticalOffset, ElementName=SubMenuScrollViewer}"/>
+    				<Setter Property="Canvas.Left" TargetName="OpaqueRect" Value="{Binding HorizontalOffset, ElementName=SubMenuScrollViewer}"/>
+    			</Trigger>
+    		</ControlTemplate.Triggers>
+    	</ControlTemplate>
     </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Key="Left" Modifiers="Alt" Command="NavigationCommands.BrowseBack" />
+        <KeyBinding Key="Right" Modifiers="Alt" Command="NavigationCommands.BrowseForward" />
+        <KeyBinding Key="O" Modifiers="Control" Command="ApplicationCommands.Open" />
+        <KeyBinding Key="P" Modifiers="Control" Command="ApplicationCommands.Print" />
+        <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
+        <KeyBinding Key="A" Modifiers="Control" Command="local:Commands.Add" />
+        <KeyBinding Key="E" Modifiers="Control" Command="local:Commands.Export" />
+    </Window.InputBindings>
 	
     <Window.CommandBindings>
         <CommandBinding Command="NavigationCommands.BrowseForward" CanExecute="CanExecuteCommand" Executed="ExecuteCommand" />
@@ -337,9 +430,9 @@
                 <MenuItem x:Name="recentFiles" Header="Recent Files" Click="recentFiles_Click" ItemsSource="{Binding ''}" ItemTemplate="{StaticResource RecentFileMenuItem}" />
                 <Separator />
                 <MenuItem Header="_Add..." Command="local:Commands.Add" />
-                <MenuItem Header="_Remove" Command="local:Commands.Remove" />
-                <MenuItem Header="_Save" Command="ApplicationCommands.Save" />
-                <MenuItem Header="_Save As..." Command="ApplicationCommands.SaveAs" />
+            	<MenuItem x:Name="removeAssemblyMenuItem" Header="_Remove" Command="local:Commands.Remove" ItemsSource="{Binding Files}" ItemContainerStyle="{DynamicResource RemoveAssemblyMenuItem}" />
+                <MenuItem Header="_Save Project" Command="ApplicationCommands.Save" />
+                <MenuItem Header="_Save Project As..." Command="ApplicationCommands.SaveAs" />
                 <MenuItem Header="Export..." x:Name="export" Command="local:Commands.Export" />
                 <Separator />                
                 <MenuItem Header="E_xit" Command="ApplicationCommands.Close" />
@@ -363,7 +456,7 @@
             </Button>
             <Button Command="ApplicationCommands.Save" Style="{DynamicResource ForwardBackButtonStyle}">
                 <Button.ToolTip>
-                    <TextBlock Text="Save documentation set (Ctrl + S)" />
+                    <TextBlock Text="Save documentation project (Ctrl + S)" />
                 </Button.ToolTip>
                 <Image Source="resources\save_24x24.png" Height="24" Width="24" />
             </Button>
@@ -402,40 +495,34 @@
             <Separator />
             <Button Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Add">
                 <Button.ToolTip>
-                    <TextBlock Text="Add (Ctrl + A)" />
+                    <TextBlock Text="Add files to project (Ctrl + A)" />
                 </Button.ToolTip>
                 <Image Source="resources\add_24x24.png" Height="24" Width="24" />
             </Button>
             <controls:DropDownButton x:Name="removeAssemblies" Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
-                <Image Source="resources\remov_24x24.png" Height="24" Width="24" />
-                <Button.ToolTip>
-                    <TextBlock Text="Remove assembly" />
-                </Button.ToolTip>
+                <controls:DropDownButton.ToolTip>
+                    <TextBlock Text="Remove assembly from project" />
+                </controls:DropDownButton.ToolTip>
                 <controls:DropDownButton.DropDownContextMenu>
-                    <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=Self}, Path=PlacementTarget.DataContext}" ItemsSource="{Binding Files}">
-                        <ContextMenu.ItemContainerStyle>
-                            <Style>
-                                <Setter Property="MenuItem.Header" Value="{Binding Path=Name}"/>
-                                <Setter Property="MenuItem.Command" Value="local:Commands.Remove" />
-                                <Setter Property="MenuItem.CommandParameter" Value="{Binding Path=UniqueId}" />
-                            </Style>
-                        </ContextMenu.ItemContainerStyle>
-                    </ContextMenu>
+                    <ContextMenu 
+						DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}" 
+						ItemsSource="{Binding Files}" 
+						ItemContainerStyle="{DynamicResource RemoveAssemblyMenuItem}" 
+						/>
                 </controls:DropDownButton.DropDownContextMenu>
+                <Image Source="resources\remov_24x24.png" Height="24" Width="24" />
             </controls:DropDownButton>
         </ToolBar>
         
 		<StatusBar DockPanel.Dock="Bottom">
+            <StatusBar.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Icon=""/>
+                </ContextMenu>
+            </StatusBar.ContextMenu>
 			<StatusBarItem>
                 <TextBlock />
             </StatusBarItem>
-            <StatusBar.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Icon="">
-                        
-                    </MenuItem>
-                </ContextMenu>
-            </StatusBar.ContextMenu>
 		</StatusBar>
 		<Grid>
 			<DockPanel x:Name="documentpage" Visibility="Visible">

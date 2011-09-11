@@ -350,6 +350,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.documentMap.ItemsSource = document.Map;
 			this.removeAssemblies.DataContext = null;
 			this.removeAssemblies.DataContext = LiveDocumentorFile.Singleton;
+			this.removeAssemblyMenuItem.DataContext = null;
+			this.removeAssemblyMenuItem.DataContext = LiveDocumentorFile.Singleton;
 
 			if (document.Map.Count > 0) {
 				this.pageViewer.Document = ((LiveDocumenterEntry)document.Map[0]).Page;
