@@ -16,6 +16,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// Interaction logic for ExceptionsMessageBox.xaml
 	/// </summary>
 	public partial class ExceptionsMessageBox : Window {
+
+		/// <summary>
+		/// Initialises a new instance of the ExceptoinMessageBox window.
+		/// </summary>
+		/// <param name="exception">The exceptoin to the report</param>
+		public ExceptionsMessageBox(Exception exception) 
+			: this(new List<Exception>() { exception }) {
+		}
+
 		/// <summary>
 		/// Initialises a new instance of the ExceptionsMessagesbox window.
 		/// </summary>

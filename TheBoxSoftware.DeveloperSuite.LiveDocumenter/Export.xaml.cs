@@ -128,12 +128,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				}
 			}
 			else {
-				this.progressText.Text = "Error exporting documentation";
+				this.progressText.Text = "Completed with errors";
 				this.progressIndicator.Value = this.progressIndicator.Maximum;
-
-				Diagnostics.ErrorReporting errorReport = new Diagnostics.ErrorReporting();
-				errorReport.SetException(e.Error);
-				errorReport.ShowDialog();
+				ExceptionsMessageBox messageBox = new ExceptionsMessageBox(e.Error);
+				messageBox.ShowDialog();
 			}
 
 			if (worker != null) {

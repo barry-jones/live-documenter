@@ -185,20 +185,24 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		/// <param name="current">The current entry to export.</param>
 		protected virtual void Export(Entry current) {
+			string filename = string.Format("{0}{1}{2}.xml",
+				this.TempDirectory,
+				current.Key,
+				string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty)
+				);
+
 			try {
 				Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
 				if (r != null) {
-					string filename = string.Format("{0}{1}{2}.xml",
-						this.TempDirectory,
-						current.Key,
-						string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty)
-						);
 					using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
 						r.Render(writer);
 					}
 				}
 			}
 			catch (Exception ex) {
+				if(System.IO.File.Exists(filename)) { 
+				    System.IO.File.Delete(filename);
+				}
 				// we will deal with it later
 				this.ExportExceptions.Add(ex);
 			}
