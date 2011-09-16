@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// <returns></returns>
 		public static Signiture Create(byte[] fileContents, Offset offset, PeCoffFile file, Signitures tokenType) {
 			int startingOffset = offset;
-			int lengthOfSigniture = fileContents[offset.Shift(1)];	// The first byte is always the length
+			int lengthOfSigniture = SignitureToken.GetCompressedValue(fileContents, offset);	// The first byte is always the length
 
 			// Read the full signiture
 			byte[] signiture = new byte[lengthOfSigniture];
