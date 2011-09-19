@@ -321,6 +321,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Resource Include="Resources\srch_16x16.png" />
     <Resource Include="Resources\sinfo_48x48.png" />
     <Resource Include="Resources\exp_48x48.png" />
     <Resource Include="Resources\add_24x24.png" />
