@@ -186,7 +186,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					return new Example(Parser.Parse(assembly, exampleElement));
 				case XmlCodeElements.Para:
 					ParaXmlCodeElement paraElement = element as ParaXmlCodeElement;
-					return new Para(new List<Inline>(((Paragraph)Parser.Parse(assembly, paraElement)[0]).Inlines));
+					return new Para(Parser.Parse(assembly, paraElement));
 				case XmlCodeElements.Remarks:
 					return new Remarks(Parser.Parse(assembly, element as RemarksXmlCodeElement));
 				case XmlCodeElements.Returns:
