@@ -406,6 +406,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			//    Documentation.Exporting.ExportConfigFile.Create(@"ApplicationData/web-msdn.ldec")
 			//    );
 			//exp.Export();
+			//throw new ArgumentException();
 		}
 
 		/// <summary>
