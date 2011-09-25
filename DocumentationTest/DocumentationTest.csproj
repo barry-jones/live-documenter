@@ -57,6 +57,7 @@
     <Compile Include="AllXmlCommentsClass.cs" />
     <Compile Include="ClassAsNamespaceBug.cs" />
     <Compile Include="CommentTests\CElement.cs" />
+    <Compile Include="CommentTests\CodeElement.cs" />
     <Compile Include="CommentTests\ExampleElement.cs" />
     <Compile Include="CommentTests\IncludeElement.cs" />
     <Compile Include="CommentTests\InvalidElements.cs" />

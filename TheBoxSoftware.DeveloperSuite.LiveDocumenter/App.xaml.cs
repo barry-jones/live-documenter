@@ -41,9 +41,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			e.Handled = true;
 
-			Diagnostics.ErrorReporting errorReport = new Diagnostics.ErrorReporting();
-			errorReport.SetException(e.Exception);
-			errorReport.ShowDialog();
+			if (e.Exception is System.Windows.Markup.XamlParseException && e.Exception.Message == "NearestNeighbor is not a valid value for BitmapScalingMode.") {
+				MessageBox.Show(
+					"This version of Live Documenter requires .NET 3.5 SP1 to be installed. Please install SP1 and relaunch the application.",
+					"Unsupported version of .NET"
+					);
+			}
+			else {
+				Diagnostics.ErrorReporting errorReport = new Diagnostics.ErrorReporting();
+				errorReport.SetException(e.Exception);
+				errorReport.ShowDialog();
+			}
 			App.Current.Shutdown();
         }
     }

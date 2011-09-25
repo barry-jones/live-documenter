@@ -191,12 +191,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 		private void MenuItem_Click(object sender, RoutedEventArgs e) {
 			// test
-			Documentation.Exporting.WebsiteExporter exp = new TheBoxSoftware.Documentation.Exporting.WebsiteExporter(
-				LiveDocumentorFile.Singleton.Files,
-				new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
-				Documentation.Exporting.ExportConfigFile.Create(@"ApplicationData/web-msdn.ldec")
-				);
-			exp.Export();
+			//Documentation.Exporting.WebsiteExporter exp = new TheBoxSoftware.Documentation.Exporting.WebsiteExporter(
+			//    LiveDocumentorFile.Singleton.Files,
+			//    new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
+			//    Documentation.Exporting.ExportConfigFile.Create(@"ApplicationData/web-msdn.ldec")
+			//    );
+			//exp.Export();
+			throw new System.Windows.Markup.XamlParseException("NearestNeighbor is not a valid value for BitmapScalingMode.");
 		}
 
 		/// <summary>
