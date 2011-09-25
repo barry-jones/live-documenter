@@ -56,6 +56,15 @@
     <Compile Include="AllOutputTypesClass.cs" />
     <Compile Include="AllXmlCommentsClass.cs" />
     <Compile Include="ClassAsNamespaceBug.cs" />
+    <Compile Include="CommentTests\CElement.cs" />
+    <Compile Include="CommentTests\ExampleElement.cs" />
+    <Compile Include="CommentTests\IncludeElement.cs" />
+    <Compile Include="CommentTests\InvalidElements.cs" />
+    <Compile Include="CommentTests\InvalidTopLevelElements.cs" />
+    <Compile Include="CommentTests\ListElement.cs" />
+    <Compile Include="CommentTests\Remarks.cs" />
+    <Compile Include="CommentTests\SeeElement.cs" />
+    <Compile Include="CommentTests\SummaryElement.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DocumentedClass.cs" />
     <Compile Include="DocumentedDelegate.cs" />
@@ -67,6 +76,16 @@
     <Compile Include="GenericClass.cs" />
     <Compile Include="InheritanceTest.cs" />
     <Compile Include="InterfaceTest.cs" />
+    <Compile Include="Issues\Issue103.cs" />
+    <Compile Include="Issues\Issue11.cs" />
+    <Compile Include="Issues\Issue120.cs" />
+    <Compile Include="Issues\Issue130.cs" />
+    <Compile Include="Issues\Issue135.cs" />
+    <Compile Include="Issues\Issue148.cs" />
+    <Compile Include="Issues\Issue149.cs" />
+    <Compile Include="Issues\Issue160.cs" />
+    <Compile Include="Issues\Issue174.cs" />
+    <Compile Include="Issues\Issue2.cs" />
     <Compile Include="Issues\Issue6.cs" />
     <Compile Include="Issues\Issue9.cs" />
     <Compile Include="OperatorOverloads.cs" />
@@ -81,6 +100,9 @@
       <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
       <Name>TheBoxSoftware.Reflection</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CommentTests\includedfile.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
