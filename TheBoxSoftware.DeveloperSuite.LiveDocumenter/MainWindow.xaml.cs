@@ -553,6 +553,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					else {
 						Model.SearchResultCollection results = new Model.SearchResultCollection();
 						results.AddEntriesToResults(LiveDocumentorFile.Singleton.LiveDocument.Search(this.searchBox.Text));
+						results.Sort();
 						this.searchBox.ItemsSource = results;
 						this.searchBox.PopulateComplete();
 					}

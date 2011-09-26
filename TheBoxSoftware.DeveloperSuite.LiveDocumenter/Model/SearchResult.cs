@@ -11,7 +11,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 	/// <summary>
 	/// Represents an individual result from a search across the <see cref="LiveDocument.Map" />.
 	/// </summary>
-	internal sealed class SearchResult {
+	internal sealed class SearchResult : IComparable<SearchResult> {
 		private string summary;
 		private ReflectedMember member;
 
@@ -35,13 +35,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 
 			if (member != null) {
 				if (member is PropertyDef) {
-					this.Name = ((PropertyDef)member).GetDisplayName(false, true);
+					this.Name = string.Format("{1} in {0}", ((PropertyDef)member).Type.GetDisplayName(false), ((PropertyDef)member).GetDisplayName(false, true));
 				}
 				else if (member is TypeDef) {
 					this.Name = ((TypeDef)member).GetDisplayName(false);
 				}
 				else if (member is MethodDef) {
-					this.Name = ((MethodDef)member).GetDisplayName(false, true);
+					this.Name = string.Format("{1} in {0}", ((MethodDef)member).Type.GetDisplayName(false), ((MethodDef)member).GetDisplayName(false, true));
 				}
 			}
 
@@ -59,6 +59,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 			}
 		}
 
+		/// <summary>
+		/// Icon that represents the type of member.
+		/// </summary>
         public string Icon {
             get {
                 if (member != null) {
@@ -105,6 +108,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 		}
 
 		/// <summary>
+		/// The fully qualified (includes namespace and type) name of the member.
+		/// </summary>
+		public string FullyQualifiedName {
+			get;
+			set;
+		}
+
+		/// <summary>
 		/// The entry that this search result is about.
 		/// </summary>
 		public Entry RelatedEntry {
@@ -113,7 +124,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 		}
 
 		public override string ToString() {
-			return string.IsNullOrEmpty(this.RelatedEntry.Name) ? String.Empty : this.RelatedEntry.Name;
+			return string.IsNullOrEmpty(this.Name) ? String.Empty : this.Name;
 		}
+
+		#region IComparable<SearchResult> Members
+
+		public int CompareTo(SearchResult other) {
+			return this.Name.CompareTo(other.Name);
+		}
+
+		#endregion
 	}
 }
