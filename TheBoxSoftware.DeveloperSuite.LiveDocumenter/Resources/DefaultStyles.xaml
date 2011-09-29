@@ -197,9 +197,11 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <Style x:Key="header" TargetType="{x:Type TextBlock}">
+    
+	
+	<Style x:Key="header" TargetType="{x:Type TextBlock}">
     	<Setter Property="FontSize" Value="16"/>
     	<Setter Property="FontWeight" Value="Bold"/>
-    </Style>
+    </Style>    
 
 </ResourceDictionary>
