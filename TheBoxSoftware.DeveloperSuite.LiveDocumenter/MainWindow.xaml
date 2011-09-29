@@ -7,7 +7,7 @@
     xmlns:extend="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Extensions"
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
-    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
     x:Name="mainWindow"
     Title="Live Documenter - Alpha Release" 
     Height="639" 
@@ -296,11 +296,11 @@
 		</Style>
         
 		<DataTemplate x:Key="RecentFileItemTemplate">
-			<Grid>
-                <Button Tag="{Binding}" Click="Hyperlink_RequestNavigate" Background="{x:Null}">
+			<DockPanel x:Name="grid">
+                <Button Tag="{Binding}" Click="Hyperlink_RequestNavigate" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0">
                     <TextBlock Text="{Binding DisplayName}" />
                 </Button>
-			</Grid>
+			</DockPanel>
 		</DataTemplate>
 
         <BitmapImage x:Shared="False" x:Key="AssemblyMenuItemIcon" UriSource="resources\elementicons\vsobject_assembly.png" />
@@ -525,7 +525,7 @@
             </StatusBarItem>
 		</StatusBar>
 		<Grid>
-			<DockPanel x:Name="documentpage" Visibility="Visible">
+			<DockPanel x:Name="documentpage" Visibility="Visible" d:IsHidden="True">
 				<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="0,1,0,1">
 		        <Grid>
 		            <Grid.ColumnDefinitions>
@@ -558,7 +558,7 @@
 		        </Grid>
 			</Border>
 			</DockPanel>
-			<DockPanel x:Name="startpage" Visibility="Hidden">
+			<DockPanel x:Name="startpage">
 				<Grid>
 			    	<Grid.RowDefinitions>
 			    		<RowDefinition Height="67.9" />
@@ -569,10 +569,10 @@
                         <TextBlock Margin="16,28,0,-1" Text="Live Documenter" TextWrapping="Wrap" FontFamily="Georgia" FontSize="24" Foreground="#FFA67D3D"/>
                     </Border>
 
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Background="#FFEFEEE8" RenderTransformOrigin="0.501,0.51">
 	                    		<Grid.ColumnDefinitions>
-	                    			<ColumnDefinition />
-	                    			<ColumnDefinition />
+	                    			<ColumnDefinition Width="0.297*" />
+	                    			<ColumnDefinition Width="0.703*" />
 	                    		</Grid.ColumnDefinitions>
 	                    		<Grid.RowDefinitions>
 	                    			<RowDefinition Height="0.184*"/>
@@ -588,9 +588,25 @@
 	                    			<TextBlock Style="{DynamicResource header}"><Run Text="Recent files"/></TextBlock>
 	                    			<TextBlock/>
 	                    			<ListView Height="Auto" x:Name="start_recentFileList" ItemTemplate="{DynamicResource RecentFileItemTemplate}" BorderBrush="{x:Null}" Background="{x:Null}" />
+	                    			<Button BorderBrush="#FF336699" Foreground="#FFEFEEE8" BorderThickness="0" Style="{DynamicResource flatButton}">
+	                    				<Button.Background>
+	                    					<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+	                    						<GradientStop Color="#FF4477AA" Offset="0"/>
+	                    						<GradientStop Color="#FF336699" Offset="1"/>
+	                    					</LinearGradientBrush>
+	                    				</Button.Background>
+	                    				<Grid>
+	                    					<Grid.ColumnDefinitions>
+	                    						<ColumnDefinition />
+												<ColumnDefinition />
+											</Grid.ColumnDefinitions>           				
+											
+											<TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0">Open file...</TextBlock>
+											<Image Grid.Column="1" Source="resources\open_24x24.png" Height="24" Width="24" Margin="0,2"  />
+										</Grid>
+	                    			</Button>
 	                    		</StackPanel>
-						
-	                    	</Grid>						
+	                    	</Grid>
 				</Grid>
 			</DockPanel>
 		</Grid>
