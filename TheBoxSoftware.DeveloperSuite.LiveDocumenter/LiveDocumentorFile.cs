@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.IO;
-using System.Xml.Serialization;
+using TheBoxSoftware.Documentation;
+using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Documentation;
-
 	/// <summary>
 	/// Represents a project file, which can be used to save and load
 	/// the preferences for a LiveDocument.
@@ -37,7 +33,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		private LiveDocumentorFile() {
 			this.files = new List<DocumentedAssembly>();
-			this.filters = new List<Visibility>();
+			this.filters = new List<Reflection.Visibility>();
 			this.language = Reflection.Syntax.Languages.CSharp;
 			this.configuration = Model.BuildConfigurations.Debug;
 		}
@@ -162,7 +158,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			foreach(DocumentedAssembly assembly in this.files) {
 				project.Files.Add(assembly.FileName);
 			}
-			foreach (Visibility filter in this.filters) {
+			foreach (Reflection.Visibility filter in this.filters) {
 				project.VisibilityFilters.Add(filter);
 			}
 			project.Configuration = this.Configuration.ToString();
@@ -198,7 +194,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			foreach(string file in project.Files) {
 				ldFile.files.Add(new DocumentedAssembly(file));
 			}
-			foreach(Visibility filter in project.VisibilityFilters){
+			foreach(Reflection.Visibility filter in project.VisibilityFilters){
 				ldFile.filters.Add(filter);
 			}
 			if(!string.IsNullOrEmpty(project.Configuration)) {
@@ -253,11 +249,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <summary>
 		/// The visibility filters
 		/// </summary>
-		public List<Visibility> Filters {
+		public List<Reflection.Visibility> Filters {
 			get { return this.filters; }
 			set {
-				Visibility[] current = this.filters.ToArray();
-				Visibility[] newFilters = value.ToArray();
+				Reflection.Visibility[] current = this.filters.ToArray();
+				Reflection.Visibility[] newFilters = value.ToArray();
 				if (!current.SequenceEqual(newFilters)) {
 					this.HasChanged = true;
 					this.filters = value;
