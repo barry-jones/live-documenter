@@ -154,6 +154,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// </summary>
 		public abstract void Export();
 
+		public abstract Stream ExportMember(Entry entry);
+
 		/// <summary>
 		/// When implemented in a dervied class checks to see if there are any issues with running
 		/// the exporter.
@@ -184,7 +186,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Exports the current entry.
 		/// </summary>
 		/// <param name="current">The current entry to export.</param>
-		protected virtual void Export(Entry current) {
+		/// <returns>The name of the rendered XML file</returns>
+		protected virtual string Export(Entry current) {
 			string filename = string.Format("{0}{1}{2}.xml",
 				this.TempDirectory,
 				current.Key,
@@ -206,6 +209,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				// we will deal with it later
 				this.ExportExceptions.Add(ex);
 			}
+
+			return filename;
 		}
 
 		/// <summary>

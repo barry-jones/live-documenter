@@ -167,6 +167,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
+		/// Member level exporting is not supported in this exporter.
+		/// </summary>
+		/// <param name="entry"></param>
+		public override Stream ExportMember(Entry entry) {
+			throw new InvalidOperationException("Member level exporting is not supported in this exporter.");
+		}
+
+		/// <summary>
 		/// Returns a collection of messages that describe any issues that this exporter has with
 		/// running.
 		/// </summary>

@@ -21,9 +21,10 @@ namespace TheBoxSoftware.Exporter {
 		/// <summary>
 		/// Initialises a new Document
 		/// </summary>
-		/// <param name="file">The</param>
-		public Document(string file) {
-			this.Filename = file;
+		/// <param name="document">The document to manage and export</param>
+		public Document(string document, string format) {
+			this.Filename = document;
+			this.Format = format;
 		}
 		#endregion
 
@@ -69,10 +70,33 @@ namespace TheBoxSoftware.Exporter {
 		/// </summary>
 		/// <param name="toDestination">The directory to write the files to.</param>
 		public void Export(string toDestination) {
+			Documentation.Exporting.ExportConfigFile ldec = TheBoxSoftware.Documentation.Exporting.ExportConfigFile.Create(this.Format);
+			Documentation.Exporting.ExportSettings exportSettings = new External.Exporting.ExportSettings();
+			exportSettings.Settings = this.baseDocument.Settings;
+
+			Documentation.Exporting.Exporter exporter = Documentation.Exporting.Exporter.Create(this.baseDocument, exportSettings, ldec);
+			exporter.Export();
 		}
 
-		public Stream GetDocumentationFor(string member) {
-			return null;
+		/// <summary>
+		/// Gets the documentation for the specified <paramref name="member"/>.
+		/// </summary>
+		/// <param name="member">The member to output, this can be in cref or full member format.</param>
+		/// <include file='Documentation\document.xml' path='member[@name="Document.GetDocumentationFor"]/*'/>
+		public Stream GetDocumentationFor(string cref) {
+			if (string.IsNullOrEmpty(this.Format)) throw new InvalidOperationException("The Format was not specified and is requried to export the documentation.");
+			if (!File.Exists(this.Format)) throw new InvalidOperationException("The Format specified could not be located.");
+
+			// convert string to cref
+			Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Parse(cref);
+			Documentation.Entry member = this.baseDocument.Find(path);
+			
+			Documentation.Exporting.ExportConfigFile ldec = TheBoxSoftware.Documentation.Exporting.ExportConfigFile.Create(this.Format);
+			Documentation.Exporting.ExportSettings exportSettings = new External.Exporting.ExportSettings();
+			exportSettings.Settings = this.baseDocument.Settings;
+
+			Documentation.Exporting.Exporter exporter = Documentation.Exporting.Exporter.Create(this.baseDocument, exportSettings, ldec);
+			return exporter.ExportMember(member);
 		}
 		#endregion
 
@@ -81,6 +105,11 @@ namespace TheBoxSoftware.Exporter {
 		/// Gets or sets the name of the file being documented.
 		/// </summary>
 		public string Filename { get; set; }
+
+		/// <summary>
+		/// Gets or sets the LDEC file used to format/render the exported content.
+		/// </summary>
+		public string Format { get; set; }
 		#endregion
 	}
 }

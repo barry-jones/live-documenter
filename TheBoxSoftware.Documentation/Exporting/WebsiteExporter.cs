@@ -102,6 +102,31 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
+		/// Exports an individual <paramref name="entry"/>.
+		/// </summary>
+		/// <param name="entry"></param>
+		public override Stream ExportMember(Entry entry) {
+			string filename = this.Export(entry);
+			MemoryStream exportedMember = new MemoryStream();
+
+			string extension = this.Config.Properties.ContainsKey("extension") ? this.Config.Properties["extension"] : "htm";
+			Processor p = new Processor();
+			using (Stream xsltStream = this.Config.GetXslt()) {
+				XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
+				transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
+				using (FileStream fs = File.OpenRead(filename)) {
+					Serializer s = new Serializer();
+					s.SetOutputStream(exportedMember);
+					transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.TempDirectory));
+					transform.Run(s);
+					s.Close();
+				}
+			}
+
+			return exportedMember;
+		}
+
+		/// <summary>
 		/// Returns a collection of messages that describe any issues that this exporter has with
 		/// running.
 		/// </summary>
