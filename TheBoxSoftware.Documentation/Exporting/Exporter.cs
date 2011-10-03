@@ -250,9 +250,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				this.PublishDirectory = this.Settings.PublishDirectory;
 			}
 			if (Directory.Exists(this.PublishDirectory)) {
-				Directory.Delete(this.PublishDirectory, true);
+				// Directory.Delete(this.PublishDirectory, true);
 			}
-			Directory.CreateDirectory(this.PublishDirectory);
+			else {
+				Directory.CreateDirectory(this.PublishDirectory);
+			}
 			
 			// read the current application directory
 			this.ApplicationDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
