@@ -96,6 +96,9 @@
       <Link>win.ico</Link>
     </Content>
     <Content Include="Documentation\document.xml" />
+    <Content Include="example-configuration.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

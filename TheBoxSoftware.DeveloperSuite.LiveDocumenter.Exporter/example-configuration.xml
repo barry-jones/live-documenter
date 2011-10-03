@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <document>c:\projects\documentation.ldproj</document>
+	
+	<!-- can be Public|Internal|Protected|ProtectedInternal|Private only those detailed will be output,
+		not specifiying a filter section will result in only the Public members being exported.
+		-->
+	<filters>
+		<filter>Public</filter>
+		<filter>Protected</filter>
+	</filters>
+	
+	<!-- the application will always check the ApplicationData folder for LDEC files -->
+    <outputs>
+        <ldec location="c:\temp\web\">web-msdn.ldec</ldec>
+        <ldec location="c:\temp\htmlhelp-1\">htmlhelp1-msdn.ldec</ldec>
+    </outputs>
+</configuration>
