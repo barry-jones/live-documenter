@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\win.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -88,6 +91,9 @@
     <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\xml.ldec">
       <Link>ApplicationData\xml.ldec</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\win.ico">
+      <Link>win.ico</Link>
     </Content>
     <Content Include="Documentation\document.xml" />
   </ItemGroup>

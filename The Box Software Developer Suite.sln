@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Documentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter", "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj", "{B8708C35-E94A-4819-9690-0C501E397B6D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Live Documenter Server Setup", "Live Documenter Server Setup\Live Documenter Server Setup.vdproj", "{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -192,6 +194,14 @@ Global
 		{B8708C35-E94A-4819-9690-0C501E397B6D}.Release|Win32.ActiveCfg = Release|x86
 		{B8708C35-E94A-4819-9690-0C501E397B6D}.Release|x86.ActiveCfg = Release|x86
 		{B8708C35-E94A-4819-9690-0C501E397B6D}.Release|x86.Build.0 = Release|x86
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Debug|Any CPU.ActiveCfg = Debug
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Debug|Win32.ActiveCfg = Debug
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Debug|x86.ActiveCfg = Debug
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Release|Any CPU.ActiveCfg = Release
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Release|Mixed Platforms.ActiveCfg = Release
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Release|Win32.ActiveCfg = Release
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
