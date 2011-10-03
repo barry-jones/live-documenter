@@ -110,6 +110,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 								ofd.FileName, System.IO.Path.GetFileName(ofd.FileName)
 								));
 						}
+						this.startpage.Visibility = System.Windows.Visibility.Hidden;
 					}
 				}
 				catch (TheBoxSoftware.Reflection.Core.NotAManagedLibraryException) {
@@ -716,6 +717,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			this.startpage.Visibility = Visibility.Hidden;
 			this.documentpage.Visibility = Visibility.Visible;
+		}
+
+		private void start_recentFileList_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if (this.start_recentFileList.SelectedItem != null) {
+				this.LoadRecentFile((Model.RecentFile)this.start_recentFileList.SelectedItem);
+
+				this.startpage.Visibility = Visibility.Hidden;
+				this.documentpage.Visibility = Visibility.Visible;
+			}
 		}
 	}
 }

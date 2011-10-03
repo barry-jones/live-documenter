@@ -294,14 +294,6 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-        
-		<DataTemplate x:Key="RecentFileItemTemplate">
-			<DockPanel x:Name="grid">
-                <Button Tag="{Binding}" Click="Hyperlink_RequestNavigate" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0">
-                    <TextBlock Text="{Binding DisplayName}" />
-                </Button>
-			</DockPanel>
-		</DataTemplate>
 
         <BitmapImage x:Shared="False" x:Key="AssemblyMenuItemIcon" UriSource="resources\elementicons\vsobject_assembly.png" />
 		
@@ -570,43 +562,55 @@
                     </Border>
 
                     <Grid Grid.Row="1" Background="#FFEFEEE8" RenderTransformOrigin="0.501,0.51">
-	                    		<Grid.ColumnDefinitions>
-	                    			<ColumnDefinition Width="0.297*" />
-	                    			<ColumnDefinition Width="0.703*" />
-	                    		</Grid.ColumnDefinitions>
-	                    		<Grid.RowDefinitions>
-	                    			<RowDefinition Height="0.184*"/>
-	                    			<RowDefinition Height="0.816*"/>
-	                    		</Grid.RowDefinitions>
+	                    <Grid.ColumnDefinitions>
+	                    	<ColumnDefinition Width="300" />
+	                    	<ColumnDefinition />
+	                    </Grid.ColumnDefinitions>
+	                    <Grid.RowDefinitions>
+	                    	<RowDefinition Height="0.184*"/>
+	                    	<RowDefinition Height="0.816*"/>
+	                    </Grid.RowDefinitions>
 						
-	                    		<StackPanel Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
-	                    			<TextBlock Style="{DynamicResource header}"><Run Text="Welcome to the Live Documenter"/></TextBlock>
-	                    			<TextBlock><Run Text="To start you can open a solution, project or library. Or select a recent file from the recent file list."/></TextBlock>
-	                    		</StackPanel>
+	                    <StackPanel Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
+	                    	<TextBlock Style="{DynamicResource header}"><Run Text="Welcome to the Live Documenter"/></TextBlock>
+	                    	<TextBlock><Run Text="To start you can open a solution, project or library. Or select a recent file from the recent file list."/></TextBlock>
+	                    </StackPanel>
 						
-	                    		<StackPanel Margin="10" Grid.Row="1" Grid.Column="0" x:Name="start_recentFiles">
-	                    			<TextBlock Style="{DynamicResource header}"><Run Text="Recent files"/></TextBlock>
-	                    			<TextBlock/>
-	                    			<ListView Height="Auto" x:Name="start_recentFileList" ItemTemplate="{DynamicResource RecentFileItemTemplate}" BorderBrush="{x:Null}" Background="{x:Null}" />
-	                    			<Button BorderBrush="#FF336699" Foreground="#FFEFEEE8" BorderThickness="0" Style="{DynamicResource flatButton}">
-	                    				<Button.Background>
-	                    					<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-	                    						<GradientStop Color="#FF4477AA" Offset="0"/>
-	                    						<GradientStop Color="#FF336699" Offset="1"/>
-	                    					</LinearGradientBrush>
-	                    				</Button.Background>
-	                    				<Grid>
-	                    					<Grid.ColumnDefinitions>
-	                    						<ColumnDefinition />
-												<ColumnDefinition />
-											</Grid.ColumnDefinitions>           				
+	                    <StackPanel Margin="10" Grid.Row="1" Grid.Column="0" x:Name="recent">
+                            <StackPanel x:Name="start_recentFiles">
+                                <TextBlock Style="{DynamicResource header}"><Run Text="Recent files"/></TextBlock>
+	                    	    <TextBlock/>
+                                <ListView x:Name="start_recentFileList" BorderBrush="#FFC4C4C4" Background="White" SelectionChanged="start_recentFileList_SelectionChanged">
+                                	<ListView.Resources>
+                                		<Style TargetType="{x:Type ListViewItem}">
+                                			<Style.Triggers>
+                                				<Trigger Property="IsMouseOver" Value="True">
+                                					<Setter Property="Background" Value="#FF212120" />
+													<Setter Property="Foreground" Value="#FFA67D3D" />
+												</Trigger>                     			
+											</Style.Triggers>                      		
+										</Style>
+									</ListView.Resources>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayName}" Padding="5" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                            <Button Command="Open" Width="{Binding ElementName=recent, Path=ActualWidth}">
+	                    		<Grid>
+	                    			<Grid.ColumnDefinitions>
+	                    				<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="26" />
+									</Grid.ColumnDefinitions>           				
 											
-											<TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0">Open file...</TextBlock>
-											<Image Grid.Column="1" Source="resources\open_24x24.png" Height="24" Width="24" Margin="0,2"  />
-										</Grid>
-	                    			</Button>
-	                    		</StackPanel>
-	                    	</Grid>
+									<TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0">Open file...</TextBlock>
+									<Image Grid.Column="1" Source="resources\open_24x24.png" Height="24" Width="24" Margin="0,2"  />
+								</Grid>
+	                    	</Button>
+	                    </StackPanel>
+	                </Grid>
 				</Grid>
 			</DockPanel>
 		</Grid>
