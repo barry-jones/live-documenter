@@ -69,7 +69,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					// move all the temporary export files to the publish directory
 					int counter = 0;
 					foreach (string file in Directory.GetFiles(this.TempDirectory)) {
-						File.Copy(file, string.Format("{0}\\{1}", this.PublishDirectory, Path.GetFileName(file)));
+						File.Copy(file, Path.Combine(this.PublishDirectory, Path.GetFileName(file)));
 						if (counter % this.XmlExportStep == 0) {
 							this.OnExportStep(new ExportStepEventArgs("Publishing XML files...", this.CurrentExportStep += 3));
 						}
