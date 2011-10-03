@@ -6,6 +6,10 @@ using System.IO;
 namespace TheBoxSoftware.Exporter {
 	internal class Program {
 		static void Main(string[] args) {
+			if (DateTime.Now > new DateTime(2011, 10, 31)) {
+				System.Windows.MessageBox.Show("This beta version of has expired.", "Software Expired");
+			}
+
 			bool printHelp = false;
 			Configuration configuration = null;
 

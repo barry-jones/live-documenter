@@ -36,6 +36,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public MainWindow() {
 			InitializeComponent();
 
+			if (DateTime.Now > new DateTime(2011, 10, 31)) {
+				MessageBox.Show("This beta version of has expired.", "Software Expired");
+			}
+
 			Model.UserApplicationStore.Load();
 
 			// restore the user preferences
