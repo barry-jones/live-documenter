@@ -16,7 +16,7 @@
         <Canvas Grid.Row="1">
             <TextBlock TextWrapping="Wrap" Width="459" Canvas.Left="6" Height="60" Canvas.Top="6">
                 Your documentation has been exported but we experienced one or more errors during the export process (details below). Please
-                take the time to report these issues to our support time by clicking the report button.
+                take the time to report these issues to our support team by clicking the report button.
             </TextBlock>
             <TextBox Canvas.Left="6" Canvas.Top="61" Height="106" Name="errorDetails" Width="459" />
         </Canvas>
