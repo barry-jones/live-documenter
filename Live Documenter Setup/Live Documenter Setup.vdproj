@@ -1,4 +1,4 @@
-﻿"DeployProject"
+"DeployProject"
 {
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
@@ -1272,7 +1272,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_00FB933D725A423C965E3D23FE4BA45A"
             {
-            "SourcePath" = "8:..\\TheBoxSoftware.DeveloperSuite.LiveDocumenter\\obj\\Debug\\Live Documenter.exe"
+            "SourcePath" = "8:..\\TheBoxSoftware.DeveloperSuite.LiveDocumenter\\obj\\Release\\Live Documenter.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7C65AA7BEB43422DAABC1C031C35B9BC"
