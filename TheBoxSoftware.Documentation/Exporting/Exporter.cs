@@ -249,12 +249,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			else {
 				this.PublishDirectory = this.Settings.PublishDirectory;
 			}
+
 			if (Directory.Exists(this.PublishDirectory)) {
-				// Directory.Delete(this.PublishDirectory, true);
+				Directory.Delete(this.PublishDirectory, true);
+				System.Threading.Thread.Sleep(0);
 			}
-			else {
-				Directory.CreateDirectory(this.PublishDirectory);
-			}
+
+			Directory.CreateDirectory(this.PublishDirectory);
 			
 			// read the current application directory
 			this.ApplicationDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);

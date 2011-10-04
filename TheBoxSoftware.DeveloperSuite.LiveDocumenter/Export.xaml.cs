@@ -39,6 +39,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.PrivacyFilters.SetFilters(LiveDocumentorFile.Singleton.Filters); // set defaults
 			this.visibility.ItemsSource = this.PrivacyFilters;
 			this.publishTo.Text = LiveDocumentorFile.Singleton.OutputLocation;
+			if(string.IsNullOrWhiteSpace(this.publishTo.Text)){
+				this.publishTo.Text = 
+					System.IO.Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+						@"Live Documenter\Documentation"
+						);
+			}
 
 			this.DataContext = this;
 			this.LoadConfigFiles();
