@@ -537,7 +537,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TheBoxSoftware.Reflection, Version=1.2.4293.18986, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TheBoxSoftware.Reflection, Version=1.2.4293.32648, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_0A3FC7CE885A816D4CA2077E62C0FA4E"
@@ -938,7 +938,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TheBoxSoftware, Version=1.2.4293.18983, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TheBoxSoftware, Version=1.2.4293.32648, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_D8E56557213287E231B112E8E1D5D78C"
@@ -969,7 +969,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TheBoxSoftware.Documentation, Version=1.2.4293.18992, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TheBoxSoftware.Documentation, Version=1.2.4293.32649, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_EAC171F14EA37116DD2B3F7CA0664221"
@@ -1075,15 +1075,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Live Documenter"
-        "ProductCode" = "8:{C555B73C-8164-4922-9B8D-19E72654ACB2}"
-        "PackageCode" = "8:{E85AE5E6-5297-4EBF-AF0D-B8356557254B}"
+        "ProductCode" = "8:{8B5647F8-F231-44D8-BC3E-0765C080FE19}"
+        "PackageCode" = "8:{D7D6080E-A3D0-49CF-8316-74A22BD7CDD5}"
         "UpgradeCode" = "8:{CB2660FD-7314-4B97-8D37-8D4996F01AFC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.2.9"
+        "ProductVersion" = "8:1.2.10"
         "Manufacturer" = "8:The Box Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
