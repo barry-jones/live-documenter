@@ -11,6 +11,8 @@ namespace DocumentationTest.Issues {
 	public class Issue149 {
 		/// <summary>
 		/// Tests the display of a external generic type with an external parameter.
+		/// <see cref="List{T}"/>.
+		/// <seealso cref="List{T}" />
 		/// </summary>
 		/// <param name="test"></param>
 		public void EnteralGenericTypeExternalParameter(List<string> test) { }

@@ -130,6 +130,30 @@ namespace DocumentationTest.CommentTests {
 		/// </remarks>
 		public void TestSeeEventVisibility() { }
 
+		/// <summary>
+		/// Tests see references to generic members and types in this assembly, referenced
+		/// asseblies and non-referenced assemblies.
+		/// </summary>
+		/// <remarks>
+		/// <para>Internal references:</para>
+		/// <list>
+		///		<item><see cref="DocumentationTest.GenericClass{T}"/></item>
+		///		<item><see cref="DocumentationTest.GenericClass{T}.GenericMethod{N}(T,N)"/></item>
+		/// </list>
+		/// <para>External references:</para>
+		/// <list>
+		///		<item><see cref="System.Collections.Generic.List{T}"/></item>
+		///		<item><see cref="System.Linq.Enumerable.Any{TSource}()"/></item>
+		/// </list>
+		/// <para>External non-referenced assemblies. These will generate error cref paths as the
+		/// compiler can not resolve the references.</para>
+		/// <list>
+		///		<item><see cref="TheBoxSoftware.Documentation.ExportSettings"/></item>
+		///		<item><see cref="TheBoxSoftware.Documentation.Rendering.IRenderer{T}"/></item>
+		/// </list>
+		/// </remarks>
+		public void TestSeeToElementsInAssemblies() {}
+
 		#region Internal Test Class
 		public class PublicClass {
 			public void PublicMethod() { }
