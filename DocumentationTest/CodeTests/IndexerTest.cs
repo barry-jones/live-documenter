@@ -60,6 +60,8 @@ namespace DocumentationTest.CodeTests{
 			public int this[int one, int two] {
 				set { }
 			}
+
+			public void set_Item(int one, int two, int three, int value) {}
 		}
 	}
 }

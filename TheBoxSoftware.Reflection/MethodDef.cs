@@ -98,6 +98,11 @@ namespace TheBoxSoftware.Reflection {
 				}
 			}
 
+			if(method.IsSpecialName && method.Name.Contains("set_Item")){
+				// for setter methods on indexers the last parameter is actually the return value
+				method.Parameters.RemoveAt(method.Parameters.Count - 1);
+			}
+
 			return method;
 		}
 

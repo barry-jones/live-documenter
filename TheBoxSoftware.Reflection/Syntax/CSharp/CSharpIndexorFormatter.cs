@@ -87,9 +87,12 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 
 			// Provide the properties to access the indexer, these are
 			// obtained from the get method.
-			MethodSyntax getMethod = new MethodSyntax(this.syntax.GetMethod);
+			MethodSyntax getMethod = new MethodSyntax(
+				this.syntax.GetMethod != null ? this.syntax.GetMethod : this.syntax.SetMethod
+				);
 			tokens.Add(new SyntaxToken("[", SyntaxTokens.Text));
 			List<ParameterDetails> parameters = getMethod.GetParameters();
+			// dont output the last parameter if we are not using the get method as it is the return value...
 			for(int i = 0; i < parameters.Count; i++) {
 				ParameterDetails current = parameters[i];
 
