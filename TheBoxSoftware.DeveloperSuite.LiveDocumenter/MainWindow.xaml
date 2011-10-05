@@ -567,8 +567,8 @@
 	                    	<ColumnDefinition />
 	                    </Grid.ColumnDefinitions>
 	                    <Grid.RowDefinitions>
-	                    	<RowDefinition Height="0.184*"/>
-	                    	<RowDefinition Height="0.816*"/>
+	                    	<RowDefinition Height="65"/>
+	                    	<RowDefinition Height="*"/>
 	                    </Grid.RowDefinitions>
 						
 	                    <StackPanel Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
@@ -610,7 +610,11 @@
 								</Grid>
 	                    	</Button>
 	                    </StackPanel>
-	                </Grid>
+                        
+                        <Canvas Grid.Row="1" Grid.Column="2">
+                            <Image Source="Resources\frontpage-background.png" Width="400" Height="250" Canvas.Bottom="0" Canvas.Right="0" />
+                        </Canvas>
+                    </Grid>
 				</Grid>
 			</DockPanel>
 		</Grid>
