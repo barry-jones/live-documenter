@@ -56,6 +56,44 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			this.RenderExceptionBlock(this.member, writer, comment);
 			this.RenderSyntaxBlocks(this.member, writer);
 
+			MethodDef internalMethod = this.member.GetMethod == null ? this.member.SetMethod : this.member.GetMethod;
+			if (this.member.IsIndexer && internalMethod.Parameters.Count > 0) {
+				writer.WriteStartElement("parameters");
+				for (int i = 0; i < internalMethod.Parameters.Count; i++) {
+					if (internalMethod.Parameters[i].Sequence == 0)
+						continue;
+
+					TypeRef parameterType = internalMethod.Parameters[i].GetTypeRef();
+					TypeDef foundEntry = this.member.Assembly.FindType(parameterType.Namespace, parameterType.Name);
+
+					writer.WriteStartElement("parameter");
+					writer.WriteAttributeString("name", internalMethod.Parameters[i].Name);
+					writer.WriteStartElement("type");
+					if (foundEntry != null) {
+						writer.WriteAttributeString("key", foundEntry.GetGloballyUniqueId().ToString());
+					}
+					writer.WriteString(parameterType.GetDisplayName(false));
+					writer.WriteEndElement(); // type
+
+					if (comment != XmlCodeComment.Empty) {
+						XmlCodeElement paramEntry = comment.Elements.Find(currentBlock =>
+							currentBlock is ParamXmlCodeElement
+							&& ((ParamXmlCodeElement)currentBlock).Name == internalMethod.Parameters[i].Name);
+						if (paramEntry != null) {
+							writer.WriteStartElement("description");
+							ParamXmlCodeElement paraElement = (ParamXmlCodeElement)paramEntry;
+							for (int j = 0; j < paraElement.Elements.Count; j++) {
+								this.Serialize(paraElement.Elements[j], writer);
+							}
+							writer.WriteEndElement();
+						}
+					}
+
+					writer.WriteEndElement(); // parameter
+				}
+				writer.WriteEndElement();
+			}
+
 			// find and output the remarks
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
