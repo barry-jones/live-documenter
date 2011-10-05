@@ -68,6 +68,22 @@ namespace TheBoxSoftware.Reflection {
 			}
 		}
 
+		/// <summary>
+		/// Indicates if this property is an Indexer
+		/// </summary>
+		public bool IsIndexer {
+			get {
+				bool isIndexer = false;
+				if(
+					(this.GetMethod != null && this.GetMethod.Parameters.Count > 0)
+					|| (this.SetMethod != null && this.SetMethod.Parameters.Count > 1)
+					) {
+					isIndexer = true;
+				}
+				return isIndexer;
+			}
+		}
+
 		#region Methods
 		/// <summary>
 		/// Returns a display name for the Property.

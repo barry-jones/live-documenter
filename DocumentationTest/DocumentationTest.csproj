@@ -78,6 +78,7 @@
     <Compile Include="AllXmlCommentsClass.cs" />
     <Compile Include="AttributeTargetsTest.cs" />
     <Compile Include="ClassAsNamespaceBug.cs" />
+    <Compile Include="CodeTests\IndexerTest.cs" />
     <Compile Include="CommentTests\CElement.cs" />
     <Compile Include="CommentTests\ExampleElement.cs" />
     <Compile Include="CommentTests\IncludeElement.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Issues\Issue149.cs" />
     <Compile Include="Issues\Issue160.cs" />
     <Compile Include="Issues\Issue174.cs" />
+    <Compile Include="Issues\Issue188.cs" />
     <Compile Include="Issues\Issue2.cs" />
     <Compile Include="Issues\Issue6.cs" />
     <Compile Include="Issues\Issue9.cs" />

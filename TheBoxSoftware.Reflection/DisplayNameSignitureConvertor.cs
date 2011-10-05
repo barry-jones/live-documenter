@@ -53,7 +53,7 @@ namespace TheBoxSoftware.Reflection {
 		public DisplayNameSignitureConvertor(PropertyDef property, bool includeNamespace, bool includeParamaters) {
 			this.type = (TypeDef)property.Type;
 			this.property = property;
-			this.method = property.GetMethod;
+			this.method = property.GetMethod != null ? property.GetMethod : property.SetMethod;
 			this.includeNamespace = includeNamespace;
 			this.includeParameters = includeParamaters;
 			this.includeTypeName = false;
@@ -93,6 +93,7 @@ namespace TheBoxSoftware.Reflection {
 		public string Convert() {
 			try {
 				StringBuilder converted = new StringBuilder();
+				bool isIndexer = false;
 
 				// Convert the type portion
 				if (this.includeTypeName) {
@@ -112,9 +113,6 @@ namespace TheBoxSoftware.Reflection {
 						converted.Append(this.GenericEnd);
 					}
 				}
-
-				// Fix to make sure properties are displayed correctly when
-				// they have parameters
 
 				// Convert the method portion
 				if (method != null) {
@@ -144,6 +142,7 @@ namespace TheBoxSoftware.Reflection {
 					else {
 						converted.Append(property.Name);
 					}
+
 					if (method.IsGeneric) {
 						converted.Append(this.GenericStart);
 						bool first = true;
@@ -159,7 +158,9 @@ namespace TheBoxSoftware.Reflection {
 						converted.Append(this.GenericEnd);
 					}
 
-					if (this.includeParameters && !method.IsConversionOperator) {
+					if (this.includeParameters && !method.IsConversionOperator && 
+						(property == null || property.IsIndexer) // only display parameters for indexer properties
+						) {
 						string parameters = this.Convert(method);
 						if (string.IsNullOrEmpty(parameters) && property == null) {
 							parameters = "()";

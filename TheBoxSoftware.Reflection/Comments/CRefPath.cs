@@ -45,7 +45,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		public CRefPath(PropertyDef property)
 			: this(CRefTypes.Property, property.Type.Namespace, property.Type.Name, property.Name) {
 			MethodDef method = property.GetMethod ?? property.SetMethod;
-			this.Parameters = this.Convert(method);
+			this.Parameters = property.IsIndexer ? this.Convert(method) : string.Empty;
 		}
 
 		/// <summary>
