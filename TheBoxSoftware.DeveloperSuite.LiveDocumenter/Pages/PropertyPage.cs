@@ -40,6 +40,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 
                 this.AddSyntaxBlock(this.property);
 
+				// add parameters for indexers
+				if(this.property.IsIndexer) {
+					this.AddParametersForMethod(this.property.GetMethod != null ? this.property.GetMethod : this.property.SetMethod, parsedBlocks);
+				}
+
 				// Add the exception table if it exists
 				if (parsedBlocks != null) {
 					Block exceptions = parsedBlocks.Find(currentBlock => currentBlock is ExceptionList);

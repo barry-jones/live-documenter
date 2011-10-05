@@ -79,6 +79,7 @@
     <Compile Include="AttributeTargetsTest.cs" />
     <Compile Include="ClassAsNamespaceBug.cs" />
     <Compile Include="CodeTests\IndexerTest.cs" />
+    <Compile Include="CodeTests\PropertyTests.cs" />
     <Compile Include="CommentTests\CElement.cs" />
     <Compile Include="CommentTests\ExampleElement.cs" />
     <Compile Include="CommentTests\IncludeElement.cs" />
