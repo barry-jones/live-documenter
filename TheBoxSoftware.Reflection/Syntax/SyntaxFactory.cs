@@ -97,7 +97,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 			else if (member is PropertyDef) {
 				// A property can be a noram property or an indexor
 				PropertyDef property = member as PropertyDef;
-				if (property.Name == "Item") {
+				if (property.IsIndexer) {
 					syntax = new IndexorSyntax(member as PropertyDef);
 				}
 				else {
