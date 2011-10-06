@@ -17,6 +17,7 @@ namespace TheBoxSoftware.Documentation {
 		/// </summary>
 		public Project() {
 			this.Files = new List<string>();
+			this.VisibilityFilters = new List<Reflection.Visibility>();
 		}
 
 		/// <summary>
