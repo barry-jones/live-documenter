@@ -81,10 +81,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			LiveDocumentorFile.Singleton.OutputLocation = this.publishTo.Text; // store the users output selection
 			
+			// animate the hiding of the options and displaying of the progress bar
 			this.exportSelection.BeginAnimation(OpacityProperty, (AnimationTimeline)this.FindResource("OptionsHide"));
 			this.BeginAnimation(HeightProperty, (AnimationTimeline)this.FindResource("ShrinkWindow"));
 			this.exportProgress.BeginAnimation(OpacityProperty, (AnimationTimeline)this.FindResource("OptionsShow"));
-			System.Windows.Forms.Application.DoEvents();
+			System.Windows.Forms.Application.DoEvents();			
+			this.exportSelection.Visibility = System.Windows.Visibility.Hidden; // now make the options invisible to fix issue #191
 
 			Documentation.Exporting.Exporter exporter = null;
 			ExportConfigFile config = (ExportConfigFile)this.outputSelection.SelectedItem;
