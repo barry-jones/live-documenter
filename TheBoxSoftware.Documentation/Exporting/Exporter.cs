@@ -251,7 +251,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 
 			if (Directory.Exists(this.PublishDirectory)) {
-				Directory.Delete(this.PublishDirectory, true);
+				this.DeleteDirectory(this.PublishDirectory); // Directory.Delete(this.PublishDirectory, true);
 				System.Threading.Thread.Sleep(0);
 			}
 
@@ -259,6 +259,26 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			
 			// read the current application directory
 			this.ApplicationDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+		}
+
+		/// <summary>
+		/// Delets the files and child directorties of <paramref name="target"/>.
+		/// </summary>
+		/// <param name="target">The directory to delete.</param>
+		private void DeleteDirectory(string target) {
+			string[] files = Directory.GetFiles(target);
+			string[] dirs = Directory.GetDirectories(target);
+
+			foreach (string file in files) {
+				File.SetAttributes(file, FileAttributes.Normal);
+				File.Delete(file);
+			}
+
+			foreach (string dir in dirs) {
+				this.DeleteDirectory(dir);
+			}
+
+			Directory.Delete(target, false);
 		}
 
 		/// <summary>

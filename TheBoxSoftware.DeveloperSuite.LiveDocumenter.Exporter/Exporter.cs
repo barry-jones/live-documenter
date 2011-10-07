@@ -20,8 +20,6 @@ namespace TheBoxSoftware.Exporter {
 		}
 
 		public void Export() {
-			System.Diagnostics.Debugger.Launch();
-
 			List<DocumentedAssembly> files = new List<DocumentedAssembly>();
 			Project project = null;
 			export.ExportSettings settings = new export.ExportSettings();
