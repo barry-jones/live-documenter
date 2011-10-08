@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		/// </summary>
 		/// <param name="propertyDef">The details of the event to get the information from.</param>
 		public IndexorSyntax(PropertyDef propertyDef) {
-			if (propertyDef.Name != "Item") {
+			if (!propertyDef.IsIndexer) {
 				throw new InvalidOperationException("The provided property is not an indexor");
 			}
 
