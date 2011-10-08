@@ -422,7 +422,7 @@
                 <MenuItem x:Name="recentFiles" Header="Recent Files" Click="recentFiles_Click" ItemsSource="{Binding ''}" ItemTemplate="{StaticResource RecentFileMenuItem}" />
                 <Separator />
                 <MenuItem Header="_Add..." Command="local:Commands.Add" />
-            	<MenuItem x:Name="removeAssemblyMenuItem" Header="_Remove" Command="local:Commands.Remove" ItemsSource="{Binding Files}" ItemContainerStyle="{DynamicResource RemoveAssemblyMenuItem}" />
+            	<MenuItem x:Name="removeAssemblyMenuItem" Header="_Remove" Command="local:Commands.Remove" />
                 <MenuItem Header="_Save Project" Command="ApplicationCommands.Save" />
                 <MenuItem Header="_Save Project As..." Command="ApplicationCommands.SaveAs" />
                 <MenuItem Header="Export..." x:Name="export" Command="local:Commands.Export" />
@@ -491,19 +491,12 @@
                 </Button.ToolTip>
                 <Image Source="resources\add_24x24.png" Height="24" Width="24" />
             </Button>
-            <controls:DropDownButton x:Name="removeAssemblies" Style="{DynamicResource ForwardBackButtonStyle}" Command="local:Commands.Remove">
-                <controls:DropDownButton.ToolTip>
+            <Button Command="local:Commands.Remove" Style="{DynamicResource ForwardBackButtonStyle}">
+                <Button.ToolTip>
                     <TextBlock Text="Remove assembly from project" />
-                </controls:DropDownButton.ToolTip>
-                <controls:DropDownButton.DropDownContextMenu>
-                    <ContextMenu 
-						DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}" 
-						ItemsSource="{Binding Files}" 
-						ItemContainerStyle="{DynamicResource RemoveAssemblyMenuItem}" 
-						/>
-                </controls:DropDownButton.DropDownContextMenu>
+                </Button.ToolTip>
                 <Image Source="resources\remov_24x24.png" Height="24" Width="24" />
-            </controls:DropDownButton>
+            </Button>
         </ToolBar>
         
 		<StatusBar DockPanel.Dock="Bottom">

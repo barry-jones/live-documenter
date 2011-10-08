@@ -46,6 +46,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private void Apply(object sender, RoutedEventArgs e) {
 			Languages selectedLanguage = (Languages)Enum.Parse(typeof(Languages), this.language.SelectedItem.ToString());
 			List<Reflection.Visibility> filters = this.PrivacyFilters.GetFilters();
+			Model.BuildConfigurations configuration = (Model.BuildConfigurations)Enum.Parse(typeof(Model.BuildConfigurations), this.buildConfiguration.SelectedItem.ToString());
 			// check if there have been changes
 			bool changed = false;
 
@@ -53,9 +54,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			Reflection.Visibility[] selectedFilters = filters.ToArray();
 			changed = !original.SequenceEqual(selectedFilters);
 
+			changed = changed || LiveDocumentorFile.Singleton.Configuration != configuration;
+
 
 			LiveDocumentorFile.Singleton.Language = selectedLanguage;
-			LiveDocumentorFile.Singleton.Configuration = (Model.BuildConfigurations)Enum.Parse(typeof(Model.BuildConfigurations), this.buildConfiguration.SelectedItem.ToString());
+			LiveDocumentorFile.Singleton.Configuration = configuration;
 			LiveDocumentorFile.Singleton.Filters = filters;
 			this.DialogResult = changed;
 			this.Close();

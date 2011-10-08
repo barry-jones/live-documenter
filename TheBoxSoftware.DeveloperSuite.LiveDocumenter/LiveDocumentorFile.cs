@@ -13,12 +13,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	[Serializable]
 	public sealed class LiveDocumentorFile {
 		private static LiveDocumentorFile current;
+		private Project project;
 		private LiveDocument liveDocument;
-		private List<DocumentedAssembly> files;
-		private List<Reflection.Visibility> filters;
-		private Reflection.Syntax.Languages language;
-		private Model.BuildConfigurations configuration;
-		private string outputLocation;
 
 		#region Constructors
 		/// <summary>
@@ -32,10 +28,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Private constructor for initialising the single instance.
 		/// </summary>
 		private LiveDocumentorFile() {
-			this.files = new List<DocumentedAssembly>();
-			this.filters = new List<Reflection.Visibility>();
-			this.language = Reflection.Syntax.Languages.CSharp;
-			this.configuration = Model.BuildConfigurations.Debug;
+			this.project = new Project();
+			this.project.Language = Reflection.Syntax.Languages.CSharp;
+			this.project.Configuration = Model.BuildConfigurations.Debug.ToString();
 		}
 		#endregion
 
@@ -53,11 +48,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		/// <returns>The updated LiveDocument.</returns>
 		internal LiveDocument Update() {
-			if (this.liveDocument == null) {
-				this.liveDocument = new LiveDocument(this.Files, this.Filters);
-			}
-			this.liveDocument.Assemblies = this.files;
-			this.liveDocument.Settings.VisibilityFilters = this.Filters;
+			this.liveDocument = new LiveDocument(this.project.GetAssemblies(), this.project.VisibilityFilters);
+			this.liveDocument.Settings.VisibilityFilters = this.project.VisibilityFilters;
 			this.liveDocument.Update();
 			return this.liveDocument;
 		}
@@ -72,18 +64,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// required.
 		/// </remarks>
 		public void Open(string filename) {
-			List<DocumentedAssembly> readFiles = new List<DocumentedAssembly>();
-			readFiles.AddRange(
-				InputFileReader.Read(
-					filename, 
-					this.Configuration.ToString()
-					)
-				);
+			this.project = new Project();
+			this.project.Files.Add(filename);
 
 			this.Filename = string.Empty;
-			readFiles.Sort((one, two) => one.Name.CompareTo(two.Name));
-			this.files.Clear();
-			this.files.AddRange(readFiles);
 			this.HasChanged = true;
 		}
 
@@ -100,25 +84,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		/// <param name="files">The files to add.</param>
 		public void Add(string[] files) {
-			List<DocumentedAssembly> readFiles = new List<DocumentedAssembly>();
-			foreach (string filename in files) {
-				readFiles.AddRange(
-					InputFileReader.Read(
-						filename, 
-						this.Configuration.ToString()
-						)
-					);
-			}
-
-			for(int i = readFiles.Count - 1; i >= 0; i--) {
-				DocumentedAssembly assembly = this.files.Find(d => d.FileName == readFiles[i].FileName);
-				if(assembly != null) {
-					readFiles.RemoveAt(i);
-				}
-			}
-
-			this.files.AddRange(readFiles);
-			this.files.Sort((one, two) => one.Name.CompareTo(two.Name));
+			this.project.AddFiles(files);
 			this.HasChanged = true;
 		}
 
@@ -127,10 +93,23 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		/// <param name="uniqueId">The assembly to remove.</param>
 		public void Remove(long uniqueId) {
-			DocumentedAssembly assembly = this.files.Find(a => a.UniqueId == uniqueId);
+			DocumentedAssembly assembly = this.project.GetAssemblies().Find(a => a.UniqueId == uniqueId);
 
-			if(assembly != null && this.files.Contains(assembly)) {
-				this.files.Remove(assembly);
+			if (assembly != null) {
+				this.project.RemovedAssemblies.Add(assembly.Name);
+				this.HasChanged = true;
+			}
+		}
+
+		/// <summary>
+		/// Removes the assembly with the <paramref name="uniqueId"/>.
+		/// </summary>
+		/// <param name="uniqueId">The assembly to remove.</param>
+		public void Remove(string name) {
+			DocumentedAssembly assembly = this.project.GetAssemblies().Find(a => a.Name == name);
+
+			if (assembly != null) {
+				this.project.RemovedAssemblies.Add(assembly.Name);
 				this.HasChanged = true;
 			}
 		}
@@ -152,20 +131,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				Model.UserApplicationStore.Store.RecentFiles.RemoveAt(0);
 			}
 
-			// convert the LDF to a LDP
-			Project project = new Project();
-
-			foreach(DocumentedAssembly assembly in this.files) {
-				project.Files.Add(assembly.FileName);
-			}
-			foreach (Reflection.Visibility filter in this.filters) {
-				project.VisibilityFilters.Add(filter);
-			}
-			project.Configuration = this.Configuration.ToString();
-			project.Language = this.Language;
-			project.OutputLocation = this.OutputLocation;
-
-			project.Serialize(filename);
+			this.project.Serialize(filename);
 			this.HasChanged = false;
 			this.Filename = filename;
 
@@ -173,7 +139,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				new Model.RecentFile(filename, System.IO.Path.GetFileName(filename))
 				);
 		}
-		
+
 		/// <summary>
 		/// Loads an existing Live Documenter Project file and sets it as the current
 		/// project.
@@ -181,30 +147,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <param name="filename">The filename of the project file.</param>
 		/// <returns>The instantiated LiveDocumenterFile</returns>
 		public static LiveDocumentorFile Load(string filename) {
-			if(System.IO.Path.GetExtension(filename) != ".ldproj")
+			if (System.IO.Path.GetExtension(filename) != ".ldproj")
 				throw new ArgumentException("Was only expecting an Live Documenter Project file.");
-			if(!System.IO.File.Exists(filename))
+			if (!System.IO.File.Exists(filename))
 				throw new ArgumentException(string.Format("File '{0}' was expected but did not exist.", filename));
-			
+
 			// deserialize it
 			Project project = Project.Deserialize(filename);
 
 			// convert it and set the LDF as current
 			LiveDocumentorFile ldFile = new LiveDocumentorFile();
-			foreach(string file in project.Files) {
-				ldFile.files.Add(new DocumentedAssembly(file));
-			}
-			foreach(Reflection.Visibility filter in project.VisibilityFilters){
-				ldFile.filters.Add(filter);
-			}
-			if(!string.IsNullOrEmpty(project.Configuration)) {
-				ldFile.configuration = (Model.BuildConfigurations)Enum.Parse(
-					typeof(Model.BuildConfigurations), project.Configuration
-					);
-			}
-			ldFile.outputLocation = project.OutputLocation;
-			ldFile.language = project.Language;
-			ldFile.Filename = filename;			
+			ldFile.project = project;
+			ldFile.Filename = filename;
 
 			LiveDocumentorFile.SetLiveDocumentorFile(ldFile);
 			return ldFile;
@@ -214,7 +168,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Clears all of the assemblies from the Live Documenter File.
 		/// </summary>
 		public void Clear() {
-			this.files.Clear();
+			this.project.Files.Clear();
 		}
 		#endregion
 
@@ -237,26 +191,38 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public bool HasChanged { get; set; }
 
 		/// <summary>
+		/// Indicates if this LiveDocumenterFile has assemblies that can be documented.
+		/// </summary>
+		public bool HasFiles {
+			get {
+				return this.project.GetAssemblies().Count + this.project.RemovedAssemblies.Count > 0; 
+			}
+		}
+
+		/// <summary>
+		/// Gets a reference to the underlying project.
+		/// </summary>
+		internal Project UnerlyingProject {
+			get { return this.project; }
+		}
+
+		/// <summary>
 		/// The actual document that represents the currently visible
 		/// live document.
 		/// </summary>
 		public LiveDocument LiveDocument { get { return this.liveDocument; } }
 
-		public List<DocumentedAssembly> Files {
-			get { return this.files; }
-		}
-
 		/// <summary>
 		/// The visibility filters
 		/// </summary>
 		public List<Reflection.Visibility> Filters {
-			get { return this.filters; }
+			get { return this.project.VisibilityFilters; }
 			set {
-				Reflection.Visibility[] current = this.filters.ToArray();
+				Reflection.Visibility[] current = this.project.VisibilityFilters.ToArray();
 				Reflection.Visibility[] newFilters = value.ToArray();
 				if (!current.SequenceEqual(newFilters)) {
 					this.HasChanged = true;
-					this.filters = value;
+					this.project.VisibilityFilters = value;
 				}
 			}
 		}
@@ -265,10 +231,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Specified the syntax language
 		/// </summary>
 		public Reflection.Syntax.Languages Language {
-			get { return this.language; }
+			get { return this.project.Language; }
 			set {
-				if (this.language != value) {
-					this.language = value;
+				if (this.project.Language != value) {
+					this.project.Language = value;
 					this.HasChanged = true;
 				}
 			}
@@ -278,11 +244,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Specified the build configuration
 		/// </summary>
 		public Model.BuildConfigurations Configuration {
-			get { return this.configuration; }
+			get {
+				if (string.IsNullOrEmpty(this.project.Configuration)) {
+					return Model.BuildConfigurations.Debug;
+				}
+				else {
+					return (Model.BuildConfigurations)Enum.Parse(typeof(Model.BuildConfigurations), this.project.Configuration);
+				}
+			}
 			set {
-				if (this.configuration != value) {
+				if (this.project.Configuration != value.ToString()) {
 					this.HasChanged = true;
-					this.configuration = value;
+					this.project.Configuration = value.ToString();
 				}
 			}
 		}
@@ -291,10 +264,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// The users last output configuration for this project.
 		/// </summary>
 		public string OutputLocation {
-			get { return this.outputLocation; }
+			get { return this.project.OutputLocation; }
 			set {
-				this.HasChanged = this.HasChanged || this.outputLocation != value;
-				this.outputLocation = value;
+				this.HasChanged = this.HasChanged || this.project.OutputLocation != value;
+				this.project.OutputLocation = value;
 			}
 		}
 		#endregion

@@ -62,7 +62,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.DataContext = this;
 			this.forward.DataContext = this.back.DataContext = this.userViewingHistory;
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
-			this.removeAssemblies.DataContext = LiveDocumentorFile.Singleton;
 
 			this.searchEntryTimer.AutoReset = true;
 			this.searchEntryTimer.Elapsed += new System.Timers.ElapsedEventHandler(PerformSearch);
@@ -282,8 +281,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 			else if (e.Command == Commands.Remove) {
 				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
-					LiveDocumentorFile.Singleton.LiveDocument.HasFiles && 
-					LiveDocumentorFile.Singleton.LiveDocument.Assemblies.Count > 1;
+					LiveDocumentorFile.Singleton.UnerlyingProject.GetAssemblies().Count + LiveDocumentorFile.Singleton.UnerlyingProject.RemovedAssemblies.Count	> 1;
 			}
 			else if (e.Command == Commands.DocumentSettings) {
 				e.CanExecute = LiveDocumentorFile.Singleton.LiveDocument != null &&
@@ -326,8 +324,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.exportClick(sender, e);
 			}
 			else if (e.Command == Commands.Remove) {
-				if(e.Parameter != null) {
-					this.RemoveAssembly((long)e.Parameter);
+				ProjectManager manager = new ProjectManager();
+				manager.Owner = this;
+				bool? result = manager.ShowDialog();
+				if (result.HasValue && result.Value) {
+					this.UpdateView();
 				}
 			}
 			else if (e.Command == Commands.DocumentSettings) {
@@ -353,10 +354,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public void UpdateView() {
 			LiveDocument document = LiveDocumentorFile.Singleton.Update();
 			this.documentMap.ItemsSource = document.Map;
-			this.removeAssemblies.DataContext = null;
-			this.removeAssemblies.DataContext = LiveDocumentorFile.Singleton;
-			this.removeAssemblyMenuItem.DataContext = null;
-			this.removeAssemblyMenuItem.DataContext = LiveDocumentorFile.Singleton;
 
 			if (document.Map.Count > 0) {
 				this.pageViewer.Document = ((LiveDocumenterEntry)document.Map[0]).Page;
@@ -423,7 +420,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.Cursor = Cursors.AppStarting;
 
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
-			if (LiveDocumentorFile.Singleton.Files.Count == 0) {
+			if (LiveDocumentorFile.Singleton.HasFiles) {
 				this.pageViewer.Document = new Pages.WelcomePage();
 			}
 			this.Cursor = null;

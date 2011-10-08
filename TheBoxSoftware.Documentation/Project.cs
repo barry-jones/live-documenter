@@ -18,6 +18,7 @@ namespace TheBoxSoftware.Documentation {
 		public Project() {
 			this.Files = new List<string>();
 			this.VisibilityFilters = new List<Reflection.Visibility>();
+			this.RemovedAssemblies = new List<string>();
 		}
 
 		/// <summary>
@@ -26,6 +27,11 @@ namespace TheBoxSoftware.Documentation {
 		[XmlArray("files")]
 		[XmlArrayItem("file")]
 		public List<string> Files { get; set; }
+
+		/// <summary>
+		/// The list of assemblies that the user has marked as not requiring documentation.
+		/// </summary>
+		public List<string> RemovedAssemblies { get; set; }
 
 		/// <summary>
 		/// Collection of filters that define what is and is not shown in this
@@ -52,6 +58,43 @@ namespace TheBoxSoftware.Documentation {
 		/// </summary>
 		[XmlElement("outputlocation")]
 		public string OutputLocation { get; set; }
+
+		/// <summary>
+		/// Obtains all of the DocumentedAssembly references for assemblies that are valid
+		/// for the current configuration.
+		/// </summary>
+		/// <returns></returns>
+		/// <remarks>
+		/// <para>The current configuration is made from the list of <see cref="Files"/>, the
+		/// <see cref="Configuration"/> and the <see cref="RemovedAssemblies"/>.</para>
+		/// </remarks>
+		public List<DocumentedAssembly> GetAssemblies() {
+			List<DocumentedAssembly> assemblies = new List<DocumentedAssembly>();
+
+			foreach (string file in this.Files) {
+				List<DocumentedAssembly> readFiles = InputFileReader.Read(file, this.Configuration);
+				for (int i = 0; i < readFiles.Count; i++) {
+					if (!this.RemovedAssemblies.Any(current => current == string.Format("{0}\\{1}", System.IO.Path.GetFileName(file), readFiles[i].Name))) {
+						assemblies.Add(readFiles[i]);
+					}
+				}
+			}
+
+			assemblies.Sort((a, b) => a.Name.CompareTo(b.Name));
+			for (int i = 0; i < assemblies.Count; i++) {
+				assemblies[i].UniqueId = i;
+			}
+
+			return assemblies;
+		}
+
+		public void AddFiles(string[] files) {
+			for (int i = 0; i < files.Length; i++) {
+				if (!this.Files.Any(current => current == files[i])) {
+					this.Files.Add(files[i]);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Serializes the contents of this project to the <paramref name="toFile"/>.
