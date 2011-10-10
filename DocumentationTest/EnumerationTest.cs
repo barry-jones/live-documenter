@@ -11,5 +11,14 @@ namespace DocumentationTest {
 		public enum Bytebase : byte {
 			AValue
 		}
+
+		public enum SBytebase : sbyte { }
+		public enum Shortbase : short {}
+		public enum UShortbase : ushort {}
+		public enum Intbase : int {}
+		public enum UIntbase : uint {}
+		public enum Longbase : long {}
+
+		public enum NoEntries { }
 	}
 }

@@ -17,16 +17,6 @@ namespace TheBoxSoftware.Reflection.Syntax {
 		List<SyntaxToken> FormatVisibility(EnumSyntax syntax);
 
 		/// <summary>
-		/// Returns a formatted version of the enumerations underlying type..
-		/// </summary>
-		/// <param name="syntax">The enumeration to format.</param>
-		/// <returns>
-		/// A formatted enumeration underlying type. For example a C# implementation
-		/// could return <c>: Int32</c>.
-		/// </returns>
-		SyntaxToken FormatUnderlyingType(EnumSyntax syntax);
-
-		/// <summary>
 		/// Returns the fully formatted enumeration.
 		/// </summary>
 		/// <param name="syntax">The enumeration details to format.</param>

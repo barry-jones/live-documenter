@@ -18,6 +18,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 		private Dictionary<string, string> defaultTypes = new Dictionary<string, string>() {
 			{"System.Object", "Object"},
 			{"System.Boolean", "Boolean"},
+			{"System.SByte", "SByte"},
 			{"System.Byte", "Byte"},
 			{"System.Char", "Char"},
 			{"System.Double", "Double"},

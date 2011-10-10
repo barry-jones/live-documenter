@@ -18,11 +18,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 		public List<SyntaxToken> FormatVisibility(EnumSyntax syntax) {
 			return this.FormatVisibility(syntax.GetVisibility());
 		}
-
-		public SyntaxToken FormatUnderlyingType(EnumSyntax syntax) {
-			throw new NotImplementedException();
-		}
-
+		
 		public SyntaxTokenCollection Format(EnumSyntax syntax) {
 			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
@@ -31,9 +27,8 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 			tokens.Add(new SyntaxToken("enum", SyntaxTokens.Keyword));
 			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
 			tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
-			// TODO: Implement underlyign type
-			// tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			// tokens.AddRange(this.FormatClassBase(syntax));
+			tokens.Add(new SyntaxToken(" : ", SyntaxTokens.Text));
+			tokens.Add(this.FormatTypeName(syntax.GetUnderlyingType()));
 
 			return tokens;
 		}

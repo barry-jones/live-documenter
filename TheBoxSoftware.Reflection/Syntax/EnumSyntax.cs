@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Reflection.Signitures;
 
 namespace TheBoxSoftware.Reflection.Syntax {
 	/// <summary>
@@ -37,8 +38,14 @@ namespace TheBoxSoftware.Reflection.Syntax {
 			return base.GetTypeName(this.Class);
 		}
 
-		public string GetUnderlyingType() {
-			return string.Empty;
+		public TypeRef GetUnderlyingType() {
+			TypeRef underlyingType = null;
+
+			if(this.type.Fields.Count > 0) { // there should always be two field on an enumeration
+				underlyingType = ((TypeSignitureToken)this.type.Fields[0].Signiture.Tokens[0]).ElementType.ResolveToken(this.type.Assembly);
+			}
+
+			return underlyingType;
 		}
 
 		/// <summary>

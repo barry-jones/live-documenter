@@ -18,6 +18,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 		private Dictionary<string, string> defaultTypes = new Dictionary<string, string>() {
 			{"System.Object", "object"},
 			{"System.Boolean", "bool"},
+			{"System.SByte", "sbyte"},
 			{"System.Byte", "byte"},
 			{"System.Char", "char"},
 			{"System.Double", "double"},
