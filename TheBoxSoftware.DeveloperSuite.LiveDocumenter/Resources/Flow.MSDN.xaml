@@ -106,6 +106,7 @@
         <Setter Property="Margin" Value="5, 10, 10, 10" />
         <Setter Property="BorderBrush" Value="#bbb" />
         <Setter Property="BorderThickness" Value="0.5" />
+        <Setter Property="LineHeight" Value="15" />
     </Style>
 
     <Style TargetType="{x:Type Table}">
