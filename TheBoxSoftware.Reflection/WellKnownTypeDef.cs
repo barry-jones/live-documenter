@@ -9,6 +9,7 @@ namespace TheBoxSoftware.Reflection {
 			this.Name = name;
 			this.Namespace = namespaceName;
 			this.Assembly = assembly;
+			this.ExtensionMethods = new List<MethodDef>();
 			this.IsExternalReference = true;
 		}
 	}
