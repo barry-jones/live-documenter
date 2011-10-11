@@ -49,5 +49,13 @@ namespace DocumentationTest.CommentTests {
 		/// <seealso cref="TheBoxSoftware.Documentation.ExportSettings" />
 		/// <seealso cref="TheBoxSoftware.Documentation.Rendering.IRenderer{T}" />
 		public void ReferenceANonReferencedElements() {}
+
+		/// <summary>
+		/// Test that links are correctly created for seealso elements. Only valid internal members should be
+		/// linked to, members external to the project should be named but not linked.
+		/// </summary>
+		/// <seealso cref="System.Object"/>
+		/// <seealso cref="Remarks"/>
+		public void SeeAlsoLinkTest() { }
 	}
 }
