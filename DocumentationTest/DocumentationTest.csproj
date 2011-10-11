@@ -81,7 +81,9 @@
     <Compile Include="CodeTests\IndexerTest.cs" />
     <Compile Include="CodeTests\PropertyTests.cs" />
     <Compile Include="CommentTests\CElement.cs" />
+    <Compile Include="CommentTests\CodeElement.cs" />
     <Compile Include="CommentTests\ExampleElement.cs" />
+    <Compile Include="CommentTests\ExceptionElement.cs" />
     <Compile Include="CommentTests\IncludeElement.cs" />
     <Compile Include="CommentTests\InvalidElements.cs" />
     <Compile Include="CommentTests\InvalidTopLevelElements.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="ReferenceInterfaceDocumentationTest.cs" />
     <Compile Include="SeeDocumentationTest.cs" />
     <Compile Include="StaticConstructorTest_25.cs" />
+    <Compile Include="TestException.cs" />
     <Compile Include="VisibilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
