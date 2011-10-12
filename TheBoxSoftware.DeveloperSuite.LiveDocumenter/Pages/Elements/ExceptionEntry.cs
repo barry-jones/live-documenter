@@ -17,17 +17,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// </summary>
 		/// <param name="link">The hyperlink to navigate to the exception details.</param>
 		/// <param name="description">The collection of parsed code elements describing the exception.</param>
-		public ExceptionEntry(Hyperlink link, List<Block> description) {
+		public ExceptionEntry(Inline link, List<Block> description) {
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Link = link;
 			this.Description = description;
 		}
 
 		/// <summary>
-		/// Gets or sets the hyperlink that takes you to the definition of the
+		/// Gets or sets the Inline (Run/Hyperlink) that takes you to the definition of the
 		/// exception.
 		/// </summary>
-		public Hyperlink Link { get; set; }
+		public Inline Link { get; set; }
 
 		/// <summary>
 		/// Gets or sets the description as a collection of parsed CodeElements.

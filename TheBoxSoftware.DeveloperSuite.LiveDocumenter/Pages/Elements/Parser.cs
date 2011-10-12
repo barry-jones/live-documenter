@@ -161,7 +161,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			TraceHelper.WriteLine("parsing-block: e({0})", element.Element.ToString());
 
 			CrefEntryKey crefEntryKey;
-			Hyperlink link;
+			Inline link;
+			string displayName;
 			
 			switch (element.Element) {
 					// Invalid inline elements
@@ -189,8 +190,19 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					return new Code(element.Text);
 				case XmlCodeElements.Exception:
 					ExceptionXmlCodeElement exceptionElement = element as ExceptionXmlCodeElement;
-					crefEntryKey = new CrefEntryKey(assembly, exceptionElement.Member.ToString());
-					link = Parser.CreateHyperlink(crefEntryKey, exceptionElement.Member.TypeName);
+
+					if (Parser.ResolveMember(exceptionElement.Text, exceptionElement.Member, assembly, out crefEntryKey, out displayName)) {
+						link = link = Parser.CreateHyperlink(crefEntryKey, exceptionElement.Member.TypeName);
+					}
+					else {
+						if (string.IsNullOrEmpty(displayName)) {
+							link = new Run(exceptionElement.Member.TypeName);
+						}
+						else {
+							link = new Run(displayName);
+						}
+					}
+
 					return new ExceptionEntry(link, Parser.Parse(assembly, element as ExceptionXmlCodeElement));
 				case XmlCodeElements.Example:
 					ExampleXmlCodeElement exampleElement = element as ExampleXmlCodeElement;
