@@ -22,11 +22,19 @@ namespace TheBoxSoftware.Reflection.Comments {
 				case CRefTypes.Type:
 					this.Text = this.Member.TypeName;
 					break;
+				case CRefTypes.Namespace:
+					this.Text = this.Member.Namespace;
+					break;
 				default:
-					this.Text = this.Member.ElementName;
+					if (!string.IsNullOrEmpty(this.Member.ElementName)) {
+						this.Text = this.Member.ElementName;
+					}
+					else if(!string.IsNullOrEmpty(node.Attributes["cref"].Value)) {
+						this.Text = node.Attributes["cref"].Value.Substring(2);
+					}					
 					break;
 			}
-			this.IsBlock = true;
+			this.IsInline = true;
 		}
 
 		/// <summary>

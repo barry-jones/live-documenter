@@ -50,9 +50,25 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// <typeparam name="T">The type to extract from <paramref name="parsedBlocks"/></typeparam>
 		/// <param name="parsedBlocks">The Block level elements parsed from the memebers XML comment.</param>
 		/// <returns>A List of all the elements <typeparamref name="T"/> from <paramref name="parsedBlocks"/>.</returns>
-		public static List<T> ParseElement<T>(List<Block> parsedBlocks) where T: class {
+		public static List<T> ParseElement<T>(IEnumerable<Block> parsedBlocks) where T: class {
 			List<T> list = new List<T>();
 			foreach (Block current in parsedBlocks) {
+				if (current is T) {
+					list.Add(current as T);
+				}
+				if (current is Paragraph) {
+					list.AddRange(Parser.ParseElement<T>(((Paragraph)current).Inlines));
+				}
+				else if (current is Section) {
+					list.AddRange(Parser.ParseElement<T>(((Section)current).Blocks));
+				}
+			}
+			return list;
+		}
+
+		public static List<T> ParseElement<T>(IEnumerable<Inline> elements) where T : class {
+			List<T> list = new List<T>();
+			foreach (Inline current in elements) {
 				if (current is T) {
 					list.Add(current as T);
 				}
@@ -152,6 +168,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				case XmlCodeElements.C:
 				case XmlCodeElements.ParamRef:
 				case XmlCodeElements.See:
+				case XmlCodeElements.SeeAlso:
 				case XmlCodeElements.Text:
 				case XmlCodeElements.TypeParamRef:
 					InvalidOperationException ex = new InvalidOperationException(
@@ -191,14 +208,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					return new Value(Parser.Parse(assembly, element as ValueXmlCodeElement));
 				case XmlCodeElements.Param:
 					return new Param(((ParamXmlCodeElement)element).Name, Parser.Parse(assembly, element as ParamXmlCodeElement));
-				case XmlCodeElements.SeeAlso:
-                    // check if the member has been output by visual studio. If the cref is
-                    // empty vs did not find it.
-                    if (((SeeAlsoXmlCodeElement)element).Member.PathType == CRefTypes.Error) {
-                        return new Paragraph();
-                    }
-					SeeAlsoXmlCodeElement seeAlso = (SeeAlsoXmlCodeElement)element;
-					return new SeeAlso(assembly, seeAlso.Member);
 				case XmlCodeElements.TypeParam:
 					TypeParamXmlCodeElement typeParamElement = (TypeParamXmlCodeElement)element;
 					return new TypeParamEntry(typeParamElement.Name, typeParamElement.Text);
@@ -243,7 +252,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				case XmlCodeElements.Permission:
 				case XmlCodeElements.Remarks:
 				case XmlCodeElements.Returns:
-				case XmlCodeElements.SeeAlso:
 				case XmlCodeElements.Summary:
 				case XmlCodeElements.TypeParam:
 				case XmlCodeElements.Value:
@@ -262,56 +270,24 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				case XmlCodeElements.ParamRef:
 					return new Italic(new Run(element.Text));
 				case XmlCodeElements.See:
-					// NOTE: Fix this, we currently find the type in our loaded libraries and dont bother to reuse that information.
-					// We cant link to elements that dont exist inside our map so we may aswell just show them as text.
 					SeeXmlCodeElement seeElement = element as SeeXmlCodeElement;
-					CrefEntryKey key = new CrefEntryKey(assembly, seeElement.Member.ToString());
-
-					TraceHelper.Indent();
-					TraceHelper.WriteLine("see ({0})", key.CRef);
-					TraceHelper.Unindent();
-
-                    // check if the member has been output by visual studio. If the cref is
-                    // empty vs did not find it.
-                    if (seeElement.Member.PathType == CRefTypes.Error) {
-                        return new Run();
-                    }
-
-					string displayName = seeElement.Text;
-					TheBoxSoftware.Documentation.Entry relatedEntry = LiveDocumentorFile.Singleton.LiveDocument.Find(seeElement.Member);
-
-					if (relatedEntry != null) {
-						displayName = relatedEntry.Name;
-
-						switch (seeElement.Member.PathType) {
-							// these elements are named and the type of element will
-							// not modify how it should be displayed
-							case CRefTypes.Field:
-							case CRefTypes.Property:
-							case CRefTypes.Event:
-							case CRefTypes.Namespace:
-								break;
-
-							// these could be generic and so will need to modify to
-							// a more appropriate display name
-							case CRefTypes.Method:
-								MethodDef method = relatedEntry.Item as MethodDef;
-								if (method != null) {
-									displayName = method.GetDisplayName(false);
-								}
-								break;
-							case CRefTypes.Type:
-								TypeDef def = relatedEntry.Item as TypeDef;
-								if (def != null) {
-									displayName = def.GetDisplayName(false);
-								}
-								break;
-						}
+					string displayName;
+					CrefEntryKey key;
+					if (Parser.ResolveMember(seeElement.Text, seeElement.Member, assembly, out key, out displayName)) {
 						return new See(key, displayName);
 					}
 					else {
-						return new Run(displayName);	// we dont create links to references we dont have in our document
-					}					
+						return new Run(displayName);
+					}
+				case XmlCodeElements.SeeAlso:
+					SeeAlsoXmlCodeElement seeAlsoElement = element as SeeAlsoXmlCodeElement;
+					// key and displayname defined in see
+					if (Parser.ResolveMember(seeAlsoElement.Text, seeAlsoElement.Member, assembly, out key, out displayName)) {
+						return new SeeAlso(key, displayName);
+					}
+					else {
+						return new SeeAlso(displayName);
+					}
 				case XmlCodeElements.Text:
 					return new Run(element.Text);
 				case XmlCodeElements.TypeParamRef:
@@ -326,6 +302,47 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 			link.Tag = key;
 			link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 			return link;
+		}
+
+		private static bool ResolveMember(string innerText, CRefPath path, AssemblyDef assembly, out CrefEntryKey key, out string displayName) {
+			key = new CrefEntryKey(assembly, path.ToString());
+			displayName = innerText;
+
+			// check if the member has been output by visual studio. If the cref is empty vs did not find it.
+			// TODO: Return error text?
+			if (path.PathType == CRefTypes.Error) return false;
+
+			TheBoxSoftware.Documentation.Entry relatedEntry = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+			if (relatedEntry != null) {
+				displayName = relatedEntry.Name;
+
+				switch (path.PathType) {
+					// these elements are named and the type of element will
+					// not modify how it should be displayed
+					case CRefTypes.Field:
+					case CRefTypes.Property:
+					case CRefTypes.Event:
+					case CRefTypes.Namespace:
+						break;
+
+					// these could be generic and so will need to modify to
+					// a more appropriate display name
+					case CRefTypes.Method:
+						MethodDef method = relatedEntry.Item as MethodDef;
+						if (method != null) {
+							displayName = method.GetDisplayName(false);
+						}
+						break;
+					case CRefTypes.Type:
+						TypeDef def = relatedEntry.Item as TypeDef;
+						if (def != null) {
+							displayName = def.GetDisplayName(false);
+						}
+						break;
+				}
+			}
+
+			return relatedEntry != null;
 		}
 
 		/// <summary>

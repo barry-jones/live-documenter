@@ -57,5 +57,14 @@ namespace DocumentationTest.CommentTests {
 		/// <seealso cref="System.Object"/>
 		/// <seealso cref="Remarks"/>
 		public void SeeAlsoLinkTest() { }
+
+		/// <summary>
+		/// Tests the use of a seealso element in a summary element. Valid <seealso cref="SeeAlsoLinkTest"/> and 
+		/// invalid <seealso cref="SeeMe"/>.
+		/// <para>
+		/// <see cref="InSummary"/> should work a lot like <seealso cref="InSummary"/> links.
+		/// </para>
+		/// </summary>
+		public void InSummary() { }
 	}
 }

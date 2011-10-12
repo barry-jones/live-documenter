@@ -215,7 +215,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// </summary>
 		/// <param name="parsedBlocks">The parsed comments block for the element.</param>
 		/// <remarks>
-		/// The <paramref name="pasedBlocks"/> should contain any and all parsed comments
+		/// The <paramref name="parsedBlocks"/> should contain any and all parsed comments
 		/// for the calling element. This method will throw the list to the Parser and
 		/// then output the seealso comment elements to a list.
 		/// </remarks>
@@ -226,7 +226,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				seeAlso.Blocks.Add(new Header2("See Also"));
 				System.Windows.Documents.List displayList = new System.Windows.Documents.List();
 				foreach (SeeAlso currentSeeAlso in seeAlsoList) {
-					displayList.ListItems.Add(new ListItem(new Paragraph(currentSeeAlso.Link)));
+					if (currentSeeAlso.IsEnabled) {
+						displayList.ListItems.Add(new ListItem(new Paragraph(currentSeeAlso.Clone())));
+					}
+					else {
+						displayList.ListItems.Add(new ListItem(new Paragraph(new Run(currentSeeAlso.Name))));
+					}
 				}
 				seeAlso.Blocks.Add(displayList);
 				this.Blocks.Add(seeAlso);

@@ -35,6 +35,15 @@
         <Setter Property="Padding" Value="0" />
     </Style>
 
+    <Style TargetType="{x:Type local:SeeAlso}">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#000000" />
+                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="BaseListStyle" TargetType="{x:Type doc:List}" >
         <Setter Property="MarkerStyle" Value="None" />
         <Setter Property="Margin" Value="10,0,0,0" />

@@ -1,39 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Documents;
+﻿using System.Windows.Documents;
+using TheBoxSoftware.Reflection.Comments;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Comments;
-
 	/// <summary>
 	/// Represents a link that is to be displayed in a see also section
 	/// of the document. This currently relates to the seealso xml code
 	/// comment element.
 	/// </summary>
-	public sealed class SeeAlso : Block {
+	public sealed class SeeAlso : Hyperlink {
 		/// <summary>
 		/// Initialises a SeeAlso instance.
 		/// </summary>
-		/// <param name="assembly">The assembly the currently being documented</param>
-		/// <param name="type">The <see cref="CRefPath"/> to the type being refered to</param>
-		public SeeAlso(AssemblyDef assembly, CRefPath type) {
+		/// <param name="key">The <see cref="CRefPath"/> to the type being refered to.</param>
+		/// <param name="name">The display name of the SeeAlso referenced member</param>
+		public SeeAlso(CrefEntryKey key, string name) : base() {
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
-			TypeDef def = assembly.FindType(type.Namespace, type.TypeName);
-			string displayName = type.TypeName;
-			if (def != null) displayName = def.GetDisplayName(false);
-
-			Hyperlink link = new Hyperlink(new Run(displayName));
-			link.Tag = new CrefEntryKey(assembly, type.ToString());
-			link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
-			this.Link = link;
+			this.Name = name;
+			this.Inlines.Add(new Run(name));
+			if (key != null) {
+				this.Tag = key;
+				this.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+			}
+			else {
+				this.IsEnabled = false;
+			}
 		}
 
 		/// <summary>
-		/// The link to the type being referenced in the see tag
+		/// Initialises a new instance of the SeeAlso class.
 		/// </summary>
-		public Hyperlink Link { get; set; }
+		/// <param name="name">The display name for the referenced memeber</param>
+		public SeeAlso(string name) : this(null, name) { }
+
+		/// <summary>
+		/// Gets the name of the member being referenced.
+		/// </summary>
+		public new string Name { get; private set; }
+
+		/// <summary>
+		/// Creats a new SeeAlso element using the same information as this instance.
+		/// </summary>
+		/// <returns>A new SeeAlso reference</returns>
+		public SeeAlso Clone() {
+			return new SeeAlso(this.Tag as CrefEntryKey, this.Name);
+		}
 	}
 }
