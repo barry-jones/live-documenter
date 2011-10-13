@@ -75,6 +75,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					// we only allow ldproj files to open here
 					if (System.IO.Path.GetExtension(args[0]) == ".ldproj") {
 						LiveDocumentorFile.Load(args[0]);
+						this.startpage.Visibility = System.Windows.Visibility.Hidden;
 						this.UpdateView();
 					}
 				}
@@ -124,7 +125,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						MessageBoxButton.OK,
 						MessageBoxImage.Information
 						);
-					this.pageViewer.Document = new Pages.WelcomePage();
 					this.pageViewer.Focus(); // [#98] need to reset focus or commands are all greyed out
 				}
 				finally {
@@ -162,7 +162,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 						MessageBoxButton.OK,
 						MessageBoxImage.Information
 						);
-					this.pageViewer.Document = new Pages.WelcomePage();
 					this.pageViewer.Focus(); // [#98] need to reset focus or commands are all greyed out
 				}
 				finally {
@@ -420,9 +419,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.Cursor = Cursors.AppStarting;
 
 			this.recentFiles.DataContext = Model.UserApplicationStore.Store.RecentFiles;
-			if (LiveDocumentorFile.Singleton.HasFiles) {
-				this.pageViewer.Document = new Pages.WelcomePage();
-			}
 			this.Cursor = null;
 			this.Opacity = 1;
 			this.Visibility = System.Windows.Visibility.Visible;
