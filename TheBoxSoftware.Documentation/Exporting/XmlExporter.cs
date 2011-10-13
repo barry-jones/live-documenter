@@ -9,6 +9,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// Exporter that exports the docuementation to XML.
 	/// </summary>
 	public class XmlExporter : Exporter {
+		private XmlWriterSettings outputSettings;
+
 		/// <summary>
 		/// Initializes a new instance of the XmlExporter class.
 		/// </summary>
@@ -17,6 +19,9 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <param name="config">The export configuration.</param>
 		public XmlExporter(Document document, ExportSettings settings, ExportConfigFile config) 
 			: base(document, settings, config) {
+			this.outputSettings = new XmlWriterSettings();
+			this.outputSettings.Indent = true;
+			this.outputSettings.IndentChars = "\t";
 		}
 
 		/// <summary>
@@ -32,23 +37,27 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				numberOfSteps += 1; // toc and index steps
 				numberOfSteps += this.Document.Map.Count; // top level entries for recursive export
 				numberOfSteps += 1; // output files
-				numberOfSteps += ((this.Document.Map.NumberOfEntries / this.XmlExportStep) * 3); // xml export stage
+				numberOfSteps += this.Document.Map.NumberOfEntries; // xml export stage
 				numberOfSteps += 1; // cleanup files
 
 				this.OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
 				this.CurrentExportStep = 1;
 
+				XmlWriterSettings settings = new XmlWriterSettings();
+				settings.Indent = true;
+				settings.IndentChars = "\t";
+
 				// export the document map
 				if (!this.IsCancelled) {
 					this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory))) {
+					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory), this.outputSettings)) {
 						Rendering.DocumentMapXmlRenderer map = new Rendering.DocumentMapXmlRenderer(this.Document.Map);
 						map.Render(writer);
 					}
 
 					// export the index page
 					IndexXmlRenderer indexPage = new IndexXmlRenderer(this.Document.Map);
-					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
+					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory), this.outputSettings)) {
 						indexPage.Render(writer);
 					}
 
@@ -70,9 +79,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					int counter = 0;
 					foreach (string file in Directory.GetFiles(this.TempDirectory)) {
 						File.Copy(file, Path.Combine(this.PublishDirectory, Path.GetFileName(file)));
-						if (counter % this.XmlExportStep == 0) {
-							this.OnExportStep(new ExportStepEventArgs("Publishing XML files...", this.CurrentExportStep += 3));
-						}
+						this.OnExportStep(new ExportStepEventArgs("Publishing XML files...", ++this.CurrentExportStep));
 					}
 				}
 
@@ -107,6 +114,49 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <returns>The issues.</returns>
 		public override List<Issue> GetIssues() {
 			return new List<Issue>();
+		}
+
+		/// <summary>
+		/// A method that recursively, through the documentation tree, exports all of the
+		/// found pages for each of the entries in the documentation.
+		/// </summary>
+		/// <param name="currentEntry">The current entry to export</param>
+		protected override void RecursiveEntryExport(Entry currentEntry) {
+			this.Export(currentEntry);
+			for (int i = 0; i < currentEntry.Children.Count; i++) {
+				this.RecursiveEntryExport(currentEntry.Children[i]);
+			}
+		}
+
+		/// <summary>
+		/// Exports the current entry.
+		/// </summary>
+		/// <param name="current">The current entry to export.</param>
+		/// <returns>The name of the rendered XML file</returns>
+		protected override string Export(Entry current) {
+			string filename = string.Format("{0}{1}{2}.xml",
+				this.TempDirectory,
+				current.Key,
+				string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty)
+				);
+
+			try {
+				Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
+				if (r != null) {
+					using (System.Xml.XmlWriter writer = XmlWriter.Create(filename, this.outputSettings)) {
+						r.Render(writer);
+					}
+				}
+			}
+			catch (Exception ex) {
+				if (System.IO.File.Exists(filename)) {
+					System.IO.File.Delete(filename);
+				}
+				// we will deal with it later
+				this.ExportExceptions.Add(ex);
+			}
+
+			return filename;
 		}
 	}
 }
