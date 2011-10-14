@@ -86,6 +86,8 @@
     <Compile Include="Model\PrivacyFilterCollection.cs" />
     <Compile Include="Model\XmlCommentParserException.cs" />
     <Compile Include="Pages\Elements\NoXmlComments.cs" />
+    <Compile Include="Pages\Elements\PermissionEntry.cs" />
+    <Compile Include="Pages\Elements\PermissionList.cs" />
     <Compile Include="Pages\ErrorPage.cs" />
     <Compile Include="Pages\NamespaceContainerPage.cs" />
     <Compile Include="ProjectManager.xaml.cs">
@@ -262,7 +264,6 @@
     </Compile>
     <Compile Include="Pages\Elements\ParamRef.cs" />
     <Compile Include="Pages\Elements\Parser.cs" />
-    <Compile Include="Pages\Elements\Permission.cs" />
     <Compile Include="Pages\Elements\Remarks.cs" />
     <Compile Include="Pages\Elements\Returns.cs" />
     <Compile Include="Pages\Elements\See.cs" />

@@ -5,12 +5,20 @@ using System.Text;
 using System.Xml;
 
 namespace TheBoxSoftware.Reflection.Comments {
-	public sealed class PermissionXmlCodeElement : XmlCodeElement {
+	/// <summary>
+	/// Represents the permission XML code element.
+	/// </summary>
+	public sealed class PermissionXmlCodeElement : XmlContainerCodeElement {
+		/// <summary>
+		/// Initialises a new instance of the PermissionXmlCodeElement class.
+		/// </summary>
+		/// <param name="node">The XML node representing the permission details.</param>
+		/// <exception cref="AttributeRequiredException">The cref attribute was missing.</exception>
 		internal PermissionXmlCodeElement(XmlNode node)
 			: base(XmlCodeElements.Permission) {
 			if (node.Attributes["cref"] == null) { throw new AttributeRequiredException("cref", XmlCodeElements.Permission); }
 			this.Member = CRefPath.Parse(node.Attributes["cref"].Value);
-			this.Text = this.RemoveNewLines(node.InnerText);
+			this.Elements = this.Parse(node);
 			this.IsBlock = true;
 		}
 

@@ -54,6 +54,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 
 			this.RenderExceptionBlock(this.member, writer, comment);
+			this.RenderPermissionBlock(this.member, writer, comment);
 			this.RenderSyntaxBlocks(this.member, writer);
 
 			MethodDef internalMethod = this.member.GetMethod == null ? this.member.SetMethod : this.member.GetMethod;

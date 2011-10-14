@@ -60,6 +60,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 
 			this.RenderSyntaxBlocks(this.member, writer);
+			this.RenderPermissionBlock(this.member, writer, comment);
 
 			// find and output the remarks
 			if (comment != XmlCodeComment.Empty) {

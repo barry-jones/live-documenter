@@ -122,6 +122,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		private static List<Block> Parse(AssemblyDef assembly, XmlContainerCodeElement container, ParsingSession session) {
 			List<Block> blocks = new List<Block>();
 			ExceptionList exceptions = new ExceptionList();
+			PermissionList permissions = new PermissionList();
 			Paragraph inlineContainer = null;
 			if(session == null)
 				session = new ParsingSession();
@@ -142,6 +143,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 						if (block is ExceptionEntry) {
 							exceptions.Add(block as ExceptionEntry);
 						}
+						else if(block is PermissionEntry) {
+							permissions.Add(block as PermissionEntry);
+						}
 						else {
 							blocks.Add(block);
 						}
@@ -150,9 +154,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				}
 			}
 
-			if (exceptions.ExceptionCount > 0) {
-				blocks.Add(exceptions);
-			}
+			if (exceptions.ExceptionCount > 0) blocks.Add(exceptions);
+			if(permissions.Count > 0) blocks.Add(permissions);
 
 			return blocks;
 		}
@@ -210,6 +213,22 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 				case XmlCodeElements.Para:
 					ParaXmlCodeElement paraElement = element as ParaXmlCodeElement;
 					return new Para(Parser.Parse(assembly, paraElement));
+				case XmlCodeElements.Permission:
+					PermissionXmlCodeElement permissionElement = element as PermissionXmlCodeElement;
+
+					if (Parser.ResolveMember(permissionElement.Text, permissionElement.Member, assembly, out crefEntryKey, out displayName)) {
+						link = link = Parser.CreateHyperlink(crefEntryKey, permissionElement.Member.TypeName);
+					}
+					else {
+						if (string.IsNullOrEmpty(displayName)) {
+							link = new Run(permissionElement.Member.TypeName);
+						}
+						else {
+							link = new Run(displayName);
+						}
+					}
+
+					return new PermissionEntry(link, Parser.Parse(assembly, element as PermissionXmlCodeElement));
 				case XmlCodeElements.Remarks:
 					return new Remarks(Parser.Parse(assembly, element as RemarksXmlCodeElement));
 				case XmlCodeElements.Returns:
@@ -234,14 +253,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 					termOrDescription.Blocks.AddRange(Parser.Parse(assembly, (XmlContainerCodeElement)element));
 					return termOrDescription;
 					break;
-
-				case XmlCodeElements.Permission:
-					//PermissionXmlCodeElement permissionElement = element as PermissionXmlCodeElement;
-					//crefEntryKey = new CrefEntryKey(assembly, permissionElement.Member.ToString());
-					//link = Parser.CreateHyperlink(crefEntryKey, permissionElement.Member.TypeName);
-					//return new ExceptionEntry(link, new Paragraph(new Run(permissionElement.Text)));
-					System.Diagnostics.Debug.WriteLine(string.Format("Element {0} not implemented.", element.Element));
-					return null;
 			}
 
 			throw new Exception("WTF, block parsing error");

@@ -68,9 +68,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				
 				// Show the delegate parameters, this comes from the invoke method
 				// Add the parameter information if available
-				//List<Param> parameterComments = Parser.ParseElement<Param>(parsedBlocks);
 				MethodDef invokeMethod = this.representedType.GetMethods().Find(m => m.Name == "Invoke");
 				this.AddParametersForMethod(invokeMethod, parsedBlocks);
+
+				if(parsedBlocks != null) {
+					Block permissions = parsedBlocks.Find(current => current is PermissionList);
+					if(permissions != null) {
+						this.Blocks.Add(permissions);
+					}
+				}
 
 				// Add the remarks if it exists
 				if (parsedBlocks != null) {

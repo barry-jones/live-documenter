@@ -98,6 +98,13 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					}
 				}
 
+				if(parsedBlocks != null) {
+					Block permissions = parsedBlocks.Find(current => current is PermissionList);
+					if(permissions != null) {
+						this.Blocks.Add(permissions);
+					}
+				}
+
 				// Add the remarks if it exists
 				if (parsedBlocks != null) {
 					Block remarks = parsedBlocks.Find(currentBlock => currentBlock is Remarks);

@@ -94,6 +94,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 
 			this.RenderExceptionBlock(this.member, writer, comment);
+			this.RenderPermissionBlock(this.member, writer, comment);
 
 			// find and output the summary
 			if (comment != XmlCodeComment.Empty) {

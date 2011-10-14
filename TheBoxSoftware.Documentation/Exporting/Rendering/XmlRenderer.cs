@@ -132,6 +132,72 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		}
 
 		/// <summary>
+		/// Renders the list of defined exceptions for the specified <paramref name="member"/>.
+		/// </summary>
+		/// <param name="member">The member to render the exceptions for.</param>
+		/// <param name="writer">The writer to write the exceptions to.</param>
+		/// <param name="comment">The XmlCodeComment to read the exceptions from.</param>
+		protected virtual void RenderPermissionBlock(ReflectedMember member, System.Xml.XmlWriter writer, XmlCodeComment comment) {
+			// output documentation for expected permissions if they are defined
+			if (comment != XmlCodeComment.Empty) {
+				List<XmlCodeElement> permissions = comment.Elements.FindAll(node => node is PermissionXmlCodeElement);
+				if (permissions != null && permissions.Count > 0) {
+					writer.WriteStartElement("permissions");
+					for (int i = 0; i < permissions.Count; i++) {
+						PermissionXmlCodeElement current = (PermissionXmlCodeElement)permissions[i];
+						string name = string.Empty;
+						ReflectedMember found = null;
+						if (current.Member.PathType != CRefTypes.Error) {
+							TypeDef def = member.Assembly.FindType(current.Member.Namespace, current.Member.TypeName);
+							name = string.Format("{0}.{1}", current.Member.Namespace, current.Member.TypeName);
+
+							if (def != null) {
+								found = def;
+								switch (current.Member.PathType) {
+									// these elements are named and the type of element will
+									// not modify how it should be displayed
+									case CRefTypes.Field:
+									case CRefTypes.Property:
+									case CRefTypes.Event:
+									case CRefTypes.Namespace:
+										break;
+
+									// these could be generic and so will need to modify to
+									// a more appropriate display name
+									case CRefTypes.Method:
+										MethodDef method = current.Member.FindIn(def) as MethodDef;
+										if (method != null) {
+											found = method;
+											name = method.GetDisplayName(false);
+										}
+										break;
+									case CRefTypes.Type:
+										name = def.GetDisplayName(false);
+										break;
+								}
+							}
+						}
+
+						writer.WriteStartElement("permission");
+						writer.WriteStartElement("name");
+						if (found != null) {
+							writer.WriteAttributeString("key", member.GetGloballyUniqueId().ToString());
+						}
+						writer.WriteString(name);
+						writer.WriteEndElement();
+						writer.WriteStartElement("description");
+						for (int j = 0; j < current.Elements.Count; j++) {
+							this.Serialize(current.Elements[j], writer);
+						}
+						writer.WriteEndElement();
+						writer.WriteEndElement();
+					}
+					writer.WriteEndElement();
+				}
+			}
+		}
+
+		/// <summary>
 		/// Renders the generic types in XML.
 		/// </summary>
 		/// <param name="genericTypes">The generic types to render.</param>
