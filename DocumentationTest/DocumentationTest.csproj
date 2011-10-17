@@ -94,6 +94,7 @@
     <Compile Include="CommentTests\SeeAlsoElement.cs" />
     <Compile Include="CommentTests\SeeElement.cs" />
     <Compile Include="CommentTests\SummaryElement.cs" />
+    <Compile Include="CommentTests\ValueElement.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DocumentedClass.cs" />
     <Compile Include="DocumentedDelegate.cs" />

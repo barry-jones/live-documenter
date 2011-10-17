@@ -45,6 +45,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 					this.AddParametersForMethod(this.property.GetMethod != null ? this.property.GetMethod : this.property.SetMethod, parsedBlocks);
 				}
 
+				// Add the remarks if it exists
+				if (parsedBlocks != null) {
+					Block value = parsedBlocks.Find(currentBlock => currentBlock is Value);
+					if (value != null) {
+						this.Blocks.Add(value);
+					}
+				}
+
 				// Add the exception table if it exists
 				if (parsedBlocks != null) {
 					Block exceptions = parsedBlocks.Find(currentBlock => currentBlock is ExceptionList);

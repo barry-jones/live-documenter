@@ -95,6 +95,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				writer.WriteEndElement();
 			}
 
+			// find and output the value
+			if (comment != XmlCodeComment.Empty) {
+				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ValueXmlCodeElement);
+				if (remarks != null) {
+					this.Serialize(remarks, writer);
+				}
+			}
+
 			// find and output the remarks
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);

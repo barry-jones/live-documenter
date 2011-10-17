@@ -55,6 +55,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			this.RenderPermissionBlock(this.member, writer, comment);
 			this.RenderSyntaxBlocks(this.member, writer);
 
+			// find and output the value
+			if (comment != XmlCodeComment.Empty) {
+				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ValueXmlCodeElement);
+				if (remarks != null) {
+					this.Serialize(remarks, writer);
+				}
+			}
+
 			// find and output the summary
 			if (comment != XmlCodeComment.Empty) {
 				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
