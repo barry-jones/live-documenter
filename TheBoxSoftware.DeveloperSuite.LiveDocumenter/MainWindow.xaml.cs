@@ -36,8 +36,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public MainWindow() {
 			InitializeComponent();
 
-			if (DateTime.Now > new DateTime(2011, 10, 31)) {
+			if (DateTime.Now > new DateTime(2011, 11, 30)) {
 				MessageBox.Show("This beta version of has expired.", "Software Expired");
+				Application.Current.Shutdown();
 			}
 
 			Model.UserApplicationStore.Load();
@@ -198,21 +199,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		/// <summary>
-		/// Remove the assembly with the <paramref name="assemblyUniqueId"/> from
-		/// the document and update.
-		/// </summary>
-		/// <param name="assemblyUniqueId">The unqiue id of the assembly.</param>
-		private void RemoveAssembly(long assemblyUniqueId) {
-			SelectionStateManager state = new SelectionStateManager();
-			state.Save(this.currentSelection);
-
-			LiveDocumentorFile.Singleton.Remove(assemblyUniqueId);
-			this.UpdateView();
-
-			state.Restore();
-		}
-
-		/// <summary>
 		/// Loads up the recent file
 		/// </summary>
 		/// <param name="file">The recent file information to load.</param>
@@ -327,18 +313,21 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				manager.Owner = this;
 				bool? result = manager.ShowDialog();
 				if (result.HasValue && result.Value) {
+					SelectionStateManager state = new SelectionStateManager();
+					state.Save(this.currentSelection);
 					this.UpdateView();
+					state.Restore();
 				}
 			}
 			else if (e.Command == Commands.DocumentSettings) {
 				Preferences p = new Preferences();
 				p.Owner = this;
-				SelectionStateManager state = new SelectionStateManager();
-				state.Save(this.currentSelection);
 
 				bool? result = p.ShowDialog();
 
 				if (result.HasValue && result.Value) {
+					SelectionStateManager state = new SelectionStateManager();
+					state.Save(this.currentSelection);
 					this.UpdateView();
 					state.Restore();
 				}
@@ -703,7 +692,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 					if (entry.Item is Reflection.ReflectedMember) {
 						Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
-							this.previousEntry.Item as Reflection.ReflectedMember
+							entry.Item as Reflection.ReflectedMember
 							);
 						found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
 					}
@@ -715,7 +704,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 						// test method/field member collection pages in a type
 						for (int i = 0; i < found.Children.Count; i++) {
-							if (found.Children[i].Name == this.previousEntry.Name) {
+							if (found.Children[i].Name == entry.Name) {
 								found = found.Children[i];
 								break;
 							}
@@ -724,6 +713,39 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					else {
 						// now its a namespace or namespace collection page and we will ignore
 						// it for now
+						bool isNamespaceContainer = entry.Item is EntryTypes 
+							&& ((EntryTypes)entry.Item) == EntryTypes.NamespaceContainer;
+						List<Entry> childrenToSearch = new List<Entry>();
+
+						// get children that can be searched for
+						if(isNamespaceContainer) {
+							for(int i = 0; i < entry.Children.Count; i++){
+								childrenToSearch.AddRange(entry.Children[i].Children);
+							}
+						}
+						else {
+							childrenToSearch.AddRange(entry.Children);
+						}
+
+						// iterate over each item until one is found
+						Entry foundChildItem = null;
+						for(int i = 0; i < childrenToSearch.Count; i++) {
+							Reflection.ReflectedMember item = childrenToSearch[i].Item as Reflection.ReflectedMember;
+							if(item != null) {
+								Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(item);
+								foundChildItem = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+								break;
+							}
+						}
+
+						if(foundChildItem != null) {
+							if(isNamespaceContainer) {
+								foundChildItem.Parent.Parent.IsExpanded = entry.IsExpanded;
+							}
+							else {
+								foundChildItem.Parent.IsExpanded = entry.IsExpanded;
+							}
+						}
 					}
 				}
 

@@ -27,7 +27,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="field">The field to create the path for.</param>
 		public CRefPath(FieldDef field)
-			: this(CRefTypes.Field, field.Type.Namespace, field.Type.Name, field.Name) {
+			: this(CRefTypes.Field, field.Type, field.Name) {
 		}
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="type">The TypRef to initialise the path with.</param>
 		public CRefPath(TypeRef type)
-			: this(CRefTypes.Type, type.Namespace, type.Name, string.Empty) {
+			: this(CRefTypes.Type, type, string.Empty) {
 		}
 
 		/// <summary>
@@ -43,7 +43,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="property">The property to initialise the path with.</param>
 		public CRefPath(PropertyDef property)
-			: this(CRefTypes.Property, property.Type.Namespace, property.Type.Name, property.Name) {
+			: this(CRefTypes.Property, property.Type, property.Name) {
 			MethodDef method = property.GetMethod ?? property.SetMethod;
 			this.Parameters = property.IsIndexer ? this.Convert(method) : string.Empty;
 		}
@@ -53,7 +53,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="cEvent">The event to create the path to.</param>
 		public CRefPath(EventDef cEvent) 
-			: this(CRefTypes.Event, cEvent.Type.Namespace, cEvent.Type.Name, cEvent.Name) {
+			: this(CRefTypes.Event, cEvent.Type, cEvent.Name) {
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="method">The method to initialise the path with.</param>
 		public CRefPath(MethodDef method)
-			: this(CRefTypes.Method, method.Type.Namespace, method.Type.Name, method.Name) {
+			: this(CRefTypes.Method, method.Type, method.Name) {
 			// We need to adjust the method name if is a constructor
 			if (method.IsConstructor) {
 				this.ElementName = method.Name.Replace('.', '#');
@@ -81,15 +81,40 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// <summary>
 		/// Private constructor initialises a new instance of the CRefPath class.
 		/// </summary>
-		/// <param name="type">The cref path type.</param>
+		/// <param name="crefPathType">The cref path type.</param>
 		/// <param name="namesp">The namespace for the path.</param>
 		/// <param name="name">The type name for the path.</param>
 		/// <param name="element">The element name for the path.</param>
-		private CRefPath(CRefTypes type, string namesp, string name, string element) {
-			this.PathType = type;
-			this.Namespace = namesp;
-			this.TypeName = name;
+		private CRefPath(CRefTypes crefPathType, TypeRef type, string element) {
+			this.PathType = crefPathType;
 			this.ElementName = element;
+
+			this.TypeName = type.Name;
+			
+			// work out the namespace
+			if(type is TypeDef) {
+				List<string> elements = new List<string>();
+				TypeDef container = null;
+				if(((TypeDef)type).ContainingClass != null) {
+					container = (TypeDef)type;
+					do {
+						container = container.ContainingClass;
+						elements.Add(container.Name);
+					}
+					while(container.ContainingClass != null);
+				}
+				if(container != null) {
+					elements.Add(container.Namespace);
+				}
+				else {
+					elements.Add(type.Namespace);
+				}
+				elements.Reverse();
+				this.Namespace = string.Join(".", elements.ToArray());
+			}
+			else {
+				this.Namespace = type.Namespace;
+			}
 		}
 		#endregion
 
