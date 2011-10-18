@@ -97,6 +97,21 @@ namespace TheBoxSoftware.Documentation {
 		}
 
 		/// <summary>
+		/// Tests the <see cref="Files"/> and returns a list of files that could not
+		/// be located.
+		/// </summary>
+		/// <returns>An array of missing files as complete file paths.</returns>
+		public string[] GetMissingFiles() {
+			List<string> missingFiles = new List<string>();
+			for(int i = 0; i < this.Files.Count; i++) {
+				if(!System.IO.File.Exists(this.Files[i])) {
+					missingFiles.Add(this.Files[i]);
+				}
+			}
+			return missingFiles.ToArray();
+		}
+
+		/// <summary>
 		/// Serializes the contents of this project to the <paramref name="toFile"/>.
 		/// </summary>
 		/// <param name="toFile">The file to replace or create.</param>
@@ -109,7 +124,7 @@ namespace TheBoxSoftware.Documentation {
 		}
 
 		/// <summary>
-		/// Deserializes a Project from the <paramref name="formFile"/>.
+		/// Deserializes a Project from the <paramref name="fromFile"/>.
 		/// </summary>
 		/// <param name="fromFile">The file to read the project from.</param>
 		/// <returns>The instantiated project.</returns>

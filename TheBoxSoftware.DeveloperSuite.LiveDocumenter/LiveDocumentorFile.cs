@@ -102,9 +102,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		}
 
 		/// <summary>
-		/// Removes the assembly with the <paramref name="uniqueId"/>.
+		/// Removes the assembly with the <paramref name="name"/>.
 		/// </summary>
-		/// <param name="uniqueId">The assembly to remove.</param>
+		/// <param name="name">The assembly to remove.</param>
 		public void Remove(string name) {
 			DocumentedAssembly assembly = this.project.GetAssemblies().Find(a => a.Name == name);
 
@@ -154,6 +154,23 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
 			// deserialize it
 			Project project = Project.Deserialize(filename);
+
+			// test the files
+			string[] missingFiles = project.GetMissingFiles();
+			if(missingFiles.Length > 0) {
+				string message = string.Format("The following files could not be located: \n\n{0}\n\n Do you wish to continue to load the project? The missing files will be ignored.",
+					string.Join("\t\n", missingFiles)
+					);
+				if(MessageBox.Show(message, "Could not locate files", MessageBoxButton.YesNo) == MessageBoxResult.No) {
+					LiveDocumentorFile.SetLiveDocumentorFile(new LiveDocumentorFile());
+					return LiveDocumentorFile.Singleton;
+				}
+				else {
+					for(int i = 0; i < missingFiles.Length; i++) {
+						project.Files.Remove(missingFiles[i]);
+					}
+				}
+			}
 
 			// convert it and set the LDF as current
 			LiveDocumentorFile ldFile = new LiveDocumentorFile();
