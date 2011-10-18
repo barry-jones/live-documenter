@@ -310,7 +310,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Handles the ExportStep event of the exporter.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportStepEventArgs"/> instance containing the event data.</param>
+		/// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportStepEventArgs" /> instance containing the event data.</param>
 		private void exporter_ExportStep(object sender, ExportStepEventArgs e) {
 			DispatcherOperation op = this.Dispatcher.BeginInvoke(
 				DispatcherPriority.Normal,

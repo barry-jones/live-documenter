@@ -652,6 +652,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private class SelectionStateManager {
 			private Entry previousEntry;
 			private bool isExpanded;
+			private List<Entry> modifiedEntries = new List<Entry>();
 
 			/// <summary>
 			/// Saves the state.
@@ -662,18 +663,45 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					this.previousEntry = current;
 					this.isExpanded = current.IsExpanded;
 				}
+
+				// recursively iterate through the entries and record each that has been 
+				// changed
+				this.RecordTreeState(LiveDocumentorFile.Singleton.LiveDocument.Map);
 			}
 
 			/// <summary>
 			/// Restores the users state.
 			/// </summary>
 			public void Restore() {
-				Entry found = null;
-				
-				if (this.previousEntry != null) { // only if something was previously selected
-					Entry parent = this.previousEntry.Parent;
+				Entry selected = this.Find(this.previousEntry);
+				List<Entry> otherChangedEntries = new List<Entry>();
 
-					if (this.previousEntry.Item is Reflection.ReflectedMember) {
+				foreach(Entry current in this.modifiedEntries) {
+					Entry found = this.Find(current);
+					if(found != null) {
+						found.IsExpanded = current.IsExpanded;
+					}
+				}
+
+				if(selected != null) {
+					selected.IsSelected = true;
+					selected.IsExpanded = true;
+					selected.IsExpanded = this.isExpanded;
+				}
+			}
+
+			/// <summary>
+			/// Finds the <paramref name="entry"/> in the new DocumentMap.
+			/// </summary>
+			/// <param name="entry"></param>
+			/// <returns></returns>
+			private Entry Find(Entry entry) {
+				Entry found = null;
+
+				if (entry != null) { // only if something was previously selected
+					Entry parent = entry.Parent;
+
+					if (entry.Item is Reflection.ReflectedMember) {
 						Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Create(
 							this.previousEntry.Item as Reflection.ReflectedMember
 							);
@@ -699,10 +727,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					}
 				}
 
-				if(found != null) {
-					found.IsSelected = true;
-					found.IsExpanded = true;
-					found.IsExpanded = this.isExpanded;
+				return found;
+			}
+
+			private void RecordTreeState(IEnumerable<Entry> entries) {
+				foreach(Entry current in entries) {
+					if(current.IsExpanded) {
+						modifiedEntries.Add(current);
+						this.RecordTreeState(current.Children);
+					}
 				}
 			}
 		}
