@@ -9,9 +9,18 @@ namespace TheBoxSoftware.Documentation {
 	/// <summary>
 	/// Represents the details and configuration of a documentation project.
 	/// </summary>
+	/// <remarks>
+	/// When the project is serialized and deserialized the file paths are made relative, this
+	/// is so the project file can be moved around with its code.
+	/// </remarks>
 	[Serializable]
 	[XmlRoot("project")]
 	public class Project {
+		/// <summary>
+		/// The file location of the project.
+		/// </summary>
+		private string location;
+
 		/// <summary>
 		/// Initialises a new instance of the Project class.
 		/// </summary>
@@ -116,11 +125,17 @@ namespace TheBoxSoftware.Documentation {
 		/// </summary>
 		/// <param name="toFile">The file to replace or create.</param>
 		public void Serialize(string toFile) {
+			this.location = toFile;
+
+			this.MakePathsRelative();
+
 			using(FileStream fs = new FileStream(toFile, FileMode.OpenOrCreate)) {
 				fs.SetLength(0); // clean up all contents
 				XmlSerializer serializer = new XmlSerializer(typeof(Project));
 				serializer.Serialize(fs, this);
 			}
+
+			this.DenormaliseRelativePaths();
 		}
 
 		/// <summary>
@@ -131,8 +146,52 @@ namespace TheBoxSoftware.Documentation {
 		public static Project Deserialize(string fromFile) {
 			using(FileStream fs = new FileStream(fromFile, FileMode.Open)) {
 				XmlSerializer serializer = new XmlSerializer(typeof(Project));
-				return (Project)serializer.Deserialize(fs);
+				Project deserializedProject = (Project)serializer.Deserialize(fs);
+				deserializedProject.location = fromFile;
+				deserializedProject.DenormaliseRelativePaths();
+				return deserializedProject;
 			}
 		}
+
+		#region Private methods
+		/// <summary>
+		/// Makes the paths relative so that the project file when saved can be
+		/// moved along with the project.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">THe location private variable was not set</exception>
+		private void MakePathsRelative()
+		{
+			if (string.IsNullOrEmpty(this.location)) throw new InvalidOperationException("No filepath set on location so relative uri can not be created");
+
+			// make paths to files relative to the save file location, this enables the ld project
+			// to be stored with its solution/project files
+			Uri fileUri = new Uri(this.location);
+			for (int i = 0; i < this.Files.Count; i++)
+			{
+				this.Files[i] = Uri.UnescapeDataString(fileUri.MakeRelativeUri(new Uri(this.Files[i])).ToString());
+			}
+		}
+
+		/// <summary>
+		/// Returns the paths back to the non-relative version so rest of the 
+		/// application can locate the files correctly.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">THe location private variable was not set</exception>
+		private void DenormaliseRelativePaths()
+		{
+			if (string.IsNullOrEmpty(this.location)) throw new InvalidOperationException("No filepath set on location so relative uri can not be created");
+
+			// make paths to files relative to the save file location, this enables the ld project
+			// to be stored with its solution/project files
+			Uri fileUri = new Uri(this.location);
+			for (int i = 0; i < this.Files.Count; i++)
+			{
+				if (!Path.IsPathRooted(this.Files[i]))
+				{
+					this.Files[i] = Path.GetFullPath(Uri.UnescapeDataString(Path.Combine(Path.GetDirectoryName(this.location), this.Files[i])));
+				}
+			}
+		}
+		#endregion
 	}
 }
