@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// properties for managing the required syntax information for concrete
 	/// implementations.
 	/// </summary>
-	public abstract class Syntax {
+	internal abstract class Syntax {
 		/// <summary>
 		/// Obtains the name of the type provided. This class will remove any
 		/// superflous characters from the name to return the name that the user

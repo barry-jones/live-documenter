@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public sealed class CSharpDelegateFormatter : CSharpFormatter, IDelegateFormatter {
+	internal sealed class CSharpDelegateFormatter : CSharpFormatter, IDelegateFormatter {
 		private DelegateSyntax syntax;
 
 		public CSharpDelegateFormatter(DelegateSyntax syntax) {

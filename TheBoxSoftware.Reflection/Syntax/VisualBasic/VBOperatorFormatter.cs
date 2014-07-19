@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public sealed class VBOperatorFormatter : VBFormatter, IOperatorFormatter {
+	internal sealed class VBOperatorFormatter : VBFormatter, IOperatorFormatter {
 		private OperatorSyntax syntax;
 		private Signiture signiture;
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	public sealed class VBStructFormatter : VBFormatter, IStructFormatter {
+	internal sealed class VBStructFormatter : VBFormatter, IStructFormatter {
 		private StructSyntax syntax;
 
 		public VBStructFormatter(StructSyntax syntax) {

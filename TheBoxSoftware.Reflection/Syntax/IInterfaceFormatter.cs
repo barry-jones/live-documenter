@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public interface IInterfaceFormatter : IFormatter {
+	internal interface IInterfaceFormatter : IFormatter {
 		/// <summary>
 		/// Returns a formatted version of the interface visibility. Public, Private
 		/// etc.

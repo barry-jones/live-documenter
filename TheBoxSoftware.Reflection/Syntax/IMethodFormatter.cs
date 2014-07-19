@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax {
 	// TODO: extern, new, modifiers
 
-	public interface IMethodFormatter : IFormatter {
+	internal interface IMethodFormatter : IFormatter {
 		List<SyntaxToken> FormatVisibility(MethodSyntax syntax);
 		SyntaxToken FormatInheritance(MethodSyntax syntax);
 		List<SyntaxToken> FormatParameters(MethodSyntax syntax);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public sealed class InterfaceSyntax : Syntax {
+	internal sealed class InterfaceSyntax : Syntax {
 		/// <summary>
 		/// Internal reference to a type that details of syntax elements can be obtained
 		/// </summary>

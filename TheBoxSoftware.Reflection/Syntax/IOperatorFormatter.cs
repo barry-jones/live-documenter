@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// Interface for sytax related classes to implement a standard mechanism
 	/// for formatting operator overloads.
 	/// </summary>
-	public interface IOperatorFormatter : IFormatter {
+	internal interface IOperatorFormatter : IFormatter {
 		List<SyntaxToken> FormatVisibility(OperatorSyntax syntax);
 		SyntaxToken FormatInheritance(OperatorSyntax syntax);
 		List<SyntaxToken> FormatParameters(OperatorSyntax syntax);

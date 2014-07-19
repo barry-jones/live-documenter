@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// Class that interogates a member for the details required
 	/// to declate a constant.
 	/// </summary>
-	public class ConstantSyntax : Syntax {
+	internal class ConstantSyntax : Syntax {
 		private FieldDef field;
 
 		/// <summary>

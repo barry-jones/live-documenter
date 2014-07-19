@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.CSharp {
-	public class CSharpStructFormatter : CSharpFormatter, IStructFormatter {
+	internal sealed class CSharpStructFormatter : CSharpFormatter, IStructFormatter {
 		private StructSyntax syntax;
 
 		public CSharpStructFormatter(StructSyntax syntax) {

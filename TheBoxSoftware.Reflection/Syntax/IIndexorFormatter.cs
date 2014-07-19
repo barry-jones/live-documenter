@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// Defines the basic requirements for the information that a Formatter
 	/// that implements this interface should return.
 	/// </summary>
-	public interface IIndexorFormatter : IFormatter {
+	internal interface IIndexorFormatter : IFormatter {
 		SyntaxToken FormatIdentifier(IndexorSyntax syntax);
 		List<SyntaxToken> FormatType(IndexorSyntax syntax);
 		List<SyntaxToken> FormatVisibility(IndexorSyntax syntax);

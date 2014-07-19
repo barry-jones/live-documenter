@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public class OperatorSyntax : Syntax {
+	internal class OperatorSyntax : Syntax {
 		private MethodDef method;
 		private Signiture signiture;
 

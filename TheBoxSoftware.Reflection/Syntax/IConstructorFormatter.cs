@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public interface IConstructorFormatter : IFormatter {
+	internal interface IConstructorFormatter : IFormatter {
 		List<SyntaxToken> FormatVisibility(ConstructorSyntax syntax);
 		SyntaxToken FormatInheritance(ConstructorSyntax syntax);
 		List<SyntaxToken> FormatParameters(ConstructorSyntax syntax);

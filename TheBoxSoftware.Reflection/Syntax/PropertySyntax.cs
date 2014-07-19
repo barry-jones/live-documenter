@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// Provides access to the important information for creating formatted
 	/// syntax for <see cref="PropertyDef"/>s.
 	/// </summary>
-	public class PropertySyntax : Syntax {
+	internal class PropertySyntax : Syntax {
 		private PropertyDef propertyDef;
 		private MethodDef get;
 		private MethodDef set;

@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 	/// Base class with methods that are useful for all VB formatting
 	/// classes.
 	/// </summary>
-	public abstract class VBFormatter {
+	internal class VBFormatter {
 		/// <summary>
 		/// Collection of all the types defined in this language with a language
 		/// specific short form.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	public sealed class VBEventFormatter : VBFormatter, IEventFormatter {
+	internal sealed class VBEventFormatter : VBFormatter, IEventFormatter {
 		private EventSyntax syntax;
 
 		public VBEventFormatter(EventSyntax syntax) {

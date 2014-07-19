@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public interface IEnumerationFormatter : IFormatter {
+	internal interface IEnumerationFormatter : IFormatter {
 		/// <summary>
 		/// Returns a formatted version of the enumeration visibility. Public, Private
 		/// etc.

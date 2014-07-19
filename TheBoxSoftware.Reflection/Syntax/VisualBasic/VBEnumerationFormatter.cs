@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	public sealed class VBEnumerationFormatter : VBFormatter, IEnumerationFormatter {
+	internal sealed class VBEnumerationFormatter : VBFormatter, IEnumerationFormatter {
 		private EnumSyntax syntax;
 
 		public VBEnumerationFormatter(EnumSyntax syntax) {

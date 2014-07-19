@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
     ///		attributes(opt) interface-modifiers(opt) interface identifier interface-base(opt)
 	/// </code>
 	/// </remarks>
-	public sealed class CSharpInterfaceFormatter : CSharpFormatter, IInterfaceFormatter {
+	internal sealed class CSharpInterfaceFormatter : CSharpFormatter, IInterfaceFormatter {
 		private InterfaceSyntax syntax;
 
 		public CSharpInterfaceFormatter(InterfaceSyntax syntax) {

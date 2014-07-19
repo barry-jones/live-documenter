@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public class FieldSyntax : Syntax {
+	internal class FieldSyntax : Syntax {
 		private FieldDef field;
 
 		public FieldSyntax(FieldDef field) {

@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public class ParameterSyntax {
+	internal class ParameterSyntax {
 		private ParamDef param;
 		private ParamSignitureToken signitureToken;
 

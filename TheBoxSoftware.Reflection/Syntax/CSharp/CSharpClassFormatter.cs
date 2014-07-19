@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 	///		attributes(opt) class-modifiers(opt) class identifier class-base(opt) class-body
 	/// </code>
 	/// </remarks>
-	public class CSharpClassFormatter : CSharpFormatter, IClassFormatter {
+	internal sealed class CSharpClassFormatter : CSharpFormatter, IClassFormatter {
 		private ClassSyntax syntax;
 
 		public CSharpClassFormatter(ClassSyntax syntax) {

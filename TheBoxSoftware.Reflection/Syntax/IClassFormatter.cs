@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// <summary>
 	/// Interface defining a template for a formatters for class syntax.
 	/// </summary>
-	public interface IClassFormatter : IFormatter {
+	internal interface IClassFormatter : IFormatter {
 		/// <summary>
 		/// Returns a formatted version of the class visibility. Public, Private
 		/// etc.

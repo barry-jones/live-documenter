@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public interface IConstantFormatter : IFormatter {
+	internal interface IConstantFormatter : IFormatter {
 		SyntaxToken GetType(ConstantSyntax syntax);
 		List<SyntaxToken> GetVisibility(ConstantSyntax syntax);
 		SyntaxTokenCollection Format(ConstantSyntax syntax);

@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public class CSharpMethodFormatter : CSharpFormatter, IMethodFormatter {
+	internal sealed class CSharpMethodFormatter : CSharpFormatter, IMethodFormatter {
 		private MethodSyntax syntax;
 		private Signiture signiture;
 

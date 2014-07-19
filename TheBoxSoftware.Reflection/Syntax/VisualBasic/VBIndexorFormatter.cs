@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 	/// </example>
 	/// </para>
 	/// </summary>
-	public sealed class VBIndexorFormatter : VBFormatter, IIndexorFormatter {
+	internal class VBIndexorFormatter : VBFormatter, IIndexorFormatter {
 		private IndexorSyntax syntax;
 
 		public VBIndexorFormatter(IndexorSyntax syntax) {

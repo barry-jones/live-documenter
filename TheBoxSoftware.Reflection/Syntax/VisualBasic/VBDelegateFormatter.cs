@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public sealed class VBDelegateFormatter : VBFormatter, IDelegateFormatter {
+	internal sealed class VBDelegateFormatter : VBFormatter, IDelegateFormatter {
 		private DelegateSyntax syntax;
 
 		public VBDelegateFormatter(DelegateSyntax syntax) {

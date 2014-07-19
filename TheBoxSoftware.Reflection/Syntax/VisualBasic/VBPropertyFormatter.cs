@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	public class VBPropertyFormatter : VBFormatter, IPropertyFormatter {
+	internal sealed class VBPropertyFormatter : VBFormatter, IPropertyFormatter {
 		private PropertySyntax syntax;
 
 		public VBPropertyFormatter(PropertySyntax syntax) {

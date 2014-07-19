@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.CSharp {
-	public class CSharpPropertyFormatter : CSharpFormatter, IPropertyFormatter {
+	internal sealed class CSharpPropertyFormatter : CSharpFormatter, IPropertyFormatter {
 		private PropertySyntax syntax;
 
 		public CSharpPropertyFormatter(PropertySyntax syntax) {

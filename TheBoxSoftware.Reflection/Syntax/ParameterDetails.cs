@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// to understand the construction of a parameter.
 	/// </summary>
 	/// <see cref="Signitures.TypeDetails"/>
-	public class ParameterDetails {
+	internal class ParameterDetails {
 		/// <summary>
 		/// Initialises a new instance of the ParameterDetails class.
 		/// </summary>

@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// <summary>
 	/// 
 	/// </summary>
-	public class EnumSyntax : Syntax {
+	internal class EnumSyntax : Syntax {
 		/// <summary>
 		/// Internal reference to a type that details of syntax elements can be obtained
 		/// </summary>

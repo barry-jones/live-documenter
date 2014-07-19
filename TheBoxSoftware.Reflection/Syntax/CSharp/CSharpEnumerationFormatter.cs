@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.CSharp {
-	public class CSharpEnumerationFormatter : CSharpFormatter, IEnumerationFormatter {
+	internal sealed class CSharpEnumerationFormatter : CSharpFormatter, IEnumerationFormatter {
 		private EnumSyntax syntax;
 
 		public CSharpEnumerationFormatter(EnumSyntax syntax) {

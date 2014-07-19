@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// Allows the caller to obtain details of an event in a structured
 	/// way.
 	/// </summary>
-	public class EventSyntax : Syntax {
+	internal class EventSyntax : Syntax {
 		private EventDef eventDef;
 		private MethodDef add;
 		private MethodDef remove;

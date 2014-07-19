@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public sealed class VBMethodFormatter : VBFormatter, IMethodFormatter {
+	internal sealed class VBMethodFormatter : VBFormatter, IMethodFormatter {
 		private MethodSyntax syntax;
 		private Signiture signiture;
 

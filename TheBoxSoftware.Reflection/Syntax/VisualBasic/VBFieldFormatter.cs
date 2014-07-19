@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	public sealed class VBFieldFormatter : VBFormatter, IFieldFormatter {
+	internal sealed class VBFieldFormatter : VBFormatter, IFieldFormatter {
 		private FieldSyntax syntax;
 
 		public VBFieldFormatter(FieldSyntax syntax) {

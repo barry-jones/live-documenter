@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.CSharp {
-	public class CSharpFieldFormatter : CSharpFormatter, IFieldFormatter {
+	internal sealed class CSharpFieldFormatter : CSharpFormatter, IFieldFormatter {
 		private FieldSyntax syntax;
 
 		public CSharpFieldFormatter(FieldSyntax syntax) {

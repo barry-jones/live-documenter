@@ -32,7 +32,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 	///		type   interface-type   .   this   [   formal-parameter-list   ] 
 	/// </code>
 	/// </remarks>
-	public sealed class CSharpIndexerFormatter : CSharpFormatter, IIndexorFormatter {
+	internal sealed class CSharpIndexerFormatter : CSharpFormatter, IIndexorFormatter {
 		private IndexorSyntax syntax;
 
 		/// <summary>

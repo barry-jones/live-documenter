@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public class StructSyntax : Syntax {
+	internal class StructSyntax : Syntax {
 		/// <summary>
 		/// Internal reference to a type that details of syntax elements can be obtained
 		/// </summary>

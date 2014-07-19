@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Syntax {
 	/// <summary>
 	/// Provides access to details of an Indexor defined in the metadata.
 	/// </summary>
-	public class IndexorSyntax : Syntax {
+	internal class IndexorSyntax : Syntax {
 		private PropertyDef propertyDef;
 		private MethodDef get;
 		private MethodDef set;

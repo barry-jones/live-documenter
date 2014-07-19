@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.CSharp {
-	public class CSharpEventFormatter : CSharpFormatter, IEventFormatter {
+	internal sealed class CSharpEventFormatter : CSharpFormatter, IEventFormatter {
 		private EventSyntax syntax;
 
 		public CSharpEventFormatter(EventSyntax syntax) {

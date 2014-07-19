@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Syntax {
 	using TheBoxSoftware.Reflection.Signitures;
 
-	public class DelegateSyntax : Syntax {
+	internal class DelegateSyntax : Syntax {
 		/// <summary>
 		/// Internal reference to a type that details of syntax elements can be obtained
 		/// </summary>

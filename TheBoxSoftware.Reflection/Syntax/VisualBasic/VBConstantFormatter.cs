@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	public sealed class VBConstantFormatter : VBFormatter, IConstantFormatter {
+	internal sealed class VBConstantFormatter : VBFormatter, IConstantFormatter {
 		private ConstantSyntax syntax;
 
 		public VBConstantFormatter(ConstantSyntax syntax) {

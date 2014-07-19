@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Syntax {
-	public enum Inheritance {
+	internal enum Inheritance {
 		Default,
 		Abstract,
 		Sealed,

@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 	/// Base class with methods that are useful for all C# formatting
 	/// classes.
 	/// </summary>
-	public abstract class CSharpFormatter {
+	internal abstract class CSharpFormatter {
 		/// <summary>
 		/// Collection of all the types defined in this language with a language
 		/// specific short form.
