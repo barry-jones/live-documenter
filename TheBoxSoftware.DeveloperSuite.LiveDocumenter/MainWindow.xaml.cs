@@ -125,6 +125,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				}
 				finally {
 					this.Cursor = null;
+                    GC.Collect();
 				}
 			}
 		}
@@ -220,6 +221,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 					"File Not Found"
 					);
 			}
+
+            GC.Collect();
 		}
 
 		/// <summary>
@@ -449,6 +452,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			if (s.DataContext != null) {
 				Model.RecentFile f = (Model.RecentFile)s.DataContext;
 				this.LoadRecentFile(f);
+
+                if (this.startpage.Visibility == Visibility.Visible) {
+                    this.startpage.Visibility = Visibility.Hidden;
+                    this.documentpage.Visibility = Visibility.Visible;
+                }
 			}
 		}
 
