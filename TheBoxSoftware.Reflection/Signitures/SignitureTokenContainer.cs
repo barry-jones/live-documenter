@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// a constuct that allows groups of tokens that are always parsed together to
 	/// be represented and contained via a single class.
 	/// </summary>
-	public abstract class SignitureTokenContainer : SignitureToken {
+	internal abstract class SignitureTokenContainer : SignitureToken {
 		private List<SignitureToken> childTokens = new List<SignitureToken>();
 		
 		/// <summary>

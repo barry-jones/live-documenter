@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// The signiture for a custom attribute as described in section 23.3 of
 	/// ECMA 335.
 	/// </summary>
-	public sealed class CustomAttributeSigniture : Signiture {
+	internal sealed class CustomAttributeSigniture : Signiture {
 		/// <summary>
 		/// Initialises a new instance of the CustomAttributeSigniture class.
 		/// </summary>

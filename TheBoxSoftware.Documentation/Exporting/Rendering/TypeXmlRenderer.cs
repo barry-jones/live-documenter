@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TheBoxSoftware.Reflection;
 using TheBoxSoftware.Reflection.Comments;
+using TheBoxSoftware.Reflection.Signitures;
 
 namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	class TypeXmlRenderer : XmlRenderer {

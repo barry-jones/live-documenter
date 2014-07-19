@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
-	public class SignitureToken {
+	internal class SignitureToken {
 		private const int CompressedByteMask = 0x7f;
 		private const int CompressedShortMask = 0x3fff;
 		private const int CompressedIntMask = 0x1fffffff;

@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Reflection {
 	/// to allow for types to derive from and implement interfaces and classes that
 	/// are generic.
 	/// </summary>
-	public sealed class TypeSpec : TypeRef {
+	internal sealed class TypeSpec : TypeRef {
 		/// <summary>
 		/// Container for the types details.
 		/// </summary>
@@ -97,7 +97,7 @@ namespace TheBoxSoftware.Reflection {
 		/// <summary>
 		/// The signiture defined for this member.
 		/// </summary>
-		public Reflection.Signitures.TypeSpecificationSigniture Signiture {
+		internal Reflection.Signitures.TypeSpecificationSigniture Signiture {
 			get {
 				if (!this.Assembly.File.IsMetadataLoaded) {
 					throw new InvalidOperationException(

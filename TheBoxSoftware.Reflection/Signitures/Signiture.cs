@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
-	public abstract class Signiture {
+	internal abstract class Signiture {
 		/// <summary>
 		/// Initialises a new instance of the Signiture class.
 		/// </summary>

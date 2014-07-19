@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Signitures {
-	public enum SignitureTokens {
+	internal enum SignitureTokens {
 		CallingConvention,
 		GenericParameterCount,
 		ParameterCount,

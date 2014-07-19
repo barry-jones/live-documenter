@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// <summary>
 	/// Provides details about a type and its surounding information.
 	/// </summary>
-	public class TypeDetails {
+	internal class TypeDetails {
 		/// <summary>
 		/// The major type details this could be any TypeRef based class. Including
 		/// generic parameter, TypeSpec and TypeDef and Ref instances.

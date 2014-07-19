@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// <summary>
 	/// Represents the group of SignitureTokens that are read together.
 	/// </summary>
-	public sealed class ReturnTypeSignitureToken : SignitureTokenContainer {
+	internal sealed class ReturnTypeSignitureToken : SignitureTokenContainer {
 		/// <summary>
 		/// Initialises a new instance of the ReturnTypeSignitureToken class.
 		/// </summary>

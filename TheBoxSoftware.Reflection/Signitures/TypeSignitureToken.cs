@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// </para>
 	/// </summary>
 	[DebuggerDisplay("Type: {ElementType}, ")]
-	public sealed class TypeSignitureToken : SignitureTokenContainer {
+	internal sealed class TypeSignitureToken : SignitureTokenContainer {
 		/// <summary>
 		/// Initialises a new TypeSignitureToken class.
 		/// </summary>

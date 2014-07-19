@@ -259,7 +259,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// <param name="sb">The string being constructed containing the cref name.</param>
 		/// <param name="resolvedType">The type the parameter has been resolved to</param>
 		/// <param name="shape">The signiture token detailing the shape of the array.</param>
-		protected virtual void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape) {
+		internal virtual void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape) {
 			this.GetTypeName(sb, resolvedType);
 			//convertedSigniture.Append(resolvedType.GetFullyQualifiedName());
 			sb.Append("[");

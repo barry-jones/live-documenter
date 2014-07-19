@@ -22,7 +22,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// </summary>
 	/// <seealso cref="TypeSignitureToken"/>
 	[DebuggerDisplay("ElementType: {ElementType}, {Token}")]
-	public sealed class ElementTypeSignitureToken : SignitureToken {
+	internal sealed class ElementTypeSignitureToken : SignitureToken {
 		/// <summary>
 		/// Instantiates a new instance of the ElementTypeSignitureToken class.
 		/// </summary>

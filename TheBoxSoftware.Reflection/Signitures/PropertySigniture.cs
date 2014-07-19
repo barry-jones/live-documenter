@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
-	public sealed class PropertySigniture : Signiture {
+	internal sealed class PropertySigniture : Signiture {
 		public PropertySigniture(PeCoffFile file, byte[] signiture)
 			: base(Signitures.Property) {
 			List<SignitureToken> tokens = new List<SignitureToken>();

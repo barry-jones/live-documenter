@@ -9,6 +9,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
+    using TheBoxSoftware.Reflection.Signitures;
 
 	public class TypeMembersPage : Page {
 		private TypeDef representedType;

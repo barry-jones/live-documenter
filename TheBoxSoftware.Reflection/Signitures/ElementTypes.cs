@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace TheBoxSoftware.Reflection.Signitures {
-	public enum ElementTypes {
+	internal enum ElementTypes {
 		End = 0x0,
 		Void = 0x1,
 		Boolean = 0x2,

@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
 	[DebuggerDisplay("Sentinal")]
-	public sealed class SentinalSignitureToken : SignitureToken {
+	internal sealed class SentinalSignitureToken : SignitureToken {
 		public SentinalSignitureToken(byte[] signiture, Offset offset)
 			: base(SignitureTokens.Sentinal) {
 			ElementTypes value = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);

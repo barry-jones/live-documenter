@@ -6,7 +6,7 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
-	public class ArrayShapeSignitureToken : SignitureToken {
+	internal class ArrayShapeSignitureToken : SignitureToken {
 		public ArrayShapeSignitureToken(byte[] signiture, Offset offset)
 			: base(SignitureTokens.ArrayShape) {
 			this.Rank = SignitureToken.GetCompressedValue(signiture, offset);

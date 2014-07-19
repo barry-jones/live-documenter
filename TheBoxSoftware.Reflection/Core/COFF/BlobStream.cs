@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF {
 	/// <summary>
 	/// The blob stream controls access to signitures contained in the pe/coff file.
 	/// </summary>
-	public sealed class BlobStream : Stream {
+	internal sealed class BlobStream : Stream {
 		private byte[] streamContents;
 		/// <summary>
 		/// Reference to file which owns the stream, this is stored to make it available to

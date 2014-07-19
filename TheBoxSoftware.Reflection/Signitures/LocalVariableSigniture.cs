@@ -6,8 +6,8 @@ using System.Text;
 namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
-	public sealed class LocalVariableSigniture : Signiture {
-		public LocalVariableSigniture(PeCoffFile file, byte[] signiture)
+	internal sealed class LocalVariableSigniture : Signiture {
+		internal LocalVariableSigniture(PeCoffFile file, byte[] signiture)
 			: base(Signitures.LocalVariable) {
 			List<SignitureToken> tokens = new List<SignitureToken>();
 			Offset offset = 0;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TheBoxSoftware.Reflection.Signitures {
 	[Flags]
-	public enum CallingConventions {
+	internal enum CallingConventions {
 		/// <summary>
 		/// Default ("normal") method with a fixed-length argument list. ILAsm has no
 		/// keyword for this calling convention.

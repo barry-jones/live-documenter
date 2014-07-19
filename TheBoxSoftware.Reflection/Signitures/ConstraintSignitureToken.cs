@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
 	[DebuggerDisplay("Constraint: {Constraint}")]
-	public sealed class ConstraintSignitureToken : SignitureToken {
+	internal sealed class ConstraintSignitureToken : SignitureToken {
 		public ConstraintSignitureToken(byte[] signiture, Offset offset)
 			: base(SignitureTokens.Constraint) {
 			this.Constraint = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);

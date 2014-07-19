@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core.COFF;
 
 	[DebuggerDisplay("Modifier: {Modifier} for [{CodedIndex.ToString()}]")]
-	public sealed class CustomModifierToken : SignitureToken {
+	internal sealed class CustomModifierToken : SignitureToken {
 		public CustomModifierToken(byte[] signiture, Offset offset)
 			: base(SignitureTokens.CustomModifier) {
 			this.Modifier = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);

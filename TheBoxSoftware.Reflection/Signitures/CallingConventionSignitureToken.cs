@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
 	[DebuggerDisplay("Calling Convention: {Convention}")]
-	public sealed class CallingConventionSignitureToken : SignitureToken {
+	internal sealed class CallingConventionSignitureToken : SignitureToken {
 		public CallingConventionSignitureToken(int convention)
 			: this((CallingConventions)convention) {
 		}

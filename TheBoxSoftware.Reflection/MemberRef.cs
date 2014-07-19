@@ -95,7 +95,7 @@ namespace TheBoxSoftware.Reflection {
 		/// <summary>
 		/// Gets the signiture defined for this member.
 		/// </summary>
-		public Reflection.Signitures.Signiture Signiture {
+		internal Reflection.Signitures.Signiture Signiture {
 			get {
 				if (!this.Assembly.File.IsMetadataLoaded) {
 					throw new InvalidOperationException("The Signiture can not be parsed correctly until the metadata has been loaded.");

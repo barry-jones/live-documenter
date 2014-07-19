@@ -5,6 +5,7 @@ using System.Text;
 
 namespace TheBoxSoftware.Reflection {
 	using TheBoxSoftware.Reflection.Core.COFF;
+    using TheBoxSoftware.Reflection.Signitures;
 
 	/// <summary>
 	/// A class that describes a property that has been defined in an <see cref="TypeDef"/>.

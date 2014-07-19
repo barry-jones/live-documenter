@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
 	[DebuggerDisplay("Generic Parameter Count: {Count}")]
-	public sealed class GenericParamaterCountSignitureToken : SignitureToken {
+	internal sealed class GenericParamaterCountSignitureToken : SignitureToken {
 		public GenericParamaterCountSignitureToken(int count)
 			: base(SignitureTokens.GenericParameterCount) {
 			this.Count = count;

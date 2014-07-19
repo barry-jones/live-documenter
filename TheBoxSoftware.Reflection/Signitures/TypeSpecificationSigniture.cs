@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// Represents a signiture for a type specification as detailed in
 	/// section 23.2.14 in ECMA 335.
 	/// </summary>
-	public sealed class TypeSpecificationSigniture : Signiture {
+	internal sealed class TypeSpecificationSigniture : Signiture {
 		/// <summary>
 		/// Instantiates a new instance of the TypeSpecificationSigniture class.
 		/// </summary>

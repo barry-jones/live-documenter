@@ -5,6 +5,7 @@ using System.Text;
 
 namespace TheBoxSoftware.Reflection {
 	using TheBoxSoftware.Reflection.Core.COFF;
+    using TheBoxSoftware.Reflection.Signitures;
 
 	/// <summary>
 	/// Details a reference to a Type that resides in another assembly.

@@ -8,6 +8,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
+    using TheBoxSoftware.Reflection.Signitures;
 
 	public class TypeMethodsPage : Page {
 		private List<MethodDef> typesMethods;

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TheBoxSoftware.Reflection.Signitures;
 
-namespace TheBoxSoftware.Reflection {
+namespace TheBoxSoftware.Reflection.Signitures {
 	/// <summary>
 	/// A <see cref="SignitureConvertor"/> implementation that creates user
 	/// displayable names for types, methods and properties.
 	/// </summary>
-	public sealed class DisplayNameSignitureConvertor : Signitures.SignitureConvertor {
+	public sealed class DisplayNameSignitureConvertor : SignitureConvertor {
 		private TypeDef type;
 		private MethodDef method;
 		private PropertyDef property;
@@ -254,7 +253,7 @@ namespace TheBoxSoftware.Reflection {
 		/// <param name="sb">The string being constructed containing the display name.</param>
 		/// <param name="resolvedType">The type the parameter has been resolved to</param>
 		/// <param name="shape">The signiture token detailing the shape of the array.</param>
-		protected override void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape) {
+		internal override void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape) {
 			this.GetTypeName(sb, resolvedType);
 			sb.Append("[");
 			for (int i = 0; i < shape.Rank; i++) {

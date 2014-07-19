@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// This class is able to parse and store details about Param entries in signitures. The
 	/// Param signiture type is detailed in ECMA 335 at section 23.2.10.
 	/// </summary>
-	public sealed class ParamSignitureToken : SignitureTokenContainer {
+	internal sealed class ParamSignitureToken : SignitureTokenContainer {
 		private ElementTypeSignitureToken elementType;
 		private bool isTypeSigniture = false;
 

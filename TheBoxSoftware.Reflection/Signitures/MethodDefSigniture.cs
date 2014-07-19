@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// A signiture for a method definition as described in section 23.2.1 in
 	/// ECMA 335.
 	/// </summary>
-	public sealed class MethodDefSigniture : Signiture {
+	internal sealed class MethodDefSigniture : Signiture {
 		/// <summary>
 		/// Initialises a new instance of the MethoDefSigniture class.
 		/// </summary>
@@ -36,9 +36,10 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			}
 		}
 
-		public CallingConventions GetCallingConvention() {
-			return ((CallingConventionSignitureToken)this.Tokens[0]).Convention;
-		}
+        public CallingConventions GetCallingConvention()
+        {
+            return ((CallingConventionSignitureToken)this.Tokens[0]).Convention;
+        }
 
 		public static CallingConventions GetCallingConvention(PeCoffFile file, byte[] signiture) {
 			return new CallingConventionSignitureToken(signiture, 0).Convention;

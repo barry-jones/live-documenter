@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	using TheBoxSoftware.Reflection.Core;
 
 	[DebuggerDisplay("Count: {Count}")]
-	public sealed class CountSignitureToken : SignitureToken {
+	internal sealed class CountSignitureToken : SignitureToken {
 		public CountSignitureToken(byte[] signiture, Offset offset)
 			: base(SignitureTokens.Count) {
 			this.Count = FieldReader.ToUInt16(signiture, offset.Shift(2));
