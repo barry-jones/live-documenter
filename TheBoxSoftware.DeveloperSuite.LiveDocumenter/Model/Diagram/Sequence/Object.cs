@@ -7,7 +7,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.Diagram.SequenceDia
 	/// <summary>
 	/// Represents an object instance or static in a sequence diagram.
 	/// </summary>
-	public class Object {
+	internal class Object {
 		private static Dictionary<string, Object> objects = new Dictionary<string, Object>();
 
 		private Object(string name, string type) {

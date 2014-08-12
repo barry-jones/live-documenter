@@ -9,7 +9,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.Diagram.SequenceDia
 	/// <summary>
 	/// The class that represents the sequence diagram
 	/// </summary>
-	public class SequenceDiagram {
+	internal class SequenceDiagram {
 		/// <summary>
 		/// Initialises a new instance of the Diagram class.
 		/// </summary>

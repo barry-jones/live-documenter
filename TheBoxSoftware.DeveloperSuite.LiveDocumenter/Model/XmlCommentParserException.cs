@@ -10,7 +10,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 	/// Describes an error that has occurred while parsing an XmlCodeComment to 
 	/// WPF Document elements.
 	/// </summary>
-	public class XmlCommentParserException : Exception, ISerializable, IExtendedException {
+	internal class XmlCommentParserException : Exception, ISerializable, IExtendedException {
 		/// <summary>
 		/// Initialises a new instance of the XmlCommentParserException.
 		/// </summary>

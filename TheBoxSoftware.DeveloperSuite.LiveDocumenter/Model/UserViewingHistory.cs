@@ -14,7 +14,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 	/// record any page that the user visits and allow them to navigate their history
 	/// when it suits them.
 	/// </summary>
-	public sealed class UserViewingHistory : INotifyPropertyChanged {
+	internal sealed class UserViewingHistory : INotifyPropertyChanged {
 		private const int MaxSize = 10;
 		private List<Entry> viewedEntries = new List<Entry>();
 		private bool canMoveBackward = false;

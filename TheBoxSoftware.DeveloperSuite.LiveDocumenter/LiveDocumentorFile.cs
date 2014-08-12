@@ -11,7 +11,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// the preferences for a LiveDocument.
 	/// </summary>
 	[Serializable]
-	public sealed class LiveDocumentorFile {
+	internal sealed class LiveDocumentorFile {
 		private static LiveDocumentorFile current;
 		private Project project;
 		private LiveDocument liveDocument;

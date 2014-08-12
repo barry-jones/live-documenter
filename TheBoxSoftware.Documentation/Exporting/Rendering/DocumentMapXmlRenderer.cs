@@ -9,16 +9,28 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	/// <summary>
 	/// Renders the <see cref="DocumentMap"/> to XML for exporting clients.
 	/// </summary>
-	internal class DocumentMapXmlRenderer : XmlRenderer {
+	public class DocumentMapXmlRenderer : XmlRenderer {
 		private DocumentMap documentMap;
+        private bool includeSafeName;
 		
-		/// <summary>
-		/// Initialises a new LiveDocument
-		/// </summary>
-		/// <param name="files">The files to be managed by this LiveDocument.</param>
-		public DocumentMapXmlRenderer(DocumentMap documentMap) {
-			this.documentMap = documentMap;
+        /// <summary>
+        /// Initialises a new instance of the DocumentMapXmlRenderer.
+        /// </summary>
+        /// <param name="documentMap">The <paramref name="documentMap"/> to render.</param>
+		public DocumentMapXmlRenderer(DocumentMap documentMap) : this(documentMap, true) {
 		}
+
+        /// <summary>
+        /// Initialises a new instance of the DocumentMapXmlRenderer.
+        /// </summary>
+        /// <param name="documentMap">The <paramref name="documentMap"/> to render.</param>
+        /// <param name="includeSafeName">Indicates if the safename attribute should be rendered</param>
+        public DocumentMapXmlRenderer(
+            DocumentMap documentMap,
+            bool includeSafeName) {
+                this.documentMap = documentMap;
+                this.includeSafeName = includeSafeName;
+        }
 
 		/// <summary>
 		/// Renders the DocumentMap to the provided <paramref name="writer"/>.
@@ -30,7 +42,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			foreach (Entry current in this.documentMap) {
 				writer.WriteStartElement("item");
 				writer.WriteAttributeString("name", current.Name);
-				writer.WriteAttributeString("safename", Exporter.CreateSafeName(current.Name));
+                if(this.includeSafeName)
+				    writer.WriteAttributeString("safename", Exporter.CreateSafeName(current.Name));
 				writer.WriteAttributeString("key", current.Key.ToString());
 				writer.WriteAttributeString("subkey", current.SubKey);
 
@@ -52,7 +65,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		private void Render(Entry entry, System.Xml.XmlWriter writer) {
 			writer.WriteStartElement("item");
 			writer.WriteAttributeString("name", entry.Name);
-			writer.WriteAttributeString("safename", Exporter.CreateSafeName(entry.Name));
+            if (this.includeSafeName)
+			    writer.WriteAttributeString("safename", Exporter.CreateSafeName(entry.Name));
 			writer.WriteAttributeString("key", entry.Key .ToString());
 			writer.WriteAttributeString("subkey", entry.SubKey);
 

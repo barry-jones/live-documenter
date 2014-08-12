@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Controls {
-	public class SequenceDiagramPanel : Panel {
+	internal class SequenceDiagramPanel : Panel {
 		private LiveDocumenter.Model.Diagram.SequenceDiagram.SequenceDiagram data;
 		// private Dictionary<Model.Diagram.SequenceDiagram.Object, UIElement> controlReference = new Dictionary<Object, UIElement>();
 		private Dictionary<object, UIElement> controlmap = new Dictionary<object, UIElement>();

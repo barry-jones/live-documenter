@@ -38,6 +38,7 @@ namespace TheBoxSoftware.Documentation {
 		/// Thrown when the <paramref name="fileName"/> provided is null or an
 		/// empty string.
 		/// </exception>
+        /// <exception cref="ArgumentException">The filename is not an accepted extension</exception>
 		public static List<DocumentedAssembly> Read(string fileName, string buildConfiguration) {
 			if (string.IsNullOrEmpty(fileName)) {
 				throw new ArgumentNullException("fileName");
@@ -61,6 +62,8 @@ namespace TheBoxSoftware.Documentation {
 				case ".exe":
 					reader = new LibraryFileReader(fileName);
 					break;
+                default:
+                    throw new ArgumentException("Provided filename is for a non valid file type", fileName);
 			}
 
 			reader.BuildConfiguration = string.IsNullOrEmpty(buildConfiguration) ? "Debug" : buildConfiguration;

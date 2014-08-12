@@ -16,7 +16,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// code information and diagrams etc. For all of the loaded files for the
 	/// current LiveDocumentFile projects.
 	/// </summary>
-	public sealed class LiveDocument : Document {
+	internal sealed class LiveDocument : Document {
 		/// <summary>
 		/// Initialises a new instance of the LiveDocument class.
 		/// </summary>

@@ -181,10 +181,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			var extensionMethods = from method in this.member.ExtensionMethods orderby method.Name select method;
 			foreach (MethodDef currentMethod in extensionMethods) {
-				if (!this.Exporter.Document.IsMemberFiltered(currentMethod)) {
+				//if (!this.Exporter.Document.IsMemberFiltered(currentMethod)) {
 					DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
 					this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
-				}
+				//}
 			}
 
 			writer.WriteEndElement();

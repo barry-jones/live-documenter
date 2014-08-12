@@ -18,11 +18,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagramming {
 	/// Interaction logic for SequenceDiagram.xaml
 	/// </summary>
 	public partial class SequenceDiagram : UserControl {
-		public SequenceDiagram() {
+		internal SequenceDiagram() {
 			InitializeComponent();
 		}
 
-		public SequenceDiagram(d.SequenceDiagram diagram) {
+		internal SequenceDiagram(d.SequenceDiagram diagram) {
 			InitializeComponent();
 			int lastPos = 1;
 			foreach (d.Object current in diagram.GetObjects()) {

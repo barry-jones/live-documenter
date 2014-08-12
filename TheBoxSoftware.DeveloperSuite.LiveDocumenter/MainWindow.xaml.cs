@@ -20,7 +20,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : Window {
-		public Model.UserViewingHistory userViewingHistory = new Model.UserViewingHistory();
+		internal Model.UserViewingHistory userViewingHistory = new Model.UserViewingHistory();
 		private System.Timers.Timer searchEntryTimer = new System.Timers.Timer(1000);
 		/// <summary>
 		/// Store for the currently selected element, this is used when the view is updated

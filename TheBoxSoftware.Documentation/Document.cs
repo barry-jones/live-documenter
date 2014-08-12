@@ -92,6 +92,9 @@ namespace TheBoxSoftware.Documentation {
 				member is FieldDef ||
 				member is TypeDef ||
 				member is EventDef)) {
+
+                // we always show public member, but if this member is not public test against
+                // the other displayable filters
 				bool publicVisibility = member.MemberAccess == Visibility.Public;
 				if (!publicVisibility) {
 					shouldBeAdded = false;

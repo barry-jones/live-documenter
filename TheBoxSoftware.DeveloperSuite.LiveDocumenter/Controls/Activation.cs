@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Controls {
-	public class Activation : Control {
+	internal class Activation : Control {
 		/// <summary>
 		/// Static constructor initialises the default styles associated with this control
 		/// </summary>

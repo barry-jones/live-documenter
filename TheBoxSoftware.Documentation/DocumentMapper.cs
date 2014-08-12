@@ -11,6 +11,10 @@ namespace TheBoxSoftware.Documentation {
 	/// <summary>
 	/// Creates <see cref="DocumentMap"/>s based on the <see cref="Assemblies"/> and <see cref="Settings"/> provided.
 	/// </summary>
+    /// <remarks>
+    /// <para>The document mapper creates a hierarchical representation of all of the entries in the documentation step. It
+    /// is also the area where the decision about which details are provided easily for sorting and searching.</para>
+    /// </remarks>
 	public abstract class DocumentMapper {
 		protected System.Text.RegularExpressions.Regex illegalFileCharacters;
 		private EventHandler<PreEntryAddedEventArgs> preEntryAddedEvent;
@@ -294,7 +298,7 @@ namespace TheBoxSoftware.Documentation {
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentMethod);
 					this.OnPreEntryAdded(e);
 					if (!e.Filter) {
-						Entry methodEntry = this.EntryCreator.Create(currentMethod, currentMethod.Name, commentsXml, methodsEntry);
+                        Entry methodEntry = this.EntryCreator.Create(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, methodsEntry);
 						methodEntry.IsSearchable = true;
 						methodEntry.Key = currentMethod.GetGloballyUniqueId();
 						methodsEntry.Children.Add(methodEntry);

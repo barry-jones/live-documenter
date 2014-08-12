@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Exporter {
 	/// </summary>
 	[Serializable]
 	[XmlRoot("configuration")]
-	public class Configuration {
+	internal class Configuration {
 		[XmlElement("document")]
 		public string Document { get; set; }
 

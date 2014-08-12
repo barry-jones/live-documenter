@@ -8,7 +8,7 @@ using System.Windows.Controls;
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 	using TheBoxSoftware.Documentation;
 
-	public class TreeViewItemDataTemplateSelector : DataTemplateSelector {
+	internal class TreeViewItemDataTemplateSelector : DataTemplateSelector {
 		public override DataTemplate SelectTemplate(object item, DependencyObject container) {
 			Entry current = (Entry)item;
 			FrameworkElement element = container as FrameworkElement;

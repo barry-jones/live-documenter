@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	/// <summary>
 	/// Renders the <see cref="Entry"/> to XML
 	/// </summary>
-	internal abstract class XmlRenderer : IRenderer<System.Xml.XmlWriter> {
+	public abstract class XmlRenderer : IRenderer<System.Xml.XmlWriter> {
 		protected Entry AssociatedEntry { get; set; }
 		public Exporter Exporter { get; set; }
 

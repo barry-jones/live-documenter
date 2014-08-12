@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Controls {
-	public class Object : UserControl {
+	internal class Object : UserControl {
 		public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(Object));
 
 		/// <summary>

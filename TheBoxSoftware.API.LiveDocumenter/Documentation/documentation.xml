@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<members>
+  <member name="Documentation">
+    <summary>
+      The Documentation class provides access to methods which allow you to load and obtain
+      information and documentation from a documentation file.
+    </summary>
+    <remarks>
+      <para class="note">
+        A Documentation instance is an accessor to the documentation file, it enables you
+        to access information such as the table of contents for the documentation or 
+        documentation for a single type/member.
+      </para>
+      <para>
+        A documentation file is a .NET managed code DLL, Visual Studio Solution/Project or 
+        a Live Documenter project file (.ldec).
+      </para>
+      <para>
+        All returned results are provided in XML format, the specification for this format 
+        can be found <a href="#">here</a>.
+      </para>
+      <example>
+        <code>
+  using TheBoxSoftware.API.LiveDocumenter
+
+  void Main()
+  {
+    Documentation ourDocs = new Documentation("c:\\Build\Output\VsSolution.sln");
+    ourDocs.Load();
+
+    // retrieve the table of contents
+    XmlDocument toc = ourDocs.GetTableOfContents();
+            
+    // retrieve a single page of documentation
+    XmlDocument type = ourDocs.Search();
+  }
+        </code>
+      </example>
+    </remarks>
+  </member>
+
+  <member name="Documentation.ctor">
+    <summary>
+      Initialises an instance of the Documentation class.
+    </summary>
+    <param name="forDocument">The documentation file to manage.</param>
+    <exception cref="ArgumentException">
+      Thrown when the provided parameter <paramref name="forDocument" /> is null or empty.
+    </exception>
+  </member>
+
+  <member name="GetDocumentationFor.key">
+    <summary>
+      Searches for and retruns the XML documentation for the provided <paramref name="key" />.
+    </summary>
+    <exception cref="EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception>
+    <exception cref="InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception>
+  </member>
+  
+  <member name="GetDocumentationFor.cref">
+    <summary>
+      Searches for and returns the XML documentation for the provided <paramref name="crefPath" />.
+    </summary>
+    <exception cref="EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception>
+    <exception cref="DocumentationException">Thrown when the provided <paramref name="crefPath" /> does not parse correctly.</exception>
+    <exception cref="ArgumentNullException">The provided <paramref name="crefPath" /> was null or empty.</exception>
+    <exception cref="InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception>
+  </member>
+
+  <member name="Load">
+    <summary>
+      The load method initialises the state of the documentation class and prepares it so documentation can be accessed.
+    </summary>
+    <remarks>
+      <note>
+        The load method, loads the documentation in to memory. Instantiating documentation can be a memory intensive activity,
+        where possible you should create cacheing mechanisms to only retrieve documentation when it has changed.
+      </note>
+    </remarks>
+    <exception cref="DocumentationException">
+      <para>The provided file [{0}] and extension is not supported.</para>
+      <para>The documentation file that the <see cref="DocumentationException" /> class was instantiated with is not a supported format.</para>
+    </exception>
+  </member>
+
+  <member name="GetTableOfContents">
+    <summary>
+      Provides an XML representation of the contents of every member in the documentation.
+    </summary>
+  </member>
+</members>

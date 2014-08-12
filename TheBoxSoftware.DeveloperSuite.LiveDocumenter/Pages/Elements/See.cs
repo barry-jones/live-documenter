@@ -11,7 +11,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 	/// comment.
 	/// </summary>
 	public sealed class See : Hyperlink {
-		public See(CrefEntryKey key, string name)
+		internal See(CrefEntryKey key, string name)
 			: base() {
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 			this.Inlines.Add(new Run(name));

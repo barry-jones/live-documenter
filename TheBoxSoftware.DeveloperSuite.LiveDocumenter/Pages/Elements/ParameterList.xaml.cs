@@ -25,7 +25,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// <summary>
 		/// Initialises a new instance of a ParameterList class.
 		/// </summary>
-		public ParameterList() {
+		internal ParameterList() {
 			this.InitializeComponent();
 			this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
 
@@ -51,7 +51,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements {
 		/// list.
 		/// </summary>
 		/// <param name="exceptionNode">The node containing the details of the exception.</param>
-		public void Add(string name, string typeName, AssemblyDef assembly, EntryKey typeKey, List<Block> description) {
+		internal void Add(string name, string typeName, AssemblyDef assembly, EntryKey typeKey, List<Block> description) {
 			Inline type = null;
 			if (typeKey != null) {
 				type = new Hyperlink(new Run(typeName));

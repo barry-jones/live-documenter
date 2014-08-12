@@ -9,7 +9,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.Diagram.SequenceDia
 	/// <summary>
 	/// Represents a call from one object to another in a sequence diagram.
 	/// </summary>
-	public class Call {
+	internal class Call {
 		public Call(MethodDef method, Activation from, out Activation next) {
 			this.Name = method.Name;
 			this.Reciever = Object.Create(method.Type.Name, method.Type.Name);

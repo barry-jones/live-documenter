@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Exporter {
 	/// Represents the Documentation for a group of assemblies.
 	/// </summary>
 	/// <include file='Documentation\document.xml' path='member[@name="Document"]/*'/>
-	public sealed class Document {
+	internal sealed class Document {
 		private External.Document baseDocument;
 
 		#region Constructors

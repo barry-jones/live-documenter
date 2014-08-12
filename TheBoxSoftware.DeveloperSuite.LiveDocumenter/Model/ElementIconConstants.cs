@@ -12,7 +12,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 	/// Class that handles the association of the VS icons to each of
 	/// the different elements (properties, methods etc).
 	/// </summary>
-	public sealed class ElementIconConstants
+	internal sealed class ElementIconConstants
 	{
 		private const string basePath = "Resources/ElementIcons/vsobject_{0}.png";
 

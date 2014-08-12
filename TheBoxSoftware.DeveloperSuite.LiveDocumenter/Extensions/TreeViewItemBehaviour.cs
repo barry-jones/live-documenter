@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Extensions {
-	public static class TreeViewItemBehavior {
+	internal static class TreeViewItemBehavior {
 		#region IsBroughtIntoViewWhenSelected
 
 		public static bool GetIsBroughtIntoViewWhenSelected(TreeViewItem treeViewItem) {

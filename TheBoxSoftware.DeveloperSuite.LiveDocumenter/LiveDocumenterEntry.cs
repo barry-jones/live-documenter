@@ -11,7 +11,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// <summary>
 	/// An implementation of <see cref="Entry"/> specific for the LiveDocument DocumentMaps.
 	/// </summary>
-	public class LiveDocumenterEntry : Entry {
+	internal class LiveDocumenterEntry : Entry {
 		/// <summary>
 		/// Initialises a new Entry instance
 		/// </summary>

@@ -76,7 +76,6 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					this.Config.SaveOutputFilesTo(this.PublishDirectory);
 
 					// move all the temporary export files to the publish directory
-					int counter = 0;
 					foreach (string file in Directory.GetFiles(this.TempDirectory)) {
 						File.Copy(file, Path.Combine(this.PublishDirectory, Path.GetFileName(file)));
 						this.OnExportStep(new ExportStepEventArgs("Publishing XML files...", ++this.CurrentExportStep));

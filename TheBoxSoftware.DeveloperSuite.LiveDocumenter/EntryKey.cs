@@ -11,7 +11,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// Represents a key for an entry. The key is a unique identifier for an element
 	/// which is unique across all properties, methods, parameters etc in a library.
 	/// </summary>
-	public class EntryKey {
+	internal class EntryKey {
 		/// <summary>
 		/// Initialises a new instance of the EntryKey class.
 		/// </summary>
@@ -48,7 +48,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// Represents a key for an entry that is a unique reference to point in another
 	/// assembly.
 	/// </summary>
-	public class CrefEntryKey : EntryKey {
+	internal class CrefEntryKey : EntryKey {
 		/// <summary>
 		/// Initialises a new instance of the CrefEntryKey class.
 		/// </summary>

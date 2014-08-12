@@ -7,8 +7,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model.Diagram.SequenceDia
 	/// <summary>
 	/// Represents a period of activation (work) for an object.
 	/// </summary>
-	public class Activation {
-		public Activation() {
+	internal class Activation {
+		internal Activation() {
 			this.Calls = new List<Call>();
 		}
 

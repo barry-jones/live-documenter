@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TypeMembersXmlRenderer"/> class.
 		/// </summary>
-		/// <param name="associatedEntry">The associated entry.</param>
+        /// <param name="entry">The associated entry.</param>
 		public TypeMembersXmlRenderer(Entry entry) {
 			this.containingType = (TypeDef)entry.Parent.Item;
 			this.xmlComments = entry.XmlCommentFile;

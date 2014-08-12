@@ -17,11 +17,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagramming {
 	/// Interaction logic for SequenceObject.xaml
 	/// </summary>
 	public partial class SequenceObject : UserControl {
-		public SequenceObject() {
+		internal SequenceObject() {
 			InitializeComponent();
 		}
 
-		public SequenceObject(Model.Diagram.SequenceDiagram.Object o) {
+		internal SequenceObject(Model.Diagram.SequenceDiagram.Object o) {
 			InitializeComponent();
 			this.DataContext = o;
 		}

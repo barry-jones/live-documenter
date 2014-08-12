@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model
 {
-	public class DocumentSettings
+	internal class DocumentSettings
 	{
 	}
 }

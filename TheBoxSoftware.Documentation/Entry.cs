@@ -14,6 +14,11 @@ namespace TheBoxSoftware.Documentation {
 	/// so defines the details of a method, type assembly and diagram pages etc. It
 	/// also contains information to populate the document tree in the user interface.
 	/// </summary>
+    /// <remarks>
+    /// <para>
+    /// Keys are unique et
+    /// </para>
+    /// </remarks>
 	[System.Diagnostics.DebuggerDisplay("Key: {Key} SubKey: {SubKey}")]
 	public class Entry : INotifyPropertyChanged, IComparable<Entry> {
 		private XmlCodeCommentFile xmlComments;

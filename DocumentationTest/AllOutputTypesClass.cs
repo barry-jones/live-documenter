@@ -104,7 +104,6 @@ namespace DocumentationTest {
         /// </summary>
         public int prop { get { return 1; } set { } }
 
-
         /// <summary>
         /// Enter description for event.
         /// ID string generated is "E:N.X.d".
