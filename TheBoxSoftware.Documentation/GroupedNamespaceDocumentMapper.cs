@@ -123,7 +123,6 @@ namespace TheBoxSoftware.Documentation {
 			current.UniqueId = assembly.UniqueId = fileCounter++;
 			assemblyEntry.Key = assembly.GetGloballyUniqueId();
 			assemblyEntry.IsSearchable = false;
-			assemblyEntry.HasXmlComments = fileExists;
 			Entry namespaceEntry = null;
 
 			// Add the namespaces to the document map

@@ -83,7 +83,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 		public string Summary {
 			get {
 				if (string.IsNullOrEmpty(this.summary)) {
-					if (this.RelatedEntry.HasXmlComments && this.member != null) {
+					if (this.RelatedEntry.XmlCommentFile != null && this.RelatedEntry.XmlCommentFile.Exists && this.member != null) {
 						CRefPath crefPath = CRefPath.Create(member);
 						this.summary = PlainTextSummaryConverter.Convert(member.Assembly, this.RelatedEntry.XmlCommentFile, crefPath);
 					}

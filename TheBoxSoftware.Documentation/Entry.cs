@@ -25,7 +25,7 @@ namespace TheBoxSoftware.Documentation {
 		private object item;
 		private bool isExpanded;
 		private bool isSelected;
-		private bool hasXmlComments = true;
+        private bool isSearchable;
 		private string name;
 
 		#region Constructors
@@ -37,7 +37,6 @@ namespace TheBoxSoftware.Documentation {
 		public Entry(object item, string displayName, XmlCodeCommentFile xmlComments) {
 			this.item = item;
 			this.xmlComments = xmlComments;
-			this.hasXmlComments = xmlComments != null && xmlComments.Exists;
 			this.Name = displayName;
 			this.Children = new List<Entry>();
 		}
@@ -153,7 +152,10 @@ namespace TheBoxSoftware.Documentation {
 		/// <summary>
 		/// Indicates if the entry is searchable.
 		/// </summary>
-		public bool IsSearchable { get; set; }
+		public bool IsSearchable {
+            get { return this.isSearchable; }
+            set { this.isSearchable = value; }
+        }
 
 		/// <summary>
 		/// The parent entry for this Entry
@@ -172,7 +174,11 @@ namespace TheBoxSoftware.Documentation {
 		/// Not sure about the Entry class retaining a reference
 		/// to the comment file.
 		/// </remarks>
-		public XmlCodeCommentFile XmlCommentFile { get { return this.xmlComments; } }
+		public XmlCodeCommentFile XmlCommentFile { 
+            get { 
+                return this.xmlComments; 
+            } 
+        }
 
 		/// <summary>
 		/// Indicates if this entry is selected.
@@ -203,22 +209,6 @@ namespace TheBoxSoftware.Documentation {
 				// Expand all the way up to the root.
 				if (this.isExpanded && this.Parent != null)
 					this.Parent.IsExpanded = true;
-			}
-		}
-
-		/// <summary>
-		/// Indicates if this entry has xml comments associated with it.
-		/// </summary>
-		/// <remarks>
-		/// This is only used for assembly entries.
-		/// </remarks>
-		public bool HasXmlComments {
-			get { return this.hasXmlComments; }
-			set {
-				if (value != this.hasXmlComments) {
-					this.hasXmlComments = value;
-					this.OnPropertyChanged("HasXmlComments");
-				}
 			}
 		}
 

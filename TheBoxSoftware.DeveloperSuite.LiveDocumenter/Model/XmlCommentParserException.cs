@@ -115,7 +115,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model {
 								if (sf.LiveDocument != null) {
 									Documentation.Entry entry = sf.LiveDocument.Find(this.Comment.Member);
 									if (entry != null) {
-										builder.AppendLine(string.Format("Has XML Comments: {0}", entry.HasXmlComments));
+										builder.AppendLine(string.Format(
+                                            "Has XML Comments: {0}", entry.XmlCommentFile != null && entry.XmlCommentFile.Exists
+                                            ));
 
 										if (entry.XmlCommentFile != null) {
 											builder.AppendLine(string.Format("XML: {0}", entry.XmlCommentFile.GetXmlFor(this.Comment.Member)));
