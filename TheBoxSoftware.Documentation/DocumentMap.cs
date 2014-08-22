@@ -57,7 +57,7 @@ namespace TheBoxSoftware.Documentation {
 		}
 
 		/// <summary>
-		/// The number of entries in this document map.
+		/// The total number of entries (including children) that are contained in this document map.
 		/// </summary>
 		/// <remarks>
 		/// This is not a calculated property but is set after the document mapper has completed.
