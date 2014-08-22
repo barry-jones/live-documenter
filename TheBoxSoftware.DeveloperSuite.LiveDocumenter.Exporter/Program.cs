@@ -6,6 +6,8 @@ using System.IO;
 namespace TheBoxSoftware.Exporter {
 	internal class Program {
 		static void Main(string[] args) {
+            Program p = new Program();
+
 			bool printHelp = false;
 			Configuration configuration = null;
 
@@ -15,7 +17,6 @@ namespace TheBoxSoftware.Exporter {
 			}
 			else if (args.Length != 1) {
 				Console.WriteLine("Invalid numnber of arguments specified, only expecting one.");
-				printHelp = true;
 			}
 			else {
 				string argument = args[0].ToLower();
@@ -30,9 +31,9 @@ namespace TheBoxSoftware.Exporter {
 			}
 
 			if (printHelp) {
-				Program.PrintHelp();
+				p.PrintHelp();
 			}
-			else {
+			else if(configuration != null) {
 				if (configuration.IsValid()) {
 					Exporter exporter = new Exporter(configuration);
 					exporter.Export();
@@ -43,19 +44,13 @@ namespace TheBoxSoftware.Exporter {
 		/// <summary>
 		/// Outputs the help information
 		/// </summary>
-		private static void PrintHelp() {
-			string[] lines = new string[] {
-			//	"-------------------------------------------------------------------------------",
-				"The exporter takes the following arguments",
-				"",
-				"    exporter \"configuration.xml\"",
-				"",
-				"  <filename>: The path to the configuration xml file.",
-				"  help:       Prints the help text.",
-			};
-			foreach (string line in lines) {
-				Console.WriteLine(line);
-			}
+		private void PrintHelp() {
+			string help = 
+				"The exporter takes the following arguments\n" +
+                "   exporter <filename>\n\n" +
+                "   <filename>  The path to the configuration xml file.\n" +
+				"   help        Prints the help text.\n";
+            Console.Write(help);
 		}
 	}
 }
