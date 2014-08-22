@@ -8,9 +8,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// Describes an issue at various points of the export process.
 	/// </summary>
 	public sealed class Issue {
+        private string description;
+
 		/// <summary>
 		/// Gets or sets a description of the issue.
 		/// </summary>
-		public string Description { get; set; }
+		public string Description {
+            get { return this.description; }
+            set { this.description = value; }
+        }
 	}
 }

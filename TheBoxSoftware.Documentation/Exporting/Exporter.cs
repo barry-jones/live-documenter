@@ -23,12 +23,25 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// </para>
 	/// </remarks>
 	public abstract class Exporter {
+        // 68 bytes
 		private ExportCalculatedEventHandler exportCalculated;
 		private ExportStepEventHandler exportStep;
 		private ExportExceptionHandler exportException;
 		private ExportFailedEventHandler exportFailure;
 		private string baseTempDirectory;	// base working directory for output and temp
 		protected readonly int XmlExportStep = 10;
+        private Document document;
+        private string applicationDirectory;
+        private string tempDirectory;
+        private string outputDirectory;
+        private string publishDirectory;
+        private ExportSettings settings;
+        private ExportConfigFile config;
+        private System.Text.RegularExpressions.Regex illegalFileCharecters;
+        private int currentExportStep;
+        private bool isCancelled;
+        private List<Exception> exportExceptions;
+
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
@@ -95,57 +108,90 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// <summary>
 		/// The Document being exported.
 		/// </summary>
-		public Document Document { get; set; }
+		public Document Document {
+            get { return this.document; }
+            set { this.document = value; }
+        }
 
 		/// <summary>
 		/// The directory the application is executing from and installed.
 		/// </summary>
-		protected string ApplicationDirectory { get; private set; }
+		protected string ApplicationDirectory {
+            get { return this.applicationDirectory; }
+            private set { this.applicationDirectory = value; }
+        }
 
 		/// <summary>
 		/// The directory used to output the first rendered output to, this is not the output or publishing directory.
 		/// </summary>
-		protected string TempDirectory { get; private set; }
+		protected string TempDirectory {
+            get { return this.tempDirectory; }
+            private set { this.tempDirectory = value; }
+        }
 
 		/// <summary>
 		/// The first staging folder where all the files come together to be completed or compiled.
 		/// </summary>
-		protected string OutputDirectory { get; private set; }
+		protected string OutputDirectory {
+            get { return this.outputDirectory; }
+            private set { this.outputDirectory = value; }
+        }
 
 		/// <summary>
 		/// Area to copy the final output to.
 		/// </summary>
-		protected string PublishDirectory { get; set; }
+		protected string PublishDirectory {
+            get { return this.publishDirectory; }
+            set { this.publishDirectory = value; }
+        }
 
 		/// <summary>
 		/// The regular expression to check for illegal file characters before creating files.
 		/// </summary>
-		protected System.Text.RegularExpressions.Regex IllegalFileCharacters { get; private set; }
+		protected System.Text.RegularExpressions.Regex IllegalFileCharacters {
+            get { return this.illegalFileCharecters; }
+            private set { this.illegalFileCharecters = value; }
+        }
 
 		/// <summary>
 		/// The export settings.
 		/// </summary>
-		protected ExportSettings Settings { get; set; }
+		protected ExportSettings Settings {
+            get { return this.settings; }
+            set { this.settings = value; }
+        }
 
 		/// <summary>
 		/// The export configuration details.
 		/// </summary>
-		protected ExportConfigFile Config { get; set; }
+		protected ExportConfigFile Config {
+            get { return this.config; }
+            set { this.config = value; }
+        }
 
 		/// <summary>
 		/// Counter indicating the current export step in the export process.
 		/// </summary>
-		protected int CurrentExportStep { get; set; }
+		protected int CurrentExportStep {
+            get { return this.currentExportStep; }
+            set { this.currentExportStep = value; }
+        }
 
 		/// <summary>
 		/// Indicates if this export has been cancelled.
 		/// </summary>
-		protected bool IsCancelled { get; private set; }
+		protected bool IsCancelled {
+            get { return this.isCancelled; }
+            private set { this.isCancelled = value; }
+        }
 
 		/// <summary>
 		/// A collection of errors that have occurred during the export process.
 		/// </summary>
-		public List<Exception> ExportExceptions { get; set; }
+		public List<Exception> ExportExceptions {
+            get { return this.exportExceptions; }
+            set { this.exportExceptions = value; }
+        }
 		#endregion
 
 		/// <summary>
