@@ -10,18 +10,35 @@ using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.API.LiveDocumentor
 {
+    // Things people are going to need to be able to do with an API
+    //  * read the contents of a single entry (class/method/parameter) which constitues a page
+    //  * recieve that information in a format that can be searched/modified converted (xml)
+    //  * that format should be described and static - perhaps the same as the XML conversion code I use currently
+    //  * read the list of available types/members for the loaded documentation
+    //      * maybe make this list searchable? 
+    //  * search for specific types members and return information about all of the found entries
+
+    // Uses
+    //  * website that injects information in to the already created documentation and presents that
+    //  * website that shows an always up to date version of the documentation (has it changed? yes then provide new details else show old)
+    //  * 
+
+    // Proposed API
+    //public abstract Stream GetDocumentationFor(string member);
+    //public abstract bool HasChanged();
+    //public abstract Stream GetTableOfContents();
+    //public abstract Stream Search(string member);
+
     // main API class for users to manage documentation
     /// <include file='Documentation\documentation.xml' path='members/member[@name="Documentation"]/*'/>
     public sealed class Documentation  {
-        // then there is the world which is big and wide, the world is indeed quite big and de
+
         private string forDocument = string.Empty;
         private Document baseDocument;
         private bool isLoaded = false;
         private XmlWriterSettings outputSettings;
 
-        #region Constructors
-        // do not allow them to instatiate this without providing details
-        private Documentation() { }
+        private Documentation() { } // do not allow them to instatiate this without providing details
 
         /// <include file='Documentation\documentation.xml' path='members/member[@name="Documentation.ctor"]/*'/>
         public Documentation(string forDocument) {
@@ -35,9 +52,7 @@ namespace TheBoxSoftware.API.LiveDocumentor
             this.outputSettings.Indent = true;
             this.outputSettings.IndentChars = "\t";
         }
-        #endregion
 
-        #region Methods
         /// <include file='Documentation\documentation.xml' path='members/member[@name="Load"]/*'/>
         // sets default settings for the documentation and loads it to memory, this is generally
         // a slow step.
@@ -167,25 +182,5 @@ namespace TheBoxSoftware.API.LiveDocumentor
 
             return document;
         }
-        #endregion
-
-        // Things people are going to need to be able to do with an API
-        //  * read the contents of a single entry (class/method/parameter) which constitues a page
-        //  * recieve that information in a format that can be searched/modified converted (xml)
-        //  * that format should be described and static - perhaps the same as the XML conversion code I use currently
-        //  * read the list of available types/members for the loaded documentation
-        //      * maybe make this list searchable? 
-        //  * search for specific types members and return information about all of the found entries
-
-        // Uses
-        //  * website that injects information in to the already created documentation and presents that
-        //  * website that shows an always up to date version of the documentation (has it changed? yes then provide new details else show old)
-        //  * 
-
-        // Proposed API
-        //public abstract Stream GetDocumentationFor(string member);
-        //public abstract bool HasChanged();
-        //public abstract Stream GetTableOfContents();
-        //public abstract Stream Search(string member);
     }
 }

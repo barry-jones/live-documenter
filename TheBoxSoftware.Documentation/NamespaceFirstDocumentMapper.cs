@@ -7,17 +7,10 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 
-	/// <summary>
-	/// DocumentMapper that creats maps with the main focus being the namespace.
-	/// </summary>
+    /// <file name='code-documentation\entry.xml' path='docs/namespacefirstdocumentmapper/member[@name="class"]/*' />
 	internal class NamespaceFirstDocumentMapper : DocumentMapper {
-		/// <summary>
-		/// Initialises a new instance of the NamespaceFirstDocumentMapper.
-		/// </summary>
-		/// <param name="assemblies">The assemblies being documented.</param>
-		/// <param name="settings">Documentation settings.</param>
-		/// <param name="useObservableCollection">Indicates if an observable collection should be used instead of a normal one.</param>
-		/// <param name="creator">The factory class for creating new <see cref="Entry"/> instances.</param>
+		
+        /// <file name='code-documentation\entry.xml' path='docs/namespacefirstdocumentmapper/member[@name="ctor1"]/*' />
 		public NamespaceFirstDocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator)
 			: base(assemblies, useObservableCollection, creator) {
 		}

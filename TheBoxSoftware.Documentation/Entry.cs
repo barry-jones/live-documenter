@@ -9,31 +9,22 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection.Comments;
 	using TheBoxSoftware.Reflection;
 
-	/// <summary>
-	/// Class that represents an entry in the live document, relates to a single page
-	/// so defines the details of a method, type assembly and diagram pages etc. It
-	/// also contains information to populate the document tree in the user interface.
-	/// </summary>
-    /// <remarks>
-    /// <para>
-    /// Keys are unique et
-    /// </para>
-    /// </remarks>
+    /// <include file='code-documentation\entry.xml' path='docs/entry/member[@name="entry"]/*' />
 	[System.Diagnostics.DebuggerDisplay("Key: {Key} SubKey: {SubKey}")]
 	public class Entry : INotifyPropertyChanged, IComparable<Entry> {
+        // 38 bytes
 		private XmlCodeCommentFile xmlComments;
 		private object item;
 		private bool isExpanded;
 		private bool isSelected;
         private bool isSearchable;
 		private string name;
+        private long key;
+        private string subKey;
+        private Entry parent;
+        private List<Entry> children;
 
-		#region Constructors
-		/// <summary>
-		/// Initialises a new Entry instance
-		/// </summary>
-		/// <param name="item">The item that represents this entry</param>
-		/// <param name="xmlComments">The XmlComments file</param>
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[@name="ctor1"]/*' />
 		public Entry(object item, string displayName, XmlCodeCommentFile xmlComments) {
 			this.item = item;
 			this.xmlComments = xmlComments;
@@ -41,44 +32,25 @@ namespace TheBoxSoftware.Documentation {
 			this.Children = new List<Entry>();
 		}
 
-		/// <summary>
-		/// Initialises a new instance of the Entry class.
-		/// </summary>
-		/// <param name="item">The item associated with the entry.</param>
-		/// <param name="displayName">The display name of the entry.</param>
-		/// <param name="xmlComments">The xml comments file for the assembly.</param>
-		/// <param name="parent">The parent node.</param>
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[@name="ctor2"]/*' />
 		public Entry(object item, string displayName, XmlCodeCommentFile xmlComments, Entry parent)
 			: this(item, displayName, xmlComments) {
 			this.Parent = parent;
 		}
-		#endregion
 
-		/// <summary>
-		/// Iterates over the complete document map and attempts to find
-		/// the item specified by the key.
-		/// </summary>
-		/// <param name="key">The key to search the document map for</param>
-		/// <returns>The found keyvalue pair or null if not found.</returns>
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="findbykey1"]/*' />
 		public Entry FindByKey(long key, string subKey) {
 			return this.FindByKey(key, subKey, true);
 		}
 
-		/// <summary>
-		/// Iterates over the complete document map and attempts to find
-		/// the item specified by the key.
-		/// </summary>
-		/// <param name="key">The key to search the document map for</param>
-		/// <returns>The found keyvalue pair or null if not found.</returns>
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="findbykey2"]/*' />
 		public Entry FindByKey(long key, string subKey, bool checkChildren) {
 			Entry found = null;
 
-			if (this.Key == key && string.IsNullOrEmpty(subKey)) {
-				found = this;
-			}
-			else if (this.Key == key && this.SubKey == subKey) {
-				found = this;
-			}
+            // make sure they have the same key and sub key
+            if (this.Key == key && ((string.IsNullOrEmpty(this.SubKey) == string.IsNullOrEmpty(subKey)) || (this.SubKey == subKey))) {
+                found = this;
+            }
 			else if (this.Children != null && checkChildren) {
 				int count = this.Children.Count;
 				for(int i = 0; i < count; i++) {
@@ -92,33 +64,28 @@ namespace TheBoxSoftware.Documentation {
 			return found;
 		}
 
-		/// <summary>
-		/// Search this entry and its children for the specified text. This will
-		/// search the full name of all <see cref="IsSearchable"/> entries and its
-		/// children.
-		/// </summary>
-		/// <param name="searchText">The text to search for.</param>
-		/// <returns>An array of entries that match the criteria.</returns>
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="search"]/*' />
 		public List<Entry> Search(string searchText) {
 			List<Entry> results = new List<Entry>();
-			if (this.IsSearchable && this.Name.ToLower().Contains(searchText.ToLower())) {
+
+			if (this.IsSearchable && this.Name.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) >= 0) {
 				results.Add(this);
 			}
-			foreach (Entry child in this.Children) {
-				results.AddRange(child.Search(searchText));
-			}
+
+            int count = this.Children.Count;
+            for(int i = 0; i < count; i++) {
+                results.AddRange(this.Children[i].Search(searchText));
+            }
+
 			return results;
 		}
 
-		/// <summary>
-		/// Finds the namespace in the document map based on the name provided.
-		/// </summary>
-		/// <param name="name">The fully qualified namespace name.</param>
-		/// <returns>The found namespace entry or null if not found.</returns>
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="findnamespace"]/*' />
 		public Entry FindNamespace(string name) {
 			// a namespace entry is an entry with a List<TypeDef> member, the required namespace should be
 			// a parent of this type (provided it was a type of member of a type).
 			Entry parent = this;
+
 			while (parent.Parent != null && !(parent.Item is KeyValuePair<string, List<TypeDef>>)) {
 				parent = parent.Parent;
 			}
@@ -127,11 +94,7 @@ namespace TheBoxSoftware.Documentation {
 		}
 
 		#region Properties
-		/// <summary>
-		/// The display name for this entry, this will be used foremost to
-		/// display in the DocumentMap for the LiceDocument. This does not
-		/// have to be unique.
-		/// </summary>
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="name"]/*' />
 		public string Name {
 			get { return this.name; }
 			set { this.name = value; }
@@ -140,14 +103,20 @@ namespace TheBoxSoftware.Documentation {
 		/// <summary>
 		/// The unique key that can be used to find the entry in a document map.
 		/// </summary>
-		public long Key { get; set; }
+		public long Key {
+            get { return this.key; }
+            set { this.key = value; }
+        }
 
 		/// <summary>
 		/// A subkey for the entry which allows us to differentiate between multiple children
 		/// where a non metadata related entry was created. For example this is used when
 		/// creating entries for property, member and method pages.
 		/// </summary>
-		public string SubKey { get; set; }
+		public string SubKey {
+            get { return this.subKey; }
+            set { this.subKey = value; }
+        }
 
 		/// <summary>
 		/// Indicates if the entry is searchable.
@@ -157,15 +126,19 @@ namespace TheBoxSoftware.Documentation {
             set { this.isSearchable = value; }
         }
 
-		/// <summary>
-		/// The parent entry for this Entry
-		/// </summary>
-		public Entry Parent { get; set; }
+        /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="parent"]/*' />
+		public Entry Parent {
+            get { return this.parent; }
+            set { this.parent = value; }
+        }
 
 		/// <summary>
 		/// The child entries for this Entry.
 		/// </summary>
-		public List<Entry> Children { get; set; }
+		public List<Entry> Children {
+            get { return this.children; }
+            set { this.children = value; }
+        }
 
 		/// <summary>
 		/// The associated comment file for this entry.

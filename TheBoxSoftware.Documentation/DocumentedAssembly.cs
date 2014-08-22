@@ -13,7 +13,14 @@ namespace TheBoxSoftware.Documentation {
 	/// <seealso cref="AssemblyDef" />
 	/// <seealso cref="Comments.XmlCodeCommentFile" />
 	public sealed class DocumentedAssembly {
+        // 32 bytes
 		private AssemblyDef assembly;
+        private string filename;
+        private DateTime timeLoaded;
+        private string name;
+        private string xmlFilename;
+        private List<string> referencedAssemblies;
+        private long uniqueId;
 
 		#region Constructors
 		/// <summary>
@@ -83,22 +90,34 @@ namespace TheBoxSoftware.Documentation {
 		/// <summary>
 		/// Gets the full name and path of the assembly being documented.
 		/// </summary>
-		public string FileName { get; set; }
+		public string FileName {
+            get { return this.filename; }
+            set { this.filename = value; }
+        }
 
 		/// <summary>
 		/// Gets or sets the date and time the file was last loaded.
 		/// </summary>
-		public DateTime TimeLoaded { get; set; }
+		public DateTime TimeLoaded {
+            get { return this.timeLoaded; }
+            private set { this.timeLoaded = value; }
+        }
 
 		/// <summary>
 		/// The name of the assembly as it would appear in assembly reference metadata entries.
 		/// </summary>
-		public string Name { get; set; }
+		public string Name {
+            get { return this.name; }
+            set { this.name = value; }
+        }
 
 		/// <summary>
 		/// Gets the full path and filename for the associated XML code comments file.
 		/// </summary>
-		public string XmlFileName { get; set; }
+		public string XmlFileName {
+            get { return this.xmlFilename; }
+            set { this.xmlFilename = value; }
+        }
 
 		/// <summary>
 		/// A collection of assemblies that are known to be referenced from this assembly
@@ -106,7 +125,10 @@ namespace TheBoxSoftware.Documentation {
 		/// a project file directly or via a solution. When it is not the assembly will have
 		/// to be queried for its references.
 		/// </summary>
-		public List<string> ReferencedAssemblies { get; set; }
+		public List<string> ReferencedAssemblies {
+            get { return this.referencedAssemblies; }
+            set { this.referencedAssemblies = value; }
+        }
 
 		/// <summary>
 		/// Indicates that the file exists on disk and is compiled.
@@ -116,7 +138,10 @@ namespace TheBoxSoftware.Documentation {
 		/// <summary>
 		/// The unique id for this Assembly
 		/// </summary>
-		public long UniqueId { get; set; }
+		public long UniqueId {
+            get { return this.uniqueId; }
+            set { this.uniqueId = value; }
+        }
 
 		/// <summary>
 		/// A reference to the assembly after it has been loaded.

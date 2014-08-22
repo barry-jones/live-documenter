@@ -11,6 +11,12 @@ namespace TheBoxSoftware.Documentation {
 	/// Represents the entire documentation for a set of assemblies.
 	/// </summary>
 	public class Document {
+        // 16 bytes
+        private DocumentMapper mapper;
+        private DocumentSettings settings;
+        private DocumentMap map;
+        private List<DocumentedAssembly> assemblies;
+
 		#region Constructors
 		/// <summary>
 		/// Initialises a new instance of the Document class.
@@ -39,22 +45,34 @@ namespace TheBoxSoftware.Documentation {
 		/// <summary>
 		/// The DocumentMapper used to generate the DocumentMap
 		/// </summary>
-		protected DocumentMapper Mapper { get; set; }
+		protected DocumentMapper Mapper {
+            get { return this.mapper; }
+            set { this.mapper = value; }
+        }
 
 		/// <summary>
 		/// The settings for this document.
 		/// </summary>
-		public DocumentSettings Settings { get; set; }
+		public DocumentSettings Settings {
+            get { return this.settings; }
+            set { this.settings = value; }
+        }
 
 		/// <summary>
 		/// The generated DocumentMap
 		/// </summary>
-		public DocumentMap Map { get; set; }
+		public DocumentMap Map {
+            get { return this.map; }
+            set { this.map = value; }
+        }
 
 		/// <summary>
 		/// The assemblies being documented.
 		/// </summary>
-		public List<DocumentedAssembly> Assemblies { get; set; }
+		public List<DocumentedAssembly> Assemblies {
+            get { return this.assemblies; }
+            set { this.assemblies = value; }
+        }
 
 		/// <summary>
 		/// Indicates if this document has <see cref="Assemblies"/>.
@@ -185,6 +203,7 @@ namespace TheBoxSoftware.Documentation {
 				}
 				if (found != null) break;
 			}
+
 			return found;
 		}
 

@@ -7,41 +7,10 @@ namespace TheBoxSoftware.Documentation {
 	using TheBoxSoftware.Reflection;
 	using TheBoxSoftware.Reflection.Comments;
 
-	/// <summary>
-	/// A <see cref="DocumentMapper"/> that produces document maps that start at
-	/// the assembly level.
-	/// </summary>
-	/// <remarks>
-	/// An AssemblYFirstDocumentMapper produces a <see cref="DocumentMap"/> which starts at the
-	/// assembly/library level e.g:
-	/// <pre>
-	/// assembly.dll
-	///   Namespace.First
-	///     FirstType
-	///       Fields
-	///       ..
-	///     SecondType
-	///       Methods
-	///       ..
-	///   Namespace.Second
-	/// anotherassembly.dll
-	///   Namespace.Third
-	///     FirstType
-	///       Fields
-	///       ..
-	///     SecondType
-	///       Methods
-	///       ..
-	///   Namespace.Fourth
-	/// </pre>
-	/// </remarks>
+    /// <file name='code-documentation\entry.xml' path='docs/assemblyfirstdocumentmapper/member[@name="class"]/*' />
 	internal class AssemblyFirstDocumentMapper : DocumentMapper {
-		/// <summary>
-		/// Initialises a new instance of the AssemblyFirstDocumentMapper.
-		/// </summary>
-		/// <param name="assemblies">The assemblies to be mapped.</param>
-		/// <param name="settings">The settings to use while producing the map.</param>
-		/// <param name="useObservableCollection">Is an observable collection required.</param>
+
+        /// <file name='code-documentation\entry.xml' path='docs/assemblyfirstdocumentmapper/member[@name="ctor1"]/*' />
 		public AssemblyFirstDocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator)
 			: base(assemblies, useObservableCollection, creator) {
 		}
