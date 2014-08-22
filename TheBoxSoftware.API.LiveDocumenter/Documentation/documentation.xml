@@ -51,7 +51,7 @@
 
   <member name="GetDocumentationFor.key">
     <summary>
-      Searches for and retruns the XML documentation for the provided <paramref name="key" />.
+      Searches for and returns the XML documentation for the provided <paramref name="key" />.
     </summary>
     <exception cref="EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception>
     <exception cref="InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception>
