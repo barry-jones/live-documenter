@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentsEntry.cs" />
+    <Compile Include="ContentsEntryCollection.cs" />
     <Compile Include="Documentation.cs" />
     <Compile Include="DocumentationException.cs" />
     <Compile Include="EntryNotFoundException.cs" />
@@ -58,10 +60,13 @@
       <Name>TheBoxSoftware.Reflection</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Documentation\tableofcontents.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <None Include="Documentation\documentation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

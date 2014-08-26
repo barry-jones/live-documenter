@@ -126,7 +126,11 @@ namespace TheBoxSoftware.API.LiveDocumentor
         }
 
         public XmlDocument Search(string member) {
-            return new XmlDocument();
+            List<Entry> results = this.baseDocument.Search(member);
+
+            // need to render the contents of the results list to xml
+
+            return null;
         }
 
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.key"]/*'/>
@@ -167,10 +171,12 @@ namespace TheBoxSoftware.API.LiveDocumentor
             XmlDocument document = new XmlDocument();
             using (MemoryStream ms = new MemoryStream()) {
                 using (XmlWriter writer = XmlWriter.Create(ms, this.outputSettings)) {
-                    XmlRenderer r = XmlRenderer.Create(entry, null);
-                    if (r != null) {
-                        r.Render(writer);
+                    XmlRenderer r = XmlRenderer.Create(entry, this.baseDocument);
+                    if (r == null) {
+                        return null;    // simply return a null reference if we cant find the renderer for the entry
                     }
+
+                    r.Render(writer);
 
                     writer.Flush();
                     writer.Close();

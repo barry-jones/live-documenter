@@ -241,7 +241,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				);
 
 			try {
-				Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this);
+				Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this.Document);
 				if (r != null) {
 					using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
 						r.Render(writer);

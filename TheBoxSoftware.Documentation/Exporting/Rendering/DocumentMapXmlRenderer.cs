@@ -46,6 +46,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				    writer.WriteAttributeString("safename", Exporter.CreateSafeName(current.Name));
 				writer.WriteAttributeString("key", current.Key.ToString());
 				writer.WriteAttributeString("subkey", current.SubKey);
+                this.writeCref(current, writer);
 
 				foreach (Entry child in current.Children) {
 					this.Render(child, writer);
@@ -69,6 +70,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			    writer.WriteAttributeString("safename", Exporter.CreateSafeName(entry.Name));
 			writer.WriteAttributeString("key", entry.Key .ToString());
 			writer.WriteAttributeString("subkey", entry.SubKey);
+            this.writeCref(entry, writer);
 
 			foreach (Entry child in entry.Children) {
 				this.Render(child, writer);
@@ -76,5 +78,20 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			writer.WriteEndElement();
 		}
+
+        // checks if the entry is a ReflectedMember or a namespace and generates the cref attribute
+        // fix: change this so it only outputs when I want it to!
+        private void writeCref(Entry entry, System.Xml.XmlWriter writer) {
+            // see DocumentMapper to see how entry.Item is populated
+            if (entry.Item is ReflectedMember && !(entry.Item is AssemblyDef) ) { // assemblies cant be cref'd
+                ReflectedMember member = entry.Item as ReflectedMember;
+                CRefPath path = CRefPath.Create(member);
+                writer.WriteAttributeString("cref", path.ToString());
+            }
+            else if (entry.Item is KeyValuePair<string, List<TypeDef>>) { // this is a namespace
+                // todo: generate namespace cref path N:..
+                writer.WriteAttributeString("cref", "N:" + ((KeyValuePair<string, List<TypeDef>>)entry.Item).Key);
+            }
+        }
 	}
 }

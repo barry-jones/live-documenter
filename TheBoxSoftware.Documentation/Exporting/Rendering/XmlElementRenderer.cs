@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 					renderer = new ListXmlElementRenderer(associatedEntry, (ListXmlCodeElement)element);
 					break;
 			}
-			renderer.Exporter = from.Exporter; // need to pass the reference over
+			renderer.Document = from.Document; // need to pass the reference over
 
 			return renderer;
 		}

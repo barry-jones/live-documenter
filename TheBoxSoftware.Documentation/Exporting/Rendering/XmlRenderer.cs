@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 	/// </summary>
 	public abstract class XmlRenderer : IRenderer<System.Xml.XmlWriter> {
 		protected Entry AssociatedEntry { get; set; }
-		public Exporter Exporter { get; set; }
+		public Document Document { get; set; }
 
 		public abstract void Render(System.Xml.XmlWriter writer);
 
@@ -23,8 +23,11 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// <param name="entry">The entry in the document map to render.</param>
 		/// <param name="exporter">The exporter.</param>
 		/// <returns>A valid renderer or null.</returns>
-		public static XmlRenderer Create(Entry entry, Exporter exporter) {
+		public static XmlRenderer Create(Entry entry, Document document) {
 			XmlRenderer renderer = null;
+
+            if (document == null)
+                throw new ArgumentNullException("document");
 
 			if (entry.Item is ReflectedMember) {
 				if (entry.Item is TypeDef && string.IsNullOrEmpty(entry.SubKey)) {
@@ -58,9 +61,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				}
 			}
 
-			if (renderer != null) {
-				renderer.Exporter = exporter;
-			}
+            renderer.Document = document;
 
 			return renderer;
 		}
@@ -260,7 +261,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 					writer.WriteStartElement("seealsolist");
 					foreach (SeeAlsoXmlCodeElement current in elements) {
 						string displayName = current.Member.TypeName;
-						Entry entry = this.Exporter.Document.Find(current.Member);
+						Entry entry = this.Document.Find(current.Member);
 
 						writer.WriteStartElement("seealso");
 						if (entry != null) {

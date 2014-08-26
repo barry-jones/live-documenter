@@ -6,8 +6,9 @@ using System.Text;
 namespace TheBoxSoftware.API.LiveDocumentor {
     using TheBoxSoftware.Documentation;
 
+    /// <include file='Documentation\tableofcontents.xml' path='members/member[@name="tableofcontents"]/*'/>
     // basically acts as wrapper for the document map instance
-    public sealed class TableOfContents {
+    public sealed class TableOfContents : List<ContentsEntry> {
         private DocumentMap map;
         private bool isValid;                       // flag indicating if this map is still valid
 

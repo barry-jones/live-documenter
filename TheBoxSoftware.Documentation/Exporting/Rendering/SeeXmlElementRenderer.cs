@@ -25,7 +25,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 		}
 
 		public override void Render(System.Xml.XmlWriter writer) {
-			Entry entry = this.Exporter.Document.Find(this.element.Member);
+			Entry entry = this.Document.Find(this.element.Member);
 			string displayName = string.IsNullOrEmpty(this.element.Member.ElementName)
 				? this.element.Member.TypeName
 				: this.element.Member.ElementName;
