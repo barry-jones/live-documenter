@@ -8,6 +8,7 @@ namespace TheBoxSoftware {
 	/// Interface to extend exceptions to provide more details than the basic message.
 	/// </summary>
 	public interface IExtendedException {
+
 		/// <summary>
 		/// When implemented by a base type should return formatted text which attempts
 		/// to utilise the internal information to return more helpful information

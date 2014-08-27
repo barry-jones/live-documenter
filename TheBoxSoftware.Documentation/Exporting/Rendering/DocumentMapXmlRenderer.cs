@@ -89,7 +89,6 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
                 writer.WriteAttributeString("cref", path.ToString());
             }
             else if (entry.Item is KeyValuePair<string, List<TypeDef>>) { // this is a namespace
-                // todo: generate namespace cref path N:..
                 writer.WriteAttributeString("cref", "N:" + ((KeyValuePair<string, List<TypeDef>>)entry.Item).Key);
             }
         }

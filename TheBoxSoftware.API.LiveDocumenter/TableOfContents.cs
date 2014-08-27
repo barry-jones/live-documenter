@@ -2,28 +2,115 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Documentation;
+using System.Collections;
+using System.Xml;
 
 namespace TheBoxSoftware.API.LiveDocumentor {
-    using TheBoxSoftware.Documentation;
 
+    /// <summary>
+    /// Provides access to the table of contents for <see cref="Documentation"/>.
+    /// </summary>
     /// <include file='Documentation\tableofcontents.xml' path='members/member[@name="tableofcontents"]/*'/>
-    // basically acts as wrapper for the document map instance
-    public sealed class TableOfContents : List<ContentsEntry> {
-        private DocumentMap map;
-        private bool isValid;                       // flag indicating if this map is still valid
+    public sealed class TableOfContents : IEnumerable {
+        private Document document;
 
         // initialises the toc class with the map reference.. this whole class will have
         // to be invalidated when the documentation is reloaded. <HOW?>
-        internal TableOfContents(DocumentMap map) {
-            this.map = map;
-            this.isValid = true;
+        internal TableOfContents(Document document) {
+            this.document = document;
         }
 
-        // invalidates the document map, so we can force the user of this instance to get a new instance
-        // from the documentation - alternatively we can replace the map behind the scenes so it always
-        // points to a clean reference.
-        internal void Invalidate() {
-            this.isValid = false;
+        /// <summary>
+        /// Retrieves the XmlDocument for the provided <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
+        /// <returns>The ContentEntry for the specified Key, or null if not found.</returns>
+        /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.key"]/*'/>
+        public ContentEntry GetDocumentationFor(long key)
+        {
+            Entry found = this.document.Find(key, string.Empty);
+            return found == null ? null : new ContentEntry(this.document.Find(key, string.Empty));
+        }
+
+        /// <summary>
+        /// Retrieves the XmlDocument for the provided <paramref name="crefPath"/>.
+        /// </summary>
+        /// <param name="crefPath">The CRefPath to retrieve the documentation for.</param>
+        /// <returns>The ContentEntry for the specified crefpath or null if not found.</returns>
+        /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.cref"]/*'/>
+        public ContentEntry GetDocumentationFor(string crefPath)
+        {
+            Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Parse(crefPath);
+            if (path.PathType == Reflection.Comments.CRefTypes.Error)
+                throw new DocumentationException("The provided cref path {0} did not parse correctly.");
+
+            Entry found = this.document.Find(path);
+            return found == null ? null : new ContentEntry(this.document.Find(path));
+        }
+
+        /// <summary>
+        /// Gets the ContentEntry at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the ContentEntry to return.</param>
+        /// <returns>The ContentEntry at the specified index.</returns>
+        public ContentEntry this[int index]
+        {
+            get
+            {
+                return new ContentEntry(this.document.Map[index]);
+            }
+        }
+
+        /// <summary>
+        /// Returns the number of top level elements in this <see cref="Documentation"/>.
+        /// </summary>
+        public int Count
+        {
+            get { return this.document.Map.Count; }
+        }
+
+        /// <summary>
+        /// Indicates if the collection is read only.
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return true; }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)new Enumerator(this.document.Map);
+        }
+
+        private class Enumerator : IEnumerator
+        {
+            private DocumentMap map;
+            private int position = -1;
+
+            internal Enumerator(DocumentMap map)
+            {
+                this.map = map;
+            }
+
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return new ContentEntry(this.map[this.position]);
+                }
+            }
+
+            bool IEnumerator.MoveNext()
+            {
+                this.position++;
+                return this.position < this.map.Count;
+            }
+
+            void IEnumerator.Reset()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

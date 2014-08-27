@@ -8,8 +8,8 @@
     <ProjectGuid>{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TheBoxSoftware.API.LiveDocumentor</RootNamespace>
-    <AssemblyName>TheBoxSoftware.API.LiveDocumentor</AssemblyName>
+    <RootNamespace>TheBoxSoftware.API.LiveDocumenter</RootNamespace>
+    <AssemblyName>TheBoxSoftware.API.LiveDocumenter</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TheBoxSoftware.API.LiveDocumentor.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\TheBoxSoftware.API.LiveDocumenter.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TheBoxSoftware.API.LiveDocumentor.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TheBoxSoftware.API.LiveDocumenter.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContentsEntry.cs" />
-    <Compile Include="ContentsEntryCollection.cs" />
+    <Compile Include="ContentEntry.cs" />
+    <Compile Include="ContentEntryCollection.cs" />
     <Compile Include="Documentation.cs" />
     <Compile Include="DocumentationException.cs" />
     <Compile Include="EntryNotFoundException.cs" />

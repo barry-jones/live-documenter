@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using TheBoxSoftware.Documentation;
 using System.IO;
 using System.Xml;
+using TheBoxSoftware.Documentation;
 using TheBoxSoftware.Documentation.Exporting;
 using TheBoxSoftware.Documentation.Exporting.Rendering;
 using TheBoxSoftware.Reflection;
@@ -29,7 +28,10 @@ namespace TheBoxSoftware.API.LiveDocumentor
     //public abstract Stream GetTableOfContents();
     //public abstract Stream Search(string member);
 
-    // main API class for users to manage documentation
+    /// <summary>
+    /// The Documentation class provides access to methods which allow you to load and obtain information and 
+    /// documentation from a documentation file.
+    /// </summary>
     /// <include file='Documentation\documentation.xml' path='members/member[@name="Documentation"]/*'/>
     public sealed class Documentation  {
 
@@ -53,6 +55,9 @@ namespace TheBoxSoftware.API.LiveDocumentor
             this.outputSettings.IndentChars = "\t";
         }
 
+        /// <summary>
+        /// Initialises the state of the documentation class and prepares it so documentation can be accessed.
+        /// </summary>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="Load"]/*'/>
         // sets default settings for the documentation and loads it to memory, this is generally
         // a slow step.
@@ -101,31 +106,20 @@ namespace TheBoxSoftware.API.LiveDocumentor
             this.isLoaded = true; // if we are here we have loaded successfully
         }
 
-        /// <include file='Documentation\documentation.xml' path='members/member[@name="GetTableOfContents"]/*'/>
-        // iterate over the document map and return a stream that gives people details of all the
-        // members available in the documentaiton - provided in XML format
-        //  NOTE: a TOC does not necessarily need to be delivered via XML. There is probably better ways...
-        public XmlDocument GetTableOfContents() {
+        /// <summary>
+        /// Obtains the details of the Entries for the currently loaded documentation.
+        /// </summary>
+        /// <include file='Documentation\documentation.xml' path='members/member[@name="GetTableOfContents"]/*'/>       
+        public TableOfContents GetTableOfContents() {
+            //  NOTE: a TOC does not necessarily need to be delivered via XML. There is probably better ways...
             if (!this.isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
 
-            XmlDocument document = new XmlDocument();
-            using (MemoryStream ms = new MemoryStream()) {
-                using (XmlWriter writer = XmlWriter.Create(ms, this.outputSettings)) {
-                    DocumentMapXmlRenderer map = new DocumentMapXmlRenderer(this.baseDocument.Map, false);
-                    map.Render(writer);
-                    writer.Flush();
-                    writer.Close();
-
-                    ms.Seek(0, SeekOrigin.Begin); // jump back to the start of the stream so we can read it
-                    document.Load(ms);
-                }
-            }
-
-            return document;
+            return new TableOfContents(this.baseDocument);
         }
 
-        public XmlDocument Search(string member) {
+        public XmlDocument Search(string member)
+        {
             List<Entry> results = this.baseDocument.Search(member);
 
             // need to render the contents of the results list to xml
@@ -133,9 +127,13 @@ namespace TheBoxSoftware.API.LiveDocumentor
             return null;
         }
 
+        /// <summary>
+        /// Retrieves the XmlDocument for the provided <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.key"]/*'/>
-        // simple key lookup for documentation, this is the quickest way to retrieve documentation content
         public XmlDocument GetDocumentationFor(long key) {
+            // this is the quickest way to retrieve documentation
             if (!this.isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
 
@@ -146,8 +144,14 @@ namespace TheBoxSoftware.API.LiveDocumentor
             return this.GetDocumentationFor(entry);
         }
 
+        /// <summary>
+        /// Retrieves the XmlDocument for the provided <paramref name="crefPath"/>.
+        /// </summary>
+        /// <param name="crefPath">The CRefPath to retrieve the documentation for.</param>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.cref"]/*'/>
         public XmlDocument GetDocumentationFor(string crefPath) {
+            if (string.IsNullOrEmpty(crefPath))
+                throw new ArgumentNullException("crefPath");
             if (!this.isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
 
@@ -162,8 +166,26 @@ namespace TheBoxSoftware.API.LiveDocumentor
             return this.GetDocumentationFor(entry);
         }
 
-        // generic method for returning documentation for single methods, resolve every search type to an Entry
-        // and return the parsed XML comments through this method.
+        /// <summary>
+        /// Retrieves the XmlDocument for the provided <paramref name="entry"/>.
+        /// </summary>
+        /// <param name="entry">The ContentEntry to get the documentation for.</param>
+        /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.entry"]/*'/>
+        public XmlDocument GetDocumentationFor(ContentEntry entry)
+        {
+            if (entry == null)
+                throw new ArgumentNullException("entry");
+            if (!this.isLoaded)
+                throw new InvalidOperationException("The documentation is not loaded, call Load first");
+
+            return this.GetDocumentationFor(entry.Entry);
+        }
+
+        /// <summary>
+        /// Retrieves an XML representation of the documentation specified by <paramref name="entry"/>.
+        /// </summary>
+        /// <param name="entry">The Entry to obtain documentation for.</param>
+        /// <returns>An XmlDocument containing the documentation.</returns>
         private XmlDocument GetDocumentationFor(Entry entry) {
             if (null == entry)
                 throw new ArgumentNullException("The provided Entry was null.");
@@ -187,6 +209,14 @@ namespace TheBoxSoftware.API.LiveDocumentor
             }
 
             return document;
+        }
+
+        /// <summary>
+        /// Indicates if the documentation is loaded and is ready to be used.
+        /// </summary>
+        internal bool IsLoaded
+        {
+            get { return this.isLoaded; }
         }
     }
 }

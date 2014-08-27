@@ -13,8 +13,10 @@ namespace Test.Console.API.LiveDocumentor {
             Program p = new Program();
             
             p.Initialise();
-            p.SearchByCref();
-            p.Search();
+            //p.SearchByCref();
+            //p.Search();
+            //p.GetFullTableOfContents();
+            p.OutputTree();
 
             // pause so the user can see it
             System.Console.ReadLine();
@@ -67,6 +69,54 @@ namespace Test.Console.API.LiveDocumentor {
         {
             XmlNode node = d.SelectNodes("member/name")[0];
             return node.Attributes["safename"].Value;
+        }
+
+        private void GetFullTableOfContents()
+        {
+            TableOfContents contents = this.docs.GetTableOfContents();
+
+            foreach (ContentEntry current in contents)
+            {
+                System.Console.WriteLine(string.Format("Top level entry: {0}", current.DisplayName));
+            }
+
+            foreach (ContentEntry current in contents)
+            {
+                System.Console.WriteLine(string.Format("Top level entry: {0}", current.CRefPath));
+            }
+        }
+
+        private void OutputTree()
+        {
+            TableOfContents contents = this.docs.GetTableOfContents();
+            ContentEntry entry = contents.GetDocumentationFor("T:TheBoxSoftware.Reflection.AssemblyDef");
+            int level = 0;
+            
+            // get the parents
+            List<ContentEntry> parents = new List<ContentEntry>();
+            ContentEntry currentParent = entry.Parent;
+            while (currentParent != null)
+            {
+                parents.Insert(0, currentParent);
+                currentParent = currentParent.Parent;
+            }
+            level = parents.Count;
+
+            // output the parents
+            int currentLevel = 0;
+            foreach (ContentEntry current in parents)
+            {
+                System.Console.WriteLine(string.Format("{0}{1}", new string(' ', currentLevel), current.DisplayName));
+                currentLevel++;
+            }
+
+            System.Console.WriteLine(string.Format("{0}{1}", new string(' ', currentLevel), entry.DisplayName));
+            currentLevel++;
+
+            foreach (ContentEntry current in entry.Children)
+            {
+                System.Console.WriteLine(string.Format("{0}{1}", new string(' ', currentLevel), current.DisplayName));
+            }
         }
     }
 }

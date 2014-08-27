@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <members>
   <member name="Documentation">
-    <summary>
-      The Documentation class provides access to methods which allow you to load and obtain
-      information and documentation from a documentation file.
-    </summary>
     <remarks>
       <para class="note">
         A Documentation instance is an accessor to the documentation file, it enables you
@@ -50,22 +46,16 @@
   </member>
 
   <member name="GetDocumentationFor.key">
-    <summary>
-      Searches for and returns the XML documentation for the provided <paramref name="key" />.
-    </summary>
     <exception cref="EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception>
     <exception cref="InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception>
     <remarks>
       Keys are generated each time a documentation set is produced, there is no gaunrentee that between each load
-      the key will be the same. If you are looking for a stable reference use cref paths and the <see cref="GetDocumentationFor(System.String)" />
-      method.
+      the key will be the same. If you are looking for a stable reference use cref paths and the 
+      <see cref="GetDocumentationFor(System.String)" /> method.
     </remarks>
   </member>
   
   <member name="GetDocumentationFor.cref">
-    <summary>
-      Searches for and returns the XML documentation for the provided <paramref name="crefPath" />.
-    </summary>
     <exception cref="EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception>
     <exception cref="DocumentationException">Thrown when the provided <paramref name="crefPath" /> does not parse correctly.</exception>
     <exception cref="ArgumentNullException">The provided <paramref name="crefPath" /> was null or empty.</exception>
@@ -82,9 +72,6 @@
   </member>
 
   <member name="Load">
-    <summary>
-      The load method initialises the state of the documentation class and prepares it so documentation can be accessed.
-    </summary>
     <remarks>
       <note>
         The load method, loads the documentation in to memory. Instantiating documentation can be a memory intensive activity,
@@ -98,8 +85,6 @@
   </member>
 
   <member name="GetTableOfContents">
-    <summary>
-      Provides an XML representation of the contents of every member in the documentation.
-    </summary>
+    <exception cref="InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception>
   </member>
 </members>

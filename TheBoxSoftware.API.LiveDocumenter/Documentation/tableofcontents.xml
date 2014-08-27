@@ -1,9 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <members>
   <member name="tableofcontents">
-    <summary>
-      The TableOfContents is a representation of the entire documentation as an accessible
-      hierarchical view of the entries in the documentation set.
-    </summary>
   </member>
 </members>

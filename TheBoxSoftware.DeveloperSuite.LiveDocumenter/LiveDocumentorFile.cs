@@ -7,8 +7,7 @@ using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// <summary>
-	/// Represents a project file, which can be used to save and load
-	/// the preferences for a LiveDocument.
+	/// Represents a project file, which can be used to save and load the preferences for a LiveDocument.
 	/// </summary>
 	[Serializable]
 	internal sealed class LiveDocumentorFile {
@@ -16,25 +15,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private Project project;
 		private LiveDocument liveDocument;
 
-		#region Constructors
-		/// <summary>
-		/// Static constructor
-		/// </summary>
 		static LiveDocumentorFile() {
 			current = new LiveDocumentorFile();
 		}
 
-		/// <summary>
-		/// Private constructor for initialising the single instance.
-		/// </summary>
 		private LiveDocumentorFile() {
+            // a new file is always created with no projects and defaults to C# and the debug configuration
 			this.project = new Project();
 			this.project.Language = Reflection.Syntax.Languages.CSharp;
 			this.project.Configuration = Model.BuildConfigurations.Debug.ToString();
 		}
-		#endregion
 
-		#region Methods
 		/// <summary>
 		/// Sets the current LiveDocument managed by the LiveDocumentor
 		/// </summary>
@@ -187,9 +178,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public void Clear() {
 			this.project.Files.Clear();
 		}
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// Obtains the single instance of the LIveDocumentorFile
 		/// </summary>
@@ -287,6 +276,5 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				this.project.OutputLocation = value;
 			}
 		}
-		#endregion
 	}
 }

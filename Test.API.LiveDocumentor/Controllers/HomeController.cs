@@ -16,9 +16,8 @@ namespace Test.API.LiveDocumentor.Controllers
         public ActionResult Index()
         {
             Documentation docs = LiveDocumentor.Models.Docs.Get();
-            XmlDocument document = docs.GetTableOfContents();
-            return this.Content(document.InnerXml, "text/xml");
+            TableOfContents document = docs.GetTableOfContents();
+            return this.Content(string.Empty, "text/xml");
         }
-
     }
 }
