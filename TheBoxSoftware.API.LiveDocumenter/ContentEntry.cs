@@ -44,7 +44,7 @@ namespace TheBoxSoftware.API.LiveDocumentor
         /// <summary>
         /// Gets the unique crefpath for this documentation entry.
         /// </summary>
-        public string CRefPath
+        public CRefPath CRefPath
         {
             get 
             {

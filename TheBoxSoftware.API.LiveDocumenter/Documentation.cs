@@ -67,6 +67,9 @@ namespace TheBoxSoftware.API.LiveDocumentor
             ExportSettings settings = new ExportSettings();
             settings.Settings = new DocumentSettings();
 
+            if (!File.Exists(this.forDocument))
+                throw new InvalidOperationException(string.Format("The file {0} does not exist.", this.forDocument));
+
             // initialise the assemblies, ldproj file will detail all assemblies, we are only working
             // with ldproj, vs projects/solutions and dll files
             if (Path.GetExtension(this.forDocument) == ".ldproj") {

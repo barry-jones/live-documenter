@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="ContentEntry.cs" />
     <Compile Include="ContentEntryCollection.cs" />
+    <Compile Include="CRefConstants.cs" />
+    <Compile Include="CRefPath.cs" />
+    <Compile Include="CRefTypes.cs" />
     <Compile Include="Documentation.cs" />
     <Compile Include="DocumentationException.cs" />
     <Compile Include="EntryNotFoundException.cs" />
@@ -71,6 +74,16 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cd $(TargetDir)
+del ikvm*.dll
+del ionic.zip.dll
+del saxon*.dll
+del *.pdb
+del theboxsoftware.xml
+del theboxsoftware.reflection.xml
+del theboxsoftware.documentation.xml</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
