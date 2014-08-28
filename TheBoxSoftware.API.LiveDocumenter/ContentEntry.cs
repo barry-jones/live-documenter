@@ -23,6 +23,25 @@ namespace TheBoxSoftware.API.LiveDocumentor
         }
 
         /// <summary>
+        /// Retrieves a list of the parent entries for this ContentEntry
+        /// </summary>
+        /// <returns>A sequential list of parents or an empty list if the entry has no parents.</returns>
+        public List<ContentEntry> GetParents()
+        {
+            List<ContentEntry> parents = new List<ContentEntry>();
+
+            ContentEntry currentParent = this.Parent;
+
+            while(currentParent != null)
+            {
+                parents.Insert(0, currentParent);
+                currentParent = currentParent.Parent;
+            }
+
+            return parents;
+        }
+
+        /// <summary>
         /// Gets the unique crefpath for this documentation entry.
         /// </summary>
         public string CRefPath

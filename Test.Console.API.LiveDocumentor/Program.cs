@@ -17,53 +17,61 @@ namespace Test.Console.API.LiveDocumentor {
             p.Search();
             p.GetFullTableOfContents();
             p.OutputTree();
+            p.OutputParents();
+        }
+
+        internal static void Log(string details)
+        {
+            System.Console.Write(details);
         }
 
         internal void Initialise()
         {
             this.docs = new Documentation(@"C:\Users\Barry\Documents\Current Projects\Live Documenter\The Box Software Developer Suite.sln");
-            System.Console.Write("Loading documentation ... ");
+            Log("Loading documentation ... ");
             this.docs.Load();
-            System.Console.Write("[done]\n");
+            Log("[done]\n");
         }
 
         private void SearchByCref() {
-            System.Console.WriteLine();
-            System.Console.WriteLine("Test searching by crefpath");
+            Log("\nTest searching by crefpath\n");
 
             XmlDocument d;
 
-            System.Console.Write(" F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField ... ");
+            Log(" F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField ... ");
             d = this.docs.GetDocumentationFor("F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField");
-            System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            Log("[done]\n");
+            Log(string.Format("  {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
 
-            System.Console.Write(" T:DocumentationTest.GenericClass`1 ... ");
+            Log(" T:DocumentationTest.GenericClass`1 ... ");
             d = this.docs.GetDocumentationFor("T:DocumentationTest.GenericClass`1");
-            System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            Log("[done]\n");
+            Log(string.Format("  {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
 
             // cref paths for generic classes are pretty horendous :/
-            System.Console.Write(" M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0) ... ");
+            Log(" M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0) ... ");
             d = this.docs.GetDocumentationFor("M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0)");
-            System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            Log("[done]\n");
+            Log(string.Format("  {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
 
-            System.Console.Write(" P:DocumentationTest.CommentTests.SummaryElement.SummaryOnProperty ... ");
+            Log(" P:DocumentationTest.CommentTests.SummaryElement.SummaryOnProperty ... ");
             d = this.docs.GetDocumentationFor("P:DocumentationTest.CommentTests.SummaryElement.SummaryOnProperty");
-            System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            Log("[done]\n");
+            Log(string.Format("  {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
         }
 
         private void Search()
         {
-            System.Console.WriteLine();
-            XmlDocument d;
+            List<ContentEntry> results;
+            TableOfContents contents = this.docs.GetTableOfContents();
 
-            System.Console.Write(" Searching for text 'genericclass' ... ");
-            d = this.docs.Search("genericclass");
-            System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            Log("\nSearching for text 'genericclass' ... ");
+            results = contents.Search("genericclass");
+            Log("[done]\n");
+            foreach (ContentEntry current in results)
+            {
+                Log(string.Format(" {0}\n", current.CRefPath));
+            }
         }
 
         private string getSafeName(XmlDocument d)
@@ -74,25 +82,35 @@ namespace Test.Console.API.LiveDocumentor {
 
         private void GetFullTableOfContents()
         {
-            System.Console.WriteLine();
-            System.Console.WriteLine("Outputting all top level entries");
+            Log("\nOutputting all top level entries");
 
             TableOfContents contents = this.docs.GetTableOfContents();
 
             foreach (ContentEntry current in contents)
             {
-                System.Console.WriteLine(string.Format(" Top level entry: {0}", current.DisplayName));
+                Log(string.Format(" Top level entry: {0}\n", current.DisplayName));
             }
+        }
 
-            foreach (ContentEntry current in contents)
+        private void OutputParents()
+        {
+            Log("\nOutput parents using GetParents method\n");
+            List<ContentEntry> parents;
+            TableOfContents contents = this.docs.GetTableOfContents();
+            ContentEntry entry = contents.GetDocumentationFor("M:TheBoxSoftware.Reflection.AssemblyDef.#ctor");
+
+            parents = entry.GetParents();
+
+            foreach (ContentEntry current in parents)
             {
-                System.Console.WriteLine(string.Format(" Top level entry: {0}", current.CRefPath));
+                Log(string.Format(" {0}\n", current.DisplayName));
             }
         }
 
         private void OutputTree()
         {
-            System.Console.WriteLine();
+            Log("\nOutput parents and direct children\n");
+
             TableOfContents contents = this.docs.GetTableOfContents();
             ContentEntry entry = contents.GetDocumentationFor("T:TheBoxSoftware.Reflection.AssemblyDef");
             int level = 0;
@@ -111,16 +129,16 @@ namespace Test.Console.API.LiveDocumentor {
             int currentLevel = 0;
             foreach (ContentEntry current in parents)
             {
-                System.Console.WriteLine(string.Format("{0}{1}", new string(' ', currentLevel), current.DisplayName));
+                Log(string.Format("{0}{1}\n", new string(' ', currentLevel), current.DisplayName));
                 currentLevel++;
             }
 
-            System.Console.WriteLine(string.Format("{0}{1}", new string(' ', currentLevel), entry.DisplayName));
+            Log(string.Format("{0}{1}\n", new string(' ', currentLevel), entry.DisplayName));
             currentLevel++;
 
             foreach (ContentEntry current in entry.Children)
             {
-                System.Console.WriteLine(string.Format("{0}{1}", new string(' ', currentLevel), current.DisplayName));
+                Log(string.Format("{0}{1}\n", new string(' ', currentLevel), current.DisplayName));
             }
         }
     }

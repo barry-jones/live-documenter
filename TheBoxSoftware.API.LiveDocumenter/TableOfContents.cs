@@ -50,6 +50,24 @@ namespace TheBoxSoftware.API.LiveDocumentor {
         }
 
         /// <summary>
+        /// Searches the documentation and returns a list of ContentEntrys that match the search term.
+        /// </summary>
+        /// <param name="text">The text to search for.</param>
+        /// <returns>A list of ContentEntrys or an empty list if none are found.</returns>
+        public List<ContentEntry> Search(string text)
+        {
+            List<Entry> results = this.document.Search(text);
+            List<ContentEntry> entries = new List<ContentEntry>();
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                entries.Add(new ContentEntry(results[i]));
+            }
+
+            return entries;
+        }
+
+        /// <summary>
         /// Gets the ContentEntry at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the ContentEntry to return.</param>

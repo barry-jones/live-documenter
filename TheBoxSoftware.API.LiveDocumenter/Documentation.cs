@@ -118,15 +118,6 @@ namespace TheBoxSoftware.API.LiveDocumentor
             return new TableOfContents(this.baseDocument);
         }
 
-        public XmlDocument Search(string member)
-        {
-            List<Entry> results = this.baseDocument.Search(member);
-
-            // need to render the contents of the results list to xml
-
-            return null;
-        }
-
         /// <summary>
         /// Retrieves the XmlDocument for the provided <paramref name="key"/>.
         /// </summary>
