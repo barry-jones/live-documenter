@@ -13,13 +13,10 @@ namespace Test.Console.API.LiveDocumentor {
             Program p = new Program();
             
             p.Initialise();
-            //p.SearchByCref();
-            //p.Search();
-            //p.GetFullTableOfContents();
+            p.SearchByCref();
+            p.Search();
+            p.GetFullTableOfContents();
             p.OutputTree();
-
-            // pause so the user can see it
-            System.Console.ReadLine();
         }
 
         internal void Initialise()
@@ -31,38 +28,42 @@ namespace Test.Console.API.LiveDocumentor {
         }
 
         private void SearchByCref() {
+            System.Console.WriteLine();
+            System.Console.WriteLine("Test searching by crefpath");
+
             XmlDocument d;
 
-            System.Console.Write("Searching for field F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField ... ");
+            System.Console.Write(" F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField ... ");
             d = this.docs.GetDocumentationFor("F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField");
             System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("\t {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
 
-            System.Console.Write("Searching for type T:DocumentationTest.GenericClass`1 ... ");
+            System.Console.Write(" T:DocumentationTest.GenericClass`1 ... ");
             d = this.docs.GetDocumentationFor("T:DocumentationTest.GenericClass`1");
             System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("\t {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
 
             // cref paths for generic classes are pretty horendous :/
-            System.Console.Write("Searching for method M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0) ... ");
+            System.Console.Write(" M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0) ... ");
             d = this.docs.GetDocumentationFor("M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0)");
             System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("\t {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
 
-            System.Console.Write("Searching for property P:DocumentationTest.CommentTests.SummaryElement.SummaryOnProperty ... ");
+            System.Console.Write(" P:DocumentationTest.CommentTests.SummaryElement.SummaryOnProperty ... ");
             d = this.docs.GetDocumentationFor("P:DocumentationTest.CommentTests.SummaryElement.SummaryOnProperty");
             System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("\t {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
         }
 
         private void Search()
         {
+            System.Console.WriteLine();
             XmlDocument d;
 
-            System.Console.Write("Searching for text 'genericclass' ... ");
+            System.Console.Write(" Searching for text 'genericclass' ... ");
             d = this.docs.Search("genericclass");
             System.Console.Write("[done]\n");
-            System.Console.WriteLine(string.Format("\t {0} - {1}\n", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
+            System.Console.WriteLine(string.Format("  {0} - {1}", (d != null) ? "found" : "not found", (d != null) ? this.getSafeName(d) : string.Empty));
         }
 
         private string getSafeName(XmlDocument d)
@@ -73,21 +74,25 @@ namespace Test.Console.API.LiveDocumentor {
 
         private void GetFullTableOfContents()
         {
+            System.Console.WriteLine();
+            System.Console.WriteLine("Outputting all top level entries");
+
             TableOfContents contents = this.docs.GetTableOfContents();
 
             foreach (ContentEntry current in contents)
             {
-                System.Console.WriteLine(string.Format("Top level entry: {0}", current.DisplayName));
+                System.Console.WriteLine(string.Format(" Top level entry: {0}", current.DisplayName));
             }
 
             foreach (ContentEntry current in contents)
             {
-                System.Console.WriteLine(string.Format("Top level entry: {0}", current.CRefPath));
+                System.Console.WriteLine(string.Format(" Top level entry: {0}", current.CRefPath));
             }
         }
 
         private void OutputTree()
         {
+            System.Console.WriteLine();
             TableOfContents contents = this.docs.GetTableOfContents();
             ContentEntry entry = contents.GetDocumentationFor("T:TheBoxSoftware.Reflection.AssemblyDef");
             int level = 0;
