@@ -61,6 +61,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT.TheBoxSoftware.Reflectio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT.TheBoxSoftware.API.LiveDocumenter", "1. Tests\UT.TheBoxSoftware.API.LiveDocumenter\UT.TheBoxSoftware.API.LiveDocumenter.csproj", "{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{67FF40B9-6403-4F1D-BCBB-02EEAB58CE7E}"
+	ProjectSection(SolutionItems) = preProject
+		2. Build Scripts\build theboxsoftware.api.livedocumenter.xml = 2. Build Scripts\build theboxsoftware.api.livedocumenter.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

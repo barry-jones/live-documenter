@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TheBoxSoftware")]
+[assembly: AssemblyTitle("TheBoxSoftware.API.LiveDocumenter")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TheBoxSoftware")]
-[assembly: AssemblyCopyright("Copyright ©  2010")]
+[assembly: AssemblyCompany("The Box Software Ltd")]
+[assembly: AssemblyProduct("TheBoxSoftware.API.LiveDocumenter")]
+[assembly: AssemblyCopyright("Copyright © The Box Software Ltd 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
