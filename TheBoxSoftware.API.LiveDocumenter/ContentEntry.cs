@@ -5,7 +5,7 @@ using System.Text;
 using TheBoxSoftware.Reflection;
 using TheBoxSoftware.Documentation;
 
-namespace TheBoxSoftware.API.LiveDocumentor
+namespace TheBoxSoftware.API.LiveDocumenter
 {
     // The content entry class is a basic wrapper to the Entry class, it is supposed to provide
     // read only access to the entries members and children.
@@ -51,15 +51,17 @@ namespace TheBoxSoftware.API.LiveDocumentor
                 if (entry.Item is ReflectedMember && !(entry.Item is AssemblyDef))  // assemblies cant be cref'd
                 { 
                     ReflectedMember member = entry.Item as ReflectedMember;
-                    return TheBoxSoftware.Reflection.Comments.CRefPath.Create(member).ToString();
+                    return CRefPath.Parse(TheBoxSoftware.Reflection.Comments.CRefPath.Create(member).ToString());
                 }
                 else if (entry.Item is KeyValuePair<string, List<TypeDef>>)         // namespace
                 {
-                    return string.Format("N:{0}",((KeyValuePair<string, List<TypeDef>>)entry.Item).Key);
+                    return CRefPath.Parse(string.Format("N:{0}", ((KeyValuePair<string, List<TypeDef>>)entry.Item).Key));
                 }
                 else if (entry.Item is TheBoxSoftware.Documentation.EntryTypes)
                 {
-                    string path = string.Empty;
+                    CRefPath path = new LiveDocumenter.CRefPath();
+                    path.PathType = CRefTypes.Error;
+
                     TheBoxSoftware.Documentation.EntryTypes entryType = (TheBoxSoftware.Documentation.EntryTypes)entry.Item;
 
                     switch (entryType)
@@ -74,7 +76,7 @@ namespace TheBoxSoftware.API.LiveDocumentor
                 }
                 else
                 {
-                    return string.Empty;
+                    return new CRefPath();
                 }
             }
         }
@@ -101,6 +103,15 @@ namespace TheBoxSoftware.API.LiveDocumentor
         public string DisplayName
         {
             get { return this.entry.Name; }
+        }
+
+        /// <summary>
+        /// Indicates if this type is a container entry or a member entry.
+        /// </summary>
+        public bool IsContainer
+        {
+            // note: be sure to indicate in the documentation that there is a different between a container and member
+            get { return !string.IsNullOrEmpty(this.SubKey); }
         }
 
         /// <summary>

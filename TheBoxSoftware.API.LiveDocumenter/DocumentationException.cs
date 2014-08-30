@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TheBoxSoftware.API.LiveDocumentor {
+namespace TheBoxSoftware.API.LiveDocumenter {
     /// <summary>
     /// Details an exception with the documentation.
     /// </summary>

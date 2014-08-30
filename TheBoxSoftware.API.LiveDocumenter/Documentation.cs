@@ -7,7 +7,7 @@ using TheBoxSoftware.Documentation.Exporting;
 using TheBoxSoftware.Documentation.Exporting.Rendering;
 using TheBoxSoftware.Reflection;
 
-namespace TheBoxSoftware.API.LiveDocumentor
+namespace TheBoxSoftware.API.LiveDocumenter
 {
     // Things people are going to need to be able to do with an API
     //  * read the contents of a single entry (class/method/parameter) which constitues a page
@@ -101,7 +101,7 @@ namespace TheBoxSoftware.API.LiveDocumentor
 
             // initialise the document
             EntryCreator entryCreator = new EntryCreator();
-            Document d = new Document(files, Mappers.GroupedNamespaceFirst, false, entryCreator);
+            Document d = new Document(files, Mappers.NamespaceFirst, false, entryCreator);
             d.Settings = settings.Settings;
             d.UpdateDocumentMap();
 

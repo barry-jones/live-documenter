@@ -6,7 +6,7 @@ using TheBoxSoftware.Documentation;
 using System.Collections;
 using System.Xml;
 
-namespace TheBoxSoftware.API.LiveDocumentor {
+namespace TheBoxSoftware.API.LiveDocumenter {
 
     /// <summary>
     /// Provides access to the table of contents for <see cref="Documentation"/>.

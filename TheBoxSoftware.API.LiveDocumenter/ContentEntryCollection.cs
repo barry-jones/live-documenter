@@ -5,7 +5,7 @@ using System.Text;
 using TheBoxSoftware.Documentation;
 using System.Collections;
 
-namespace TheBoxSoftware.API.LiveDocumentor
+namespace TheBoxSoftware.API.LiveDocumenter
 {
     /// <summary>
     /// Represents a sequence of ContentEntry elements.
