@@ -302,10 +302,10 @@ namespace TheBoxSoftware.Reflection.Comments {
 			// find all potential members
 			switch (this.PathType) {
 				case CRefTypes.Event:
-					foundMembers.AddRange(type.Events.FindAll(e => e.Name == this.ElementName).ToArray());
+					foundMembers.AddRange(type.Events.FindAll(e => string.Compare(e.Name, this.ElementName) == 0).ToArray());
 					break;
 				case CRefTypes.Field:
-					foundMembers.AddRange(type.Fields.FindAll(e => e.Name == this.ElementName).ToArray());
+					foundMembers.AddRange(type.Fields.FindAll(e => string.Compare(e.Name, this.ElementName) == 0).ToArray());
 					break;
 				case CRefTypes.Method:
 					string elementName = this.ElementName.Replace('#', '.');
@@ -314,7 +314,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 						genParameters = int.Parse(elementName.Substring(elementName.Length - 1, 1));
 						elementName = elementName.Substring(0, elementName.IndexOf('`'));
 					}
-					MethodDef[] foundMethods = type.Methods.FindAll(e => e.Name == elementName).ToArray();
+					MethodDef[] foundMethods = type.Methods.FindAll(e => string.Compare(e.Name, elementName) == 0).ToArray();
 					if (foundMethods.Length > 1 && genParameters > 0) {
 						for (int i = 0; i < foundMethods.Length; i++) {
 							if (foundMethods[i].GenericTypes != null && foundMethods[i].GenericTypes.Count == genParameters) {
@@ -327,7 +327,7 @@ namespace TheBoxSoftware.Reflection.Comments {
 					}
 					break;
 				case CRefTypes.Property:
-					foundMembers.AddRange(type.Properties.FindAll(e => e.Name == this.ElementName).ToArray());
+					foundMembers.AddRange(type.Properties.FindAll(e => string.Compare(e.Name, this.ElementName) == 0).ToArray());
 					break;
 			}
 

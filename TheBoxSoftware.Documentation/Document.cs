@@ -173,7 +173,7 @@ namespace TheBoxSoftware.Documentation {
 
 			for (int i = 0; i < namespaceEntries.Count; i++) {
 				Entry currentLevel = namespaceEntries[i];
-				if (currentLevel.SubKey == path.Namespace) {
+				if (string.Compare(currentLevel.SubKey, path.Namespace, true) == 0) {
 					// if we are searching for a namespace, we are done now as we have found it
 					if (path.PathType == CRefTypes.Namespace) {
 						found = currentLevel;
@@ -184,7 +184,7 @@ namespace TheBoxSoftware.Documentation {
 					for (int j = 0; j < currentLevel.Children.Count; j++) {
 						Entry currentTypeEntry = currentLevel.Children[j];
 						TypeDef currentType = (TypeDef)currentTypeEntry.Item;
-						if (currentType.Name == path.TypeName) {
+						if (string.Compare(currentType.Name, path.TypeName) == 0) {
 							// if we are searchinf for a type, we are done now
 							if (path.PathType == CRefTypes.Type) {
 								found = currentTypeEntry;
