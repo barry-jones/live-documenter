@@ -184,7 +184,7 @@ namespace TheBoxSoftware.Documentation {
 					for (int j = 0; j < currentLevel.Children.Count; j++) {
 						Entry currentTypeEntry = currentLevel.Children[j];
 						TypeDef currentType = (TypeDef)currentTypeEntry.Item;
-						if (string.Compare(currentType.Name, path.TypeName) == 0) {
+						if (string.Compare(currentType.Name, path.TypeName, true) == 0) {
 							// if we are searchinf for a type, we are done now
 							if (path.PathType == CRefTypes.Type) {
 								found = currentTypeEntry;

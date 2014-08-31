@@ -66,6 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 		2. Build Scripts\build theboxsoftware.api.livedocumenter.xml = 2. Build Scripts\build theboxsoftware.api.livedocumenter.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console.LiveDocumenter", "1. Tests\Test.Console.LiveDocumenter\Test.Console.LiveDocumenter.csproj", "{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -283,16 +285,28 @@ Global
 		{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6}.Release|Win32.ActiveCfg = Release|Any CPU
 		{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6}.Release|x86.ActiveCfg = Release|Any CPU
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Debug|Win32.ActiveCfg = Debug|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Debug|x86.ActiveCfg = Debug|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Debug|x86.Build.0 = Debug|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|Any CPU.ActiveCfg = Release|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|Win32.ActiveCfg = Release|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|x86.ActiveCfg = Release|x86
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2AD369A3-7737-4EC5-A4BA-3E846F80C066} = {99959C78-1632-423F-B474-F37FCA98F34C}
-		{A51EE3F8-1D1A-4231-846A-923A2046D6CA} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{8DEA43B6-DB5B-498D-9238-6A9230E27D62} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{225439FA-43C9-48DD-B1A4-2E9869C183BD} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{E1CD760F-3E5D-4C16-983D-3D17115F48F5} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6} = {99959C78-1632-423F-B474-F37FCA98F34C}
+		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B} = {99959C78-1632-423F-B474-F37FCA98F34C}
 	EndGlobalSection
 EndGlobal

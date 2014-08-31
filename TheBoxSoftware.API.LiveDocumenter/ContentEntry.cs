@@ -139,6 +139,14 @@ namespace TheBoxSoftware.API.LiveDocumenter
         }
 
         /// <summary>
+        /// Indicates if the member has XML comments associated with it.
+        /// </summary>
+        public bool HasComments
+        {
+            get { return this.entry.XmlCommentFile != null; }
+        }
+
+        /// <summary>
         /// Obtains a reference to the entry this content entry is wrapping.
         /// </summary>
         internal Entry Entry

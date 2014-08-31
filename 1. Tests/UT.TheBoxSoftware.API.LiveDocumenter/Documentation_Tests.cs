@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using TheBoxSoftware.API.LiveDocumentor;
+using TheBoxSoftware.API.LiveDocumenter;
 using System.Xml;
 
 namespace UT.TheBoxSoftware.API.LiveDocumenter

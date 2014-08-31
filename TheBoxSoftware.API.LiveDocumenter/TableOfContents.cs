@@ -27,10 +27,10 @@ namespace TheBoxSoftware.API.LiveDocumenter {
         /// <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
         /// <returns>The ContentEntry for the specified Key, or null if not found.</returns>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.key"]/*'/>
-        public ContentEntry GetDocumentationFor(long key)
+        public ContentEntry GetDocumentationFor(long key, string subKey)
         {
-            Entry found = this.document.Find(key, string.Empty);
-            return found == null ? null : new ContentEntry(this.document.Find(key, string.Empty));
+            Entry found = this.document.Find(key, subKey);
+            return found == null ? null : new ContentEntry(found);
         }
 
         /// <summary>

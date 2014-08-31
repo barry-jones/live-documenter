@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using TheBoxSoftware.API.LiveDocumentor;
+using TheBoxSoftware.API.LiveDocumenter;
 
 
-namespace Test.API.LiveDocumentor.Models {
+namespace Test.API.LiveDocumenter.Models {
     public static class Docs {
         public static Documentation Get() {
             Documentation documentation = (Documentation)System.Web.HttpContext.Current.Application["documentation"];
