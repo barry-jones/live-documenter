@@ -82,6 +82,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 						ExceptionXmlCodeElement current = (ExceptionXmlCodeElement)exceptions[i];
 						string exceptionName = string.Empty;
 						ReflectedMember found = null;
+
 						if (current.Member.PathType != CRefTypes.Error) {
 							TypeDef def = member.Assembly.FindType(current.Member.Namespace, current.Member.TypeName);
 							exceptionName = string.Format("{0}.{1}", current.Member.Namespace, current.Member.TypeName);
@@ -113,19 +114,21 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 							}
 						}
 
-						writer.WriteStartElement("exception");
-						writer.WriteStartElement("name");
-						if (found != null) {
-							writer.WriteAttributeString("key", member.GetGloballyUniqueId().ToString());
-						}
-						writer.WriteString(exceptionName);
-						writer.WriteEndElement();
-						writer.WriteStartElement("condition");
-						for (int j = 0; j < current.Elements.Count; j++) {
-							this.Serialize(current.Elements[j], writer);
-						}
-						writer.WriteEndElement();
-						writer.WriteEndElement();
+                        writer.WriteStartElement("exception");
+                        writer.WriteStartElement("name");
+                        if (found != null)
+                        {
+                            writer.WriteAttributeString("key", found.GetGloballyUniqueId().ToString());
+                        }
+                        writer.WriteString(exceptionName);
+                        writer.WriteEndElement();
+                        writer.WriteStartElement("condition");
+                        for (int j = 0; j < current.Elements.Count; j++)
+                        {
+                            this.Serialize(current.Elements[j], writer);
+                        }
+                        writer.WriteEndElement();
+                        writer.WriteEndElement();
 					}
 					writer.WriteEndElement();
 				}
