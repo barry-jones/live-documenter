@@ -47,7 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumentor.csproj">
+    <ProjectReference Include="..\..\TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumentor.csproj">
       <Project>{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}</Project>
       <Name>TheBoxSoftware.API.LiveDocumentor</Name>
     </ProjectReference>

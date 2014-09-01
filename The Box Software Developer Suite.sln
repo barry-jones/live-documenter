@@ -25,15 +25,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{99959C78-1632-423F-B474-F37FCA98F34C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Tests", "1. Tests", "{99959C78-1632-423F-B474-F37FCA98F34C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection", "TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj", "{B8749831-5746-4443-BEE9-9B01792C0D98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter", "TheBoxSoftware.DeveloperSuite.LiveDocumenter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.csproj", "{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentationTest", "DocumentationTest\DocumentationTest.csproj", "{2AD369A3-7737-4EC5-A4BA-3E846F80C066}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentationTest", "1. Tests\DocumentationTest\DocumentationTest.csproj", "{2AD369A3-7737-4EC5-A4BA-3E846F80C066}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LiveDocumentor.Test.VBDocumentation", "LiveDocumentor.Test.VBDocumentation\LiveDocumentor.Test.VBDocumentation.vbproj", "{A51EE3F8-1D1A-4231-846A-923A2046D6CA}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LiveDocumentor.Test.VBDocumentation", "1. Tests\LiveDocumentor.Test.VBDocumentation\LiveDocumentor.Test.VBDocumentation.vbproj", "{A51EE3F8-1D1A-4231-846A-923A2046D6CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Diagramming", "TheBoxSoftware.Diagramming\TheBoxSoftware.Diagramming.csproj", "{E0931A15-6EBB-46EA-969D-37FD924D9233}"
 EndProject
@@ -53,9 +53,9 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Live Documenter Server Setu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.API.LiveDocumentor", "TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumentor.csproj", "{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.API.LiveDocumentor", "Test.API.LiveDocumentor\Test.API.LiveDocumentor.csproj", "{8DEA43B6-DB5B-498D-9238-6A9230E27D62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.API.LiveDocumentor", "1. Tests\Test.API.LiveDocumentor\Test.API.LiveDocumentor.csproj", "{8DEA43B6-DB5B-498D-9238-6A9230E27D62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console.API.LiveDocumentor", "Test.Console.API.LiveDocumentor\Test.Console.API.LiveDocumentor.csproj", "{225439FA-43C9-48DD-B1A4-2E9869C183BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console.API.LiveDocumentor", "1. Tests\Test.Console.API.LiveDocumentor\Test.Console.API.LiveDocumentor.csproj", "{225439FA-43C9-48DD-B1A4-2E9869C183BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT.TheBoxSoftware.Reflection", "1. Tests\UT.TheBoxSoftware.Reflection\UT.TheBoxSoftware.Reflection.csproj", "{E1CD760F-3E5D-4C16-983D-3D17115F48F5}"
 EndProject
