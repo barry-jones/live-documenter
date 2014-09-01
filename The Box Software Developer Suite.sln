@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38DB0E87-8DF0-4CDE-AA61-EC35482E0C0C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Solution Items", "{38DB0E87-8DF0-4CDE-AA61-EC35482E0C0C}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\eula.rtf = Solution Items\eula.rtf
 		Solution Items\ExporterVersionInfo.cs = Solution Items\ExporterVersionInfo.cs
@@ -61,7 +61,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT.TheBoxSoftware.Reflectio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT.TheBoxSoftware.API.LiveDocumenter", "1. Tests\UT.TheBoxSoftware.API.LiveDocumenter\UT.TheBoxSoftware.API.LiveDocumenter.csproj", "{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{67FF40B9-6403-4F1D-BCBB-02EEAB58CE7E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Build Scripts", "2. Build Scripts", "{67FF40B9-6403-4F1D-BCBB-02EEAB58CE7E}"
 	ProjectSection(SolutionItems) = preProject
 		2. Build Scripts\build theboxsoftware.api.livedocumenter.xml = 2. Build Scripts\build theboxsoftware.api.livedocumenter.xml
 	EndProjectSection
