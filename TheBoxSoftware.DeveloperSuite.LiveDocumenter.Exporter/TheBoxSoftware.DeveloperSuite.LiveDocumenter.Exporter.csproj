@@ -101,6 +101,7 @@
     <Content Include="Documentation\document.xml" />
     <Content Include="example-configuration.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

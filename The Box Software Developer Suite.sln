@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Diagramming.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.PEViewer", "TheBoxSoftware.DeveloperSuite.PeViewer\TheBoxSoftware.DeveloperSuite.PEViewer.csproj", "{E23C4A5D-127A-48B1-A17E-4972054A078F}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Live Documenter Setup", "Live Documenter Setup\Live Documenter Setup.vdproj", "{438B0FED-13C0-4172-8702-FB62978FB4BF}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Live Documenter Setup", "3. Setup Projects\Live Documenter Setup\Live Documenter Setup.vdproj", "{438B0FED-13C0-4172-8702-FB62978FB4BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware", "TheBoxSoftware\TheBoxSoftware.csproj", "{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}"
 EndProject
@@ -49,7 +49,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Documentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter", "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj", "{B8708C35-E94A-4819-9690-0C501E397B6D}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Live Documenter Server Setup", "Live Documenter Server Setup\Live Documenter Server Setup.vdproj", "{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Live Documenter Server Setup", "3. Setup Projects\Live Documenter Server Setup\Live Documenter Server Setup.vdproj", "{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.API.LiveDocumentor", "TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumentor.csproj", "{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}"
 EndProject
@@ -67,6 +67,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Build Scripts", "2. Buil
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console.LiveDocumenter", "1. Tests\Test.Console.LiveDocumenter\Test.Console.LiveDocumenter.csproj", "{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Setup Projects", "3. Setup Projects", "{E5364AFE-6049-490F-BBA9-4E0FADF57763}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -308,5 +310,7 @@ Global
 		{E1CD760F-3E5D-4C16-983D-3D17115F48F5} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B} = {99959C78-1632-423F-B474-F37FCA98F34C}
+		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3} = {E5364AFE-6049-490F-BBA9-4E0FADF57763}
+		{438B0FED-13C0-4172-8702-FB62978FB4BF} = {E5364AFE-6049-490F-BBA9-4E0FADF57763}
 	EndGlobalSection
 EndGlobal
