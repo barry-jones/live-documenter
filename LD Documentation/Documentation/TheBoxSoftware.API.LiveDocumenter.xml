@@ -1,0 +1,423 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TheBoxSoftware.API.LiveDocumenter</name>
+    </assembly>
+    <members>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.CRefTypes">
+            <summary>
+            An enumeration of the available types of element that can be referenced
+            by a cref path in the xml code comments for an assembly.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefTypes.Namespace">
+            <summary>
+            Represents a cref link to a namespace; these can not have commented directly
+            but can be referenced.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefTypes.Type">
+            <summary>
+            Represents a path to a type defined in this or another assembly.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefTypes.Property">
+            <summary>
+            Represents a path to a property in a type.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefTypes.Field">
+            <summary>
+            Represents a fully qualified path to a field in a type.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefTypes.Method">
+            <summary>
+            Represents a fully qualified path to a method in a type.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefTypes.Event">
+            <summary>
+            Represents a fully qualified path to an event.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefTypes.Error">
+            <summary>
+            The compiler when generating the path could not resolve the type.
+            </summary>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.ContentEntryCollection">
+            <summary>
+            Represents a sequence of ContentEntry elements.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntryCollection.Item(System.Int32)">
+            <summary>
+            Gets the ContentEntry at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the ContentEntry to return.</param>
+            <returns>The ContentEntry at the specified index.</returns>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntryCollection.Count">
+            <summary>
+            Returns the number of top level elements in this <see cref="T:TheBoxSoftware.API.LiveDocumenter.Documentation"/>.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntryCollection.IsReadOnly">
+            <summary>
+            Indicates if the collection is read only.
+            </summary>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.DocumentationException">
+            <summary>
+            Details an exception with the documentation.
+            </summary>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.TableOfContents">
+            <summary>
+            Provides access to the table of contents for <see cref="T:TheBoxSoftware.API.LiveDocumenter.Documentation"/>.
+            </summary>
+            <!-- No matching elements were found for the following include tag --><include file="Documentation\tableofcontents.xml" path="members/member[@name=&quot;tableofcontents&quot;]/*"/>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.TableOfContents.GetDocumentationFor(System.Int64)">
+            <summary>
+            Retrieves the XmlDocument for the provided <paramref name="key"/>.
+            </summary>
+            <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
+            <returns>The ContentEntry for the specified Key, or null if not found.</returns>
+            <exception cref="T:TheBoxSoftware.API.LiveDocumenter.EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception><exception cref="T:System.InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception><remarks>
+      Keys are generated each time a documentation set is produced, there is no gaunrentee that between each load
+      the key will be the same. If you are looking for a stable reference use cref paths and the 
+      <see cref="M:TheBoxSoftware.API.LiveDocumenter.TableOfContents.GetDocumentationFor(System.String)"/> method.
+    </remarks>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.TableOfContents.GetDocumentationFor(System.String)">
+            <summary>
+            Retrieves the XmlDocument for the provided <paramref name="crefPath"/>.
+            </summary>
+            <param name="crefPath">The CRefPath to retrieve the documentation for.</param>
+            <returns>The ContentEntry for the specified crefpath or null if not found.</returns>
+            <exception cref="T:TheBoxSoftware.API.LiveDocumenter.EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception><exception cref="T:TheBoxSoftware.API.LiveDocumenter.DocumentationException">Thrown when the provided <paramref name="crefPath"/> does not parse correctly.</exception><exception cref="T:System.ArgumentNullException">The provided <paramref name="crefPath"/> was null or empty.</exception><exception cref="T:System.InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception><remarks>
+      <para>
+        A cref path is a way of determining a unique identifier for a type and is generated by the XML documentation compiler when XML
+        comments are produced.
+      </para>
+      <para>
+        You can retrieve cref paths easily in the API by finding the element you want to GetDocumentationFor from the table of contents.
+      </para>
+    </remarks>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.TableOfContents.Search(System.String)">
+            <summary>
+            Searches the documentation and returns a list of ContentEntrys that match the search term.
+            </summary>
+            <param name="text">The text to search for.</param>
+            <returns>A list of ContentEntrys or an empty list if none are found.</returns>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.TableOfContents.Item(System.Int32)">
+            <summary>
+            Gets the ContentEntry at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the ContentEntry to return.</param>
+            <returns>The ContentEntry at the specified index.</returns>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.TableOfContents.Count">
+            <summary>
+            Returns the number of top level elements in this <see cref="T:TheBoxSoftware.API.LiveDocumenter.Documentation"/>.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.TableOfContents.IsReadOnly">
+            <summary>
+            Indicates if the collection is read only.
+            </summary>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.Documentation">
+            <summary>
+            The Documentation class provides access to methods which allow you to load and obtain information and 
+            documentation from a documentation file.
+            </summary>
+            <remarks>
+      <para class="note">
+        A Documentation instance is an accessor to the documentation file, it enables you
+        to access information such as the table of contents for the documentation or 
+        documentation for a single type/member.
+      </para>
+      <para>
+        A documentation file is a .NET managed code DLL, Visual Studio Solution/Project or 
+        a Live Documenter project file (.ldec).
+      </para>
+      <para>
+        All returned results are provided in XML format, the specification for this format 
+        can be found <a href="#">here</a>.
+      </para>
+      <example>
+        <code>
+  using TheBoxSoftware.API.LiveDocumenter
+
+  void Main()
+  {
+    Documentation ourDocs = new Documentation("c:\\Build\Output\VsSolution.sln");
+    ourDocs.Load();
+
+    // retrieve the table of contents
+    XmlDocument toc = ourDocs.GetTableOfContents();
+            
+    // retrieve a single page of documentation
+    XmlDocument type = ourDocs.Search();
+  }
+        </code>
+      </example>
+    </remarks>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.Documentation.#ctor(System.String)">
+            <summary>
+      Initialises an instance of the Documentation class.
+    </summary><param name="forDocument">The documentation file to manage.</param><exception cref="T:System.ArgumentException">
+      Thrown when the provided parameter <paramref name="forDocument"/> is null or empty.
+    </exception>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.Documentation.Load">
+            <summary>
+            Initialises the state of the documentation class and prepares it so documentation can be accessed.
+            </summary>
+            <remarks>
+      <note>
+        The load method, loads the documentation in to memory. Instantiating documentation can be a memory intensive activity,
+        where possible you should create cacheing mechanisms to only retrieve documentation when it has changed.
+      </note>
+    </remarks><exception cref="T:TheBoxSoftware.API.LiveDocumenter.DocumentationException">
+      <para>The provided file [{0}] and extension is not supported.</para>
+      <para>The documentation file that the <see cref="T:TheBoxSoftware.API.LiveDocumenter.DocumentationException"/> class was instantiated with is not a supported format.</para>
+    </exception>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.Documentation.GetTableOfContents">
+            <summary>
+            Obtains the details of the Entries for the currently loaded documentation.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception>       
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.Documentation.GetDocumentationFor(System.Int64)">
+            <summary>
+            Retrieves the XmlDocument for the provided <paramref name="key"/>.
+            </summary>
+            <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
+            <exception cref="T:TheBoxSoftware.API.LiveDocumenter.EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception><exception cref="T:System.InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception><remarks>
+      Keys are generated each time a documentation set is produced, there is no gaunrentee that between each load
+      the key will be the same. If you are looking for a stable reference use cref paths and the 
+      <see cref="M:TheBoxSoftware.API.LiveDocumenter.Documentation.GetDocumentationFor(System.String)"/> method.
+    </remarks>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.Documentation.GetDocumentationFor(System.String)">
+            <summary>
+            Retrieves the XmlDocument for the provided <paramref name="crefPath"/>.
+            </summary>
+            <param name="crefPath">The CRefPath to retrieve the documentation for.</param>
+            <exception cref="T:TheBoxSoftware.API.LiveDocumenter.EntryNotFoundException">Thrown when the key provided does not resolve to a member in the documentation.</exception><exception cref="T:TheBoxSoftware.API.LiveDocumenter.DocumentationException">Thrown when the provided <paramref name="crefPath"/> does not parse correctly.</exception><exception cref="T:System.ArgumentNullException">The provided <paramref name="crefPath"/> was null or empty.</exception><exception cref="T:System.InvalidOperationException">Thrown when the Load method was not called, call the Load method first.</exception><remarks>
+      <para>
+        A cref path is a way of determining a unique identifier for a type and is generated by the XML documentation compiler when XML
+        comments are produced.
+      </para>
+      <para>
+        You can retrieve cref paths easily in the API by finding the element you want to GetDocumentationFor from the table of contents.
+      </para>
+    </remarks>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.Documentation.GetDocumentationFor(TheBoxSoftware.API.LiveDocumenter.ContentEntry)">
+            <summary>
+            Retrieves the XmlDocument for the provided <paramref name="entry"/>.
+            </summary>
+            <param name="entry">The ContentEntry to get the documentation for.</param>
+            <!-- No matching elements were found for the following include tag --><include file="Documentation\documentation.xml" path="members/member[@name=&quot;GetDocumentationFor.entry&quot;]/*"/>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.Documentation.GetDocumentationFor(TheBoxSoftware.Documentation.Entry)">
+            <summary>
+            Retrieves an XML representation of the documentation specified by <paramref name="entry"/>.
+            </summary>
+            <param name="entry">The Entry to obtain documentation for.</param>
+            <returns>An XmlDocument containing the documentation.</returns>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.Documentation.IsLoaded">
+            <summary>
+            Indicates if the documentation is loaded and is ready to be used.
+            </summary>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.CRefConstants">
+            <summary>
+            Set of constants that define all of the different cref identifiers
+            that can be used in code comments.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefConstants.FieldTypeIndicator">
+            <summary>
+            Constant that defines a field reference.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefConstants.PropertyTypeIndicator">
+            <summary>
+            Constant that defines a property reference.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefConstants.MethodTypeIndicator">
+            <summary>
+            Constant that defines a method reference.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefConstants.TypeIndicator">
+            <summary>
+            Constant that defines a type reference.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefConstants.NamespaceTypeIndicator">
+            <summary>
+            Constant that defines a namespace reference.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefConstants.EventTypeIndicator">
+            <summary>
+            Constant that defines an event reference.
+            </summary>
+        </member>
+        <member name="F:TheBoxSoftware.API.LiveDocumenter.CRefConstants.ErrorTypeIndicator">
+            <summary>
+            Constant that defines a resolution error reference.
+            </summary>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.CRefConstants.GetIndicatorFor(TheBoxSoftware.API.LiveDocumenter.CRefTypes)">
+            <summary>
+            Returns the string indicator for the specified CRef type.
+            </summary>
+            <param name="type">The type to return the indicator for.</param>
+            <returns>The indicator.</returns>
+            <exception cref="T:System.NotImplementedException">
+            The provided constant in the enumeration <paramref name="type"/> has
+            not been implemented.
+            </exception>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.EntryNotFoundException">
+            <summary>
+            Details an error where an entry was not found in the documentation.
+            </summary>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.CRefPath">
+            <summary>
+            Class that handles and parses a CRef comment path. A CRef path can contain
+            a fully qualified link to a type, property, method etc in an assembly.
+            </summary>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.CRefPath.#ctor">
+            <summary>
+            Initialises a new instance of the CRefPath class.
+            </summary>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.CRefPath.Parse(System.String)">
+            <summary>
+            Parses the provided path and returns a populated cref path instance.
+            </summary>
+            <param name="crefPath">The cref path to control.</param>
+            <exception cref="T:System.ArgumentNullException">The specified path was null or empty.</exception>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.CRefPath.Parse">
+            <summary>
+            Parses the contents of the contained path and stores the details in the
+            classes properties.
+            </summary>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.CRefPath.ParseType">
+            <summary>
+            Extracts the cref type portion of the string and sets the <see cref="P:TheBoxSoftware.API.LiveDocumenter.CRefPath.PathType"/>.
+            </summary>
+            <exception cref="T:System.NotImplementedException">
+            Thrown when the parser finds a type that it can not handle.
+            </exception>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.CRefPath.ToString">
+            <summary>
+            Returns a string representation of this CRefPath.
+            </summary>
+            <returns>The cref path constructed from the elements.</returns>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.CRefPath.PathType">
+            <summary>
+            Indicates the type of element that is referenced by the CRef path.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.CRefPath.Namespace">
+            <summary>
+            Gets or sets a string that indicates the namespace the type parsed from the cref
+            path resides in.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.CRefPath.TypeName">
+            <summary>
+            Gets or sets a string that indicates the name of the type from the CRef path.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.CRefPath.ElementName">
+            <summary>
+            Gets or sets a string that is the value of the element name from the cref
+            path.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.CRefPath.Parameters">
+            <summary>
+            A string representing the parameter section of the CRefPath.
+            </summary>
+        </member>
+        <member name="T:TheBoxSoftware.API.LiveDocumenter.ContentEntry">
+            <summary>
+            Represents an individual entry in the <see cref="T:TheBoxSoftware.API.LiveDocumenter.Documentation"/>.
+            </summary>
+        </member>
+        <member name="M:TheBoxSoftware.API.LiveDocumenter.ContentEntry.GetParents">
+            <summary>
+            Retrieves a list of the parent entries for this ContentEntry
+            </summary>
+            <returns>A sequential list of parents or an empty list if the entry has no parents.</returns>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.CRefPath">
+            <summary>
+            Gets the unique crefpath for this documentation entry.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.Key">
+            <summary>
+            Gets the key for this documentation entry.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.SubKey">
+            <summary>
+            Gets the subkey for this documentation entry.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.DisplayName">
+            <summary>
+            Gets a displayable version of the name for this documentation entry.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.IsContainer">
+            <summary>
+            Indicates if this type is a container entry or a member entry.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.Children">
+            <summary>
+            Gets a reference to the collection containing a sequence of child ContentEntrys for this entry.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.Parent">
+            <summary>
+            Gets a reference to the parent entry.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.HasComments">
+            <summary>
+            Indicates if the member has XML comments associated with it.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.API.LiveDocumenter.ContentEntry.Entry">
+            <summary>
+            Obtains a reference to the entry this content entry is wrapping.
+            </summary>
+        </member>
+    </members>
+</doc>
