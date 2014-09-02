@@ -6,6 +6,7 @@ using TheBoxSoftware.Documentation;
 using TheBoxSoftware.Documentation.Exporting;
 using TheBoxSoftware.Documentation.Exporting.Rendering;
 using TheBoxSoftware.Reflection;
+using System.Text;
 
 namespace TheBoxSoftware.API.LiveDocumenter
 {
@@ -126,7 +127,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         /// <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.key"]/*'/>
-        public XmlDocument GetDocumentationFor(long key) {
+        public string GetDocumentationFor(long key) {
             // this is the quickest way to retrieve documentation
             if (!this.isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
@@ -143,7 +144,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         /// <param name="crefPath">The CRefPath to retrieve the documentation for.</param>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.cref"]/*'/>
-        public XmlDocument GetDocumentationFor(string crefPath) {
+        public string GetDocumentationFor(string crefPath) {
             if (string.IsNullOrEmpty(crefPath))
                 throw new ArgumentNullException("crefPath");
             if (!this.isLoaded)
@@ -165,7 +166,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         /// <param name="entry">The ContentEntry to get the documentation for.</param>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.entry"]/*'/>
-        public XmlDocument GetDocumentationFor(ContentEntry entry)
+        public string GetDocumentationFor(ContentEntry entry)
         {
             if (entry == null)
                 throw new ArgumentNullException("entry");
@@ -180,29 +181,26 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         /// <param name="entry">The Entry to obtain documentation for.</param>
         /// <returns>An XmlDocument containing the documentation.</returns>
-        private XmlDocument GetDocumentationFor(Entry entry) {
+        private string GetDocumentationFor(Entry entry) {
             if (null == entry)
                 throw new ArgumentNullException("The provided Entry was null.");
 
-            XmlDocument document = new XmlDocument();
-            using (MemoryStream ms = new MemoryStream()) {
-                using (XmlWriter writer = XmlWriter.Create(ms, this.outputSettings)) {
-                    XmlRenderer r = XmlRenderer.Create(entry, this.baseDocument);
-                    if (r == null) {
-                        return null;    // simply return a null reference if we cant find the renderer for the entry
-                    }
-
-                    r.Render(writer);
-
-                    writer.Flush();
-                    writer.Close();
-
-                    ms.Seek(0, SeekOrigin.Begin); // jump back to the start of the stream so we can read it
-                    document.Load(ms);
+            StringBuilder output = new StringBuilder();
+            using (XmlWriter writer = XmlWriter.Create(output))
+            {
+                XmlRenderer r = XmlRenderer.Create(entry, this.baseDocument);
+                if (r == null)
+                {
+                    return null;    // simply return a null reference if we cant find the renderer for the entry
                 }
+
+                r.Render(writer);
+
+                writer.Flush();
+                writer.Close();
             }
 
-            return document;
+            return output.ToString();
         }
 
         /// <summary>
