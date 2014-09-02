@@ -18,12 +18,12 @@
 	</filters>
   	
 	<!-- the application will always check the ApplicationData folder for LDEC files -->
-    <outputs>
-		<!-- the locations being output to will be cleared without warning -->
-      <ldec location="c:\temp\web\">web-msdn.ldec</ldec>
-      <ldec location="c:\temp\htmlhelp-1\">htmlhelp1-msdn.ldec</ldec>
-      <ldec location="c:\temp\htmlhelp-2\">htmlhelp2-msdn.ldec</ldec>
-      <ldec location="c:\temp\helpviewer-1\">helpviewer1-msdn.ldec</ldec>
-      <ldec location="c:\temp\xml\">xml.ldec</ldec>
-    </outputs>
+  <outputs>
+	<!-- the locations being output to will be cleared without warning -->
+    <ldec location="c:\temp\web\">web-msdn.ldec</ldec>
+    <ldec location="c:\temp\htmlhelp-1\">htmlhelp1-msdn.ldec</ldec>
+    <ldec location="c:\temp\htmlhelp-2\">htmlhelp2-msdn.ldec</ldec>
+    <ldec location="c:\temp\helpviewer-1\">helpviewer1-msdn.ldec</ldec>
+    <ldec location="c:\temp\xml\">xml.ldec</ldec>
+  </outputs>
 </configuration>
