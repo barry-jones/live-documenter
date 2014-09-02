@@ -50,7 +50,6 @@
     <Compile Include="..\Solution Items\ExporterVersionInfo.cs">
       <Link>ExporterVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Document.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="Program.cs" />

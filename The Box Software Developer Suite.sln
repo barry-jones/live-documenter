@@ -15,14 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Sol
 		Solution Items\Live Documenter.vpp = Solution Items\Live Documenter.vpp
 		Solution Items\live-documenter-setup-banner.jpg = Solution Items\live-documenter-setup-banner.jpg
 		Solution Items\LiveDocumenterVersionInfo.cs = Solution Items\LiveDocumenterVersionInfo.cs
-		Local.testsettings = Local.testsettings
 		Solution Items\Performance.psess = Solution Items\Performance.psess
 		Solution Items\PEViewerVersionInfo.cs = Solution Items\PEViewerVersionInfo.cs
 		Solution Items\saxon9he-api.dll = Solution Items\saxon9he-api.dll
 		Solution Items\saxon9he.dll = Solution Items\saxon9he.dll
 		Solution Items\System.Windows.Controls.Input.Toolkit.dll = Solution Items\System.Windows.Controls.Input.Toolkit.dll
 		The Box Software Developer Suite.vsmdi = The Box Software Developer Suite.vsmdi
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Tests", "1. Tests", "{99959C78-1632-423F-B474-F37FCA98F34C}"

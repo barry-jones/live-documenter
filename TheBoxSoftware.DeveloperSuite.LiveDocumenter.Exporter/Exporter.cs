@@ -28,9 +28,7 @@ namespace TheBoxSoftware.Exporter {
 			// initialise the assemblies to be documented
 			if(Path.GetExtension(this.configuration.Document) == ".ldproj") {
 				project = Project.Deserialize(this.configuration.Document);
-				foreach (string file in project.Files) {
-					files.Add(new DocumentedAssembly(file));
-				}
+                files.AddRange(project.GetAssemblies());                            // [#2] hopefully this is the simple fix
 				settings.Settings.VisibilityFilters = project.VisibilityFilters;
 			}
 			else if(Path.GetExtension(this.configuration.Document) == ".dll") {
