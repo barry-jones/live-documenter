@@ -46,8 +46,8 @@ namespace TheBoxSoftware.Documentation {
 		/// Collection of filters that define what is and is not shown in this
 		/// project.
 		/// </summary>
-		[XmlArray("visibilityfilters")]
-		[XmlArrayItem("visibility")]
+		[XmlArray("filters")]
+		[XmlArrayItem("filter")]
 		public List<Reflection.Visibility> VisibilityFilters { get; set; }
 
 		/// <summary>
@@ -144,13 +144,14 @@ namespace TheBoxSoftware.Documentation {
 		/// <param name="fromFile">The file to read the project from.</param>
 		/// <returns>The instantiated project.</returns>
 		public static Project Deserialize(string fromFile) {
-			using(FileStream fs = new FileStream(fromFile, FileMode.Open)) {
-				XmlSerializer serializer = new XmlSerializer(typeof(Project));
-				Project deserializedProject = (Project)serializer.Deserialize(fs);
-				deserializedProject.location = fromFile;
-				deserializedProject.DenormaliseRelativePaths();
-				return deserializedProject;
-			}
+            using (FileStream fs = new FileStream(fromFile, FileMode.Open))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Project));
+                Project deserializedProject = (Project)serializer.Deserialize(fs);
+                deserializedProject.location = fromFile;
+                deserializedProject.DenormaliseRelativePaths();
+                return deserializedProject;
+            }
 		}
 
 		#region Private methods

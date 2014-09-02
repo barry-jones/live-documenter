@@ -26,7 +26,15 @@ namespace TheBoxSoftware.Exporter {
 					printHelp = true;
 				}
 				else {
-					configuration = Configuration.Deserialize(argument);
+                    try
+                    {
+                        configuration = Configuration.Deserialize(argument);
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        Console.Write(string.Format("! there was an error reading the configuration file\n  {0}", e.Message));
+                        return; // bail we have no configuration or some of it is missing
+                    }
 				}
 			}
 

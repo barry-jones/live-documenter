@@ -24,12 +24,29 @@ namespace TheBoxSoftware.Exporter {
 			Project project = null;
 			export.ExportSettings settings = new export.ExportSettings();
 			settings.Settings = new DocumentSettings();
+            settings.Settings.VisibilityFilters = this.configuration.Filters;
 
 			// initialise the assemblies to be documented
 			if(Path.GetExtension(this.configuration.Document) == ".ldproj") {
-				project = Project.Deserialize(this.configuration.Document);
-                files.AddRange(project.GetAssemblies());                            // [#2] hopefully this is the simple fix
-				settings.Settings.VisibilityFilters = project.VisibilityFilters;
+                try
+                {
+                    project = Project.Deserialize(this.configuration.Document);
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.Write(
+                        string.Format("! invalid document '{0}' please fix the error and try again.\n  {1}", this.configuration.Document, e.Message)
+                        );
+                    return; // bail we have an invalid ldproj file
+                }
+                finally { }
+                files.AddRange(project.GetAssemblies());
+
+                // override the filters if they are specified in the project
+                if (!(settings.Settings.VisibilityFilters != null && settings.Settings.VisibilityFilters.Count > 0))
+                {
+                    settings.Settings.VisibilityFilters = project.VisibilityFilters;
+                }
 			}
 			else if(Path.GetExtension(this.configuration.Document) == ".dll") {
 				files.Add(new DocumentedAssembly(this.configuration.Document));
@@ -43,11 +60,22 @@ namespace TheBoxSoftware.Exporter {
 			}
 
 			// use the configurations visibility filters or default to just public
-			if (this.configuration.Filters != null && this.configuration.Filters.Count > 0) {
-			}
-			else if (settings.Settings.VisibilityFilters == null || settings.Settings.VisibilityFilters.Count == 0) {
-				settings.Settings.VisibilityFilters = new List<Visibility>() { Visibility.Public };
-			}
+            if (settings.Settings.VisibilityFilters == null || settings.Settings.VisibilityFilters.Count == 0)
+            {
+                Console.Write("[note] no visibility filters are found defaulting to Public and Protected.\n");
+                settings.Settings.VisibilityFilters = new List<Visibility>() { Visibility.Public };
+            }
+            else
+            {
+                List<string> filters = new List<string>();
+                foreach (Visibility current in settings.Settings.VisibilityFilters)
+                {
+                    filters.Add(Enum.GetName(typeof(Visibility), current));
+                }
+                Console.Write(
+                    string.Format("[note] exporting ({0}) visible members\n", string.Join("|", filters.ToArray()))
+                    );
+            }
 
 			// initialise the document
 			EntryCreator entryCreator = new EntryCreator();
@@ -55,6 +83,7 @@ namespace TheBoxSoftware.Exporter {
 			d.Settings = settings.Settings;
 			d.UpdateDocumentMap();
 
+            Console.Write("\n");
 			Console.WriteLine("Exporting {0}", configuration.Document);
 			Console.WriteLine("  containing {0} members and types.", entryCreator.Created);
 
@@ -68,6 +97,7 @@ namespace TheBoxSoftware.Exporter {
 					+ output.File
 					);
 
+                Console.Write("\n----------\n");
 				Console.WriteLine("Exporting with {0} to location {1}.", output.File, output.Location);
 
 				if (!config.IsValid) {
@@ -96,7 +126,7 @@ namespace TheBoxSoftware.Exporter {
 							}
 						}
 						else {
-							Console.WriteLine("The export completed at {0}, taking {1} minutes.", end, end.Subtract(start).TotalMinutes.ToString());
+							Console.WriteLine("The export completed at {0}, taking {1} seconds.", end, end.Subtract(start).TotalSeconds.ToString());
 						}
 					}
 				}
