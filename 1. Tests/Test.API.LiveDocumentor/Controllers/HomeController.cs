@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
-using TheBoxSoftware.API.LiveDocumentor;
+using TheBoxSoftware.API.LiveDocumenter;
 
-namespace Test.API.LiveDocumentor.Controllers
+namespace Test.API.LiveDocumenter.Controllers
 {
     public class HomeController : Controller
     {
@@ -15,7 +15,7 @@ namespace Test.API.LiveDocumentor.Controllers
 
         public ActionResult Index()
         {
-            Documentation docs = LiveDocumentor.Models.Docs.Get();
+            Documentation docs = LiveDocumenter.Models.Docs.Get();
             TableOfContents document = docs.GetTableOfContents();
             return this.Content(string.Empty, "text/xml");
         }
