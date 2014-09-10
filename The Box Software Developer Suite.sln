@@ -3,7 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Solution Items", "{38DB0E87-8DF0-4CDE-AA61-EC35482E0C0C}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\eula.rtf = Solution Items\eula.rtf
-		Solution Items\ExporterVersionInfo.cs = Solution Items\ExporterVersionInfo.cs
 		Solution Items\IKVM.OpenJDK.Charsets.dll = Solution Items\IKVM.OpenJDK.Charsets.dll
 		Solution Items\IKVM.OpenJDK.Core.dll = Solution Items\IKVM.OpenJDK.Core.dll
 		Solution Items\IKVM.OpenJDK.Text.dll = Solution Items\IKVM.OpenJDK.Text.dll
@@ -14,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Items", "0. Sol
 		Solution Items\LibraryVersionInfo.cs = Solution Items\LibraryVersionInfo.cs
 		Solution Items\Live Documenter.vpp = Solution Items\Live Documenter.vpp
 		Solution Items\live-documenter-setup-banner.jpg = Solution Items\live-documenter-setup-banner.jpg
-		Solution Items\LiveDocumenterVersionInfo.cs = Solution Items\LiveDocumenterVersionInfo.cs
 		Solution Items\Performance.psess = Solution Items\Performance.psess
 		Solution Items\PEViewerVersionInfo.cs = Solution Items\PEViewerVersionInfo.cs
 		Solution Items\saxon9he-api.dll = Solution Items\saxon9he-api.dll
@@ -67,6 +65,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Console.LiveDocumenter", "1. Tests\Test.Console.LiveDocumenter\Test.Console.LiveDocumenter.csproj", "{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Setup Projects", "3. Setup Projects", "{E5364AFE-6049-490F-BBA9-4E0FADF57763}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Utilities", "4. Utilities", "{37EA6322-4696-4946-B88A-594FEA0CE28B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Licensing", "TheBoxSoftware.Licensing\TheBoxSoftware.Licensing.csproj", "{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -297,18 +299,30 @@ Global
 		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|Win32.ActiveCfg = Release|x86
 		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|x86.ActiveCfg = Release|x86
 		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}.Release|x86.Build.0 = Release|x86
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9B61AE17-91F6-4498-BCD8-D2826E5DF9BC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2AD369A3-7737-4EC5-A4BA-3E846F80C066} = {99959C78-1632-423F-B474-F37FCA98F34C}
+		{A51EE3F8-1D1A-4231-846A-923A2046D6CA} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{8DEA43B6-DB5B-498D-9238-6A9230E27D62} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{225439FA-43C9-48DD-B1A4-2E9869C183BD} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{E1CD760F-3E5D-4C16-983D-3D17115F48F5} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B} = {99959C78-1632-423F-B474-F37FCA98F34C}
-		{A51EE3F8-1D1A-4231-846A-923A2046D6CA} = {99959C78-1632-423F-B474-F37FCA98F34C}
 		{CF204D30-523F-4D21-99DA-1BF0CBB1FBC3} = {E5364AFE-6049-490F-BBA9-4E0FADF57763}
 		{438B0FED-13C0-4172-8702-FB62978FB4BF} = {E5364AFE-6049-490F-BBA9-4E0FADF57763}
 	EndGlobalSection

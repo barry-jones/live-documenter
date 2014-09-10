@@ -6,18 +6,18 @@ using System.Text;
 namespace TheBoxSoftware.Licencing
 {
     [Serializable]
-    public sealed class Licence
+    public sealed class License
     {
         private DateTime purchaseDate;
         private DateTime licencedUntil;
         private List<string> components;
 
-        public static Licence Decrypt()
+        public static License Decrypt()
         {
             string pubKey = "";
 
 
-            return new Licence();
+            return new License();
         }
 
         public override string ToString()
