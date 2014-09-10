@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace TheBoxSoftware.Exporter {
 	internal class Program {
@@ -138,9 +140,10 @@ namespace TheBoxSoftware.Exporter {
         private void PrintVersionInformation()
         {
             // get version information
-            Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Logger.Verbose(string.Format("Live Documenter Exporter Version: {0}\n\n", version.ToString()));
+            Logger.Verbose(string.Format("Live Documenter Exporter Version: {0}\n\n", fvi.ProductVersion));
         }
 	}
 }
