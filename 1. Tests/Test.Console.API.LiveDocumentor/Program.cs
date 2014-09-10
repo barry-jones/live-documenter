@@ -36,7 +36,7 @@ namespace Test.Console.API.LiveDocumentor {
         private void SearchByCref() {
             Log("\nTest searching by crefpath\n");
 
-            XmlDocument d;
+            string d;
 
             Log(" F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField ... ");
             d = this.docs.GetDocumentationFor("F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField");
@@ -74,9 +74,11 @@ namespace Test.Console.API.LiveDocumentor {
             }
         }
 
-        private string getSafeName(XmlDocument d)
+        private string getSafeName(string d)
         {
-            XmlNode node = d.SelectNodes("member/name")[0];
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(d);
+            XmlNode node = doc.SelectNodes("member/name")[0];
             return node.Attributes["safename"].Value;
         }
 

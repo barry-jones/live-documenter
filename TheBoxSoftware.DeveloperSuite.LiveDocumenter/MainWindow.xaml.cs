@@ -39,7 +39,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
         /// <returns>True if the application can run else false.</returns>
         private bool CheckLicense()
         {
-            string file = "license.lic";
+            string file = "livedocumenter.lic";
             Licensing.License license;
 
             if (!File.Exists(file))
@@ -53,7 +53,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 
             try
             {
-                license = Licensing.License.Decrypt("license.lic");
+                license = Licensing.License.Decrypt(file);
             }
             catch (Exception ex)
             {
@@ -69,7 +69,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Licensing.License.ValidationInfo info = license.Validate("ld-server", fvi.ProductVersion);
+            Licensing.License.ValidationInfo info = license.Validate("ld-desktop", fvi.ProductVersion);
             if (info.HasExpired)
             {
                 MessageBox.Show(
