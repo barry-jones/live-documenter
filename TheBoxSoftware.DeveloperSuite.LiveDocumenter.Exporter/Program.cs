@@ -19,6 +19,10 @@ namespace TheBoxSoftware.Exporter {
             bool verbose = false;
 
             Console.WriteLine(string.Empty); // always start hte output with a new line clearing from the command data
+            if (!p.CheckLicense())
+            {
+                return; // just quit.
+            }
 
 			// read all the arguments
 			if (args == null || args.Length == 0) {
@@ -68,6 +72,64 @@ namespace TheBoxSoftware.Exporter {
 
             Console.WriteLine(); // space at end of outpuut for readability
 		}
+
+        /// <summary>
+        /// Checks the license and informs the user if there is an issue.
+        /// </summary>
+        /// <returns>True if the application can run else false.</returns>
+        private bool CheckLicense()
+        {
+            string file = "license.lic";
+            Licensing.License license;
+
+            if (!File.Exists(file))
+            {
+                Logger.Log(
+                    string.Format("No license was located. Please add your license file '{0}' to the same directory as this executable.\n\n", file), 
+                    LogType.Error
+                    );
+                return false;
+            }
+
+            try
+            {
+                license = Licensing.License.Decrypt("license.lic");
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("There was an error reading your license file. Please make sure it is correct. If this issue continues please contact support@theboxsoftware.com\n\n", LogType.Error);
+                return false;
+            }
+            finally { }
+
+            // validate the license.
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            Licensing.License.ValidationInfo info = license.Validate("ld-server", fvi.ProductVersion);
+            if (info.HasExpired)
+            {
+                Logger.Log("Thank you for trying out our software. You can purchase a full copy from http://livedocumenter.com\n\n");
+                return false;
+            }
+            if (!info.IsComponentValid)
+            {
+                Logger.Log("Your license does not cover this application. You can purchase a full copy from http://livedocumenter.com\n\n", LogType.Error);
+                return false;
+            }
+            if (info.IsVersionInvalid)
+            {
+                Logger.Log(
+                    string.Format("Unfortuntely your license does not cover this version {0} of the software. Please upgrade or install an earlier version.\n\n", 
+                        fvi.ProductVersion
+                        ),
+                        LogType.Error
+                    );
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Reads the arguments from the command line.

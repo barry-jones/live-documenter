@@ -30,6 +30,43 @@ namespace TheBoxSoftware.Licensing
         private const int keysize = 256;
 
         /// <summary>
+        /// Performs a validation test on the license to check if the provided components,
+        /// versions and time makes this a valid or invalid license for those criteria.
+        /// </summary>
+        /// <param name="component">The string representing the component to check.</param>
+        /// <param name="version">The version to check the component for.</param>
+        /// <returns>A ValidationInfo file that describes the results of the validation test.</returns>
+        public ValidationInfo Validate(string component, string version)
+        {
+            ValidationInfo info = new ValidationInfo();
+
+            if (this.End != null && this.End != DateTime.MinValue) // trial version test
+            {
+                if (DateTime.Now > this.End)
+                {
+                    info.HasExpired = true;
+                }
+            }
+
+            foreach (KeyValuePair<string, int> current in this.Components)
+            {
+                if (string.Compare(current.Key, component) == 0)
+                {
+                    info.IsComponentValid = true;
+
+                    // check the version (this test will mean we will need to distribute new licenses for version upgrades)
+                    Version v = new Version(version);
+                    if (v.Major > current.Value)
+                    {
+                        info.IsVersionInvalid = true;
+                    }
+                }
+            }
+
+            return info;
+        }
+
+        /// <summary>
         /// Encrypts the current instance to a byte array.
         /// </summary>
         /// <returns>A byte array of encrypted data.</returns>
@@ -157,6 +194,44 @@ namespace TheBoxSoftware.Licensing
         {
             get { return this.start; }
             set { this.start = value; }
+        }
+
+        /// <summary>
+        /// Provides information on the validatity of a license based on a test.
+        /// </summary>
+        /// <seealso cref="License.Validate"/>
+        public class ValidationInfo
+        {
+            private bool isVersionInvalid = false;
+            private bool hasExpired = false;
+            private bool isComponentValid = false;
+
+            /// <summary>
+            /// Indicates if the version is licensed.
+            /// </summary>
+            public bool IsVersionInvalid
+            {
+                get { return this.isVersionInvalid; }
+                set { this.isVersionInvalid = value; }
+            }
+
+            /// <summary>
+            /// Indicates if the component is licensed.
+            /// </summary>
+            public bool IsComponentValid
+            {
+                get { return this.isComponentValid; }
+                set { this.isComponentValid = value; }
+            }
+
+            /// <summary>
+            /// Indicates if the license has expired.
+            /// </summary>
+            public bool HasExpired
+            {
+                get { return this.hasExpired; }
+                set { this.hasExpired = value; }
+            }
         }
     }
 }
