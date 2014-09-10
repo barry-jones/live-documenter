@@ -8,17 +8,32 @@ using export = TheBoxSoftware.Documentation.Exporting;
 using TheBoxSoftware.Reflection;
 
 namespace TheBoxSoftware.Exporter {
+    /// <summary>
+    /// Exporter class, reads the configuration information and exports the contents as requested.
+    /// </summary>
+    /// <remarks>
+    /// <para>Verbose will slow down the processing time for the export but will provide more information
+    /// about how the export is progressing.</para>
+    /// </remarks>
 	internal sealed class Exporter {
 		private Configuration configuration;
+        private string lastStep = string.Empty; // stores the last export step so we can work out where we are
+        private bool verbose = false;           // indicates if the output information should be verbose or not
 
 		/// <summary>
 		/// Initialises a new instance of the Exporter
 		/// </summary>
-		/// <param name="configuration"></param>
-		public Exporter(Configuration configuration) {
+		/// <param name="configuration">The export configuration information.</param>
+        /// <param name="verbose">Indicates if the output should be complete or limited.</param>
+		public Exporter(Configuration configuration, bool verbose) {
 			this.configuration = configuration;
+            this.verbose = verbose;
 		}
 
+        /// <summary>
+        /// Performs the export, exporting to the libraries to the outputs specified in the XML configuration
+        /// file.
+        /// </summary>
 		public void Export() {
 			List<DocumentedAssembly> files = new List<DocumentedAssembly>();
 			Project project = null;
@@ -107,6 +122,11 @@ namespace TheBoxSoftware.Exporter {
 					settings.PublishDirectory = output.Location;
 
 					export.Exporter exporter = export.Exporter.Create(d, settings, config);
+                    if(this.verbose) exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
+                    exporter.ExportException += new export.ExportExceptionHandler(exporter_ExportException);
+                    if(this.verbose) exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
+                    exporter.ExportFailed += new export.ExportFailedEventHandler(exporter_ExportFailed);
+
 					List<export.Issue> issues = exporter.GetIssues();
 					if (issues.Count > 0) {
 						Console.WriteLine("  The following issues occurred with the {0} exporter.", output.File);
@@ -133,9 +153,30 @@ namespace TheBoxSoftware.Exporter {
 			}
 		}
 
-		void exporter_ExportStep(object sender, export.ExportStepEventArgs e) {
-			Console.WriteLine("  {0}", e.Description);
+		private void exporter_ExportStep(object sender, export.ExportStepEventArgs e) {
+            if (this.lastStep == e.Description)
+                return;
+            else
+            {
+                this.lastStep = e.Description;
+                Console.WriteLine("  {0}", e.Description);
+            }
 		}
+
+        private void exporter_ExportException(object sender, export.ExportExceptionEventArgs e)
+        {
+            Console.Write(string.Format("  [error] {0}\n", e.Exception.Message));
+        }
+
+        private void exporter_ExportCalculated(object sender, export.ExportCalculatedEventArgs e)
+        {
+            Console.Write("  Export started\n");
+        }
+
+        private void exporter_ExportFailed(export.ExportFailedEventArgs e)
+        {
+            Console.Write("  [fatal] {0}\n", e.Message);
+        }
 
 		private string FormatExceptionData(Exception forException) {
 			StringBuilder sb = new StringBuilder();
