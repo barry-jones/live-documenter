@@ -15,6 +15,9 @@ using System.IO.IsolatedStorage;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	using TheBoxSoftware.Documentation;
+    using System.Reflection;
+    using System.Diagnostics;
+    using System.IO;
 
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -29,6 +32,73 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		private Entry currentSelection;
 		private Entry currentSelectionParent;
 		private bool allowFileRefreshing = true;
+
+        /// <summary>
+        /// Checks the license and informs the user if there is an issue.
+        /// </summary>
+        /// <returns>True if the application can run else false.</returns>
+        private bool CheckLicense()
+        {
+            string file = "license.lic";
+            Licensing.License license;
+
+            if (!File.Exists(file))
+            {
+                MessageBox.Show(
+                    string.Format("No license was located. Please add your license file '{0}' to the same directory as this executable and restart the application.\n\n", file),
+                    "Live Documenter - License Issue"
+                    );
+                return false;
+            }
+
+            try
+            {
+                license = Licensing.License.Decrypt("license.lic");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "There was an error reading your license file. Please make sure it is correct. If this issue continues please contact support@theboxsoftware.com\n\n",
+                    "Live Documenter - License Issue"
+                    );
+                return false;
+            }
+            finally { }
+
+            // validate the license.
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            Licensing.License.ValidationInfo info = license.Validate("ld-server", fvi.ProductVersion);
+            if (info.HasExpired)
+            {
+                MessageBox.Show(
+                    "Thank you for trying out our software. You can purchase a full copy from http://livedocumenter.com\n\n",
+                    "Live Documenter - License Issue"
+                    );
+                return false;
+            }
+            if (!info.IsComponentValid)
+            {
+                MessageBox.Show(
+                    "Your license does not cover this application. You can purchase a full copy from http://livedocumenter.com\n\n",
+                    "Live Documenter - License Issue"
+                    );
+                return false;
+            }
+            if (info.IsVersionInvalid)
+            {
+                MessageBox.Show(
+                    string.Format("Unfortuntely your license does not cover this version {0} of the software. Please upgrade or install an earlier version.\n\n",
+                        fvi.ProductVersion
+                        ),
+                    "Live Documenter - License Issue"
+                    );
+                return false;
+            }
+
+            return true;
+        }
 
 		/// <summary>
 		/// Initialises a new instance of the MainWindow class.
@@ -63,6 +133,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.searchEntryTimer.Elapsed += new System.Timers.ElapsedEventHandler(PerformSearch);
 
 			this.InitialiseStartScreen();
+
+            if (!this.CheckLicense())
+            {
+                Application.Current.Shutdown();
+            }
 
 			string[] args = ((App)App.Current).Arguments;
 			if (args != null && args.Length > 0) {
