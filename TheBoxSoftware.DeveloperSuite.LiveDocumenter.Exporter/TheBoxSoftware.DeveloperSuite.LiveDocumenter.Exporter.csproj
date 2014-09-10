@@ -52,6 +52,7 @@
     </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Exporter.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -98,6 +99,7 @@
       <Link>win.ico</Link>
     </Content>
     <Content Include="Documentation\document.xml" />
+    <Content Include="Documentation\logger.xml" />
     <Content Include="example-configuration.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

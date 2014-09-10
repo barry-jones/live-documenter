@@ -16,6 +16,8 @@ namespace TheBoxSoftware.Exporter {
 			Configuration configuration = null;
             bool verbose = false;
 
+            Console.WriteLine(string.Empty); // always start hte output with a new line clearing from the command data
+
 			// read all the arguments
 			if (args == null || args.Length == 0) {
 				printHelp = true;
@@ -28,7 +30,7 @@ namespace TheBoxSoftware.Exporter {
 				if (!printHelp) {
                     if (string.IsNullOrEmpty(configFile))
                     {
-                        Console.Write("  [error] No configuration file was provided.\n");
+                        Logger.Log("No configuration file was provided.\n", LogType.Error);
                     }
                     else if (File.Exists(configFile))
                     {
@@ -38,13 +40,13 @@ namespace TheBoxSoftware.Exporter {
                         }
                         catch (InvalidOperationException e)
                         {
-                            Console.Write(string.Format("! there was an error reading the configuration file\n  {0}", e.Message));
+                            Logger.Log(string.Format("There was an error reading the configuration file\n  {0}", e.Message), LogType.Error);
                             return; // bail we have no configuration or some of it is missing
                         }
                     }
                     else
                     {
-                        Console.Write(string.Format("  [error] the config file '{0}' does not exist", configFile));
+                        Logger.Log(string.Format("The config file '{0}' does not exist", configFile), LogType.Error);
                     }
 				}
 			}
@@ -54,12 +56,15 @@ namespace TheBoxSoftware.Exporter {
 			}
 			else if(configuration != null) {
 				if (configuration.IsValid()) {
+                    Logger.Init(verbose);
                     p.PrintVersionInformation();
 
 					Exporter exporter = new Exporter(configuration, verbose);
 					exporter.Export();
 				}
 			}
+
+            Console.WriteLine(); // space at end of outpuut for readability
 		}
 
         /// <summary>
@@ -118,13 +123,13 @@ namespace TheBoxSoftware.Exporter {
             this.PrintVersionInformation();
 
             string help =
-                "The exporter takes the following arguments\n" +
+                "\nThe exporter takes the following arguments\n" +
                 "   exporter [modifiers] <filename>\n\n" +
                 "   modifiers:\n" +
                 "     -h        show help information\n" +
-                "     -v        show verbose export details\n" +
+                "     -v        show verbose export details\n\n" +
                 "   <filename>  The path to the configuration xml file.\n";
-            Console.Write(help);
+            Logger.Log(help);
 		}
 
         /// <summary>
@@ -135,7 +140,7 @@ namespace TheBoxSoftware.Exporter {
             // get version information
             Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
 
-            Console.Write(string.Format("Live Documenter Exporter Version: {0}\n", version.ToString()));
+            Logger.Verbose(string.Format("Live Documenter Exporter Version: {0}\n\n", version.ToString()));
         }
 	}
 }
