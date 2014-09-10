@@ -1,0 +1,41 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.About"
+    Title="About" Height="303" Width="445" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" mc:Ignorable="d">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="ApplicationCommands.Close" />
+    </Window.InputBindings>
+    <Grid>
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition Width="0.05*"/>
+    		<ColumnDefinition Width="0.31*"/>
+    		<ColumnDefinition Width="0.64*"/>
+    	</Grid.ColumnDefinitions>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="0.415*"/>
+    		<RowDefinition Height="0.585*"/>
+    	</Grid.RowDefinitions>
+    	<Image Margin="0,0,-461,-3" Height="280" Grid.ColumnSpan="3" Source="Resources/about.png" Stretch="Fill"/>
+        <TextBlock 
+                   Margin="0,27.37,54.556,0" 
+                   VerticalAlignment="Top" 
+                   TextWrapping="Wrap" 
+                   Grid.Column="1" 
+                   Foreground="#FF212120" d:LayoutOverrides="Width, GridBox" Grid.Row="1" Grid.ColumnSpan="2"><Run Text="v 0.0.0000.0000" x:Name="version" Language="en-gb"/></TextBlock>
+        <TextBlock Margin="0,59.045,17.941,64" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Grid.ColumnSpan="2" d:LayoutOverrides="GridBox"><Run Text="Copyright © The Box Software Ltd 2010-2011"/><LineBreak/><Run Text="All rights reserved."/><LineBreak/><Run Text=""/><LineBreak/></TextBlock>
+    	<TextBlock Margin="0,0,17.941,26" Grid.Column="1" Grid.Row="1" Text="Please visit www.theboxsoftware.com for more information and support." TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="24" d:LayoutOverrides="GridBox"/>
+    	<TextBlock 
+    		FontFamily="Arial" 
+    		Foreground="#FF212120" 
+    		TextWrapping="Wrap" 
+    		Grid.Column="1" 
+    		Height="18.37" 
+    		VerticalAlignment="Top" Margin="0,14,8,0" Grid.Row="1" Grid.ColumnSpan="2" d:LayoutOverrides="GridBox">
+            <Run Text="Assembly Name" x:Name="assemblyName" Language="en-gb"/>
+            </TextBlock>
+    </Grid>
+</Window>

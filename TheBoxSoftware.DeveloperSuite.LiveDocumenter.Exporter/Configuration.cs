@@ -55,7 +55,7 @@ namespace TheBoxSoftware.Exporter {
 			bool isValid = true;
 			
 			if (!File.Exists(this.Document)) {
-				Console.WriteLine("  The document '{0}' does not exist.", this.Document);
+				Logger.Log(string.Format("The document '{0}' does not exist.", this.Document), LogType.Error);
 				isValid = false;
 			}
 

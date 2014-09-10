@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<members>
+  <member name="Logger">
+    <remarks>
+      <para>Logs messages to the Console colour coded based on the type of log that is being recorded.</para>
+      <list>
+        <listheader>
+          <term>Log type</term>
+          <description>Output colour</description>
+        </listheader>
+        <item>
+          <term>Information</term>
+          <description>Default colour for the console.</description>
+        </item>
+        <item>
+          <term>Warning</term>
+          <description>Yellow foreground colour for warning messages.</description>
+        </item>
+        <item>
+          <term>Error</term>
+          <description>Red foreground colour for error messages.</description>
+        </item>
+      </list>
+      <para>The logger will write a predefined string with the provided message. In the event that a warning or
+      error message is provided for example, the string will be prefixed with [wrn] or [err].</para>
+    </remarks>
+  </member>
+</members>

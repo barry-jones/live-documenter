@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 	/// <summary>
@@ -28,9 +29,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public About() {
 			InitializeComponent();
 
-			System.Reflection.Assembly current = System.Reflection.Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
 			this.assemblyName.Text = About.ProductName;
-			this.version.Text = "v " + About.ProductVersion;
+			this.version.Text = "v " + fvi.ProductVersion;
 		}
 
 		/// <summary>
