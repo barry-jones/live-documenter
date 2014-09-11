@@ -40,6 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\v2.0\v2\ExtensionMethods.cs">
+      <Link>v2\ExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\v3.0\v3\DynamicKeyword.cs">
+      <Link>v3\DynamicKeyword.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
