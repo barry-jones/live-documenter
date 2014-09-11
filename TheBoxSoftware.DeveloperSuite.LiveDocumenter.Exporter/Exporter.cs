@@ -142,9 +142,8 @@ namespace TheBoxSoftware.Exporter {
 								Logger.Log(this.FormatExceptionData(current), LogType.Warning);
 							}
 						}
-						else {
-							Logger.Verbose(string.Format("The export completed at {0}, taking {1} seconds.\n", end, end.Subtract(start).TotalSeconds.ToString()));
-						}
+						
+						Logger.Verbose(string.Format("The export completed at {0}, taking {1} seconds.\n", end, end.Subtract(start).TotalSeconds.ToString()));
 					}
 				}
 			}
@@ -178,10 +177,7 @@ namespace TheBoxSoftware.Exporter {
 		private string FormatExceptionData(Exception forException) {
 			StringBuilder sb = new StringBuilder();
 			if (forException != null) {
-				sb.AppendLine();
-				sb.AppendLine("----------------------------------------------------------");
 				sb.AppendLine(string.Format("Message: {0}", forException.Message));
-				sb.AppendLine();
 				if (forException is IExtendedException) {
 					sb.Append(((IExtendedException)forException).GetExtendedInformation());
 					sb.AppendLine();

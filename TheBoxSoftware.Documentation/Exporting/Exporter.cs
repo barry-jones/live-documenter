@@ -252,7 +252,16 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				if(System.IO.File.Exists(filename)) { 
 				    System.IO.File.Delete(filename);
 				}
-				// we will deal with it later
+				
+                // we will deal with it later
+                if(current != null)
+                {
+                    ExportException issue = new ExportException(
+                        string.Format("Failed to export member '{0}'.", current.Name),
+                        ex);
+                    ex = issue;
+                }
+
 				this.ExportExceptions.Add(ex);
 			}
 

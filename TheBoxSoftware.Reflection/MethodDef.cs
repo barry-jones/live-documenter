@@ -281,7 +281,7 @@ namespace TheBoxSoftware.Reflection {
 		/// <summary>
 		/// A reference to the return type for this method.
 		/// </summary>
-		public TypeRef ReturnType { get; set; }
+		//public TypeRef ReturnType { get; set; }
 
 		/// <summary>
 		/// The parameters for this method.

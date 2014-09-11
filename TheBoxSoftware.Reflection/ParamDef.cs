@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace TheBoxSoftware.Reflection{
 	using TheBoxSoftware.Reflection.Core.COFF;
@@ -9,6 +10,7 @@ namespace TheBoxSoftware.Reflection{
 	/// <summary>
 	/// Describes a parameter
 	/// </summary>
+    [DebuggerDisplay("{Name}")]
 	public class ParamDef : ReflectedMember {
 		private TypeRef typeRef;
 
