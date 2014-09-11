@@ -92,6 +92,12 @@ namespace TheBoxSoftware.Reflection {
 		/// <summary>
 		/// Extension methods associated with this type.
 		/// </summary>
+        /// <remarks>
+        /// Extension methods are defined on the TypeRef as this represents a reference which 
+        /// is used in this library. So in essance all types loaded will be recorded. TypeDef
+        /// derives for this type too, which means all assembly defined types will get this
+        /// functionality.
+        /// </remarks>
 		public List<MethodDef> ExtensionMethods { get; set; }
 		#endregion
 
