@@ -246,11 +246,13 @@ namespace TheBoxSoftware.Reflection {
 						CustomAttribute attribute = new CustomAttribute(ofType);
 						attributeTo.Attributes.Add(attribute);
 
+                        // try and add the extension method as an extension of the type it is extending. These
+                        // methods are already a part of the type they are declared in.
 						if (ofType.Type.Name == "ExtensionAttribute" && attributeTo is MethodDef) {
 							MethodDef extensionMethod = attributeTo as MethodDef;
 							if (extensionMethod != null) {
 								TypeRef type = extensionMethod.Parameters[0].GetTypeRef();
-								if (!(type is GenericTypeRef)) {
+								if (type != null && !(type is GenericTypeRef)) {
 									type.ExtensionMethods.Add(extensionMethod);
 								}
 							}

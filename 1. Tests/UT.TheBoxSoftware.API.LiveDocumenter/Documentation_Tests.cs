@@ -45,7 +45,7 @@ namespace UT.TheBoxSoftware.API.LiveDocumenter
             ContentEntry toFind = toc.GetDocumentationFor("T:DocumentationTest.AllOutputTypesClass");
 
             // test find
-            XmlDocument found = documentation.GetDocumentationFor(toFind.Key);
+            string found = documentation.GetDocumentationFor(toFind.Key);
 
             Assert.IsNotNull(found);
             Assert.AreEqual(toFind.Key.ToString(), this.getKey(found));
@@ -59,7 +59,7 @@ namespace UT.TheBoxSoftware.API.LiveDocumenter
             TableOfContents toc = documentation.GetTableOfContents();
 
             // test find
-            XmlDocument found = documentation.GetDocumentationFor(0);
+            string found = documentation.GetDocumentationFor(0);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace UT.TheBoxSoftware.API.LiveDocumenter
             TableOfContents toc = documentation.GetTableOfContents();
 
             // find a key to search for
-            XmlDocument found = documentation.GetDocumentationFor(cref);
+            string found = documentation.GetDocumentationFor(cref);
 
             // test find
 
@@ -88,7 +88,7 @@ namespace UT.TheBoxSoftware.API.LiveDocumenter
 
             documentation.Load();
 
-            XmlDocument found = documentation.GetDocumentationFor(cref);
+            string found = documentation.GetDocumentationFor(cref);
         }
 
         [Test]
@@ -101,21 +101,25 @@ namespace UT.TheBoxSoftware.API.LiveDocumenter
             ContentEntry toFind = toc.GetDocumentationFor("T:DocumentationTest.AllOutputTypesClass");
 
             // test find
-            XmlDocument found = documentation.GetDocumentationFor(toFind);
+            string found = documentation.GetDocumentationFor(toFind);
 
             Assert.IsNotNull(found);
             Assert.AreEqual(toFind.Key.ToString(), this.getKey(found));
         }
 
-        private string getSafeName(XmlDocument d)
+        private string getSafeName(string d)
         {
-            XmlNode node = d.SelectNodes("member/name")[0];
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(d);
+            XmlNode node = doc.SelectNodes("member/name")[0];
             return node.Attributes["safename"].Value;
         }
 
-        private string getKey(XmlDocument d)
+        private string getKey(string d)
         {
-            XmlNode node = d.SelectNodes("member")[0];
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(d);
+            XmlNode node = doc.SelectNodes("member")[0];
             return node.Attributes["id"].Value;
         }
     }

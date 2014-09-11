@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using TheBoxSoftware.API.LiveDocumentor;
+using TheBoxSoftware.API.LiveDocumenter;
 using System.Xml;
 
-namespace Test.API.LiveDocumentor.Controllers
+namespace Test.API.LiveDocumenter.Controllers
 {
     public class LibraryController : Controller
     {
@@ -14,9 +14,9 @@ namespace Test.API.LiveDocumentor.Controllers
         // GET: /Library/
 
         public ActionResult Index(long documentationFor) {
-            Documentation docs = LiveDocumentor.Models.Docs.Get();
-            XmlDocument document = docs.GetDocumentationFor(documentationFor);
-            return this.Content(document.InnerXml, "text/xml");
+            Documentation docs = LiveDocumenter.Models.Docs.Get();
+            string document = docs.GetDocumentationFor(documentationFor);
+            return this.Content(document, "text/xml");
         }
     }
 }
