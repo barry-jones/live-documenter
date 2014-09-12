@@ -1,0 +1,13 @@
+﻿<pages:Page x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.WelcomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pages="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages"
+    xmlns:el="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements">
+    <el:Header1>
+        <Run>Welcome, to the Live Documenter! </Run>
+    </el:Header1>
+    <Section x:Name="pRecentProjects">
+        <el:Header3><Run xml:lang="en-gb">Recent Projects</Run></el:Header3>
+        <el:UnorderedList x:Name="recentProjectList"></el:UnorderedList>
+    </Section>
+</pages:Page>

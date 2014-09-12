@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B8708C35-E94A-4819-9690-0C501E397B6D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheBoxSoftware.Exporter</RootNamespace>
+    <AssemblyName>Exporter</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Exporter.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\win.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Solution Items\ExporterVersionInfo.cs">
+      <Link>ExporterVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Exporter.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj">
+      <Project>{0B3F2A4C-8DDF-4DAB-B676-44C927921EFF}</Project>
+      <Name>TheBoxSoftware.Documentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
+      <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
+      <Name>TheBoxSoftware.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
+      <Project>{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}</Project>
+      <Name>TheBoxSoftware</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\documentation.msha">
+      <Link>ApplicationData\documentation.msha</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\helpviewer1-msdn.ldec">
+      <Link>ApplicationData\helpviewer1-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\htmlhelp1-msdn.ldec">
+      <Link>ApplicationData\htmlhelp1-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\htmlhelp2-msdn.ldec">
+      <Link>ApplicationData\htmlhelp2-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\web-msdn.ldec">
+      <Link>ApplicationData\web-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\xml.ldec">
+      <Link>ApplicationData\xml.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\win.ico">
+      <Link>win.ico</Link>
+    </Content>
+    <Content Include="Documentation\document.xml" />
+    <Content Include="Documentation\logger.xml" />
+    <Content Include="example-configuration.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

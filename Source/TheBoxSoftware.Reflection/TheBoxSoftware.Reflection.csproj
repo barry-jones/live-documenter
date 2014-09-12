@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B8749831-5746-4443-BEE9-9B01792C0D98}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheBoxSoftware.Reflection</RootNamespace>
+    <AssemblyName>TheBoxSoftware.Reflection</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>http://localhost/TheBoxSoftware.Reflection/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\TheBoxSoftware.Reflection.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;TEST</DefineConstants>
+    <DocumentationFile>bin\Debug\TheBoxSoftware.Reflection.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Solution Items\LibraryVersionInfo.cs">
+      <Link>LibraryVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="AssemblyDef.cs" />
+    <Compile Include="AssemblyRef.cs" />
+    <Compile Include="Comments\AttributeRequiredException.cs" />
+    <Compile Include="Comments\BoldXmlCodeElement.cs" />
+    <Compile Include="Comments\CodeXmlCodeElement.cs" />
+    <Compile Include="Comments\CRefConstants.cs" />
+    <Compile Include="Comments\CRefPath.cs" />
+    <Compile Include="Comments\CRefTypes.cs" />
+    <Compile Include="Comments\CXmlCodeElement.cs" />
+    <Compile Include="Comments\DescriptionXmlCodeElement.cs" />
+    <Compile Include="Comments\ErrorXmlCodeElement.cs" />
+    <Compile Include="Comments\ExampleXmlCodeElement.cs" />
+    <Compile Include="Comments\ExceptionXmlCodeElement.cs" />
+    <Compile Include="Comments\ItalicXmlCodeElement.cs" />
+    <Compile Include="Comments\ListHeaderXmlCodeElement.cs" />
+    <Compile Include="Comments\ListItemXmlCodeElement.cs" />
+    <Compile Include="Comments\ListTypes.cs" />
+    <Compile Include="Comments\ListXmlCodeElement.cs" />
+    <Compile Include="Comments\ParamRefXmlCodeElement.cs" />
+    <Compile Include="Comments\ParamXmlCodeElement.cs" />
+    <Compile Include="Comments\ParaXmlCodeElement.cs" />
+    <Compile Include="Comments\PermissionXmlCodeElement.cs" />
+    <Compile Include="Comments\RemarksXmlCodeElement.cs" />
+    <Compile Include="Comments\ReturnsXmlCodeElement.cs" />
+    <Compile Include="Comments\SeeAlsoXmlCodeElement.cs" />
+    <Compile Include="Comments\SeeXmlCodeElement.cs" />
+    <Compile Include="Comments\SummaryXmlCodeElement.cs" />
+    <Compile Include="Comments\TermXmlCodeElement.cs" />
+    <Compile Include="Comments\TextXmlCodeElement.cs" />
+    <Compile Include="Comments\TypeParamRefXmlCodeElement.cs" />
+    <Compile Include="Comments\TypeParamXmlCodeElement.cs" />
+    <Compile Include="Comments\ValueXmlCodeElement.cs" />
+    <Compile Include="Comments\XmlCodeComment.cs" />
+    <Compile Include="Comments\XmlCodeCommentFile.cs" />
+    <Compile Include="Comments\XmlCodeElement.cs" />
+    <Compile Include="Comments\XmlCodeElementCollection.cs" />
+    <Compile Include="Comments\XmlCodeElements.cs" />
+    <Compile Include="Comments\XmlCommentException.cs" />
+    <Compile Include="Comments\XmlContainerCodeElement.cs" />
+    <Compile Include="ConstantInfo.cs" />
+    <Compile Include="Core\COFF\AssemblyFlags.cs" />
+    <Compile Include="Core\COFF\AssemblyMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\AssemblyOSMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\AssemblyProcessorMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\AssemblyRefMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\AssemblyRefOSMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\AssemblyRefProcessorMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\BlobStream.cs" />
+    <Compile Include="Core\COFF\ClassLayoutMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\CLRDirectory.cs" />
+    <Compile Include="Core\COFF\CodedIndex.cs" />
+    <Compile Include="Core\COFF\CodedIndexes.cs" />
+    <Compile Include="Core\COFF\CodedIndexMap.cs" />
+    <Compile Include="Core\COFF\ConstantMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\Cor20Flags.cs" />
+    <Compile Include="Core\COFF\Cor20Header.cs" />
+    <Compile Include="Core\COFF\CustomAttributeMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\DeclSecurityMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\EventMapMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\EventMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\ExportedTypeMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\FieldAttributes.cs" />
+    <Compile Include="Core\COFF\FieldLayoutMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\FieldMarshalMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\FieldMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\FieldRVAMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\FileMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\GenericParamConstraintMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\GenericParamMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\GuidStream.cs" />
+    <Compile Include="Core\COFF\HeapOffsetSizes.cs" />
+    <Compile Include="Core\COFF\ImplMapMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\Index.cs" />
+    <Compile Include="Core\COFF\InterfaceImplMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\ManifestResourceMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\MemberRefMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\MetadataDirectory.cs" />
+    <Compile Include="Core\COFF\MetadataHeader.cs" />
+    <Compile Include="Core\COFF\MetadataRow.cs" />
+    <Compile Include="Core\COFF\MetadataStream.cs" />
+    <Compile Include="Core\COFF\MetadataStreamHeader.cs" />
+    <Compile Include="Core\COFF\MetadataTables.cs" />
+    <Compile Include="Core\COFF\MetadataTablesDictionary.cs" />
+    <Compile Include="Core\COFF\MethodAttributes.cs" />
+    <Compile Include="Core\COFF\MethodImplFlags.cs" />
+    <Compile Include="Core\COFF\MethodImplMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\MethodMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\MethodSemanticsAttributes.cs" />
+    <Compile Include="Core\COFF\MethodSemanticsMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\MethodSpecMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\ModuleMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\ModuleRefMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\NestedClassMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\ParamMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\PropertyMapMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\PropertyMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\StandAloneSigMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\Stream.cs" />
+    <Compile Include="Core\COFF\Streams.cs" />
+    <Compile Include="Core\COFF\StringStream.cs" />
+    <Compile Include="Core\COFF\TypeAttributes.cs" />
+    <Compile Include="Core\COFF\TypeDefMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\TypeRefMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\TypeSpecMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\USStream.cs" />
+    <Compile Include="Core\Directory.cs" />
+    <Compile Include="Core\FieldReader.cs" />
+    <Compile Include="Core\NotAManagedLibraryException.cs" />
+    <Compile Include="Core\Offset.cs" />
+    <Compile Include="Core\ParameterInfo.cs" />
+    <Compile Include="Core\PeCoffFile.cs" />
+    <Compile Include="Core\PE\DataDirectories.cs" />
+    <Compile Include="Core\PE\DataDirectory.cs" />
+    <Compile Include="Core\PE\FileCharacteristics.cs" />
+    <Compile Include="Core\PE\FileHeader.cs" />
+    <Compile Include="Core\PE\FileMagicNumbers.cs" />
+    <Compile Include="Core\PE\MachineTypes.cs" />
+    <Compile Include="Core\PE\PEHeader.cs" />
+    <Compile Include="Core\PE\SectionCharacteristics.cs" />
+    <Compile Include="Core\PE\SectionHeader.cs" />
+    <Compile Include="Core\Version.cs" />
+    <Compile Include="CustomAttribute.cs" />
+    <Compile Include="DisplayNameSignitureConvertor.cs" />
+    <Compile Include="EventDef.cs" />
+    <Compile Include="FieldDef.cs" />
+    <Compile Include="FlowControl.cs" />
+    <Compile Include="GenericTypeRef.cs" />
+    <Compile Include="ILInstruction.cs" />
+    <Compile Include="ILMetadataToken.cs" />
+    <Compile Include="MemberRef.cs" />
+    <Compile Include="MemberTypes.cs" />
+    <Compile Include="MetadataToDefinitionMap.cs" />
+    <Compile Include="MethodBody.cs" />
+    <Compile Include="MethodDef.cs" />
+    <Compile Include="ModuleDef.cs" />
+    <Compile Include="OpCode.cs" />
+    <Compile Include="OpCodes.cs" />
+    <Compile Include="OpCodesMap.cs" />
+    <Compile Include="OpCodeType.cs" />
+    <Compile Include="OperandType.cs" />
+    <Compile Include="ParamDef.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDef.cs" />
+    <Compile Include="ReflectedMember.cs" />
+    <Compile Include="ReflectionException.cs" />
+    <Compile Include="Resources\ExceptionMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Signitures\ArrayShapeSignitureToken.cs" />
+    <Compile Include="Signitures\CallingConventions.cs" />
+    <Compile Include="Signitures\CallingConventionSignitureToken.cs" />
+    <Compile Include="Signitures\ConstraintSignitureToken.cs" />
+    <Compile Include="Signitures\CountSignitureToken.cs" />
+    <Compile Include="Signitures\CustomAttributeSigniture.cs" />
+    <Compile Include="Signitures\CustomModifierToken.cs" />
+    <Compile Include="Signitures\ElementTypes.cs" />
+    <Compile Include="Signitures\ElementTypeSignitureToken.cs" />
+    <Compile Include="Signitures\FieldSigniture.cs" />
+    <Compile Include="Signitures\GenericArgumentCountSignitureToken.cs" />
+    <Compile Include="Signitures\GenericParamaterCountSignitureToken.cs" />
+    <Compile Include="Signitures\LocalVariableSigniture.cs" />
+    <Compile Include="Signitures\MethodDefSigniture.cs" />
+    <Compile Include="Signitures\MethodRefSigniture.cs" />
+    <Compile Include="Signitures\ParameterCountSignitureToken.cs" />
+    <Compile Include="Signitures\ParamSignitureToken.cs" />
+    <Compile Include="Signitures\PrologSignitureToken.cs" />
+    <Compile Include="Signitures\PropertySigniture.cs" />
+    <Compile Include="Signitures\ReturnTypeSignitureToken.cs" />
+    <Compile Include="Signitures\SentinalSignitureToken.cs" />
+    <Compile Include="Signitures\Signiture.cs" />
+    <Compile Include="Signitures\SignitureConvertor.cs" />
+    <Compile Include="Signitures\Signitures.cs" />
+    <Compile Include="Signitures\SignitureToken.cs" />
+    <Compile Include="Signitures\SignitureTokenContainer.cs" />
+    <Compile Include="Signitures\SignitureTokens.cs" />
+    <Compile Include="Signitures\TypeDetails.cs" />
+    <Compile Include="Signitures\TypeSignitureToken.cs" />
+    <Compile Include="Signitures\TypeSpecificationSigniture.cs" />
+    <Compile Include="StackBehaviour.cs" />
+    <Compile Include="Syntax\ClassSyntax.cs" />
+    <Compile Include="Syntax\ConstantSyntax.cs" />
+    <Compile Include="Syntax\ConstructorSyntax.cs" />
+    <Compile Include="Syntax\CSharp\CSharpClassFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpConstantFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpConstructorFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpDelegateFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpEnumerationFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpEventFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpFieldFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpIndexorFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpInterfaceFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpMethodFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpOperatorFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpPropertyFormatter.cs" />
+    <Compile Include="Syntax\CSharp\CSharpStructFormatter.cs" />
+    <Compile Include="Syntax\DelegateSyntax.cs" />
+    <Compile Include="Syntax\EnumSyntax.cs" />
+    <Compile Include="Syntax\EventSyntax.cs" />
+    <Compile Include="Syntax\FieldSyntax.cs" />
+    <Compile Include="Syntax\IClassFormatter.cs" />
+    <Compile Include="Syntax\IConstantFormatter.cs" />
+    <Compile Include="Syntax\IConstructorFormatter.cs" />
+    <Compile Include="Syntax\IDelegateFormatter.cs" />
+    <Compile Include="Syntax\IEnumerationFormatter.cs" />
+    <Compile Include="Syntax\IEventFormatter.cs" />
+    <Compile Include="Syntax\IFieldFormatter.cs" />
+    <Compile Include="Syntax\IFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Syntax\IIndexorFormatter.cs" />
+    <Compile Include="Syntax\IInterfaceFormatter.cs" />
+    <Compile Include="Syntax\IMethodFormatter.cs" />
+    <Compile Include="Syntax\IndexorSyntax.cs" />
+    <Compile Include="Syntax\Inheritance.cs" />
+    <Compile Include="Syntax\InterfaceSyntax.cs" />
+    <Compile Include="Syntax\IOperatorFormatter.cs" />
+    <Compile Include="Syntax\IPropertyFormatter.cs" />
+    <Compile Include="Syntax\IStructFormatter.cs" />
+    <Compile Include="Syntax\Languages.cs" />
+    <Compile Include="Syntax\MethodSyntax.cs" />
+    <Compile Include="Syntax\OperatorSyntax.cs" />
+    <Compile Include="Syntax\ParameterDetails.cs" />
+    <Compile Include="Syntax\ParameterSyntax.cs" />
+    <Compile Include="Syntax\PropertySyntax.cs" />
+    <Compile Include="Syntax\StructSyntax.cs" />
+    <Compile Include="Syntax\Syntax.cs" />
+    <Compile Include="Syntax\SyntaxFactory.cs" />
+    <Compile Include="Syntax\SyntaxToken.cs" />
+    <Compile Include="Syntax\SyntaxTokenCollection.cs" />
+    <Compile Include="Syntax\SyntaxTokens.cs" />
+    <Compile Include="Syntax\VisualBasic\VBClassFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBConstantFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBConstructorFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBDelegateFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBEnumerationFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBEventFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBFieldFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBIndexorFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBInterfaceFormatter.cs" />
+    <Compile Include="Visibility.cs" />
+    <Compile Include="Syntax\VisualBasic\VBMethodFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBOperatorFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBPropertyFormatter.cs" />
+    <Compile Include="Syntax\VisualBasic\VBStructFormatter.cs" />
+    <Compile Include="TypeDef.cs" />
+    <Compile Include="TypeInNamespaceMap.cs" />
+    <Compile Include="TypeRef.cs" />
+    <Compile Include="TypeSpec.cs" />
+    <Compile Include="WellKnownTypeDef.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ExceptionMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
+      <Project>{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}</Project>
+      <Name>TheBoxSoftware</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
