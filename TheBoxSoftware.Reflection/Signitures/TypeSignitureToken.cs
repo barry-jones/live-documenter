@@ -7,6 +7,7 @@ using TheBoxSoftware.Reflection.Core;
 
 namespace TheBoxSoftware.Reflection.Signitures
 {
+	
 	/// <summary>
 	/// <para>Represents an element of a signiture that can be used to resolve back to a type,
 	/// however the type it resolves back to can be one of many things; see ECMA 335
@@ -21,8 +22,11 @@ namespace TheBoxSoftware.Reflection.Signitures
 	[DebuggerDisplay("Type: {ElementType}, ")]
 	internal sealed class TypeSignitureToken : SignitureTokenContainer 
     {
+        // note: We are passing a whole reference around here (file) for one ElementTypeSigniture token...
+
 		/// <summary>
-		/// Initialises a new TypeSignitureToken class.
+		/// Initialises a new TypeSigniture from the <paramref name="signiture"/> starting at the
+        /// specified <paramref name="offset"/>.
 		/// </summary>
 		/// <param name="signiture">The signiture to parse the type from.</param>
 		/// <param name="offset">The offset to start reading from.</param>
@@ -58,7 +62,6 @@ namespace TheBoxSoftware.Reflection.Signitures
 				case ElementTypes.GenericInstance:
 					ElementTypeSignitureToken genericType = new ElementTypeSignitureToken(file, signiture, offset);
 					this.Tokens.Add(genericType);
-
 					GenericArgumentCountSignitureToken argCount = new GenericArgumentCountSignitureToken(signiture, offset);
 					this.Tokens.Add(argCount);
 					for (int i = 0; i < argCount.Count; i++) 
@@ -354,6 +357,22 @@ namespace TheBoxSoftware.Reflection.Signitures
 			}
 			return type;
 		}
+
+        /// <summary>
+        /// Produces a string representation of the Type token.
+        /// </summary>
+        /// <returns>A string.</returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("[Type: ");
+            foreach (SignitureToken current in this.Tokens)
+                sb.Append(current.ToString());
+            sb.Append("] ");
+
+            return sb.ToString();
+        }
 
         /// <summary>
         /// The ElementType details for this TypeSignitureToken

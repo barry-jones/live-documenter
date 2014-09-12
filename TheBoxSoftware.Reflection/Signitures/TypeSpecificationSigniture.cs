@@ -56,9 +56,8 @@ namespace TheBoxSoftware.Reflection.Signitures
                     case SignitureTokens.Count:
                     case SignitureTokens.CustomModifier:
                     case SignitureTokens.GenericParameterCount:
-                        sb.Append(token.ToString()); 
-                        break;
-
+                    case SignitureTokens.Type:
+                    case SignitureTokens.TypeDefOrRefEncodedToken:
                     case SignitureTokens.Field:
                     case SignitureTokens.LocalSigniture:
                     case SignitureTokens.Param:
@@ -66,11 +65,9 @@ namespace TheBoxSoftware.Reflection.Signitures
                     case SignitureTokens.Prolog:
                     case SignitureTokens.Property:
                     case SignitureTokens.ReturnType:
-                    case SignitureTokens.Sentinal:
-                    case SignitureTokens.Type:
-                    case SignitureTokens.TypeDefOrRefEncodedToken:
+                    case SignitureTokens.Sentinal:                    
                     default:
-                        sb.AppendFormat("[{0}] ", token.ToString());
+                        sb.Append(token.ToString()); 
                         break;
                 }
             }
