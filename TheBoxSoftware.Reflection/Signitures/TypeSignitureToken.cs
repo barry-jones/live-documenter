@@ -126,7 +126,7 @@ namespace TheBoxSoftware.Reflection.Signitures {
 				}
 				details.IsPointer = true;
 			}
-			else if (this.ElementType.ElementType == ElementTypes.Array
+			else if (this.ElementType.ElementType == ElementTypes.Array)
             {
 				if (this.Tokens[1].TokenType == SignitureTokens.Type) 
                 {
