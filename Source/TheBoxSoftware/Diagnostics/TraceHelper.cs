@@ -144,13 +144,16 @@ namespace TheBoxSoftware.Diagnostics {
 
         public static void WriteLine(TraceEventType eventType, string message)
         {
-            if (eventType == TraceEventType.Information)
+            if (ts != null)
             {
-                ts.TraceInformation(message);
-            }
-            else
-            {
-                ts.TraceEvent(eventType, 0, message);
+                if (eventType == TraceEventType.Information)
+                {
+                    ts.TraceInformation(message);
+                }
+                else
+                {
+                    ts.TraceEvent(eventType, 0, message);
+                }
             }
         }
     }

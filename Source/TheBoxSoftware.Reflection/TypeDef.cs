@@ -52,9 +52,22 @@ namespace TheBoxSoftware.Reflection {
                         // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
                         if (token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignitureToken)token).ElementType == ElementTypes.GenericInstance)
                         {
-                            SignitureToken typeToken = spec.Signiture.Type.Tokens[1];
+                            ElementTypeSignitureToken typeToken = spec.Signiture.Type.Tokens[1] as ElementTypeSignitureToken;
 
-                            TypeRef typeRef = ((ElementTypeSignitureToken)typeToken).ResolveToken(this.Assembly);
+                            /* todo: come back to this at some point (try and get to a coded index from the signiture so we dont have to call resolve.
+                            CodedIndex.Details d = new CodedIndex.Details();
+                            byte code;
+                            uint index;
+
+                            d.GetCodedIndex((uint)typeToken.Token, out code, out index);
+
+                            if (((MetadataTables)code) == ciForThisType.Table && index == ciForThisType.Index.Value)
+                            {
+                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i));
+                            }
+                             * */
+
+                            TypeRef typeRef = typeToken.ResolveToken(this.Assembly);
                             if (typeRef == this)
                             {
                                 ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i));
