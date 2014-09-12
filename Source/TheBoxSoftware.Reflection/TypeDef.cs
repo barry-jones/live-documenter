@@ -5,6 +5,7 @@ using System.Text;
 
 namespace TheBoxSoftware.Reflection {
 	using TheBoxSoftware.Reflection.Core.COFF;
+    using TheBoxSoftware.Reflection.Signitures;
 
 	/// <summary>
 	/// Contains the information regarding the construction and elements
@@ -17,238 +18,65 @@ namespace TheBoxSoftware.Reflection {
 		private MetadataTables table;
 		private int index;
 
-		#region Properties
-		/// <summary>
-		/// The methods this type contains
-		/// </summary>
-		public List<MethodDef> Methods { get; set; }
-		
-		/// <summary>
-		/// The fields this type contains
-		/// </summary>
-		public List<FieldDef> Fields { get; set; }
-
-		/// <summary>
-		/// The events this type contains.
-		/// </summary>
-		public List<EventDef> Events { get; set; }
-
-		/// <summary>
-		/// The properties this type contains.
-		/// </summary>
-		public List<PropertyDef> Properties { get; set; }
-
-		/// <summary>
-		/// Returns a reference to the TypeDef or Ref which this type
-		/// inherits from.
-		/// </summary>
-		public TypeRef InheritsFrom {
-			get {
-				try {
-					MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
-					MetadataToDefinitionMap map = this.Assembly.File.Map;
-					TypeRef inheritsFrom = null;
-
-					if (this.extends.Index != 0) {
-						inheritsFrom = map.GetDefinition(this.extends.Table,
-							stream.Tables.GetEntryFor(this.extends.Table, this.extends.Index)) as TypeRef;
-						// We have to handle type spec based classes, as if they use the parent generic types
-						// we need the type to have a reference to its container.
-						if (inheritsFrom is TypeSpec) {
-							((TypeSpec)inheritsFrom).ImplementingType = this;
-						}
-					}
-
-					return inheritsFrom;
-				}
-				catch (Exception ex) {
-					throw new ReflectionException(this, "Error caused determining the parent type.", ex);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Collection of all the generic types that are relevant for this member, this
-		/// includes the types defined in parent and containing classes.
-		/// </summary>
-		/// <seealso cref="GetGenericTypes"/>
-		public List<GenericTypeRef> GenericTypes { get; set; }
-
-		/// <summary>
-		/// Indicates if this class is an Interface.
-		/// </summary>
-		public bool IsInterface { get; set; }
-
-		/// <summary>
-		/// Indicates if this class is an enumeration.
-		/// </summary>
-		public bool IsEnumeration {
-			get { return this.InheritsFrom != null && this.InheritsFrom.GetFullyQualifiedName() == "System.Enum"; }
-		}
-
-		/// <summary>
-		/// Indicates if this class is a delegate
-		/// </summary>
-		public bool IsDelegate {
-			get {
-				TypeRef parent = this.InheritsFrom;
-				if (parent != null) {
-					return (parent.Name == "MulticastDelegate" || (parent.Name == "Delegate" && this.Name != "MulticastDelegate"));
-				}
-				else return false;
-			}
-		}
-
-		/// <summary>
-		/// Flags defining extra information about the type.
-		/// </summary>
-		public TypeAttributes Flags { get; set; }
-
-		/// <summary>
-		/// Indicates if this type has any members defined
-		/// </summary>
-		public bool HasMembers {
-			get {
-				return this.Methods.Count > 0 ||
-					this.Fields.Count > 0;
-			}
-		}
-
-		/// <summary>
-		/// Returns the namespace for the current class. This is obtained from the
-		/// Types metadata.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// When the class <see cref="IsNested"/> the namespace returned is the namespace
-		/// of the enclosing type. Where the class is nested multiple times each nested class
-		/// is checked until one its containers defines a namespace and that is returned.
-		/// </para>
-		/// </remarks>
-		public override string Namespace {
-			get {
-				if (this.IsNested) {
-					StringBuilder sb = new StringBuilder();
-					sb.Append(this.ContainingClass.Namespace);
-
-					List<string> containingClassNames = new List<string>();
-					TypeDef currentType = this;
-					if (currentType.IsNested) {
-						currentType = currentType.ContainingClass;
-						containingClassNames.Add(currentType.GetDisplayName(false));
-					}
-
-					for (int i = containingClassNames.Count - 1; i >= 0; i--) {
-						sb.Append(".");
-						sb.Append(containingClassNames[i]);
-					}
-
-					return sb.ToString();
-				}
-				return base.Namespace;
-			}
-			set {
-				base.Namespace = value;
-			}
-		}
-
-		/// <summary>
-		/// Indicates if this class is a nested class, if so the <see cref="ContainingClass"/> property
-		/// details its container.
-		/// </summary>
-		public bool IsNested {
-			get { return this.ContainingClass != null; }
-		}
-
-		/// <summary>
-		/// Indicates if this TypeDef is a structure
-		/// </summary>
-		public bool IsStructure {
-			get { return this.InheritsFrom != null && this.InheritsFrom.GetFullyQualifiedName() == "System.ValueType"; }
-		}
-
-		/// <summary>
-		/// When this class is a nested class this property will contain the class which
-		/// owns this class.
-		/// </summary>
-		public TypeDef ContainingClass { get; set; }
-
-		/// <summary>
-		/// Collection of <see cref="TypeRef"/> instances defining the interfaces this class implements.
-		/// </summary>
-		public List<TypeRef> Implements { get; set; }
-
-		/// <summary>
-		/// Returns the <see cref="Visibility"/> of the TypeDef.
-		/// </summary>
-		public override Visibility MemberAccess {
-			get {
-				switch (this.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.VisibilityMask) {
-					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPublic:
-					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Public:
-						return Visibility.Public;
-					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NotPublic:
-						return Visibility.Internal;
-					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamAndAssem:
-						return Visibility.Internal;
-					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamily:
-						return Visibility.Protected;
-					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPrivate:
-						return Visibility.Private;
-					case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamOrAssem:
-						return Visibility.InternalProtected;
-					default:
-						return Visibility.Internal;
-				};
-			}
-		}
-
-		/// <summary>
-		/// Indicates if this type is compiler generated.
-		/// </summary>
-		public bool IsCompilerGenerated {
-			get {
-				// a type is generated if it is a child of generated type.
-				bool parentGenerated = this.ContainingClass != null ? this.ContainingClass.IsCompilerGenerated : false;
-				return parentGenerated || 
-					this.Namespace == "XamlGeneratedNamespace" ||
-					this.Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
-			}
-		}
-		#endregion
-
 		#region Methods
 		/// <summary>
 		/// Obtains all of the <see cref="TypeRef"/>s that extend this TypeDef.
 		/// </summary>
 		/// <returns>A collection of derived types.</returns>
-		public List<TypeRef> GetExtendingTypes() {
+		public List<TypeRef> GetExtendingTypes() 
+        {
 			MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
 			MetadataToDefinitionMap map = this.Assembly.File.Map;
 			CodedIndex ciForThisType = new CodedIndex(this.table, (uint)this.index);
 			List<TypeRef> inheritingTypes = new List<TypeRef>();
+            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata signitures
 
-			// if our type is generic all children will point to an entry in the typespec table,
-			// we need to find out reference in the typespec table and search for that in typedef.extends.
-			if (this.IsGeneric) {
+            ourIndexes.Add(ciForThisType);
+
+			// All types in this assembly that extend another use the TypeDef.Extends data in the metadata
+            // table.
+			if (this.IsGeneric) 
+            {
 				MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
-				for (int i = 0; i < typeSpecs.Length; i++) {
+				for (int i = 0; i < typeSpecs.Length; i++)
+                {
 					TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
-					if (row != null) {
+					if (row != null)
+                    {
+                        // We need to find all of the TypeSpec references that point back to us, remember
+                        // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
+                        // for example. Each one of these will be a different type spec.
 						TypeSpec spec = (TypeSpec)this.Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row);
-						if (spec.TypeDetails != null) {
-							ciForThisType = new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1);
-							break;
-						}
+                        SignitureToken token = spec.Signiture.Type.Tokens[0];
+
+                        // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
+                        if (token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignitureToken)token).ElementType == ElementTypes.GenericInstance)
+                        {
+                            SignitureToken typeToken = spec.Signiture.Type.Tokens[1];
+
+                            TypeRef typeRef = ((ElementTypeSignitureToken)typeToken).ResolveToken(this.Assembly);
+                            if (typeRef == this)
+                            {
+                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i));
+                            }
+                        }
 					}
 				}
 			}
 
 			MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
-			for (int i = 0; i < typeDefs.Length; i++) {
-				if (((TypeDefMetadataTableRow)typeDefs[i]).Extends == ciForThisType) {
-					inheritingTypes.Add((TypeDef)map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i]));
-				}
+			for (int i = 0; i < typeDefs.Length; i++) 
+            {
+                for (int j = 0; j < ourIndexes.Count; j++)
+                {
+                    CodedIndex ourCi = ourIndexes[j];
+                    if (((TypeDefMetadataTableRow)typeDefs[i]).Extends == ourCi)
+                    {
+                        inheritingTypes.Add(
+                            (TypeDef)map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i])
+                            );
+                    }
+                }
 			}
 
 			return inheritingTypes;
@@ -617,6 +445,231 @@ namespace TheBoxSoftware.Reflection {
 			}
 		}
 		#endregion
+
+        #region Properties
+        /// <summary>
+        /// The methods this type contains
+        /// </summary>
+        public List<MethodDef> Methods { get; set; }
+
+        /// <summary>
+        /// The fields this type contains
+        /// </summary>
+        public List<FieldDef> Fields { get; set; }
+
+        /// <summary>
+        /// The events this type contains.
+        /// </summary>
+        public List<EventDef> Events { get; set; }
+
+        /// <summary>
+        /// The properties this type contains.
+        /// </summary>
+        public List<PropertyDef> Properties { get; set; }
+
+        /// <summary>
+        /// Returns a reference to the TypeDef or Ref which this type
+        /// inherits from.
+        /// </summary>
+        public TypeRef InheritsFrom
+        {
+            get
+            {
+                try
+                {
+                    MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
+                    MetadataToDefinitionMap map = this.Assembly.File.Map;
+                    TypeRef inheritsFrom = null;
+
+                    if (this.extends.Index != 0)
+                    {
+                        inheritsFrom = map.GetDefinition(this.extends.Table,
+                            stream.Tables.GetEntryFor(this.extends.Table, this.extends.Index)) as TypeRef;
+                        // We have to handle type spec based classes, as if they use the parent generic types
+                        // we need the type to have a reference to its container.
+                        if (inheritsFrom is TypeSpec)
+                        {
+                            ((TypeSpec)inheritsFrom).ImplementingType = this;
+                        }
+                    }
+
+                    return inheritsFrom;
+                }
+                catch (Exception ex)
+                {
+                    throw new ReflectionException(this, "Error caused determining the parent type.", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Collection of all the generic types that are relevant for this member, this
+        /// includes the types defined in parent and containing classes.
+        /// </summary>
+        /// <seealso cref="GetGenericTypes"/>
+        public List<GenericTypeRef> GenericTypes { get; set; }
+
+        /// <summary>
+        /// Indicates if this class is an Interface.
+        /// </summary>
+        public bool IsInterface { get; set; }
+
+        /// <summary>
+        /// Indicates if this class is an enumeration.
+        /// </summary>
+        public bool IsEnumeration
+        {
+            get { return this.InheritsFrom != null && this.InheritsFrom.GetFullyQualifiedName() == "System.Enum"; }
+        }
+
+        /// <summary>
+        /// Indicates if this class is a delegate
+        /// </summary>
+        public bool IsDelegate
+        {
+            get
+            {
+                TypeRef parent = this.InheritsFrom;
+                if (parent != null)
+                {
+                    return (parent.Name == "MulticastDelegate" || (parent.Name == "Delegate" && this.Name != "MulticastDelegate"));
+                }
+                else return false;
+            }
+        }
+
+        /// <summary>
+        /// Flags defining extra information about the type.
+        /// </summary>
+        public TypeAttributes Flags { get; set; }
+
+        /// <summary>
+        /// Indicates if this type has any members defined
+        /// </summary>
+        public bool HasMembers
+        {
+            get
+            {
+                return this.Methods.Count > 0 ||
+                    this.Fields.Count > 0;
+            }
+        }
+
+        /// <summary>
+        /// Returns the namespace for the current class. This is obtained from the
+        /// Types metadata.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// When the class <see cref="IsNested"/> the namespace returned is the namespace
+        /// of the enclosing type. Where the class is nested multiple times each nested class
+        /// is checked until one its containers defines a namespace and that is returned.
+        /// </para>
+        /// </remarks>
+        public override string Namespace
+        {
+            get
+            {
+                if (this.IsNested)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(this.ContainingClass.Namespace);
+
+                    List<string> containingClassNames = new List<string>();
+                    TypeDef currentType = this;
+                    if (currentType.IsNested)
+                    {
+                        currentType = currentType.ContainingClass;
+                        containingClassNames.Add(currentType.GetDisplayName(false));
+                    }
+
+                    for (int i = containingClassNames.Count - 1; i >= 0; i--)
+                    {
+                        sb.Append(".");
+                        sb.Append(containingClassNames[i]);
+                    }
+
+                    return sb.ToString();
+                }
+                return base.Namespace;
+            }
+            set
+            {
+                base.Namespace = value;
+            }
+        }
+
+        /// <summary>
+        /// Indicates if this class is a nested class, if so the <see cref="ContainingClass"/> property
+        /// details its container.
+        /// </summary>
+        public bool IsNested
+        {
+            get { return this.ContainingClass != null; }
+        }
+
+        /// <summary>
+        /// Indicates if this TypeDef is a structure
+        /// </summary>
+        public bool IsStructure
+        {
+            get { return this.InheritsFrom != null && this.InheritsFrom.GetFullyQualifiedName() == "System.ValueType"; }
+        }
+
+        /// <summary>
+        /// When this class is a nested class this property will contain the class which
+        /// owns this class.
+        /// </summary>
+        public TypeDef ContainingClass { get; set; }
+
+        /// <summary>
+        /// Collection of <see cref="TypeRef"/> instances defining the interfaces this class implements.
+        /// </summary>
+        public List<TypeRef> Implements { get; set; }
+
+        /// <summary>
+        /// Returns the <see cref="Visibility"/> of the TypeDef.
+        /// </summary>
+        public override Visibility MemberAccess
+        {
+            get
+            {
+                switch (this.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.VisibilityMask)
+                {
+                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPublic:
+                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Public:
+                        return Visibility.Public;
+                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NotPublic:
+                        return Visibility.Internal;
+                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamAndAssem:
+                        return Visibility.Internal;
+                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamily:
+                        return Visibility.Protected;
+                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPrivate:
+                        return Visibility.Private;
+                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamOrAssem:
+                        return Visibility.InternalProtected;
+                    default:
+                        return Visibility.Internal;
+                };
+            }
+        }
+
+        /// <summary>
+        /// Indicates if this type is compiler generated.
+        /// </summary>
+        public bool IsCompilerGenerated
+        {
+            get
+            {
+                // a type is generated if it is a child of generated type.
+                bool parentGenerated = this.ContainingClass != null ? this.ContainingClass.IsCompilerGenerated : false;
+                return parentGenerated ||
+                    this.Namespace == "XamlGeneratedNamespace" ||
+                    this.Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
+            }
+        }
+        #endregion
 
 		#region Internals
 		/// <summary>

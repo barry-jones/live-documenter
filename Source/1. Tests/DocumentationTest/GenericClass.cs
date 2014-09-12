@@ -81,4 +81,25 @@ namespace DocumentationTest {
 	/// <seealso cref="GenericClass{T}" />
 	public class InheritedGenericClass : GenericClass<string> {
 	}
+
+    /// <summary>
+    /// Summary Test 2
+    /// </summary>
+    public class InheritedGenericClassTest2 : GenericClass<int>
+    {
+    }
+
+    /// <summary>
+    /// Summary Test 3
+    /// </summary>
+    public class InheritedGenericClassTest3 : GenericClass<List<int>>
+    {
+    }
+
+    /// <summary>
+    /// Test summary Test 4.
+    /// </summary>
+    public class InheritedGenericClassTest4 : GenericClass<List<GenericClass<string>>>
+    {
+    }
 }

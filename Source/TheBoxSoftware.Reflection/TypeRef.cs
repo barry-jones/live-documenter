@@ -28,6 +28,7 @@ namespace TheBoxSoftware.Reflection {
 		/// <returns>A reference to a TypeRef that represents the metadata row.</returns>
 		internal static TypeRef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, TypeRefMetadataTableRow row) {
 		    TypeRef typeRef = new TypeRef();
+
 			typeRef.UniqueId = assembly.GetUniqueId();
 		    typeRef.Name = assembly.StringStream.GetString(row.Name.Value);
 		    typeRef.Namespace = assembly.StringStream.GetString(row.Namespace.Value);
