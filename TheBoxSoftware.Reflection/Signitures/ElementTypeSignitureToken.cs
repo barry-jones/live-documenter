@@ -22,7 +22,13 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// </summary>
 	/// <seealso cref="TypeSignitureToken"/>
 	[DebuggerDisplay("ElementType: {ElementType}, {Token}")]
-	internal sealed class ElementTypeSignitureToken : SignitureToken {
+	internal sealed class ElementTypeSignitureToken : SignitureToken 
+    {
+        // 12 bytes
+        private Int32 token;
+        private object definition;
+        private ElementTypes elementType;
+
 		/// <summary>
 		/// Instantiates a new instance of the ElementTypeSignitureToken class.
 		/// </summary>
@@ -38,19 +44,22 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// </para>
 		/// </remarks>
 		public ElementTypeSignitureToken(PeCoffFile file, byte[] signiture, Offset offset)
-			: base(SignitureTokens.ElementType) {
+			: base(SignitureTokens.ElementType) 
+        {
 
 			MetadataToDefinitionMap map = file.Map;
 			this.ElementType = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
 			int typeMask;
 			int token;
 
-			switch (this.ElementType) {
+			switch (this.ElementType) 
+            {
 				case ElementTypes.Class:
 					// Read the typedef, typeref or typespec token
 					typeMask = 0x00000003;
 					token = SignitureToken.GetCompressedValue(signiture, offset);
-					switch (typeMask & token) {
+					switch (typeMask & token) 
+                    {
 						case 0: // TypeDef
 							this.Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
 							break;
@@ -67,7 +76,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 					// Read the typedef, typeref or typespec token
 					typeMask = 0x00000003;
 					token = SignitureToken.GetCompressedValue(signiture, offset);
-					switch (typeMask & token) {
+					switch (typeMask & token) 
+                    {
 						case 0: // TypeDef
 							this.Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
 							break;
@@ -104,37 +114,73 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			}
 		}
 
-		#region Methods
-		public static bool IsToken(byte[] signiture, int offset, ElementTypes allowed) {
+        /// <summary>
+        /// Checks if the token a the <paramref name="offset"/> in the <paramref name="signiture"/>
+        /// is one of the <paramref name="allowed"/> element types.
+        /// </summary>
+        /// <param name="signiture">The signiture blob.</param>
+        /// <param name="offset">The offset in the signiture.</param>
+        /// <param name="allowed">The allowed element type flags.</param>
+        /// <returns>True of false</returns>
+		public static bool IsToken(byte[] signiture, int offset, ElementTypes allowed) 
+        {
 			ElementTypes value = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
 			return value == allowed;
 		}
 
-		internal TypeRef ResolveToken(AssemblyDef assembly) {
-			if (this.Definition != null) {
+        /// <summary>
+        /// Resolves a token (Defintion) in the provided <paramref name="assembly"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly reference to resolve the token with.</param>
+        /// <returns>The resolved type reference.</returns>
+		internal TypeRef ResolveToken(AssemblyDef assembly) 
+        {
+			if (this.Definition != null) 
+            {
 				return (TypeRef)this.Definition;
 			}
-			else {
+			else 
+            {
 				return (TypeRef)assembly.ResolveMetadataToken(this.Token);
 			}
 		}
-		#endregion
+
+        /// <summary>
+        /// Produces a string representation of the element type token.
+        /// </summary>
+        /// <returns>A string</returns>
+        public override string ToString()
+        {
+            return string.Format("[ElementType: {0}] ", this.token);
+        }
 
 		/// <summary>
 		/// The token parameter to this element type, this is not always relevant
 		/// so can be zero.
 		/// </summary>
-		public Int32 Token { get; private set; }
+		public Int32 Token
+        {
+            get { return this.token; }
+            private set { this.token = value; }
+        }
 
 		/// <summary>
 		/// The definition of the specified element. This is populated when the element
 		/// is a well known system type. Token will be 0;
 		/// </summary>
-		public object Definition { get; set; }
+		public object Definition
+        {
+            get { return this.definition; }
+            set { this.definition = value; }
+        }
 
 		/// <summary>
 		/// The enumerated value indicating which type of element is contained in this token.
 		/// </summary>
-		public ElementTypes ElementType { get; private set; }
+		public ElementTypes ElementType 
+        {
+            get { return this.elementType; }
+            private set { this.elementType = value; }
+        }
 	}
 }

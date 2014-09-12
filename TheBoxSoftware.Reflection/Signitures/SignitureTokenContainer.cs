@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
-namespace TheBoxSoftware.Reflection.Signitures {
+namespace TheBoxSoftware.Reflection.Signitures 
+{
 	/// <summary>
 	/// Represents a container for one or more SignitureToken instances. This is
 	/// a constuct that allows groups of tokens that are always parsed together to
 	/// be represented and contained via a single class.
 	/// </summary>
-	internal abstract class SignitureTokenContainer : SignitureToken {
+	internal abstract class SignitureTokenContainer : SignitureToken 
+    {
 		private List<SignitureToken> childTokens = new List<SignitureToken>();
 		
 		/// <summary>
@@ -17,10 +20,12 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// </summary>
 		/// <param name="tokenType">The type of signiture token represented.</param>
 		protected SignitureTokenContainer(SignitureTokens tokenType)
-			: base(tokenType) {
+			: base(tokenType) 
+        {
 		}
 
-		public List<SignitureToken> Tokens {
+		public List<SignitureToken> Tokens 
+        {
 			get { return this.childTokens; }
 			set { this.childTokens = value; }
 		}

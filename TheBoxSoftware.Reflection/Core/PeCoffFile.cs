@@ -12,14 +12,24 @@ namespace TheBoxSoftware.Reflection.Core {
 	/// </summary>
 	/// <seealso cref="TheBoxSoftware.Reflection.AssemblyDef" />
 	public sealed class PeCoffFile {
+        // 40 bytes
 		private const int PeSignitureOffsetLocation = 0x3c;
 		private string filePath;
+        private string fileName;
+        private FileHeader fileHeader;
+        private PEHeader peHeader;
+        private List<SectionHeader> sectionHeaders;
+        private Dictionary<DataDirectories, Directory> directories;
+        private byte[] fileContents;
+        private bool isMetadataLoaded;
+        private MetadataToDefinitionMap map;
 
 		/// <summary>
 		/// Initialises a new instance of the PeCoffFile
 		/// </summary>
 		/// <param name="filePath">The physical location of the file</param>
-		public PeCoffFile(string filePath) {
+		public PeCoffFile(string filePath) 
+        {
 			TraceHelper.WriteLine("loading pecoff file ({0})", filePath);
 			TraceHelper.Indent();
 			this.FileName = filePath;
@@ -32,14 +42,14 @@ namespace TheBoxSoftware.Reflection.Core {
 			TraceHelper.Unindent();
 		}
 
-		#region Methods
 		/// <summary>
 		/// Reads the contents of the PeCoff file in to our custom data structures
 		/// </summary>
 		/// <exception Cref="NotAManagedLibraryException">
 		/// Thrown when a file which is not a managed PE file is loaded.
 		/// </exception>
-		private void ReadFileContents() {
+		private void ReadFileContents() 
+        {
 			List<byte> contents = new List<byte>(File.ReadAllBytes(filePath));
 			byte[] contentsAsArray = contents.ToArray();
 			this.FileContents = contentsAsArray;
@@ -65,9 +75,9 @@ namespace TheBoxSoftware.Reflection.Core {
 		/// <summary>
 		/// Reads the headers for all of the defined sections in the file
 		/// </summary>
-		/// <param name="fileContents">The contents of the file</param>
 		/// <param name="offset">The offset to the section headers</param>
-		private void ReadSectionHeaders(Offset offset) {
+		private void ReadSectionHeaders(Offset offset) 
+        {
 			this.SectionHeaders = new List<SectionHeader>();
 			for (int i = 0; i < this.FileHeader.NumberOfSections; i++) {
 				this.SectionHeaders.Add(new SectionHeader(this.FileContents, offset));
@@ -77,8 +87,8 @@ namespace TheBoxSoftware.Reflection.Core {
 		/// <summary>
 		/// Reads the contents of the directories specified in the file header
 		/// </summary>
-		/// <param name="fileContents">The contents of the file</param>
-		private void ReadDirectories() {
+		private void ReadDirectories() 
+        {
 			this.Directories = new Dictionary<DataDirectories, Directory>();
 			foreach (KeyValuePair<DataDirectories, DataDirectory> current in this.PeHeader.DataDirectories) {
 				DataDirectory directory = current.Value;
@@ -97,7 +107,8 @@ namespace TheBoxSoftware.Reflection.Core {
 		/// </summary>
 		/// <param name="rva">The RVA to convert</param>
 		/// <returns>The file offset address</returns>
-		internal int FileAddressFromRVA(int rva) {
+		internal int FileAddressFromRVA(int rva) 
+        {
 			int virtualOffset = 0;
 			int rawOffset = 0;
 			int max = -1;
@@ -124,54 +135,84 @@ namespace TheBoxSoftware.Reflection.Core {
 		/// Helper method to obtain the .NET metadata directory
 		/// </summary>
 		/// <returns>The .NET metadata directory</returns>
-		public COFF.MetadataDirectory GetMetadataDirectory() {
+		public COFF.MetadataDirectory GetMetadataDirectory() 
+        {
 			return ((COFF.CLRDirectory)this.Directories[
 				DataDirectories.CommonLanguageRuntimeHeader
 				]).Metadata;
 		}
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// The full path and filename for the disk location of this PE/COFF file.
 		/// </summary>
-		public string FileName { get; set; }
+		public string FileName 
+        {
+            get { return this.fileName; }
+            private set { this.fileName = value; }
+        }
 
 		/// <summary>
 		/// This files header details.
 		/// </summary>
-		public FileHeader FileHeader { get; set; }
+		public FileHeader FileHeader
+        {
+            get { return this.fileHeader; }
+            private set { this.fileHeader = value; }
+        }
 
 		/// <summary>
 		/// The PE Header.
 		/// </summary>
-		public PEHeader PeHeader { get; set; }
+		public PEHeader PeHeader
+        {
+            get { return this.peHeader; }
+            private set { this.peHeader = value; }
+        }
 
 		/// <summary>
 		/// The headers for all the sections defined in the file
 		/// </summary>
-		public List<SectionHeader> SectionHeaders { get; set; }
+		public List<SectionHeader> SectionHeaders
+        {
+            get { return this.sectionHeaders; }
+            private set { this.sectionHeaders = value; }
+        }
 
 		/// <summary>
 		/// All of the directories for the PE/COFF file.
 		/// </summary>
-		public Dictionary<DataDirectories, Directory> Directories { get; set; }
+		public Dictionary<DataDirectories, Directory> Directories
+        {
+            get { return this.directories; }
+            private set { this.directories = value; }
+        }
 
 		/// <summary>
 		/// The byte contents of the file.
 		/// </summary>
-		internal byte[] FileContents { get; set; }
+		internal byte[] FileContents
+        {
+            get { return this.fileContents; }
+            private set { this.fileContents = value; }
+        }
 
 		/// <summary>
 		/// Indicates if the metadata has been loaded in its entirety from the
 		/// PE/COFF file.
 		/// </summary>
-		public bool IsMetadataLoaded { get; set; }
+		public bool IsMetadataLoaded
+        {
+            get { return this.isMetadataLoaded; }
+            private set { this.isMetadataLoaded = value; }
+        }
 
 		/// <summary>
 		/// Internal mapping of metadata to reflected definitions.
 		/// </summary>
-		internal MetadataToDefinitionMap Map { get; private set; }
-		#endregion
+		internal MetadataToDefinitionMap Map
+        {
+            get { return this.map; }
+            private set { this.map = value; }
+        }
 	}
 }

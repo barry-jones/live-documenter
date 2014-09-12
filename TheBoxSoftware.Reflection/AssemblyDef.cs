@@ -5,8 +5,11 @@ using System.Text;
 using TheBoxSoftware.Reflection.Core.COFF;
 using TheBoxSoftware.Reflection.Core.PE;
 using TheBoxSoftware.Reflection.Core;
+using System.Diagnostics;
+using TheBoxSoftware.Diagnostics;
 
-namespace TheBoxSoftware.Reflection {
+namespace TheBoxSoftware.Reflection 
+{
 	/// <summary>
 	/// The AssemblyDef provides the top level information and entry point to
 	/// all types, methods etc reflected from a .NET executable.
@@ -33,23 +36,17 @@ namespace TheBoxSoftware.Reflection {
 	/// </example>
 	/// </remarks>
 	/// <seealso cref="PeCoffFile"/>
-	public class AssemblyDef : ReflectedMember {
-		/// <summary>
-		/// Counter to generate unique identifiers for each element that is reflected
-		/// in this assembly.
-		/// </summary>
-		private int uniqueIdCounter;
+	public class AssemblyDef : ReflectedMember 
+    {
+        // 36 bytes
+        private List<AssemblyRef> referencedAssemblies;
+        private List<ModuleDef> modules;
+        private List<TypeDef> types;
+        private TheBoxSoftware.Reflection.Core.PeCoffFile file;
+        private TheBoxSoftware.Reflection.Core.Version version;
+		private int uniqueIdCounter;    // counter to generate unique identifers for each element that is in this assmebly
 		private TypeInNamespaceMap namspaceMap;
-
-		/// <summary>
-		/// Gets or sets a reference to the string stream.
-		/// </summary>
-		/// <remarks>
-		/// This has been created to reduce the cost of obtaining this information, it is
-		/// a well access field and storing it behind a property just increases cost for no
-		/// reason.
-		/// </remarks>
-		public StringStream StringStream;
+        private StringStream stringStream;
 
 		#region Methods
 		/// <summary>
@@ -62,7 +59,8 @@ namespace TheBoxSoftware.Reflection {
 		/// Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
 		/// does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
 		/// </exception>
-		public static AssemblyDef Create(string fileName) {
+		public static AssemblyDef Create(string fileName)
+        {
 			if (string.IsNullOrEmpty(fileName))
 				throw new ArgumentNullException(fileName);
 
@@ -88,7 +86,8 @@ namespace TheBoxSoftware.Reflection {
 		/// Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
 		/// does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
 		/// </exception>
-		public static AssemblyDef Create(PeCoffFile peCoffFile) {
+		public static AssemblyDef Create(PeCoffFile peCoffFile) 
+        {
 			if (peCoffFile == null)
 				throw new ArgumentNullException("peCoffFile");
 
@@ -401,28 +400,88 @@ namespace TheBoxSoftware.Reflection {
 		}
 		#endregion
 
-		#region Properties
-		public List<AssemblyRef> ReferencedAssemblies { get; set; }
+#if TEST
+        /// <summary>
+        /// Prints all the type spec signitures to the Trace stream
+        /// </summary>
+        public void PrintTypeSpecSignitures()
+        {
+            // Read the metadata from the file and populate the entries
+            MetadataDirectory metadata = this.File.GetMetadataDirectory();
+            MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
+            int count = 0;
+
+            //
+            StringStream stringStream = (StringStream)metadata.Streams[Streams.StringStream];
+
+            if (metadataStream.Tables.ContainsKey(MetadataTables.TypeSpec))
+            {
+                foreach (TypeSpecMetadataTableRow typeSpecRow in metadataStream.Tables[MetadataTables.TypeSpec])
+                {
+                    TypeSpec type = TypeSpec.CreateFromMetadata(this, metadata, typeSpecRow);
+                    type.Signiture.PrintTokens();
+                }
+            }
+        }
+#endif
+
+        /// <summary>
+        /// All assembles this assembly refers to.
+        /// </summary>
+        public List<AssemblyRef> ReferencedAssemblies
+        {
+            get { return this.referencedAssemblies; }
+            set { this.referencedAssemblies = value; }
+        }
 
 		/// <summary>
 		/// The list of <see cref="ModuleDef"/>s in this assembly.
 		/// </summary>
-		public List<ModuleDef> Modules { get; set; }
+        public List<ModuleDef> Modules
+        {
+            get { return this.modules; }
+            set { this.modules = value; }
+        }
 
 		/// <summary>
 		/// The list of <see cref="TypeDef"/>s in this assembly.
 		/// </summary>
-		public List<TypeDef> Types { get; set; }
+		public List<TypeDef> Types
+        {
+            get { return this.types; }
+            set { this.types = value; }
+        }
 
 		/// <summary>
 		/// The <see cref="PeCoffFile"/> the assembly was reflected from.
 		/// </summary>
-		public TheBoxSoftware.Reflection.Core.PeCoffFile File { get; set; }
+		public TheBoxSoftware.Reflection.Core.PeCoffFile File
+        {
+            get { return this.file; }
+            set { this.file = value; }
+        }
 
 		/// <summary>
 		/// The version details for this assembly.
 		/// </summary>
-		public TheBoxSoftware.Reflection.Core.Version Version { get; set; }
-		#endregion
+		public TheBoxSoftware.Reflection.Core.Version Version
+        {
+            get { return this.version; }
+            set { this.version = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a reference to the string stream.
+        /// </summary>
+        /// <remarks>
+        /// This has been created to reduce the cost of obtaining this information, it is
+        /// a well access field and storing it behind a property just increases cost for no
+        /// reason.
+        /// </remarks>
+        public StringStream StringStream
+        {
+            get { return this.stringStream; }
+            set { this.stringStream = value; }
+        }
 	}
 }

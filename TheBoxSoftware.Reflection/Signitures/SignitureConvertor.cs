@@ -268,8 +268,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 				if (i != 0 && i != shape.Rank) {
 					sb.Append(",");
 				}
-				bool hasLoBound = i < shape.NumLoBounds;
-				bool hasSize = i < shape.NumSizes;
+				bool hasLoBound = i < shape.LoBounds.Length;
+				bool hasSize = i < shape.Sizes.Length;
 				if (hasLoBound) {
 					sb.Append(shape.LoBounds[i]);
 				}

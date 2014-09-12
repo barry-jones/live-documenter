@@ -5,7 +5,8 @@ using System.Text;
 
 namespace TheBoxSoftware.Reflection.Signitures 
 {
-	using TheBoxSoftware.Reflection.Core;
+    using TheBoxSoftware.Diagnostics;
+    using TheBoxSoftware.Reflection.Core;
 
 	/// <summary>
 	/// Represents a signiture for a type specification as detailed in
@@ -35,24 +36,52 @@ namespace TheBoxSoftware.Reflection.Signitures
 			return this.Type.GetTypeDetails(member);
 		}
 
+#if TEST
+        /// <summary>
+        /// Prints tokens to the current TRACE output
+        /// </summary>
+        public void PrintTokens()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (SignitureToken token in this.Type.Tokens)
+            {
+                switch (token.TokenType)
+                {
+                    case SignitureTokens.ArrayShape: // non-nested token
+                    case SignitureTokens.CallingConvention:
+                    case SignitureTokens.Constraint:
+                    case SignitureTokens.ElementType:
+                    case SignitureTokens.GenericArgumentCount:
+                    case SignitureTokens.Count:
+                    case SignitureTokens.CustomModifier:
+                    case SignitureTokens.GenericParameterCount:
+                        sb.Append(token.ToString()); 
+                        break;
+
+                    case SignitureTokens.Field:
+                    case SignitureTokens.LocalSigniture:
+                    case SignitureTokens.Param:
+                    case SignitureTokens.ParameterCount:
+                    case SignitureTokens.Prolog:
+                    case SignitureTokens.Property:
+                    case SignitureTokens.ReturnType:
+                    case SignitureTokens.Sentinal:
+                    case SignitureTokens.Type:
+                    case SignitureTokens.TypeDefOrRefEncodedToken:
+                    default:
+                        sb.AppendFormat("[{0}] ", token.ToString());
+                        break;
+                }
+            }
+
+            TraceHelper.WriteLine(sb.ToString());
+        }
+#endif
+
 		/// <summary>
 		/// 
 		/// </summary>
 		public TypeSignitureToken Type { get; set; }
-
-        /// <summary>
-        /// Outputs the TypeSpecSigniture as a string (using signiture tokens.)
-        /// </summary>
-        /// <returns>A strign representation of the TypeSpecificationSigniture</returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach(SignitureToken token in this.Tokens)
-            {
-                sb.Append(token.ToString());
-                sb.Append(" ");
-            }
-            return sb.ToString();
-        }
 	}
 }

@@ -2,16 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using TheBoxSoftware.Reflection.Core;
+using TheBoxSoftware.Diagnostics;
 
-namespace TheBoxSoftware.Reflection.Signitures {
-	using TheBoxSoftware.Reflection.Core;
+namespace TheBoxSoftware.Reflection.Signitures 
+{
+    /// <summary>
+    /// 
+    /// </summary>
+	internal abstract class Signiture 
+    {
+        // 8 bytes
+        private Signitures type;
+        private List<SignitureToken> tokens;
 
-	internal abstract class Signiture {
 		/// <summary>
 		/// Initialises a new instance of the Signiture class.
 		/// </summary>
 		/// <param name="tokenType">The type of signiture being represented.</param>
-		protected Signiture(Signitures tokenType) {
+		protected Signiture(Signitures tokenType) 
+        {
 			this.Type = tokenType;
 			this.Tokens = new List<SignitureToken>();
 		}
@@ -24,7 +35,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// <param name="file">The PeCoffFile that is being read (same as file contents)</param>
 		/// <param name="tokenType">The type of signiture being read.</param>
 		/// <returns></returns>
-		public static Signiture Create(byte[] fileContents, Offset offset, PeCoffFile file, Signitures tokenType) {
+		public static Signiture Create(byte[] fileContents, Offset offset, PeCoffFile file, Signitures tokenType) 
+        {
 			int startingOffset = offset;
 			int lengthOfSigniture = SignitureToken.GetCompressedValue(fileContents, offset);	// The first byte is always the length
 
@@ -51,7 +63,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// signiture.
 		/// </summary>
 		/// <returns>A collection of parameter tokens.</returns>
-		public List<ParamSignitureToken> GetParameterTokens() {
+		public List<ParamSignitureToken> GetParameterTokens() 
+        {
 			return (from token in this.Tokens
 					where token is ParamSignitureToken
 					select (ParamSignitureToken)token).ToList<ParamSignitureToken>();
@@ -61,7 +74,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// Returns the token that describes the return type defined in the signiture.
 		/// </summary>
 		/// <returns>The Token or null if no return type defined.</returns>
-		public ReturnTypeSignitureToken GetReturnTypeToken() {
+		public ReturnTypeSignitureToken GetReturnTypeToken() 
+        {
 			ReturnTypeSignitureToken token = null;
 			for (int i = 0; i < this.Tokens.Count; i++) {
 				if (this.Tokens[i] is ReturnTypeSignitureToken) {
@@ -72,13 +86,19 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			return token;
 		}
 
-		#region Properties
 		/// <summary>
 		/// Describes the type of signiture.
 		/// </summary>
-		public Signitures Type { get; private set; }
+		public Signitures Type 
+        {
+            get { return this.type; }
+            protected set { this.type = value; }
+        }
 
-		public List<SignitureToken> Tokens { get; set; }
-		#endregion
+		public List<SignitureToken> Tokens
+        {
+            get { return this.tokens; }
+            protected set { this.tokens = value; }
+        }
 	}
 }
