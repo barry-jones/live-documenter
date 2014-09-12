@@ -19,23 +19,27 @@ namespace TheBoxSoftware.Reflection.Signitures {
 	/// </para>
 	/// </summary>
 	[DebuggerDisplay("Type: {ElementType}, ")]
-	internal sealed class TypeSignitureToken : SignitureTokenContainer {
+	internal sealed class TypeSignitureToken : SignitureTokenContainer 
+    {
 		/// <summary>
 		/// Initialises a new TypeSignitureToken class.
 		/// </summary>
 		/// <param name="signiture">The signiture to parse the type from.</param>
 		/// <param name="offset">The offset to start reading from.</param>
 		public TypeSignitureToken(PeCoffFile file, byte[] signiture, Offset offset) 
-			: base(SignitureTokens.Type) {
+			: base(SignitureTokens.Type) 
+        {
 
 			ElementTypeSignitureToken type = new ElementTypeSignitureToken(file, signiture, offset);
 			TypeSignitureToken childType;
 			this.Tokens.Add(type);
 			this.ElementType = type;
 
-			switch (type.ElementType) {
+			switch (type.ElementType) 
+            {
 				case ElementTypes.SZArray:
-					while (CustomModifierToken.IsToken(signiture, offset)) {
+					while (CustomModifierToken.IsToken(signiture, offset)) 
+                    {
 						CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
 						this.Tokens.Add(modifier);
 					}
@@ -43,7 +47,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 					this.Tokens.Add(childType);
 					break;
 				case ElementTypes.Ptr:
-					while (CustomModifierToken.IsToken(signiture, offset)) {
+					while (CustomModifierToken.IsToken(signiture, offset)) 
+                    {
 						CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
 						this.Tokens.Add(modifier);
 					}
@@ -68,10 +73,12 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			}
 		}
 
-		public TypeDetails GetTypeDetails(ReflectedMember member) {
+		public TypeDetails GetTypeDetails(ReflectedMember member) 
+        {
 			TypeDetails details = new TypeDetails();
 
-			if (this.ElementType.ElementType == ElementTypes.SZArray) {
+			if (this.ElementType.ElementType == ElementTypes.SZArray) 
+            {
 				TypeSignitureToken childType = (TypeSignitureToken)this.Tokens.Last();
 				details.ArrayOf = childType.GetTypeDetails(member);
 				details.IsArray = true;
@@ -79,44 +86,55 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			else if (
 				this.ElementType.ElementType == ElementTypes.Class ||
 				this.ElementType.ElementType == ElementTypes.ValueType
-				) {
+				) 
+            {
 				details.Type = this.ElementType.ResolveToken(member.Assembly);
 			}
-			else if (this.ElementType.ElementType == ElementTypes.GenericInstance) {
+			else if (this.ElementType.ElementType == ElementTypes.GenericInstance) 
+            {
 				ElementTypeSignitureToken childType = (ElementTypeSignitureToken)this.Tokens[1];
 				details.Type = childType.ResolveToken(member.Assembly);
 				details.IsGenericInstance = true;
 				details.GenericParameters = new List<TypeDetails>();
-				for (int i = 3; i < this.GetGenericArgumentCount().Count + 3; i++) {
-					if(this.Tokens[i].TokenType == SignitureTokens.Type) {
+				for (int i = 3; i < this.GetGenericArgumentCount().Count + 3; i++) 
+                {
+					if(this.Tokens[i].TokenType == SignitureTokens.Type) 
+                    {
 						details.GenericParameters.Add(
 							((TypeSignitureToken)this.Tokens[i]).GetTypeDetails(member)
 							);
 					}
-					else {
+					else 
+                    {
 						TypeDetails genericParameter = new TypeDetails();
 						genericParameter.Type = ((ElementTypeSignitureToken)this.Tokens[i]).ResolveToken(member.Assembly);
 						details.GenericParameters.Add(genericParameter);
 					}
 				}
 			}
-			else if (this.ElementType.ElementType == ElementTypes.Ptr) {
-				if (this.Tokens[1].TokenType == SignitureTokens.Type) {
+			else if (this.ElementType.ElementType == ElementTypes.Ptr) 
+            {
+				if (this.Tokens[1].TokenType == SignitureTokens.Type) 
+                {
 					TypeSignitureToken childType = (TypeSignitureToken)this.Tokens[1];
 					details = childType.GetTypeDetails(member);
 				}
-				else {
+				else 
+                {
 					ElementTypeSignitureToken childType = (ElementTypeSignitureToken)this.Tokens[1];
 					details.Type = childType.ResolveToken(member.Assembly);
 				}
 				details.IsPointer = true;
 			}
-			else if (this.ElementType.ElementType == ElementTypes.Array) {
-				if (this.Tokens[1].TokenType == SignitureTokens.Type) {
+			else if (this.ElementType.ElementType == ElementTypes.Array
+            {
+				if (this.Tokens[1].TokenType == SignitureTokens.Type) 
+                {
 					TypeSignitureToken childType = (TypeSignitureToken)this.Tokens[1];
 					details.ArrayOf = childType.GetTypeDetails(member);
 				}
-				else {
+				else 
+                {
 					ElementTypeSignitureToken childType = (ElementTypeSignitureToken)this.Tokens[1];
 					details.ArrayOf = new TypeDetails();
 					details.ArrayOf.Type = childType.ResolveToken(member.Assembly);
@@ -124,25 +142,24 @@ namespace TheBoxSoftware.Reflection.Signitures {
 				details.IsMultidemensionalArray = true;
 				details.ArrayShape = (ArrayShapeSignitureToken)this.Tokens.Find(t => t.TokenType == SignitureTokens.ArrayShape);
 			}
-			else if (this.ElementType.ElementType == ElementTypes.MVar) {
+			else if (this.ElementType.ElementType == ElementTypes.MVar)
+            {
 				details.Type = this.ResolveType(member.Assembly, member);
 			}
-			else if (this.ElementType.ElementType == ElementTypes.Var) {
+			else if (this.ElementType.ElementType == ElementTypes.Var) 
+            {
 				details.Type = this.ResolveType(member.Assembly, member);
 			}
-			else if (this.ElementType.Definition != null) {
+			else if (this.ElementType.Definition != null) 
+            {
 				details.Type = (TypeRef)this.ElementType.Definition;
 			}
 
 			return details;
 		}
 
-		/// <summary>
-		/// The ElementType details for this TypeSignitureToken
-		/// </summary>
-		public ElementTypeSignitureToken ElementType { get; set; }
-
-		public GenericArgumentCountSignitureToken GetGenericArgumentCount() {
+		public GenericArgumentCountSignitureToken GetGenericArgumentCount() 
+        {
 			foreach (SignitureToken current in this.Tokens) {
 				if (current.TokenType == SignitureTokens.GenericArgumentCount) {
 					return (GenericArgumentCountSignitureToken)current;
@@ -303,5 +320,10 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			}
 			return type;
 		}
+
+        /// <summary>
+        /// The ElementType details for this TypeSignitureToken
+        /// </summary>
+        public ElementTypeSignitureToken ElementType { get; set; }
 	}
 }

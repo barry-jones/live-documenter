@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <document>C:\Users\Barry\Documents\Development\Temp\ravendb.ldproj</document>
+  <document>C:\Users\Barry\Documents\Live Documenter\ravendb.ldproj</document>
+  <!--<document>C:\Users\Barry\Documents\Current Projects\ravendb\Raven.Client.Silverlight\obj\Debug\Raven.Client.Silverlight.dll</document>-->
 	
 	<!-- can be Public|Internal|Protected|ProtectedInternal|Private only those detailed will be output,
 		not specifiying a filter section will result in only the Public members being exported.

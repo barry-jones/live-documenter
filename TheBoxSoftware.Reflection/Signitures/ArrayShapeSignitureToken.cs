@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Reflection.Core;
 
 namespace TheBoxSoftware.Reflection.Signitures {
-	using TheBoxSoftware.Reflection.Core;
 
 	internal class ArrayShapeSignitureToken : SignitureToken {
 		public ArrayShapeSignitureToken(byte[] signiture, Offset offset)

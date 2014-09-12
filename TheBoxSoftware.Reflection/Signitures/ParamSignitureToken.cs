@@ -30,7 +30,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 			}
 
 			// After a custom modifier the parameter can be defined as a ByRef, TypedByRef or Type token.
-			if (ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.ByRef)) {
+			if (ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.ByRef)) 
+            {
 				this.Tokens.Add(new ElementTypeSignitureToken(file, signiture, offset));	// ByRef
 				TypeSignitureToken typeSig = new TypeSignitureToken(file, signiture, offset);
 				this.Tokens.Add(typeSig);	// Type

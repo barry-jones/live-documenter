@@ -40,13 +40,7 @@ namespace TheBoxSoftware.Reflection {
 			TypeSpecificationSigniture signiture = this.Signiture;
 			ElementTypes elementType = signiture.Type.ElementType.ElementType;
 
-			// some rogue entries in the typespec table do not need resolution
-			if (elementType == ElementTypes.Var || elementType == ElementTypes.MVar) {
-				this.details = new TypeDetails();
-			}
-			else {
-				this.details = signiture.GetTypeDetails(this);
-			}
+            this.details = signiture.GetTypeDetails(this);
 		}
 
 		#region Properties

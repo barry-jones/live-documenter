@@ -12,7 +12,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// <summary>
 	/// Exports documentation in the MS Help Viewer 1 format.
 	/// </summary>
-	public class HelpViewer1Exporter : Exporter {
+	public class HelpViewer1Exporter : Exporter 
+    {
 		/// <summary>
 		/// Initialises a new instance of the HelpViewer1Exporter class.
 		/// </summary>
@@ -44,7 +45,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				if (!this.IsCancelled) {
 					// export the document map
 					this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory))) {
+					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory))) 
+                    {
 						Rendering.DocumentMapXmlRenderer map = new Rendering.DocumentMapXmlRenderer(
 							this.Document.Map
 							);
@@ -52,12 +54,14 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					}
 
 					Website.IndexXmlRenderer indexPage = new Website.IndexXmlRenderer(this.Document.Map);
-					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) {
+					using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory))) 
+                    {
 						indexPage.Render(writer);
 					}
 
 					// export each of the members
-					foreach (Entry current in this.Document.Map) {
+					foreach (Entry current in this.Document.Map) 
+                    {
 						this.RecursiveEntryExport(current);
 						this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
 						if (this.IsCancelled) break;
@@ -65,9 +69,12 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					GC.Collect();
 				}
 
-				if (!this.IsCancelled) {
+                // perform the transform of the full XML files produced to the Help Viewer 1 format.
+				if (!this.IsCancelled) 
+                {
 					Processor p = new Processor();
-					using (Stream xsltStream = this.Config.GetXslt()) {
+					using (Stream xsltStream = this.Config.GetXslt()) 
+                    {
 						XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
 						transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
 
@@ -82,7 +89,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 						foreach (string current in Directory.GetFiles(this.TempDirectory)) {
 							if (current.Substring(this.TempDirectory.Length) == "toc.xml")
 								continue;
-							using (FileStream fs = File.OpenRead(current)) {
+							using (FileStream fs = File.OpenRead(current)) 
+                            {
 								Serializer s = new Serializer();
 								s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
 								transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
@@ -90,7 +98,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 								s.Close();
 							}
 							counter++;
-							if (counter % this.XmlExportStep == 0) {
+							if (counter % this.XmlExportStep == 0) 
+                            {
 								this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
 							}
 							if (this.IsCancelled) break;
@@ -98,7 +107,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					}
 				}
 
-				if(!this.IsCancelled) {
+				if(!this.IsCancelled) 
+                {
 					// compile the html help file
 					this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
 					this.CompileHelp(this.OutputDirectory + "\\Documentation.mshc");
@@ -107,7 +117,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					// publish the documentation
 					this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
 					string[] files = { "Documentation.mshc", "Documentation.msha" };
-					for (int i = 0; i < files.Length; i++) {
+					for (int i = 0; i < files.Length; i++) 
+                    {
 						File.Move(
 							Path.Combine(this.OutputDirectory, files[i]),
 							Path.Combine(this.PublishDirectory, files[i])
@@ -119,7 +130,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
 				this.Cleanup();
 			}
-			catch (Exception ex) {
+			catch (Exception ex) 
+            {
 				this.Cleanup(); // attempt to clean up our mess before dying
 				ExportException exception = new ExportException(ex.Message, ex);
 				this.OnExportException(new ExportExceptionEventArgs(exception));
@@ -130,7 +142,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Exports an individual member.
 		/// </summary>
 		/// <param name="entry"></param>
-		public override Stream ExportMember(Entry entry) {
+		public override Stream ExportMember(Entry entry) 
+        {
 			throw new InvalidOperationException("Member level exporting is not supported in this exporter.");
 		}
 
@@ -139,7 +152,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// running.
 		/// </summary>
 		/// <returns>The issues.</returns>
-		public override List<Issue> GetIssues() {
+		public override List<Issue> GetIssues() 
+        {
 			return new List<Issue>();
 		}
 
@@ -147,7 +161,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Compiles and creates the Help Viewer 1 mshc file.
 		/// </summary>
 		/// <param name="projectFile">The HxC file.</param>
-		private void CompileHelp(string projectFile) {
+		private void CompileHelp(string projectFile) 
+        {
 			// zip up the content director and rename it
 			Ionic.Zip.ZipFile outputFile = new Ionic.Zip.ZipFile();
 			outputFile.AddDirectory(this.OutputDirectory);

@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TheBoxSoftware.Reflection.Signitures {
+namespace TheBoxSoftware.Reflection.Signitures 
+{
 	using TheBoxSoftware.Reflection.Core;
 
 	/// <summary>
 	/// Represents a signiture for a type specification as detailed in
 	/// section 23.2.14 in ECMA 335.
 	/// </summary>
-	internal sealed class TypeSpecificationSigniture : Signiture {
+	internal sealed class TypeSpecificationSigniture : Signiture 
+    {
 		/// <summary>
 		/// Instantiates a new instance of the TypeSpecificationSigniture class.
 		/// </summary>
 		/// <param name="file">The file containing the signiture</param>
 		/// <param name="signiture">The actual signiture contents.</param>
 		public TypeSpecificationSigniture(PeCoffFile file, byte[] signiture)
-			: base(Signitures.TypeSpecification) {
+			: base(Signitures.TypeSpecification) 
+        {
 
 			this.Type = new TypeSignitureToken(file, signiture, 0);
 		}
@@ -27,7 +30,8 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// </summary>
 		/// <param name="member">The member to resolve against.</param>
 		/// <returns>The details of the type having the specification.</returns>
-		public TypeDetails GetTypeDetails(ReflectedMember member) {
+		public TypeDetails GetTypeDetails(ReflectedMember member) 
+        {
 			return this.Type.GetTypeDetails(member);
 		}
 
@@ -35,5 +39,20 @@ namespace TheBoxSoftware.Reflection.Signitures {
 		/// 
 		/// </summary>
 		public TypeSignitureToken Type { get; set; }
+
+        /// <summary>
+        /// Outputs the TypeSpecSigniture as a string (using signiture tokens.)
+        /// </summary>
+        /// <returns>A strign representation of the TypeSpecificationSigniture</returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(SignitureToken token in this.Tokens)
+            {
+                sb.Append(token.ToString());
+                sb.Append(" ");
+            }
+            return sb.ToString();
+        }
 	}
 }

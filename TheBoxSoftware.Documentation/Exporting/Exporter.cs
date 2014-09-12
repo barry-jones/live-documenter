@@ -22,7 +22,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 	/// is continued. As this method is likely to be called on seperate threads.
 	/// </para>
 	/// </remarks>
-	public abstract class Exporter {
+	public abstract class Exporter 
+    {
         // 68 bytes
 		private ExportCalculatedEventHandler exportCalculated;
 		private ExportStepEventHandler exportStep;
@@ -47,7 +48,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// Initializes a new instance of the <see cref="Exporter"/> class.
 		/// </summary>
 		/// <param name="currentFiles">The current files.</param>
-		protected Exporter(Document document, ExportSettings settings, ExportConfigFile config) {
+		protected Exporter(Document document, ExportSettings settings, ExportConfigFile config) 
+        {
 			this.Config = config;
 			this.Settings = settings;
 			this.Document = document;
@@ -71,7 +73,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// All of the parameters are required so provided a null reference will cause this exception
 		/// please see the parameter name in the exception for more information.
 		/// </exception>
-		public static Exporter Create(Document document, ExportSettings settings, ExportConfigFile config) {
+		public static Exporter Create(Document document, ExportSettings settings, ExportConfigFile config) 
+        {
 			if (document == null) throw new ArgumentNullException("document");
 			if (settings == null) throw new ArgumentNullException("settings");
 			if (config == null) throw new ArgumentNullException("config");
@@ -104,96 +107,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			return createdExporter;
 		}
 
-		#region Properties
-		/// <summary>
-		/// The Document being exported.
-		/// </summary>
-		public Document Document {
-            get { return this.document; }
-            set { this.document = value; }
-        }
-
-		/// <summary>
-		/// The directory the application is executing from and installed.
-		/// </summary>
-		protected string ApplicationDirectory {
-            get { return this.applicationDirectory; }
-            private set { this.applicationDirectory = value; }
-        }
-
-		/// <summary>
-		/// The directory used to output the first rendered output to, this is not the output or publishing directory.
-		/// </summary>
-		protected string TempDirectory {
-            get { return this.tempDirectory; }
-            private set { this.tempDirectory = value; }
-        }
-
-		/// <summary>
-		/// The first staging folder where all the files come together to be completed or compiled.
-		/// </summary>
-		protected string OutputDirectory {
-            get { return this.outputDirectory; }
-            private set { this.outputDirectory = value; }
-        }
-
-		/// <summary>
-		/// Area to copy the final output to.
-		/// </summary>
-		protected string PublishDirectory {
-            get { return this.publishDirectory; }
-            set { this.publishDirectory = value; }
-        }
-
-		/// <summary>
-		/// The regular expression to check for illegal file characters before creating files.
-		/// </summary>
-		protected System.Text.RegularExpressions.Regex IllegalFileCharacters {
-            get { return this.illegalFileCharecters; }
-            private set { this.illegalFileCharecters = value; }
-        }
-
-		/// <summary>
-		/// The export settings.
-		/// </summary>
-		protected ExportSettings Settings {
-            get { return this.settings; }
-            set { this.settings = value; }
-        }
-
-		/// <summary>
-		/// The export configuration details.
-		/// </summary>
-		protected ExportConfigFile Config {
-            get { return this.config; }
-            set { this.config = value; }
-        }
-
-		/// <summary>
-		/// Counter indicating the current export step in the export process.
-		/// </summary>
-		protected int CurrentExportStep {
-            get { return this.currentExportStep; }
-            set { this.currentExportStep = value; }
-        }
-
-		/// <summary>
-		/// Indicates if this export has been cancelled.
-		/// </summary>
-		protected bool IsCancelled {
-            get { return this.isCancelled; }
-            private set { this.isCancelled = value; }
-        }
-
-		/// <summary>
-		/// A collection of errors that have occurred during the export process.
-		/// </summary>
-		public List<Exception> ExportExceptions {
-            get { return this.exportExceptions; }
-            set { this.exportExceptions = value; }
-        }
-		#endregion
-
+		
 		/// <summary>
 		/// Performs the export steps necessary to produce the final exported documentation in the
 		/// implementing type.
@@ -229,31 +143,42 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		}
 
 		/// <summary>
-		/// Exports the current entry.
+		/// Exports the <paramref name="current"/> entry to intermediate XML format.
 		/// </summary>
 		/// <param name="current">The current entry to export.</param>
 		/// <returns>The name of the rendered XML file</returns>
-		protected virtual string Export(Entry current) {
+        /// <remarks>
+        /// This method captures exceptions during imort of single items and records the details
+        /// in the <see cref="ExportExceptions"/> property. Errors here will not halt an export.
+        /// </remarks>
+		protected virtual string Export(Entry current) 
+        {
 			string filename = string.Format("{0}{1}{2}.xml",
 				this.TempDirectory,
 				current.Key,
 				string.IsNullOrEmpty(current.SubKey) ? string.Empty : "-" + this.IllegalFileCharacters.Replace(current.SubKey, string.Empty)
 				);
 
-			try {
+			try 
+            {
 				Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this.Document);
-				if (r != null) {
-					using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) {
-						r.Render(writer);
-					}
+
+                if (null == r)
+                    this.ExportExceptions.Add(new Exception(string.Format("No XML renderer for the Entry {0}", current.Name)));
+
+				using (System.Xml.XmlWriter writer = XmlWriter.Create(filename)) 
+                {
+					r.Render(writer);
 				}
 			}
-			catch (Exception ex) {
-				if(System.IO.File.Exists(filename)) { 
-				    System.IO.File.Delete(filename);
-				}
+            catch (Exception ex) 
+            {
+                if(System.IO.File.Exists(filename)) 
+                { 
+                    System.IO.File.Delete(filename);
+                }
 				
-                // we will deal with it later
+                // ignore it and add it to the list of exceptions, try and add more details
                 if(current != null)
                 {
                     ExportException issue = new ExportException(
@@ -262,8 +187,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
                     ex = issue;
                 }
 
-				this.ExportExceptions.Add(ex);
-			}
+                this.ExportExceptions.Add(ex);
+            }
 
 			return filename;
 		}
@@ -403,5 +328,106 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			}
 		}
 		#endregion
+
+        #region Properties
+        /// <summary>
+        /// The Document being exported.
+        /// </summary>
+        public Document Document
+        {
+            get { return this.document; }
+            set { this.document = value; }
+        }
+
+        /// <summary>
+        /// The directory the application is executing from and installed.
+        /// </summary>
+        protected string ApplicationDirectory
+        {
+            get { return this.applicationDirectory; }
+            private set { this.applicationDirectory = value; }
+        }
+
+        /// <summary>
+        /// The directory used to output the first rendered output to, this is not the output or publishing directory.
+        /// </summary>
+        protected string TempDirectory
+        {
+            get { return this.tempDirectory; }
+            private set { this.tempDirectory = value; }
+        }
+
+        /// <summary>
+        /// The first staging folder where all the files come together to be completed or compiled.
+        /// </summary>
+        protected string OutputDirectory
+        {
+            get { return this.outputDirectory; }
+            private set { this.outputDirectory = value; }
+        }
+
+        /// <summary>
+        /// Area to copy the final output to.
+        /// </summary>
+        protected string PublishDirectory
+        {
+            get { return this.publishDirectory; }
+            set { this.publishDirectory = value; }
+        }
+
+        /// <summary>
+        /// The regular expression to check for illegal file characters before creating files.
+        /// </summary>
+        protected System.Text.RegularExpressions.Regex IllegalFileCharacters
+        {
+            get { return this.illegalFileCharecters; }
+            private set { this.illegalFileCharecters = value; }
+        }
+
+        /// <summary>
+        /// The export settings.
+        /// </summary>
+        protected ExportSettings Settings
+        {
+            get { return this.settings; }
+            set { this.settings = value; }
+        }
+
+        /// <summary>
+        /// The export configuration details.
+        /// </summary>
+        protected ExportConfigFile Config
+        {
+            get { return this.config; }
+            set { this.config = value; }
+        }
+
+        /// <summary>
+        /// Counter indicating the current export step in the export process.
+        /// </summary>
+        protected int CurrentExportStep
+        {
+            get { return this.currentExportStep; }
+            set { this.currentExportStep = value; }
+        }
+
+        /// <summary>
+        /// Indicates if this export has been cancelled.
+        /// </summary>
+        protected bool IsCancelled
+        {
+            get { return this.isCancelled; }
+            private set { this.isCancelled = value; }
+        }
+
+        /// <summary>
+        /// A collection of errors that have occurred during the export process.
+        /// </summary>
+        public List<Exception> ExportExceptions
+        {
+            get { return this.exportExceptions; }
+            set { this.exportExceptions = value; }
+        }
+        #endregion
 	}
 }

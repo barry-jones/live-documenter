@@ -6,8 +6,10 @@ using TheBoxSoftware.Reflection;
 using TheBoxSoftware.Reflection.Comments;
 using TheBoxSoftware.Reflection.Signitures;
 
-namespace TheBoxSoftware.Documentation.Exporting.Rendering {
-	class TypeXmlRenderer : XmlRenderer {
+namespace TheBoxSoftware.Documentation.Exporting.Rendering 
+{
+	internal sealed class TypeXmlRenderer : XmlRenderer 
+    {
 		private TypeDef member;
 		private XmlCodeCommentFile xmlComments;
 
@@ -15,13 +17,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// Initializes a new instance of the <see cref="TypeXmlRenderer"/> class.
 		/// </summary>
 		/// <param name="entry">The entry in the document map to initialise the renderer with.</param>
-		public TypeXmlRenderer(Entry entry) {
+		public TypeXmlRenderer(Entry entry) 
+        {
 			this.member = (TypeDef)entry.Item;
 			this.xmlComments = entry.XmlCommentFile;
 			this.AssociatedEntry = entry;
 		}
 
-		public override void Render(System.Xml.XmlWriter writer) {
+		public override void Render(System.Xml.XmlWriter writer) 
+        {
 			CRefPath crefPath = new CRefPath(this.member);
 			XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
 
@@ -119,14 +123,16 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteEndElement();	// member
 		}
 
-		private void OutputMembers(System.Xml.XmlWriter writer) {
+		private void OutputMembers(System.Xml.XmlWriter writer) 
+        {
 			if (this.AssociatedEntry.Children.Count == 0) return;
 
 			writer.WriteStartElement("entries");
 			List<Entry> children = this.AssociatedEntry.Children;
 
 			Entry constructors = children.Find(entry => entry.Name == "Constructors");
-			if (constructors != null) {
+			if (constructors != null) 
+            {
 				var s = from child in constructors.Children orderby child.Name select child;
 				foreach (Entry current in s) {
 					MethodDef currentMember = (MethodDef)current.Item;
@@ -135,57 +141,67 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			}
 
 			Entry fields = children.Find(entry => entry.Name == "Fields");
-			if (fields != null) {
+			if (fields != null) 
+            {
 				var s = from child in fields.Children orderby child.Name select child;
-				foreach (Entry current in s) {
+				foreach (Entry current in s) 
+                {
 					FieldDef currentMember = (FieldDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.Name);
 				}
 			}
 
 			Entry properties = children.Find(entry => entry.Name == "Properties");
-			if (properties != null) {
+			if (properties != null) 
+            {
 				var s = from child in properties.Children orderby child.Name select child;
-				foreach (Entry current in s) {
+				foreach (Entry current in s) 
+                {
 					PropertyDef currentMember = (PropertyDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
 				}
 			}
 
 			Entry events = children.Find(entry => entry.Name == "Events");
-			if (events != null) {
+			if (events != null) 
+            {
 				var s = from child in events.Children orderby child.Name select child;
-				foreach (Entry current in s) {
+				foreach (Entry current in s) 
+                {
 					EventDef currentMember = (EventDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.Name);
 				}
 			}
 
 			Entry methods = children.Find(entry => entry.Name == "Methods");
-			if (methods != null) {
+			if (methods != null) 
+            {
 				var s = from child in methods.Children orderby child.Name select child;
-				foreach (Entry current in s) {
+				foreach (Entry current in s) 
+                {
 					MethodDef currentMember = (MethodDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
 				}
 			}
 
 			Entry operators = children.Find(entry => entry.Name == "Operators");
-			if (operators != null) {
+			if (operators != null) 
+            {
 				var s = from child in operators.Children orderby child.Name select child;
-				foreach (Entry current in s) {
+				foreach (Entry current in s) 
+                {
 					MethodDef currentMember = (MethodDef)current.Item;
 					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false));
 				}
 			}
 
-			var extensionMethods = from method in this.member.ExtensionMethods orderby method.Name select method;
-			foreach (MethodDef currentMethod in extensionMethods) {
-				//if (!this.Exporter.Document.IsMemberFiltered(currentMethod)) {
-					DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
-					this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
-				//}
-			}
+            // I dont think we have any extension methods anymore - perhaps we can just delete this code?
+            var extensionMethods = from method in this.member.ExtensionMethods orderby method.Name select method;
+            foreach (MethodDef currentMethod in extensionMethods)
+            {
+                DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
+                this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
+            }
 
 			writer.WriteEndElement();
 		}
@@ -223,23 +239,28 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// </summary>
 		/// <param name="type">The type to parse and display the tree for.</param>
 		/// <param name="writer">The writer to write the XML to.</param>
-		private void AddInheritanceTree(TypeDef type, System.Xml.XmlWriter writer) {
+		private void AddInheritanceTree(TypeDef type, System.Xml.XmlWriter writer) 
+        {
 			List<TypeRef> reverseInheritanceTree = new List<TypeRef>();
 			TypeRef parent = type.InheritsFrom;
-			while (parent != null) {
+			while (parent != null) 
+            {
 				reverseInheritanceTree.Add(parent);
 
 				// only add types that are referenced in the current library
 				// TODO: for some types like system, we could link to MS website
-				if (parent is TypeDef) {
+				if (parent is TypeDef)
+                {
 					parent = ((TypeDef)parent).InheritsFrom;
 				}
-				else {
+				else 
+                {
 					parent = null;
 				}
 			}
 
-			if (reverseInheritanceTree.Count > 0) {
+			if (reverseInheritanceTree.Count > 0) 
+            {
 				reverseInheritanceTree.Reverse();
 				writer.WriteStartElement("inheritance");
 
@@ -250,7 +271,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		}
 
 		private void WriteType(int index, List<TypeRef> tree, System.Xml.XmlWriter writer) {
-			if (index < tree.Count) {
+			if (index < tree.Count) 
+            {
 				writer.WriteStartElement("type");
 				TypeRef current = tree[index];
 				if (current is TypeDef) {	// only provide ids for internal classes
@@ -261,17 +283,21 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				this.WriteType(++index, tree, writer);
 				writer.WriteEndElement();
 			}
-			else if(index == tree.Count) {
+			else if(index == tree.Count) 
+            {
 				writer.WriteStartElement("type");
 				writer.WriteAttributeString("current", "true");
 				writer.WriteAttributeString("name", this.member.GetDisplayName(true));
 				this.WriteType(++index, tree, writer);
 				writer.WriteEndElement();
 			}
-			else if (index > tree.Count) {
-				foreach (TypeRef current in this.member.GetExtendingTypes()) {
+			else if (index > tree.Count) 
+            {
+				foreach (TypeRef current in this.member.GetExtendingTypes()) 
+                {
 					Entry found = this.Document.Find(CRefPath.Create(current));
-					if(found != null) {
+					if(found != null) 
+                    {
 						writer.WriteStartElement("type");
 						if (current is TypeDef) {	// only provide ids for internal classes not filtered
 							writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
