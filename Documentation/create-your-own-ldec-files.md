@@ -1,0 +1,2 @@
+# Creating your own LDEC files
+Creating your own LDEC files requires knowledge of XSLT, however if you want to simply re-use and restyle one of the existing LDEC files you should only need to modify the stylsheets. Either way this document will provide you with some insight in to modifying and creating your own export configurations.
