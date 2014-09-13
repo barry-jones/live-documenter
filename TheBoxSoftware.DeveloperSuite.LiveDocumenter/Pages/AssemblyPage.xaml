@@ -1,6 +1,0 @@
-﻿<pages:Page x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.AssemblyPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pages="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages"
-    xmlns:el="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages">
-</pages:Page>
