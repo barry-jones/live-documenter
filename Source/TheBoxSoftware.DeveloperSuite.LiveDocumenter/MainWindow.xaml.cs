@@ -42,16 +42,21 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			Size lastSize = Model.UserApplicationStore.Store.LastWindowSize;
 			Point lastPosition = Model.UserApplicationStore.Store.LastWindowPosition;
 			FlowDocumentReaderViewingMode mode = Model.UserApplicationStore.Store.ViewingMode;
+
 			if (lastSize != null && !lastSize.IsEmpty && lastSize != new Size(0, 0)) {
 				this.Height = lastSize.Height;
 				this.Width = lastSize.Width;
 			}
+
 			if (lastPosition != null && !(lastPosition.X == 0 && lastPosition.Y == 0)) {
 				this.Top = lastPosition.X;
 				this.Left = lastPosition.Y;
 			}
+
 			this.pageViewer.ViewingMode = mode;
-			if (Model.UserApplicationStore.Store.IsMaximized) {
+
+			if (Model.UserApplicationStore.Store.IsMaximized) 
+            {
 				this.WindowState = System.Windows.WindowState.Maximized;
 			}
 

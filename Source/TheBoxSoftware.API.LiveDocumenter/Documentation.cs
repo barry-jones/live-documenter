@@ -98,7 +98,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
                 }
             }
 
-            settings.Settings.VisibilityFilters = new List<Visibility>() { Visibility.Public }; // we will always default to public
+            settings.Settings.VisibilityFilters = new List<Visibility>() { Visibility.Public, Visibility.Protected }; // we will always default to public/protected
 
             // initialise the document
             EntryCreator entryCreator = new EntryCreator();

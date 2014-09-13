@@ -3,28 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using TheBoxSoftware.Reflection;
+using TheBoxSoftware.Reflection.Core;
+using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages;
+using TheBoxSoftware.Reflection.Comments;
+using TheBoxSoftware.Documentation;
 
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Core;
-	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages;
-	using TheBoxSoftware.Reflection.Comments;
-	using TheBoxSoftware.Documentation;
-
+namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter 
+{
 	/// <summary>
 	/// Represents a live document, which is a collection of pages which display
 	/// code information and diagrams etc. For all of the loaded files for the
 	/// current LiveDocumentFile projects.
 	/// </summary>
-	internal sealed class LiveDocument : Document {
+	internal sealed class LiveDocument : Document 
+    {
 		/// <summary>
 		/// Initialises a new instance of the LiveDocument class.
 		/// </summary>
 		/// <param name="assemblies">The assemblies to document.</param>
 		/// <param name="filters">The visibility filters.</param>
 		public LiveDocument(List<DocumentedAssembly> assemblies, List<Reflection.Visibility> filters)
-			: base(assemblies, Mappers.GroupedNamespaceFirst, true, new LiveDocumenterEntryCreator()) {
-
+			: base(assemblies, Mappers.GroupedNamespaceFirst, true, new LiveDocumenterEntryCreator())
+        {
 			DocumentSettings settings = new DocumentSettings();
 			settings.VisibilityFilters.AddRange(filters);
 			this.Settings = settings;
@@ -34,7 +35,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// Updates the contents of the live document for the current list of
 		/// file references.
 		/// </summary>
-		public void Update() {
+		public void Update() 
+        {
 			this.Mapper.GenerateMap();
 			this.Map = this.Mapper.DocumentMap;
 		}
@@ -53,15 +55,19 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// and is then inserted in to the current <see cref="DocumentMap"/>.
 		/// </para>
 		/// </remarks>
-		public void RefreshAssembly(DocumentedAssembly documentedAssembly) {
+		public void RefreshAssembly(DocumentedAssembly documentedAssembly) 
+        {
 			// The assembly has been modified, find the existing node
 			// and generate the new one
 			Entry existingEntry = null;
 			int entryAtIndex = -1;
 			int fileCounter = LiveDocumentorFile.Singleton.LiveDocument.Map.Count;
-			for (int i = 0; i < LiveDocumentorFile.Singleton.LiveDocument.Map.Count; i++) {
+
+			for (int i = 0; i < LiveDocumentorFile.Singleton.LiveDocument.Map.Count; i++) 
+            {
 				Entry currentEntry = LiveDocumentorFile.Singleton.LiveDocument.Map[i];
-				if (currentEntry.Name == System.IO.Path.GetFileName(documentedAssembly.FileName)) {
+				if (currentEntry.Name == System.IO.Path.GetFileName(documentedAssembly.FileName))
+                {
 					existingEntry = currentEntry;
 					entryAtIndex = i;
 					break;
@@ -69,7 +75,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 
 			// only remove and reset if the assembly already exists in the document map
-			if (entryAtIndex != -1) {
+			if (entryAtIndex != -1) 
+            {
 				// Remove the old entry, we need to do this now so any searches performed in the
 				// generate method do not return values from here.
 				this.Map.RemoveAt(entryAtIndex);
@@ -85,15 +92,21 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// <summary>
 		/// Returns the assembly currently selected by the user.
 		/// </summary>
-		public DocumentedAssembly SelectedAssembly {
-			get {
+		public DocumentedAssembly SelectedAssembly 
+        {
+			get 
+            {
 				DocumentedAssembly selected = null;
-				if (this.Map != null && this.Assemblies != null) {
-					foreach (LiveDocumenterEntry entry in this.Map) {
+				if (this.Map != null && this.Assemblies != null)
+                {
+					foreach (LiveDocumenterEntry entry in this.Map)
+                    {
 						if (entry.IsSelected) {
 							long assemblyId = ReflectedMember.GetAssemblyId(entry.Key);
-							foreach (DocumentedAssembly assembly in this.Assemblies) {
-								if (assembly.UniqueId == assemblyId) {
+							foreach (DocumentedAssembly assembly in this.Assemblies)
+                            {
+								if (assembly.UniqueId == assemblyId) 
+                                {
 									selected = assembly;
 									break;
 								}

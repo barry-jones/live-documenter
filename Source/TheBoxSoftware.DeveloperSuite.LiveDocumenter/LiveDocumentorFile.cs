@@ -24,6 +24,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			this.project = new Project();
 			this.project.Language = Reflection.Syntax.Languages.CSharp;
 			this.project.Configuration = Model.BuildConfigurations.Debug.ToString();
+
+            // default to Public/Protected
+            this.project.VisibilityFilters.Add(Reflection.Visibility.Public);
+            this.project.VisibilityFilters.Add(Reflection.Visibility.Protected);
 		}
 
 		/// <summary>
@@ -57,6 +61,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		public void Open(string filename) {
 			this.project = new Project();
 			this.project.Files.Add(filename);
+
+            // default to Public/Protected
+            this.project.VisibilityFilters.Add(Reflection.Visibility.Public);
+            this.project.VisibilityFilters.Add(Reflection.Visibility.Protected);
 
 			this.Filename = string.Empty;
 			this.HasChanged = true;

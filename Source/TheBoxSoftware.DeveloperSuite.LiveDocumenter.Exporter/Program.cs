@@ -39,6 +39,13 @@ namespace TheBoxSoftware.Exporter {
                         try
                         {
                             configuration = Configuration.Deserialize(configFile);
+
+                            // if no filters are defined, default to Public/Protected
+                            if (configuration.Filters == null || configuration.Filters.Count == 0)
+                            {
+                                configuration.Filters.Add(Reflection.Visibility.Public);
+                                configuration.Filters.Add(Reflection.Visibility.Protected);
+                            }
                         }
                         catch (InvalidOperationException e)
                         {
