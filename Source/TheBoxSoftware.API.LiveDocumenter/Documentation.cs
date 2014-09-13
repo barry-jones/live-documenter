@@ -50,7 +50,9 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// <include file='Documentation\documentation.xml' path='members/member[@name="Documentation.ctor"]/*'/>
         public Documentation(string forDocument)
         {
+#if !DEBUG
             this.CheckLicense();
+#endif
 
             if (string.IsNullOrEmpty(forDocument))
                 throw new ArgumentNullException("forDocument");

@@ -21,10 +21,12 @@ namespace TheBoxSoftware.Exporter
             bool verbose = false;
 
             Console.WriteLine(string.Empty); // always start hte output with a new line clearing from the command data
+#if !DEBUG
             if (!p.CheckLicense())
             {
                 return; // just quit.
             }
+#endif
 
 			// read all the arguments
 			if (args == null || args.Length == 0) {

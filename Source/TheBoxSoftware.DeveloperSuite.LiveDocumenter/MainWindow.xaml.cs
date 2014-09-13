@@ -132,10 +132,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 
 			this.InitialiseStartScreen();
 
+#if !DEBUG
             if (!this.CheckLicense())
             {
                 Application.Current.Shutdown();
             }
+#endif
 
 			string[] args = ((App)App.Current).Arguments;
 			if (args != null && args.Length > 0) {
