@@ -54,23 +54,10 @@ namespace TheBoxSoftware.Reflection {
                         {
                             ElementTypeSignitureToken typeToken = spec.Signiture.Type.Tokens[1] as ElementTypeSignitureToken;
 
-                            /* todo: come back to this at some point (try and get to a coded index from the signiture so we dont have to call resolve.
-                            CodedIndex.Details d = new CodedIndex.Details();
-                            byte code;
-                            uint index;
-
-                            d.GetCodedIndex((uint)typeToken.Token, out code, out index);
-
-                            if (((MetadataTables)code) == ciForThisType.Table && index == ciForThisType.Index.Value)
-                            {
-                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i));
-                            }
-                             * */
-
                             TypeRef typeRef = typeToken.ResolveToken(this.Assembly);
                             if (typeRef == this)
                             {
-                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i));
+                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i+1));
                             }
                         }
 					}
@@ -82,12 +69,15 @@ namespace TheBoxSoftware.Reflection {
             {
                 for (int j = 0; j < ourIndexes.Count; j++)
                 {
+                    TypeDefMetadataTableRow row = (TypeDefMetadataTableRow)typeDefs[i];
                     CodedIndex ourCi = ourIndexes[j];
-                    if (((TypeDefMetadataTableRow)typeDefs[i]).Extends == ourCi)
+
+                    if (row.Extends == ourCi)
                     {
                         inheritingTypes.Add(
                             (TypeDef)map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i])
                             );
+                        continue; // a type can only be extending once so if we find ourselves we are done
                     }
                 }
 			}
