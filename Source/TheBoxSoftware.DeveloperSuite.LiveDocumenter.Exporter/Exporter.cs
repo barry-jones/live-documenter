@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Exporter {
 							}
 						}
 						
-						Logger.Verbose(string.Format("The export completed at {0}, taking {1} seconds.\n", end, end.Subtract(start).TotalSeconds.ToString()));
+						Logger.Verbose(string.Format("The export completed at {0}, taking {1}.\n", end, end.Subtract(start).ToString()));
 					}
 				}
 			}

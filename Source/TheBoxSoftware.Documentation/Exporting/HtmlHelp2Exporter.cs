@@ -193,14 +193,26 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		/// property <see cref="HtmlHelpCompilerFilePath"/> is set.
 		/// </summary>
 		/// <returns>Boolean indicating if the compiler was found.</returns>
-		private bool FindHtmlHelpCompiler() {
+		private bool FindHtmlHelpCompiler() 
+        {
+            // test local paths for compiler
 			string compiler = Path.Combine(
 					Environment.GetFolderPath(
-						Environment.SpecialFolder.ProgramFiles),
+                        Environment.SpecialFolder.ProgramFilesX86),
 					@"Common Files\microsoft shared\Help 2.0 Compiler\hxcomp.exe");
-			if (File.Exists(compiler)) {
+			if (File.Exists(compiler)) 
+            {
 				this.HtmlHelpCompilerFilePath = compiler;
 			}
+
+            compiler = Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.ProgramFiles),
+                    @"Common Files\microsoft shared\Help 2.0 Compiler\hxcomp.exe");
+            if (File.Exists(compiler))
+            {
+                this.HtmlHelpCompilerFilePath = compiler;
+            }
 
 			// Not in default directory check in registry
 			if (string.IsNullOrEmpty(this.HtmlHelpCompilerFilePath)) {

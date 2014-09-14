@@ -201,7 +201,7 @@ namespace TheBoxSoftware.Documentation.Exporting {
 		private bool FindHtmlHelpCompiler() {
 			string compiler = Path.Combine(
 					Environment.GetFolderPath(
-						Environment.SpecialFolder.ProgramFiles),
+						Environment.SpecialFolder.ProgramFilesX86),
 					@"HTML Help Workshop\hhc.exe");
 			if (File.Exists(compiler)) {
 				this.HtmlHelpCompilerFilePath = compiler;
