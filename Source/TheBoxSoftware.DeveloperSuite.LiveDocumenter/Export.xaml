@@ -25,9 +25,9 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="43.11" />
 		</Grid.RowDefinitions>
-		
-    	<Border BorderBrush="#FFB7ABAB" BorderThickness="0,0,0,1" Background="#FF212120" Margin="0,0,0,-0.04" Height="67.9">
-    		<TextBlock Margin="16,28,0,-1" Text="Export" TextWrapping="Wrap" FontFamily="Georgia" FontSize="24" Foreground="#FFA67D3D"/>
+
+        <Border BorderBrush="#FF57bfcb" BorderThickness="0,0,0,1" Background="#FF57bfcb" Margin="0,0,0,-0.04" Height="67.9">
+    		<TextBlock Margin="16,16,0,11" Text="Export" TextWrapping="Wrap" FontSize="24" Foreground="#FFFFFFFF"/>
     	</Border>
 
         <Canvas x:Name="exportProgress" Grid.Row="1" Opacity="0" Margin="0,0.055,0,54.865">

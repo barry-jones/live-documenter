@@ -10,9 +10,9 @@
 			<RowDefinition Height="0.614*" />
 			<RowDefinition Height="0.152*" />
 		</Grid.RowDefinitions>
-		
-    	<Border BorderBrush="#FFB7ABAB" BorderThickness="0,0,0,1" Background="#FF212120" Margin="0,0,0,-0.04" Height="67.9">
-    		<TextBlock Margin="16,28,0,-1" Text="Export Settings" TextWrapping="Wrap" FontFamily="Georgia" FontSize="24" Foreground="#FFA67D3D"/>
+
+        <Border BorderBrush="#FF57bfcb" BorderThickness="0,0,0,1" Background="#FF57bfcb" Margin="0,0,0,-0.04" Height="67.9">
+    		<TextBlock Margin="16,15,0,12" Text="Export Settings" TextWrapping="Wrap" FontSize="24" Foreground="#FFFFFFFF"/>
     	</Border>
 
         <Canvas Grid.Row="1">

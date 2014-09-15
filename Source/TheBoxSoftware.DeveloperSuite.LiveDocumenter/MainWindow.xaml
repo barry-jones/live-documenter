@@ -9,7 +9,7 @@
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
     xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="TheBoxSoftware.DeveloperSuite.LiveDocumenter.MainWindow"
     x:Name="mainWindow"
-    Title="Live Documenter - Beta Release" 
+    Title="Live Documenter" 
     Height="639" 
     Width="969" 
     UseLayoutRounding="True"
@@ -550,8 +550,8 @@
 			    		<RowDefinition Height="*"/>
 			    	</Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" BorderBrush="#FFB7ABAB" BorderThickness="0,0,0,1" Background="#FF212120" Margin="0,0,0,-0.04" Height="67.9">
-                        <TextBlock Margin="16,28,0,-1" Text="Live Documenter" TextWrapping="Wrap" FontFamily="Georgia" FontSize="24" Foreground="#FFA67D3D"/>
+                    <Border Grid.Row="0" BorderBrush="#FF57bfcb" BorderThickness="0,0,0,1" Background="#FF57bfcb" Margin="0,0,0,-0.04" Height="67.9">
+                        <TextBlock Margin="16,17,0,10" Text="Live Documenter" TextWrapping="Wrap" FontSize="24" Foreground="#FFFFFFFF"/>
                     </Border>
 
                     <Grid Grid.Row="1" Background="#FFEFEEE8" RenderTransformOrigin="0.501,0.51">
@@ -566,7 +566,7 @@
 						
 	                    <StackPanel Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
 	                    	<TextBlock Style="{DynamicResource header}"><Run Text="Welcome to the Live Documenter"/></TextBlock>
-	                    	<TextBlock><Run Text="To start you can open a solution, project or library. Or select a recent file from the recent file list."/></TextBlock>
+	                    	<TextBlock FontSize="14"><Run Text="To start you can open a solution, project or library. Or select a recent file from the recent file list."/></TextBlock>
 	                    </StackPanel>
 						
 	                    <StackPanel Margin="10" Grid.Row="1" Grid.Column="0" x:Name="recent">

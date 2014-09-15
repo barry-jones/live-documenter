@@ -26,7 +26,7 @@
                    TextWrapping="Wrap" 
                    Grid.Column="1" 
                    Foreground="#FF212120" d:LayoutOverrides="Width, GridBox" Grid.Row="1" Grid.ColumnSpan="2"><Run Text="v 0.0.0000.0000" x:Name="version" Language="en-gb"/></TextBlock>
-        <TextBlock Margin="0,59.045,17.941,64" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Grid.ColumnSpan="2" d:LayoutOverrides="GridBox"><Run Text="Copyright © The Box Software Ltd 2010-2011"/><LineBreak/><Run Text="All rights reserved."/><LineBreak/><Run Text=""/><LineBreak/></TextBlock>
+        <TextBlock Margin="0,59.045,17.941,64" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Grid.ColumnSpan="2" d:LayoutOverrides="GridBox"><Run Text="Copyright © The Box Software Ltd 2010"/><LineBreak/><Run Text="All rights reserved."/><LineBreak/><Run Text=""/><LineBreak/></TextBlock>
     	<TextBlock Margin="0,0,17.941,26" Grid.Column="1" Grid.Row="1" Text="Please visit www.livedocumenter.com for more information and support." TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="24" d:LayoutOverrides="GridBox"/>
     	<TextBlock 
     		FontFamily="Arial" 
