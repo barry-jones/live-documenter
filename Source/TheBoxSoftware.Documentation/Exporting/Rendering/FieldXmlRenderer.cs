@@ -28,6 +28,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
 			writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
+            writer.WriteAttributeString("cref", crefPath.ToString());
 			writer.WriteStartElement("name");
 			writer.WriteAttributeString("safename", Exporter.CreateSafeName(this.member.Name));
 			writer.WriteString(this.member.Name);
@@ -37,6 +38,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Type.Namespace);
 			writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
 			writer.WriteAttributeString("name", namespaceEntry.SubKey);
+            writer.WriteAttributeString("cref", string.Format("N:{0}", this.member.Type.Namespace));
 			writer.WriteString(this.member.Type.Namespace);
 			writer.WriteEndElement();
 			writer.WriteStartElement("assembly");

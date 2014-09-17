@@ -33,6 +33,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
 			writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
+            this.WriteCref(this.AssociatedEntry, writer);
 
 			writer.WriteStartElement("assembly");
 			writer.WriteAttributeString("file", System.IO.Path.GetFileName(this.member.Assembly.File.FileName));
@@ -49,6 +50,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 			Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Namespace);
 			writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
 			writer.WriteAttributeString("name", namespaceEntry.SubKey);
+            writer.WriteAttributeString("cref", string.Format("N:{0}", this.member.Namespace));
 			writer.WriteString(this.member.Namespace);
 			writer.WriteEndElement();
 
@@ -215,6 +217,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 			writer.WriteAttributeString("subId", string.Empty);
 			writer.WriteAttributeString("type", type);
 			writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(entryMember));
+            writer.WriteAttributeString("cref", currentPath.ToString());
 
 			writer.WriteStartElement("name");
 			writer.WriteString(displayName);
@@ -277,6 +280,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 				TypeRef current = tree[index];
 				if (current is TypeDef) {	// only provide ids for internal classes
 					writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
+                    writer.WriteAttributeString("cref", CRefPath.Create(current).ToString());
 				}
 				writer.WriteAttributeString("name", current.GetDisplayName(true));
 
@@ -301,6 +305,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 						writer.WriteStartElement("type");
 						if (current is TypeDef) {	// only provide ids for internal classes not filtered
 							writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
+                            writer.WriteAttributeString("cref", CRefPath.Create(current).ToString());
 						}
 						writer.WriteAttributeString("name", current.GetDisplayName(true));
 						writer.WriteEndElement();

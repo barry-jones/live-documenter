@@ -19,7 +19,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 		/// </summary>
 		/// <param name="entry">The associated entry.</param>
 		/// <exception cref="InvalidOperationException">Thrown when an Entry with an invalid Item is provided.</exception>
-		public AssemblyXmlRenderer(Entry entry) {
+		public AssemblyXmlRenderer(Entry entry)
+        {
 			this.member = entry.Item as AssemblyDef;
 			this.xmlComments = entry.XmlCommentFile;
 			this.AssociatedEntry = entry;
@@ -48,6 +49,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 				writer.WriteAttributeString("name", current.Name);
 				writer.WriteAttributeString("key", current.Key.ToString());
 				writer.WriteAttributeString("type", "namespace");
+                if(this.IncludeCRefPath)
+                    writer.WriteAttributeString("cref", string.Format("N:{0}", current.Name));
 				writer.WriteEndElement(); // parent
 			}
 

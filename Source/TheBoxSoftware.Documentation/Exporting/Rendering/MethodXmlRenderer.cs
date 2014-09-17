@@ -36,6 +36,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
 			writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
+            writer.WriteAttributeString("cref", crefPath.ToString());
 			writer.WriteStartElement("name");
 			writer.WriteAttributeString("safename", Exporter.CreateSafeName(displayName));
 			writer.WriteString(this.member.GetDisplayName(false));
@@ -45,6 +46,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Type.Namespace);
 			writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
 			writer.WriteAttributeString("name", namespaceEntry.SubKey);
+            writer.WriteAttributeString("cref", string.Format("N:{0}", this.member.Type.Namespace));
 			writer.WriteString(this.member.Type.Namespace);
 			writer.WriteEndElement();
 			writer.WriteStartElement("assembly");
@@ -70,6 +72,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 					writer.WriteStartElement("type");
 					if (foundEntry != null) {
 						writer.WriteAttributeString("key", foundEntry.GetGloballyUniqueId().ToString());
+                        writer.WriteAttributeString("cref", CRefPath.Create(foundEntry).ToString());
 					}
 					writer.WriteString(parameterType.GetDisplayName(false));
 					writer.WriteEndElement(); // type

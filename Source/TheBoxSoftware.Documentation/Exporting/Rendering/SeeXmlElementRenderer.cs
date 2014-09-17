@@ -36,6 +36,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 				if(entry != null) {
 					displayName = entry.Name;					
 					writer.WriteAttributeString("id", entry.Key.ToString());
+                    writer.WriteAttributeString("cref", this.element.Member.ToString());
 
 					switch (this.element.Member.PathType) {
 						case CRefTypes.Namespace:
@@ -46,13 +47,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 						// a more appropriate display name
 						case CRefTypes.Method:
 							MethodDef method = entry.Item as MethodDef;
-							if (method != null) {
+							if (method != null)
+                            {
 								displayName = method.GetDisplayName(false);
 							}
 							break;
 						case CRefTypes.Type:
 							TypeDef def = entry.Item as TypeDef;
-							if (def != null) {
+							if (def != null) 
+                            {
 								displayName = def.GetDisplayName(false);
 							}
 							break;

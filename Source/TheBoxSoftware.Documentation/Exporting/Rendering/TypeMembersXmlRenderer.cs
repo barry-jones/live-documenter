@@ -28,6 +28,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteStartElement("members");
 			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
 			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
+            this.WriteCref(this.AssociatedEntry, writer);
 
 			string typeDisplayName = this.containingType.GetDisplayName(false);
 			string pageDisplayName = string.Format("{0} {1}", typeDisplayName, this.AssociatedEntry.Name);
@@ -80,6 +81,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 			writer.WriteAttributeString("subId", string.Empty);
 			writer.WriteAttributeString("type", type);
 			writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(entryMember));
+            writer.WriteAttributeString("cref", currentPath.ToString());
 
 			writer.WriteStartElement("name");
 			writer.WriteString(displayName);

@@ -78,19 +78,5 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering {
 
 			writer.WriteEndElement();
 		}
-
-        // checks if the entry is a ReflectedMember or a namespace and generates the cref attribute
-        // fix: change this so it only outputs when I want it to!
-        private void WriteCref(Entry entry, System.Xml.XmlWriter writer) {
-            // see DocumentMapper to see how entry.Item is populated
-            if (entry.Item is ReflectedMember && !(entry.Item is AssemblyDef) ) { // assemblies cant be cref'd
-                ReflectedMember member = entry.Item as ReflectedMember;
-                CRefPath path = CRefPath.Create(member);
-                writer.WriteAttributeString("cref", path.ToString());
-            }
-            else if (entry.Item is KeyValuePair<string, List<TypeDef>>) { // this is a namespace
-                writer.WriteAttributeString("cref", "N:" + ((KeyValuePair<string, List<TypeDef>>)entry.Item).Key);
-            }
-        }
 	}
 }

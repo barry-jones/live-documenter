@@ -205,22 +205,34 @@ namespace TheBoxSoftware.API.LiveDocumenter
             if (null == entry)
                 throw new ArgumentNullException("The provided Entry was null.");
 
-            StringBuilder output = new StringBuilder();
-            using (XmlWriter writer = XmlWriter.Create(output))
+            string stringOutput = string.Empty;
+
+            using (MemoryStream output = new MemoryStream())
             {
-                XmlRenderer r = XmlRenderer.Create(entry, this.baseDocument);
-                if (r == null)
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Encoding = Encoding.UTF8;
+
+                using (XmlWriter writer = XmlWriter.Create(output, settings))
                 {
-                    return null;    // simply return a null reference if we cant find the renderer for the entry
+                    XmlRenderer r = XmlRenderer.Create(entry, this.baseDocument);
+                    if (r == null)
+                    {
+                        return null;    // simply return a null reference if we cant find the renderer for the entry
+                    }
+
+                    r.Render(writer);
+
+                    writer.Flush();
+                    writer.Close();
+
+                    // get memory stream contents as a string
+                    output.Seek(0, SeekOrigin.Begin);
+                    StreamReader s = new StreamReader(output);
+                    stringOutput = s.ReadToEnd();
                 }
-
-                r.Render(writer);
-
-                writer.Flush();
-                writer.Close();
             }
 
-            return output.ToString();
+            return stringOutput;
         }
 
         /// <summary>
