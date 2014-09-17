@@ -18,6 +18,8 @@ namespace Test.Console.API.LiveDocumentor {
             p.GetFullTableOfContents();
             p.OutputTree();
             p.OutputParents();
+
+            System.Console.ReadLine();
         }
 
         internal static void Log(string details)
@@ -30,7 +32,7 @@ namespace Test.Console.API.LiveDocumentor {
             this.docs = new Documentation(@"C:\Users\Barry\Documents\Current Projects\Live Documenter\The Box Software Developer Suite.sln");
             Log("Loading documentation ... ");
             this.docs.Load();
-            Log("[done]\n");
+            Log("[done]\n");            
         }
 
         private void SearchByCref() {

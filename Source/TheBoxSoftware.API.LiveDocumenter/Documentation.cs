@@ -231,16 +231,23 @@ namespace TheBoxSoftware.API.LiveDocumenter
             string file = "livedocumenter.lic";
             Licensing.License license;
 
-            if (!File.Exists(file))
+            // bug #18 need to check the location of this library for the licence file as this could be run under 
+            // many different services
+            string assemblyFile = System.IO.Path.GetDirectoryName(
+                new System.Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath
+                );
+            string licenceFile = assemblyFile + "\\" + file;
+
+            if (!File.Exists(licenceFile))
             {
                 throw new LicenseException(
-                    string.Format("No license was located. Please add your license file '{0}' to the same directory as this executable.\n\n", file)
+                    string.Format("No license was located in {1}. Please add your license file '{0}' to the same directory as this executable.\n\n", file, licenceFile)
                     );
             }
 
             try
-            {
-                license = Licensing.License.Decrypt(file);
+            {                
+                license = Licensing.License.Decrypt(licenceFile);
             }
             catch (Exception ex)
             {

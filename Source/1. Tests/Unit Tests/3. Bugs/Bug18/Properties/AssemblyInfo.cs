@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TheBoxSoftware.API.LiveDocumenter")]
+[assembly: AssemblyTitle("Bug18")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("The Box Software Ltd")]
-[assembly: AssemblyProduct("TheBoxSoftware.API.LiveDocumenter")]
-[assembly: AssemblyCopyright("Copyright © The Box Software Ltd 2009")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Bug18")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7b1d25d2-88bd-4ee7-b1d6-31d8fff77f86")]
+[assembly: Guid("4b2b148c-28e5-4476-9bbd-b6e718de920e")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,10 +29,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers 
+// You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0.1")]
-
