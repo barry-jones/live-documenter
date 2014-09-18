@@ -66,7 +66,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         }
 
         /// <summary>
-        /// Initialises the state of the documentation class and prepares it so documentation can be accessed.
+        /// Initialises the state of the documentation class and prepares it so <see cref="Documentation" /> can be accessed.
         /// </summary>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="Load"]/*'/>
         // sets default settings for the documentation and loads it to memory, this is generally

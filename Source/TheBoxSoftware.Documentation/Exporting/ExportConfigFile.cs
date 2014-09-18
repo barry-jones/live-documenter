@@ -37,9 +37,13 @@ namespace TheBoxSoftware.Documentation.Exporting {
 					xmlDocument.LoadXml(new StreamReader(ms).ReadToEnd());
 					ms.Close();
 
-					this.Name = xmlDocument.SelectSingleNode("/export/name").InnerText;
-					this.Version = xmlDocument.SelectSingleNode("/export/version").InnerText;
-					this.Exporter = this.UnpackExporter(xmlDocument.SelectSingleNode("/export/exporter").InnerText);
+                    XmlNode nameNode = xmlDocument.SelectSingleNode("/export/name");
+                    if(nameNode != null)
+					    this.Name = nameNode.InnerText;
+                    XmlNode versionNode = xmlDocument.SelectSingleNode("/export/version");
+                    if(versionNode != null)
+					    this.Version = versionNode.InnerText;
+					this.Exporter = this.UnpackExporter(xmlDocument.SelectSingleNode("/export/exporter"));
 					XmlNode descriptionNode = xmlDocument.SelectSingleNode("/export/description");
 					if (descriptionNode != null) {
 						this.Description = descriptionNode.InnerText;
@@ -190,10 +194,11 @@ namespace TheBoxSoftware.Documentation.Exporting {
 			return urls;
 		}
 
-		private Exporters UnpackExporter(string value) {
-			if (value == null) value = string.Empty;
+		private Exporters UnpackExporter(XmlNode value) {
+            string content = string.Empty;
+            if (value != null) content = value.InnerText;
 
-			switch (value.ToLower()) {
+			switch (content.ToLower()) {
 				case "web":
 					return Exporters.Website;
 				case "html1":
@@ -229,6 +234,8 @@ namespace TheBoxSoftware.Documentation.Exporting {
 				// does the xslt link point to a file in the zip
 				this.IsValid = this.IsValid && container.ContainsEntry(xsltNode.InnerText);
 			}
+
+            this.IsValid = this.IsValid && !string.IsNullOrEmpty(this.Name);
 		}
 		#endregion
 	}

@@ -15,24 +15,29 @@
         All returned results are provided in XML format, the specification for this format
         can be found <a href="#">here</a>.
       </para>
-      <example>
-        <code>
-          using TheBoxSoftware.API.LiveDocumenter
-
-          void Main()
-          {
-          Documentation ourDocs = new Documentation("c:\\Build\Output\VsSolution.sln");
-          ourDocs.Load();
-
-          // retrieve the table of contents
-          XmlDocument toc = ourDocs.GetTableOfContents();
-
-          // retrieve a single page of documentation
-          XmlDocument type = ourDocs.Search();
-          }
-        </code>
-      </example>
     </remarks>
+    <example>
+      <para>Documentation can be instantiated simply by passing in a Visual Studio solution
+        file, project or .NET library. Further you can create Live Documenter project files
+        and load those for a more flexability.
+      </para>
+      <para>
+        You will need to call <see cref="Load" /> to load the documentation in to memory.
+      </para>
+      <code>
+using TheBoxSoftware.API.LiveDocumenter
+{
+    void Main()
+    {
+        Documentation fromSolution = new Documentation("c:\\Build\Output\VsSolution.sln");
+        fromSolution.Load();
+        
+        Documentation fromLdProj = new Documentation("c:\\projectoutput.ldproj");
+        fromLdProj.Load();
+    }
+}
+      </code>
+    </example>
   </member>
 
   <member name="Documentation.ctor">
@@ -81,6 +86,7 @@
 
   <member name="Load">
     <remarks>
+      <para>If this method is not called before trying to search and retrieve documentation you will receive a <see cref="DocumentationException" /></para>
       <note>
         The load method, loads the documentation in to memory. Instantiating documentation can be a memory intensive activity,
         where possible you should create cacheing mechanisms to only retrieve documentation when it has changed.

@@ -25,6 +25,7 @@ namespace TheBoxSoftware.API.LiveDocumenter {
         /// Retrieves the XmlDocument for the provided <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
+        /// <param name="subKey">The Entry.SubKey if required to get the documentation for.</param>
         /// <returns>The ContentEntry for the specified Key, or null if not found.</returns>
         /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.key"]/*'/>
         public ContentEntry GetDocumentationFor(long key, string subKey)

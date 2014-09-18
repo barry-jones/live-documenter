@@ -2,4 +2,27 @@
 <members>
   <member name="tableofcontents">
   </member>
+
+  <member name="GetDocumentationFor.key">
+    <remarks>
+      <para>Each <see cref="ContentEntry" /> in the documentation provides a Key and SubKey, the Key is a unique identifier
+        for a type while the SubKey helps to differentiate between groups of content for that type; such as the List of members.
+      </para>
+      <example>
+        <para>
+          So to retrieve the complete list of methods for a types you may do the following.
+        </para>
+        <code>
+Documentation docs = new Documentation("mysolution.sln");
+TableOfContents tocs = docs.GetTableOfContents();
+
+ContentEntryCollection methods = tocs.GetDocumentationFor(123456, "Methods");
+        </code>
+      </example>
+      <para>
+        The SubKey is not required so passing null or an empty string to that parameter will get the type or member
+        which the unique key related to.
+      </para>
+    </remarks>
+  </member>
 </members>
