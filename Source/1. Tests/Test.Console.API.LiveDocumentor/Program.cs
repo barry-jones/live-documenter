@@ -101,7 +101,7 @@ namespace Test.Console.API.LiveDocumentor {
             Log("\nOutput parents using GetParents method\n");
             List<ContentEntry> parents;
             TableOfContents contents = this.docs.GetTableOfContents();
-            ContentEntry entry = contents.GetDocumentationFor("M:TheBoxSoftware.Reflection.AssemblyDef.#ctor");
+            ContentEntry entry = contents.GetEntryFor("M:TheBoxSoftware.Reflection.AssemblyDef.#ctor");
 
             parents = entry.GetParents();
 
@@ -116,7 +116,7 @@ namespace Test.Console.API.LiveDocumentor {
             Log("\nOutput parents and direct children\n");
 
             TableOfContents contents = this.docs.GetTableOfContents();
-            ContentEntry entry = contents.GetDocumentationFor("T:TheBoxSoftware.Reflection.AssemblyDef");
+            ContentEntry entry = contents.GetEntryFor("T:TheBoxSoftware.Reflection.AssemblyDef");
             int level = 0;
             
             // get the parents

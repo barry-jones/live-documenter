@@ -42,7 +42,7 @@ namespace UT.TheBoxSoftware.API.LiveDocumenter
             TableOfContents toc = documentation.GetTableOfContents();
 
             // find a key to search for
-            ContentEntry toFind = toc.GetDocumentationFor("T:DocumentationTest.AllOutputTypesClass");
+            ContentEntry toFind = toc.GetEntryFor("T:DocumentationTest.AllOutputTypesClass");
 
             // test find
             string found = documentation.GetDocumentationFor(toFind.Key);
@@ -98,7 +98,7 @@ namespace UT.TheBoxSoftware.API.LiveDocumenter
             TableOfContents toc = documentation.GetTableOfContents();
 
             // find a key to search for
-            ContentEntry toFind = toc.GetDocumentationFor("T:DocumentationTest.AllOutputTypesClass");
+            ContentEntry toFind = toc.GetEntryFor("T:DocumentationTest.AllOutputTypesClass");
 
             // test find
             string found = documentation.GetDocumentationFor(toFind);

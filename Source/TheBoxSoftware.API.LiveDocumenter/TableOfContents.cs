@@ -22,25 +22,25 @@ namespace TheBoxSoftware.API.LiveDocumenter {
         }
 
         /// <summary>
-        /// Retrieves the XmlDocument for the provided <paramref name="key"/>.
+        /// Retrieves the ContentEntry for the provided <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The unique Entry.Key to retrieve the documentation for.</param>
         /// <param name="subKey">The Entry.SubKey if required to get the documentation for.</param>
         /// <returns>The ContentEntry for the specified Key, or null if not found.</returns>
-        /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.key"]/*'/>
-        public ContentEntry GetDocumentationFor(long key, string subKey)
+        /// <include file='Documentation\tableofcontents.xml' path='members/member[@name="GetEntryFor.key"]/*'/>
+        public ContentEntry GetEntryFor(long key, string subKey)
         {
             Entry found = this.document.Find(key, subKey);
             return found == null ? null : new ContentEntry(found);
         }
 
         /// <summary>
-        /// Retrieves the XmlDocument for the provided <paramref name="crefPath"/>.
+        /// Retrieves the ContentEntry for the provided <paramref name="crefPath"/>.
         /// </summary>
         /// <param name="crefPath">The CRefPath to retrieve the documentation for.</param>
         /// <returns>The ContentEntry for the specified crefpath or null if not found.</returns>
-        /// <include file='Documentation\documentation.xml' path='members/member[@name="GetDocumentationFor.cref"]/*'/>
-        public ContentEntry GetDocumentationFor(string crefPath)
+        /// <include file='Documentation\tableofcontents.xml' path='members/member[@name="GetEntryFor.cref"]/*'/>
+        public ContentEntry GetEntryFor(string crefPath)
         {
             Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Parse(crefPath);
             if (path.PathType == Reflection.Comments.CRefTypes.Error)

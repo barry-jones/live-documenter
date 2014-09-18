@@ -3,7 +3,7 @@
   <member name="tableofcontents">
   </member>
 
-  <member name="GetDocumentationFor.key">
+  <member name="GetEntryFor.key">
     <remarks>
       <para>Each <see cref="ContentEntry" /> in the documentation provides a Key and SubKey, the Key is a unique identifier
         for a type while the SubKey helps to differentiate between groups of content for that type; such as the List of members.
@@ -16,13 +16,30 @@
 Documentation docs = new Documentation("mysolution.sln");
 TableOfContents tocs = docs.GetTableOfContents();
 
-ContentEntryCollection methods = tocs.GetDocumentationFor(123456, "Methods");
+ContentEntry method = tocs.GetEntryFor(123456, "Methods");
         </code>
       </example>
       <para>
         The SubKey is not required so passing null or an empty string to that parameter will get the type or member
         which the unique key related to.
       </para>
+    </remarks>
+  </member>
+
+  <member name="GetEntryFor.cref">
+    <remarks>
+      <para>
+        Each <see cref="ContentEntry" /> can be found by a unique cref path.
+      </para>
+      <example>
+        <para>To retrieve a specific type the following can be used.</para>
+        <code>
+Documentation docs = new Documentation("mysolution.sln");
+TableOfContents tocs = docs.GetTableOfContents();
+
+ContentEntry method = tocs.GetEntryFor("T:TheBoxSoftware.API.LiveDocumenter.Documentation);
+        </code>
+      </example>
     </remarks>
   </member>
 </members>
