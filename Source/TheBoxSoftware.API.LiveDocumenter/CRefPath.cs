@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TheBoxSoftware.API.LiveDocumenter {
+namespace TheBoxSoftware.API.LiveDocumenter
+{
 
 	/// <summary>
 	/// Class that handles and parses a CRef comment path. A CRef path can contain
 	/// a fully qualified link to a type, property, method etc in an assembly.
 	/// </summary>
 	[System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
-	public sealed class CRefPath {
+	public sealed class CRefPath 
+    {
 		private string crefPath;
 		private string returnType;
 		private bool isOperator = false;
@@ -28,7 +30,8 @@ namespace TheBoxSoftware.API.LiveDocumenter {
 		/// </summary>
 		/// <param name="crefPath">The cref path to control.</param>
 		/// <exception cref="ArgumentNullException">The specified path was null or empty.</exception>
-		public static CRefPath Parse(string crefPath) {
+		public static CRefPath Parse(string crefPath) 
+        {
 			if (string.IsNullOrEmpty(crefPath))
 				throw new ArgumentNullException("path");
 			CRefPath parsedPath = new CRefPath();
@@ -41,26 +44,33 @@ namespace TheBoxSoftware.API.LiveDocumenter {
 		/// Parses the contents of the contained path and stores the details in the
 		/// classes properties.
 		/// </summary>
-		private void Parse() {
+		private void Parse() 
+        {
 			this.ParseType();
 
-			if (this.PathType != CRefTypes.Error) {
+			if (this.PathType != CRefTypes.Error)
+            {
 				string[] items;
-				if (this.PathType != CRefTypes.Method) {
+				if (this.PathType != CRefTypes.Method)
+                {
 					items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1).Split('.');
 				}
-				else {
+				else
+                {
 					int startParams = this.crefPath.IndexOf('(');
-					if (startParams == -1) {
+					if (startParams == -1) 
+                    {
 						items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1).Split('.');
 					}
-					else {
+					else 
+                    {
 						items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1, this.crefPath.IndexOf('(') - 2).Split('.');
 						this.Parameters = this.crefPath.Substring(this.crefPath.IndexOf('('));
 					}
 				}
 
-				switch (this.PathType) {
+				switch (this.PathType)
+                {
 					case CRefTypes.Namespace:
 						this.Namespace = string.Join(".", items);
 						break;
@@ -69,10 +79,12 @@ namespace TheBoxSoftware.API.LiveDocumenter {
 						this.Namespace = string.Join(".", items, 0, items.Length - 1);
 						break;
 					default:
-						if (items.Length - 2 <= 0) {
+						if (items.Length - 2 <= 0)
+                        {
 							this.PathType = CRefTypes.Error;
 						}
-						else {
+						else
+                        {
 							// -2 because the last element is the element name
 							this.TypeName = items[items.Length - 2];
 							this.ElementName = items[items.Length - 1];
@@ -89,14 +101,17 @@ namespace TheBoxSoftware.API.LiveDocumenter {
 		/// <exception cref="NotImplementedException">
 		/// Thrown when the parser finds a type that it can not handle.
 		/// </exception>
-		private void ParseType() {
-			if (this.crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(this.crefPath.Substring(0, this.crefPath.IndexOf(':')))) {
+		private void ParseType() 
+        {
+			if (this.crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(this.crefPath.Substring(0, this.crefPath.IndexOf(':'))))
+            {
 				this.PathType = CRefTypes.Error;
 				return;
 			}
 
 			string typePortion = this.crefPath.Substring(0, this.crefPath.IndexOf(':'));
-			switch (typePortion) {
+			switch (typePortion) 
+            {
 				case CRefConstants.TypeIndicator: this.PathType = CRefTypes.Type; break;
 				case CRefConstants.PropertyTypeIndicator: this.PathType = CRefTypes.Property; break;
 				case CRefConstants.MethodTypeIndicator: this.PathType = CRefTypes.Method; break;
@@ -113,9 +128,11 @@ namespace TheBoxSoftware.API.LiveDocumenter {
 		/// Returns a string representation of this CRefPath.
 		/// </summary>
 		/// <returns>The cref path constructed from the elements.</returns>
-		public override string ToString() {
+		public override string ToString() 
+        {
 			string toString = string.Empty;
-			switch (this.PathType) {
+			switch (this.PathType) 
+            {
 				case CRefTypes.Namespace:
 					toString = string.Format("{0}:{1}",
 						CRefConstants.GetIndicatorFor(this.PathType),
@@ -127,18 +144,21 @@ namespace TheBoxSoftware.API.LiveDocumenter {
 						CRefConstants.GetIndicatorFor(this.PathType),
 						this.Namespace,
 						this.TypeName);
-					if (this.PathType != CRefTypes.Type) {
+					if (this.PathType != CRefTypes.Type)
+                    {
 						typePortion += "." + this.ElementName;
 					}
 					// [#32] - Added code to make cref paths add parameters for
 					//	parameterised properties.
-					if (this.PathType == CRefTypes.Method  || (this.PathType == CRefTypes.Property && this.Parameters != null)) {
+					if (this.PathType == CRefTypes.Method  || (this.PathType == CRefTypes.Property && this.Parameters != null)) 
+                    {
 						typePortion += this.Parameters;
 					}
 
 					// Operators provide the return types after a "~" character as specified in:
 					//	http://msdn.microsoft.com/en-us/library/fsbx0t7x(VS.71).aspx
-					if (this.isOperator && !string.IsNullOrEmpty(this.returnType)) {
+					if (this.isOperator && !string.IsNullOrEmpty(this.returnType)) 
+                    {
 						typePortion += "~";
 						typePortion += this.returnType;
 					}

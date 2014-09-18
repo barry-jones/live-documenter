@@ -6,18 +6,20 @@ using TheBoxSoftware.Documentation;
 using System.Collections;
 using System.Xml;
 
-namespace TheBoxSoftware.API.LiveDocumenter {
-
+namespace TheBoxSoftware.API.LiveDocumenter 
+{
     /// <summary>
     /// Provides access to the table of contents for <see cref="Documentation"/>.
     /// </summary>
     /// <include file='Documentation\tableofcontents.xml' path='members/member[@name="tableofcontents"]/*'/>
-    public sealed class TableOfContents : IEnumerable {
+    public sealed class TableOfContents : IEnumerable
+    {
         private Document document;
 
         // initialises the toc class with the map reference.. this whole class will have
         // to be invalidated when the documentation is reloaded. <HOW?>
-        internal TableOfContents(Document document) {
+        internal TableOfContents(Document document)
+        {
             this.document = document;
         }
 
