@@ -13,6 +13,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
     /// <summary>
     /// Represents an individual entry in the <see cref="Documentation"/>.
     /// </summary>
+    /// <include file='Documentation\contententry.xml' path='members/member[@name="ContentEntry"]/*'/>
     public sealed class ContentEntry
     {
         private TheBoxSoftware.Documentation.Entry entry;                   // the internal representation of the entry data
@@ -26,6 +27,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// Retrieves a list of the parent entries for this ContentEntry
         /// </summary>
         /// <returns>A sequential list of parents or an empty list if the entry has no parents.</returns>
+        /// <include file='Documentation\contententry.xml' path='members/member[@name="GetParents"]/*'/>
         public List<ContentEntry> GetParents()
         {
             List<ContentEntry> parents = new List<ContentEntry>();
@@ -44,6 +46,8 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// <summary>
         /// Gets the unique crefpath for this documentation entry.
         /// </summary>
+        /// <returns>A CrefPath instance that describes this element or an empty CRefPath.</returns>
+        /// <include file='Documentation\contententry.xml' path='members/member[@name="CRefPath"]/*'/>
         public CRefPath CRefPath
         {
             get 

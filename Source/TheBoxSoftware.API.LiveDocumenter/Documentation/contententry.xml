@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<members>
+  <member name="ContentEntry">
+    <remarks>
+      <para>A content entry is a reference to an element in the documentation, some basic informatino about the element is made
+        available - however the main function of this class is to obtain XML content from the <see cref="Documentation" /> class.
+    </para>
+      <para>A secondary function is to obtain information about where this element lay in the document structure, through the user
+      of <see cref="GetParents" /> and <see cref="Children" /> methods. Which in turn return ContentEntrys.
+      </para>
+      <example>
+        <para>ContentEntry instances can be obtained by querying the <see cref="TableOfContents" /> instance. This can be done by
+        the unique identifer for that element or by cref path. The latter is the most preferred due to the fact that across loads
+        the cref path will not change but the id will change each time.</para>
+        <code>
+Documentation docs = new Documentation("c:\mysolution.sln");
+TableOfContents tocs = docs.GetTableOfContents(); // this TableOfContent instance is the 
+                                                  // best way to find elements in the documentation
+
+ContentEntry fromCref = tocs.GetEntryFor("T:TheBoxSoftware.API.LiveDocumenter.Documentation");
+ContentEntry fromKey = tocs.GetEntryFor(123456, string.Empty);  // this number will change all the time.
+        </code>
+      </example>
+    </remarks>
+  </member>
+
+  <member name="GetParents">
+    <remarks>
+      <para>Calling this method will return a sequential list of parents for this ContentEntry. Parents are listed from top to bottom
+      in order of distance from this element.</para>
+      <example>
+        <para>So for example, given an element defined as below:</para>
+        <code>
+namespace TestNamespace
+{
+    public class ParentClass
+    {
+        public class ChildClass
+        {
+            public class ClassForOurContentEntry
+            {
+            }
+        }
+    }
+}
+        </code>
+        <para>The GetParents method would return ContentEntrys in the following order for a ContentEntry that points to the 
+        class <c>ClassForOutContentEntry</c>.</para>
+        <code>
+1. TestNamespace
+2. ParentClass
+3. ChildClass
+        </code>
+      </example>
+    </remarks>
+  </member>
+</members>
