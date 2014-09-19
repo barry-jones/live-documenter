@@ -2,30 +2,27 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3DF1C48A-8DD2-4014-86BC-B5C1465DD58B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D0EA0E7F-9B62-4FC5-9E4D-0E1D9ECEABE6}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Test.Console.LiveDocumenter</RootNamespace>
-    <AssemblyName>Test.Console.LiveDocumenter</AssemblyName>
+    <RootNamespace>UT.TheBoxSoftware.API.LiveDocumenter</RootNamespace>
+    <AssemblyName>UT.TheBoxSoftware.API.LiveDocumenter</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,18 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Documentation_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestCrefPath.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj">
-      <Project>{0B3F2A4C-8DDF-4DAB-B676-44C927921EFF}</Project>
-      <Name>TheBoxSoftware.Documentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
-      <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
-      <Name>TheBoxSoftware.Reflection</Name>
+    <ProjectReference Include="..\..\..\TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumentor.csproj">
+      <Project>{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}</Project>
+      <Name>TheBoxSoftware.API.LiveDocumentor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
