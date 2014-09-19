@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TheBoxSoftware.Reflection.Comments {
+namespace TheBoxSoftware.Reflection.Comments
+{
 	/// <summary>
 	/// Set of constants that define all of the different cref identifiers
 	/// that can be used in code comments.
 	/// </summary>
-	internal static class CRefConstants {
+	internal static class CRefConstants
+    {
 		/// <summary>
 		/// Constant that defines a field reference.
 		/// </summary>
@@ -47,7 +49,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// The provided constant in the enumeration <paramref name="type"/> has
 		/// not been implemented.
 		/// </exception>
-		public static string GetIndicatorFor(CRefTypes type) {
+		public static string GetIndicatorFor(CRefTypes type)
+        {
 			switch (type) {
 				case CRefTypes.Field: return CRefConstants.FieldTypeIndicator;
 				case CRefTypes.Method: return CRefConstants.MethodTypeIndicator;

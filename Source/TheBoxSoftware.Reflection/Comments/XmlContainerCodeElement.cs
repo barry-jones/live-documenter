@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace TheBoxSoftware.Reflection.Comments {
-	public class XmlContainerCodeElement : XmlCodeElement {
+namespace TheBoxSoftware.Reflection.Comments 
+{
+	public class XmlContainerCodeElement : XmlCodeElement 
+    {
 		/// <summary>
 		/// Initialises a new instance of the XmlContainerCodeElement class.
 		/// </summary>
 		protected XmlContainerCodeElement(XmlCodeElements element)
-			: base(element) {
+			: base(element)
+        {
 			this.Elements = new XmlCodeElementCollection();
 		}
 
@@ -29,7 +32,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="parentNode">The parent node to parse the xml code elements from.</param>
 		/// <returns>The collection of elements.</returns>
-		internal static XmlCodeElementCollection ParseChildren(XmlNode parentNode) {
+		internal static XmlCodeElementCollection ParseChildren(XmlNode parentNode)
+        {
 			XmlContainerCodeElement container = new XmlContainerCodeElement();
 			return container.Parse(parentNode);
 		}
@@ -40,20 +44,26 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="parentNode">The block level element to parse.</param>
 		/// <returns>The collection of parsed instances.</returns>
-		protected XmlCodeElementCollection Parse(XmlNode parentNode) {
+		protected XmlCodeElementCollection Parse(XmlNode parentNode)
+        {
 			XmlCodeElementCollection childElements = new XmlCodeElementCollection();
 			XmlNode currentChild;
 
 			int childNodeCount = parentNode.ChildNodes.Count;
-			for (int i = 0; i < childNodeCount; i++) {
+			for (int i = 0; i < childNodeCount; i++)
+            {
 				currentChild = parentNode.ChildNodes[i];
-				if (!XmlCodeElement.DefinedElements.ContainsKey(currentChild.Name)) {
+				if (!XmlCodeElement.DefinedElements.ContainsKey(currentChild.Name)) 
+                {
 					System.Diagnostics.Debug.WriteLine(string.Format("The current element type '{0}' is not supported", currentChild.Name));
 				}
-				else {
+				else 
+                {
 					XmlCodeElements type = XmlCodeElement.DefinedElements[currentChild.Name.ToLower()];
-					try {
-						switch (type) {
+					try
+                    {
+						switch (type)
+                        {
 							case XmlCodeElements.B: childElements.Add(new BoldXmlCodeElement(currentChild)); break;
 							case XmlCodeElements.C: childElements.Add(new CXmlCodeElement(currentChild)); break;
 							case XmlCodeElements.Code: childElements.Add(new CodeXmlCodeElement(currentChild)); break;
@@ -83,7 +93,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 								break;
 						}
 					}
-					catch (AttributeRequiredException ex) {
+					catch (AttributeRequiredException ex) 
+                    {
 						childElements.Add(new ErrorXmlCodeElement(ex));
 					}
 				}

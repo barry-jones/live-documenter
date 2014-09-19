@@ -5,19 +5,24 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace TheBoxSoftware.Reflection.Comments {
+namespace TheBoxSoftware.Reflection.Comments
+{
 	/// <summary>
 	/// A container and manager class for the xml code comments files associated
 	/// with libraries.
 	/// </summary>
-	public class XmlCodeCommentFile {
+	public class XmlCodeCommentFile
+    {
+        // 8 bytes
 		private string xmlCommentFileName;
+        private bool exists;
 
 		/// <summary>
 		/// Initialises a new instance of the XmlCodeCommentFile
 		/// </summary>
 		/// <param name="xmlCommentFile">The file to parse.</param>
-		public XmlCodeCommentFile(string xmlCommentFile) {
+		public XmlCodeCommentFile(string xmlCommentFile) 
+        {
 			this.xmlCommentFileName = xmlCommentFile;
 			this.Exists = System.IO.File.Exists(xmlCommentFile);
 		}
@@ -32,7 +37,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="forMember">The CRefPath to read the xml code comments for.</param>
 		/// <returns>The <see cref="XmlCodeComment"/>.</returns>
-		public XmlCodeComment ReadComment(CRefPath forMember) {
+		public XmlCodeComment ReadComment(CRefPath forMember)
+        {
 			string xpath = string.Format(
 					"/doc/members/member[@name=\"{0}\"]",
 					forMember.ToString()
@@ -47,7 +53,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="xpath">The xpath path to load the comments of.</param>
 		/// <returns>The XmlCodeComment</returns>
-		public XmlCodeComment ReadComment(string xpath) {
+		public XmlCodeComment ReadComment(string xpath)
+        {
 			return this.GetComment(xpath);
 		}
 
@@ -58,27 +65,34 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="xpath">The xpath path to load the comments of.</param>
 		/// <returns>The XmlCodeComment</returns>
-		protected virtual XmlCodeComment GetComment(string xpath) {
+		protected virtual XmlCodeComment GetComment(string xpath) 
+        {
 			XmlCodeComment parsedComment = XmlCodeComment.Empty;
 
-			if (this.Exists) {
+			if (this.Exists)
+            {
 				XPathDocument commentsDocument = new XPathDocument(this.xmlCommentFileName);
 				XPathNavigator n = commentsDocument.CreateNavigator();
 				XPathNodeIterator ni = n.Select(xpath);
 				XmlNode memberComment = null;
-				if (ni.MoveNext()) {
-					using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml)) {
+				if (ni.MoveNext())
+                {
+					using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml))
+                    {
 						XmlReader xmlReader = XmlTextReader.Create(reader);
 						XmlDocument tempD = new XmlDocument();
 						memberComment = tempD.ReadNode(xmlReader);
 					}
 				}
 
-				if (memberComment != null) {
-					try {
+				if (memberComment != null) 
+                {
+					try
+                    {
 						parsedComment = new XmlCodeComment(memberComment);
 					}
-					catch(Exception ex) {
+					catch(Exception ex)
+                    {
 						// we cant fix this problem but we do need to add more details
 						// to the exception
 						throw new XmlCommentException(memberComment.InnerXml, "An error occurred while parsing XML comments", ex);
@@ -94,7 +108,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="cref">The member to get the original XML for</param>
 		/// <returns>The original XML for the specified member</returns>
-		public virtual string GetXmlFor(CRefPath cref) {
+		public virtual string GetXmlFor(CRefPath cref) 
+        {
 			string xpath = string.Format(
 				"/doc/members/member[@name=\"{0}\"]",
 				cref.ToString()
@@ -102,20 +117,24 @@ namespace TheBoxSoftware.Reflection.Comments {
 
 			string xml = string.Empty;
 
-			if (this.Exists) {
+			if (this.Exists)
+            {
 				XPathDocument commentsDocument = new XPathDocument(this.xmlCommentFileName);
 				XPathNavigator n = commentsDocument.CreateNavigator();
 				XPathNodeIterator ni = n.Select(xpath);
 				XmlNode memberComment = null;
-				if (ni.MoveNext()) {
-					using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml)) {
+				if (ni.MoveNext())
+                {
+					using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml)) 
+                    {
 						XmlReader xmlReader = XmlTextReader.Create(reader);
 						XmlDocument tempD = new XmlDocument();
 						memberComment = tempD.ReadNode(xmlReader);
 					}
 				}
 
-				if (memberComment != null) {
+				if (memberComment != null)
+                {
 					xml = memberComment.InnerXml;
 				}
 			}
@@ -127,16 +146,19 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// Obtains an instance of the <see cref="ReusableXmlCodeCommentFile"/>.
 		/// </summary>
 		/// <returns>The instance.</returns>
-		public ReusableXmlCodeCommentFile GetReusableFile() {
+		public ReusableXmlCodeCommentFile GetReusableFile() 
+        {
 			return new ReusableXmlCodeCommentFile(this.xmlCommentFileName, this.Exists);
 		}
 
-		#region Properties
 		/// <summary>
 		/// Indicates if the xml code comment file exists.
 		/// </summary>
-		public bool Exists { get; set; }
-		#endregion
+        public bool Exists
+        {
+            get { return this.exists; }
+            set { this.exists = value; }
+        }
 
 		#region Internals
 		/// <summary>
@@ -145,7 +167,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// However it does speed up the process of reading many elements from
 		/// the xml file in iterations.
 		/// </summary>
-		public sealed class ReusableXmlCodeCommentFile : XmlCodeCommentFile {
+		public sealed class ReusableXmlCodeCommentFile : XmlCodeCommentFile
+        {
 			private XPathDocument commentsDocument;
 			private XPathNavigator navigator;
 
@@ -154,10 +177,12 @@ namespace TheBoxSoftware.Reflection.Comments {
 			/// </summary>
 			/// <param name="file">The filename of the xml comments file.</param>
 			/// <param name="exists">Indicates if the file exists.</param>
-			internal ReusableXmlCodeCommentFile(string file, bool exists) {
+			internal ReusableXmlCodeCommentFile(string file, bool exists)
+            {
 				this.xmlCommentFileName = file;
 				this.Exists = exists;
-				if (exists) {
+				if (exists)
+                {
 					commentsDocument = new XPathDocument(file);
 					navigator = commentsDocument.CreateNavigator();
 				}
@@ -176,25 +201,32 @@ namespace TheBoxSoftware.Reflection.Comments {
 			/// </summary>
 			/// <param name="xpath">The XPath expression to search for.</param>
 			/// <returns>The XmlCodeComment found or XmlCodeComment.Empty if not.</returns>
-			protected override XmlCodeComment GetComment(string xpath) {
+			protected override XmlCodeComment GetComment(string xpath)
+            {
 				XmlCodeComment parsedComment = XmlCodeComment.Empty;
 
-				if (this.Exists) {
+				if (this.Exists)
+                {
 					XPathNodeIterator ni = navigator.Select(xpath);
 					XmlNode memberComment = null;
-					if (ni.MoveNext()) {
-						using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml)) {
+					if (ni.MoveNext())
+                    {
+						using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml))
+                        {
 							XmlReader xmlReader = XmlTextReader.Create(reader);
 							XmlDocument tempD = new XmlDocument();
 							memberComment = tempD.ReadNode(xmlReader);
 						}
 					}
 
-					if (memberComment != null) {
-						try {
+					if (memberComment != null)
+                    {
+						try
+                        {
 							parsedComment = new XmlCodeComment(memberComment);
 						}
-						catch(Exception ex) {
+						catch(Exception ex)
+                        {
 							// we cant fix this problem but we do need to add more details
 							// to the exception
 							throw new XmlCommentException(memberComment.InnerXml, "An error occurred while parsing XML comments", ex);
@@ -210,7 +242,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 			/// </summary>
 			/// <param name="cref">The member to get the original XML for</param>
 			/// <returns>The original XML for the specified member</returns>
-			public override string GetXmlFor(CRefPath cref) {
+			public override string GetXmlFor(CRefPath cref) 
+            {
 				string xpath = string.Format(
 				"/doc/members/member[@name=\"{0}\"]",
 				cref.ToString()
@@ -218,18 +251,22 @@ namespace TheBoxSoftware.Reflection.Comments {
 
 				string xml = string.Empty;
 
-				if (this.Exists) {
+				if (this.Exists)
+                {
 					XPathNodeIterator ni = navigator.Select(xpath);
 					XmlNode memberComment = null;
-					if (ni.MoveNext()) {
-						using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml)) {
+					if (ni.MoveNext())
+                    {
+						using (System.IO.StringReader reader = new System.IO.StringReader(ni.Current.OuterXml))
+                        {
 							XmlReader xmlReader = XmlTextReader.Create(reader);
 							XmlDocument tempD = new XmlDocument();
 							memberComment = tempD.ReadNode(xmlReader);
 						}
 					}
 
-					if (memberComment != null) {
+					if (memberComment != null)
+                    {
 						xml = memberComment.InnerXml;
 					}
 				}

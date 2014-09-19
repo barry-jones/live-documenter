@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Diagnostics;
 
-namespace TheBoxSoftware.Reflection.Comments {
-	using TheBoxSoftware.Diagnostics;
-
+namespace TheBoxSoftware.Reflection.Comments 
+{
 	/// <summary>
 	/// Class that handles and parses a CRef comment path. A CRef path can contain
 	/// a fully qualified link to a type, property, method etc in an assembly.
 	/// </summary>
 	[System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
-	public sealed class CRefPath : Signitures.SignitureConvertor {
+	public sealed class CRefPath : Signitures.SignitureConvertor
+    {
 		private string crefPath;
 		private string returnType;
 		private bool isOperator = false;
@@ -43,7 +44,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="property">The property to initialise the path with.</param>
 		public CRefPath(PropertyDef property)
-			: this(CRefTypes.Property, property.Type, property.Name) {
+			: this(CRefTypes.Property, property.Type, property.Name) 
+        {
 			MethodDef method = property.GetMethod ?? property.SetMethod;
 			this.Parameters = property.IsIndexer ? this.Convert(method) : string.Empty;
 		}
@@ -61,16 +63,20 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="method">The method to initialise the path with.</param>
 		public CRefPath(MethodDef method)
-			: this(CRefTypes.Method, method.Type, method.Name) {
+			: this(CRefTypes.Method, method.Type, method.Name) 
+        {
 			// We need to adjust the method name if is a constructor
-			if (method.IsConstructor) {
+			if (method.IsConstructor) 
+            {
 				this.ElementName = method.Name.Replace('.', '#');
 			}
-			if (method.IsGeneric) {
+			if (method.IsGeneric) 
+            {
 				this.ElementName += "``" + method.GenericTypes.Count;
 			}
 			this.Parameters = this.Convert(method);
-			if (method.IsOperator && method.IsConversionOperator) {
+			if (method.IsOperator && method.IsConversionOperator) 
+            {
 				this.isOperator = true;
 				this.returnType = method.Signiture.GetReturnTypeToken().ResolveType(method.Assembly, method).GetFullyQualifiedName();
 			}
@@ -85,34 +91,40 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// <param name="namesp">The namespace for the path.</param>
 		/// <param name="name">The type name for the path.</param>
 		/// <param name="element">The element name for the path.</param>
-		private CRefPath(CRefTypes crefPathType, TypeRef type, string element) {
+		private CRefPath(CRefTypes crefPathType, TypeRef type, string element)
+        {
 			this.PathType = crefPathType;
 			this.ElementName = element;
 
 			this.TypeName = type.Name;
 			
 			// work out the namespace
-			if(type is TypeDef) {
+			if(type is TypeDef)
+            {
 				List<string> elements = new List<string>();
 				TypeDef container = null;
-				if(((TypeDef)type).ContainingClass != null) {
+				if(((TypeDef)type).ContainingClass != null)
+                {
 					container = (TypeDef)type;
-					do {
+					do 
+                    {
 						container = container.ContainingClass;
 						elements.Add(container.Name);
-					}
-					while(container.ContainingClass != null);
+					} while(container.ContainingClass != null);
 				}
-				if(container != null) {
+				if(container != null) 
+                {
 					elements.Add(container.Namespace);
 				}
-				else {
+				else
+                {
 					elements.Add(type.Namespace);
 				}
 				elements.Reverse();
 				this.Namespace = string.Join(".", elements.ToArray());
 			}
-			else {
+			else
+            {
 				this.Namespace = type.Namespace;
 			}
 		}
@@ -129,7 +141,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// Thrown when the type of the <see cref="ReflectedMember"/> is not
 		/// implemented.
 		/// </exception>
-		public static CRefPath Create(ReflectedMember member) {
+		public static CRefPath Create(ReflectedMember member) 
+        {
 			CRefPath path = null;
 
 			if (member is FieldDef) {
@@ -161,7 +174,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// </summary>
 		/// <param name="crefPath">The cref path to control.</param>
 		/// <exception cref="ArgumentNullException">The specified path was null or empty.</exception>
-		public static CRefPath Parse(string crefPath) {
+		public static CRefPath Parse(string crefPath) 
+        {
 			if (string.IsNullOrEmpty(crefPath))
 				throw new ArgumentNullException("path");
 			CRefPath parsedPath = new CRefPath();
@@ -174,10 +188,12 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// Parses the contents of the contained path and stores the details in the
 		/// classes properties.
 		/// </summary>
-		private void Parse() {
+		private void Parse()
+        {
 			this.ParseType();
 
-			if (this.PathType != CRefTypes.Error) {
+			if (this.PathType != CRefTypes.Error)
+            {
 				string[] items;
 				if (this.PathType != CRefTypes.Method) {
 					items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1).Split('.');
@@ -222,7 +238,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// <exception cref="NotImplementedException">
 		/// Thrown when the parser finds a type that it can not handle.
 		/// </exception>
-		private void ParseType() {
+		private void ParseType()
+        {
 			if (this.crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(this.crefPath.Substring(0, this.crefPath.IndexOf(':')))) {
 				this.PathType = CRefTypes.Error;
 				return;
@@ -247,7 +264,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// Returns a string representation of this CRefPath.
 		/// </summary>
 		/// <returns>The cref path constructed from the elements.</returns>
-		public override string ToString() {
+		public override string ToString() 
+        {
 			string toString = string.Empty;
 			switch (this.PathType) {
 				case CRefTypes.Namespace:
@@ -289,7 +307,8 @@ namespace TheBoxSoftware.Reflection.Comments {
 		/// <param name="type">The type.</param>
 		/// <returns>The found member ref.</returns>
 		/// <exception cref="ArgumentNullException">When <paramref name="type"/> is null.</exception>
-		public ReflectedMember FindIn(TypeDef type) {
+		public ReflectedMember FindIn(TypeDef type)
+        {
 			if (type == null) throw new ArgumentNullException("type");
 
 			if (this.PathType == CRefTypes.Namespace || this.PathType == CRefTypes.Type || this.PathType == CRefTypes.Error) {
