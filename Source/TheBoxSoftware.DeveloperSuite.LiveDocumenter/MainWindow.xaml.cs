@@ -18,6 +18,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
     {
 		internal Model.UserViewingHistory userViewingHistory = new Model.UserViewingHistory();
 		private System.Timers.Timer searchEntryTimer = new System.Timers.Timer(1000);
+
 		/// <summary>
 		/// Store for the currently selected element, this is used when the view is updated
 		/// from an external build so we can reselect the users selection.searchBox_SelectionChanged
@@ -462,14 +463,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 		}
 
 		private void MenuItem_Click(object sender, RoutedEventArgs e) {
-			//// test
-			//Documentation.Exporting.WebsiteExporter exp = new TheBoxSoftware.Documentation.Exporting.WebsiteExporter(
-			//    LiveDocumentorFile.Singleton.Files,
-			//    new TheBoxSoftware.Documentation.Exporting.ExportSettings(),
-			//    Documentation.Exporting.ExportConfigFile.Create(@"ApplicationData/web-msdn.ldec")
-			//    );
-			//exp.Export();
-			//throw new ArgumentException();
+			// test
+            //throw new ArgumentException();
 		}
 
 		/// <summary>

@@ -104,14 +104,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 		/// </summary>
 		public static string ProductVersion {
 			get {
-				Assembly assembly = System.Reflection.Assembly.GetEntryAssembly();
-				if (assembly != null) {
-					object[] customAttributes = assembly.GetCustomAttributes
-									(typeof(AssemblyFileVersionAttribute), false);
-					if ((customAttributes != null) && (customAttributes.Length > 0)) {
-						productVersion =
-							((AssemblyFileVersionAttribute)customAttributes[0]).Version;
-					}
+				Assembly assembly = Assembly.GetExecutingAssembly();
+				if (assembly != null) {                    
+                    FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                    productVersion = fvi.ProductVersion;
 					if (string.IsNullOrEmpty(productVersion)) {
 						productVersion = string.Empty;
 					}
