@@ -29,9 +29,9 @@
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
 	<ItemGroup>
-		<ProjectReference Include="..\..\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj">
-			<Name>TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter</Name>
-			<Project>{B8708C35-E94A-4819-9690-0C501E397B6D}</Project>
+		<ProjectReference Include="..\..\TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumentor.csproj">
+			<Name>TheBoxSoftware.API.LiveDocumentor</Name>
+			<Project>{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}</Project>
 		</ProjectReference>
 	</ItemGroup>
 </Project>
