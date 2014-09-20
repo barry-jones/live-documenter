@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DocumentationTest {
+namespace DocumentationTest
+{
 	/// <summary>
 	/// See <see cref="Property"/> and see <see cref="Field1"/>.
 	/// <para>
@@ -13,9 +14,15 @@ namespace DocumentationTest {
 	/// </para>
 	/// <para>Namespace: <see cref="DocumentationTest"/></para>
 	/// </summary>
-	public class SeeDocumentationTest {
+	public class SeeDocumentationTest
+    {
+        /// <summary>
+        /// Invalid <see cref="P:Field2"/> reference.
+        /// </summary>
 		public string Field1;
+
 		public string Field2;
+
 		public string Property { get; set; }
 	}
 }

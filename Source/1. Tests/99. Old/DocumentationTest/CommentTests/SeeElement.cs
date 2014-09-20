@@ -32,6 +32,11 @@ namespace DocumentationTest.CommentTests {
 
 		public void ParameterisedGenericMethod<T>(T s) { }
 
+        /// <summary>
+        /// This tests a manually written cref in the see element. <see cref="P:TestProperty"/>
+        /// </summary>
+        public void TestSeeWithManualCref() { }
+
 		/// <summary>
 		/// You can specify the cref path explicitly and the compiler will not attempt to resolve it. This
 		/// causes issues with our cref parser.
@@ -153,6 +158,8 @@ namespace DocumentationTest.CommentTests {
 		/// </list>
 		/// </remarks>
 		public void TestSeeToElementsInAssemblies() {}
+
+        public string TestProperty { get; set; }
 
 		#region Internal Test Class
 		public class PublicClass {
