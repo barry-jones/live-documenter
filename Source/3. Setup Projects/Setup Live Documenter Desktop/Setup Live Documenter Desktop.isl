@@ -3751,6 +3751,7 @@
 		<row><td>ID_STRING2</td><td>1033</td><td/><td>0</td><td/><td>1822568267</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>http://livedocumenter.com</td><td>0</td><td/><td>-1532863859</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>The Box Software</td><td>0</td><td/><td>1822591052</td></row>
+		<row><td>ID_STRING5</td><td>1033</td><td>LIVEDO~1|Live Documenter</td><td>0</td><td/><td>-1398624823</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>1822596811</td></row>
 	</table>
 
@@ -4529,6 +4530,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>NewShortcut1</td><td>ProgramMenuFolder</td><td>##ID_STRING5##</td><td>TheBoxSoftware.DeveloperSuite.LiveDocumenter.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
