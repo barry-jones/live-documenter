@@ -34,7 +34,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
         private bool CheckLicense()
         {
             string file = "livedocumenter.lic";
-            Licensing.License license;
+            Licencing.Licence license;
 
             if (!File.Exists(file))
             {
@@ -47,7 +47,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 
             try
             {
-                license = Licensing.License.Decrypt(file);
+                license = Licencing.Licence.Decrypt(file);
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Licensing.License.ValidationInfo info = license.Validate("ld-desktop", fvi.ProductVersion);
+            Licencing.Licence.ValidationInfo info = license.Validate("ld-desktop", fvi.ProductVersion);
             if (info.HasExpired)
             {
                 MessageBox.Show(

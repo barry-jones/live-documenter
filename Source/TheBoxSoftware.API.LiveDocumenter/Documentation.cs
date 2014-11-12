@@ -8,7 +8,7 @@ using TheBoxSoftware.Documentation;
 using TheBoxSoftware.Documentation.Exporting;
 using TheBoxSoftware.Documentation.Exporting.Rendering;
 using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Licensing;
+using TheBoxSoftware.Licencing;
 using System.Reflection;
 
 namespace TheBoxSoftware.API.LiveDocumenter
@@ -241,7 +241,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         private void CheckLicense()
         {
             string file = "livedocumenter.lic";
-            Licensing.License license;
+            Licencing.Licence license;
 
             // bug #18 need to check the location of this library for the licence file as this could be run under 
             // many different services
@@ -252,18 +252,18 @@ namespace TheBoxSoftware.API.LiveDocumenter
 
             if (!File.Exists(licenceFile))
             {
-                throw new LicenseException(
+                throw new LicenceException(
                     string.Format("No license was located in {1}. Please add your license file '{0}' to the same directory as this executable.\n\n", file, licenceFile)
                     );
             }
 
             try
             {                
-                license = Licensing.License.Decrypt(licenceFile);
+                license = Licencing.Licence.Decrypt(licenceFile);
             }
             catch (Exception ex)
             {
-                throw new LicenseException(
+                throw new LicenceException(
                     "There was an error reading your license file. Please make sure it is correct. If this issue continues please contact support@theboxsoftware.com\n\n"
                     );
             }
@@ -273,22 +273,22 @@ namespace TheBoxSoftware.API.LiveDocumenter
             Assembly assembly = typeof(Documentation).Assembly;
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Licensing.License.ValidationInfo info = license.Validate("ld-api", fvi.ProductVersion);
+            Licencing.Licence.ValidationInfo info = license.Validate("ld-api", fvi.ProductVersion);
             if (info.HasExpired)
             {
-                throw new LicenseException(
+                throw new LicenceException(
                     "Trial expired. Thank you for trying out our software. You can purchase a full copy from http://livedocumenter.com\n\n"
                     );
             }
             if (!info.IsComponentValid)
             {
-                throw new LicenseException(
+                throw new LicenceException(
                     "Your license does not cover this application. You can purchase a full copy from http://livedocumenter.com\n\n"
                     );
             }
             if (info.IsVersionInvalid)
             {
-                throw new LicenseException(
+                throw new LicenceException(
                     string.Format("Unfortuntely your license does not cover this version {0} of the software. Please upgrade or install an earlier version.\n\n",
                         fvi.ProductVersion
                         )

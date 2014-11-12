@@ -21,12 +21,11 @@ namespace TheBoxSoftware.Exporter
             bool verbose = false;
 
             Console.WriteLine(string.Empty); // always start hte output with a new line clearing from the command data
-#if !DEBUG
+
             if (!p.CheckLicense())
             {
                 return; // just quit.
             }
-#endif
 
 			// read all the arguments
 			if (args == null || args.Length == 0) {
@@ -91,7 +90,7 @@ namespace TheBoxSoftware.Exporter
         private bool CheckLicense()
         {
             string file = "livedocumenter.lic";
-            Licensing.License license;
+            Licencing.Licence license;
 
             // get the directory of the executable
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
@@ -112,7 +111,7 @@ namespace TheBoxSoftware.Exporter
 
             try
             {
-                license = Licensing.License.Decrypt(file);
+                license = Licencing.Licence.Decrypt(file);
             }
             catch (Exception ex)
             {
@@ -125,7 +124,7 @@ namespace TheBoxSoftware.Exporter
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Licensing.License.ValidationInfo info = license.Validate("ld-server", fvi.ProductVersion);
+            Licencing.Licence.ValidationInfo info = license.Validate("ld-server", fvi.ProductVersion);
             if (info.HasExpired)
             {
                 Logger.Log("Thank you for trying out our software. You can purchase a full copy from http://livedocumenter.com\n\n");

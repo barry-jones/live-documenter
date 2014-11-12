@@ -88,7 +88,7 @@
     <Compile Include="Diagnostics\Logging.cs" />
     <Compile Include="Diagnostics\TraceHelper.cs" />
     <Compile Include="IExtendedException.cs" />
-    <Compile Include="Licensing\License.cs" />
+    <Compile Include="Licencing\Licence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

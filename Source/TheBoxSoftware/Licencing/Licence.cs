@@ -5,14 +5,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace TheBoxSoftware.Licensing
+namespace TheBoxSoftware.Licencing
 {
     /// <summary>
     /// Represents the details of a License which determines what functionliaty (if any) is available
     /// at run time.
     /// </summary>
     [Serializable]
-    public sealed class License
+    public sealed class Licence
     {
         private const string phrase = "49b76s9954";
         private DateTime start;
@@ -112,7 +112,7 @@ namespace TheBoxSoftware.Licensing
         /// </summary>
         /// <param name="file">The file to decrypt/</param>
         /// <returns>A license containing licensing information or null if license was not found or is invalid.</returns>
-        public static License Decrypt(string file)
+        public static Licence Decrypt(string file)
         {
             if (!File.Exists(file))
             {
@@ -141,11 +141,11 @@ namespace TheBoxSoftware.Licensing
             }
 
             // deserialize
-            License lic = null;
+            Licence lic = null;
             BinaryFormatter formatter = new BinaryFormatter();
             using(MemoryStream s = new MemoryStream(plainTextBytes))
             {
-                lic = (License)formatter.Deserialize(s);
+                lic = (Licence)formatter.Deserialize(s);
             }
 
             return lic;
@@ -199,7 +199,7 @@ namespace TheBoxSoftware.Licensing
         /// <summary>
         /// Provides information on the validatity of a license based on a test.
         /// </summary>
-        /// <seealso cref="License.Validate"/>
+        /// <seealso cref="Licence.Validate"/>
         public class ValidationInfo
         {
             private bool isVersionInvalid = false;

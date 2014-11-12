@@ -35,7 +35,7 @@ namespace License_Utility
         /// Populates the form fields with the details of the provided <paramref name="license"/>.
         /// </summary>
         /// <param name="license">The license to populate the fields from.</param>
-        private void PopulateFields(TheBoxSoftware.Licensing.License license)
+        private void PopulateFields(TheBoxSoftware.Licencing.Licence license)
         {
             foreach (string component in license.Components.Keys)
             {
@@ -64,13 +64,13 @@ namespace License_Utility
         }
 
         /// <summary>
-        /// Reads the details of a license from the fields and populates a new <see cref="TheBoxSoftware.Licensing.License"/>
+        /// Reads the details of a license from the fields and populates a new <see cref="TheBoxSoftware.Licencing.Licence"/>
         /// object.
         /// </summary>
         /// <returns>The populated License.</returns>
-        private TheBoxSoftware.Licensing.License GetLicenseFromFields()
+        private TheBoxSoftware.Licencing.Licence GetLicenseFromFields()
         {
-            TheBoxSoftware.Licensing.License license = new TheBoxSoftware.Licensing.License();
+            TheBoxSoftware.Licencing.Licence license = new TheBoxSoftware.Licencing.Licence();
 
             if (this.chkDesktop.Checked)
             {
@@ -116,7 +116,7 @@ namespace License_Utility
                     if (!string.IsNullOrEmpty(ofd.FileName))
                     {
                         this.ClearControls();
-                        this.PopulateFields(TheBoxSoftware.Licensing.License.Decrypt(ofd.FileName));
+                        this.PopulateFields(TheBoxSoftware.Licencing.Licence.Decrypt(ofd.FileName));
                     }
                 }
                 finally
@@ -149,7 +149,7 @@ namespace License_Utility
                 {
                     if (!string.IsNullOrEmpty(sfd.FileName))
                     {
-                        TheBoxSoftware.Licensing.License license = this.GetLicenseFromFields();
+                        TheBoxSoftware.Licencing.Licence license = this.GetLicenseFromFields();
                         System.IO.File.WriteAllBytes(sfd.FileName, license.Encrypt());
                     }
                 }
