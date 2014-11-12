@@ -195,18 +195,13 @@ namespace TheBoxSoftware.Reflection.Comments
 			if (this.PathType != CRefTypes.Error)
             {
 				string[] items;
-				if (this.PathType != CRefTypes.Method) {
+				int startParams = this.crefPath.IndexOf('(');
+				if (startParams == -1) {
 					items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1).Split('.');
 				}
 				else {
-					int startParams = this.crefPath.IndexOf('(');
-					if (startParams == -1) {
-						items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1).Split('.');
-					}
-					else {
-						items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1, this.crefPath.IndexOf('(') - 2).Split('.');
-						this.Parameters = this.crefPath.Substring(this.crefPath.IndexOf('('));
-					}
+					items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1, this.crefPath.IndexOf('(') - 2).Split('.');
+					this.Parameters = this.crefPath.Substring(this.crefPath.IndexOf('('));
 				}
 
 				switch (this.PathType) {
