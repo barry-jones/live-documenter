@@ -143,7 +143,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 			if (e.Error == null)
             {
 				this.progressIndicator.Value = this.progressIndicator.Maximum;
-				this.progressText.Text = string.Format("Complete in {0}:{1}s", (int)duration.TotalMinutes, duration.Seconds);
+                this.progressText.Text = string.Format("Completed in {0:hh\\:mm\\:ss}s.", duration);
 
 				if (this.threadedExporter.ExportExceptions.Count > 0)
                 {
