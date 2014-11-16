@@ -4,6 +4,7 @@
     <remarks>
       <para>A content entry is a reference to an element in the documentation, some basic information about the element is made
         available - however the main function of this class is to obtain XML content from the <see cref="Documentation" /> class.
+        Using the <see cref="Documentation.GetDocumentationFor(ContentEntry)" /> method.
     </para>
       <para>A secondary function is to obtain information about where this element exists in the document structure, through the use
       of <see cref="GetParents" /> and <see cref="Children" /> methods. Which in returns ContentEntrys instances.
@@ -53,6 +54,12 @@ namespace TestNamespace
 3. ChildClass
         </code>
       </example>
+    </remarks>
+  </member>
+
+  <member name="CRefPath">
+    <remarks>
+      <para>Obtains the unique cref path for this content entry. See <see cref="LiveDocumenter.CRefPath" /> for more information.</para>
     </remarks>
   </member>
 </members>
