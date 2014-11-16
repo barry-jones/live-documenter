@@ -193,7 +193,7 @@
 							</VisualStateManager.VisualStateGroups>
 							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1" Background="{TemplateBinding Background}" Padding="0,0,2,0">
 								<DockPanel Focusable="False">
-									<Image DockPanel.Dock="Right" Source="resources\srch_16x16.png" Margin="0,0,0,0" Width="17" Height="16" Opacity="0.3" />
+									<Image DockPanel.Dock="Right" Source="resources\srch_16x16.png" Margin="0,0,0,0" Width="17" Height="16" Opacity="0.6" />
 									<TextBox x:Name="Text" Margin="0" Focusable="True" Style="{TemplateBinding TextBoxStyle}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{TemplateBinding Foreground}" IsTabStop="True" BorderThickness="0" Padding="5,2,2,2"/>
 								</DockPanel>
 							</Border>

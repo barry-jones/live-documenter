@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <members>
   <member name="tableofcontents">
+    <remarks>
+      <para>The TableOfContents is a heirarchical representation of the elements in the documentation. Each type, member and namespace is a
+        <see cref="ContentEntry" /> which can be used to obtain the XML documentation.
+      </para>
+    </remarks>
   </member>
 
   <member name="GetEntryFor.key">

@@ -11,7 +11,7 @@
         <Setter Property="ColumnWidth" Value="400" />
         <Setter Property="ColumnGap" Value="20" />
         <Setter Property="TextElement.FontFamily" Value="Verdana, Arial" />
-        <Setter Property="TextElement.FontSize" Value="12" />
+        <Setter Property="TextElement.FontSize" Value="13" />
     </Style>
     
     <Style x:Key="Paragraph" TargetType="{x:Type doc:Paragraph}">
@@ -72,7 +72,7 @@
 
     <Style x:Key="Header" TargetType="{x:Type doc:Paragraph}">
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Margin" Value="0,12,6,3" />
+        <Setter Property="Margin" Value="0,12,6,12" />
         <Setter Property="Padding" Value="0,0,0,0" />
         <Setter Property="TextElement.FontFamily" Value="Arial" />
         <Setter Property="TextElement.FontSize" Value="12" />
@@ -81,16 +81,19 @@
     <Style TargetType="{x:Type local:Header1}" BasedOn="{StaticResource Header}">
         <Setter Property="FontSize" Value="18" />
         <Setter Property="Foreground" Value="#3F529C" />
+        <Setter Property="Padding" Value="0,0,0,12" />
     </Style>
 
     <Style TargetType="{x:Type local:Header2}" BasedOn="{StaticResource Header}">
         <Setter Property="FontSize" Value="15" />
         <Setter Property="Foreground" Value="#3F529C" />
+        <Setter Property="Padding" Value="0,12,0,0" />
     </Style>
 
     <Style TargetType="{x:Type local:Header3}" BasedOn="{StaticResource Header}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="#3F529C" />
+        <Setter Property="Padding" Value="0,12,0,0" />
     </Style>
 
     <Style TargetType="{x:Type local:Keyword}">
@@ -103,16 +106,16 @@
     </Style>
 
     <Style x:Key="C" TargetType="{x:Type local:C}">
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="FontFamily" Value="Courier New" />
     </Style>
 
     <Style x:Key="Code" TargetType="{x:Type local:Code}">
         <Setter Property="TextElement.FontFamily" Value="Courier New" />
         <Setter Property="Background" Value="#efefef" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="Padding" Value="5" />
-        <Setter Property="Margin" Value="5, 10, 10, 10" />
+        <Setter Property="Margin" Value="5, 20, 10, 10" />
         <Setter Property="BorderBrush" Value="#bbb" />
         <Setter Property="BorderThickness" Value="0.5" />
         <Setter Property="LineHeight" Value="15" />
@@ -126,7 +129,7 @@
     </Style>
 
     <Style TargetType="{x:Type TableCell}">
-        <Setter Property="Padding" Value="3" />
+        <Setter Property="Padding" Value="5" />
         <Setter Property="BorderThickness" Value="0, 0, 0.5, 0.5" />
         <Setter Property="BorderBrush" Value="#bbb" />
     </Style>
@@ -140,13 +143,13 @@
     </Style>    
     
     <Style x:Key="CellRight" TargetType="{x:Type TableCell}">
-        <Setter Property="Padding" Value="3" />
+        <Setter Property="Padding" Value="5" />
         <Setter Property="BorderBrush" Value="#bbb" />
         <Setter Property="BorderThickness" Value="0, 0, 0, 0.5" />
     </Style>
     
     <Style x:Key="SummaryTableIconColumn" TargetType="{x:Type TableColumn}">
-        <Setter Property="Width" Value="24" />
+        <Setter Property="Width" Value="28" />
     </Style>
     
     <Style x:Key="SummaryTableColumn" TargetType="{x:Type TableColumn}">
