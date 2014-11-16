@@ -10,6 +10,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
 	/// Class that handles and parses a CRef comment path. A CRef path can contain
 	/// a fully qualified link to a type, property, method etc in an assembly.
 	/// </summary>
+    /// <include file='Documentation\contententry.xml' path='members/member[@name="CRefPath"]/*'/>
 	[System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
 	public sealed class CRefPath 
     {

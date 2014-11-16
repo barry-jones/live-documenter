@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<members>
+  <member name="CRefPath">
+    <remarks>
+      <para>A cref path is a string which uniquely identifies an element in a library. This element can be a method, type or namespace.
+      Live Documenter uses cref paths to enabel you to find items inside you libraries. The XML comments produces by the .NET compiler
+      contain these cref paths as attributes to the members inside the XML. You can check there for examples or see the Microsoft website
+      <a href="http://msdn.microsoft.com/en-us/library/cc837134.aspx">here</a>.
+      </para>
+    </remarks>
+  </member>
+</members>

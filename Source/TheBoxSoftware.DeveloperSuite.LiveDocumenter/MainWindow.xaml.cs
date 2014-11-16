@@ -36,6 +36,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
             string file = "livedocumenter.lic";
             Licencing.Licence license;
 
+            // get the directory of the executable
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            string executingDirectory = Path.GetDirectoryName(path);
+
+            file = executingDirectory + "\\" + file;
+
             if (!File.Exists(file))
             {
                 MessageBox.Show(

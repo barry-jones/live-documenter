@@ -89,7 +89,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documentation\contententry.xml" />
+    <None Include="Documentation\contententry.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentation\crefpath.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -2,23 +2,24 @@
 <members>
   <member name="ContentEntry">
     <remarks>
-      <para>A content entry is a reference to an element in the documentation, some basic informatino about the element is made
+      <para>A content entry is a reference to an element in the documentation, some basic information about the element is made
         available - however the main function of this class is to obtain XML content from the <see cref="Documentation" /> class.
     </para>
-      <para>A secondary function is to obtain information about where this element lay in the document structure, through the user
-      of <see cref="GetParents" /> and <see cref="Children" /> methods. Which in turn return ContentEntrys.
+      <para>A secondary function is to obtain information about where this element exists in the document structure, through the use
+      of <see cref="GetParents" /> and <see cref="Children" /> methods. Which in returns ContentEntrys instances.
       </para>
       <example>
-        <para>ContentEntry instances can be obtained by querying the <see cref="TableOfContents" /> instance. This can be done by
-        the unique identifer for that element or by cref path. The latter is the most preferred due to the fact that across loads
-        the cref path will not change but the id will change each time.</para>
+        <para>ContentEntry instances can be obtained by querying the <see cref="TableOfContents" />. This can be done by
+        the unique identifer for that element or by cref path. The latter is the most preferred due to the fact that across loads,
+        the <see cref="CRefPath" /> will not change but the id will change each time.</para>
         <code>
 Documentation docs = new Documentation("c:\mysolution.sln");
 TableOfContents tocs = docs.GetTableOfContents(); // this TableOfContent instance is the 
                                                   // best way to find elements in the documentation
 
 ContentEntry fromCref = tocs.GetEntryFor("T:TheBoxSoftware.API.LiveDocumenter.Documentation");
-ContentEntry fromKey = tocs.GetEntryFor(123456, string.Empty);  // this number will change all the time.
+ContentEntry fromKey = tocs.GetEntryFor(123456, string.Empty);  // this number will change all 
+                                                                // the time.
         </code>
       </example>
     </remarks>
