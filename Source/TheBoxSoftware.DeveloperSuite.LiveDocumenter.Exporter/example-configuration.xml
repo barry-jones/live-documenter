@@ -19,7 +19,7 @@
   	
 	<!-- the application will always check the ApplicationData folder for LDEC files -->
   <outputs>
-	<!-- the locations being output to will be cleared without warning -->
+	<!-- the locations being output to will have new folders created inside them -->
     <ldec location="c:\temp\web\">web-msdn.ldec</ldec>
     <!--<ldec location="c:\temp\htmlhelp-1\">htmlhelp1-msdn.ldec</ldec>
     <ldec location="c:\temp\htmlhelp-2\">htmlhelp2-msdn.ldec</ldec>

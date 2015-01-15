@@ -59,7 +59,7 @@
 							<TextBox x:Name="publishTo" Height="22" Width="310" />
 							<Button x:Name="fileDialogOpen" Content="..." Width="22" Margin="3,0,0,0" Click="fileDialogOpen_Click" />
 						</WrapPanel>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Foreground="#FFB80000" Margin="0,-3,0,0">The contents of this folder will be erased without warning.</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Foreground="#FFB80000" Margin="0,-3,0,0">A new folder will be created in this directory.</TextBlock>
 						
 						<TextBlock Grid.Column="0" Grid.Row="2" Text="Visibility" Height="22" VerticalAlignment="Center" />
 			            <controls:ComboWithCheckboxes x:Name="visibility" DefaultText="Document Public members" Grid.Column="1" Grid.Row="2" Height="22" Margin="0,0,0,4" />
