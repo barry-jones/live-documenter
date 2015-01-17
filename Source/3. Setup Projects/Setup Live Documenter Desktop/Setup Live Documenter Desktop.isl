@@ -4367,9 +4367,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>##IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
-		<row><td>ProductCode</td><td>{A2F9E34A-410B-4968-B378-5E91F35ED37D}</td><td/></row>
+		<row><td>ProductCode</td><td>{4340CBC7-3AC8-449A-9BBB-46F2E583C2BF}</td><td/></row>
 		<row><td>ProductName</td><td>Live Documenter</td><td/></row>
-		<row><td>ProductVersion</td><td>2.0.0.3</td><td/></row>
+		<row><td>ProductVersion</td><td>2.0.4.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4381,7 +4381,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>RestartManagerOption</td><td>CloseRestart</td><td/></row>
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40CLIENT;ISACTIONPROP2;ISACTIONPROP3;ISACTIONPROP1</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40CLIENT;ISACTIONPROP2;ISACTIONPROP3;ISACTIONPROP1;ISACTIONPROP4</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{EE2C02CD-A942-421F-95A9-621BA1E34C40}</td><td/></row>
@@ -4656,6 +4656,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>{EE2C02CD-A942-421F-95A9-621BA1E34C40}</td><td>2.0.0.0</td><td>2.0.0.0</td><td>1033</td><td>768</td><td/><td>ISACTIONPROP2</td><td>v2.0.0.0</td></row>
 		<row><td>{EE2C02CD-A942-421F-95A9-621BA1E34C40}</td><td>2.0.0.1</td><td>2.0.0.1</td><td>1033</td><td>768</td><td/><td>ISACTIONPROP3</td><td>v2.0.0.1</td></row>
 		<row><td>{EE2C02CD-A942-421F-95A9-621BA1E34C40}</td><td>2.0.0.2</td><td>2.0.0.2</td><td>1033</td><td>768</td><td/><td>ISACTIONPROP1</td><td>v2.0.0.2</td></row>
+		<row><td>{EE2C02CD-A942-421F-95A9-621BA1E34C40}</td><td>2.0.0.3</td><td>2.0.0.3</td><td>1033</td><td>768</td><td/><td>ISACTIONPROP4</td><td>v2.0.0.3</td></row>
 	</table>
 
 	<table name="Verb">
