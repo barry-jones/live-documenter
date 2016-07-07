@@ -240,6 +240,8 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         private void CheckLicense()
         {
+            return;
+
             string file = "livedocumenter.lic";
             Licencing.Licence license;
 

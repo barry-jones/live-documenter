@@ -63,6 +63,12 @@ namespace TheBoxSoftware.Licencing
                 }
             }
 
+            // licencing removed 2016-07
+            info = new ValidationInfo();
+            info.IsComponentValid = true;
+            info.IsVersionInvalid = true;
+            info.HasExpired = false;
+
             return info;
         }
 

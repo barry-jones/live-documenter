@@ -89,6 +89,8 @@ namespace TheBoxSoftware.Exporter
         /// <returns>True if the application can run else false.</returns>
         private bool CheckLicense()
         {
+            return true;
+
             string file = "livedocumenter.lic";
             Licencing.Licence license;
 

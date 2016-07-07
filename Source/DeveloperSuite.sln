@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware", "TheBoxSoftware\TheBoxSoftware.csproj", "{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}"
 EndProject
@@ -43,6 +43,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Utilities", "4. Utilities", "{87C0012D-44C8-4F6E-B9BD-56C226A67C93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "License Utility", "4. Utilities\License Utility\License Utility.csproj", "{9125D912-81EE-4221-B5FB-7DD63B92FFB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection.Tests.Unit", "1. Tests\1. Unit\TheBoxSoftware.Reflection.Tests.Unit\TheBoxSoftware.Reflection.Tests.Unit.csproj", "{EC33F5A8-7AD6-45F6-981E-1F304AE73858}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -207,6 +209,24 @@ Global
 		{9125D912-81EE-4221-B5FB-7DD63B92FFB2}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9125D912-81EE-4221-B5FB-7DD63B92FFB2}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{9125D912-81EE-4221-B5FB-7DD63B92FFB2}.Test|x86.ActiveCfg = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Release|x86.Build.0 = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Test|Any CPU.Build.0 = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Test|x86.ActiveCfg = Release|Any CPU
+		{EC33F5A8-7AD6-45F6-981E-1F304AE73858}.Test|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

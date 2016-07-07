@@ -33,6 +33,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
         /// <returns>True if the application can run else false.</returns>
         private bool CheckLicense()
         {
+            return true;
+
             string file = "livedocumenter.lic";
             Licencing.Licence license;
 
