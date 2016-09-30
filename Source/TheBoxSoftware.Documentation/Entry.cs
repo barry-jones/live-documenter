@@ -1,11 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using TheBoxSoftware.Reflection.Comments;
+using System.ComponentModel;
 using TheBoxSoftware.Reflection;
+using TheBoxSoftware.Reflection.Comments;
 
 namespace TheBoxSoftware.Documentation
 {
