@@ -6,196 +6,211 @@ using TheBoxSoftware.Reflection;
 using TheBoxSoftware.Reflection.Comments;
 using TheBoxSoftware.Reflection.Signitures;
 
-namespace TheBoxSoftware.Documentation.Exporting.Rendering 
+namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
-	internal sealed class TypeXmlRenderer : XmlRenderer 
+    internal sealed class TypeXmlRenderer : XmlRenderer
     {
-		private TypeDef member;
-		private XmlCodeCommentFile xmlComments;
+        private TypeDef member;
+        private XmlCodeCommentFile xmlComments;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TypeXmlRenderer"/> class.
-		/// </summary>
-		/// <param name="entry">The entry in the document map to initialise the renderer with.</param>
-		public TypeXmlRenderer(Entry entry) 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypeXmlRenderer"/> class.
+        /// </summary>
+        /// <param name="entry">The entry in the document map to initialise the renderer with.</param>
+        public TypeXmlRenderer(Entry entry)
         {
-			this.member = (TypeDef)entry.Item;
-			this.xmlComments = entry.XmlCommentFile;
-			this.AssociatedEntry = entry;
-		}
+            this.member = (TypeDef)entry.Item;
+            this.xmlComments = entry.XmlCommentFile;
+            this.AssociatedEntry = entry;
+        }
 
-		public override void Render(System.Xml.XmlWriter writer) 
+        public override void Render(System.Xml.XmlWriter writer)
         {
-			CRefPath crefPath = new CRefPath(this.member);
-			XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
+            CRefPath crefPath = new CRefPath(this.member);
+            XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
 
-			writer.WriteStartElement("member");
-			writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
-			writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
-			writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
+            writer.WriteStartElement("member");
+            writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
+            writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
+            writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
             this.WriteCref(this.AssociatedEntry, writer);
 
-			writer.WriteStartElement("assembly");
-			writer.WriteAttributeString("file", System.IO.Path.GetFileName(this.member.Assembly.File.FileName));
-			writer.WriteString(this.member.Assembly.Name);
-			writer.WriteEndElement();
+            writer.WriteStartElement("assembly");
+            writer.WriteAttributeString("file", System.IO.Path.GetFileName(this.member.Assembly.File.FileName));
+            writer.WriteString(this.member.Assembly.Name);
+            writer.WriteEndElement();
 
-			string displayName = this.member.GetDisplayName(false);
-			writer.WriteStartElement("name");
-			writer.WriteAttributeString("safename", Exporter.CreateSafeName(displayName));
-			writer.WriteString(displayName);
-			writer.WriteEndElement();
+            string displayName = this.member.GetDisplayName(false);
+            writer.WriteStartElement("name");
+            writer.WriteAttributeString("safename", Exporter.CreateSafeName(displayName));
+            writer.WriteString(displayName);
+            writer.WriteEndElement();
 
-			writer.WriteStartElement("namespace");
-			Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Namespace);
-			writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
-			writer.WriteAttributeString("name", namespaceEntry.SubKey);
+            writer.WriteStartElement("namespace");
+            Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Namespace);
+            writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
+            writer.WriteAttributeString("name", namespaceEntry.SubKey);
             writer.WriteAttributeString("cref", string.Format("N:{0}", this.member.Namespace));
-			writer.WriteString(this.member.Namespace);
-			writer.WriteEndElement();
+            writer.WriteString(this.member.Namespace);
+            writer.WriteEndElement();
 
-			if (this.member.IsGeneric) {
-				this.RenderGenericTypeParameters(this.member.GetGenericTypes(), writer, comment);
-			}
+            if (this.member.IsGeneric)
+            {
+                this.RenderGenericTypeParameters(this.member.GetGenericTypes(), writer, comment);
+            }
 
-			// find and output the summary
-			if (comment != XmlCodeComment.Empty) {
-				XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
-				if (summary != null) {
-					this.Serialize(summary, writer);
-				}
-			}
+            // find and output the summary
+            if (comment != XmlCodeComment.Empty)
+            {
+                XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
+                if (summary != null)
+                {
+                    this.Serialize(summary, writer);
+                }
+            }
 
-			this.RenderSyntaxBlocks(this.member, writer);
-			this.RenderPermissionBlock(this.member, writer, comment);
+            this.RenderSyntaxBlocks(this.member, writer);
+            this.RenderPermissionBlock(this.member, writer, comment);
 
-			// find and output the remarks
-			if (comment != XmlCodeComment.Empty) {
-				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
-				if (remarks != null) {
-					this.Serialize(remarks, writer);
-				}
-			}
+            // find and output the remarks
+            if (comment != XmlCodeComment.Empty)
+            {
+                XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
+                if (remarks != null)
+                {
+                    this.Serialize(remarks, writer);
+                }
+            }
 
-			// find and output the examples
-			if (comment != XmlCodeComment.Empty) {
-				XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement);
-				if (remarks != null) {
-					this.Serialize(remarks, writer);
-				}
-			}
+            // find and output the examples
+            if (comment != XmlCodeComment.Empty)
+            {
+                XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement);
+                if (remarks != null)
+                {
+                    this.Serialize(remarks, writer);
+                }
+            }
 
-			this.RenderSeeAlsoBlock(member, writer, comment);
+            this.RenderSeeAlsoBlock(member, writer, comment);
 
-			if (this.member.IsEnumeration) {
-				writer.WriteStartElement("values");
-				List<FieldDef> fields = this.member.Fields;
-				for (int i = 0; i < fields.Count; i++) {
-					if (fields[i].IsSystemGenerated)
-						continue;
-					CRefPath currentPath = CRefPath.Create(fields[i]);
-					XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
+            if (this.member.IsEnumeration)
+            {
+                writer.WriteStartElement("values");
+                List<FieldDef> fields = this.member.Fields;
+                for (int i = 0; i < fields.Count; i++)
+                {
+                    if (fields[i].IsSystemGenerated)
+                        continue;
+                    CRefPath currentPath = CRefPath.Create(fields[i]);
+                    XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
 
-					writer.WriteStartElement("value");
-					writer.WriteStartElement("name");
-					writer.WriteString(fields[i].Name);
-					writer.WriteEndElement();
-					writer.WriteStartElement("description");
-					if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null) {
-						XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
-						if (summary != null) {
-							this.Serialize(summary, writer);
-						}
-					}
-					writer.WriteEndElement();
-					writer.WriteEndElement();
-				}
-				writer.WriteEndElement();
-			}
-			else {
-				if(this.member.HasMembers) {
-					this.OutputMembers(writer);
-				}
-			}
+                    writer.WriteStartElement("value");
+                    writer.WriteStartElement("name");
+                    writer.WriteString(fields[i].Name);
+                    writer.WriteEndElement();
+                    writer.WriteStartElement("description");
+                    if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null)
+                    {
+                        XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
+                        if (summary != null)
+                        {
+                            this.Serialize(summary, writer);
+                        }
+                    }
+                    writer.WriteEndElement();
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+            else
+            {
+                if (this.member.HasMembers)
+                {
+                    this.OutputMembers(writer);
+                }
+            }
 
-			if (!this.member.IsDelegate && !this.member.IsEnumeration && !this.member.IsInterface && !this.member.IsStructure) {
-				this.AddInheritanceTree(this.member, writer);
-			}
+            if (!this.member.IsDelegate && !this.member.IsEnumeration && !this.member.IsInterface && !this.member.IsStructure)
+            {
+                this.AddInheritanceTree(this.member, writer);
+            }
 
-			writer.WriteEndElement();	// member
-		}
+            writer.WriteEndElement();   // member
+        }
 
-		private void OutputMembers(System.Xml.XmlWriter writer) 
+        private void OutputMembers(System.Xml.XmlWriter writer)
         {
-			if (this.AssociatedEntry.Children.Count == 0) return;
+            if (this.AssociatedEntry.Children.Count == 0) return;
 
-			writer.WriteStartElement("entries");
-			List<Entry> children = this.AssociatedEntry.Children;
+            writer.WriteStartElement("entries");
+            List<Entry> children = this.AssociatedEntry.Children;
 
-			Entry constructors = children.Find(entry => entry.Name == "Constructors");
-			if (constructors != null) 
+            Entry constructors = children.Find(entry => entry.Name == "Constructors");
+            if (constructors != null)
             {
-				var s = from child in constructors.Children orderby child.Name select child;
-				foreach (Entry current in s) {
-					MethodDef currentMember = (MethodDef)current.Item;
-					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
-				}
-			}
-
-			Entry fields = children.Find(entry => entry.Name == "Fields");
-			if (fields != null) 
-            {
-				var s = from child in fields.Children orderby child.Name select child;
-				foreach (Entry current in s) 
+                var s = from child in constructors.Children orderby child.Name select child;
+                foreach (Entry current in s)
                 {
-					FieldDef currentMember = (FieldDef)current.Item;
-					this.WriteEntry(writer, currentMember, currentMember.Name);
-				}
-			}
+                    MethodDef currentMember = (MethodDef)current.Item;
+                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
+                }
+            }
 
-			Entry properties = children.Find(entry => entry.Name == "Properties");
-			if (properties != null) 
+            Entry fields = children.Find(entry => entry.Name == "Fields");
+            if (fields != null)
             {
-				var s = from child in properties.Children orderby child.Name select child;
-				foreach (Entry current in s) 
+                var s = from child in fields.Children orderby child.Name select child;
+                foreach (Entry current in s)
                 {
-					PropertyDef currentMember = (PropertyDef)current.Item;
-					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
-				}
-			}
+                    FieldDef currentMember = (FieldDef)current.Item;
+                    this.WriteEntry(writer, currentMember, currentMember.Name);
+                }
+            }
 
-			Entry events = children.Find(entry => entry.Name == "Events");
-			if (events != null) 
+            Entry properties = children.Find(entry => entry.Name == "Properties");
+            if (properties != null)
             {
-				var s = from child in events.Children orderby child.Name select child;
-				foreach (Entry current in s) 
+                var s = from child in properties.Children orderby child.Name select child;
+                foreach (Entry current in s)
                 {
-					EventDef currentMember = (EventDef)current.Item;
-					this.WriteEntry(writer, currentMember, currentMember.Name);
-				}
-			}
+                    PropertyDef currentMember = (PropertyDef)current.Item;
+                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
+                }
+            }
 
-			Entry methods = children.Find(entry => entry.Name == "Methods");
-			if (methods != null) 
+            Entry events = children.Find(entry => entry.Name == "Events");
+            if (events != null)
             {
-				var s = from child in methods.Children orderby child.Name select child;
-				foreach (Entry current in s) 
+                var s = from child in events.Children orderby child.Name select child;
+                foreach (Entry current in s)
                 {
-					MethodDef currentMember = (MethodDef)current.Item;
-					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
-				}
-			}
+                    EventDef currentMember = (EventDef)current.Item;
+                    this.WriteEntry(writer, currentMember, currentMember.Name);
+                }
+            }
 
-			Entry operators = children.Find(entry => entry.Name == "Operators");
-			if (operators != null) 
+            Entry methods = children.Find(entry => entry.Name == "Methods");
+            if (methods != null)
             {
-				var s = from child in operators.Children orderby child.Name select child;
-				foreach (Entry current in s) 
+                var s = from child in methods.Children orderby child.Name select child;
+                foreach (Entry current in s)
                 {
-					MethodDef currentMember = (MethodDef)current.Item;
-					this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false));
-				}
-			}
+                    MethodDef currentMember = (MethodDef)current.Item;
+                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
+                }
+            }
+
+            Entry operators = children.Find(entry => entry.Name == "Operators");
+            if (operators != null)
+            {
+                var s = from child in operators.Children orderby child.Name select child;
+                foreach (Entry current in s)
+                {
+                    MethodDef currentMember = (MethodDef)current.Item;
+                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false));
+                }
+            }
 
             // I dont think we have any extension methods anymore - perhaps we can just delete this code?
             var extensionMethods = from method in this.member.ExtensionMethods orderby method.Name select method;
@@ -205,113 +220,120 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
             }
 
-			writer.WriteEndElement();
-		}
+            writer.WriteEndElement();
+        }
 
-		private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type) {
-			CRefPath currentPath = CRefPath.Create(entryMember);
-			XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
+        private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type)
+        {
+            CRefPath currentPath = CRefPath.Create(entryMember);
+            XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
 
-			writer.WriteStartElement("entry");
-			writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());
-			writer.WriteAttributeString("subId", string.Empty);
-			writer.WriteAttributeString("type", type);
-			writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(entryMember));
+            writer.WriteStartElement("entry");
+            writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());
+            writer.WriteAttributeString("subId", string.Empty);
+            writer.WriteAttributeString("type", type);
+            writer.WriteAttributeString("visibility", ReflectionHelper.GetVisibility(entryMember));
             writer.WriteAttributeString("cref", currentPath.ToString());
 
-			writer.WriteStartElement("name");
-			writer.WriteString(displayName);
-			writer.WriteEndElement();
+            writer.WriteStartElement("name");
+            writer.WriteString(displayName);
+            writer.WriteEndElement();
 
-			// find and output the summary
-			if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null) {
-				XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
-				if (summary != null) {
-					this.Serialize(summary, writer);
-				}
-			}
-			writer.WriteEndElement();
-		}
+            // find and output the summary
+            if (currentComment != XmlCodeComment.Empty && currentComment.Elements != null)
+            {
+                XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
+                if (summary != null)
+                {
+                    this.Serialize(summary, writer);
+                }
+            }
+            writer.WriteEndElement();
+        }
 
-		private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName) {
-			this.WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
-		}
-
-		/// <summary>
-		/// Adds the inheritance tree for the specified <paramref name="type"/>.
-		/// </summary>
-		/// <param name="type">The type to parse and display the tree for.</param>
-		/// <param name="writer">The writer to write the XML to.</param>
-		private void AddInheritanceTree(TypeDef type, System.Xml.XmlWriter writer) 
+        private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName)
         {
-			List<TypeRef> reverseInheritanceTree = new List<TypeRef>();
-			TypeRef parent = type.InheritsFrom;
-			while (parent != null) 
-            {
-				reverseInheritanceTree.Add(parent);
+            this.WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
+        }
 
-				// only add types that are referenced in the current library
-				// TODO: for some types like system, we could link to MS website
-				if (parent is TypeDef)
+        /// <summary>
+        /// Adds the inheritance tree for the specified <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">The type to parse and display the tree for.</param>
+        /// <param name="writer">The writer to write the XML to.</param>
+        private void AddInheritanceTree(TypeDef type, System.Xml.XmlWriter writer)
+        {
+            List<TypeRef> reverseInheritanceTree = new List<TypeRef>();
+            TypeRef parent = type.InheritsFrom;
+            while (parent != null)
+            {
+                reverseInheritanceTree.Add(parent);
+
+                // only add types that are referenced in the current library
+                // TODO: for some types like system, we could link to MS website
+                if (parent is TypeDef)
                 {
-					parent = ((TypeDef)parent).InheritsFrom;
-				}
-				else 
+                    parent = ((TypeDef)parent).InheritsFrom;
+                }
+                else
                 {
-					parent = null;
-				}
-			}
+                    parent = null;
+                }
+            }
 
-			if (reverseInheritanceTree.Count > 0) 
+            if (reverseInheritanceTree.Count > 0)
             {
-				reverseInheritanceTree.Reverse();
-				writer.WriteStartElement("inheritance");
+                reverseInheritanceTree.Reverse();
+                writer.WriteStartElement("inheritance");
 
-				this.WriteType(0, reverseInheritanceTree, writer);
+                this.WriteType(0, reverseInheritanceTree, writer);
 
-				writer.WriteEndElement(); // inheritance
-			}
-		}
+                writer.WriteEndElement(); // inheritance
+            }
+        }
 
-		private void WriteType(int index, List<TypeRef> tree, System.Xml.XmlWriter writer) {
-			if (index < tree.Count) 
+        private void WriteType(int index, List<TypeRef> tree, System.Xml.XmlWriter writer)
+        {
+            if (index < tree.Count)
             {
-				writer.WriteStartElement("type");
-				TypeRef current = tree[index];
-				if (current is TypeDef) {	// only provide ids for internal classes
-					writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
+                writer.WriteStartElement("type");
+                TypeRef current = tree[index];
+                if (current is TypeDef)
+                {   // only provide ids for internal classes
+                    writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
                     writer.WriteAttributeString("cref", CRefPath.Create(current).ToString());
-				}
-				writer.WriteAttributeString("name", current.GetDisplayName(true));
+                }
+                writer.WriteAttributeString("name", current.GetDisplayName(true));
 
-				this.WriteType(++index, tree, writer);
-				writer.WriteEndElement();
-			}
-			else if(index == tree.Count) 
+                this.WriteType(++index, tree, writer);
+                writer.WriteEndElement();
+            }
+            else if (index == tree.Count)
             {
-				writer.WriteStartElement("type");
-				writer.WriteAttributeString("current", "true");
-				writer.WriteAttributeString("name", this.member.GetDisplayName(true));
-				this.WriteType(++index, tree, writer);
-				writer.WriteEndElement();
-			}
-			else if (index > tree.Count) 
+                writer.WriteStartElement("type");
+                writer.WriteAttributeString("current", "true");
+                writer.WriteAttributeString("name", this.member.GetDisplayName(true));
+                this.WriteType(++index, tree, writer);
+                writer.WriteEndElement();
+            }
+            else if (index > tree.Count)
             {
-				foreach (TypeRef current in this.member.GetExtendingTypes()) 
+                foreach (TypeRef current in this.member.GetExtendingTypes())
                 {
-					Entry found = this.Document.Find(CRefPath.Create(current));
-					if(found != null) 
+                    Entry found = this.Document.Find(CRefPath.Create(current));
+                    if (found != null)
                     {
-						writer.WriteStartElement("type");
-						if (current is TypeDef) {	// only provide ids for internal classes not filtered
-							writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
+                        writer.WriteStartElement("type");
+                        if (current is TypeDef)
+                        {   // only provide ids for internal classes not filtered
+                            writer.WriteAttributeString("id", current.GetGloballyUniqueId().ToString());
                             writer.WriteAttributeString("cref", CRefPath.Create(current).ToString());
-						}
-						writer.WriteAttributeString("name", current.GetDisplayName(true));
-						writer.WriteEndElement();
-					}
-				}
-			}
-		}
-	}
+                        }
+                        writer.WriteAttributeString("name", current.GetDisplayName(true));
+                        writer.WriteEndElement();
+                    }
+                }
+            }
+        }
+    }
 }

@@ -2,29 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBoxSoftware.Reflection;
+using TheBoxSoftware.Reflection.Comments;
 
-namespace TheBoxSoftware.Documentation {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Comments;
-
+namespace TheBoxSoftware.Documentation
+{
     /// <file name='code-documentation\entry.xml' path='docs/assemblyfirstdocumentmapper/member[@name="class"]/*' />
-	internal class AssemblyFirstDocumentMapper : DocumentMapper {
-
+	internal class AssemblyFirstDocumentMapper : DocumentMapper
+    {
         /// <file name='code-documentation\entry.xml' path='docs/assemblyfirstdocumentmapper/member[@name="ctor1"]/*' />
 		public AssemblyFirstDocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator)
-			: base(assemblies, useObservableCollection, creator) {
+			: base(assemblies, useObservableCollection, creator)
+        {
 		}
 
-		public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter) {
+		public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter)
+        {
 			AssemblyDef assembly = AssemblyDef.Create(current.FileName);
 			current.LoadedAssembly = assembly;
 
 			XmlCodeCommentFile xmlComments = null;
 			bool fileExists = System.IO.File.Exists(current.XmlFileName);
-			if (fileExists) {
+			if (fileExists)
+            {
 				xmlComments = new XmlCodeCommentFile(current.XmlFileName);
 			}
-			else {
+			else
+            {
 				xmlComments = new XmlCodeCommentFile();
 			}
 
@@ -34,14 +38,17 @@ namespace TheBoxSoftware.Documentation {
 			assemblyEntry.IsSearchable = false;
 
 			// Add the namespaces to the document map
-			foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in assembly.GetTypesInNamespaces()) {
-				if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0) {
+			foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in assembly.GetTypesInNamespaces())
+            {
+				if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0)
+                {
 					continue;
 				}
 				string namespaceSubKey = this.BuildSubkey(currentNamespace);
 
 				Entry namespaceEntry = this.FindByKey(assemblyEntry.Key, namespaceSubKey, false);
-				if (namespaceEntry == null) {
+				if (namespaceEntry == null)
+                {
 					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments, assemblyEntry);
 					namespaceEntry.Key = assemblyEntry.Key;
 					namespaceEntry.SubKey = namespaceSubKey;
@@ -49,14 +56,16 @@ namespace TheBoxSoftware.Documentation {
 				}
 
 				// Add the types from that namespace to its map
-				foreach (TypeDef currentType in currentNamespace.Value) {
-					if (currentType.Name.StartsWith("<")) {
+				foreach (TypeDef currentType in currentNamespace.Value)
+                {
+					if (currentType.Name.StartsWith("<"))
+                    {
 						continue;
 					}
 					PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentType);
 					this.OnPreEntryAdded(e);
-					if (!e.Filter) {
-
+					if (!e.Filter)
+                    {
 						Entry typeEntry = this.EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
 						typeEntry.Key = currentType.GetGloballyUniqueId();
 						typeEntry.IsSearchable = true;
@@ -65,10 +74,12 @@ namespace TheBoxSoftware.Documentation {
 						// this is currently for System.Enum derived values.
 						if (
 								currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
-								currentType.IsDelegate) {
+								currentType.IsDelegate)
+                        {
 							// Ignore children
 						}
-						else {
+						else
+                        {
 							this.GenerateTypeMap(currentType, typeEntry, xmlComments);
 							typeEntry.Children.Sort();
 						}
@@ -76,7 +87,8 @@ namespace TheBoxSoftware.Documentation {
 						namespaceEntry.Children.Add(typeEntry);
 					}
 				}
-				if (namespaceEntry.Children.Count > 0) {
+				if (namespaceEntry.Children.Count > 0)
+                {
 					assemblyEntry.Children.Add(namespaceEntry);
 					namespaceEntry.Children.Sort();
 				}
