@@ -44,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Utilities", "4. Utilitie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "License Utility", "4. Utilities\License Utility\License Utility.csproj", "{9125D912-81EE-4221-B5FB-7DD63B92FFB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Documentation.Tests", "TheBoxSoftware.Documentation.Tests\TheBoxSoftware.Documentation.Tests.csproj", "{2216040E-9D5A-4DF5-ADF3-1561D08794FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +209,24 @@ Global
 		{9125D912-81EE-4221-B5FB-7DD63B92FFB2}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9125D912-81EE-4221-B5FB-7DD63B92FFB2}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{9125D912-81EE-4221-B5FB-7DD63B92FFB2}.Test|x86.ActiveCfg = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Release|x86.Build.0 = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|Any CPU.Build.0 = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|x86.ActiveCfg = Release|Any CPU
+		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

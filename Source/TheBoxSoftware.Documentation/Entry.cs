@@ -51,8 +51,7 @@ namespace TheBoxSoftware.Documentation
         {
             Entry found = null;
 
-            // make sure they have the same key and sub key
-            if (Key == key && ((string.IsNullOrEmpty(SubKey) == string.IsNullOrEmpty(subKey)) || (SubKey == subKey)))
+            if (IsThisEntry(key, subKey))
             {
                 found = this;
             }
@@ -73,7 +72,7 @@ namespace TheBoxSoftware.Documentation
         }
 
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="search"]/*' />
-		public List<Entry> Search(string searchText)
+        public List<Entry> Search(string searchText)
         {
             List<Entry> results = new List<Entry>();
 
@@ -104,6 +103,11 @@ namespace TheBoxSoftware.Documentation
             }
 
             return parent;
+        }
+
+        private bool IsThisEntry(long key, string subKey)
+        {
+            return _key == key && ((string.IsNullOrEmpty(_subKey) == string.IsNullOrEmpty(subKey)) || (_subKey == subKey));
         }
 
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="name"]/*' />
