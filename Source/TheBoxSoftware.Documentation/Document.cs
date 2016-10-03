@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TheBoxSoftware.Reflection;
 using TheBoxSoftware.Reflection.Comments;
 
@@ -35,10 +33,10 @@ namespace TheBoxSoftware.Documentation
         /// <param name="creator">The EntryCreator to use to create new Entries in the Map</param>
         public Document(List<DocumentedAssembly> assemblies, Mappers mapperType, bool useObservableCollection, EntryCreator creator)
         {
-            Mapper = DocumentMapper.Create(assemblies, mapperType, useObservableCollection, creator);
-            Mapper.PreEntryAdded += new EventHandler<PreEntryAddedEventArgs>(PreEntryAdded);
+            _mapper = DocumentMapper.Create(assemblies, mapperType, useObservableCollection, creator);
+            _mapper.PreEntryAdded += new EventHandler<PreEntryAddedEventArgs>(PreEntryAdded);
 
-            Assemblies = assemblies;
+            _assemblies = assemblies;
         }
 
         /// <summary>
@@ -46,8 +44,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public void UpdateDocumentMap()
         {
-            Mapper.GenerateMap();
-            Map = Mapper.DocumentMap;
+            _mapper.GenerateMap();
+            _map = Mapper.DocumentMap;
         }
 
         /// <summary>
@@ -250,10 +248,6 @@ namespace TheBoxSoftware.Documentation
             {
                 return _mapper;
             }
-            set
-            {
-                _mapper = value;
-            }
         }
 
         /// <summary>
@@ -280,7 +274,7 @@ namespace TheBoxSoftware.Documentation
             {
                 return _map;
             }
-            set
+            protected set
             {
                 _map = value;
             }
@@ -294,10 +288,6 @@ namespace TheBoxSoftware.Documentation
             get
             {
                 return _assemblies;
-            }
-            set
-            {
-                _assemblies = value;
             }
         }
 
