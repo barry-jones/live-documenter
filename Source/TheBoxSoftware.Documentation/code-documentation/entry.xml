@@ -17,6 +17,7 @@
         Initialises a new Entry instance
       </summary>
       <param name="item">The item that represents this entry</param>
+      <param name="displayName">The display name of the entry.</param>
       <param name="xmlComments">The XmlComments file</param>
     </member>
 

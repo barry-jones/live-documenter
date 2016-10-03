@@ -34,7 +34,7 @@ namespace TheBoxSoftware.Documentation
 		public Entry(object item, string displayName, XmlCodeCommentFile xmlComments, Entry parent)
             : this(item, displayName, xmlComments)
         {
-            Parent = parent;
+            _parent = parent;
         }
 
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="findbykey1"]/*' />
@@ -253,7 +253,7 @@ namespace TheBoxSoftware.Documentation
         }
 
         /// <summary>
-        /// 
+        /// The Item being represented by this Entry
         /// </summary>
         public object Item
         {
