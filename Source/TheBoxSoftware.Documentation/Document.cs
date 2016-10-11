@@ -114,8 +114,8 @@ namespace TheBoxSoftware.Documentation
         /// <returns>The Entry if it is found else null.</returns>
         public Entry Find(CRefPath path)
         {
-            if (path == null || path.PathType == CRefTypes.Error) return null;  // nothing to search for
-            if (Map.Count == 0) return null; // nothing to search in
+            if (path == null || path.PathType == CRefTypes.Error) return null;
+            if (Map.Count == 0) return null;
 
             // find the level of the namespace entries
             int level = 1;
