@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace TheBoxSoftware.Reflection
+{
+    public class CustomAttribute
+    {
+        private MemberRef attributeType;
 
-namespace TheBoxSoftware.Reflection {
-	using TheBoxSoftware.Reflection.Core;
-	using TheBoxSoftware.Reflection.Core.COFF;
+        public CustomAttribute(MemberRef attributeType)
+        {
+            this.attributeType = attributeType;
+        }
 
-	public class CustomAttribute {
-		private MemberRef attributeType;
-
-		public CustomAttribute(MemberRef attributeType) {
-			this.attributeType = attributeType;
-		}
-
-		public string Name {
-			get { return this.attributeType.Type.Name; }
-		}
-	}
+        public string Name
+        {
+            get { return this.attributeType.Type.Name; }
+        }
+    }
 }
