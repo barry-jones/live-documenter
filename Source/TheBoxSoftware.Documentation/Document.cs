@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Documentation
     /// </summary>
     public class Document
     {
-        private DocumentMapper _mapper;
+        private IDocumentMapper _mapper;
         private DocumentSettings _settings;
         private DocumentMap _map;
         private List<DocumentedAssembly> _assemblies;
@@ -242,7 +242,7 @@ namespace TheBoxSoftware.Documentation
         /// <summary>
         /// The DocumentMapper used to generate the DocumentMap
         /// </summary>
-        protected DocumentMapper Mapper
+        protected IDocumentMapper Mapper
         {
             get
             {

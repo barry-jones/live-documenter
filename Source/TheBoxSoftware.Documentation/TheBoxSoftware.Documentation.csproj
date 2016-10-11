@@ -170,6 +170,7 @@
     <Compile Include="Exporting\Website\IndexXmlRenderer.cs" />
     <Compile Include="Exporting\XmlExporter.cs" />
     <Compile Include="GroupedNamespaceDocumentMapper.cs" />
+    <Compile Include="IDocumentMapper.cs" />
     <Compile Include="InputFileReader.cs" />
     <Compile Include="Mappers.cs" />
     <Compile Include="NamespaceFirstDocumentMapper.cs" />

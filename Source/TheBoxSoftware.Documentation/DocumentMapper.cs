@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Documentation
     /// <para>The document mapper creates a hierarchical representation of all of the entries in the documentation step. It
     /// is also the area where the decision about which details are provided easily for sorting and searching.</para>
     /// </remarks>
-    public abstract class DocumentMapper
+    public abstract class DocumentMapper : IDocumentMapper
     {
         protected System.Text.RegularExpressions.Regex illegalFileCharacters;
         private EventHandler<PreEntryAddedEventArgs> _preEntryAddedEvent;
@@ -36,7 +36,7 @@ namespace TheBoxSoftware.Documentation
         /// The provided <paramref name="typeOfMapper"/> has no implementation, the document mapper failed to be
         /// created.
         /// </exception>
-        public static DocumentMapper Create(List<DocumentedAssembly> assemblies,
+        public static IDocumentMapper Create(List<DocumentedAssembly> assemblies,
             Mappers typeOfMapper,
             bool useObservableCollection,
             EntryCreator creator)
