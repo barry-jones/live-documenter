@@ -256,12 +256,19 @@ namespace TheBoxSoftware.Documentation
         /// <param name="commentsXml">The assembly comment file.</param>
         protected virtual void GenerateTypeMap(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
         {
-            BuildConstructorEntries(typeDef, typeEntry, commentsXml);
-            BuildMethodEntries(typeDef, typeEntry, commentsXml);
-            BuildOperatorEntries(typeDef, typeEntry, commentsXml);
-            BuildFieldEntries(typeDef, typeEntry, commentsXml);
-            BuildPropertyEntries(typeDef, typeEntry, commentsXml);
-            BuildEventEntries(typeDef, typeEntry, commentsXml);
+            const string CONSTRUCTOR = "Constructors";
+            const string METHOD = "Methods";
+            const string OPERATOR = "Operators";
+            const string FIELD = "Fields";
+            const string PROPERTY = "Properties";
+            const string EVENT = "Events";
+
+            BuildMethodEntries(CONSTRUCTOR, typeDef.GetConstructors(), typeEntry, commentsXml);
+            BuildMethodEntries(METHOD, typeDef.GetMethods(), typeEntry, commentsXml);
+            BuildMethodEntries(OPERATOR, typeDef.GetOperators(), typeEntry, commentsXml);
+            BuildEntries<FieldDef>(FIELD, typeDef.GetFields(), typeEntry, commentsXml);
+            BuildEntries<PropertyDef>(PROPERTY, typeDef.GetProperties(), typeEntry, commentsXml);
+            BuildEntries<EventDef>(EVENT, typeDef.GetEvents(), typeEntry, commentsXml);
         }
 
         /// <summary>
@@ -280,200 +287,65 @@ namespace TheBoxSoftware.Documentation
             return found;
         }
 
-        private void BuildEventEntries(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
+        private void BuildEntries<T>(string collectionName, List<T> entries, Entry typeEntry, XmlCodeCommentFile commentsXml) where T: ReflectedMember
         {
-            List<EventDef> events = typeDef.GetEvents();
+            if(entries.Count == 0) return;
 
-            // Display the properties defined in the current type
-            if (events.Count > 0)
+            ReflectedMember containingType = (ReflectedMember)typeEntry.Item;
+
+            Entry eventsEntry = EntryCreator.Create(entries, collectionName, commentsXml, typeEntry);
+            eventsEntry.IsSearchable = false;
+            eventsEntry.Key = containingType.GetGloballyUniqueId();
+            eventsEntry.SubKey = collectionName;
+
+            foreach(T current in entries)
             {
-                Entry eventsEntry = EntryCreator.Create(events, "Events", commentsXml, typeEntry);
-                eventsEntry.IsSearchable = false;
-                eventsEntry.Key = ((ReflectedMember)typeEntry.Item).GetGloballyUniqueId();
-                eventsEntry.SubKey = "Events";
+                PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(current);
+                this.OnPreEntryAdded(e);
+                if(!e.Filter)
+                {
+                    Entry propertyEntry = EntryCreator.Create(current, current.Name, commentsXml, eventsEntry);
+                    propertyEntry.IsSearchable = true;
+                    propertyEntry.Key = current.GetGloballyUniqueId();
+                    eventsEntry.Children.Add(propertyEntry);
+                }
+            }
 
-                foreach (EventDef currentProperty in events)
-                {
-                    PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentProperty);
-                    this.OnPreEntryAdded(e);
-                    if (!e.Filter)
-                    {
-                        Entry propertyEntry = EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, eventsEntry);
-                        propertyEntry.IsSearchable = true;
-                        propertyEntry.Key = currentProperty.GetGloballyUniqueId();
-                        eventsEntry.Children.Add(propertyEntry);
-                    }
-                }
-                if (eventsEntry.Children.Count > 0)
-                {
-                    eventsEntry.Children.Sort();
-                    typeEntry.Children.Add(eventsEntry);
-                }
+            if(eventsEntry.Children.Count > 0)
+            {
+                eventsEntry.Children.Sort();
+                typeEntry.Children.Add(eventsEntry);
             }
         }
 
-        private void BuildPropertyEntries(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
+        private void BuildMethodEntries(string collectionName, List<MethodDef> entries, Entry typeEntry, XmlCodeCommentFile commentsXml)
         {
-            List<PropertyDef> properties = typeDef.GetProperties();
+            if(entries.Count == 0) return;
 
-            // Display the properties defined in the current type
-            if (properties.Count > 0)
+            ReflectedMember containingType = (ReflectedMember)typeEntry.Item;
+
+            Entry eventsEntry = EntryCreator.Create(entries, collectionName, commentsXml, typeEntry);
+            eventsEntry.IsSearchable = false;
+            eventsEntry.Key = containingType.GetGloballyUniqueId();
+            eventsEntry.SubKey = collectionName;
+
+            foreach(MethodDef current in entries)
             {
-                Entry propertiesEntry = EntryCreator.Create(properties, "Properties", commentsXml, typeEntry);
-                propertiesEntry.IsSearchable = false;
-                propertiesEntry.Key = typeDef.GetGloballyUniqueId();
-                propertiesEntry.SubKey = "Properties";
-
-                foreach (PropertyDef currentProperty in properties)
+                PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(current);
+                this.OnPreEntryAdded(e);
+                if(!e.Filter)
                 {
-                    PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentProperty);
-                    this.OnPreEntryAdded(e);
-                    if (!e.Filter)
-                    {
-                        Entry propertyEntry = EntryCreator.Create(currentProperty, currentProperty.Name, commentsXml, propertiesEntry);
-                        propertyEntry.IsSearchable = true;
-                        propertyEntry.Key = currentProperty.GetGloballyUniqueId();
-                        propertiesEntry.Children.Add(propertyEntry);
-                    }
-                }
-                if (propertiesEntry.Children.Count > 0)
-                {
-                    propertiesEntry.Children.Sort();
-                    typeEntry.Children.Add(propertiesEntry);
+                    Entry propertyEntry = EntryCreator.Create(current, current.GetDisplayName(false, false), commentsXml, eventsEntry);
+                    propertyEntry.IsSearchable = true;
+                    propertyEntry.Key = current.GetGloballyUniqueId();
+                    eventsEntry.Children.Add(propertyEntry);
                 }
             }
-        }
 
-        private void BuildFieldEntries(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
-        {
-            List<FieldDef> fields = typeDef.GetFields();
-
-            // Add entries to allow the viewing of the types fields			
-            if (fields.Count > 0)
+            if(eventsEntry.Children.Count > 0)
             {
-                Entry fieldsEntry = EntryCreator.Create(fields, "Fields", commentsXml, typeEntry);
-                fieldsEntry.Key = typeDef.GetGloballyUniqueId();
-                fieldsEntry.SubKey = "Fields";
-                fieldsEntry.IsSearchable = false;
-
-                foreach (FieldDef currentField in fields)
-                {
-                    PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentField);
-                    this.OnPreEntryAdded(e);
-                    if (!e.Filter)
-                    {
-                        Entry fieldEntry = EntryCreator.Create(currentField, currentField.Name, commentsXml, fieldsEntry);
-                        fieldEntry.Key = currentField.GetGloballyUniqueId();
-                        fieldEntry.IsSearchable = true;
-                        fieldsEntry.Children.Add(fieldEntry);
-                    }
-                }
-                if (fieldsEntry.Children.Count > 0)
-                {
-                    fieldsEntry.Children.Sort();
-                    typeEntry.Children.Add(fieldsEntry);
-                }
-            }
-        }
-
-        private void BuildOperatorEntries(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
-        {
-            List<MethodDef> operators = typeDef.GetOperators();
-            if (operators.Count > 0)
-            {
-                Entry operatorsEntry = EntryCreator.Create(operators, "Operators", commentsXml, typeEntry);
-                operatorsEntry.Key = typeDef.GetGloballyUniqueId();
-                operatorsEntry.SubKey = "Operators";
-                operatorsEntry.IsSearchable = false;
-
-                int count = operators.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    MethodDef current = operators[i];
-                    PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(current);
-                    this.OnPreEntryAdded(e);
-                    if (!e.Filter)
-                    {
-                        Entry operatorEntry = EntryCreator.Create(current, current.GetDisplayName(false, false), commentsXml, operatorsEntry);
-                        operatorEntry.Key = current.GetGloballyUniqueId();
-                        operatorEntry.IsSearchable = true;
-                        operatorsEntry.Children.Add(operatorEntry);
-                    }
-                }
-                if (operatorsEntry.Children.Count > 0)
-                {
-                    operatorsEntry.Children.Sort();
-                    typeEntry.Children.Add(operatorsEntry);
-                }
-            }
-        }
-
-        private void BuildMethodEntries(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
-        {
-            List<MethodDef> methods = typeDef.GetMethods();
-
-            // Add a methods containing page and the associated methods
-            if (methods.Count > 0)
-            {
-                Entry methodsEntry = EntryCreator.Create(methods, "Methods", commentsXml, typeEntry);
-                methodsEntry.Key = ((ReflectedMember)typeEntry.Item).GetGloballyUniqueId();
-                methodsEntry.SubKey = "Methods";
-                methodsEntry.IsSearchable = false;
-
-                // Add the method pages child page entries to the map
-                int count = methods.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    MethodDef currentMethod = methods[i];
-                    PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentMethod);
-                    this.OnPreEntryAdded(e);
-                    if (!e.Filter)
-                    {
-                        Entry methodEntry = EntryCreator.Create(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, methodsEntry);
-                        methodEntry.IsSearchable = true;
-                        methodEntry.Key = currentMethod.GetGloballyUniqueId();
-                        methodsEntry.Children.Add(methodEntry);
-                    }
-                }
-                if (methodsEntry.Children.Count > 0)
-                {
-                    methodsEntry.Children.Sort();
-                    typeEntry.Children.Add(methodsEntry);
-                }
-            }
-        }
-
-        private void BuildConstructorEntries(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
-        {
-            List<MethodDef> constructors = typeDef.GetConstructors();
-
-            if (constructors.Count > 0)
-            {
-                Entry constructorsEntry = EntryCreator.Create(constructors, "Constructors", commentsXml, typeEntry);
-                constructorsEntry.Key = typeDef.GetGloballyUniqueId();
-                constructorsEntry.SubKey = "Constructors";
-                constructorsEntry.IsSearchable = false;
-
-                // Add the method pages child page entries to the map
-                int count = constructors.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    MethodDef currentMethod = constructors[i];
-                    PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentMethod);
-                    this.OnPreEntryAdded(e);
-                    if (!e.Filter)
-                    {
-                        Entry constructorEntry = EntryCreator.Create(currentMethod, currentMethod.GetDisplayName(false, false), commentsXml, constructorsEntry);
-                        constructorEntry.IsSearchable = true;
-                        constructorEntry.Key = currentMethod.GetGloballyUniqueId();
-                        constructorsEntry.Children.Add(constructorEntry);
-                    }
-                }
-                if (constructorsEntry.Children.Count > 0)
-                {
-                    constructorsEntry.Children.Sort();
-                    typeEntry.Children.Add(constructorsEntry);
-                }
+                eventsEntry.Children.Sort();
+                typeEntry.Children.Add(eventsEntry);
             }
         }
 
