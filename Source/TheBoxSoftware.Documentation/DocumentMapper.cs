@@ -59,7 +59,7 @@ namespace TheBoxSoftware.Documentation
             }
 
             if (mapper == null)
-                throw new InvalidOperationException(string.Format("There is no implementation of {0} document mapper. Document could not be mapped.", typeOfMapper));
+                throw new InvalidOperationException($"There is no implementation of {typeOfMapper} document mapper. Document could not be mapped.");
 
             return mapper;
         }
