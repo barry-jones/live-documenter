@@ -42,7 +42,6 @@ namespace TheBoxSoftware.Documentation.Exporting
         private bool _isCancelled;
         private List<Exception> _exportExceptions;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Exporter"/> class.
         /// </summary>
@@ -105,7 +104,6 @@ namespace TheBoxSoftware.Documentation.Exporting
 
             return createdExporter;
         }
-
 
         /// <summary>
         /// Performs the export steps necessary to produce the final exported documentation in the
