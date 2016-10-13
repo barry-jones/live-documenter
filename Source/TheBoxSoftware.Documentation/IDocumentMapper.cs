@@ -7,11 +7,7 @@ namespace TheBoxSoftware.Documentation
 {
     public interface IDocumentMapper
     {
-        void GenerateMap();
-
-        Entry GenerateDocumentForAssembly(DocumentedAssembly documentedAssembly, ref int fileCounter);
-
-        DocumentMap DocumentMap { get; }
+        DocumentMap GenerateMap();
 
         event EventHandler<PreEntryAddedEventArgs> PreEntryAdded;
     }

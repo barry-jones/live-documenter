@@ -44,8 +44,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public void UpdateDocumentMap()
         {
-            _mapper.GenerateMap();
-            _map = Mapper.DocumentMap;
+            _map = _mapper.GenerateMap();
         }
 
         /// <summary>

@@ -25,10 +25,10 @@ namespace TheBoxSoftware.Documentation
         /// <summary>
         /// Generates a document map grouping related namespaces.
         /// </summary>
-		public override void GenerateMap()
+		public override DocumentMap GenerateMap()
         {
             EntryCreator.Created = 0;
-            DocumentMap = UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
+            DocumentMap map = UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
             int fileCounter = 1;
 
             // For each of the documentedfiles generate the document map and add
@@ -38,18 +38,16 @@ namespace TheBoxSoftware.Documentation
                 if (!CurrentFiles[i].IsCompiled)
                     continue;
 
-                GenerateDocumentForAssembly(
-                    CurrentFiles[i], ref fileCounter
-                    );
+                GenerateDocumentForAssembly(map, CurrentFiles[i], ref fileCounter);
             }
 
-            this.DocumentMap.Sort();
+            map.Sort();
 
             bool dontGroupNamespaces = true;
             List<string> counter = new List<string>();
             List<Entry> namespaceContainers = new List<Entry>();
 
-            if (DocumentMap.Count > 10)
+            if (map.Count > 10)
             {
                 // calculate the best level to create groups from or if there is no best place
                 dontGroupNamespaces = false;
@@ -60,9 +58,9 @@ namespace TheBoxSoftware.Documentation
                 {
                     counter.Clear();
 
-                    for (int dmI = 0; dmI < this.DocumentMap.Count; dmI++)
+                    for (int dmI = 0; dmI < map.Count; dmI++)
                     {
-                        string[] parts = DocumentMap[dmI].Name.Split('.');
+                        string[] parts = map[dmI].Name.Split('.');
                         string currentNamespace = parts.Length > currentLevel ? string.Join(".", parts, 0, currentLevel + 1) : string.Join(".", parts);
 
                         if (!counter.Contains(currentNamespace))
@@ -71,7 +69,7 @@ namespace TheBoxSoftware.Documentation
                         }
                     }
 
-                    currentPercentage = ((float)counter.Count) / ((float)DocumentMap.Count);
+                    currentPercentage = ((float)counter.Count) / ((float)map.Count);
                     if (parentPercentage < 0.1 && currentPercentage > 0.65 && currentLevel > 0)
                     {
                         dontGroupNamespaces = true;
@@ -79,9 +77,9 @@ namespace TheBoxSoftware.Documentation
                     }
 
                     currentLevel++;
-                    parentPercentage = ((float)counter.Count) / ((float)DocumentMap.Count);
+                    parentPercentage = ((float)counter.Count) / ((float)map.Count);
                 }
-                while (((float)counter.Count) / ((float)DocumentMap.Count) < 0.1306);
+                while (((float)counter.Count) / ((float)map.Count) < 0.1306);
             }
 
             if (!dontGroupNamespaces)
@@ -90,23 +88,21 @@ namespace TheBoxSoftware.Documentation
                 int id = 0;
                 for (int cI = 0; cI < counter.Count; cI++)
                 {
-                    Entry namespaceContainer = EntryCreator.Create(
-                        EntryTypes.NamespaceContainer, counter[cI], null
-                        );
+                    Entry namespaceContainer = EntryCreator.Create(EntryTypes.NamespaceContainer, counter[cI], null);
                     namespaceContainer.Key = id++;
                     namespaceContainer.SubKey = counter[cI] + "Namespaces";
                     namespaceContainers.Add(namespaceContainer);
                 }
 
                 // add all the namespaces to the groupings
-                for (int namespaceI = 0; namespaceI < DocumentMap.Count; namespaceI++)
+                for (int namespaceI = 0; namespaceI < map.Count; namespaceI++)
                 {
                     for (int containersI = namespaceContainers.Count; containersI > 0; containersI--)
                     {
-                        if (DocumentMap[namespaceI].Name.Contains(namespaceContainers[containersI - 1].Name))
+                        if (map[namespaceI].Name.Contains(namespaceContainers[containersI - 1].Name))
                         {
-                            DocumentMap[namespaceI].Parent = namespaceContainers[containersI - 1];
-                            namespaceContainers[containersI - 1].Children.Add(DocumentMap[namespaceI]);
+                            map[namespaceI].Parent = namespaceContainers[containersI - 1];
+                            namespaceContainers[containersI - 1].Children.Add(map[namespaceI]);
                             break;
                         }
                     }
@@ -115,19 +111,21 @@ namespace TheBoxSoftware.Documentation
 
             if (namespaceContainers.Count > 1)
             {
-                DocumentMap.Clear();
+                map.Clear();
 
                 for (int i = 0; i < namespaceContainers.Count; i++)
                 {
                     namespaceContainers[i].Name += " Namespaces";
-                    DocumentMap.Add(namespaceContainers[i]);
+                    map.Add(namespaceContainers[i]);
                 }
             }
 
-            DocumentMap.NumberOfEntries = EntryCreator.Created;
+            map.NumberOfEntries = EntryCreator.Created;
+
+            return map;
         }
 
-        public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter)
+        protected override Entry GenerateDocumentForAssembly(DocumentMap map, DocumentedAssembly current, ref int fileCounter)
         {
             AssemblyDef assembly = AssemblyDef.Create(current.FileName);
             current.LoadedAssembly = assembly;
@@ -159,7 +157,7 @@ namespace TheBoxSoftware.Documentation
                 }
                 string namespaceSubKey = BuildSubkey(currentNamespace);
 
-                namespaceEntry = Find(namespaceSubKey);
+                namespaceEntry = Find(map, namespaceSubKey);
                 if (namespaceEntry == null)
                 {
                     namespaceEntry = EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
@@ -205,9 +203,9 @@ namespace TheBoxSoftware.Documentation
                     namespaceEntry.Children.Sort();
                     // we still need to add here otherwise we get duplicate namespaces.
                     assemblyEntry.Children.Add(namespaceEntry);
-                    if (!this.DocumentMap.Contains(namespaceEntry))
+                    if (!map.Contains(namespaceEntry))
                     {
-                        this.DocumentMap.Add(namespaceEntry);
+                        map.Add(namespaceEntry);
                     }
                     else
                     {
@@ -220,21 +218,6 @@ namespace TheBoxSoftware.Documentation
 
             // we are not interested in assemblies being used here so make them childless
             return this.EntryCreator.Create(null, string.Empty, null);
-        }
-
-        /// <summary>
-        /// Searches the top level elements for the specified <paramref name="name"/>.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>The Entry if found else null.</returns>
-        private Entry Find(string name)
-        {
-            Entry found = null;
-            for (int i = 0; i < this.DocumentMap.Count; i++) {
-                found = this.DocumentMap[i].Name == name ? this.DocumentMap[i] : null;
-                if (found != null) break;
-            }
-            return found;
         }
     }
 }

@@ -17,7 +17,6 @@ namespace TheBoxSoftware.Documentation
     /// </remarks>
     public abstract class DocumentMapper : IDocumentMapper
     {
-        protected System.Text.RegularExpressions.Regex illegalFileCharacters;
         private EventHandler<PreEntryAddedEventArgs> _preEntryAddedEvent;
         private List<DocumentedAssembly> _currentFiles;
         private DocumentMap _documentMap;
@@ -73,13 +72,6 @@ namespace TheBoxSoftware.Documentation
         /// <param name="creator">The EntryCreator to use.</param>
         protected DocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator)
         {
-            string regex = string.Format("{0}{1}",
-                 new string(Path.GetInvalidFileNameChars()),
-                 new string(Path.GetInvalidPathChars()));
-            illegalFileCharacters = new System.Text.RegularExpressions.Regex(
-                string.Format("[{0}]", System.Text.RegularExpressions.Regex.Escape(regex))
-                );
-
             _currentFiles = assemblies;
             _useObservableCollection = useObservableCollection;
             _entryCreator = creator;
@@ -88,10 +80,10 @@ namespace TheBoxSoftware.Documentation
         /// <summary>
         /// Generates the document map based on the <see cref="CurrentFiles"/>.
         /// </summary>
-        public virtual void GenerateMap()
+        public virtual DocumentMap GenerateMap()
         {
             this.EntryCreator.Created = 0;
-            this.DocumentMap = this.UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
+            DocumentMap map = this.UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
             int fileCounter = 1;
 
             // For each of the documentedfiles generate the document map and add
@@ -100,16 +92,17 @@ namespace TheBoxSoftware.Documentation
             {
                 if (!this.CurrentFiles[i].IsCompiled)
                     continue;
-                Entry assemblyEntry = this.GenerateDocumentForAssembly(
-                    this.CurrentFiles[i], ref fileCounter
-                    );
+                Entry assemblyEntry = this.GenerateDocumentForAssembly(map, this.CurrentFiles[i], ref fileCounter);
                 if (assemblyEntry.Children.Count > 0)
                 {
-                    this.DocumentMap.Add(assemblyEntry);
+                    map.Add(assemblyEntry);
                 }
             }
-            this.DocumentMap.Sort();
-            this.DocumentMap.NumberOfEntries = this.EntryCreator.Created;
+
+            map.Sort();
+            map.NumberOfEntries = this.EntryCreator.Created;
+
+            return map;
         }
 
         /// <summary>
@@ -118,12 +111,12 @@ namespace TheBoxSoftware.Documentation
         /// <param name="key">The key to search for.</param>
         /// <param name="checkChildren">Wether or not to check the child entries</param>
         /// <returns>The entry that relates to the key or null if not found</returns>
-        protected Entry FindByKey(long key, string subKey, bool checkChildren)
+        protected Entry FindByKey(DocumentMap map, long key, string subKey, bool checkChildren)
         {
             Entry found = null;
-            for (int i = 0; i < this.DocumentMap.Count; i++)
+            for (int i = 0; i < map.Count; i++)
             {
-                found = DocumentMap[i].FindByKey(key, subKey, checkChildren);
+                found = map[i].FindByKey(key, subKey, checkChildren);
                 if (found != null)
                 {
                     break;
@@ -132,7 +125,7 @@ namespace TheBoxSoftware.Documentation
             return found;
         }
 
-        public virtual Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter)
+        protected virtual Entry GenerateDocumentForAssembly(DocumentMap map, DocumentedAssembly current, ref int fileCounter)
         {
             AssemblyDef assembly = AssemblyDef.Create(current.FileName);
             current.LoadedAssembly = assembly;
@@ -163,14 +156,14 @@ namespace TheBoxSoftware.Documentation
                 }
                 string namespaceSubKey = BuildSubkey(currentNamespace);
 
-                namespaceEntry = FindByKey(assemblyEntry.Key, namespaceSubKey, false);
+                namespaceEntry = FindByKey(map, assemblyEntry.Key, namespaceSubKey, false);
                 if (namespaceEntry == null)
                 {
                     namespaceEntry = EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
                     namespaceEntry.Key = assemblyEntry.Key;
                     namespaceEntry.SubKey = namespaceSubKey;
                     namespaceEntry.IsSearchable = false;
-                    this.DocumentMap[0].Children.Add(namespaceEntry);
+                    map[0].Children.Add(namespaceEntry);
                 }
 
                 // Add the types from that namespace to its map
@@ -213,12 +206,12 @@ namespace TheBoxSoftware.Documentation
             }
 
             // Make sure we dont display any empty namespaces
-            for (int i = this.DocumentMap[0].Children.Count - 1; i >= 0; i--)
+            for (int i = map[0].Children.Count - 1; i >= 0; i--)
             {
-                Entry entry = DocumentMap[0].Children[i];
+                Entry entry = map[0].Children[i];
                 if (namespaceEntry.Children.Count == 0)
                 {
-                    this.DocumentMap[0].Children.RemoveAt(i);
+                    map[0].Children.RemoveAt(i);
                 }
             }
 
@@ -271,6 +264,22 @@ namespace TheBoxSoftware.Documentation
             BuildEventEntries(typeDef, typeEntry, commentsXml);
         }
 
+        /// <summary>
+        /// Searches the top level elements for the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>The Entry if found else null.</returns>
+        protected Entry Find(DocumentMap map, string name)
+        {
+            Entry found = null;
+            for(int i = 0; i < map.Count; i++)
+            {
+                found = map[i].Name == name ? map[i] : null;
+                if(found != null) break;
+            }
+            return found;
+        }
+
         private void BuildEventEntries(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
         {
             List<EventDef> events = typeDef.GetEvents();
@@ -280,7 +289,7 @@ namespace TheBoxSoftware.Documentation
             {
                 Entry eventsEntry = EntryCreator.Create(events, "Events", commentsXml, typeEntry);
                 eventsEntry.IsSearchable = false;
-                eventsEntry.Key = typeDef.GetGloballyUniqueId();
+                eventsEntry.Key = ((ReflectedMember)typeEntry.Item).GetGloballyUniqueId();
                 eventsEntry.SubKey = "Events";
 
                 foreach (EventDef currentProperty in events)
@@ -407,7 +416,7 @@ namespace TheBoxSoftware.Documentation
             if (methods.Count > 0)
             {
                 Entry methodsEntry = EntryCreator.Create(methods, "Methods", commentsXml, typeEntry);
-                methodsEntry.Key = typeDef.GetGloballyUniqueId();
+                methodsEntry.Key = ((ReflectedMember)typeEntry.Item).GetGloballyUniqueId();
                 methodsEntry.SubKey = "Methods";
                 methodsEntry.IsSearchable = false;
 
@@ -508,21 +517,6 @@ namespace TheBoxSoftware.Documentation
             set
             {
                 _currentFiles = value;
-            }
-        }
-
-        /// <summary>
-        /// The DocumentMap generated by the DocumentMapper.
-        /// </summary>
-        public DocumentMap DocumentMap
-        {
-            get
-            {
-                return _documentMap;
-            }
-            set
-            {
-                _documentMap = value;
             }
         }
 

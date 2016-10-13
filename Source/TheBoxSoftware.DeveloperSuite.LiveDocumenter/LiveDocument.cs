@@ -37,8 +37,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 		/// </summary>
 		public void Update() 
         {
-			this.Mapper.GenerateMap();
-			this.Map = this.Mapper.DocumentMap;
+			this.Map = this.Mapper.GenerateMap();
 		}
 
 		/// <summary>
@@ -57,36 +56,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 		/// </remarks>
 		public void RefreshAssembly(DocumentedAssembly documentedAssembly) 
         {
-			// The assembly has been modified, find the existing node
-			// and generate the new one
-			Entry existingEntry = null;
-			int entryAtIndex = -1;
-			int fileCounter = LiveDocumentorFile.Singleton.LiveDocument.Map.Count;
-
-			for (int i = 0; i < LiveDocumentorFile.Singleton.LiveDocument.Map.Count; i++) 
-            {
-				Entry currentEntry = LiveDocumentorFile.Singleton.LiveDocument.Map[i];
-				if (currentEntry.Name == System.IO.Path.GetFileName(documentedAssembly.FileName))
-                {
-					existingEntry = currentEntry;
-					entryAtIndex = i;
-					break;
-				}
-			}
-
-			// only remove and reset if the assembly already exists in the document map
-			if (entryAtIndex != -1) 
-            {
-				// Remove the old entry, we need to do this now so any searches performed in the
-				// generate method do not return values from here.
-				this.Map.RemoveAt(entryAtIndex);
-
-				fileCounter = ((TheBoxSoftware.Reflection.AssemblyDef)existingEntry.Item).UniqueId;
-			}
-			Entry assemblyEntry = this.Mapper.GenerateDocumentForAssembly(documentedAssembly, ref fileCounter);
-
-			// insert the newly generated entry in the same location as the old one or make it the first entry
-			this.Map.Insert(entryAtIndex == -1 ? 0 : entryAtIndex, assemblyEntry);
+            this.Map = this.Mapper.GenerateMap();
 		}
 
 		/// <summary>

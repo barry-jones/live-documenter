@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Documentation
         {
 		}
 
-		public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter)
+		protected override Entry GenerateDocumentForAssembly(DocumentMap map, DocumentedAssembly current, ref int fileCounter)
         {
 			AssemblyDef assembly = AssemblyDef.Create(current.FileName);
 			current.LoadedAssembly = assembly;
@@ -46,7 +46,7 @@ namespace TheBoxSoftware.Documentation
 				}
 				string namespaceSubKey = this.BuildSubkey(currentNamespace);
 
-				Entry namespaceEntry = this.FindByKey(assemblyEntry.Key, namespaceSubKey, false);
+				Entry namespaceEntry = this.FindByKey(map, assemblyEntry.Key, namespaceSubKey, false);
 				if (namespaceEntry == null)
                 {
 					namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments, assemblyEntry);

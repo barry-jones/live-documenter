@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Documentation
         {
         }
 
-        public override Entry GenerateDocumentForAssembly(DocumentedAssembly current, ref int fileCounter)
+        protected override Entry GenerateDocumentForAssembly(DocumentMap map, DocumentedAssembly current, ref int fileCounter)
         {
             AssemblyDef assembly = AssemblyDef.Create(current.FileName);
             current.LoadedAssembly = assembly;
@@ -47,7 +47,7 @@ namespace TheBoxSoftware.Documentation
                 }
                 string namespaceSubKey = this.BuildSubkey(currentNamespace);
 
-                namespaceEntry = this.Find(namespaceSubKey);
+                namespaceEntry = Find(map, namespaceSubKey);
                 if (namespaceEntry == null)
                 {
                     namespaceEntry = this.EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
@@ -93,9 +93,9 @@ namespace TheBoxSoftware.Documentation
                     namespaceEntry.Children.Sort();
                     // we still need to add here otherwise we get duplicate namespaces.
                     assemblyEntry.Children.Add(namespaceEntry);
-                    if (!this.DocumentMap.Contains(namespaceEntry))
+                    if (!map.Contains(namespaceEntry))
                     {
-                        this.DocumentMap.Add(namespaceEntry);
+                        map.Add(namespaceEntry);
                     }
                     else
                     {
@@ -106,26 +106,10 @@ namespace TheBoxSoftware.Documentation
                 }
             }
 
-            this.DocumentMap.Sort();
+            map.Sort();
 
             // we are not interested in assemblies being used here so make them childless
             return this.EntryCreator.Create(null, string.Empty, null);
-        }
-
-        /// <summary>
-        /// Searches the top level elements for the specified <paramref name="name"/>.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>The Entry if found else null.</returns>
-        private Entry Find(string name)
-        {
-            Entry found = null;
-            for (int i = 0; i < this.DocumentMap.Count; i++)
-            {
-                found = this.DocumentMap[i].Name == name ? this.DocumentMap[i] : null;
-                if (found != null) break;
-            }
-            return found;
         }
     }
 }
