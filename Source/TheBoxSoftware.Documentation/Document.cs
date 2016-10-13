@@ -35,7 +35,6 @@ namespace TheBoxSoftware.Documentation
         {
             _mapper = DocumentMapper.Create(assemblies, mapperType, useObservableCollection, creator);
             _mapper.PreEntryAdded += new EventHandler<PreEntryAddedEventArgs>(PreEntryAdded);
-
             _assemblies = assemblies;
         }
 
