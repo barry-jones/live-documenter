@@ -178,9 +178,11 @@ namespace TheBoxSoftware.Reflection.Comments
         {
 			if (string.IsNullOrEmpty(crefPath))
 				throw new ArgumentNullException("path");
+
 			CRefPath parsedPath = new CRefPath();
 			parsedPath.crefPath = crefPath;
 			parsedPath.Parse();
+
 			return parsedPath;
 		}
 
