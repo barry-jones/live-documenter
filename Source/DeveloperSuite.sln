@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "License Utility", "4. Utili
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Documentation.Tests", "TheBoxSoftware.Documentation.Tests\TheBoxSoftware.Documentation.Tests.csproj", "{2216040E-9D5A-4DF5-ADF3-1561D08794FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflections.Tests", "TheBoxSoftware.Reflections.Tests\TheBoxSoftware.Reflections.Tests.csproj", "{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -227,6 +229,24 @@ Global
 		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|x86.ActiveCfg = Release|Any CPU
 		{2216040E-9D5A-4DF5-ADF3-1561D08794FC}.Test|x86.Build.0 = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Debug|x86.Build.0 = Debug|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Release|x86.Build.0 = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|Any CPU.Build.0 = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|x86.ActiveCfg = Release|Any CPU
+		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
