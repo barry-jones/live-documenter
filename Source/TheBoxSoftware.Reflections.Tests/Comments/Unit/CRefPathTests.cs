@@ -42,15 +42,6 @@ namespace TheBoxSoftware.Reflections.Tests.Comments.Unit
         }
 
         [Test]
-        public void CRefPath_Parse_ErrorPath_Should()
-        {
-            CRefPath path = CRefPath.Parse("E:information");
-
-            Assert.AreEqual(CRefTypes.Error, path.PathType);
-            Assert.AreEqual(string.Empty, path.ToString());
-        }
-
-        [Test]
         public void CRefPath_Parse_MethodPath_ShouldReturnMethodType()
         {
             // I think there is a slight problem here, in that there is an expection
@@ -69,6 +60,11 @@ namespace TheBoxSoftware.Reflections.Tests.Comments.Unit
         [Test]
         public void CRefPath_Parse_MethodPathWithOnlyTwoPartNames_ShouldReturnMethodType()
         {
+            // this fails because there is not enough elements defined, currently we expect
+            // that there are more than 2 elements, which will probably cause errors when
+            // types are defined without a namespace. 
+            // TODO: Fix, but need to make sure all the rest of the system doesnt break.
+
             CRefPath path = CRefPath.Parse("M:string.ToUpper()");
 
             Assert.AreEqual(CRefTypes.Error, path.PathType); // this is currently an error as there
