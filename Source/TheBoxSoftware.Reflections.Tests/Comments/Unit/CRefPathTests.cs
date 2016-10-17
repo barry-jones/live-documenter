@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using TheBoxSoftware.Reflection.Comments;
 
-namespace TheBoxSoftware.Reflections.Tests.Comments.Unit
+namespace TheBoxSoftware.Reflection.Tests.Comments.Unit
 {
     [TestFixture]
     public class CRefPathTests

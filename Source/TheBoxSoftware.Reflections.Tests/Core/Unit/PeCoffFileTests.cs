@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using TheBoxSoftware.Reflection.Core;
 
-namespace TheBoxSoftware.Reflections.Tests.Core.Unit
+namespace TheBoxSoftware.Reflection.Tests.Core.Unit
 {
     [TestFixture]
     public class PeCoffFileTests
