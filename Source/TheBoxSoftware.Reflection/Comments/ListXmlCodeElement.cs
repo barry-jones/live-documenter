@@ -3,77 +3,72 @@
  * at: http://msdn.microsoft.com/en-us/library/vstudio/y3ww3c7e(v=vs.100).aspx
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 
-namespace TheBoxSoftware.Reflection.Comments 
+namespace TheBoxSoftware.Reflection.Comments
 {
-	/// <summary>
-	/// An internal representation of the list XML element.
-	/// </summary>
+    /// <summary>
+    /// An internal representation of the list XML element.
+    /// </summary>
     /// <remarks>
     /// A list element can represent a numbered or bulletted list or a table by way of a type
     /// attribute. If no type attribute is specified it will default to a bulleted list.
     /// </remarks>
-	public sealed class ListXmlCodeElement : XmlContainerCodeElement 
+    public sealed class ListXmlCodeElement : XmlContainerCodeElement
     {
-        // 4 bytes
-        private ListTypes listType;
+        private ListTypes _listType;
 
-		/// <summary>
-		/// Initialises a new instance of the ListXmlCodeElement class.
-		/// </summary>
-		/// <param name="node">The node the list is based on.</param>
-		internal ListXmlCodeElement(XmlNode node)
-			: base(XmlCodeElements.List)
+        /// <summary>
+        /// Initialises a new instance of the ListXmlCodeElement class.
+        /// </summary>
+        /// <param name="node">The node the list is based on.</param>
+        internal ListXmlCodeElement(XmlNode node)
+            : base(XmlCodeElements.List)
         {
-			this.Elements = this.Parse(node);
-			this.IsBlock = true;
-			this.ListType = ListTypes.Bullet; // default
-			
-			// the node should have a type attribute, if not default to bullet list
-			XmlAttribute typeAttribute = node.Attributes["type"];
-			if (typeAttribute == null) 
-            {
-				if (this.IsTable())
-                {
-					this.ListType = ListTypes.Table;
-				}
-			}
-			else
-            {
-				switch (typeAttribute.Value.ToLower())
-                {
-					case "table":
-						this.ListType = ListTypes.Table;
-						break;
-					case "number":
-						this.ListType = ListTypes.Number;
-						break;
-				}
-			}
-		}
+            this.Elements = this.Parse(node);
+            this.IsBlock = true;
+            this.ListType = ListTypes.Bullet; // default
 
-		/// <summary>
-		/// Checks the contents of the list to determine if it should be handled
-		/// as a table or a list.
-		/// </summary>
-		/// <returns>True if the displayer should display a table.</returns>
-		public bool IsTable() 
+            // the node should have a type attribute, if not default to bullet list
+            XmlAttribute typeAttribute = node.Attributes["type"];
+            if(typeAttribute == null)
+            {
+                if(this.IsTable())
+                {
+                    this.ListType = ListTypes.Table;
+                }
+            }
+            else
+            {
+                switch(typeAttribute.Value.ToLower())
+                {
+                    case "table":
+                        this.ListType = ListTypes.Table;
+                        break;
+                    case "number":
+                        this.ListType = ListTypes.Number;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks the contents of the list to determine if it should be handled
+        /// as a table or a list.
+        /// </summary>
+        /// <returns>True if the displayer should display a table.</returns>
+        public bool IsTable()
         {
-			return this.ListType == ListTypes.Table;
-		}
+            return this.ListType == ListTypes.Table;
+        }
 
-		/// <summary>
-		/// Gets or sets the style for bullets displayed in this list.
-		/// </summary>
+        /// <summary>
+        /// Gets or sets the style for bullets displayed in this list.
+        /// </summary>
         public ListTypes ListType
         {
-            get { return this.listType; }
-            private set { this.listType = value; }
+            get { return this._listType; }
+            private set { this._listType = value; }
         }
-	}
+    }
 }
