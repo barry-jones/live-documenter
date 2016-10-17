@@ -133,5 +133,24 @@ namespace TheBoxSoftware.Reflections.Tests.Comments.Unit
             Assert.AreEqual(CRefTypes.Type, path.PathType);
             Assert.AreEqual("String", path.TypeName);
         }
+
+        [Test]
+        public void CRefPath_Parse_TestPathTypesAreConvertedCorrectly()
+        {
+            PathTypesShouldBeSetCorrectly("F:System.Test.myfield", CRefTypes.Field);
+            PathTypesShouldBeSetCorrectly("P:System.Test.Property", CRefTypes.Property);
+            PathTypesShouldBeSetCorrectly("M:System.Test.Method()", CRefTypes.Method);
+            PathTypesShouldBeSetCorrectly("T:System.Test", CRefTypes.Type);
+            PathTypesShouldBeSetCorrectly("N:System", CRefTypes.Namespace);
+            PathTypesShouldBeSetCorrectly("E:System.Test.Changed", CRefTypes.Event);
+            PathTypesShouldBeSetCorrectly("!:Error", CRefTypes.Error);
+        }
+
+        public void PathTypesShouldBeSetCorrectly(string path, CRefTypes expectedType)
+        {
+            CRefPath converted = CRefPath.Parse(path);
+
+            Assert.AreEqual(expectedType, converted.PathType);
+        }
     }
 }
