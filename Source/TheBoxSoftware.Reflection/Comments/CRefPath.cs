@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TheBoxSoftware.Diagnostics;
 
 namespace TheBoxSoftware.Reflection.Comments
 {
     /// <summary>
-    /// Class that handles and parses a CRef comment path. A CRef path can contain
-    /// a fully qualified link to a type, property, method etc in an assembly.
+    /// Class that handles and parses a CRef comment path. A CRef path can contain a fully qualified 
+    /// link to a type, property, method etc in an assembly.
     /// </summary>
     [System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
     public sealed class CRefPath : Signitures.SignitureConvertor
@@ -81,8 +80,8 @@ namespace TheBoxSoftware.Reflection.Comments
             this.Parameters = this.Convert(method);
             if(method.IsOperator && method.IsConversionOperator)
             {
-                this._isOperator = true;
-                this._returnType = method.Signiture.GetReturnTypeToken().ResolveType(method.Assembly, method).GetFullyQualifiedName();
+                _isOperator = true;
+                _returnType = method.Signiture.GetReturnTypeToken().ResolveType(method.Assembly, method).GetFullyQualifiedName();
             }
         }
 
@@ -92,8 +91,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// Private constructor initialises a new instance of the CRefPath class.
         /// </summary>
         /// <param name="crefPathType">The cref path type.</param>
-        /// <param name="namesp">The namespace for the path.</param>
-        /// <param name="name">The type name for the path.</param>
+        /// <param name="type">The type information.</param>
         /// <param name="element">The element name for the path.</param>
         private CRefPath(CRefTypes crefPathType, TypeRef type, string element)
         {
@@ -169,9 +167,7 @@ namespace TheBoxSoftware.Reflection.Comments
             }
             else
             {
-                throw new NotImplementedException(string.Format("The '{0}' type is not supported.",
-                    member.GetType().ToString()
-                    ));
+                throw new NotImplementedException($"The '{member.GetType().ToString()}' type is not supported.");
             }
 
             return path;
@@ -201,41 +197,40 @@ namespace TheBoxSoftware.Reflection.Comments
         public override string ToString()
         {
             string toString = string.Empty;
+            string pathIndicator = CRefConstants.GetIndicatorFor(this.PathType);
+
             switch(this.PathType)
             {
                 case CRefTypes.Namespace:
-                    toString = string.Format("{0}:{1}",
-                        CRefConstants.GetIndicatorFor(this.PathType),
-                        this.Namespace);
+                    toString = $"{pathIndicator}:{Namespace}";
                     break;
+
                 case CRefTypes.Error: break;
+
                 default:
-                    string typePortion = string.Format("{0}:{1}.{2}",
-                        CRefConstants.GetIndicatorFor(this.PathType),
-                        this.Namespace,
-                        this.TypeName);
-                    if(this.PathType != CRefTypes.Type)
+                    string typePortion = $"{pathIndicator}:{Namespace}.{TypeName}";
+                    if(PathType != CRefTypes.Type)
                     {
-                        typePortion += "." + this.ElementName;
+                        typePortion += $".{ElementName}";
                     }
                     // [#32] - Added code to make cref paths add parameters for
                     //	parameterised properties.
-                    if(this.PathType == CRefTypes.Method || (this.PathType == CRefTypes.Property && this.Parameters != null))
+                    if(PathType == CRefTypes.Method || (PathType == CRefTypes.Property && Parameters != null))
                     {
-                        typePortion += this.Parameters;
+                        typePortion += Parameters;
                     }
 
                     // Operators provide the return types after a "~" character as specified in:
                     //	http://msdn.microsoft.com/en-us/library/fsbx0t7x(VS.71).aspx
-                    if(this._isOperator && !string.IsNullOrEmpty(this._returnType))
+                    if(_isOperator && !string.IsNullOrEmpty(_returnType))
                     {
-                        typePortion += "~";
-                        typePortion += _returnType;
+                        typePortion += $"~{_returnType}";
                     }
 
                     toString = typePortion;
                     break;
             }
+
             return toString;
         }
 
