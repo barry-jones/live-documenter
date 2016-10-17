@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using TheBoxSoftware.Reflection.Core;
 
 namespace TheBoxSoftware.Reflections.Tests.Core.Unit
@@ -7,9 +8,11 @@ namespace TheBoxSoftware.Reflections.Tests.Core.Unit
     public class PeCoffFileTests
     {
         [Test]
-        public void Create()
+        public void PeCoffFile_WhenCreatedWithEmptyString_ThrowsArgumentException()
         {
-            PeCoffFile coffFile = new PeCoffFile(string.Empty);
+            Assert.Throws<ArgumentException>(delegate() {
+                PeCoffFile coffFile = new PeCoffFile(string.Empty);
+                });
         }
     }
 }

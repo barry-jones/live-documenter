@@ -13,17 +13,7 @@ namespace TheBoxSoftware.Reflection.Core
     public sealed class PeCoffFile
     {
         private const int PeSignitureOffsetLocation = 0x3c;
-
-        private string filePath;
-        private string fileName;
-        private FileHeader fileHeader;
-        private PEHeader peHeader;
-        private List<SectionHeader> sectionHeaders;
-        private Dictionary<DataDirectories, Directory> directories;
-        private byte[] fileContents;
-        private bool isMetadataLoaded;
-        private MetadataToDefinitionMap map;
-
+        
         /// <summary>
         /// Initialises a new instance of the PeCoffFile
         /// </summary>
@@ -35,7 +25,6 @@ namespace TheBoxSoftware.Reflection.Core
             this.FileName = filePath;
             this.Map = new MetadataToDefinitionMap();
             this.IsMetadataLoaded = false;
-            this.filePath = filePath;
             this.ReadFileContents();
             this.FileContents = null;
             this.IsMetadataLoaded = true;
@@ -54,6 +43,38 @@ namespace TheBoxSoftware.Reflection.Core
         }
 
         /// <summary>
+        /// Converts a Relative Virtual Address to a file offset
+        /// </summary>
+        /// <param name="rva">The RVA to convert</param>
+        /// <returns>The file offset address</returns>
+        internal int FileAddressFromRVA(int rva)
+        {
+            int virtualOffset = 0;
+            int rawOffset = 0;
+            int max = -1;
+
+            // determine which section the RVA belongs too
+            for(int i = 0; i < this.SectionHeaders.Count; i++)
+            {
+                int minAddress = (int)this.SectionHeaders[i].VirtualAddress;
+                int maxAddress = (i + 1 < this.SectionHeaders.Count)
+                    ? (int)this.SectionHeaders[i + 1].VirtualAddress
+                    : max;
+
+                if(rva >= minAddress)
+                {
+                    if(maxAddress == -1 || rva < maxAddress)
+                    {
+                        virtualOffset = (int)this.SectionHeaders[i].VirtualAddress;
+                        rawOffset = (int)this.SectionHeaders[i].PointerToRawData;
+                    }
+                }
+            }
+
+            return rva - virtualOffset + rawOffset;
+        }
+
+        /// <summary>
         /// Reads the contents of the PeCoff file in to our custom data structures
         /// </summary>
         /// <exception Cref="NotAManagedLibraryException">
@@ -61,7 +82,7 @@ namespace TheBoxSoftware.Reflection.Core
         /// </exception>
         private void ReadFileContents()
         {
-            List<byte> contents = new List<byte>(File.ReadAllBytes(filePath));
+            List<byte> contents = new List<byte>(File.ReadAllBytes(FileName));
             byte[] contentsAsArray = contents.ToArray();
             this.FileContents = contentsAsArray;
 
@@ -117,108 +138,44 @@ namespace TheBoxSoftware.Reflection.Core
         }
 
         /// <summary>
-        /// Converts a Relative Virtual Address to a file offset
-        /// </summary>
-        /// <param name="rva">The RVA to convert</param>
-        /// <returns>The file offset address</returns>
-        internal int FileAddressFromRVA(int rva)
-        {
-            int virtualOffset = 0;
-            int rawOffset = 0;
-            int max = -1;
-
-            // determine which section the RVA belongs too
-            for(int i = 0; i < this.SectionHeaders.Count; i++)
-            {
-                int minAddress = (int)this.SectionHeaders[i].VirtualAddress;
-                int maxAddress = (i + 1 < this.SectionHeaders.Count)
-                    ? (int)this.SectionHeaders[i + 1].VirtualAddress
-                    : max;
-
-                if(rva >= minAddress)
-                {
-                    if(maxAddress == -1 || rva < maxAddress)
-                    {
-                        virtualOffset = (int)this.SectionHeaders[i].VirtualAddress;
-                        rawOffset = (int)this.SectionHeaders[i].PointerToRawData;
-                    }
-                }
-            }
-
-            return rva - virtualOffset + rawOffset;
-        }
-
-        /// <summary>
         /// The full path and filename for the disk location of this PE/COFF file.
         /// </summary>
-        public string FileName
-        {
-            get { return this.fileName; }
-            private set { this.fileName = value; }
-        }
+        public string FileName { get; private set; }
 
         /// <summary>
         /// This files header details.
         /// </summary>
-        public FileHeader FileHeader
-        {
-            get { return this.fileHeader; }
-            private set { this.fileHeader = value; }
-        }
+        public FileHeader FileHeader { get; private set; }
 
         /// <summary>
         /// The PE Header.
         /// </summary>
-        public PEHeader PeHeader
-        {
-            get { return this.peHeader; }
-            private set { this.peHeader = value; }
-        }
+        public PEHeader PeHeader { get; private set; }
 
         /// <summary>
         /// The headers for all the sections defined in the file
         /// </summary>
-        public List<SectionHeader> SectionHeaders
-        {
-            get { return this.sectionHeaders; }
-            private set { this.sectionHeaders = value; }
-        }
+        public List<SectionHeader> SectionHeaders { get; private set; }
 
         /// <summary>
         /// All of the directories for the PE/COFF file.
         /// </summary>
-        public Dictionary<DataDirectories, Directory> Directories
-        {
-            get { return this.directories; }
-            private set { this.directories = value; }
-        }
-
-        /// <summary>
-        /// The byte contents of the file.
-        /// </summary>
-        internal byte[] FileContents
-        {
-            get { return this.fileContents; }
-            private set { this.fileContents = value; }
-        }
+        public Dictionary<DataDirectories, Directory> Directories { get; private set; }
 
         /// <summary>
         /// Indicates if the metadata has been loaded in its entirety from the
         /// PE/COFF file.
         /// </summary>
-        public bool IsMetadataLoaded
-        {
-            get { return this.isMetadataLoaded; }
-            private set { this.isMetadataLoaded = value; }
-        }
+        public bool IsMetadataLoaded { get; private set; }
+
+        /// <summary>
+        /// The byte contents of the file.
+        /// </summary>
+        internal byte[] FileContents { get; private set; }
 
         /// <summary>
         /// Internal mapping of metadata to reflected definitions.
         /// </summary>
-        internal MetadataToDefinitionMap Map
-        {
-            get { return this.map; }
-            private set { this.map = value; }
-        }
+        internal MetadataToDefinitionMap Map { get; private set; }
     }
 }
