@@ -105,6 +105,7 @@ namespace TheBoxSoftware.Reflection.Core
         private void ReadSectionHeaders(Offset offset)
         {
             this.SectionHeaders = new List<SectionHeader>();
+
             for(int i = 0; i < this.FileHeader.NumberOfSections; i++)
             {
                 this.SectionHeaders.Add(new SectionHeader(this.FileContents, offset));
@@ -117,6 +118,7 @@ namespace TheBoxSoftware.Reflection.Core
         private void ReadDirectories()
         {
             this.Directories = new Dictionary<DataDirectories, Directory>();
+
             foreach(KeyValuePair<DataDirectories, DataDirectory> current in this.PeHeader.DataDirectories)
             {
                 DataDirectory directory = current.Value;
