@@ -1,20 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using TheBoxSoftware.Reflection.Core;
 
-namespace TheBoxSoftware.Reflection.Signitures 
+namespace TheBoxSoftware.Reflection.Signitures
 {
     /// <summary>
     /// An Int32 numeric value that indicates the number of generics arguments in a signiture.
     /// </summary>
 	[DebuggerDisplay("Generic Argument Count: {Count}")]
-	internal sealed class GenericArgumentCountSignitureToken : SignitureToken 
+    internal sealed class GenericArgumentCountSignitureToken : SignitureToken
     {
-        // 4 bytes
-        private int count;
+        private int _count;
 
         /// <summary>
         /// Initiailses a GenericArgumentCount token from the <paramref name="signiture"/> at the
@@ -23,10 +18,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset  in the signiture blob.</param>
 		public GenericArgumentCountSignitureToken(byte[] signiture, Offset offset)
-			: base(SignitureTokens.GenericArgumentCount) 
+            : base(SignitureTokens.GenericArgumentCount)
         {
-			this.Count = SignitureToken.GetCompressedValue(signiture, offset);
-		}
+            this.Count = SignitureToken.GetCompressedValue(signiture, offset);
+        }
 
         /// <summary>
         /// Produces a string representation of this generic argument count token.
@@ -42,8 +37,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public int Count
         {
-            get { return this.count; }
-            private set { this.count = value; }
+            get { return this._count; }
+            private set { this._count = value; }
         }
-	}
+    }
 }

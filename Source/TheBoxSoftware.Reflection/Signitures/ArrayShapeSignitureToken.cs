@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using TheBoxSoftware.Reflection.Core;
 
@@ -10,17 +8,16 @@ using TheBoxSoftware.Reflection.Core;
  * RANK->NUMSIZES->SIZE<->NUMLOBOUNDS->LOBOUND<->
  */
 
-namespace TheBoxSoftware.Reflection.Signitures 
+namespace TheBoxSoftware.Reflection.Signitures
 {
     /// <summary>
     /// A signiture that describes the shape of an array as defined.
     /// </summary>
-	internal class ArrayShapeSignitureToken : SignitureToken 
+	internal class ArrayShapeSignitureToken : SignitureToken
     {
-        // 16 bytes
-        private Int32 rank;         // specifies the number of dimensions (1 or more)
-        private Int32[] sizes;      // size of each dimension
-        private Int32[] loBounds;   // the lower boundaries of those dimensions
+        private Int32 _rank;         // specifies the number of dimensions (1 or more)
+        private Int32[] _sizes;      // size of each dimension
+        private Int32[] _loBounds;   // the lower boundaries of those dimensions
 
         /// <summary>
         /// Initialises a new instance of the ArrayShapeSignitureToken which reads the array share
@@ -29,27 +26,27 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob to read this token from.</param>
         /// <param name="offset">The offset where this roken begins.</param>
 		public ArrayShapeSignitureToken(byte[] signiture, Offset offset)
-			: base(SignitureTokens.ArrayShape) 
+            : base(SignitureTokens.ArrayShape)
         {
             Int32 numSizes = 0;
             Int32 numLoBounds = 0;
 
-			this.Rank = SignitureToken.GetCompressedValue(signiture, offset);
+            this.Rank = SignitureToken.GetCompressedValue(signiture, offset);
 
-			numSizes = SignitureToken.GetCompressedValue(signiture, offset);
-			this.Sizes = new Int32[numSizes];
-			for (int i = 0; i < numSizes; i++) 
+            numSizes = SignitureToken.GetCompressedValue(signiture, offset);
+            this.Sizes = new Int32[numSizes];
+            for(int i = 0; i < numSizes; i++)
             {
-				this.Sizes[i] = SignitureToken.GetCompressedValue(signiture, offset);
-			}
+                this.Sizes[i] = SignitureToken.GetCompressedValue(signiture, offset);
+            }
 
-			numLoBounds = SignitureToken.GetCompressedValue(signiture, offset);
-			this.LoBounds = new Int32[numLoBounds];
-			for (int i = 0; i < numLoBounds; i++) 
+            numLoBounds = SignitureToken.GetCompressedValue(signiture, offset);
+            this.LoBounds = new Int32[numLoBounds];
+            for(int i = 0; i < numLoBounds; i++)
             {
-				this.LoBounds[i] = SignitureToken.GetCompressedValue(signiture, offset);
-			}
-		}
+                this.LoBounds[i] = SignitureToken.GetCompressedValue(signiture, offset);
+            }
+        }
 
         /// <summary>
         /// Produces a string representation e.g. '[1..6, 5, ,]' of the array 
@@ -61,17 +58,17 @@ namespace TheBoxSoftware.Reflection.Signitures
             StringBuilder sb = new StringBuilder();
             sb.Append("[ArraySize: [");
 
-            for (int i = 0; i < this.Rank; i++)
+            for(int i = 0; i < this.Rank; i++)
             {
-                if (this.LoBounds.Length < i)
+                if(this.LoBounds.Length < i)
                 {
                     sb.AppendFormat("{0}...", this.LoBounds[i]);
                 }
-                if (this.Sizes.Length < i)
+                if(this.Sizes.Length < i)
                 {
                     sb.AppendFormat("{0}", this.Sizes[i]);
                 }
-                if (i != this.Rank - 1)
+                if(i != this.Rank - 1)
                 {
                     sb.Append(",");
                 }
@@ -85,28 +82,28 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The number of ranks in the array shape.
         /// </summary>
-		public Int32 Rank 
+		public Int32 Rank
         {
-            get { return this.rank; }
-            private set { this.rank = value; }
+            get { return this._rank; }
+            private set { this._rank = value; }
         }
 
         /// <summary>
         /// The defined sizes
         /// </summary>
-		public Int32[] Sizes 
+		public Int32[] Sizes
         {
-            get { return this.sizes; }
-            private set { this.sizes = value; }
+            get { return this._sizes; }
+            private set { this._sizes = value; }
         }
 
         /// <summary>
         /// The values of those low boundaries.
         /// </summary>
-		public Int32[] LoBounds 
+		public Int32[] LoBounds
         {
-            get { return this.loBounds; }
-            private set { this.loBounds = value; }
+            get { return this._loBounds; }
+            private set { this._loBounds = value; }
         }
-	}
+    }
 }

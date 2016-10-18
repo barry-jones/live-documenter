@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TheBoxSoftware.Reflection.Core;
 using TheBoxSoftware.Reflection.Core.COFF;
 
@@ -13,10 +10,9 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// entry in the metadata tables.
     /// </summary>
 	[DebuggerDisplay("Modifier: {Modifier} for [{CodedIndex.ToString()}]")]
-	internal sealed class CustomModifierToken : SignitureToken 
+    internal sealed class CustomModifierToken : SignitureToken
     {
-        // 8 bytes
-        private ElementTypes modifier;
+        private ElementTypes _modifier;
         private CodedIndex index;
 
         /// <summary>
@@ -26,11 +22,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
 		public CustomModifierToken(byte[] signiture, Offset offset)
-			: base(SignitureTokens.CustomModifier) 
+            : base(SignitureTokens.CustomModifier)
         {
-			this.Modifier = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
-			this.Index = this.ReadEncodedDefOrRefToken(signiture, offset);
-		}
+            this.Modifier = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+            this.Index = this.ReadEncodedDefOrRefToken(signiture, offset);
+        }
 
         /// <summary>
         /// Reads a DefOrRefToken from the <paramref name="signiture"/> which defines a compressed
@@ -39,45 +35,45 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
         /// <returns></returns>
-		private CodedIndex ReadEncodedDefOrRefToken(byte[] signiture, Offset offset) 
+		private CodedIndex ReadEncodedDefOrRefToken(byte[] signiture, Offset offset)
         {
-			// Read the typedef, typeref or typespec token
-			int typeMask = 0x00000003;
-			int token = SignitureToken.GetCompressedValue(signiture, offset);
-			
-			// Resolved values
-			MetadataTables table;
-			int index = token >> 2;
+            // Read the typedef, typeref or typespec token
+            int typeMask = 0x00000003;
+            int token = SignitureToken.GetCompressedValue(signiture, offset);
 
-			switch (typeMask & token) 
+            // Resolved values
+            MetadataTables table;
+            int index = token >> 2;
+
+            switch(typeMask & token)
             {
-				case 0: // TypeDef
-					table = MetadataTables.TypeDef;
-					break;
-				case 1:	// TypeRef
-					table = MetadataTables.TypeRef;
-					break;
-				case 2:	// TypeSpec
-					table = MetadataTables.TypeSpec;
-					break;
-				default:
-					throw new InvalidOperationException("Metadata Table could not be resolved for this Signiture");
-			}
-			return new CodedIndex(table, (uint)index);
-		}
+                case 0: // TypeDef
+                    table = MetadataTables.TypeDef;
+                    break;
+                case 1: // TypeRef
+                    table = MetadataTables.TypeRef;
+                    break;
+                case 2: // TypeSpec
+                    table = MetadataTables.TypeSpec;
+                    break;
+                default:
+                    throw new InvalidOperationException("Metadata Table could not be resolved for this Signiture");
+            }
+            return new CodedIndex(table, (uint)index);
+        }
 
-		/// <summary>
-		/// Checks if the next token at the current offset can potentially be a
-		/// CustomModifierToken.
-		/// </summary>
-		/// <param name="signiture">The signiture to preview</param>
-		/// <param name="offset">The current offset in the signiture</param>
-		/// <returns></returns>
-		public static bool IsToken(byte[] signiture, int offset) 
+        /// <summary>
+        /// Checks if the next token at the current offset can potentially be a
+        /// CustomModifierToken.
+        /// </summary>
+        /// <param name="signiture">The signiture to preview</param>
+        /// <param name="offset">The current offset in the signiture</param>
+        /// <returns></returns>
+        public static bool IsToken(byte[] signiture, int offset)
         {
-			ElementTypes modifier = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
-			return modifier == ElementTypes.CModOptional || modifier == ElementTypes.CModRequired;
-		}
+            ElementTypes modifier = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+            return modifier == ElementTypes.CModOptional || modifier == ElementTypes.CModRequired;
+        }
 
         /// <summary>
         /// Produces a string representaion of the custom modifier token.
@@ -93,8 +89,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public ElementTypes Modifier
         {
-            get { return this.modifier; }
-            private set { this.modifier = value; }
+            get { return this._modifier; }
+            private set { this._modifier = value; }
         }
 
         /// <summary>
@@ -105,5 +101,5 @@ namespace TheBoxSoftware.Reflection.Signitures
             get { return this.index; }
             private set { this.index = value; }
         }
-	}
+    }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using TheBoxSoftware.Reflection.Core;
 
 /*
@@ -11,17 +7,16 @@ using TheBoxSoftware.Reflection.Core;
  * Can only contain one value ELEMENT_TYPE_PINNED
  */
 
-namespace TheBoxSoftware.Reflection.Signitures 
+namespace TheBoxSoftware.Reflection.Signitures
 {
     /// <summary>
     /// Represents a constraint in a signiture as a token. Constraints can only be
     /// <see cref="ElementTypes.Pinned"/>.
     /// </summary>
 	[DebuggerDisplay("Constraint: {Constraint}")]
-	internal sealed class ConstraintSignitureToken : SignitureToken 
+    internal sealed class ConstraintSignitureToken : SignitureToken
     {
-        // 4 bytes
-        private ElementTypes constraint;
+        private ElementTypes _constraint;
 
         /// <summary>
         /// Initialises a new instance of the ConstraintSignitureToken from the <paramref name="signiture"/>
@@ -30,10 +25,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture to load from.</param>
         /// <param name="offset">The offset in the signiture.</param>
 		public ConstraintSignitureToken(byte[] signiture, Offset offset)
-			: base(SignitureTokens.Constraint) 
+            : base(SignitureTokens.Constraint)
         {
-			this.Constraint = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
-		}
+            this.Constraint = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+        }
 
         /// <summary>
         /// Checks if the entry at <paramref name="offset"/> in the <paramref name="signiture"/>
@@ -42,11 +37,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture to check.</param>
         /// <param name="offset">The offset in the signiture.</param>
         /// <returns>True if it is a token else false.</returns>
-		public static bool IsToken(byte[] signiture, int offset) 
+		public static bool IsToken(byte[] signiture, int offset)
         {
-			ElementTypes type = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
-			return (type & ElementTypes.Pinned) == ElementTypes.Pinned;
-		}
+            ElementTypes type = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+            return (type & ElementTypes.Pinned) == ElementTypes.Pinned;
+        }
 
         /// <summary>
         /// Produces a string representation of the constraint token [Constraint: {ElementType}]
@@ -60,10 +55,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The constraint this token represents.
         /// </summary>
-		public ElementTypes Constraint 
+		public ElementTypes Constraint
         {
-            get { return this.constraint; }
-            private set { this.constraint = value; }
+            get { return this._constraint; }
+            private set { this._constraint = value; }
         }
-	}
+    }
 }

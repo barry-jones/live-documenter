@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TheBoxSoftware.Reflection.Core;
 
-namespace TheBoxSoftware.Reflection.Signitures 
+namespace TheBoxSoftware.Reflection.Signitures
 {
-    /// <summary>
-    /// ?
-    /// </summary>
-	[DebuggerDisplay("Count: {Count}")]
-	internal sealed class CountSignitureToken : SignitureToken 
+    [DebuggerDisplay("Count: {Count}")]
+    internal sealed class CountSignitureToken : SignitureToken
     {
-        // 4 bytes
-        private UInt16 count;
+        private UInt16 _count;
 
         /// <summary>
         /// Initialises a new Count token from the provided <paramref name="signiture"/> at 
@@ -23,10 +16,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
 		public CountSignitureToken(byte[] signiture, Offset offset)
-			: base(SignitureTokens.Count) 
+            : base(SignitureTokens.Count)
         {
-			this.Count = FieldReader.ToUInt16(signiture, offset.Shift(2));
-		}
+            this.Count = FieldReader.ToUInt16(signiture, offset.Shift(2));
+        }
 
         public override string ToString()
         {
@@ -38,8 +31,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
 		public UInt16 Count
         {
-            get { return this.count; }
-            set { this.count = value; }
+            get { return this._count; }
+            set { this._count = value; }
         }
-	}
+    }
 }

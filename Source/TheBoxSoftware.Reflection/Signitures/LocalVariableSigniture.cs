@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using TheBoxSoftware.Reflection.Core;
 
-namespace TheBoxSoftware.Reflection.Signitures 
+namespace TheBoxSoftware.Reflection.Signitures
 {
     /// <summary>
     /// Represents a local variable signiture in the signiture blob. Details of the signiture are
@@ -19,47 +17,47 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="file">The PeCoffFile that contains the signiture block.</param>
         /// <param name="signiture">The signiture blob.</param>
 		internal LocalVariableSigniture(PeCoffFile file, byte[] signiture)
-			: base(Signitures.LocalVariable) 
+            : base(Signitures.LocalVariable)
         {
-			List<SignitureToken> tokens = new List<SignitureToken>();
-			Offset offset = 0;
+            List<SignitureToken> tokens = new List<SignitureToken>();
+            Offset offset = 0;
 
-			offset.Shift(1);	// jump passed the 0x7 indicator
+            offset.Shift(1);    // jump passed the 0x7 indicator
 
-			CountSignitureToken count = new CountSignitureToken(signiture, offset);
-			tokens.Add(count);
+            CountSignitureToken count = new CountSignitureToken(signiture, offset);
+            tokens.Add(count);
 
-			for (int i = 0; i < count.Count; i++)
+            for(int i = 0; i < count.Count; i++)
             {
-				if (ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
+                if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
                 {
-					ElementTypeSignitureToken typedByRef = new ElementTypeSignitureToken(file, signiture, offset);
-					tokens.Add(typedByRef);
-				}
-				else 
+                    ElementTypeSignitureToken typedByRef = new ElementTypeSignitureToken(file, signiture, offset);
+                    tokens.Add(typedByRef);
+                }
+                else
                 {
-					while (CustomModifierToken.IsToken(signiture, offset) || ConstraintSignitureToken.IsToken(signiture, offset)) 
+                    while(CustomModifierToken.IsToken(signiture, offset) || ConstraintSignitureToken.IsToken(signiture, offset))
                     {
-						if (CustomModifierToken.IsToken(signiture, offset))
+                        if(CustomModifierToken.IsToken(signiture, offset))
                         {
-							CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
-							tokens.Add(modifier);
-						}
-						else 
+                            CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
+                            tokens.Add(modifier);
+                        }
+                        else
                         {
-							ConstraintSignitureToken constraint = new ConstraintSignitureToken(signiture, offset);
-							tokens.Add(constraint);
-						}
-					}
+                            ConstraintSignitureToken constraint = new ConstraintSignitureToken(signiture, offset);
+                            tokens.Add(constraint);
+                        }
+                    }
 
-					ElementTypeSignitureToken byRef = new ElementTypeSignitureToken(file, signiture, offset);
-					tokens.Add(byRef);
+                    ElementTypeSignitureToken byRef = new ElementTypeSignitureToken(file, signiture, offset);
+                    tokens.Add(byRef);
 
-					ElementTypeSignitureToken type = new ElementTypeSignitureToken(file, signiture, offset);
-					tokens.Add(type);
-				}
-			}
-		}
+                    ElementTypeSignitureToken type = new ElementTypeSignitureToken(file, signiture, offset);
+                    tokens.Add(type);
+                }
+            }
+        }
 
         /// <summary>
         /// Produces a string representation of the local variable signiture.
@@ -71,7 +69,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[LocalVar: ");
 
-            foreach (SignitureToken t in this.Tokens)
+            foreach(SignitureToken t in this.Tokens)
             {
                 sb.Append(t.ToString());
             }
@@ -80,5 +78,5 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             return sb.ToString();
         }
-	}
+    }
 }

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using TheBoxSoftware.Reflection.Core;
 
-namespace TheBoxSoftware.Reflection.Signitures 
+namespace TheBoxSoftware.Reflection.Signitures
 {
     /// <summary>
     /// A token that represents the number of generic parameters.
     /// </summary>
 	[DebuggerDisplay("Generic Parameter Count: {Count}")]
-	internal sealed class GenericParamaterCountSignitureToken : SignitureToken 
+    internal sealed class GenericParamaterCountSignitureToken : SignitureToken
     {
-        // 4 bytes
-        private int count;
+        private int _count;
 
         /// <summary>
         /// Initialises a GenericParameterCount token from the <paramref name="signiture"/> at
@@ -22,11 +17,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
-		public GenericParamaterCountSignitureToken(byte[] signiture, Offset offset) 
-			: base(SignitureTokens.GenericParameterCount) 
+		public GenericParamaterCountSignitureToken(byte[] signiture, Offset offset)
+            : base(SignitureTokens.GenericParameterCount)
         {
-			this.Count = SignitureToken.GetCompressedValue(signiture, offset);
-		}
+            this.Count = SignitureToken.GetCompressedValue(signiture, offset);
+        }
 
         /// <summary>
         /// Produces a string representation of the generic parameter count token.
@@ -37,13 +32,13 @@ namespace TheBoxSoftware.Reflection.Signitures
             return string.Format("[GenParamCount: {0}]", this.Count);
         }
 
-		/// <summary>
-		/// The number of generic parameters in this signiture.
-		/// </summary>
-		public int Count
+        /// <summary>
+        /// The number of generic parameters in this signiture.
+        /// </summary>
+        public int Count
         {
-            get { return this.count; }
-            private set { this.count = value; }
+            get { return this._count; }
+            private set { this._count = value; }
         }
-	}
+    }
 }

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using TheBoxSoftware.Reflection.Core;
 
-namespace TheBoxSoftware.Reflection.Signitures 
+namespace TheBoxSoftware.Reflection.Signitures
 {
     /// <summary>
     /// Describes a field signiture, which is specified in the ECMA 23.2.4.
     /// </summary>
-	internal sealed class FieldSigniture : Signiture 
+	internal sealed class FieldSigniture : Signiture
     {
         /// <summary>
         /// Initialises a field signiture from the specified <paramref name="signiture"/> blob.
@@ -17,29 +15,30 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="file">The PeCoffFile that contains the definition.</param>
         /// <param name="signiture">The signiture blob.</param>
 		public FieldSigniture(PeCoffFile file, byte[] signiture)
-			: base(Signitures.Field) 
+            : base(Signitures.Field)
         {
-			List<SignitureToken> tokens = new List<SignitureToken>();
-			Offset offset = 0;
+            List<SignitureToken> tokens = new List<SignitureToken>();
+            Offset offset = 0;
 
-			if (signiture[offset] != 0x06) { // ?? whats this for
-			}
-			offset.Shift(1);
+            if(signiture[offset] != 0x06)
+            { // ?? whats this for
+            }
+            offset.Shift(1);
 
-			while (offset < signiture.Length) 
+            while(offset < signiture.Length)
             {
-				while (CustomModifierToken.IsToken(signiture, offset)) 
+                while(CustomModifierToken.IsToken(signiture, offset))
                 {
-					CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
-					tokens.Add(modifier);
-				}
+                    CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
+                    tokens.Add(modifier);
+                }
 
-				TypeSignitureToken type = new TypeSignitureToken(file, signiture, offset);
-				tokens.Add(type);
-			}
+                TypeSignitureToken type = new TypeSignitureToken(file, signiture, offset);
+                tokens.Add(type);
+            }
 
-			this.Tokens = tokens;
-		}
+            this.Tokens = tokens;
+        }
 
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[Field: ");
 
-            foreach (SignitureToken t in this.Tokens)
+            foreach(SignitureToken t in this.Tokens)
             {
                 sb.Append(t.ToString());
             }
@@ -61,5 +60,5 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             return sb.ToString();
         }
-	}
+    }
 }
