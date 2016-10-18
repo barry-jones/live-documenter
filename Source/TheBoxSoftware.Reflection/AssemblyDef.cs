@@ -93,9 +93,9 @@ namespace TheBoxSoftware.Reflection
             }
 
             AssemblyDef assembly = new AssemblyDef();
-            assembly.Modules = new List<ModuleDef>();
-            assembly.Types = new List<TypeDef>();
-            assembly.ReferencedAssemblies = new List<AssemblyRef>();
+            assembly._modules = new List<ModuleDef>();
+            assembly._types = new List<TypeDef>();
+            assembly._referencedAssemblies = new List<AssemblyRef>();
             assembly._namspaceMap = new TypeInNamespaceMap(assembly);
             assembly.Assembly = assembly;
 
@@ -128,7 +128,7 @@ namespace TheBoxSoftware.Reflection
                     AssemblyRefMetadataTableRow assemblyRefRow = items[i] as AssemblyRefMetadataTableRow;
                     AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(assembly, metadata, assemblyRefRow);
                     map.Add(MetadataTables.AssemblyRef, assemblyRefRow, assemblyRef);
-                    assembly.ReferencedAssemblies.Add(assemblyRef);
+                    assembly._referencedAssemblies.Add(assemblyRef);
                 }
             }
 
@@ -136,7 +136,7 @@ namespace TheBoxSoftware.Reflection
             {
                 ModuleDef module = ModuleDef.CreateFromMetadata(assembly, metadata, moduleRow);
                 map.Add(MetadataTables.Module, moduleRow, module);
-                assembly.Modules.Add(module);
+                assembly._modules.Add(module);
             }
 
             if(metadataStream.Tables.ContainsKey(MetadataTables.TypeRef))
@@ -155,7 +155,7 @@ namespace TheBoxSoftware.Reflection
                 TypeDef type = TypeDef.CreateFromMetadata(assembly, metadata, typeDefRow);
                 map.Add(MetadataTables.TypeDef, typeDefRow, type);
                 assembly._namspaceMap.Add(type.Namespace, MetadataTables.TypeDef, typeDefRow);
-                assembly.Types.Add(type);
+                assembly._types.Add(type);
             }
 
             if(metadataStream.Tables.ContainsKey(MetadataTables.MemberRef))
@@ -279,7 +279,7 @@ namespace TheBoxSoftware.Reflection
             List<string> orderedNamespaces = new List<string>();
             Dictionary<string, List<TypeDef>> temp = new Dictionary<string, List<TypeDef>>();
 
-            foreach(TypeDef current in this.Types.FindAll(t => !t.IsCompilerGenerated))
+            foreach(TypeDef current in this._types.FindAll(t => !t.IsCompilerGenerated))
             {
                 if(!orderedNamespaces.Contains(current.Namespace))
                 {
@@ -293,7 +293,7 @@ namespace TheBoxSoftware.Reflection
             {
                 temp.Add(current, new List<TypeDef>());
             }
-            foreach(TypeDef current in this.Types)
+            foreach(TypeDef current in this._types)
             {
                 if(temp.ContainsKey(current.Namespace))
                 {
@@ -461,33 +461,6 @@ namespace TheBoxSoftware.Reflection
             }
         }
 #endif
-
-        /// <summary>
-        /// All assembles this assembly refers to.
-        /// </summary>
-        public List<AssemblyRef> ReferencedAssemblies
-        {
-            get { return this._referencedAssemblies; }
-            set { this._referencedAssemblies = value; }
-        }
-
-        /// <summary>
-        /// The list of <see cref="ModuleDef"/>s in this assembly.
-        /// </summary>
-        public List<ModuleDef> Modules
-        {
-            get { return _modules; }
-            set { _modules = value; }
-        }
-
-        /// <summary>
-        /// The list of <see cref="TypeDef"/>s in this assembly.
-        /// </summary>
-        public List<TypeDef> Types
-        {
-            get { return _types; }
-            set { _types = value; }
-        }
 
         /// <summary>
         /// The <see cref="PeCoffFile"/> the assembly was reflected from.
