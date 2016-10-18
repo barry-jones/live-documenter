@@ -136,42 +136,42 @@ namespace TheBoxSoftware.Reflection.Core
         /// <summary>
         /// The full path and filename for the disk location of this PE/COFF file.
         /// </summary>
-        public string FileName { get; private set; }
+        public string FileName { get; set; }
 
         /// <summary>
         /// This files header details.
         /// </summary>
-        public FileHeader FileHeader { get; private set; }
+        public FileHeader FileHeader { get; set; }
 
         /// <summary>
         /// The PE Header.
         /// </summary>
-        public PEHeader PeHeader { get; private set; }
+        public PEHeader PeHeader { get; set; }
 
         /// <summary>
         /// The headers for all the sections defined in the file
         /// </summary>
-        public List<SectionHeader> SectionHeaders { get; private set; }
+        public List<SectionHeader> SectionHeaders { get; set; }
 
         /// <summary>
         /// All of the directories for the PE/COFF file.
         /// </summary>
-        public Dictionary<DataDirectories, Directory> Directories { get; private set; }
+        public Dictionary<DataDirectories, Directory> Directories { get; set; }
 
         /// <summary>
         /// Indicates if the metadata has been loaded in its entirety from the
         /// PE/COFF file.
         /// </summary>
-        public bool IsMetadataLoaded { get; private set; }
+        public bool IsMetadataLoaded { get; set; }
 
         /// <summary>
         /// The byte contents of the file.
         /// </summary>
-        internal byte[] FileContents { get; private set; }
+        internal byte[] FileContents { get; set; }
 
         /// <summary>
         /// Internal mapping of metadata to reflected definitions.
         /// </summary>
-        internal MetadataToDefinitionMap Map { get; private set; }
+        internal MetadataToDefinitionMap Map { get; set; }
     }
 }

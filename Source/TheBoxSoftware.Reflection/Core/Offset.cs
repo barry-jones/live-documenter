@@ -14,7 +14,7 @@
         /// <param name="start">The starting offset</param>
         public Offset(int start)
         {
-            this._current = start;
+            _current = start;
         }
 
         /// <summary>
@@ -30,8 +30,8 @@
         /// </remarks>
         public int Shift(int by)
         {
-            int now = this._current;
-            this._current += by;
+            int now = _current;
+            _current += by;
             return now;
         }
 

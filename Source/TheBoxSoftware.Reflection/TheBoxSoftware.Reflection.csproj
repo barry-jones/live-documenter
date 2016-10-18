@@ -195,7 +195,6 @@
     <Compile Include="Core\FieldReader.cs" />
     <Compile Include="Core\NotAManagedLibraryException.cs" />
     <Compile Include="Core\Offset.cs" />
-    <Compile Include="Core\ParameterInfo.cs" />
     <Compile Include="Core\PeCoffFile.cs" />
     <Compile Include="Core\PE\DataDirectories.cs" />
     <Compile Include="Core\PE\DataDirectory.cs" />
@@ -373,7 +372,9 @@
   <ItemGroup>
     <None Include="Comments\README.md" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="code-documentation\core.pe.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
