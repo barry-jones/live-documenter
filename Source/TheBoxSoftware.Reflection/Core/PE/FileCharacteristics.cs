@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace TheBoxSoftware.Reflection.Core.PE {
-
+namespace TheBoxSoftware.Reflection.Core.PE
+{
     [Flags]
-    public enum FileCharacteristics : ushort {
+    public enum FileCharacteristics : ushort
+    {
         RelocsStripped = 0x0001,
         ExecutableImage = 0x002,
         LineNumbersStripped = 0x004,

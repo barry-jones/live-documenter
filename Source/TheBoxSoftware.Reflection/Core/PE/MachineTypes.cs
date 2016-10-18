@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TheBoxSoftware.Reflection.Core.PE {
-
-    public enum MachineTypes {
+﻿namespace TheBoxSoftware.Reflection.Core.PE
+{
+    public enum MachineTypes
+    {
         Unknown = 0x0,
         I386 = 0x014c,
         R3000 = 0x0162,

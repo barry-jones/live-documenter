@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace TheBoxSoftware.Reflection.Core.PE {
-
+namespace TheBoxSoftware.Reflection.Core.PE
+{
     [Flags]
-    public enum SectionCharacteristics : uint {
+    public enum SectionCharacteristics : uint
+    {
         Reserved1                       = 0x00000000,
         Reserved2                       = 0x00000001,
         Reserved3                       = 0x00000002,
