@@ -2,9 +2,6 @@
 
 namespace TheBoxSoftware.Reflection
 {
-    /// <summary>
-    /// Test
-    /// </summary>
     public class ConstantInfo
     {
         public static ConstantInfo CreateFromMetadata(AssemblyDef assembly, MetadataStream stream, ConstantMetadataTableRow row)

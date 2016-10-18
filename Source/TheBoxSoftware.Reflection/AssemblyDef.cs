@@ -34,7 +34,6 @@ namespace TheBoxSoftware.Reflection
     /// <seealso cref="PeCoffFile"/>
     public class AssemblyDef : ReflectedMember
     {
-        // 36 bytes
         private List<AssemblyRef> _referencedAssemblies;
         private List<ModuleDef> _modules;
         private List<TypeDef> _types;
@@ -51,7 +50,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The instantiated AssemblyDef.</returns>
         /// <exception cref="ArgumentNullException">The filename was null or empty.</exception>
         /// <exception cref="NotAManagedLibraryException">
-        /// Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
+        /// Thrown when a PeCoff file is passed to the function and the <paramref name="fileName"/>
         /// does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
         /// </exception>
         public static AssemblyDef Create(string fileName)
@@ -59,14 +58,13 @@ namespace TheBoxSoftware.Reflection
             if(string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(fileName);
 
-            // [#102] check for CLR directory to make sure it is a managed PE file
             PeCoffFile peFile = new PeCoffFile(fileName);
             peFile.Initialise();
 
             if(!peFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
             {
                 peFile = null;  // would be nice to get the memory back
-                throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", fileName));
+                throw new NotAManagedLibraryException($"The file '{fileName}' is not a managed library.");
             }
 
             return AssemblyDef.Create(peFile);
@@ -313,7 +311,7 @@ namespace TheBoxSoftware.Reflection
         /// </remarks>
         public bool IsNamespaceDefined(string theNamespace)
         {
-            return this._namspaceMap.ContainsNamespace(theNamespace);
+            return _namspaceMap.ContainsNamespace(theNamespace);
         }
 
         /// <summary>
@@ -322,7 +320,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The collection of strings representing the namespaces.</returns>
         public List<string> GetNamespaces()
         {
-            return this._namspaceMap.GetAllNamespaces();
+            return _namspaceMap.GetAllNamespaces();
         }
 
         /// <summary>
@@ -343,7 +341,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The unique identifier</returns>
         internal int GetUniqueId()
         {
-            return this._uniqueIdCounter++;
+            return _uniqueIdCounter++;
         }
 
         /// <summary>
@@ -475,8 +473,8 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public List<ModuleDef> Modules
         {
-            get { return this._modules; }
-            set { this._modules = value; }
+            get { return _modules; }
+            set { _modules = value; }
         }
 
         /// <summary>
@@ -484,8 +482,8 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public List<TypeDef> Types
         {
-            get { return this._types; }
-            set { this._types = value; }
+            get { return _types; }
+            set { _types = value; }
         }
 
         /// <summary>
@@ -493,8 +491,8 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public TheBoxSoftware.Reflection.Core.PeCoffFile File
         {
-            get { return this._file; }
-            set { this._file = value; }
+            get { return _file; }
+            set { _file = value; }
         }
 
         /// <summary>
@@ -516,8 +514,8 @@ namespace TheBoxSoftware.Reflection
         /// </remarks>
         public StringStream StringStream
         {
-            get { return this._stringStream; }
-            set { this._stringStream = value; }
+            get { return _stringStream; }
+            set { _stringStream = value; }
         }
     }
 }

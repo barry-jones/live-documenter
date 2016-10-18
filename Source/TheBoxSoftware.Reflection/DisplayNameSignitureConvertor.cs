@@ -99,17 +99,16 @@ namespace TheBoxSoftware.Reflection.Signitures
             try
             {
                 StringBuilder converted = new StringBuilder();
-                bool isIndexer = false;
 
                 // Convert the type portion
-                if(this._includeTypeName)
+                if(_includeTypeName)
                 {
-                    this.GetTypeName(converted, this._type);
+                    this.GetTypeName(converted, _type);
                     if(this._type.IsGeneric)
                     {
                         converted.Append(this.GenericStart);
                         bool first = true;
-                        foreach(GenericTypeRef type in this._type.GetGenericTypes())
+                        foreach(GenericTypeRef type in _type.GetGenericTypes())
                         {
                             if(first)
                             {
@@ -196,17 +195,17 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             catch(Exception ex)
             {
-                if(this._property != null)
+                if(_property != null)
                 {
-                    throw new ReflectionException(this._property, "Error processing display name signiture for a property", ex);
+                    throw new ReflectionException(_property, "Error processing display name signiture for a property", ex);
                 }
-                else if(this._method != null)
+                else if(_method != null)
                 {
-                    throw new ReflectionException(this._method, "Error processing display name signiture for a method", ex);
+                    throw new ReflectionException(_method, "Error processing display name signiture for a method", ex);
                 }
                 else
                 {
-                    throw new ReflectionException(this._type, "Error processing display name signiture for a type", ex);
+                    throw new ReflectionException(_type, "Error processing display name signiture for a type", ex);
                 }
             }
         }
@@ -274,7 +273,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             // Type Generic Parameter
             GenericTypeRef foundGenericType = null;
-            foreach(GenericTypeRef current in this._type.GenericTypes)
+            foreach(GenericTypeRef current in _type.GenericTypes)
             {
                 if(current.Sequence == sequence)
                 {

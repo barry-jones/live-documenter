@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TheBoxSoftware.Reflection.Core.COFF;
 
 namespace TheBoxSoftware.Reflection
@@ -33,11 +30,6 @@ namespace TheBoxSoftware.Reflection
             assemblyRef.Assembly = assembly;
 
             return assemblyRef;
-        }
-
-        public AssemblyDef Load()
-        {
-            return new AssemblyDef();
         }
 
         /// <summary>
