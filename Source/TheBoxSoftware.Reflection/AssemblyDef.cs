@@ -52,25 +52,18 @@ namespace TheBoxSoftware.Reflection
                 throw new ArgumentNullException("peCoffFile");
 
             if(!peCoffFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
-            {
-                peCoffFile = null;  // would be nice to get the memory back
-                throw new NotAManagedLibraryException(string.Format("The file '{0}' is not a managed library.", peCoffFile.FileName));
-            }
+                throw new NotAManagedLibraryException($"The file '{peCoffFile.FileName}' is not a managed library.");
 
             AssemblyDef assembly = new AssemblyDef();
-
-            // Store the details of the file
             assembly.File = peCoffFile;
-            MetadataToDefinitionMap map = assembly.File.Map;
+            MetadataToDefinitionMap map = peCoffFile.Map;
             map.Assembly = assembly;
 
             // Read the metadata from the file and populate the entries
-            MetadataDirectory metadata = assembly.File.GetMetadataDirectory();
+            MetadataDirectory metadata = peCoffFile.GetMetadataDirectory();
             MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
 
-            //
-            assembly.StringStream = (StringStream)metadata.Streams[Streams.StringStream];
-
+            assembly.StringStream = (StringStream)metadata.Streams[Streams.StringStream]; // needs to be populated first
             assembly.LoadAssemblyMetadata(metadataStream);
             assembly.LoadAssemblyRefMetadata(map, metadata, metadataStream);
             assembly.LoadModuleMetadata(map, metadata, metadataStream);
@@ -277,6 +270,7 @@ namespace TheBoxSoftware.Reflection
             {
                 ConstantMetadataTableRow constantRow = constants[i] as ConstantMetadataTableRow;
                 ConstantInfo constant = ConstantInfo.CreateFromMetadata(this, metadataStream, constantRow);
+
                 switch(constantRow.Parent.Table)
                 {
                     case MetadataTables.Field:
