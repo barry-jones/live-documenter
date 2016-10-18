@@ -46,7 +46,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "License Utility", "4. Utili
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Documentation.Tests", "TheBoxSoftware.Documentation.Tests\TheBoxSoftware.Documentation.Tests.csproj", "{2216040E-9D5A-4DF5-ADF3-1561D08794FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection.Tests", "TheBoxSoftware.Reflections.Tests\TheBoxSoftware.Reflection.Tests.csproj", "{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection.Tests", "TheBoxSoftware.Reflection.Tests\TheBoxSoftware.Reflection.Tests.csproj", "{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
