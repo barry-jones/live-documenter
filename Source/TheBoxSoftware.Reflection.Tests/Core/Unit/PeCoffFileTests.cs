@@ -18,9 +18,9 @@ namespace TheBoxSoftware.Reflection.Tests.Core.Unit
         [Test]
         public void PeCoffFile_WhenCreatedWithValidFile_MetadataIsLoaded()
         {
-            PeCoffFile coffFile = new PeCoffFile("theboxsoftware.reflections.tests\\testfiles\\system.dll");
+            PeCoffFile coffFile = new PeCoffFile("theboxsoftware.reflection.tests\\bin\\debug\\theboxsoftware.reflection.dll");
 
-            Assert.AreEqual("theboxsoftware.reflections.tests\\testfiles\\system.dll", coffFile.FileName);
+            Assert.AreEqual("theboxsoftware.reflection.tests\\bin\\debug\\theboxsoftware.reflection.dll", coffFile.FileName);
             Assert.IsTrue(coffFile.IsMetadataLoaded);
         }
     }
