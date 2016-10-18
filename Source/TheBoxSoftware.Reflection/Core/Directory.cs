@@ -37,7 +37,8 @@ namespace TheBoxSoftware.Reflection.Core {
 			return createdDirectory;
 		}
 
-		public virtual void ReadDirectories(PeCoffFile containingFile) {
+		public virtual void ReadDirectories(PeCoffFile containingFile)
+        {
 		}
 		#endregion
 

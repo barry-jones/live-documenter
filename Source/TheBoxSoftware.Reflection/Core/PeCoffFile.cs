@@ -20,18 +20,18 @@ namespace TheBoxSoftware.Reflection.Core
         /// <param name="filePath">The physical location of the file</param>
         public PeCoffFile(string filePath)
         {
-            this.FileName = filePath;
+            FileName = filePath;
         }
 
         public void Initialise()
         {
             TraceHelper.WriteLine("loading pecoff file ({0})", FileName);
             TraceHelper.Indent();
-            this.Map = new MetadataToDefinitionMap();
-            this.IsMetadataLoaded = false;
-            this.ReadFileContents();
-            this.FileContents = null;
-            this.IsMetadataLoaded = true;
+            Map = new MetadataToDefinitionMap();
+            IsMetadataLoaded = false;
+            ReadFileContents();
+            FileContents = null;
+            IsMetadataLoaded = true;
             TraceHelper.Unindent();
         }
 
@@ -89,20 +89,11 @@ namespace TheBoxSoftware.Reflection.Core
             byte[] contentsAsArray = contents.ToArray();
             this.FileContents = contentsAsArray;
 
-            // Load the offset for the PE file
             Offset offset = contents[PeCoffFile.PeSignitureOffsetLocation];
+            offset += 4; // skip past the PE signature bytes
 
-            // Read and check the signiture of the file to verify it
-            //string signiture = Convert.ToString(contents.GetRange(offset, offset.Shift(4)).ToArray());
-            //if (signiture != "PE") {
-            //    throw new ApplicationException("Invalid signiture in PE/COFF file");
-            //}
-            offset += 4;
-
-            // Read the image_file_header
             this.FileHeader = new FileHeader(contentsAsArray, offset);
             this.PeHeader = new PEHeader(contentsAsArray, offset);
-
             this.ReadSectionHeaders(offset);
             this.ReadDirectories();
         }

@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Tests.Core.Unit
         private const string TEST_LIBRARY = "theboxsoftware.reflection.tests\\bin\\debug\\theboxsoftware.reflection.dll";
 
         [Test]
-        public void PeCoffFile_WhenCreatedWithEmptyString_ThrowsArgumentException()
+        public void PeCoffFile_WhenInitialisedWithEmptyString_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(delegate() {
                 PeCoffFile coffFile = new PeCoffFile(string.Empty);
@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Tests.Core.Unit
         }
 
         [Test]
-        public void PeCoffFile_WhenCreatedWithValidFile_MetadataIsLoaded()
+        public void PeCoffFile_WhenInitialisedWithValidFile_MetadataIsLoaded()
         {
             PeCoffFile coffFile = new PeCoffFile(TEST_LIBRARY);
             coffFile.Initialise();
