@@ -1,0 +1,143 @@
+﻿<docs>
+  <assemblydef>
+    <member name="class">
+      <summary>
+        The AssemblyDef provides the top level information and entry point to
+        all types, methods etc reflected from a .NET executable.
+      </summary>
+      <remarks>
+        <para>
+          The AssemblyDef is the starting point for obtaining reflected information
+          about a .NET assembly. This information is obtained by parsing and discerning
+          information about <see cref="TypeDef"/>s, <see cref="MethodDef"/>s etc from
+          the .NET metadata stored in the <see cref="PeCoffFile"/>.
+        </para>
+        <para>
+          The assembly implements a mechanism for generating unique identifiers
+          that can be assigned to each of the elements reflected in this assembly. The
+          unique identifier is not really required but can help other applications to
+          store keys and find reflected elements more quickly and uses less memory than
+          string based unique identifiers.
+        </para>
+        <example>
+          <code>
+          // Instantiate from a full file path and name
+          AssemblyDef assembly = AssemblyDef.Create(myAssemblyPath);
+          
+          // Instantiate from an already existing loaded metadata file
+          PeCoffFile peCoffFile = new PeCoffFile(myAssemblyPath);
+          AssemblyDef assembly = AssemblyDef.Create(peCoffFile);
+          </code>
+        </example>
+      </remarks>
+      <seealso cref="PeCoffFile"/>
+    </member>
+
+    <member name="create">
+      <summary>
+        Creates and instantiates an AssemblyDef based on the provided library name.
+      </summary>
+      <param name="fileName">The file name of the assembly to reflect.</param>
+      <returns>The instantiated AssemblyDef.</returns>
+      <exception cref="ArgumentNullException">The filename was null or empty.</exception>
+      <exception cref="NotAManagedLibraryException">
+        Thrown when a PeCoff file is passed to the function and the <paramref name="fileName"/>
+        does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
+      </exception>
+    </member>
+
+    <member name="create2">
+      <summary>
+        Initialises and instantiates an AssemblyDef instance for the provided
+        <see cref="PeCoffFile"/> (assembly).
+      </summary>
+      <param name="peCoffFile">The PeCoffFile to load the AssemblyDef from.</param>
+      <returns>The instantiated AssemblyDef.</returns>
+      <exception cref="ArgumentNullException">Thrown when the PeCoffFile is null.</exception>
+      <exception cref="NotAManagedLibraryException">
+        Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
+        does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
+      </exception>
+    </member>
+
+    <member name="gettypesinnamespaces">
+      <summary>
+        Returns all the types in their respective namespaces.
+      </summary>
+      <returns>A dictionary of namespaces and its containing types</returns>
+    </member>
+
+    <member name="isnamespacedefined">
+      <summary>
+        Checks if this assembly defines the namespace specified.
+      </summary>
+      <param name="theNamespace">The namespace to check.</param>
+      <returns>True if yes else false.</returns>
+      <remarks>
+        When using this make sure that you are aware that more than one assembly
+        can specifiy the same namespace.
+      </remarks>
+    </member>
+
+    <member name="getnamespaces">
+      <summary>
+        Obtains a collection of all the namespaces defined in this assembly.
+      </summary>
+      <returns>The collection of strings representing the namespaces.</returns>
+    </member>
+
+    <member name="findtype">
+      <summary>
+        Searches the assembly for the named type in the specified assembly.
+      </summary>
+      <param name="theNamespace">The namespace to search for the type in.</param>
+      <param name="theTypeName">The name of the type</param>
+      <returns>The resolved type definition or null if not found.</returns>
+    </member>
+
+    <member name="resolvemetadatatoken">
+      <summary>
+        Helps to resolve tokens from the metadata to there associated types and elements inside
+        this assembly.
+      </summary>
+      <param name="metadataToken">The metadata token to resolve</param>
+      <returns>A resolved token reference or null if not found in this assembly.</returns>
+      <remarks>
+        A token is specific to an assembly.
+      </remarks>
+    </member>
+
+    <member name="resolvecodedindex">
+      <summary>
+        Resolves a coded index to its instantiated reference
+      </summary>
+      <param name="index">The coded index to resolve</param>
+      <returns>Null if not resolved else the object referenced by the index</returns>
+    </member>
+
+    <member name="getgloballyuniqueid">
+      <summary>
+        Returns a unique identifier for this AssemblyDef.
+      </summary>
+      <returns></returns>
+    </member>
+
+    <member name="getassemblyid">
+      <summary>
+        Returns the unique identifier of the AssemblyDef
+      </summary>
+      <returns>The assembly unique id</returns>
+    </member>
+
+    <member name="stringstream">
+      <summary>
+        Gets or sets a reference to the string stream.
+      </summary>
+      <remarks>
+        This has been created to reduce the cost of obtaining this information, it is
+        a well access field and storing it behind a property just increases cost for no
+        reason.
+      </remarks>
+    </member>
+  </assemblydef>
+</docs>
