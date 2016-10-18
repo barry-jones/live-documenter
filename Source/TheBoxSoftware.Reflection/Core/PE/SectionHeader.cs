@@ -34,7 +34,7 @@ namespace TheBoxSoftware.Reflection.Core.PE
                 }
             }
 
-            return tempName.ToString().Trim(TerminatingChar);
+            return new string(tempName).Trim(TerminatingChar);
         }
 
         public string Name { get; set; }

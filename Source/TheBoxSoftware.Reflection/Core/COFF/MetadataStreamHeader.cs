@@ -41,7 +41,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 }
             }
 
-            return tempName.ToString().TrimEnd(nullCharacter);
+            return new string(tempName.ToArray()).TrimEnd(nullCharacter);
         }
     }
 }
