@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TheBoxSoftware.Reflection.Core.COFF {
-	/// <summary>
-	/// Enumeration of all the available metadata tables that can reside
-	/// in a .net pe/coff file.
-	/// </summary>
-    public enum MetadataTables : byte {
+namespace TheBoxSoftware.Reflection.Core.COFF
+{
+    /// <summary>
+    /// Enumeration of all the available metadata tables that can reside
+    /// in a .net pe/coff file.
+    /// </summary>
+    public enum MetadataTables : byte
+    {
         Module					= 0x00,
 		TypeRef					= 0x01,
 		TypeDef					= 0x02,

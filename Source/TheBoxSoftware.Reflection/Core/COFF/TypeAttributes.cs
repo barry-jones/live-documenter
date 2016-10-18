@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace TheBoxSoftware.Reflection.Core.COFF {
-	[Flags]
-	public enum TypeAttributes {
+namespace TheBoxSoftware.Reflection.Core.COFF
+{
+    [Flags]
+	public enum TypeAttributes
+    {
 		VisibilityMask			= 0x00000007,
 		NotPublic				= 0x00000000,
 		Public					= 0x00000001,

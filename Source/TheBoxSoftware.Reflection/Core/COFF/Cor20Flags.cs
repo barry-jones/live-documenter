@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace TheBoxSoftware.Reflection.Core.COFF
+{
 
-namespace TheBoxSoftware.Reflection.Core.COFF {
-
-    public enum Cor20Flags : ulong {
+    public enum Cor20Flags : ulong
+    {
         /// <summary>The image file contains IL code only</summary>
-        ILOnly =				0x00000001,
+        ILOnly = 0x00000001,
         /// <summary>The image file can only be loaded in to a 32bit process</summary>
-        Bit32Required			= 0x00000002,
+        Bit32Required = 0x00000002,
         /// <summary>This flag is obsolete</summary>
-        ILLibrary				= 0x00000004,
+        ILLibrary = 0x00000004,
         /// <summary>The image file is protected with a strong name signiture</summary>
-        StrongNameSigned		= 0x00000008,
+        StrongNameSigned = 0x00000008,
         /// <summary>The loader and the JIT compiler are required to track debug information</summary>
-        TrackedDebugData		= 0x00010000
+        TrackedDebugData = 0x00010000
     }
 }
