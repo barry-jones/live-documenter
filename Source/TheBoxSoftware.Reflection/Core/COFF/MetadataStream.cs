@@ -353,13 +353,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         {
             get
             {
-                if(this._sizeOfStringIndexes == 0)
+                if(_sizeOfStringIndexes == 0)
                 {
-                    this._sizeOfStringIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.StringIsLarge) == HeapOffsetSizes.StringIsLarge)
+                    _sizeOfStringIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.StringIsLarge) == HeapOffsetSizes.StringIsLarge)
                         ? (byte)4
                         : (byte)2;
                 }
-                return this._sizeOfStringIndexes;
+                return _sizeOfStringIndexes;
             }
         }
 
@@ -370,13 +370,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         {
             get
             {
-                if(this._sizeOfGuidIndexes == 0)
+                if(_sizeOfGuidIndexes == 0)
                 {
-                    this._sizeOfGuidIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.GuidIsLarge) == HeapOffsetSizes.GuidIsLarge)
+                    _sizeOfGuidIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.GuidIsLarge) == HeapOffsetSizes.GuidIsLarge)
                         ? (byte)4
                         : (byte)2;
                 }
-                return this._sizeOfGuidIndexes;
+                return _sizeOfGuidIndexes;
             }
         }
 
@@ -387,13 +387,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         {
             get
             {
-                if(this._sizeOfBlobIndexes == 0)
+                if(_sizeOfBlobIndexes == 0)
                 {
-                    this._sizeOfBlobIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.BlobIsLarge) == HeapOffsetSizes.BlobIsLarge)
+                    _sizeOfBlobIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.BlobIsLarge) == HeapOffsetSizes.BlobIsLarge)
                         ? (byte)4
                         : (byte)2;
                 }
-                return this._sizeOfBlobIndexes;
+                return _sizeOfBlobIndexes;
             }
         }
 

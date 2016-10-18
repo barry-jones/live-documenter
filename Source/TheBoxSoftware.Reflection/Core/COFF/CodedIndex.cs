@@ -328,7 +328,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 CodedIndex.GetTablesInformation(ref details, codedIndex);
 
                 // calculate the max rows in the specific table and in prospective tables
-                //details.MaxRowsInCodedTable = 0;
                 details.MaxRowsInTables = 0;
                 int count = details.Tables.Count;
                 for(int i = 0; i < count; i++)
@@ -343,7 +342,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     }
                 }
 
-                // Dont forget to add it to the map...
                 stream.codedIndexMap[codedIndex] = details;
             }
 
