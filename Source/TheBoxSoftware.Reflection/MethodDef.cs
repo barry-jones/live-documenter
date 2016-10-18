@@ -41,7 +41,7 @@ namespace TheBoxSoftware.Reflection
             MethodDef method = new MethodDef();
 
             method.GenericTypes = new List<GenericTypeRef>();
-            method.UniqueId = assembly.GetUniqueId();
+            method.UniqueId = assembly.CreateUniqueId();
             method.Assembly = assembly;
             method.Type = container;
             method.RVA = (int)row.RVA;

@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection
             ParamDef parameter = new ParamDef();
 
             AssemblyDef assembly = owner.Assembly;
-            parameter.UniqueId = assembly.GetUniqueId();
+            parameter.UniqueId = assembly.CreateUniqueId();
             parameter.Name = assembly.StringStream.GetString(row.Name.Value);
             assembly = null;
             parameter.Method = owner;

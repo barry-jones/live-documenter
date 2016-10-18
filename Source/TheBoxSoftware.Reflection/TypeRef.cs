@@ -29,7 +29,7 @@ namespace TheBoxSoftware.Reflection
         {
             TypeRef typeRef = new TypeRef();
 
-            typeRef.UniqueId = assembly.GetUniqueId();
+            typeRef.UniqueId = assembly.CreateUniqueId();
             typeRef.Name = assembly.StringStream.GetString(row.Name.Value);
             typeRef.Namespace = assembly.StringStream.GetString(row.Namespace.Value);
             typeRef.Assembly = assembly;

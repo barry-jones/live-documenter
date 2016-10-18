@@ -25,7 +25,7 @@ namespace TheBoxSoftware.Reflection
                 row.BuildNumber,
                 row.RevisionNumber);
             assemblyRef.Culture = assembly.StringStream.GetString(row.Culture.Value);
-            assemblyRef.UniqueId = assembly.GetUniqueId();
+            assemblyRef.UniqueId = assembly.CreateUniqueId();
             assemblyRef.Name = assembly.StringStream.GetString(row.Name.Value);
             assemblyRef.Assembly = assembly;
 

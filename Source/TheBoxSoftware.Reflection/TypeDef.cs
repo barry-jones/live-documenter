@@ -262,7 +262,7 @@ namespace TheBoxSoftware.Reflection
             typeDef._index = ((MetadataStream)metadata.Streams[Streams.MetadataStream]).Tables[MetadataTables.TypeDef].ToList().IndexOf(row) + 1;
             typeDef._table = MetadataTables.TypeDef;
 
-            typeDef.UniqueId = assembly.GetUniqueId();
+            typeDef.UniqueId = assembly.CreateUniqueId();
             typeDef.Name = assembly.StringStream.GetString(row.Name.Value);
             typeDef.Namespace = assembly.StringStream.GetString(row.Namespace.Value);
             typeDef.Assembly = assembly;

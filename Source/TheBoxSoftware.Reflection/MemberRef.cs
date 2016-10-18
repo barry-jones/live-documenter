@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection
         {
             MemberRef memberRef = new MemberRef();
 
-            memberRef.UniqueId = assembly.GetUniqueId();
+            memberRef.UniqueId = assembly.CreateUniqueId();
 
             // as per page: 126 of the ECMA, the class column can contain a reference to a TypeRef,
             // MemberRef, TypeSpec or ModuleRef entry

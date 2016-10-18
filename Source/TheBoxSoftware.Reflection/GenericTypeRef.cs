@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection
         internal static GenericTypeRef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, GenericParamMetadataTableRow row)
         {
             GenericTypeRef genericType = new GenericTypeRef();
-            genericType.UniqueId = assembly.GetUniqueId();
+            genericType.UniqueId = assembly.CreateUniqueId();
             genericType.Sequence = (Int16)row.Number;
             genericType.Name = assembly.StringStream.GetString(row.Name.Value);
             // this.Flags = FieldReader.ToUInt16(contents, offset.Shift(2));

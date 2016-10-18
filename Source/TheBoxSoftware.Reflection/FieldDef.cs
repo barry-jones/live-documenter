@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection
         {
             FieldDef field = new FieldDef();
 
-            field.UniqueId = assembly.GetUniqueId();
+            field.UniqueId = assembly.CreateUniqueId();
             field.Assembly = assembly;
             field.Type = container;
             field.Name = assembly.StringStream.GetString(row.Name.Value);

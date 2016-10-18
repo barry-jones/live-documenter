@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection
         {
             ModuleDef module = new ModuleDef();
             module.Name = assembly.StringStream.GetString(row.Name.Value);
-            module.UniqueId = assembly.GetUniqueId();
+            module.UniqueId = assembly.CreateUniqueId();
             module.ModuleVersionId = ((GuidStream)metadataDirectory.Streams[Streams.GuidStream]).GetGuid(row.Mvid);
             module.Assembly = assembly;
             return module;

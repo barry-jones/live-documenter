@@ -278,6 +278,7 @@ namespace TheBoxSoftware.Reflection
             // REVIEW: see this.namespaceMap. Also appears to be wasteful
             List<string> orderedNamespaces = new List<string>();
             Dictionary<string, List<TypeDef>> temp = new Dictionary<string, List<TypeDef>>();
+
             foreach(TypeDef current in this.Types.FindAll(t => !t.IsCompilerGenerated))
             {
                 if(!orderedNamespaces.Contains(current.Namespace))
@@ -285,7 +286,9 @@ namespace TheBoxSoftware.Reflection
                     orderedNamespaces.Add(current.Namespace);
                 }
             }
+
             orderedNamespaces.Sort();
+
             foreach(string current in orderedNamespaces)
             {
                 temp.Add(current, new List<TypeDef>());
@@ -332,14 +335,14 @@ namespace TheBoxSoftware.Reflection
         public TypeDef FindType(string theNamespace, string theTypeName)
         {
             if(string.IsNullOrEmpty(theTypeName) || string.IsNullOrEmpty(theNamespace)) return null;
-            return this._namspaceMap.FindTypeInNamespace(theNamespace, theTypeName);
+            return _namspaceMap.FindTypeInNamespace(theNamespace, theTypeName);
         }
 
         /// <summary>
         /// Get the next available unique identifier for this assembly.
         /// </summary>
         /// <returns>The unique identifier</returns>
-        internal int GetUniqueId()
+        internal int CreateUniqueId()
         {
             return _uniqueIdCounter++;
         }

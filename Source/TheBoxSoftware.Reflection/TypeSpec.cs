@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection
         public static TypeSpec CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metatadata, TypeSpecMetadataTableRow row)
         {
             TypeSpec spec = new TypeSpec();
-            spec.UniqueId = assembly.GetUniqueId();
+            spec.UniqueId = assembly.CreateUniqueId();
             spec.Assembly = assembly;
             spec.SignitureBlob = row.Signiture;
             return spec;
