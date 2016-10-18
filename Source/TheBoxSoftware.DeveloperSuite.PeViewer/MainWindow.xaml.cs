@@ -1,55 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using TheBoxSoftware.Reflection.Core;
 
-namespace TheBoxSoftware.DeveloperSuite.PEViewer {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window {
-		private Model.PEFile peFile;
+namespace TheBoxSoftware.DeveloperSuite.PEViewer
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private Model.PEFile peFile;
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public MainWindow() {
-			InitializeComponent();
-		}
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// Initilialises the window for the newly loaded PEFile.
-		/// </summary>
-		private void InitialiseForNewPEFile() {
-			this.peViewMap.ItemsSource = peFile.Entries;
-		}
+        /// <summary>
+        /// Initilialises the window for the newly loaded PEFile.
+        /// </summary>
+        private void InitialiseForNewPEFile()
+        {
+            this.peViewMap.ItemsSource = peFile.Entries;
+        }
 
-		#region Event Handlers
-		/// <summary>
-		/// Handles the user wanting load an assembly.
-		/// </summary>
-		/// <param name="sender">Calling object</param>
-		/// <param name="e">Event arguments</param>
-		private void LoadAssembly_Click(object sender, RoutedEventArgs e) {
-			System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
-			if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-				peFile = new Model.PEFile(new TheBoxSoftware.Reflection.Core.PeCoffFile(ofd.FileName));
-				this.InitialiseForNewPEFile();
-			}
-		}
+        /// <summary>
+        /// Handles the user wanting load an assembly.
+        /// </summary>
+        /// <param name="sender">Calling object</param>
+        /// <param name="e">Event arguments</param>
+        private void LoadAssembly_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            if(ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                PeCoffFile coffFile = new PeCoffFile(ofd.FileName);
+                coffFile.Initialise();
 
-		private void ShowAbout(object sender, RoutedEventArgs e) {
-			TheBoxSoftware.DeveloperSuite.LiveDocumenter.About about = new TheBoxSoftware.DeveloperSuite.LiveDocumenter.About();
-			about.ShowDialog();
-		}
-		#endregion
-	}
+                peFile = new Model.PEFile(coffFile);
+                this.InitialiseForNewPEFile();
+            }
+        }
+
+        private void ShowAbout(object sender, RoutedEventArgs e)
+        {
+            TheBoxSoftware.DeveloperSuite.LiveDocumenter.About about = new TheBoxSoftware.DeveloperSuite.LiveDocumenter.About();
+            about.ShowDialog();
+        }
+    }
 }

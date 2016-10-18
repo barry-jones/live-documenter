@@ -61,6 +61,7 @@ namespace TheBoxSoftware.Reflection
 
             // [#102] check for CLR directory to make sure it is a managed PE file
             PeCoffFile peFile = new PeCoffFile(fileName);
+            peFile.Initialise();
 
             if(!peFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
             {

@@ -20,9 +20,13 @@ namespace TheBoxSoftware.Reflection.Core
         /// <param name="filePath">The physical location of the file</param>
         public PeCoffFile(string filePath)
         {
-            TraceHelper.WriteLine("loading pecoff file ({0})", filePath);
-            TraceHelper.Indent();
             this.FileName = filePath;
+        }
+
+        public void Initialise()
+        {
+            TraceHelper.WriteLine("loading pecoff file ({0})", FileName);
+            TraceHelper.Indent();
             this.Map = new MetadataToDefinitionMap();
             this.IsMetadataLoaded = false;
             this.ReadFileContents();
@@ -37,9 +41,8 @@ namespace TheBoxSoftware.Reflection.Core
         /// <returns>The .NET metadata directory</returns>
         public COFF.MetadataDirectory GetMetadataDirectory()
         {
-            return ((COFF.CLRDirectory)this.Directories[
-                DataDirectories.CommonLanguageRuntimeHeader
-                ]).Metadata;
+            COFF.CLRDirectory directory = Directories[DataDirectories.CommonLanguageRuntimeHeader] as COFF.CLRDirectory;
+            return directory.Metadata;
         }
 
         /// <summary>
