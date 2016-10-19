@@ -1,4 +1,6 @@
-﻿using TheBoxSoftware.Reflection.Core;
+﻿using System.Text;
+using TheBoxSoftware.Diagnostics;
+using TheBoxSoftware.Reflection.Core;
 
 namespace TheBoxSoftware.Reflection.Signitures
 {
