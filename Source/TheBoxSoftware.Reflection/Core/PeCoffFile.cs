@@ -13,6 +13,8 @@ namespace TheBoxSoftware.Reflection.Core
     public sealed class PeCoffFile
     {
         private const int PeSignitureOffsetLocation = 0x3c;
+
+        private byte[] _fileContents;
         
         /// <summary>
         /// Initialises a new instance of the PeCoffFile
@@ -25,14 +27,11 @@ namespace TheBoxSoftware.Reflection.Core
 
         public void Initialise()
         {
-            TraceHelper.WriteLine("loading pecoff file ({0})", FileName);
-            TraceHelper.Indent();
             Map = new MetadataToDefinitionMap();
             IsMetadataLoaded = false;
             ReadFileContents();
-            FileContents = null;
+            _fileContents = null;
             IsMetadataLoaded = true;
-            TraceHelper.Unindent();
         }
 
         /// <summary>
@@ -55,12 +54,13 @@ namespace TheBoxSoftware.Reflection.Core
             int virtualOffset = 0;
             int rawOffset = 0;
             int max = -1;
+            int numSectionHeaders = this.SectionHeaders.Count;
 
             // determine which section the RVA belongs too
-            for(int i = 0; i < this.SectionHeaders.Count; i++)
+            for(int i = 0; i < numSectionHeaders; i++)
             {
                 int minAddress = (int)this.SectionHeaders[i].VirtualAddress;
-                int maxAddress = (i + 1 < this.SectionHeaders.Count)
+                int maxAddress = (i + 1 < numSectionHeaders)
                     ? (int)this.SectionHeaders[i + 1].VirtualAddress
                     : max;
 
@@ -85,48 +85,50 @@ namespace TheBoxSoftware.Reflection.Core
         /// </exception>
         private void ReadFileContents()
         {
-            List<byte> contents = new List<byte>(File.ReadAllBytes(FileName));
-            byte[] contentsAsArray = contents.ToArray();
-            this.FileContents = contentsAsArray;
+            _fileContents = File.ReadAllBytes(FileName);
 
-            Offset offset = contents[PeCoffFile.PeSignitureOffsetLocation];
+            Offset offset = _fileContents[PeCoffFile.PeSignitureOffsetLocation];
             offset += 4; // skip past the PE signature bytes
 
-            this.FileHeader = new FileHeader(contentsAsArray, offset);
-            this.PeHeader = new PEHeader(contentsAsArray, offset);
-            this.ReadSectionHeaders(offset);
-            this.ReadDirectories();
+            FileHeader fileHeader = new FileHeader(_fileContents, offset);
+            PEHeader peHeader = new PEHeader(_fileContents, offset);
+
+            this.ReadSectionHeaders(fileHeader.NumberOfSections, offset);
+            this.ReadDirectories(peHeader.DataDirectories);
         }
 
         /// <summary>
         /// Reads the headers for all of the defined sections in the file
         /// </summary>
+        /// <param name="numberOfSections">The number of sections in the file header to initialise.</param>
         /// <param name="offset">The offset to the section headers</param>
-        private void ReadSectionHeaders(Offset offset)
+        private void ReadSectionHeaders(ushort numberOfSections, Offset offset)
         {
             this.SectionHeaders = new List<SectionHeader>();
 
-            for(int i = 0; i < this.FileHeader.NumberOfSections; i++)
+            for(int i = 0; i < numberOfSections; i++)
             {
-                this.SectionHeaders.Add(new SectionHeader(this.FileContents, offset));
+                this.SectionHeaders.Add(new SectionHeader(_fileContents, offset));
             }
         }
 
         /// <summary>
         /// Reads the contents of the directories specified in the file header
         /// </summary>
-        private void ReadDirectories()
+        /// <param name="dataDirectories">The data directories to initialise in hte PE header.</param>
+        private void ReadDirectories(Dictionary<DataDirectories, DataDirectory> dataDirectories)
         {
             this.Directories = new Dictionary<DataDirectories, Directory>();
 
-            foreach(KeyValuePair<DataDirectories, DataDirectory> current in this.PeHeader.DataDirectories)
+            foreach(KeyValuePair<DataDirectories, DataDirectory> current in dataDirectories)
             {
                 DataDirectory directory = current.Value;
 
                 if(directory.IsUsed)
                 {
                     int address = this.FileAddressFromRVA((int)directory.VirtualAddress);
-                    Directory created = Directory.Create(directory.Directory, this.FileContents, address);
+
+                    Directory created = Directory.Create(directory.Directory, _fileContents, address);
                     created.ReadDirectories(this);
                     this.Directories.Add(current.Key, created);
                 }
@@ -137,16 +139,6 @@ namespace TheBoxSoftware.Reflection.Core
         /// The full path and filename for the disk location of this PE/COFF file.
         /// </summary>
         public string FileName { get; set; }
-
-        /// <summary>
-        /// This files header details.
-        /// </summary>
-        public FileHeader FileHeader { get; set; }
-
-        /// <summary>
-        /// The PE Header.
-        /// </summary>
-        public PEHeader PeHeader { get; set; }
 
         /// <summary>
         /// The headers for all the sections defined in the file
@@ -167,7 +159,10 @@ namespace TheBoxSoftware.Reflection.Core
         /// <summary>
         /// The byte contents of the file.
         /// </summary>
-        internal byte[] FileContents { get; set; }
+        internal byte[] FileContents
+        {
+            get { return _fileContents; }
+        }
 
         /// <summary>
         /// Internal mapping of metadata to reflected definitions.

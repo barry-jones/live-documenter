@@ -12,7 +12,6 @@ namespace PerformanceTests
         static void Main(string[] args)
         {
             var summary = BenchmarkRunner.Run<Reflection.Core.PeCoffFileBenchmark>();
-            Console.WriteLine(summary);
         }
     }
 }
