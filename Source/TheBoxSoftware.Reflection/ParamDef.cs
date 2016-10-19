@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using TheBoxSoftware.Reflection.Core.COFF;
 
 namespace TheBoxSoftware.Reflection
@@ -21,6 +22,7 @@ namespace TheBoxSoftware.Reflection
         internal static ParamDef CreateFromMetadata(MethodDef owner, MetadataDirectory metadata, ParamMetadataTableRow row)
         {
             ParamDef parameter = new ParamDef();
+            parameter.Constants = new List<ConstantInfo>();
 
             AssemblyDef assembly = owner.Assembly;
             parameter.UniqueId = assembly.CreateUniqueId();
@@ -74,6 +76,11 @@ namespace TheBoxSoftware.Reflection
         /// refers to on its parent method.
         /// </Summary>
         public int Sequence { get; set; }
+
+        /// <summary>
+        /// The constant values associated with the parameters if any.
+        /// </summary>
+        public List<ConstantInfo> Constants { get; set; }
 
         /// <summary>
         /// Indicates if the parameter has been declared as an in paramter

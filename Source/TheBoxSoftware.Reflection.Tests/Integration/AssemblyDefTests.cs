@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using TheBoxSoftware.Reflection.Comments;
 using TheBoxSoftware.Reflection.Signitures;
 
 namespace TheBoxSoftware.Reflection.Tests.Integration
@@ -217,6 +218,18 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
 
             Assert.IsTrue(optParam.IsOptional);
             Assert.IsFalse(notOptParam.IsOptional);
+        }
+
+        [Test, Category("Integration")]
+        public void OptionalParameters_TheAssociatedConstantIsReferenced()
+        {
+            TypeDef publicType = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
+            List<MethodDef> methods = publicType.GetMethods();
+            List<ParamDef> parameters = methods.First(c => c.Name == "inTest").Parameters;
+
+            ParamDef optParam = parameters[2];
+
+            Assert.AreEqual(1, optParam.Constants.Count());
         }
 
         private void CheckVisibility(Visibility expected, Visibility actual)

@@ -4754,6 +4754,11 @@
             refers to on its parent method.
             </Summary>
         </member>
+        <member name="P:TheBoxSoftware.Reflection.ParamDef.Constants">
+            <summary>
+            The constant values associated with the parameters if any.
+            </summary>
+        </member>
         <member name="P:TheBoxSoftware.Reflection.ParamDef.IsIn">
             <summary>
             Indicates if the parameter has been declared as an in paramter

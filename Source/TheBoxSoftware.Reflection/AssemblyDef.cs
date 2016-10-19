@@ -282,6 +282,10 @@ namespace TheBoxSoftware.Reflection
                     case MetadataTables.Property:
                         break;
                     case MetadataTables.Param:
+                        ParamDef parameter = (ParamDef)map.GetDefinition(MetadataTables.Param,
+                            metadataStream.GetEntryFor(MetadataTables.Param, constantRow.Parent.Index)
+                            );
+                        parameter.Constants.Add(constant);
                         break;
                 }
             }
