@@ -2,11 +2,20 @@
 
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    // TODO: When resolving these metadata rows, we should also look in to the constant metadata
+    //  table and resolve optional parameters to the constant defenitions this will enable us
+    //  to correctly output the syntax for these parameters.
+
     /// <summary>
-    /// pdated for 4-byte heap indexes
+    /// Represents a single entry in the Param Metadata table.
     /// </summary>
     /// <remarks>
-    /// Completed 
+    /// The In, Out and Optional modifiers are specified in the <see cref="Flags"/> property. Further,
+    /// if it is defined as optional the constant values supplied are recorded in the Constants
+    /// Metadata directory p209 of .NET IL Assembler book.
+    /// 
+    /// The constant can be accessed but the value is only available on the signature blob which makes
+    /// it a little more difficult to access the value.
     /// </remarks>
     public class ParamMetadataTableRow : MetadataRow
     {
