@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mydocs>
+  <member name="first">
+    <summary>
+      <b>This</b> is a summary! <i>Italic</i> is also rendered.
+    </summary>
+    <remarks>
+      This is a remrks sections from an include file.
+    </remarks>
+  </member>
+  <member name="second">
+    <summary>
+      Each member defined in this document is found by using XPath by the C# copmiler.
+    </summary>
+    <remarks>
+      This is a remrks sections from an include file.
+    </remarks>
+  </member>
+</mydocs>

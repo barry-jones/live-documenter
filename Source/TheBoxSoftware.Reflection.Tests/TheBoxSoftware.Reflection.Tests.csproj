@@ -67,6 +67,10 @@
     <Folder Include="Unit\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj">
+      <Project>{2ad369a3-7737-4ec5-a4ba-3e846f80c066}</Project>
+      <Name>DocumentationTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
       <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
       <Name>TheBoxSoftware.Reflection</Name>

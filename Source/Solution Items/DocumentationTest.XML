@@ -1,0 +1,1833 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DocumentationTest</name>
+    </assembly>
+    <members>
+        <member name="T:DocumentationTest.AllOutputTypesClass">
+            <summary>
+            Enter description here for class X. 
+            ID string generated is "T:N.X". 
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.#ctor">
+            <summary>
+            Enter description here for the first constructor.
+            ID string generated is "M:N.X.#ctor".
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.#ctor(System.Int32)">
+            <summary>
+            Enter description here for the second constructor.
+            ID string generated is "M:N.X.#ctor(System.Int32)".
+            </summary>
+            <param name="i">Describe parameter.</param>
+        </member>
+        <member name="F:DocumentationTest.AllOutputTypesClass.q">
+            <summary>
+            Enter description here for field q.
+            ID string generated is "F:N.X.q".
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.AllOutputTypesClass.PI">
+            <summary>
+            Enter description for constant PI.
+            ID string generated is "F:N.X.PI".
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.f">
+            <summary>
+            Enter description for method f.
+            ID string generated is "M:N.X.f".
+            </summary>
+            <returns>Describe return value.</returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.bb(System.String,System.Int32@,System.Void*)">
+            <summary>
+            Enter description for method bb.
+            ID string generated is "M:N.X.bb(System.String,System.Int32@,System.Void*)".
+            </summary>
+            <param name="s">Describe parameter.</param>
+            <param name="y">Describe parameter.</param>
+            <param name="z">Describe parameter.</param>
+            <returns>Describe return value.</returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.bb(System.String,System.Int32@,DocumentationTest.TestStructure*)">
+            <summary>
+            Enter description for method bb.
+            ID string generated is "M:N.X.bb(System.String,System.Int32@,DocumentationTest.TestStructure*)".
+            </summary>
+            <param name="s">Describe parameter.</param>
+            <param name="y">Describe parameter.</param>
+            <param name="z">Describe parameter.</param>
+            <returns>Describe return value.</returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.test(System.Collections.Generic.List{System.String[]})">
+            <summary>
+            ID generated is "M:N.X.test(System.Collections.Generic.List{System.String[]})".
+            </summary>
+            <param name="test">test parameter</param>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.inTest(System.Int32@)">
+            <summary>
+            "M:DocumentationTest.AllOutputTypesClass.inTest(System.Int32@)".
+            </summary>
+            <param name="o">Described parameter</param>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.gg(System.Int16[],System.Int32[0:,0:])">
+            <summary>
+            Enter description for method gg.
+            ID string generated is "M:N.X.gg(System.Int16[],System.Int32[0:,0:])". 
+            </summary>
+            <param name="array1">Describe parameter.</param>
+            <param name="array">Describe parameter.</param>
+            <returns>Describe return value.</returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.op_Addition(DocumentationTest.AllOutputTypesClass,DocumentationTest.AllOutputTypesClass)">
+            <summary>
+            Enter description for operator.
+            ID string generated is "M:N.X.op_Addition(N.X,N.X)". 
+            </summary>
+            <param name="x">Describe parameter.</param>
+            <param name="xx">Describe parameter.</param>
+            <returns>Describe return value.</returns>
+        </member>
+        <member name="P:DocumentationTest.AllOutputTypesClass.prop">
+            <summary>
+            Enter description for property.
+            ID string generated is "P:N.X.prop".
+            </summary>
+        </member>
+        <member name="E:DocumentationTest.AllOutputTypesClass.d">
+            <summary>
+            Enter description for event.
+            ID string generated is "E:N.X.d".
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.AllOutputTypesClass.Item(System.String)">
+            <summary>
+            Enter description for property.
+            ID string generated is "P:N.X.Item(System.String)".
+            </summary>
+            <param name="s">Describe parameter.</param>
+            <returns></returns>
+        </member>
+        <member name="P:DocumentationTest.AllOutputTypesClass.Item(System.String,System.Int32)">
+            <summary>
+            Enter description for property.
+            ID string generated is "P:N.X.Item(System.String, System.Int32)".
+            </summary>
+            <param name="s">Describe parameter.</param>
+            <returns></returns>
+        </member>
+        <member name="T:DocumentationTest.AllOutputTypesClass.Nested">
+            <summary>1
+            Enter description for class Nested.
+            ID string generated is "T:N.X.Nested".
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.AllOutputTypesClass.D">
+            <summary>
+            Enter description for delegate.
+            ID string generated is "T:N.X.D". 
+            </summary>
+            <param name="i">Describe parameter.</param>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.op_Explicit(DocumentationTest.AllOutputTypesClass)~System.Int32">
+            <summary>
+            Enter description for operator.
+            ID string generated is "M:N.X.op_Explicit(N.X)~System.Int32".
+            </summary>
+            <param name="x">Describe parameter.</param>
+            <returns>Describe return value.</returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.GenericMethod``1(``0)">
+            <summary>
+            M:DocumentationTest.AllOutputTypesClass.GenericMethod``1(``0)
+            </summary>
+            <typeparam name="T">T Type parameter details</typeparam>
+            <param name="anItem">The parameter anItem</param>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.JaggedReturnArray(System.String[][])">
+            <summary>
+            Jagged array documentation test
+            </summary>
+            <param name="jaggy">Jagged array return type</param>
+            <returns>Another jagged array</returns>
+        </member>
+        <member name="P:DocumentationTest.AllOutputTypesClass.PrivateGet">
+            <summary>
+            PrivateGet
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.AllOutputTypesClass.PrivateSet">
+            <summary>
+            PrivateGet
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.Gah`1">
+            <summary>
+            <para>This is some summary information, inside a paragraph.</para>
+            This is not inside a para element and contains a <see cref="T:DocumentationTest.AllOutputTypesClass"/>
+            link.
+            <para>This is a <see cref="T:DocumentationTest.AllOutputTypesClass"/> inside a para; this is <c>some code.</c>
+            <code>
+            Somewhat incorrectly added code block element.
+            </code>
+            </para>
+            <example>
+            This is an example with a paragraph outside the para element.
+            <para>This is inside the para element.</para>
+            <code>
+            This code block is inside the example block.
+            </code>
+            </example>
+            This method <see cref="M:DocumentationTest.Gah`1.ATestMethod(System.Int32)" />, is simply a test. <see cref="M:DocumentationTest.Gah`1.ATestMethod(System.String)"/>. <see cref="M:DocumentationTest.Gah`1.#ctor"/>. <see cref="M:DocumentationTest.Gah`1.#ctor(System.String)"/>
+            </summary>
+            <remarks>
+            <para>Here are some remarks inside a para element.</para>
+            <example>Apparaently examples are not allowed in remarks!
+            <code>
+            int i = 3;
+            i++;
+            </code>
+            </example>
+            <list>
+            	<listheader>This is the header for the list!</listheader>
+            	<item>A plain item with text</item>
+            	<item><code>string x = "testing code";</code></item>
+            	<item><para>A couple of paragraphs of information in a list.</para><para>This will look shit. Does para = paragraph or parameter??</para></item>
+            </list>
+            </remarks>
+            <typeparam name="T">This is detail for the type parameter information</typeparam>
+            <seealso cref="T:System.Object"/>
+        </member>
+        <member name="M:DocumentationTest.Gah`1.#ctor(System.String)">
+            <summary>
+            <PARA></PARA>
+            <para>
+            <B>A bold section.</B>
+            Erroneous summary text to throw a KeyNotFound exception. Use a non-lowercase
+            XML tag.
+            </para>
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="F:DocumentationTest.Gah`1.booleanIn">
+            <summary>
+            Value is apparently what youwould put on a private member. <see cref="M:DocumentationTest.Gah`1.ATestMethod(System.Int32)" />.
+            <example>
+            Hoorah!
+            </example>
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.Gah`1.Test">
+            <summary>
+            This is some summary information about a property
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.Gah`1.CHild">
+            <summary>
+            Value is apparently what youwould put on a private member. <see cref="M:DocumentationTest.Gah`1.ATestMethod(System.Int32)" />
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.Gah`1.ATestMethod(System.Int32)">
+            <summary>
+            THis is some summary information about a method. The parameter <paramref name="i"/> is
+            not really that interesting. But <typeparamref name="T"/> on the class has no effect on this
+            method whatsoever!
+            </summary>
+            <param name="i">This is some detail about the parameter.</param>
+            <returns>It returns a string represetnation of the integer</returns>
+            <seealso cref="T:DocumentationTest.AllOutputTypesClass"/>
+        </member>
+        <member name="T:DocumentationTest.AttributeTargetsTest">
+            <summary>
+            Tests attribute targets and how these types are handled by our reflection library.
+            </summary>
+            <remarks>
+            Attribute target removes ambiguity see http://msdn.microsoft.com/en-us/library/b3787ac0(v=vs.80).aspx 
+            for more info.
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.AttributeTargetsTest.AMethod">
+            <summary>
+            Atribute sepecific to method/.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AttributeTargetsTest.ARetMethod">
+            <summary>
+            Attribute specific to return type.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DocumentationTest.ClassAsNamespaceBug">
+            <summary>
+            When a class is defined and has LINQ expressions etc, the comiler
+            sets the namespace on the generated class as the type (it is a nested
+            type). However we do not display the system generated types therefor
+            giving the impression of a class being displayed as a namespace.
+            
+            This is a test class for that bug.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.CodeTests.IndexerTest">
+            <summary>
+            Tests verious uses and basterdisations of indexers in types.
+            </summary>
+            <remarks>
+            Because of the way indexers work we need to define a new child class
+            for each test.
+            </remarks>
+        </member>
+        <member name="T:DocumentationTest.CodeTests.IndexerTest.ReturnTypeTests">
+            <summary>
+            Tests the display and use of return types in Indexers
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.IndexerTest.ReturnTypeTests.Item(System.Int32)">
+            <summary>
+            Integer return type
+            </summary>
+            <param name="one">One</param>
+            <returns>Int return type</returns>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.IndexerTest.ReturnTypeTests.Item(System.Int32,System.Int32)">
+            <summary>
+            String return type
+            </summary>
+            <param name="one">One</param>
+            <param name="two">Two</param>
+            <returns>String return type</returns>
+        </member>
+        <member name="T:DocumentationTest.CodeTests.IndexerTest.SettersAndGetters">
+            <summary>
+            Tests the different setter and getter variations
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.IndexerTest.SettersAndGetters.Item(System.Int32)">
+            <summary>
+            No setter
+            </summary>
+            <param name="one">One</param>
+            <returns>Return</returns>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.IndexerTest.SettersAndGetters.Item(System.Int32,System.Int32)">
+            <summary>
+            No getter
+            </summary>
+            <param name="one">One</param>
+            <param name="two">Two</param>
+            <returns>Return</returns>
+        </member>
+        <member name="T:DocumentationTest.CodeTests.PropertyTests`1">
+            <summary>
+            Tests various uses and basterdisations of properties
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.PropertyTests`1.AutoGeneratedGetSet">
+            <summary>
+            Generated get and set
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.PropertyTests`1.AutoGeneratedSet">
+            <summary>
+            Generated only set
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.PropertyTests`1.AutoGeneratedGet">
+            <summary>
+            Generated only get
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.PropertyTests`1.GetAndSet">
+            <summary>
+            Get and set not autogenerated
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.PropertyTests`1.Set">
+            <summary>
+            Set not autogenerated
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.PropertyTests`1.Get">
+            <summary>
+            Get not autogenerated
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CodeTests.PropertyTests`1.GenericProperty">
+            <summary>
+            Property with generic type
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.CElement">
+            <summary>
+            This is a <c>test</c> of the c element.
+            </summary>
+            <remarks>
+            <para>Where is a <c>c</c> element valid? In this para?</para>
+            Or outside of any <c>c</c>?
+            <list type="bullet">
+            	<item>In a <c>list</c> item.</item>
+            </list>
+            </remarks>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:DocumentationTest.CommentTests.CElement.InvalidCasing" -->
+        <member name="T:DocumentationTest.CommentTests.CodeElement">
+            <summary>
+            Tests the various uses and basterdisations of the &lt;code&gt; element.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.CodeElement.AsAChildElement">
+            <summary>
+            Here is a code element in the summary tag.
+            <code>
+            Line 1: int x = 0;
+            Line 2: x++;
+            Line 3:
+            Line 4: x.ToString();
+            </code>
+            </summary>
+            <remarks>
+            These are some remarks with code.
+            <code>
+            Line 1: int x = 0;
+            Line 2: x++;
+            Line 3:
+            Line 4: x.ToString();
+            </code>
+            </remarks>
+            <example>
+            This is an example with code.
+            <code>
+            Line 1: int x = 0;
+            Line 2: x++;
+            Line 3:
+            Line 4: x.ToString();
+            </code>
+            </example>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.CodeElement.TopLevelElement">
+            <summary>As a top level element this should not be displayed.</summary>
+            <code>
+            Line 1: int x = 0;
+            Line 2: x++;
+            Line 3:
+            Line 4: x.ToString();
+            </code>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.ExampleElement">
+            <summary>
+            Tests the various uses and basterdisations of the example XML element.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:DocumentationTest.CommentTests.ExampleElement.AsAChildElemement" -->
+        <member name="M:DocumentationTest.CommentTests.ExampleElement.AsATopLevelElement">
+            <summary>
+            This test examples defined at the top level.
+            </summary>
+            <example>
+            This is an example, the first example.
+            List&lt;PerformanceReviewSummary> reviewDetails = this.facade.GetReviews();
+            </example>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ExampleElement.TwoTopLevelExamples">
+            <summary>
+            Two examples at a top level is not normally allowed.
+            </summary>
+            <example>
+            Example one!
+            List&lt;PerformanceReviewSummary&gt; reviewDetails = this.facade.GetReviews();
+            </example>
+            <example>
+            Example two!
+            </example>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.ExceptionElement">
+            <summary>
+            Tests the various uses and basterdisations of the &lt;exception&gt; element.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ExceptionElement.Basic">
+            <summary>
+            Tests the basic uses of the exception element.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">
+            This is a known type in the current environment and should work correctly.
+            </exception>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ExceptionElement.MultipleExceptions">
+            <summary>
+            Tests the display of multiple excetions.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">ArgumentNullException</exception>
+            <exception cref="T:System.ArgumentException">ArgumentException</exception>
+            <exception cref="T:System.Exception">Exception</exception>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ExceptionElement.ReferencableException">
+            <summary>
+            Tests that the links are created correctly to exceptions defined in the project.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Not defined and should not be linked.</exception>
+            <exception cref="T:DocumentationTest.TestException">Defined and should be linked.</exception>
+            <exception cref="T:DocumentationTest.CommentTests.ExceptionElement">Valid type not a valid exception.</exception>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.IncludeElement">
+            <summary>
+            Test the uses and basterdisations of the <c>include</c> element.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.IncludeElement.IncludedFirst">
+            <summary>
+      <b>This</b> is a summary! <i>Italic</i> is also rendered.
+    </summary><remarks>
+      This is a remrks sections from an include file.
+    </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.IncludeElement.IncludedSecond">
+            <summary>
+      Each member defined in this document is found by using XPath by the C# copmiler.
+    </summary><remarks>
+      This is a remrks sections from an include file.
+    </remarks>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.InvalidElements">
+            <summary>
+            <b>Bold</b> is supported. <author>Is not supported.</author> and has some text after.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.InvalidElements.Method">
+            <summary>
+            <job><code>Test code</code> is <c>Woop!</c></job> is the business.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.InvalidTopLevelElements">
+            <summary>
+            This class has an invalid top level XML element
+            </summary>
+            <invalid>
+            <para>It does have some content!</para>
+            </invalid>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.InvalidTopLevelElements.Method(System.Object)">
+            <nothing></nothing>
+        </member>
+        <member name="P:DocumentationTest.CommentTests.InvalidTopLevelElements.Property">
+            <testelement>This is a test</testelement>
+        </member>
+        <member name="F:DocumentationTest.CommentTests.InvalidTopLevelElements.field">
+            <nv>Nothing value</nv>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.ListElement">
+            <summary>
+            <list type="">
+            <listheader>Header</listheader>
+            	<item>This is the first list item</item>
+            		<item>Random<list type="">
+            			<item>This list has a list!</item>
+            		</list></item>
+            </list>
+            </summary>
+            <remarks>
+            <list>
+            	<term>A term</term>
+            	<term>Another term</term>
+            	<description>Are these supposed to be 1-1?</description>
+            	<description>A second description with no term.</description>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.Method">
+            <summary>
+            <list type="">
+                <unsupported></unsupported>
+            	<listheader>Header</listheader>
+            	<item>This is the first list item</item>
+            		<item>Random<list type="">
+            			<item>This list has a list!</item>
+            		</list></item>
+            </list>
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.NumberedList">
+            <summary>
+            Test for a correctly defined numbered list
+            </summary>
+            <remarks>
+            <list type="number">
+            	<item>
+            		<description>Item one</description>
+            	</item>
+            	<item>
+            		<description>Item two</description>
+            	</item>
+            	<item>
+            		<description>Item three</description>
+            	</item>
+            	<item>
+            		<description>Item four</description>
+            	</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.QuickNumberedList">
+            <summary>
+            Test for a quick ill defined numbered list (no decsription or term)
+            </summary>
+            <remarks>
+            <list type="number">
+            	<item>Item one</item>
+            	<item>Item two</item>
+            	<item>Item three</item>
+            	<item>Item four</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.ACorrectTableList">
+            <remarks>
+            <list type="table">
+            	<listheader>
+            		<term>Custom term title</term>
+            		<description>Custom description title</description>
+            	</listheader>
+            	<item>
+            		<term>A term requiring definition</term>
+            		<description>A description of the term.</description>
+            	</item>
+            	<item>
+            		<term>A term requiring definition</term>
+            		<description>A description of the term.</description>
+            	</item>
+            </list>
+            </remarks>
+            <summary>
+            A test to see how the application handles a correctly defined term list.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.TableWithNoHeaderDefined">
+            <remarks>
+            <list type="table">
+            	<item>
+            		<term>A term requiring definition</term>
+            		<description>A description of the term.</description>
+            	</item>
+            </list>
+            </remarks>
+            <summary>
+            A test to see how the application handles a correctly defined term list.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.ATableWithNoListItems">
+            <remarks>
+            <list type="table">
+            	<listheader>
+            		<term>Custom term title</term>
+            		<description>Custom description title</description>
+            	</listheader>
+            </list>
+            </remarks>
+            <summary>
+            A test to see how the application handles a table with no list items just a header
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.ACorrectBulletList">
+            <summary>
+            A test to see how the application handles a correctly defined bullet list.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>
+            		<description>Item one</description>
+            	</item>
+            	<item>
+            		<description>Item two</description>
+            	</item>
+            	<item>
+            		<description>Item three</description>
+            	</item>
+            	<item>
+            		<description>Item four</description>
+            	</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.ItemsWithContentNotDescription">
+            <summary>
+            A test to see how the application handles a list which has direct content and not
+            via a description or term.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>Item one</item>
+            	<item>Item two</item>
+            	<item>Item three</item>
+            	<item>Item four</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.TableWithChild">
+            <summary>
+            Test a table with a sub table
+            </summary>
+            <remarks>
+            <list type="table">
+            	<listheader>
+            		<term>Custom term title</term>
+            		<description>Custom description title</description>
+            	</listheader>
+            	<item>
+            		<term>A term requiring definition</term>
+            		<description>
+            <list type="table">
+            	<listheader>
+            		<term>Custom term title</term>
+            		<description>Custom description title</description>
+            	</listheader>
+            	<item>
+            		<term>A term requiring definition</term>
+            		<description>A description of the term.</description>
+            	</item>
+            	<item>
+            		<term>A term requiring definition</term>
+            		<description>A description of the term.</description>
+            	</item>
+            </list>
+            		</description>
+            	</item>
+            	<item>
+            		<term>A term requiring definition</term>
+            		<description>A description of the term.</description>
+            	</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.ChildLists">
+            <summary>
+            Test to see how the application handles child lists
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>
+            		<description>Item one</description>
+            	</item>
+            	<item>
+            		<description>
+            <list type="bullet">
+            	<item>
+            		<description>Sub item one</description>
+            	</item>
+            	<item>
+            		<description>Sub item two</description>
+            	</item>
+            	<item>
+            		<description>Sub item three</description>
+            	</item>
+            	<item>
+            		<description>Sub item four</description>
+            	</item>
+            </list>
+            		</description>
+            	</item>
+            	<item>
+            		<description>Item three</description>
+            	</item>
+            	<item>
+            		<description>Item four</description>
+            	</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.QuickChildLists">
+            <remarks>
+            <list type="bullet">
+            	<item>
+            <list type="bullet">
+            	<item>Sub item one</item>
+            	<item>Sub item two</item>
+            	<item>Sub item three</item>
+            	<item>Sub item four</item>
+            </list>
+            	</item>
+            	<item>Item two</item>
+            	<item>Item three</item>
+            	<item>Item four</item>
+            </list>
+            </remarks>
+            <summary>
+            Tests how the appliction handles a quick defined list with lists children
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ListElement.BadDeclerations">
+            <summary>
+            Test of different invalid ways of declaring lists, to make sure the application fails gracefully
+            </summary>
+            Badly declared list header followed by list items that are not a term/description
+            <list>
+            	<listheader>This is the header for the list!</listheader>
+            	<item>A plain item with text</item>
+            	<item><code>string x = "testing code";</code></item>
+            	<item>
+            		<para>A couple of paragraphs of information in a list.</para>
+            		<para>This will look shit. Does para = paragraph or parameter??</para>
+            	</item>
+            </list>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.ParaElement">
+            <summary>
+            Tests various implementation so the &lt;para> element.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ParaElement.TestEmptyPara">
+            <summary>
+            An empty and redundant para element.
+            </summary>
+            <para></para>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ParaElement.TestParaWithOneSpace">
+            <summary>
+            A para element with only a single space ' ' in it.
+            </summary>
+            <remarks>
+            <para> </para>
+            </remarks>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.ParamElement">
+            <summary>
+            Tests the various uses and basterdisations of the param element.
+            </summary>
+            <remarks>
+            <para>The param element should be used in the comment for a method declaration to describe
+            one of the parmaeters for the method. To document multiple parameters use multiple param 
+            tags.</para>
+            <para>The param tag name property is used to point to the correct parameter.</para>
+            </remarks>
+            <example>
+            <code>
+            &lt;param name="first"&gt;The first parameter.&lt;\param&gt;
+            void MyMethod(int first) {
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ParamElement.SingleParameter(System.Int32)">
+            <summary>
+            Defines a single parameter
+            </summary>
+            <param name="first"></param>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ParamElement.MultipleParameters(System.Int32,System.Int32)">
+            <summary>
+            Multiple parameters defined.
+            </summary>
+            <param name="first">First</param>
+            <param name="second">Second</param>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ParamElement.InvalidName(System.Int32)">
+            <summary>
+            Param with an invalid name.
+            </summary>
+            <param name="second">Invalid parameter name.</param>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.ParamElement.ParamDefinedOnNoParameters">
+            <summary>
+            Test the param element defined on a method with no parameters.
+            </summary>
+            <param name="doesnotexist">Description.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:DocumentationTest.CommentTests.PermissionElement" -->
+        <member name="T:DocumentationTest.CommentTests.PermissionElement.PermissionOnClass">
+            <summary>
+            
+            </summary>
+            <permission cref="T:System.Security.PermissionSet">Everyone can access this class.</permission>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.PermissionElement.SinglePermissionMethod">
+            <summary>
+            Tests a single permission elment on a method.
+            </summary>
+            <permission cref="T:System.Security.PermissionSet">Everyone can access this class.</permission>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.PermissionElement.MultiplePermissions">
+            <summary>
+            Tests the use of multiple permissions entries
+            </summary>
+            <permission cref="T:System.Security.PermissionSet">Everyone can access this class.</permission>
+            <permission cref="T:System.Security.ReadOnlyPermissionSet">Not everyone can access this class.</permission>
+        </member>
+        <member name="P:DocumentationTest.CommentTests.PermissionElement.Property">
+            <summary>
+            Tests permission on properties
+            </summary>
+            <permission cref="T:System.Security.PermissionSet">Everyone can access this class.</permission>
+        </member>
+        <member name="F:DocumentationTest.CommentTests.PermissionElement.Field">
+            <summary>
+            Tests permissions on fields
+            </summary>
+            <permission cref="T:System.Security.PermissionSet">Everyone can access this class.</permission>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.Remarks">
+            <remarks>
+            This class does not have a summary, it just has remarks.
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.Remarks.Test">
+            <summary>
+            
+            </summary>
+            <remarks>
+            These remarks are on a method.
+            </remarks>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.SeeAlsoElement">
+            <summary>
+            Tests the various uses and basterdisations of the seealso element.
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnProperty">
+            <summary>
+            Tests the use of a seealso element on a property.
+            </summary>
+            <seealso cref="T:DocumentationTest.CommentTests.SeeAlsoElement"/>
+        </member>
+        <member name="F:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnField">
+            <summary>
+            Tests the use of a seealso element on a field.
+            </summary>
+            <seealso cref="T:DocumentationTest.CommentTests.SeeAlsoElement"/>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoOnMethod">
+            <summary>
+            Test the use of the seealso element on a method
+            </summary>
+            <seealso cref="T:DocumentationTest.CommentTests.SeeAlsoElement"/>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeAlsoElement.ReferenceInternalGeneric">
+            <summary>
+            Tests the use of the seealso element when referencing generic types and methods
+            defined in the current assembly.
+            </summary>
+            <seealso cref="T:DocumentationTest.GenericClass`1" />
+            <seealso cref="M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0)"/>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeAlsoElement.ReferenceExternalGeneric">
+            <summary>
+            Tests the use of the seealso element when referencing generic types and methods
+            defined in an external assembly.
+            </summary>
+            <seealso cref="T:System.Collections.Generic.List`1" />
+            <seealso cref="!:System.Linq.Enumerable.Any&lt;TSource&gt;()"/>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeAlsoElement.ReferenceANonReferencedElements">
+            <summary>
+            Tests references from seealso elements to members in assemblies that are not referenced
+            by this assembly.
+            </summary>
+            <seealso cref="!:TheBoxSoftware.Documentation.ExportSettings" />
+            <seealso cref="!:TheBoxSoftware.Documentation.Rendering.IRenderer&lt;T&gt;" />
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoLinkTest">
+            <summary>
+            Test that links are correctly created for seealso elements. Only valid internal members should be
+            linked to, members external to the project should be named but not linked.
+            </summary>
+            <seealso cref="T:System.Object"/>
+            <seealso cref="T:DocumentationTest.CommentTests.Remarks"/>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeAlsoElement.InSummary">
+            <summary>
+            Tests the use of a seealso element in a summary element. Valid <seealso cref="M:DocumentationTest.CommentTests.SeeAlsoElement.SeeAlsoLinkTest"/> and 
+            invalid <seealso cref="!:SeeMe"/>.
+            <para>
+            <see cref="M:DocumentationTest.CommentTests.SeeAlsoElement.InSummary"/> should work a lot like <seealso cref="M:DocumentationTest.CommentTests.SeeAlsoElement.InSummary"/> links.
+            </para>
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.SeeElement">
+            <summary>
+            This class tests various uses and basterdisations of the see element.
+            </summary>
+            <remarks>
+            The <see cref="T:DocumentationTest.CommentTests.SeeElement"/> can be used to link to other elements.
+            Zero parameter methods: <see cref="!:SeeElement.InvaldCasing()"/>
+            Parameterised methods: <see cref="M:DocumentationTest.CommentTests.SeeElement.InvalidCasing(System.String)"/>
+            Internal methods: <see cref="M:DocumentationTest.CommentTests.SeeElement.InternalMethod"/>
+            Generic methods: <see cref="M:DocumentationTest.CommentTests.SeeElement.GenericMethod``1"/>
+            Parameterised generic methods: <see cref="M:DocumentationTest.CommentTests.SeeElement.ParameterisedGenericMethod``1(``0)"/>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.InvalidCasing">
+            <summary>
+            This tests the casing of the element and its attributes.
+            </summary>
+            <remarks>
+            We can <see cref="M:DocumentationTest.CommentTests.SeeElement.InvalidCasing"/>! <SEE cref="M:DocumentationTest.CommentTests.SeeElement.InvalidCasing"/> and <see CREF="InvalidCasing"/>.
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.TestSeeWithManualCref">
+            <summary>
+            This tests a manually written cref in the see element. <see cref="P:TestProperty"/>
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.InvalidSelfCreatedCRef">
+            <summary>
+            You can specify the cref path explicitly and the compiler will not attempt to resolve it. This
+            causes issues with our cref parser.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>Type which is a method: <see cref="T:DocumentationTest.CommentTests.InvalidCasing"/>.</item>
+            	<item>Not existent: <see cref="E:InvalidCasing"/>.</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.ValidSelfCreatedCRef">
+            <summary>
+            You can specify the cref path explicitly and the compiler will not attempt to resolve it. This
+            causes issues with our cref parser.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>Type: <see cref="T:DocumentationTest.CommentTests.SeeElement"/>.</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.TestSeeMethodVisibility">
+            <summary>
+            Tests the see element against different method visibility modifiers. This is to enable
+            testing of the filters.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>See <see cref="M:DocumentationTest.CommentTests.SeeElement.PublicClass.PublicMethod"/>.</item>
+            	<item>See <see cref="M:DocumentationTest.CommentTests.SeeElement.PublicClass.TestInternalMethod"/>.</item>
+            	<item>See <see cref="M:DocumentationTest.CommentTests.SeeElement.PublicClass.TestProtectedInternalMethod"/>.</item>
+            	<item>See <see cref="M:DocumentationTest.CommentTests.SeeElement.PublicClass.TestProtectedMethod"/>.</item>
+            	<item>See <see cref="M:DocumentationTest.CommentTests.SeeElement.PublicClass.TestPrivateMethod"/>.</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.TestSeeTypeVisibility">
+            <summary>
+            Tests the see element against different method visibility modifiers. This is to enable
+            testing of the filters.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>See <see cref="T:DocumentationTest.CommentTests.SeeElement.PublicClass"/>.</item>
+            	<item>See <see cref="T:DocumentationTest.CommentTests.SeeElement.InternalClass"/>.</item>
+            	<item>See <see cref="T:DocumentationTest.CommentTests.SeeElement.InternalProtectedClass"/>.</item>
+            	<item>See <see cref="T:DocumentationTest.CommentTests.SeeElement.ProtectedClass"/>.</item>
+            	<item>See <see cref="T:DocumentationTest.CommentTests.SeeElement.PrivateClass"/>.</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.TestSeeFieldVisibility">
+            <summary>
+            Tests the see element against different method visibility modifiers. This is to enable
+            testing of the filters.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>See <see cref="F:DocumentationTest.CommentTests.SeeElement.PublicClass.PublicField"/>.</item>
+            	<item>See <see cref="F:DocumentationTest.CommentTests.SeeElement.PublicClass.InternalField"/>.</item>
+            	<item>See <see cref="F:DocumentationTest.CommentTests.SeeElement.PublicClass.InternalProtectedField"/>.</item>
+            	<item>See <see cref="F:DocumentationTest.CommentTests.SeeElement.PublicClass.ProtectedField"/>.</item>
+            	<item>See <see cref="F:DocumentationTest.CommentTests.SeeElement.PublicClass.PrivateField"/>.</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.TestSeePropertyVisibility">
+            <summary>
+            Tests the see element against different method visibility modifiers. This is to enable
+            testing of the filters.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>See <see cref="P:DocumentationTest.CommentTests.SeeElement.PublicClass.PublicProperty"/>.</item>
+            	<item>See <see cref="P:DocumentationTest.CommentTests.SeeElement.PublicClass.InternalProperty"/>.</item>
+            	<item>See <see cref="P:DocumentationTest.CommentTests.SeeElement.PublicClass.InternalProtectedProperty"/>.</item>
+            	<item>See <see cref="P:DocumentationTest.CommentTests.SeeElement.PublicClass.ProtectedProperty"/>.</item>
+            	<item>See <see cref="P:DocumentationTest.CommentTests.SeeElement.PublicClass.PrivateProperty"/>.</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.TestSeeEventVisibility">
+            <summary>
+            Tests the see element against different method visibility modifiers. This is to enable
+            testing of the filters.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            	<item>See <see cref="E:DocumentationTest.CommentTests.SeeElement.PublicClass.PublicEvent"/>.</item>
+            	<item>See <see cref="E:DocumentationTest.CommentTests.SeeElement.PublicClass.InternalEvent"/>.</item>
+            	<item>See <see cref="E:DocumentationTest.CommentTests.SeeElement.PublicClass.InternalProtectedEvent"/>.</item>
+            	<item>See <see cref="E:DocumentationTest.CommentTests.SeeElement.PublicClass.ProtectedEvent"/>.</item>
+            	<item>See <see cref="E:DocumentationTest.CommentTests.SeeElement.PublicClass.PrivateEvent"/>.</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SeeElement.TestSeeToElementsInAssemblies">
+            <summary>
+            Tests see references to generic members and types in this assembly, referenced
+            asseblies and non-referenced assemblies.
+            </summary>
+            <remarks>
+            <para>Internal references:</para>
+            <list>
+            	<item><see cref="T:DocumentationTest.GenericClass`1"/></item>
+            	<item><see cref="M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0)"/></item>
+            </list>
+            <para>External references:</para>
+            <list>
+            	<item><see cref="T:System.Collections.Generic.List`1"/></item>
+            	<item><see cref="!:System.Linq.Enumerable.Any&lt;TSource&gt;()"/></item>
+            </list>
+            <para>External non-referenced assemblies. These will generate error cref paths as the
+            compiler can not resolve the references.</para>
+            <list>
+            	<item><see cref="!:TheBoxSoftware.Documentation.ExportSettings"/></item>
+            	<item><see cref="!:TheBoxSoftware.Documentation.Rendering.IRenderer&lt;T&gt;"/></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.SummaryElement">
+            <summary>
+            This class tests summary elements, there many guises and basterdisations.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SummaryElement.#ctor">
+            <summary>
+            This is a summary element on a constructor.
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.CommentTests.SummaryElement.SummaryOnProperty">
+            <summary>
+            This tests a summary on a property
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.CommentTests.SummaryElement.SummaryOnAField">
+            <summary>
+            This tests a summary on a field.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SummaryElement.SummaryOnAMethod">
+            <summary>
+            This is a test of a summary on a method.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SummaryElement.InvalidCasing">
+            <SUMMARY>
+            This is a test of a summary with invalid casing.
+            </SUMMARY>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SummaryElement.MultipleInstances">
+            <summary>
+            Tests multiple instances of the summary element
+            </summary>
+            <summary>
+            This is the second instance.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.CommentTests.SummaryElement.SummaryAsAChildOfSummary">
+            <summary>
+            Test a summary as a child of a summary.
+            <summary>
+            People will do really weird things!
+            </summary>
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.CommentTests.ValueElement">
+            <summary>
+            Tests the various uses and basterdisations of the value element.
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.CommentTests.ValueElement.OnAFieldTest">
+            <summary>
+            Tests the use of the value element on a field.
+            </summary>
+            <value>Value for a field.</value>
+        </member>
+        <member name="P:DocumentationTest.CommentTests.ValueElement.OnAProperty">
+            <summary>
+            Tests the use of the value element on a property.
+            </summary>
+            <value>Value for the property.</value>
+        </member>
+        <member name="T:DocumentationTest.Constants">
+            <summary>
+            Test for constants defined in classes
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.Constants.PRIVATE_CONST">
+            <summary>
+            This is a summary for PRIVATE_CONST
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.Constants.PUBLIC_CONST">
+            <summary>
+            This is a summary for PUBLIC_CONST
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.Constants.AField">
+            <summary>
+            A field in a class defining constants.
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.Constants.anotherField">
+            <summary>
+            A private field in a class defining constants.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.DocumentedClass">
+            <summary>
+            This is documentation for a class. <see cref="N:DocumentationTest"/>
+            </summary>
+            <remarks>
+            It is a test to output general information about a class. Some <i>italic</i>,
+            <b>bold</b>.
+            <example>
+            This is an example inside a remark!
+            <code>
+            DocumentedClass c = new DocumentedClass();
+            </code>
+            </example>
+            </remarks>
+            <example>
+            You use the documented class like this.
+            <code>
+            DocumentedClass doc = new DocumentedClass();
+            doc.GenericClassMethod&lt;string&gt;("Hello world.");
+            </code>
+            </example>
+        </member>
+        <member name="M:DocumentationTest.DocumentedClass.#ctor">
+            <summary>
+            Constructor documentation
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.DocumentedClass.aField">
+            <field>
+            Fiels is not an acknoledged element.
+            </field>
+            <summary>This is the summary for the field</summary>
+            <value>It contains an integer.</value>
+            <remarks>These are remarks for the field</remarks>
+            <example>
+            Nothing really to have an example of but just testing.
+            <code>
+            public DocumentedClass() {
+              this.aField = 3;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:DocumentationTest.DocumentedClass.DoSomething(System.String[]@)">
+            <summary>
+            Documentation for a class method
+            </summary>
+            <param name="aString">The parameter</param>
+            <returns>Returns something</returns>
+            <example>
+            It is called like this.
+            <code>
+            DocumentedClass c = new DocumentedClass();
+            string[] myStrings = new string[] { "One", "Two" };
+            d.DoSomething(ref myStrings);
+            </code>
+            </example>
+            <exception cref="T:System.ArgumentException">Prob with the <paramref name="aString"/> argument.</exception>
+            <exception cref="T:System.InvalidOperationException">The operation was invalid.</exception>
+        </member>
+        <member name="M:DocumentationTest.DocumentedClass.GenericClassMethod``1(``0)">
+            <summary>
+            A generic methods documentation with a constraint
+            </summary>
+            <typeparam name="T">The type t</typeparam>
+            <param name="something">The parameter</param>
+            <exception cref="T:System.ArgumentException">Prob with the <paramref name="aString"/> argument.</exception>
+            <exception cref="T:System.InvalidOperationException">The operation was invalid.</exception>
+        </member>
+        <member name="P:DocumentationTest.DocumentedClass.Name">
+            <summary>
+            Documentation for a class property.
+            </summary>
+            <remarks>
+            The name property has lots of awesome things about it.
+            <para>They are too awesome <b>to</b> explain.</para>
+            </remarks>
+            <example>
+            This is an example of a property.
+            <code>
+            DocumentedClass c = new DocumentedClass();
+            c.Name = "Joe Bloggs";
+            </code>
+            </example>
+            <exception cref="T:System.ArgumentException">Prob with the <paramref name="aString"/> argument.</exception>
+            <exception cref="T:System.InvalidOperationException">The operation was invalid.</exception>
+        </member>
+        <member name="M:DocumentationTest.DocumentedClass.OutOfOrderDocumentedMethod(System.String,System.String)">
+            <returns>Returns a boolean</returns>
+            <param name="param1">The first parameter</param>
+            <summary>
+            A summary of the method
+            </summary>
+            <param name="param2">The second parameter</param>
+            <exception cref="T:System.ArgumentException">Prob with the <paramref name="aString"/> argument.</exception>
+            <exception cref="T:System.InvalidOperationException">The operation was invalid.</exception>
+        </member>
+        <member name="T:DocumentationTest.DoSomething">
+            <summary>
+            These are comments for a delegate DoSomething.
+            </summary>
+            <param name="something">The parameter</param>
+            <returns>An integer</returns>
+        </member>
+        <member name="T:DocumentationTest.DoSomethingElse`1">
+            <summary>
+            Documented generic delegate class
+            </summary>
+            <typeparam name="J">The generic type parameter</typeparam>
+            <param name="hoorah">The parameter</param>
+        </member>
+        <member name="T:DocumentationTest.DocumentedInterface">
+            <summary>
+            Documentation for a public interface
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.DocumentedInterface.Something">
+            <summary>
+            Documentation for an interfaces property
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.DocumentedInterface.DoSomething">
+            <summary>
+            Documentation for an interfaces method
+            </summary>
+            <myown cref="P:DocumentationTest.DocumentedInterface.Something">
+            This is something I decided to add, a myown element.
+            </myown>
+        </member>
+        <member name="M:DocumentationTest.ExtensionMethodTest.ExtensionMethod(DocumentationTest.AllOutputTypesClass)">
+            <summary>
+            Summary for the ExtensionMethod.
+            </summary>
+            <param name="c">The type being extended.</param>
+            <returns>The number 1.</returns>
+        </member>
+        <member name="M:DocumentationTest.ExtensionMethodTest.GenericExtensionMethod``1(``0)">
+            <summary>
+            Testing the use of a generic extension method.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DocumentationTest.ExternalInheritanceTest">
+            <summary>
+            If this class is displayed as part of its solution we can test if cross
+            loaded library references work.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.GenericArrayTest`1">
+            <summary>
+            T:
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:DocumentationTest.GenericArrayTest`1.#ctor(`0[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="test"></param>
+        </member>
+        <member name="M:DocumentationTest.GenericArrayTest`1.GenericArrayTestA(`0[])">
+            <summary>
+            M:
+            </summary>
+            <param name="lotsOfEm"></param>
+        </member>
+        <member name="T:DocumentationTest.GenericClass`1">
+            <summary>
+            T:DocumentationTest.GenericClass`1
+            </summary>
+            <typeparam name="T">T</typeparam>
+        </member>
+        <member name="M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0)">
+            <summary>
+            M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0)
+            </summary>
+            <typeparam name="U">U</typeparam>
+            <param name="anItem"></param>
+            <param name="secondItem"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DocumentationTest.GenericClass`1.ChildClassTest">
+            <summary>
+            A test to check if child classes of generic types causes problems.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.TwoGenericClass`2">
+            <summary>
+            T:DocumentationTest.TwoGenericClass`2
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <typeparam name="Z">Z</typeparam>
+        </member>
+        <member name="M:DocumentationTest.TwoGenericClass`2.Method(`0,`1)">
+            <summary>
+            M:DocumentationTest.TwoGenericClass`2.Method(`0,`1)
+            </summary>
+            <param name="one"></param>
+            <param name="two"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DocumentationTest.TwoGenericClass`2.GenericMethod``1(`0,`1,``0)">
+            <summary>
+            M:DocumentationTest.TwoGenericClass`2.GenericMethod``1(`0,`1,``0)
+            </summary>
+            <typeparam name="Y">Y</typeparam>
+            <param name="one">one</param>
+            <param name="two">two</param>
+            <param name="three">three</param>
+            <returns>Stuff</returns>
+        </member>
+        <member name="T:DocumentationTest.InheritedGenericClass">
+            <summary>
+            This class inherits from a genric class to make sure the documentation
+            is output correctly. The see and seealso links also test refering to
+            generic classes in documentation. <see cref="T:DocumentationTest.GenericClass`1" />
+            </summary>
+            <seealso cref="T:DocumentationTest.GenericClass`1" />
+        </member>
+        <member name="T:DocumentationTest.InheritedGenericClassTest2">
+            <summary>
+            Summary Test 2
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.InheritedGenericClassTest3">
+            <summary>
+            Summary Test 3
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.InheritedGenericClassTest4">
+            <summary>
+            Test summary Test 4.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.InterfaceTest">
+            <summary>
+            Summary for the interface. <see cref="M:DocumentationTest.InterfaceTest.Method"/>
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.InterfaceTest.Method">
+            <summary>
+            Summary for Method
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.InterfaceTest.Property">
+            <summary>
+            Summary for Property
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.InternalDocumentedClass">
+            <summary>
+            Internal documed class to test filters.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.Issues.Bug6">
+            <summary>
+            Test bug 6: Exception thrown when an extension method is defined on a type that does
+            not exist in the project libraries.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.Issues.Bug6.WhereEntityIs(System.Collections.Generic.IEnumerable{System.String},System.String[])">
+            <summary>
+            A summary for the WhereEntityIs extension method - will never be seen.
+            </summary>
+            <param name="self">Us</param>
+            <param name="metadata">Some info.</param>
+            <returns>An enumerable collection</returns>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue103">
+            <summary>
+            <para>
+            This is a paragraph.
+            <code>
+            Code in a paragraph.
+            </code>
+            </para>
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue120">
+            <summary>
+            The application does not handle empty param tags.
+            <para></para>
+            <B>A bold peice of text.</B> That will throw an exception if the code
+            for #120 had not been implemented.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue130">
+             <summary>
+             <code>
+             
+             
+            	Testing
+            
+            
+            	Testing
+            		T
+            		
+             
+             </code>
+             </summary>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue135">
+            <summary>
+            <para><seealso cref="T:DocumentationTest.Issues.Issue9"/> That see also block will cause an exception.</para>
+            <para>Some text <seealso cref="T:DocumentationTest.Issues.Issue9"/> This will be invisible.</para>
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue149">
+            <summary>
+            When a method has a generic parameter types they are displayed without the type details.
+            E.g. List&lt;string&gt; is displayed as List&lt;&gt;.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.Issues.Issue149.EnteralGenericTypeExternalParameter(System.Collections.Generic.List{System.String})">
+            <summary>
+            Tests the display of a external generic type with an external parameter.
+            <see cref="T:System.Collections.Generic.List`1"/>.
+            <seealso cref="T:System.Collections.Generic.List`1" />
+            </summary>
+            <param name="test"></param>
+        </member>
+        <member name="M:DocumentationTest.Issues.Issue149.EnteralGenericTypeInternalParameter(System.Collections.Generic.List{DocumentationTest.TestStructure})">
+            <summary>
+            Tests the display of an external generic type with an internal parameter.
+            </summary>
+            <param name="test"></param>
+        </member>
+        <member name="M:DocumentationTest.Issues.Issue149.InternalGenericTypeExternalParameter(DocumentationTest.Gah{System.String})">
+            <summary>
+            Tests the display of internal type external parameter
+            </summary>
+            <param name="test"></param>
+        </member>
+        <member name="M:DocumentationTest.Issues.Issue149.InternalGenericTypeInternalParameter(DocumentationTest.Gah{DocumentationTest.TestStructure})">
+            <summary>
+            Tests the display of an internal type and parameter.
+            </summary>
+            <param name="test"></param>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue160">
+            <summary>
+            When members inherit from or have children derive from them the inheritance
+            tree shows all parents and children with links regardless of if the type
+            has been filtered out.
+            </summary>
+            <remarks>
+            Because the derived type being displayed will always be atleast the same
+            visibility as its parents we don't need to test that. We only need to test
+            children.
+            </remarks>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue174">
+            <summary>
+            Test an issue with the length of signatures that needed a compressed length
+            </summary>
+            <remarks>
+            The old code works with any signature under 174 bytes.
+            </remarks>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue188">
+            <summary>
+            Tests the problem reported in issue 188.
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.Issues.Issue188.GetAndSet">
+            <summary>
+            This property defines both a getter and a setter
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.Issues.Issue188.SetNoGet">
+            <summary>
+            This property only defines a setter
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.Issues.Issue188.GetNoSet">
+            <summary>
+            This property has a getter and no setter.
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.Issues.Issue188.Item(System.Int32,System.Int32)">
+            <summary>
+            Multiple parameter indexer with only a setter
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DocumentationTest.Issues.Issue188.Item(System.Int32)">
+            <summary>
+            Single parameter indexer with only a setter
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue189">
+            <summary>
+            Test for issue where a property named Item does not display it's
+            syntax correctly.
+            </summary>
+            <remarks>
+            This occurs because the Item property shares the same name as the Indexers
+            generated methods.
+            </remarks>
+        </member>
+        <member name="P:DocumentationTest.Issues.Issue189.Item">
+            <summary>
+            Item property
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue2">
+            <summary>
+            Structure which implements interfaces
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.Issues.Issue2.CompareTo(System.Object)">
+            <summary>
+            A documented implementation of an interface method.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DocumentationTest.Issues.Issue9">
+            <summary>
+            Testing <see CRef="TestMethod" />
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.ListDocumentationTest">
+            <summary>
+            This is a test of the description of the list xml code comment element.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.ListDocumentationTest.SpecBullet">
+            <summary>
+            Test of - as defined by microsoft - bulletted list.
+            </summary>
+            <remarks>
+            <list type="bullet">
+                <item>
+                    <term>This is the first entry.</term>
+                </item>
+                <item>
+                    <term>This is the second element.</term>
+                </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.ListDocumentationTest.SpecNumber">
+            <summary>
+            Test of - as defined by microsoft - numbered list.
+            </summary>
+            <remarks>
+            <list type="number">
+                <item>
+                    <term>This is the first entry.</term>
+                </item>
+                <item>
+                    <term>This is the second element.</term>
+                </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.ListDocumentationTest.SpecTable">
+            <summary>
+            Test of - as defined by microsoft - table.
+            </summary>
+            <remarks>
+            <list type="table">
+                <listheader>
+                    <term>Header term</term>
+                    <description>Header description</description>
+                </listheader>
+                <item>
+                    <term>First row term</term>
+                    <description>First row description</description>
+                </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.ListDocumentationTest.TestNoItems">
+            <summary>
+            Test of list defined with no items.
+            </summary>
+            <remarks>
+            <list type="bullet">
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.ListDocumentationTest.SimpleNoType">
+            <summary>
+            Test of a simple definition (no term) and no type attribute.
+            </summary>
+            <remarks>
+            <list>
+                <item>First</item>
+                <item>Second</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.ListDocumentationTest.TableNoHeader">
+            <summary>
+            Tests a list as a table but no header element defined.
+            </summary>
+            <remarks>
+            <list type="table">
+                <item>
+                    <term>First row</term>
+                    <description>First row description</description>
+                </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.ListDocumentationTest.TableNoTermOrDescription">
+            <summary>
+            Tests table definiton with just items - no term or description specified
+            </summary>
+            <remarks>
+            <list type="table">
+                <listheader>
+                    First
+                </listheader>
+                <item>
+                    Second
+                </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:DocumentationTest.OpTest.op_Equality(DocumentationTest.OpTest,DocumentationTest.OpTest)">
+            <summary>
+            Comparison operator test
+            </summary>
+            <param name="one">The first comparison parmeter</param>
+            <param name="two">The second comparison parameter</param>
+            <returns>The result of the comparison</returns>
+        </member>
+        <member name="M:DocumentationTest.OpTest.op_False(DocumentationTest.OpTest)">
+            <summary>The false operator</summary>
+            <param name="one">The unary operator parameter</param>
+            <returns>A unary operator conversion</returns>
+        </member>
+        <member name="M:DocumentationTest.OpTest.op_Addition(DocumentationTest.OpTest,DocumentationTest.OpTest)">
+            <summary>
+            A binary operator test
+            </summary>
+            <param name="one">The first binary parameter</param>
+            <param name="two">The second binary parameter</param>
+            <returns>The result of the binary operation</returns>
+        </member>
+        <member name="M:DocumentationTest.OpTest.op_Implicit(DocumentationTest.OpTest)~System.Int32">
+            <summary>
+            An implicit conversion
+            </summary>
+            <param name="o">The paramtere</param>
+            <returns>The converted value</returns>
+        </member>
+        <member name="M:DocumentationTest.OpTest.op_Explicit(DocumentationTest.OpTest)~System.UInt32">
+            <summary>
+            Explicit convertion
+            </summary>
+            <param name="o">OpTest</param>
+            <returns>Int32</returns>
+        </member>
+        <member name="M:DocumentationTest.OpTest.op_Explicit(DocumentationTest.OpTest)~DocumentationTest.ExConvTest">
+            <summary>
+            Another test explicit
+            </summary>
+            <param name="o">Parmatere</param>
+            <returns>Return explicit OpTest ExConvTest</returns>
+        </member>
+        <member name="T:DocumentationTest.PublicDocumentedClass">
+            <summary>
+            Public class to test filters
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.PublicDocumentedClass.PrivateDocumentedClass">
+            <summary>
+            Private documented class to test filters.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.ReferenceInterfaceDocumentationTest.Method">
+            <summary>
+            Implements <see cref="M:DocumentationTest.InterfaceTest.Method"/>
+            </summary>
+        </member>
+        <member name="P:DocumentationTest.ReferenceInterfaceDocumentationTest.Property">
+            <summary>
+            Implements <see cref="P:DocumentationTest.InterfaceTest.Property"/>
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.SeeDocumentationTest">
+            <summary>
+            See <see cref="P:DocumentationTest.SeeDocumentationTest.Property"/> and see <see cref="F:DocumentationTest.SeeDocumentationTest.Field1"/>.
+            <para>
+            Test seeing a class <see cref="T:DocumentationTest.DocumentedClass"/>. External,
+            <see cref="T:TheBoxSoftware.Reflection.ReflectedMember"/> and finally
+            outside the solution <see cref="T:System.Object"/>.
+            </para>
+            <para>Namespace: <see cref="N:DocumentationTest"/></para>
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.SeeDocumentationTest.Field1">
+            <summary>
+            Invalid <see cref="P:Field2"/> reference.
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.StaticConstructorTest_25.#cctor">
+            <summary>
+            Testing that a static constructructor is documneted correctly
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.TestException">
+            <summary>
+            A test exception.
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.VisibilityTest">
+            <summary>
+            Public external class
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.VisibilityTest.PublicNestedClass">
+            <summary>
+            Public Nested Class
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.VisibilityTest.ProtectedNestedClass">
+            <summary>
+            Protected nested class
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.VisibilityTest.InternalProtectedClass">
+            <summary>
+            Internal protected class
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.VisibilityTest.InternalClass">
+            <summary>
+            Internal class
+            </summary>
+        </member>
+        <member name="T:DocumentationTest.VisibilityTest.PrivateClass">
+            <summary>
+            Private class
+            </summary>
+        </member>
+        <member name="T:Issue11">
+            <summary>
+            Test class without namespace issue.
+            </summary>
+        </member>
+    </members>
+</doc>
