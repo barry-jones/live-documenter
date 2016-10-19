@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{194E1A63-508
 		Solution Items\saxon9he-api.dll = Solution Items\saxon9he-api.dll
 		Solution Items\saxon9he.dll = Solution Items\saxon9he.dll
 		Solution Items\System.Windows.Controls.Input.Toolkit.dll = Solution Items\System.Windows.Controls.Input.Toolkit.dll
+		Solution Items\TheBoxSoftware.Reflection.dll = Solution Items\TheBoxSoftware.Reflection.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Utilities", "4. Utilities", "{87C0012D-44C8-4F6E-B9BD-56C226A67C93}"
@@ -47,6 +48,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Documentation.Tests", "TheBoxSoftware.Documentation.Tests\TheBoxSoftware.Documentation.Tests.csproj", "{2216040E-9D5A-4DF5-ADF3-1561D08794FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection.Tests", "TheBoxSoftware.Reflection.Tests\TheBoxSoftware.Reflection.Tests.csproj", "{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests", "PerformanceTests\PerformanceTests.csproj", "{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -247,6 +250,24 @@ Global
 		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|x86.ActiveCfg = Release|Any CPU
 		{B16D4531-1D80-4E6F-8A9B-0D194E89B2F5}.Test|x86.Build.0 = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Debug|x86.Build.0 = Debug|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Release|x86.ActiveCfg = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Release|x86.Build.0 = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Test|Any CPU.Build.0 = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Test|x86.ActiveCfg = Release|Any CPU
+		{B2D8ADEC-F1F7-414A-A31D-BC7E375E282A}.Test|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
