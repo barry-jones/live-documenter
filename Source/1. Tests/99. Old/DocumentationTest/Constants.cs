@@ -18,6 +18,12 @@ namespace DocumentationTest {
 		/// </summary>
 		public const int PUBLIC_CONST = 3;
 
+        protected const int PROTECTED_CONST = 1;
+
+        internal const int INTERNAL_CONST = 1;
+
+        protected internal const int PROTECTED_INTERNAL_CONST = 1;
+
 		/// <summary>
 		/// A field in a class defining constants.
 		/// </summary>

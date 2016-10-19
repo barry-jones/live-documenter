@@ -23,10 +23,20 @@
             </summary>
             <param name="i">Describe parameter.</param>
         </member>
+        <member name="F:DocumentationTest.AllOutputTypesClass.Field">
+            <summary>
+            A static field
+            </summary>
+        </member>
         <member name="F:DocumentationTest.AllOutputTypesClass.q">
             <summary>
             Enter description here for field q.
             ID string generated is "F:N.X.q".
+            </summary>
+        </member>
+        <member name="F:DocumentationTest.AllOutputTypesClass.Readonly">
+            <summary>
+            THis is a readonly field
             </summary>
         </member>
         <member name="F:DocumentationTest.AllOutputTypesClass.PI">

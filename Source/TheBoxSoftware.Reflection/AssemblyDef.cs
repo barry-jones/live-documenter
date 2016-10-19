@@ -125,7 +125,7 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="findtype"]/*'/> 
         public TypeDef FindType(string theNamespace, string theTypeName)
         {
-            if(string.IsNullOrEmpty(theTypeName) || string.IsNullOrEmpty(theNamespace)) return null;
+            if(string.IsNullOrEmpty(theTypeName)) return null;
             return _namspaceMap.FindTypeInNamespace(theNamespace, theTypeName);
         }
 

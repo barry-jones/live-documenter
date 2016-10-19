@@ -23,6 +23,10 @@ namespace DocumentationTest {
         /// <param name="i">Describe parameter.</param>
 		public AllOutputTypesClass(int i) { }
 
+        /// <summary>
+        /// A static field
+        /// </summary>
+        public static string Field;
 
         /// <summary>
         /// Enter description here for field q.
@@ -30,6 +34,10 @@ namespace DocumentationTest {
         /// </summary>
         public string q;
 
+        /// <summary>
+        /// THis is a readonly field
+        /// </summary>
+        public readonly int Readonly = 3;
 
         /// <summary>
         /// Enter description for constant PI.

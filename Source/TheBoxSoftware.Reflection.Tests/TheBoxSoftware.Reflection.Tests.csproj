@@ -57,13 +57,13 @@
     <Compile Include="Core\PE\Unit\DataDirectoryTests.cs" />
     <Compile Include="Core\PE\Unit\SectionHeaderTests.cs" />
     <Compile Include="Core\Unit\PeCoffFileTests.cs" />
+    <Compile Include="Integration\AssemblyDefTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="TestFiles\" />
     <Folder Include="Unit\" />
   </ItemGroup>
   <ItemGroup>

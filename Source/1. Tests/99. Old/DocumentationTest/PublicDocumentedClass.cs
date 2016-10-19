@@ -30,7 +30,15 @@ namespace DocumentationTest
 		private string PrivateField;
 		private void PrivateMethod() { }
 
-		protected class ProtectedClass
+        public delegate void PublicDelegate();
+
+        public event PublicDelegate PublicEvent { add { }  remove { } }
+        protected event PublicDelegate ProtectedEvent { add { } remove { } }
+        internal event PublicDelegate InternalEvent { add { } remove { } }
+        protected internal event PublicDelegate ProtectedInternalEvent { add { } remove { } }
+        private event PublicDelegate PrivateEvent { add { } remove { } }
+
+        protected class ProtectedClass
 		{
 			public string PublicProperty { get; set; }
 			public string PublicField;
