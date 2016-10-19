@@ -11,7 +11,13 @@ namespace PerformanceTests
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<Reflection.Core.PeCoffFileBenchmark>();
+#if !DEBUG
+            BenchmarkRunner.Run<Reflection.Core.PeCoffFileBenchmark>();
+            BenchmarkRunner.Run<Reflection.Core.COFF.StringStreamBenchmark>();
+#else
+            new Reflection.Core.COFF.StringStreamBenchmark().GetStringFromStream();
+#endif
+
         }
     }
 }

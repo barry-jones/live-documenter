@@ -1,33 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <summary>
-    /// The string stream which stores the strings for all metadata names
-    /// and text.
+    /// The string stream which stores the strings for all metadata names and text.
     /// </summary>
     public sealed class StringStream : Stream
     {
-        /// <summary>
-        /// The underlying data for the string stream.
-        /// </summary>
-        private byte[] _streamContents;
+        private const char TerminatingChar = '\0';
+
+        private byte[] _streamContents; // underlying stream data from file
 
         /// <summary>
         /// Initialises a new instance of the StringStream class.
         /// </summary>
-        /// <param name="file">The file this stream is a part of.</param>
+        /// <param name="fileContents">The file this stream is a part of.</param>
         /// <param name="address">The start address of the string stream.</param>
         /// <param name="size">The size of the stream.</param>
         /// <exception cref="InvalidOperationException">
         /// The application encountered an invalid and unexpected character at the
         /// start of the stream.
         /// </exception>
-        internal StringStream(PeCoffFile file, int address, int size)
+        internal StringStream(byte[] fileContents, int address, int size)
         {
             // The first entry in the stream should always be a null termination character
-            if(file.FileContents[address] != '\0')
+            if(fileContents[address] != TerminatingChar)
             {
                 InvalidOperationException ex = new InvalidOperationException(
                     Resources.ExceptionMessages.Ex_InvalidStream_StartCharacter
@@ -38,10 +37,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             }
 
             // Read and store the underlying data for this stream
-            this._streamContents = new byte[size];
+            _streamContents = new byte[size];
             for(int i = address; i < (address + size); i++)
             {
-                this._streamContents[i - address] = file.FileContents[i];
+                _streamContents[i - address] = fileContents[i];
             }
         }
 
@@ -54,27 +53,26 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The string at the specified index.</returns>
         public string GetString(int index)
         {
-            // Calculate the size of the string
-            int size = 0;
-            int length = this._streamContents.Length;
-            for(int i = index; i < length && ((char)this._streamContents[i]) != '\0'; i++, size++) ;
+            string readString = string.Empty;
+            int lengthOfString = 0;
+            int length = _streamContents.Length;
+
+            // calculate the length of the string
+            for(int i = index; i < length && _streamContents[i] != TerminatingChar; i++, lengthOfString++) ;
 
             // Read the string in to an array
-            byte[] currentString = new byte[size];
-            for(int i = index, current = 0; i < (index + size); i++, current++)
+            byte[] currentString = new byte[lengthOfString];
+            for(int i = index, current = 0; i < (index + lengthOfString); i++, current++)
             {
-                currentString[current] = this._streamContents[i];
+                currentString[current] = _streamContents[i];
             }
 
-            // Convert bytes to a string
-            if(size > 0)
+            if(lengthOfString > 0)
             {
-                return System.Text.ASCIIEncoding.UTF8.GetString(currentString);
+                return ASCIIEncoding.UTF8.GetString(currentString);
             }
-            else
-            {
-                return string.Empty;
-            }
+
+            return readString;
         }
 
         /// <summary>
@@ -85,12 +83,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         {
             Dictionary<int, string> strings = new Dictionary<int, string>();
             List<byte> currentString = null;
+            int streamLength = _streamContents.Length;
 
             // Iterate over the full string stream and read the strings and
             // starting indexes.
             bool newString = true;
             int startOffset = 0;
-            for(int i = 0; i < this._streamContents.Length; i++)
+            for(int i = 0; i < streamLength; i++)
             {
                 if(currentString == null || newString)
                 {
@@ -98,8 +97,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     currentString = new List<byte>();
                     startOffset = i;
                 }
-                byte current = this._streamContents[i];
-                if((char)current != '\0')
+
+                byte current = _streamContents[i];
+                if((char)current != TerminatingChar)
                 {
                     currentString.Add(current);
                 }

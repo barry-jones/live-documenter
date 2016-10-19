@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comments\Unit\CRefPathTests.cs" />
+    <Compile Include="Core\COFF\Unit\StringStreamTests.cs" />
     <Compile Include="Core\PE\Unit\DataDirectoryTests.cs" />
     <Compile Include="Core\PE\Unit\SectionHeaderTests.cs" />
     <Compile Include="Core\Unit\PeCoffFileTests.cs" />

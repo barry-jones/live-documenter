@@ -14,7 +14,7 @@
                     break;
 
                 case "#Strings":
-                    created = new StringStream(file, address, (int)header.Size);
+                    created = new StringStream(file.FileContents, address, (int)header.Size);
                     created.StreamType = Streams.StringStream;
                     break;
 
