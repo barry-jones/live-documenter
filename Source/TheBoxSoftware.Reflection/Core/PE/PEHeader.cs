@@ -56,18 +56,16 @@ namespace TheBoxSoftware.Reflection.Core.PE
             DataDirectories = new Dictionary<DataDirectories, DataDirectory>();
 
             // read the data directories
-            List<byte> bytes = new List<byte>(fileContents);
             for(int i = 0; i < 16; i++)
             {
-                this.DataDirectories.Add(
-                    (DataDirectories)i,
-                    new DataDirectory(
-                        bytes.GetRange(
-                            offset.Shift(DataDirectory.SizeInBytes),
-                            DataDirectory.SizeInBytes).ToArray(),
-                            (DataDirectories)i
-                        )
-                    );
+                int startIndex = offset.Shift(DataDirectory.SizeInBytes);
+                byte[] directoryContents = new byte[DataDirectory.SizeInBytes];
+                for(int j = 0; j < DataDirectory.SizeInBytes; j++)
+                {
+                    directoryContents[j] = fileContents[startIndex + j];
+                }
+
+                this.DataDirectories.Add((DataDirectories)i, new DataDirectory(directoryContents, (DataDirectories)i));
             }
 
             this.Size = offset;

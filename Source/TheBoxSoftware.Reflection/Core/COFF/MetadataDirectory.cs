@@ -7,12 +7,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the MetadataDirectory
         /// </summary>
-        /// <param name="fileContents">The contents of the file</param>
+        /// <param name="file">The contents of the file</param>
         /// <param name="address">The base address of the directory</param>
         public MetadataDirectory(PeCoffFile file, int address)
         {
             this.Header = new MetadataHeader(file.FileContents, address);
             this.Streams = new Dictionary<Streams, Stream>();
+
             for(int i = 0; i < this.Header.NumberOfMetaDataStreams; i++)
             {
                 Stream current = Stream.Create(
