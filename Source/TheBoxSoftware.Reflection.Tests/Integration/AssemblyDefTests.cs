@@ -191,6 +191,34 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
             Assert.AreEqual(0, (int)(notSetField.Flags & Reflection.Core.COFF.FieldAttributes.InitOnly));
         }
 
+        [Test, Category("Integration")]
+        public void OutParameters_OutIsSet()
+        {
+            TypeDef publicType = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
+            List<MethodDef> methods = publicType.GetMethods();
+            List<ParamDef> parameters = methods.First(c => c.Name == "inTest").Parameters;
+
+            ParamDef outParam = parameters[0];
+            ParamDef notOutParam = parameters[1];
+
+            Assert.IsTrue(outParam.IsOut);
+            Assert.IsFalse(notOutParam.IsOut);
+        }
+
+        [Test, Category("Integration")]
+        public void OptionalParameters_OptionalFlagIsSet()
+        {
+            TypeDef publicType = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
+            List<MethodDef> methods = publicType.GetMethods();
+            List<ParamDef> parameters = methods.First(c => c.Name == "inTest").Parameters;
+
+            ParamDef optParam = parameters[2];
+            ParamDef notOptParam = parameters[1];
+
+            Assert.IsTrue(optParam.IsOptional);
+            Assert.IsFalse(notOptParam.IsOptional);
+        }
+
         private void CheckVisibility(Visibility expected, Visibility actual)
         {
             Assert.AreEqual(expected, actual);

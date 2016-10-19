@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection
     [DebuggerDisplay("{Name}")]
     public class ParamDef : ReflectedMember
     {
-        private TypeRef _typeRef;
+        private ParamAttributeFlags _flags;
 
         /// <summary>
         /// Initialises a ParamDef from provided metadata
@@ -29,6 +29,7 @@ namespace TheBoxSoftware.Reflection
             parameter.Method = owner;
             parameter.Sequence = row.Sequence;
             parameter.Assembly = owner.Assembly;
+            parameter._flags = row.Flags;
 
             return parameter;
         }
@@ -73,5 +74,29 @@ namespace TheBoxSoftware.Reflection
         /// refers to on its parent method.
         /// </Summary>
         public int Sequence { get; set; }
+
+        /// <summary>
+        /// Indicates if the parameter has been declared as an in paramter
+        /// </summary>
+        public bool IsIn
+        {
+            get { return (_flags & ParamAttributeFlags.In) == ParamAttributeFlags.In; }
+        }
+
+        /// <summary>
+        /// Indicates if the parameter has been declared as an out parameter
+        /// </summary>
+        public bool IsOut
+        {
+            get { return (_flags & ParamAttributeFlags.Out) == ParamAttributeFlags.Out; }
+        }
+
+        /// <summary>
+        /// Indicates if the parameter has been declared as optional.
+        /// </summary>
+        public bool IsOptional
+        {
+            get { return (_flags & ParamAttributeFlags.Optional) == ParamAttributeFlags.Optional; }
+        }
     }
 }

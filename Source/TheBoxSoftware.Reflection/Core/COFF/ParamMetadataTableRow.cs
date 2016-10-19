@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         public ParamMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
         {
             this.FileOffset = offset;
-            this.Flags = FieldReader.ToUInt16(contents, offset.Shift(2));
+            this.Flags = (ParamAttributeFlags)FieldReader.ToUInt16(contents, offset.Shift(2));
             this.Sequence = FieldReader.ToUInt16(contents, offset.Shift(2));
             this.Name = new StringIndex(stream, offset);
         }
@@ -27,7 +27,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// A 2-byte bitmask of ParamAttributes
         /// </summary>
-        public UInt16 Flags { get; set; }
+        public ParamAttributeFlags Flags { get; set; }
 
         /// <summary>
         /// The sequence of the parameter

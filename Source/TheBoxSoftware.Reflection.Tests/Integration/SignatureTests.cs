@@ -26,9 +26,15 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
         {
             TypeDef typeDef = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
             MethodDef method = typeDef.GetMethods().First(p => p.Name == "bb");
+            ParamDef refParam = method.Parameters.Find(p => p.Name == "y");
             Signiture sig = method.Signiture;
 
-            Assert.AreEqual(string.Empty, sig.ToString());
+            // get the details of the byref parameter
+            ParamSignitureToken byRefToken = method.Signiture.GetParameterTokens()[refParam.Sequence - 1];
+            ParamSignitureToken notRefToken = method.Signiture.GetParameterTokens()[0];
+
+            Assert.IsTrue(byRefToken.IsByRef);
+            Assert.IsFalse(notRefToken.IsByRef);
         }
     }
 }

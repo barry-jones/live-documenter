@@ -4749,6 +4749,21 @@
             refers to on its parent method.
             </Summary>
         </member>
+        <member name="P:TheBoxSoftware.Reflection.ParamDef.IsIn">
+            <summary>
+            Indicates if the parameter has been declared as an in paramter
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.Reflection.ParamDef.IsOut">
+            <summary>
+            Indicates if the parameter has been declared as an out parameter
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.Reflection.ParamDef.IsOptional">
+            <summary>
+            Indicates if the parameter has been declared as optional.
+            </summary>
+        </member>
         <member name="T:TheBoxSoftware.Reflection.PropertyDef">
             <summary>
             A class that describes a property that has been defined in an <see cref="T:TheBoxSoftware.Reflection.TypeDef"/>.

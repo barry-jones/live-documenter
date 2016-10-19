@@ -78,11 +78,13 @@
             </summary>
             <param name="test">test parameter</param>
         </member>
-        <member name="M:DocumentationTest.AllOutputTypesClass.inTest(System.Int32@)">
+        <member name="M:DocumentationTest.AllOutputTypesClass.inTest(System.Int32@,System.Int32,System.Int32)">
             <summary>
             "M:DocumentationTest.AllOutputTypesClass.inTest(System.Int32@)".
             </summary>
             <param name="o">Described parameter</param>
+            <param name="a">Normal parameter</param>
+            <param name="c">An optional parameter</param>
         </member>
         <member name="M:DocumentationTest.AllOutputTypesClass.gg(System.Int16[],System.Int32[0:,0:])">
             <summary>

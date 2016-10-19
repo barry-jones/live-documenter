@@ -84,7 +84,9 @@ namespace DocumentationTest {
 		/// "M:DocumentationTest.AllOutputTypesClass.inTest(System.Int32@)".
 		/// </summary>
 		/// <param name="o">Described parameter</param>
-		public void inTest(out int o) { o = 3; }
+        /// <param name="a">Normal parameter</param>
+        /// <param name="c">An optional parameter</param>
+		public void inTest(out int o, int a, int c = 3) { o = 3; }
 
         /// <summary>
         /// Enter description for method gg.
