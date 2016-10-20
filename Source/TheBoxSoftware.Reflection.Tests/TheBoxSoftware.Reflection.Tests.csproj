@@ -59,6 +59,7 @@
     <Compile Include="Core\Unit\PeCoffFileTests.cs" />
     <Compile Include="Integration\AssemblyDefTests.cs" />
     <Compile Include="Integration\SignatureTests.cs" />
+    <Compile Include="Integration\Syntax\CSharp_MethodSyntaxTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

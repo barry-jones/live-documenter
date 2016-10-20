@@ -45,6 +45,36 @@
             ID string generated is "F:N.X.PI".
             </summary>
         </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.BasicDefaultMethod">
+            <summary>
+            A method which uses the default visibility
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.BasicPublicMethod">
+            <summary>
+            A basic method that returns nothing and has no parameters
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.BasicInternalMethod">
+            <summary>
+            A basic internal method
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.BasicProtectedInternalMethod">
+            <summary>
+            A basic protected internal method
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.BasicProtectedMethod">
+            <summary>
+            A basic protected method
+            </summary>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.BasicPrivateMethod">
+            <summary>
+            A basic private method
+            </summary>
+        </member>
         <member name="M:DocumentationTest.AllOutputTypesClass.f">
             <summary>
             Enter description for method f.
@@ -94,6 +124,70 @@
             <param name="array1">Describe parameter.</param>
             <param name="array">Describe parameter.</param>
             <returns>Describe return value.</returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.ReturnsOurClass">
+            <summary>
+            A method that returns a custom type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.BuildInLongTypeReturned">
+            <summary>
+            A built in long type returned from the method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.ArrayReturnType">
+            <summary>
+            Array return type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.GenericReturnType">
+            <summary>
+            Generic return type from method
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.GenericMethodOfT``1">
+            <summary>
+            GenericMethodOfT
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.RefParameters(System.Int32@)">
+            <summary>
+            RefParameters
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.NormalParameters(System.Int32)">
+            <summary>
+            Normal parameters
+            </summary>
+            <param name="first"></param>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.MultipleParameters(System.Int32,System.Int32@,System.String,DocumentationTest.AllOutputTypesClass)">
+            <summary>
+            Multiple parameters test
+            </summary>
+            <param name="first"></param>
+            <param name="second"></param>
+            <param name="test"></param>
+            <param name="allOut"></param>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.OutParameter(System.Int32@)">
+            <summary>
+            An output parameter
+            </summary>
+            <param name="first"></param>
+        </member>
+        <member name="M:DocumentationTest.AllOutputTypesClass.DefaultParameter(System.Int32)">
+            <summary>
+            Default parameter
+            </summary>
+            <param name="first"></param>
         </member>
         <member name="M:DocumentationTest.AllOutputTypesClass.op_Addition(DocumentationTest.AllOutputTypesClass,DocumentationTest.AllOutputTypesClass)">
             <summary>
