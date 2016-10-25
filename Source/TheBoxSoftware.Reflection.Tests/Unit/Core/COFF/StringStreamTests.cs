@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using TheBoxSoftware.Reflection.Core.COFF;
 
-namespace TheBoxSoftware.Reflection.Tests.Core.COFF.Unit
+namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
     [TestFixture]
     public class StringStreamTests

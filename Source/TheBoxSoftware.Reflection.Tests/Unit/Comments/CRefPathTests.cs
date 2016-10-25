@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Comments;
-
-namespace TheBoxSoftware.Reflection.Tests.Comments.Unit
+﻿
+namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
 {
+    using System;
+    using NUnit.Framework;
+    using TheBoxSoftware.Reflection.Comments;
+
     [TestFixture]
     public class CRefPathTests
     {

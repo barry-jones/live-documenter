@@ -7,7 +7,7 @@ using NUnit.Framework;
 using TheBoxSoftware.Reflection.Core;
 using TheBoxSoftware.Reflection.Core.PE;
 
-namespace TheBoxSoftware.Reflection.Tests.Core.PE.Unit
+namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
 {
     [TestFixture]
     public class SectionHeaderTests

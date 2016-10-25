@@ -6,7 +6,7 @@ namespace TheBoxSoftware.Reflection.Syntax
     /// </summary>
     internal class ConstantSyntax : Syntax
     {
-        private FieldDef field;
+        private FieldDef _field;
 
         /// <summary>
         /// Initialises a new instance of the ConstantSyntax class.
@@ -14,7 +14,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <param name="field">The field to obtain the syntax details for.</param>
         public ConstantSyntax(FieldDef field)
         {
-            this.field = field;
+            _field = field;
         }
 
         public string[] GetAttributes()
@@ -28,7 +28,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <returns>A visibility enumerated value.</returns>
         public Visibility GetVisibility()
         {
-            return this.field.MemberAccess;
+            return _field.MemberAccess;
         }
 
         /// <summary>
@@ -39,20 +39,18 @@ namespace TheBoxSoftware.Reflection.Syntax
         {
             TypeRef returnType = null;
 
-            Signitures.Signiture signiture = this.field.Signiture;
+            Signitures.Signiture signiture = this._field.Signiture;
             Signitures.SignitureToken token = signiture.Tokens.Find(
-                t => t.TokenType == TheBoxSoftware.Reflection.Signitures.SignitureTokens.ElementType ||
-                    t.TokenType == TheBoxSoftware.Reflection.Signitures.SignitureTokens.Type
+                t => t.TokenType == Signitures.SignitureTokens.ElementType || t.TokenType == Signitures.SignitureTokens.Type
                 );
+
             if(token != null)
             {
                 TypeRef type = (token is Signitures.TypeSignitureToken)
-                    ? ((Signitures.TypeSignitureToken)token).ResolveType(this.field.Assembly, null)
-                    : ((Signitures.ElementTypeSignitureToken)token).ResolveToken(this.field.Assembly);
-                if(type != null)
-                {
-                    returnType = type;
-                }
+                    ? ((Signitures.TypeSignitureToken)token).ResolveType(_field.Assembly, null)
+                    : ((Signitures.ElementTypeSignitureToken)token).ResolveToken(_field.Assembly);
+
+                returnType = type;
             }
 
             return returnType;
@@ -60,7 +58,7 @@ namespace TheBoxSoftware.Reflection.Syntax
 
         public string GetIdentifier()
         {
-            return this.field.Name;
+            return _field.Name;
         }
     }
 }

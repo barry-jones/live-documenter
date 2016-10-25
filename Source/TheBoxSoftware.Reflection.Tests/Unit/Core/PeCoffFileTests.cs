@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TheBoxSoftware.Reflection.Core;
 using TheBoxSoftware.Reflection.Core.COFF;
 
-namespace TheBoxSoftware.Reflection.Tests.Core.Unit
+namespace TheBoxSoftware.Reflection.Tests.Unit.Core
 {
     [TestFixture]
     public class PeCoffFileTests

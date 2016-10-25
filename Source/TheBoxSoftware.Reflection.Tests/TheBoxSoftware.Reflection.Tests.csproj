@@ -52,21 +52,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comments\Unit\CRefPathTests.cs" />
-    <Compile Include="Core\COFF\Unit\StringStreamTests.cs" />
-    <Compile Include="Core\PE\Unit\DataDirectoryTests.cs" />
-    <Compile Include="Core\PE\Unit\SectionHeaderTests.cs" />
-    <Compile Include="Core\Unit\PeCoffFileTests.cs" />
+    <Compile Include="Unit\Comments\Unit\CRefPathTests.cs" />
+    <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
+    <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
+    <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
+    <Compile Include="Unit\Core\PeCoffFileTests.cs" />
     <Compile Include="Integration\AssemblyDefTests.cs" />
     <Compile Include="Integration\SignatureTests.cs" />
     <Compile Include="Integration\Syntax\CSharp_MethodSyntaxTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\Syntax\ClassSyntaxTests.cs" />
+    <Compile Include="Unit\Syntax\DelegateSyntaxTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Unit\Core\Unit\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj">
       <Project>{2ad369a3-7737-4ec5-a4ba-3e846f80c066}</Project>

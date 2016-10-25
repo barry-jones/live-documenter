@@ -1,72 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.Reflection.Syntax
+{
+    using System.Collections.Generic;
+    using Signitures;
 
-namespace TheBoxSoftware.Reflection.Syntax {
-	using TheBoxSoftware.Reflection.Signitures;
+    internal class ConstructorSyntax : Syntax
+    {
+        private MethodDef _method;
+        private Signiture _signiture;
 
-	internal class ConstructorSyntax : Syntax {
-		private MethodDef method;
-		private Signiture signiture;
+        public ConstructorSyntax(MethodDef method)
+        {
+            _method = method;
+            _signiture = method.Signiture;
+        }
 
-		public ConstructorSyntax(MethodDef method) {
-			this.method = method;
-			this.signiture = method.Signiture;
-		}
+        public Visibility GetVisibility()
+        {
+            return _method.MemberAccess;
+        }
 
-		public Visibility GetVisibility() {
-			return this.method.MemberAccess;
-		}
+        public Inheritance GetInheritance()
+        {
+            Inheritance classInheritance = Inheritance.Default;
 
-		public Inheritance GetInheritance() {
-			Inheritance classInheritance = Inheritance.Default;
-			if ((this.method.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Static) == TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Static) {
-				classInheritance = Inheritance.Static;
-			}
-			else if ((this.method.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Abstract) == TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Abstract) {
-				classInheritance = Inheritance.Abstract;
-			}
-			else if ((this.method.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Virtual) == TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Virtual) {
-				classInheritance = Inheritance.Virtual;
-			}
-			return classInheritance;
-		}
+            if((_method.Attributes & Core.COFF.MethodAttributes.Static) == Core.COFF.MethodAttributes.Static)
+            {
+                classInheritance = Inheritance.Static;
+            }
+            else if((_method.Attributes & Core.COFF.MethodAttributes.Abstract) == Core.COFF.MethodAttributes.Abstract)
+            {
+                classInheritance = Inheritance.Abstract;
+            }
+            else if((_method.Attributes & Core.COFF.MethodAttributes.Virtual) == Core.COFF.MethodAttributes.Virtual)
+            {
+                classInheritance = Inheritance.Virtual;
+            }
 
-		/// <summary>
-		/// Obtains the cleaned up identifier for the method.
-		/// </summary>
-		/// <returns>The name of the method.</returns>
-		/// <remarks>
-		/// If the method is generic, the metadata stores the name with a `1 style
-		/// prefix denoting details of its generic types. This method cleans that
-		/// information up. So for example a method Test'1 will return Test.
-		/// </remarks>
-		public string GetIdentifier() {
-			string typeName = this.method.Type.Name;
-			if (this.method.Type.IsGeneric) {
-				int count = int.Parse(typeName.Substring(typeName.IndexOf('`') + 1));
-				typeName = typeName.Substring(0, typeName.IndexOf('`'));
-			}
-			return typeName;
-		}
+            return classInheritance;
+        }
 
-		public List<ParameterDetails> GetParameters() {
-			List<ParameterDetails> details = new List<ParameterDetails>();
-			List<ParamSignitureToken> definedParameters = new List<ParamSignitureToken>(this.signiture.Tokens.FindAll(
-				t => t.TokenType == SignitureTokens.Param
-				).ConvertAll<ParamSignitureToken>(p => (ParamSignitureToken)p).ToArray());
-			List<ParamDef> parameters = this.method.Parameters;
+        /// <summary>
+        /// Obtains the cleaned up identifier for the method.
+        /// </summary>
+        /// <returns>The name of the method.</returns>
+        public string GetIdentifier()
+        {
+            // convert from .ctor to the typename as this is the standard language syntax for constructors
+            string typeName = _method.Type.Name;
 
-			for (int i = 0; i < parameters.Count; i++) {
-				details.Add(new ParameterDetails(
-					parameters[i].Name,
-					definedParameters[i].GetTypeDetails(this.method)
-					));
-			}
-			return details;
-		}
+            if(_method.Type.IsGeneric)
+            {
+                typeName = typeName.Substring(0, typeName.IndexOf('`'));
+            }
 
-		public MethodDef Method { get { return this.method; } }
-	}
+            return typeName;
+        }
+
+        public List<ParameterDetails> GetParameters()
+        {
+            List<ParameterDetails> details = new List<ParameterDetails>();
+            List<ParamSignitureToken> definedParameters = new List<ParamSignitureToken>(_signiture.Tokens.FindAll(
+                t => t.TokenType == SignitureTokens.Param
+                ).ConvertAll(p => (ParamSignitureToken)p).ToArray());
+            List<ParamDef> parameters = _method.Parameters;
+
+            for(int i = 0; i < parameters.Count; i++)
+            {
+                details.Add(new ParameterDetails(
+                    parameters[i].Name,
+                    definedParameters[i].GetTypeDetails(_method)
+                    ));
+            }
+
+            return details;
+        }
+
+        public MethodDef Method
+        {
+            get { return _method; }
+        }
+    }
 }

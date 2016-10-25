@@ -5045,11 +5045,6 @@
             Obtains the cleaned up identifier for the method.
             </summary>
             <returns>The name of the method.</returns>
-            <remarks>
-            If the method is generic, the metadata stores the name with a `1 style
-            prefix denoting details of its generic types. This method cleans that
-            information up. So for example a method Test'1 will return Test.
-            </remarks>
         </member>
         <member name="T:TheBoxSoftware.Reflection.Syntax.CSharp.CSharpClassFormatter">
             <summary>
@@ -5260,25 +5255,11 @@
             </remarks>
         </member>
         <!-- Badly formed XML comment ignored for member "M:TheBoxSoftware.Reflection.Syntax.CSharp.CSharpInterfaceFormatter.Format(TheBoxSoftware.Reflection.Syntax.InterfaceSyntax)" -->
-        <member name="F:TheBoxSoftware.Reflection.Syntax.DelegateSyntax.type">
-            <summary>
-            Internal reference to a type that details of syntax elements can be obtained
-            </summary>
-        </member>
-        <member name="F:TheBoxSoftware.Reflection.Syntax.DelegateSyntax.invokeMethod">
-            <summary>
-            All delegates have an invoke method and this seems to detail the return type
-            and parameters for the delegate. So here we will store a loaded syntax instance
-            containing those details.
-            </summary>
-        </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.DelegateSyntax.#ctor(TheBoxSoftware.Reflection.TypeDef)">
             <summary>
             Initialises a new instance of the ClassSyntax class.
             </summary>
             <param name="type">The type to retrieve syntax details for.</param>
-            <exception cref="T:System.ArgumentException">Thrown when the type provided is not a delegate.</exception>
-            <exception cref="T:System.ArgumentNullException">Thrown when the type provided is null.</exception>
         </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.DelegateSyntax.GetVisibility">
             <summary>
@@ -5620,11 +5601,6 @@
             Obtains the cleaned up identifier for the method.
             </summary>
             <returns>The name of the method.</returns>
-            <remarks>
-            If the method is generic, the metadata stores the name with a `1 style
-            prefix denoting details of its generic types. This method cleans that
-            information up. So for example a method Test'1 will return Test.
-            </remarks>
         </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.MethodSyntax.GetGenericParameters">
             <summary>
