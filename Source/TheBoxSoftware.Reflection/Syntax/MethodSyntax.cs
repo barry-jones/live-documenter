@@ -22,22 +22,7 @@ namespace TheBoxSoftware.Reflection.Syntax
 
         public Inheritance GetInheritance()
         {
-            Inheritance classInheritance = Inheritance.Default;
-
-            if((_method.Attributes & Core.COFF.MethodAttributes.Static) == Core.COFF.MethodAttributes.Static)
-            {
-                classInheritance = Inheritance.Static;
-            }
-            else if((_method.Attributes & Core.COFF.MethodAttributes.Abstract) == Core.COFF.MethodAttributes.Abstract)
-            {
-                classInheritance = Inheritance.Abstract;
-            }
-            else if((_method.Attributes & Core.COFF.MethodAttributes.Virtual) == Core.COFF.MethodAttributes.Virtual)
-            {
-                classInheritance = Inheritance.Virtual;
-            }
-
-            return classInheritance;
+            return ConvertMethodInheritance(_method.Attributes);
         }
 
         /// <summary>

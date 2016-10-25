@@ -39,5 +39,48 @@ namespace TheBoxSoftware.Reflection.Syntax
             }
             return name;
         }
+
+        protected Inheritance ConvertMethodInheritance(Core.COFF.MethodAttributes attributes)
+        {
+            Inheritance classInheritance = Inheritance.Default;
+
+            if((attributes & Core.COFF.MethodAttributes.Static) == Core.COFF.MethodAttributes.Static)
+            {
+                classInheritance = Inheritance.Static;
+            }
+            else if((attributes & Core.COFF.MethodAttributes.Abstract) == Core.COFF.MethodAttributes.Abstract)
+            {
+                classInheritance = Inheritance.Abstract;
+            }
+            else if((attributes & Core.COFF.MethodAttributes.Virtual) == Core.COFF.MethodAttributes.Virtual)
+            {
+                classInheritance = Inheritance.Virtual;
+            }
+
+            return classInheritance;
+        }
+
+        protected Inheritance ConvertTypeInheritance(Core.COFF.TypeAttributes attributes)
+        {
+            Inheritance classInheritance = Inheritance.Default;
+
+            if(
+                (attributes & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract &&
+                (attributes & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed
+                )
+            {
+                classInheritance = Inheritance.Static;
+            }
+            else if((attributes & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract)
+            {
+                classInheritance = Inheritance.Abstract;
+            }
+            else if((attributes & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed)
+            {
+                classInheritance = Inheritance.Sealed;
+            }
+
+            return classInheritance;
+        }
     }
 }

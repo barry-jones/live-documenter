@@ -22,22 +22,11 @@ namespace TheBoxSoftware.Reflection.Syntax
 
         public Inheritance GetInheritance()
         {
-            Inheritance classInheritance = Inheritance.Default;
-
-            if((_method.Attributes & Core.COFF.MethodAttributes.Static) == Core.COFF.MethodAttributes.Static)
-            {
-                classInheritance = Inheritance.Static;
-            }
-            else if((_method.Attributes & Core.COFF.MethodAttributes.Abstract) == Core.COFF.MethodAttributes.Abstract)
-            {
-                classInheritance = Inheritance.Abstract;
-            }
-            else if((_method.Attributes & Core.COFF.MethodAttributes.Virtual) == Core.COFF.MethodAttributes.Virtual)
-            {
-                classInheritance = Inheritance.Virtual;
-            }
-
-            return classInheritance;
+            // TODO: Fix static is not returned for static constructors
+            //  it seems as if .cctor is a static constructor and .ctor is not in IL though they both have static set.
+            //  When viewing the metadata via the peviewer it shows .cctor but here it is displayed as .ctor - I think we
+            //  must be changing it somewhere.
+            return ConvertMethodInheritance(_method.Attributes);
         }
 
         /// <summary>

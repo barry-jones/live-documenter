@@ -117,25 +117,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// </remarks>
         public Inheritance GetInheritance()
         {
-            Inheritance classInheritance = Inheritance.Default;
-
-            if(
-                (_type.Flags & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract &&
-                (_type.Flags & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed
-                )
-            {
-                classInheritance = Inheritance.Static;
-            }
-            else if((_type.Flags & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract)
-            {
-                classInheritance = Inheritance.Abstract;
-            }
-            else if((_type.Flags & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed)
-            {
-                classInheritance = Inheritance.Sealed;
-            }
-
-            return classInheritance;
+            return ConvertTypeInheritance(_type.Flags);
         }
 
         /// <summary>

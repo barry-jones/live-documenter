@@ -5524,11 +5524,6 @@
             A reference to the set method for this property.
             </summary>
         </member>
-        <member name="F:TheBoxSoftware.Reflection.Syntax.InterfaceSyntax.type">
-            <summary>
-            Internal reference to a type that details of syntax elements can be obtained
-            </summary>
-        </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.InterfaceSyntax.#ctor(TheBoxSoftware.Reflection.TypeDef)">
             <summary>
             Initialises a new instance of the InterfaceSyntax class.
@@ -5659,11 +5654,6 @@
             Initialises a new instance of the EventSyntax class.
             </summary>
             <param name="propertyDef">The details of the event to get the information from.</param>
-        </member>
-        <member name="F:TheBoxSoftware.Reflection.Syntax.StructSyntax.type">
-            <summary>
-            Internal reference to a type that details of syntax elements can be obtained
-            </summary>
         </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.StructSyntax.#ctor(TheBoxSoftware.Reflection.TypeDef)">
             <summary>
