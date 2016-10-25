@@ -12,6 +12,7 @@ namespace TheBoxSoftware.Reflection
     internal sealed class TypeSpec : TypeRef
     {
         private TypeDetails _details = null;
+        private BlobIndex _signitureIndexInBlob;
 
         /// <summary>
         /// Creates a new instance of the TypeSpec class, using the provided information.
@@ -25,7 +26,7 @@ namespace TheBoxSoftware.Reflection
             TypeSpec spec = new TypeSpec();
             spec.UniqueId = assembly.CreateUniqueId();
             spec.Assembly = assembly;
-            spec.SignitureBlob = row.Signiture;
+            spec._signitureIndexInBlob = row.Signiture;
             return spec;
         }
 
@@ -88,10 +89,7 @@ namespace TheBoxSoftware.Reflection
             set { base.IsGeneric = value; }
         }
 
-        /// <summary>
-        /// Storage for details about the type specifications signiture.
-        /// </summary>
-        private BlobIndex SignitureBlob { get; set; }
+        
 
         /// <summary>
         /// The signiture defined for this member.
@@ -110,7 +108,7 @@ namespace TheBoxSoftware.Reflection
                 BlobStream stream = (BlobStream)((Core.COFF.CLRDirectory)this.Assembly.File.Directories[
                     Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
                 return (TypeSpecificationSigniture)stream.GetSigniture(
-                    (int)this.SignitureBlob.Value, this.SignitureBlob.SignitureType
+                    (int)this._signitureIndexInBlob.Value, _signitureIndexInBlob.SignitureType
                     );
             }
         }

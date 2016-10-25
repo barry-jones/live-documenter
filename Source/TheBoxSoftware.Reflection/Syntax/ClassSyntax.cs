@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Syntax
 {
+    using System.Collections.Generic;
+
     internal sealed class ClassSyntax : Syntax
     {
-        /// <summary>
-        /// Internal reference to a type that details of syntax elements can be obtained
-        /// </summary>
-        private TypeDef type;
+        private TypeDef _type;
 
         /// <summary>
         /// Initialises a new instance of the ClassSyntax class.
@@ -18,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <param name="type">The type to retrieve syntax details for.</param>
         public ClassSyntax(TypeDef type)
         {
-            this.type = type;
+            _type = type;
         }
 
         /// <summary>
@@ -27,13 +22,14 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <returns>The type identifier.</returns>
         public string GetIdentifier()
         {
-            string name = string.Empty;
-            name = this.type.Name;
-            if(this.type.IsGeneric)
+            string name = _type.Name;
+
+            if(_type.IsGeneric)
             {
                 int count = int.Parse(name.Substring(name.IndexOf('`') + 1));
                 name = name.Substring(0, name.IndexOf('`'));
             }
+
             return name;
         }
 
@@ -43,20 +39,22 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <returns>An array of strings identifying the interfaces.</returns>
         public Signitures.TypeDetails[] GetInterfaces()
         {
-            Signitures.TypeDetails[] interfaces = new Signitures.TypeDetails[this.type.Implements.Count];
-            for(int i = 0; i < this.type.Implements.Count; i++)
+            Signitures.TypeDetails[] interfaces = new Signitures.TypeDetails[_type.Implements.Count];
+
+            for(int i = 0; i < _type.Implements.Count; i++)
             {
-                if(this.type.Implements[i] is TypeSpec)
+                if(_type.Implements[i] is TypeSpec)
                 {
-                    interfaces[i] = ((TypeSpec)this.type.Implements[i]).TypeDetails;
+                    interfaces[i] = ((TypeSpec)_type.Implements[i]).TypeDetails;
                 }
                 else
                 {
                     Signitures.TypeDetails details = new TheBoxSoftware.Reflection.Signitures.TypeDetails();
-                    details.Type = this.type.Implements[i];
+                    details.Type = _type.Implements[i];
                     interfaces[i] = details;
                 }
             }
+
             return interfaces;
         }
 
@@ -70,7 +68,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// </remarks>
         public List<GenericTypeRef> GetGenericParameters()
         {
-            return this.type.GetGenericTypes();
+            return _type.GetGenericTypes();
         }
 
         /// <summary>
@@ -80,20 +78,20 @@ namespace TheBoxSoftware.Reflection.Syntax
         public Signitures.TypeDetails GetBaseClass()
         {
 #if DEBUG
-            if(this.type.InheritsFrom == null)
+            if(_type.InheritsFrom == null)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("class {0} has a null base type.", this.type.Name));
+                System.Diagnostics.Debug.WriteLine($"class {_type.Name} has a null base type.");
                 return null;
             }
 #endif
-            if(this.type.InheritsFrom is TypeSpec)
+            if(this._type.InheritsFrom is TypeSpec)
             {
-                return ((TypeSpec)this.type.InheritsFrom).TypeDetails;
+                return ((TypeSpec)_type.InheritsFrom).TypeDetails;
             }
             else
             {
                 Signitures.TypeDetails details = new TheBoxSoftware.Reflection.Signitures.TypeDetails();
-                details.Type = this.type.InheritsFrom;
+                details.Type = _type.InheritsFrom;
                 return details;
             }
         }
@@ -104,7 +102,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <returns>The visibility modifier for the class.</returns>
         public Visibility GetVisibility()
         {
-            return this.type.MemberAccess;
+            return _type.MemberAccess;
         }
 
         /// <summary>
@@ -120,21 +118,23 @@ namespace TheBoxSoftware.Reflection.Syntax
         public Inheritance GetInheritance()
         {
             Inheritance classInheritance = Inheritance.Default;
+
             if(
-                (this.type.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Abstract) == TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Abstract &&
-                (this.type.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Sealed) == TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Sealed
+                (_type.Flags & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract &&
+                (_type.Flags & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed
                 )
             {
                 classInheritance = Inheritance.Static;
             }
-            else if((this.type.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Abstract) == TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Abstract)
+            else if((_type.Flags & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract)
             {
                 classInheritance = Inheritance.Abstract;
             }
-            else if((this.type.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Sealed) == TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Sealed)
+            else if((_type.Flags & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed)
             {
                 classInheritance = Inheritance.Sealed;
             }
+
             return classInheritance;
         }
 
@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// </summary>
         public TypeDef Class
         {
-            get { return this.type; }
+            get { return _type; }
         }
     }
 }

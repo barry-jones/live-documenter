@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Syntax;
-using TheBoxSoftware.Reflection.Syntax.CSharp;
-
+﻿
 namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
 {
+    using System.Linq;
+    using NUnit.Framework;
+    using Reflection.Syntax;
+
     [TestFixture]
     public class CSharp_MethodSyntaxTests
     {

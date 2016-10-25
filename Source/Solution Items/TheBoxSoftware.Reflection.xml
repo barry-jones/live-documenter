@@ -4960,11 +4960,6 @@
               Looks up a localized string similar to The stream did not have the expected start character, check address details..
             </summary>
         </member>
-        <member name="F:TheBoxSoftware.Reflection.Syntax.ClassSyntax.type">
-            <summary>
-            Internal reference to a type that details of syntax elements can be obtained
-            </summary>
-        </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.ClassSyntax.#ctor(TheBoxSoftware.Reflection.TypeDef)">
             <summary>
             Initialises a new instance of the ClassSyntax class.
@@ -5024,8 +5019,7 @@
         </member>
         <member name="T:TheBoxSoftware.Reflection.Syntax.ConstantSyntax">
             <summary>
-            Class that interogates a member for the details required
-            to declate a constant.
+            Class that interogates a member for the details required to declare a constant.
             </summary>
         </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.ConstantSyntax.#ctor(TheBoxSoftware.Reflection.FieldDef)">
@@ -6317,11 +6311,6 @@
         <member name="P:TheBoxSoftware.Reflection.TypeSpec.IsGeneric">
             <summary>
             Indicates if this type is a generic type.
-            </summary>
-        </member>
-        <member name="P:TheBoxSoftware.Reflection.TypeSpec.SignitureBlob">
-            <summary>
-            Storage for details about the type specifications signiture.
             </summary>
         </member>
         <member name="P:TheBoxSoftware.Reflection.TypeSpec.Signiture">
