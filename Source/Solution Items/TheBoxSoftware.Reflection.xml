@@ -5267,18 +5267,6 @@
             </summary>
             <returns>The visibility modifier for the class.</returns>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Syntax.DelegateSyntax.GetInheritance">
-            <summary>
-            Obtains the inheritance modifier for the class.
-            </summary>
-            <returns>The inheritance modifier.</returns>
-            <remarks>
-            Although the language specification does not specify a static modifier here,
-            classes which are defined as both abstract and sealed seems to be the way to
-            define the static modifier in the metadata. That is a static class can not have
-            instances created and can not be derived from.
-            </remarks>
-        </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.DelegateSyntax.GetGenericParameters">
             <summary>
             Obtains details of the generic parameters associated with this type.

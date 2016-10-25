@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+    using Reflection.Core.COFF;
+
     [TestFixture]
     public class StringStreamTests
     {

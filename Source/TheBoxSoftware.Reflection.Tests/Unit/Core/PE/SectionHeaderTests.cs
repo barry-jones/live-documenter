@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Core;
-using TheBoxSoftware.Reflection.Core.PE;
-
+﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
 {
+    using NUnit.Framework;
+    using Reflection.Core;
+    using Reflection.Core.PE;
+
     [TestFixture]
     public class SectionHeaderTests
     {

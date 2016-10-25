@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Unit\Comments\Unit\CRefPathTests.cs" />
+    <Compile Include="Unit\Comments\CRefPathTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
@@ -67,9 +67,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Unit\Core\Unit\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj">
       <Project>{2ad369a3-7737-4ec5-a4ba-3e846f80c066}</Project>

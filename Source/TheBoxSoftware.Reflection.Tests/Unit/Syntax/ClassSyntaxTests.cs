@@ -8,36 +8,19 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Syntax
     [TestFixture]
     public class ClassSyntaxTests
     {
-        [Test]
-        public void ClassSyntax_GetIdentifier_WhenTypeIsNotGeneric_ShouldReturnTypeName()
+        [TestCase("TypeName", false, "TypeName")]
+        [TestCase("TypeName`2", true, "TypeName")]
+        public void ClassSyntax_GetIdentifier(string name, bool isGeneric, string expectedResult)
         {
-            const string NAME = "TypeName";
-
             TypeDef typeDef = new TypeDef();
             ClassSyntax syntax = new ClassSyntax(typeDef);
 
-            typeDef.Name = NAME;
+            typeDef.IsGeneric = isGeneric;
+            typeDef.Name = name;
 
             string result = syntax.GetIdentifier();
 
-            Assert.AreEqual(NAME, result);
-        }
-
-        [Test]
-        public void ClassSyntax_GetIdentifier_WhenTypeIsGenericWithOneParameter_ShouldReturnNameWithoutGenerics()
-        {
-            const string NAME = "TypeName`1";
-            const string EXPECTED_NAME = "TypeName";
-
-            TypeDef typeDef = new TypeDef();
-            ClassSyntax syntax = new ClassSyntax(typeDef);
-
-            typeDef.IsGeneric = true;
-            typeDef.Name = NAME;
-
-            string result = syntax.GetIdentifier();
-
-            Assert.AreEqual(EXPECTED_NAME, result);
+            Assert.AreEqual(expectedResult, result);
         }
 
         [Test]

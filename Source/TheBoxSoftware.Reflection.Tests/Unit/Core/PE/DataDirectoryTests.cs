@@ -1,9 +1,10 @@
-﻿using System;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Core.PE;
-
+﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
 {
+    using System;
+    using NUnit.Framework;
+    using Reflection.Core.PE;
+
     [TestFixture]
     public class DataDirectoryTests
     {

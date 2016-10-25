@@ -1,10 +1,11 @@
-﻿using System;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Core;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core
 {
+    using System;
+    using NUnit.Framework;
+    using Reflection.Core;
+    using Reflection.Core.COFF;
+
     [TestFixture]
     public class PeCoffFileTests
     {

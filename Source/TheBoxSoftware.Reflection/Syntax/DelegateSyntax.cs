@@ -34,39 +34,6 @@ namespace TheBoxSoftware.Reflection.Syntax
             return _type.MemberAccess;
         }
 
-        /// <summary>
-        /// Obtains the inheritance modifier for the class.
-        /// </summary>
-        /// <returns>The inheritance modifier.</returns>
-        /// <remarks>
-        /// Although the language specification does not specify a static modifier here,
-        /// classes which are defined as both abstract and sealed seems to be the way to
-        /// define the static modifier in the metadata. That is a static class can not have
-        /// instances created and can not be derived from.
-        /// </remarks>
-        public Inheritance GetInheritance()
-        {
-            Inheritance classInheritance = Inheritance.Default;
-
-            if(
-                (_type.Flags & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract &&
-                (_type.Flags & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed
-                )
-            {
-                classInheritance = Inheritance.Static;
-            }
-            else if((_type.Flags & Core.COFF.TypeAttributes.Abstract) == Core.COFF.TypeAttributes.Abstract)
-            {
-                classInheritance = Inheritance.Abstract;
-            }
-            else if((_type.Flags & Core.COFF.TypeAttributes.Sealed) == Core.COFF.TypeAttributes.Sealed)
-            {
-                classInheritance = Inheritance.Sealed;
-            }
-
-            return classInheritance;
-        }
-
         public TypeDetails GetReturnType()
         {
             return _invokeMethodSyntax.GetReturnType();
