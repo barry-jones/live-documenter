@@ -26,7 +26,6 @@ namespace TheBoxSoftware.Reflection.Syntax
 
             if(_type.IsGeneric)
             {
-                int count = int.Parse(name.Substring(name.IndexOf('`') + 1));
                 name = name.Substring(0, name.IndexOf('`'));
             }
 
@@ -39,9 +38,10 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <returns>An array of strings identifying the interfaces.</returns>
         public Signitures.TypeDetails[] GetInterfaces()
         {
-            Signitures.TypeDetails[] interfaces = new Signitures.TypeDetails[_type.Implements.Count];
+            int implentationCount = _type.Implements.Count;
+            Signitures.TypeDetails[] interfaces = new Signitures.TypeDetails[implentationCount];
 
-            for(int i = 0; i < _type.Implements.Count; i++)
+            for(int i = 0; i < implentationCount; i++)
             {
                 if(_type.Implements[i] is TypeSpec)
                 {
@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection.Syntax
                 }
                 else
                 {
-                    Signitures.TypeDetails details = new TheBoxSoftware.Reflection.Signitures.TypeDetails();
+                    Signitures.TypeDetails details = new Signitures.TypeDetails();
                     details.Type = _type.Implements[i];
                     interfaces[i] = details;
                 }
@@ -90,7 +90,7 @@ namespace TheBoxSoftware.Reflection.Syntax
             }
             else
             {
-                Signitures.TypeDetails details = new TheBoxSoftware.Reflection.Signitures.TypeDetails();
+                Signitures.TypeDetails details = new Signitures.TypeDetails();
                 details.Type = _type.InheritsFrom;
                 return details;
             }
