@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.Reflection.Syntax
+{
+    using Reflection.Signitures;
 
-namespace TheBoxSoftware.Reflection.Syntax {
-	using TheBoxSoftware.Reflection.Signitures;
+    internal class ParameterSyntax
+    {
+        private ParamDef _param;
+        private ParamSignitureToken _signitureToken;
 
-	internal class ParameterSyntax {
-		private ParamDef param;
-		private ParamSignitureToken signitureToken;
-
-		public ParameterSyntax(ParamDef param, ParamSignitureToken signitureToken) {
-			this.param = param;
-			this.signitureToken = signitureToken;
-		}
-	}
+        public ParameterSyntax(ParamDef param, ParamSignitureToken signitureToken)
+        {
+            _param = param;
+            _signitureToken = signitureToken;
+        }
+    }
 }

@@ -5288,16 +5288,6 @@
             Access to the class reference being represented by this syntax class.
             </summary>
         </member>
-        <member name="T:TheBoxSoftware.Reflection.Syntax.EnumSyntax">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:TheBoxSoftware.Reflection.Syntax.EnumSyntax.type">
-            <summary>
-            Internal reference to a type that details of syntax elements can be obtained
-            </summary>
-        </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.EnumSyntax.#ctor(TheBoxSoftware.Reflection.TypeDef)">
             <summary>
             Initialises a new instance of the ClassSyntax class.
@@ -5323,8 +5313,7 @@
         </member>
         <member name="T:TheBoxSoftware.Reflection.Syntax.EventSyntax">
             <summary>
-            Allows the caller to obtain details of an event in a structured
-            way.
+            Allows the caller to obtain details of an event in a structured way.
             </summary>
         </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.EventSyntax.#ctor(TheBoxSoftware.Reflection.EventDef)">
