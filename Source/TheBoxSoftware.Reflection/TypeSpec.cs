@@ -1,9 +1,10 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core.COFF;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using Reflection.Core.COFF;
+    using Reflection.Signitures;
+
     /// <summary>
     /// Details the specification of a type. This is generally used by the metadata
     /// to allow for types to derive from and implement interfaces and classes that
@@ -38,7 +39,7 @@ namespace TheBoxSoftware.Reflection
             TypeSpecificationSigniture signiture = this.Signiture;
             ElementTypes elementType = signiture.Type.ElementType.ElementType;
 
-            this._details = signiture.GetTypeDetails(this);
+            _details = signiture.GetTypeDetails(this);
         }
 
         /// <summary>
@@ -89,8 +90,6 @@ namespace TheBoxSoftware.Reflection
             set { base.IsGeneric = value; }
         }
 
-        
-
         /// <summary>
         /// The signiture defined for this member.
         /// </summary>
@@ -100,16 +99,14 @@ namespace TheBoxSoftware.Reflection
             {
                 if(!this.Assembly.File.IsMetadataLoaded)
                 {
-                    throw new InvalidOperationException(
-                        "The Signiture can not be parsed correctly until the metadata has been loaded."
-                        );
+                    throw new InvalidOperationException(Resources.ExceptionMessages.Ex_SignatureParsing_NoMetadata);
                 }
 
-                BlobStream stream = (BlobStream)((Core.COFF.CLRDirectory)this.Assembly.File.Directories[
+                BlobStream stream = (BlobStream)((CLRDirectory)this.Assembly.File.Directories[
                     Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
-                return (TypeSpecificationSigniture)stream.GetSigniture(
-                    (int)this._signitureIndexInBlob.Value, _signitureIndexInBlob.SignitureType
-                    );
+                return stream.GetSigniture(
+                    (int)_signitureIndexInBlob.Value, _signitureIndexInBlob.SignitureType
+                    ) as TypeSpecificationSigniture;
             }
         }
 

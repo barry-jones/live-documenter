@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System.Collections.Generic;
+
     public class WellKnownTypeDef : TypeRef
     {
         public WellKnownTypeDef(AssemblyDef assembly, string namespaceName, string name)
         {
-            this.Name = name;
-            this.Namespace = namespaceName;
-            this.Assembly = assembly;
-            this.ExtensionMethods = new List<MethodDef>();
-            this.IsExternalReference = true;
+            Name = name;
+            Namespace = namespaceName;
+            Assembly = assembly;
+            ExtensionMethods = new List<MethodDef>();
+            IsExternalReference = true;
         }
     }
 }
