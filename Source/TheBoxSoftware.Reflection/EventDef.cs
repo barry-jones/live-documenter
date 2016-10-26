@@ -3,17 +3,15 @@
 namespace TheBoxSoftware.Reflection
 {
     /// <summary>
-    /// Represents a single event for a type. An event is made up from one or
-    /// two MethodDef entries in the type. These are generally prefixed with
-    /// add_ and remove_. This class allows those events to be treated as a
-    /// single unit.
+    /// Represents a single event for a type. An event is made up from one or two MethodDef entries 
+    /// in the type. These are generally prefixed with add_ and remove_. This class allows those 
+    /// events to be treated as a single unit.
     /// </summary>
     /// <seealso cref="MethodDef"/>
     public sealed class EventDef : ReflectedMember
     {
         /// <summary>
-        /// Factory method for instantiating an event from the details provided 
-        /// in the metadata.
+        /// Factory method for instantiating an event from the details provided in the metadata.
         /// </summary>
         /// <param name="assembly">The assembly the event is defined in.</param>
         /// <param name="container">The containing type for the event.</param>
@@ -36,12 +34,10 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Attemps to find the add method for this event from its
-        /// containing type.
+        /// Attemps to find the add method for this event from its containing type.
         /// </summary>
         /// <returns>
-        /// The method defenition for add portion of the event or null
-        /// if not found.
+        /// The method defenition for add portion of the event or null if not found.
         /// </returns>
         public MethodDef GetAddEventMethod()
         {
@@ -52,12 +48,10 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Attemps to find the remove method for this event from its
-        /// containing type.
+        /// Attemps to find the remove method for this event from its containing type.
         /// </summary>
         /// <returns>
-        /// The method defenition for remove portion of the event or null
-        /// if not found.
+        /// The method defenition for remove portion of the event or null if not found.
         /// </returns>
         public MethodDef GetRemoveEventMethod()
         {

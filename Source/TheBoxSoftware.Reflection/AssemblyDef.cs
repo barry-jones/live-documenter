@@ -16,9 +16,9 @@ namespace TheBoxSoftware.Reflection
         private Core.Version _version;
         private int _uniqueIdCounter;
         private TypeInNamespaceMap _namspaceMap;
-        private StringStream _stringStream;
+        private IStringStream _stringStream;
 
-        private AssemblyDef()
+        internal AssemblyDef()
         {
             _modules = new List<ModuleDef>();
             _types = new List<TypeDef>();
@@ -63,7 +63,7 @@ namespace TheBoxSoftware.Reflection
             MetadataDirectory metadata = peCoffFile.GetMetadataDirectory();
             MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
 
-            assembly.StringStream = (StringStream)metadata.Streams[Streams.StringStream]; // needs to be populated first
+            assembly.StringStream = (IStringStream)metadata.Streams[Streams.StringStream]; // needs to be populated first
             assembly.LoadAssemblyMetadata(metadataStream);
             assembly.LoadAssemblyRefMetadata(map, metadata, metadataStream);
             assembly.LoadModuleMetadata(map, metadata, metadataStream);
@@ -408,7 +408,7 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < items.Length; i++)
             {
                 AssemblyRefMetadataTableRow assemblyRefRow = items[i] as AssemblyRefMetadataTableRow;
-                AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(this, metadata, assemblyRefRow);
+                AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(this, assemblyRefRow);
                 map.Add(MetadataTables.AssemblyRef, assemblyRefRow, assemblyRef);
                 _referencedAssemblies.Add(assemblyRef);
             }
@@ -444,7 +444,7 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="stringstream"]/*'/> 
-        public StringStream StringStream
+        public IStringStream StringStream
         {
             get { return _stringStream; }
             set { _stringStream = value; }

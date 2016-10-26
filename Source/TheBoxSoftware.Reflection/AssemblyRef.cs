@@ -1,8 +1,9 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using Core.COFF;
+
     /// <summary>
     /// Represents a reference to an external library.
     /// </summary>
@@ -12,10 +13,9 @@ namespace TheBoxSoftware.Reflection
         /// Initialises a new instance of the AssemblyRef class from the provided details.
         /// </summary>
         /// <param name="assembly">The assembly this reference is made in.</param>
-        /// <param name="metadata">The metadata details for the assembly.</param>
         /// <param name="row">The row that provides the assembly reference details.</param>
         /// <returns>A populated AssemblyRef instance.</returns>
-        public static AssemblyRef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, AssemblyRefMetadataTableRow row)
+        public static AssemblyRef CreateFromMetadata(AssemblyDef assembly, AssemblyRefMetadataTableRow row)
         {
             AssemblyRef assemblyRef = new AssemblyRef();
 

@@ -127,12 +127,11 @@
             Represents a reference to an external library.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.AssemblyRef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.AssemblyRefMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.AssemblyRef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.AssemblyRefMetadataTableRow)">
             <summary>
             Initialises a new instance of the AssemblyRef class from the provided details.
             </summary>
             <param name="assembly">The assembly this reference is made in.</param>
-            <param name="metadata">The metadata details for the assembly.</param>
             <param name="row">The row that provides the assembly reference details.</param>
             <returns>A populated AssemblyRef instance.</returns>
         </member>
@@ -4069,17 +4068,15 @@
         </member>
         <member name="T:TheBoxSoftware.Reflection.EventDef">
             <summary>
-            Represents a single event for a type. An event is made up from one or
-            two MethodDef entries in the type. These are generally prefixed with
-            add_ and remove_. This class allows those events to be treated as a
-            single unit.
+            Represents a single event for a type. An event is made up from one or two MethodDef entries 
+            in the type. These are generally prefixed with add_ and remove_. This class allows those 
+            events to be treated as a single unit.
             </summary>
             <seealso cref="T:TheBoxSoftware.Reflection.MethodDef"/>
         </member>
         <member name="M:TheBoxSoftware.Reflection.EventDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.EventMetadataTableRow)">
             <summary>
-            Factory method for instantiating an event from the details provided 
-            in the metadata.
+            Factory method for instantiating an event from the details provided in the metadata.
             </summary>
             <param name="assembly">The assembly the event is defined in.</param>
             <param name="container">The containing type for the event.</param>
@@ -4087,10 +4084,21 @@
             <param name="row">The row that provides access to the details for this event.</param>
             <returns>An instantiated EventDef instance.</returns>
         </member>
-        <member name="P:TheBoxSoftware.Reflection.EventDef.Type">
+        <member name="M:TheBoxSoftware.Reflection.EventDef.GetAddEventMethod">
             <summary>
-            The type which contains this event.
+            Attemps to find the add method for this event from its containing type.
             </summary>
+            <returns>
+            The method defenition for add portion of the event or null if not found.
+            </returns>
+        </member>
+        <member name="M:TheBoxSoftware.Reflection.EventDef.GetRemoveEventMethod">
+            <summary>
+            Attemps to find the remove method for this event from its containing type.
+            </summary>
+            <returns>
+            The method defenition for remove portion of the event or null if not found.
+            </returns>
         </member>
         <member name="M:TheBoxSoftware.Reflection.EventDef.GetInternalName(System.String)">
             <summary>
@@ -4099,25 +4107,10 @@
             </summary>
             <returns>A string containing the implementing method name</returns>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.EventDef.GetAddEventMethod">
+        <member name="P:TheBoxSoftware.Reflection.EventDef.Type">
             <summary>
-            Attemps to find the add method for this event from its
-            containing type.
+            The type which contains this event.
             </summary>
-            <returns>
-            The method defenition for add portion of the event or null
-            if not found.
-            </returns>
-        </member>
-        <member name="M:TheBoxSoftware.Reflection.EventDef.GetRemoveEventMethod">
-            <summary>
-            Attemps to find the remove method for this event from its
-            containing type.
-            </summary>
-            <returns>
-            The method defenition for remove portion of the event or null
-            if not found.
-            </returns>
         </member>
         <member name="T:TheBoxSoftware.Reflection.FieldDef">
             <summary>

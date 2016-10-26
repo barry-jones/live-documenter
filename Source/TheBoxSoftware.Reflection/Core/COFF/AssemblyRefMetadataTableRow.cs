@@ -4,6 +4,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class AssemblyRefMetadataTableRow : MetadataRow
     {
+        public AssemblyRefMetadataTableRow() { }
+
         /// <summary>
         /// Initialises an instance of the AssemblyRefMetadataTableRow class
         /// </summary>

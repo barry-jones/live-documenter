@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// <summary>
     /// The string stream which stores the strings for all metadata names and text.
     /// </summary>
-    public sealed class StringStream : Stream
+    public sealed class StringStream : Stream, IStringStream
     {
         private const char TerminatingChar = '\0';
 

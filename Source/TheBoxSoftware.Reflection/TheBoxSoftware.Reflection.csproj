@@ -160,6 +160,7 @@
     <Compile Include="Core\COFF\ImplMapMetadataTableRow.cs" />
     <Compile Include="Core\COFF\Index.cs" />
     <Compile Include="Core\COFF\InterfaceImplMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\IStringStream.cs" />
     <Compile Include="Core\COFF\ManifestResourceMetadataTableRow.cs" />
     <Compile Include="Core\COFF\MemberRefMetadataTableRow.cs" />
     <Compile Include="Core\COFF\MetadataDirectory.cs" />
