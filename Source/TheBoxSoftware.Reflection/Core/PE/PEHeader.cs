@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.PE
 {
+    using System;
+    using System.Collections.Generic;
+
     public class PEHeader
     {
         public const int Size32Bit = 96;

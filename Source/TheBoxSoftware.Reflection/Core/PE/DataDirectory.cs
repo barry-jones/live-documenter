@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.PE
 {
+    using System;
+
     /// <include file='..\..\code-documentation\core.pe.xml' path='docs/datadirectory/member[@name="class"]/*' />
     public class DataDirectory
     {

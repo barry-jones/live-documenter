@@ -1,6 +1,6 @@
-﻿namespace TheBoxSoftware.Reflection.Core.PE
+﻿
+namespace TheBoxSoftware.Reflection.Core.PE
 {
-    public enum MachineTypes
     {
         Unknown = 0x0,
         I386 = 0x014c,

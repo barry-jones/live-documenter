@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.PE
+﻿
+namespace TheBoxSoftware.Reflection.Core.PE
 {
     public enum FileMagicNumbers : ushort
     {

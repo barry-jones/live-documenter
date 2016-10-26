@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.PE
+﻿
+namespace TheBoxSoftware.Reflection.Core.PE
 {
     /// <summary>
     /// Enumeration of all the available data directories in a MS PE/COFF file.

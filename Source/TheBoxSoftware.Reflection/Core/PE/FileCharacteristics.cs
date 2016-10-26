@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.PE
 {
+    using System;
+
     [Flags]
     public enum FileCharacteristics : ushort
     {

@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.PE
 {
+    using System;
+
     public class SectionHeader
     {
         public SectionHeader(byte[] fileContents, Offset offset)
