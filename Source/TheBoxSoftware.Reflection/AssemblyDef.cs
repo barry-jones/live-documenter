@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using TheBoxSoftware.Reflection.Core.COFF;
-using TheBoxSoftware.Reflection.Core.PE;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using System.Collections.Generic;
+    using Core.COFF;
+    using Core.PE;
+    using Core;
+
     /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="class"]/*'/> 
     public class AssemblyDef : ReflectedMember
     {
@@ -38,7 +39,6 @@ namespace TheBoxSoftware.Reflection
 
             if(!peFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
             {
-                peFile = null;  // would be nice to get the memory back
                 throw new NotAManagedLibraryException($"The file '{fileName}' is not a managed library.");
             }
 
@@ -86,7 +86,7 @@ namespace TheBoxSoftware.Reflection
             List<string> orderedNamespaces = new List<string>();
             Dictionary<string, List<TypeDef>> temp = new Dictionary<string, List<TypeDef>>();
 
-            foreach(TypeDef current in this._types.FindAll(t => !t.IsCompilerGenerated))
+            foreach(TypeDef current in _types.FindAll(t => !t.IsCompilerGenerated))
             {
                 if(!orderedNamespaces.Contains(current.Namespace))
                 {
@@ -100,7 +100,7 @@ namespace TheBoxSoftware.Reflection
             {
                 temp.Add(current, new List<TypeDef>());
             }
-            foreach(TypeDef current in this._types)
+            foreach(TypeDef current in _types)
             {
                 if(temp.ContainsKey(current.Namespace))
                 {
@@ -179,24 +179,10 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="resolvecodedindex"]/*'/> 
-        public object ResolveCodedIndex(CodedIndex index)
+        /*public object ResolveCodedIndex(CodedIndex index)
         {
-            object resolvedReference = null;
-
-            MetadataDirectory metadata = this.File.GetMetadataDirectory();
-            MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
-            if(metadataStream.Tables.ContainsKey(index.Table))
-            {
-                if(metadataStream.Tables[index.Table].Length + 1 > index.Index)
-                {
-                    MetadataToDefinitionMap map = this.File.Map;
-                    MetadataRow metadataRow = metadataStream.GetEntryFor(index);
-                    resolvedReference = map.GetDefinition(index.Table, metadataRow);
-                }
-            }
-
-            return resolvedReference;
-        }
+            return File.ResolveCodedIndex(index);
+        }*/
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getgloballyuniqueid"]/*'/> 
         public override long GetGloballyUniqueId()
@@ -439,8 +425,8 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public TheBoxSoftware.Reflection.Core.Version Version
         {
-            get { return this._version; }
-            set { this._version = value; }
+            get { return _version; }
+            set { _version = value; }
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="stringstream"]/*'/> 

@@ -44,6 +44,24 @@ namespace TheBoxSoftware.Reflection.Core
             return directory.Metadata;
         }
 
+        public object ResolveCodedIndex(COFF.CodedIndex index)
+        {
+            object resolvedReference = null;
+
+            COFF.MetadataDirectory metadata = GetMetadataDirectory();
+            COFF.MetadataStream metadataStream = (COFF.MetadataStream)metadata.Streams[COFF.Streams.MetadataStream];
+            if(metadataStream.Tables.ContainsKey(index.Table))
+            {
+                if(metadataStream.Tables[index.Table].Length + 1 > index.Index)
+                {
+                    COFF.MetadataRow metadataRow = metadataStream.GetEntryFor(index);
+                    resolvedReference = Map.GetDefinition(index.Table, metadataRow);
+                }
+            }
+
+            return resolvedReference;
+        }
+
         /// <summary>
         /// Converts a Relative Virtual Address to a file offset
         /// </summary>

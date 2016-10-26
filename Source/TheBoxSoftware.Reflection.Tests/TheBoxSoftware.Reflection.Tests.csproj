@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Unit\AssemblyDefTests.cs" />
     <Compile Include="Unit\AssemblyRefTests.cs" />
     <Compile Include="Unit\Comments\CRefPathTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />

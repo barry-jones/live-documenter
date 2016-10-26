@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Reflection
             // as per page: 126 of the ECMA, the class column can contain a reference to a TypeRef,
             // MemberRef, TypeSpec or ModuleRef entry
             // TODO: Handle TypeSpec and ModuleRef references
-            object o = assembly.ResolveCodedIndex(row.Class);
+            object o = assembly.File.ResolveCodedIndex(row.Class);
             if(o is TypeRef)
             {
                 memberRef.Type = (TypeRef)o;
