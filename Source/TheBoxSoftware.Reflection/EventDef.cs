@@ -36,47 +36,6 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// The type which contains this event.
-        /// </summary>
-        public TypeDef Type { get; set; }
-
-        public override Visibility MemberAccess
-        {
-            get
-            {
-                int addVisibility = 0;
-                int removeVisibility = 0;
-                MethodDef addMethod = this.GetAddEventMethod();
-                MethodDef removeMethod = this.GetRemoveEventMethod();
-                if(addMethod != null)
-                {
-                    addVisibility = (int)addMethod.MemberAccess;
-                }
-                if(removeMethod != null)
-                {
-                    removeVisibility = (int)removeMethod.MemberAccess;
-                }
-
-                // The more public, the greater the number
-                return (addVisibility > removeVisibility)
-                    ? (Visibility)addVisibility
-                    : (Visibility)removeVisibility;
-            }
-        }
-
-        /// <summary>
-        /// Gets a version of the events name that can be checked against the events method
-        /// names (add, remove) in the owning type.
-        /// </summary>
-        /// <returns>A string containing the implementing method name</returns>
-        private string GetInternalName(string addOrRemove)
-        {
-            // build the event name, some event have full namespaces declared
-            // [#109] this is a bug fix but should be implemented properly when the eventdef is loaded
-            return string.Format("{1}_{0}", this.Name.Substring(this.Name.LastIndexOf('.') + 1), addOrRemove);
-        }
-
-        /// <summary>
         /// Attemps to find the add method for this event from its
         /// containing type.
         /// </summary>
@@ -106,6 +65,47 @@ namespace TheBoxSoftware.Reflection
             string eventName = this.GetInternalName("remove");
 
             return this.Type.Methods.Find(method => method.Name == eventName);
+        }
+
+        /// <summary>
+        /// Gets a version of the events name that can be checked against the events method
+        /// names (add, remove) in the owning type.
+        /// </summary>
+        /// <returns>A string containing the implementing method name</returns>
+        private string GetInternalName(string addOrRemove)
+        {
+            // build the event name, some event have full namespaces declared
+            // [#109] this is a bug fix but should be implemented properly when the eventdef is loaded
+            return $"{addOrRemove}_{this.Name.Substring(this.Name.LastIndexOf('.') + 1)}";
+        }
+
+        /// <summary>
+        /// The type which contains this event.
+        /// </summary>
+        public TypeDef Type { get; set; }
+
+        public override Visibility MemberAccess
+        {
+            get
+            {
+                int addVisibility = 0;
+                int removeVisibility = 0;
+                MethodDef addMethod = this.GetAddEventMethod();
+                MethodDef removeMethod = this.GetRemoveEventMethod();
+                if(addMethod != null)
+                {
+                    addVisibility = (int)addMethod.MemberAccess;
+                }
+                if(removeMethod != null)
+                {
+                    removeVisibility = (int)removeMethod.MemberAccess;
+                }
+
+                // The more public, the greater the number
+                return (addVisibility > removeVisibility)
+                    ? (Visibility)addVisibility
+                    : (Visibility)removeVisibility;
+            }
         }
     }
 }
