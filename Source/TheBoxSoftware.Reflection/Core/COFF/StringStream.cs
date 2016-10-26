@@ -53,7 +53,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The string at the specified index.</returns>
         public string GetString(int index)
         {
-            string readString = string.Empty;
             int lengthOfString = 0;
             int length = _streamContents.Length;
 
@@ -72,7 +71,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 return ASCIIEncoding.UTF8.GetString(currentString);
             }
 
-            return readString;
+            return string.Empty;
         }
 
         /// <summary>

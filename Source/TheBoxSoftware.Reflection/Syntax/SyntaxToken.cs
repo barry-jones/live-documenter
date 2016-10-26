@@ -35,7 +35,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <param name="tokenType">The type of token.</param>
         public SyntaxToken(string content, SyntaxTokens tokenType)
         {
-            this.Content = content;
+            Content = content;
             _tokenType = tokenType;
         }
 

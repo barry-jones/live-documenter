@@ -5670,16 +5670,15 @@
         </member>
         <member name="M:TheBoxSoftware.Reflection.Syntax.Syntax.GetTypeName(TheBoxSoftware.Reflection.TypeRef)">
             <summary>
-            Obtains the name of the type provided. This class will remove any
-            superflous characters from the name to return the name that the user
-            will understand and had entered when creating the type.
+            Obtains the name of the type provided. This class will remove any superflous characters from 
+            the name to return the name that the user will understand and had entered when creating the type.
             </summary>
             <param name="type">The type to get the name of.</param>
             <returns>A string representing the name of the type.</returns>
             <remarks>
-            .NET Framework will add special characters to names to allow, for example,
-            generic methods to be overloaded. These characeters are removed in this
-            method and the user defined name of the type is returned.
+            .NET Framework will add special characters to names to allow, for example, generic methods to 
+            be overloaded. These characeters are removed in this method and the user defined name of the 
+            type is returned.
             <example>
             // User creates type
             public class MyGenericType&lt;T&gt;
@@ -5797,8 +5796,7 @@
         </member>
         <member name="T:TheBoxSoftware.Reflection.Syntax.SyntaxTokens">
             <summary>
-            Enumeration of token types that <see cref="T:TheBoxSoftware.Reflection.Syntax.SyntaxToken"/> can
-            be.
+            Enumeration of token types that <see cref="T:TheBoxSoftware.Reflection.Syntax.SyntaxToken"/> can be.
             </summary>
         </member>
         <member name="F:TheBoxSoftware.Reflection.Syntax.SyntaxTokens.Text">

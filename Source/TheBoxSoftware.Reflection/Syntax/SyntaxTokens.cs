@@ -2,8 +2,7 @@
 namespace TheBoxSoftware.Reflection.Syntax
 {
     /// <summary>
-    /// Enumeration of token types that <see cref="SyntaxToken"/> can
-    /// be.
+    /// Enumeration of token types that <see cref="SyntaxToken"/> can be.
     /// </summary>
     public enum SyntaxTokens
     {

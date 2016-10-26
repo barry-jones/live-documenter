@@ -86,22 +86,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         public Inheritance GetInheritance()
         {
             MethodDef method = _get ?? _set;
-            Inheritance classInheritance = Inheritance.Default;
-
-            if((method.Attributes & Core.COFF.MethodAttributes.Static) == Core.COFF.MethodAttributes.Static)
-            {
-                classInheritance = Inheritance.Static;
-            }
-            else if((method.Attributes & Core.COFF.MethodAttributes.Abstract) == Core.COFF.MethodAttributes.Abstract)
-            {
-                classInheritance = Inheritance.Abstract;
-            }
-            else if((method.Attributes & Core.COFF.MethodAttributes.Virtual) == Core.COFF.MethodAttributes.Virtual)
-            {
-                classInheritance = Inheritance.Virtual;
-            }
-
-            return classInheritance;
+            return ConvertMethodInheritance(method.Attributes);
         }
 
         /// <summary>
