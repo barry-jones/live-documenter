@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
     public struct OpCode
@@ -31,34 +27,34 @@ namespace TheBoxSoftware.Reflection
                         bool endsjmpblk,
                         int stack)
         {
-            this.m_stringname = stringname;
-            this.m_pop = pop;
-            this.m_push = push;
-            this.m_operand = operand;
-            this.m_type = type;
-            this.m_size = size;
-            this.m_s1 = s1;
-            this.m_s2 = s2;
-            this.m_ctrl = ctrl;
-            this.m_endsUncondJmpBlk = endsjmpblk;
-            this.m_stackChange = stack;
+            m_stringname = stringname;
+            m_pop = pop;
+            m_push = push;
+            m_operand = operand;
+            m_type = type;
+            m_size = size;
+            m_s1 = s1;
+            m_s2 = s2;
+            m_ctrl = ctrl;
+            m_endsUncondJmpBlk = endsjmpblk;
+            m_stackChange = stack;
         }
 
         internal bool EndsUncondJmpBlk()
         {
-            return this.m_endsUncondJmpBlk;
+            return m_endsUncondJmpBlk;
         }
 
         internal int StackChange()
         {
-            return this.m_stackChange;
+            return m_stackChange;
         }
 
         public OperandType OperandType
         {
             get
             {
-                return this.m_operand;
+                return m_operand;
             }
         }
 
@@ -66,7 +62,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.m_ctrl;
+                return m_ctrl;
             }
         }
 
@@ -74,7 +70,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.m_type;
+                return m_type;
             }
         }
 
@@ -82,7 +78,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.m_pop;
+                return m_pop;
             }
         }
 
@@ -90,7 +86,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.m_push;
+                return m_push;
             }
         }
 
@@ -98,7 +94,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.m_size;
+                return m_size;
             }
         }
 
@@ -106,11 +102,11 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                if(this.m_size == 2)
+                if(m_size == 2)
                 {
-                    return (short)((this.m_s1 << 8) | this.m_s2);
+                    return (short)((m_s1 << 8) | m_s2);
                 }
-                return this.m_s2;
+                return m_s2;
             }
         }
 
@@ -118,7 +114,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.m_stringname;
+                return m_stringname;
             }
         }
 
@@ -129,7 +125,7 @@ namespace TheBoxSoftware.Reflection
 
         public bool Equals(OpCode obj)
         {
-            return ((obj.m_s1 == this.m_s1) && (obj.m_s2 == this.m_s2));
+            return ((obj.m_s1 == m_s1) && (obj.m_s2 == m_s2));
         }
 
         public static bool operator ==(OpCode a, OpCode b)
@@ -144,12 +140,12 @@ namespace TheBoxSoftware.Reflection
 
         public override int GetHashCode()
         {
-            return this.m_stringname.GetHashCode();
+            return m_stringname.GetHashCode();
         }
 
         public override string ToString()
         {
-            return this.m_stringname;
+            return m_stringname;
         }
     }
 }

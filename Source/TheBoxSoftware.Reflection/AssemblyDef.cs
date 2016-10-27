@@ -10,21 +10,16 @@ namespace TheBoxSoftware.Reflection
     /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="class"]/*'/> 
     public class AssemblyDef : ReflectedMember
     {
-        private List<AssemblyRef> _referencedAssemblies;
-        private List<ModuleDef> _modules;
-        private List<TypeDef> _types;
         private PeCoffFile _file;
         private Core.Version _version;
         private int _uniqueIdCounter;
-        private TypeInNamespaceMap _namspaceMap;
-        private IStringStream _stringStream;
 
         internal AssemblyDef()
         {
-            _modules = new List<ModuleDef>();
-            _types = new List<TypeDef>();
-            _referencedAssemblies = new List<AssemblyRef>();
-            _namspaceMap = new TypeInNamespaceMap(this);
+            Modules = new List<ModuleDef>();
+            Types = new List<TypeDef>();
+            ReferencedAssemblies = new List<AssemblyRef>();
+            Map = new TypeInNamespaceMap(this);
             base.Assembly = this;
         }
 
@@ -48,35 +43,8 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create2"]/*'/> 
         public static AssemblyDef Create(PeCoffFile peCoffFile)
         {
-            if(peCoffFile == null)
-                throw new ArgumentNullException("peCoffFile");
-
-            if(!peCoffFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
-                throw new NotAManagedLibraryException($"The file '{peCoffFile.FileName}' is not a managed library.");
-
-            AssemblyDef assembly = new AssemblyDef();
-            assembly.File = peCoffFile;
-            MetadataToDefinitionMap map = peCoffFile.Map;
-            map.Assembly = assembly;
-
-            // Read the metadata from the file and populate the entries
-            MetadataDirectory metadata = peCoffFile.GetMetadataDirectory();
-            MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
-
-            assembly.StringStream = (IStringStream)metadata.Streams[Streams.StringStream]; // needs to be populated first
-            assembly.LoadAssemblyMetadata(metadataStream);
-            assembly.LoadAssemblyRefMetadata(map, metadata, metadataStream);
-            assembly.LoadModuleMetadata(map, metadata, metadataStream);
-            assembly.LoadTypeRefMetadata(map, metadata, metadataStream);
-            assembly.LoadTypeDefMetadata(map, metadata, metadataStream);
-            assembly.LoadMemberRefMetadata(map, metadata, metadataStream);
-            assembly.LoadTypeSpecMetadata(map, metadata, metadataStream);
-            assembly.LoadNestedClassMetadata(map, metadataStream);
-            assembly.LoadInterfaceImplMetadata(map, metadataStream);
-            assembly.LoadConstantMetadata(map, metadataStream);
-            assembly.LoadCustomAttributeMetadata(map, metadataStream);
-
-            return assembly;
+            AssemblyDefBuilder builder = new AssemblyDefBuilder(peCoffFile);
+            return builder.Build();
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
@@ -86,7 +54,7 @@ namespace TheBoxSoftware.Reflection
             List<string> orderedNamespaces = new List<string>();
             Dictionary<string, List<TypeDef>> temp = new Dictionary<string, List<TypeDef>>();
 
-            foreach(TypeDef current in _types.FindAll(t => !t.IsCompilerGenerated))
+            foreach(TypeDef current in Types.FindAll(t => !t.IsCompilerGenerated))
             {
                 if(!orderedNamespaces.Contains(current.Namespace))
                 {
@@ -100,7 +68,7 @@ namespace TheBoxSoftware.Reflection
             {
                 temp.Add(current, new List<TypeDef>());
             }
-            foreach(TypeDef current in _types)
+            foreach(TypeDef current in Types)
             {
                 if(temp.ContainsKey(current.Namespace))
                 {
@@ -113,29 +81,20 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="isnamespacedefined"]/*'/> 
         public bool IsNamespaceDefined(string theNamespace)
         {
-            return _namspaceMap.ContainsNamespace(theNamespace);
+            return Map.ContainsNamespace(theNamespace);
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getnamespaces"]/*'/> 
         public List<string> GetNamespaces()
         {
-            return _namspaceMap.GetAllNamespaces();
+            return Map.GetAllNamespaces();
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="findtype"]/*'/> 
         public TypeDef FindType(string theNamespace, string theTypeName)
         {
             if(string.IsNullOrEmpty(theTypeName) || string.IsNullOrEmpty(theNamespace)) return null;
-            return _namspaceMap.FindTypeInNamespace(theNamespace, theTypeName);
-        }
-
-        /// <summary>
-        /// Get the next available unique identifier for this assembly.
-        /// </summary>
-        /// <returns>The unique identifier</returns>
-        internal int CreateUniqueId()
-        {
-            return _uniqueIdCounter++;
+            return Map.FindTypeInNamespace(theNamespace, theTypeName);
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="resolvemetadatatoken"]/*'/> 
@@ -179,16 +138,10 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getgloballyuniqueid"]/*'/> 
-        public override long GetGloballyUniqueId()
-        {
-            return ((long)this.UniqueId) << 32;
-        }
+        public override long GetGloballyUniqueId() => ((long)this.UniqueId) << 32;
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
-        public override long GetAssemblyId()
-        {
-            return this.UniqueId;
-        }
+        public override long GetAssemblyId() => this.UniqueId;
 
 #if TEST
         /// <summary>
@@ -215,204 +168,19 @@ namespace TheBoxSoftware.Reflection
         }
 #endif
 
-        private void LoadCustomAttributeMetadata(MetadataToDefinitionMap map, MetadataStream metadataStream)
+        /// <summary>
+        /// Get the next available unique identifier for this assembly.
+        /// </summary>
+        /// <returns>The unique identifier</returns>
+        internal int CreateUniqueId()
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.CustomAttribute))
-                return;
-
-            MetadataRow[] customAttributes = metadataStream.Tables[MetadataTables.CustomAttribute];
-            for(int i = 0; i < customAttributes.Length; i++)
-            {
-                CustomAttributeMetadataTableRow customAttributeRow = customAttributes[i] as CustomAttributeMetadataTableRow;
-
-                ReflectedMember attributeTo = map.GetDefinition(customAttributeRow.Parent.Table,
-                    metadataStream.GetEntryFor(customAttributeRow.Parent)
-                    );
-                MemberRef ofType = (MemberRef)map.GetDefinition(customAttributeRow.Type.Table,
-                    metadataStream.GetEntryFor(customAttributeRow.Type)
-                    );
-
-                if(attributeTo != null)
-                {
-                    CustomAttribute attribute = new CustomAttribute(ofType);
-                    attributeTo.Attributes.Add(attribute);
-                }
-            }
-        }
-
-        private void LoadConstantMetadata(MetadataToDefinitionMap map, MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.Constant))
-                return;
-
-            MetadataRow[] constants = metadataStream.Tables[MetadataTables.Constant];
-            for(int i = 0; i < constants.Length; i++)
-            {
-                ConstantMetadataTableRow constantRow = constants[i] as ConstantMetadataTableRow;
-                ConstantInfo constant = ConstantInfo.CreateFromMetadata(this, metadataStream, constantRow);
-
-                switch(constantRow.Parent.Table)
-                {
-                    case MetadataTables.Field:
-                        FieldDef field = (FieldDef)map.GetDefinition(MetadataTables.Field,
-                            metadataStream.GetEntryFor(MetadataTables.Field, constantRow.Parent.Index)
-                            );
-                        field.Constants.Add(constant);
-                        break;
-                    case MetadataTables.Property:
-                        break;
-                    case MetadataTables.Param:
-                        ParamDef parameter = (ParamDef)map.GetDefinition(MetadataTables.Param,
-                            metadataStream.GetEntryFor(MetadataTables.Param, constantRow.Parent.Index)
-                            );
-                        parameter.Constants.Add(constant);
-                        break;
-                }
-            }
-        }
-
-        private void LoadInterfaceImplMetadata(MetadataToDefinitionMap map, MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.InterfaceImpl))
-                return;
-            
-            MetadataRow[] interfaceImplementations = metadataStream.Tables[MetadataTables.InterfaceImpl];
-            for(int i = 0; i < interfaceImplementations.Length; i++)
-            {
-                InterfaceImplMetadataTableRow interfaceImplRow = interfaceImplementations[i] as InterfaceImplMetadataTableRow;
-                TypeDefMetadataTableRow implementingClassRow = (TypeDefMetadataTableRow)metadataStream.Tables.GetEntryFor(
-                    MetadataTables.TypeDef, interfaceImplRow.Class
-                    );
-                MetadataRow interfaceRow = metadataStream.Tables.GetEntryFor(
-                    interfaceImplRow.Interface.Table,
-                    interfaceImplRow.Interface.Index);
-
-                TypeDef implementingClass = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, implementingClassRow);
-                TypeRef implementedClass = (TypeRef)map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow);
-                if(implementedClass is TypeSpec)
-                {
-                    ((TypeSpec)implementedClass).ImplementingType = implementingClass;
-                }
-                implementingClass.Implements.Add((TypeRef)map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow));
-            }
-        }
-
-        private void LoadNestedClassMetadata(MetadataToDefinitionMap map, MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.NestedClass))
-                return;
-
-            MetadataRow[] nestedClasses = metadataStream.Tables[MetadataTables.NestedClass];
-            for(int i = 0; i < nestedClasses.Length; i++)
-            {
-                NestedClassMetadataTableRow nestedClassRow = nestedClasses[i] as NestedClassMetadataTableRow;
-                TypeDefMetadataTableRow nestedClass = (TypeDefMetadataTableRow)metadataStream.Tables.GetEntryFor(
-                    MetadataTables.TypeDef, nestedClassRow.NestedClass
-                    );
-                TypeDef container = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, metadataStream.Tables.GetEntryFor(
-                    MetadataTables.TypeDef, nestedClassRow.EnclosingClass
-                    ));
-                TypeDef nested = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, nestedClass);
-                nested.ContainingClass = container;
-                _namspaceMap.Add(nested.Namespace, MetadataTables.TypeDef, nestedClass);
-            }
-        }
-
-        private void LoadTypeSpecMetadata(MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.TypeSpec))
-                return;
-            
-            foreach(TypeSpecMetadataTableRow typeSpecRow in metadataStream.Tables[MetadataTables.TypeSpec])
-            {
-                TypeSpec typeRef = TypeSpec.CreateFromMetadata(this, metadata, typeSpecRow);
-                map.Add(MetadataTables.TypeSpec, typeSpecRow, typeRef);
-            }
-        }
-
-        private void LoadMemberRefMetadata(MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.MemberRef))
-                return;
-            
-            int count = metadataStream.Tables[MetadataTables.MemberRef].Length;
-            for(int i = 0; i < count; i++)
-            {
-                MemberRefMetadataTableRow memberRefRow = (MemberRefMetadataTableRow)metadataStream.Tables[MetadataTables.MemberRef][i];
-                MemberRef memberRef = MemberRef.CreateFromMetadata(this, metadata, memberRefRow);
-                map.Add(MetadataTables.MemberRef, memberRefRow, memberRef);
-            }
-        }
-
-        private void LoadTypeDefMetadata(MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
-        {
-            int count = metadataStream.Tables[MetadataTables.TypeDef].Length;
-            for(int i = 0; i < count; i++)
-            {
-                TypeDefMetadataTableRow typeDefRow = (TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][i];
-                TypeDef type = TypeDef.CreateFromMetadata(this, metadata, typeDefRow);
-                map.Add(MetadataTables.TypeDef, typeDefRow, type);
-                _namspaceMap.Add(type.Namespace, MetadataTables.TypeDef, typeDefRow);
-                _types.Add(type);
-            }
-        }
-
-        private void LoadTypeRefMetadata(MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.TypeRef))
-                return;
-            
-            foreach(TypeRefMetadataTableRow typeRefRow in metadataStream.Tables[MetadataTables.TypeRef])
-            {
-                TypeRef typeRef = TypeRef.CreateFromMetadata(this, metadata, typeRefRow);
-                map.Add(MetadataTables.TypeRef, typeRefRow, typeRef);
-            }
-        }
-
-        private void LoadModuleMetadata(MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
-        {
-            foreach(ModuleMetadataTableRow moduleRow in metadataStream.Tables[MetadataTables.Module])
-            {
-                ModuleDef module = ModuleDef.CreateFromMetadata(this, metadata, moduleRow);
-                map.Add(MetadataTables.Module, moduleRow, module);
-                _modules.Add(module);
-            }
-        }
-
-        private void LoadAssemblyRefMetadata(MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.AssemblyRef))
-                return;
-            
-            MetadataRow[] items = metadataStream.Tables[MetadataTables.AssemblyRef];
-            for(int i = 0; i < items.Length; i++)
-            {
-                AssemblyRefMetadataTableRow assemblyRefRow = items[i] as AssemblyRefMetadataTableRow;
-                AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(this, assemblyRefRow);
-                map.Add(MetadataTables.AssemblyRef, assemblyRefRow, assemblyRef);
-                _referencedAssemblies.Add(assemblyRef);
-            }
-        }
-
-        private void LoadAssemblyMetadata(MetadataStream metadataStream)
-        {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.Assembly))
-                return;
-            
-            // Always one and only
-            AssemblyMetadataTableRow assemblyRow = (AssemblyMetadataTableRow)metadataStream.Tables[MetadataTables.Assembly][0];
-            Name = StringStream.GetString(assemblyRow.Name.Value);
-            Version = assemblyRow.GetVersion();
+            return _uniqueIdCounter++;
         }
 
         /// <summary>
         /// The <see cref="PeCoffFile"/> the assembly was reflected from.
         /// </summary>
-        public PeCoffFile File
-        {
-            get { return _file; }
-            set { _file = value; }
-        }
+        public PeCoffFile File { get; set; }
 
         /// <summary>
         /// The version details for this assembly.
@@ -424,10 +192,14 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="stringstream"]/*'/> 
-        public IStringStream StringStream
-        {
-            get { return _stringStream; }
-            set { _stringStream = value; }
-        }
+        public IStringStream StringStream { get; set; }
+
+        public List<AssemblyRef> ReferencedAssemblies { get; set; }
+
+        public List<ModuleDef> Modules { get; set; }
+
+        public List<TypeDef> Types { get; set; }
+
+        internal TypeInNamespaceMap Map { get; set; }
     }
 }

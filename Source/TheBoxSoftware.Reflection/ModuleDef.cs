@@ -1,8 +1,9 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using Core.COFF;
+
     /// <summary>
     /// Provides a definition for a module in an assembly.
     /// </summary>

@@ -90,6 +90,7 @@
       <Link>LibraryVersionInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyDef.cs" />
+    <Compile Include="AssemblyDefBuilder.cs" />
     <Compile Include="AssemblyRef.cs" />
     <Compile Include="Comments\AttributeRequiredException.cs" />
     <Compile Include="Comments\BoldXmlCodeElement.cs" />
