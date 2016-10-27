@@ -10,7 +10,6 @@ namespace TheBoxSoftware.Reflection
     /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="class"]/*'/> 
     public class AssemblyDef : ReflectedMember
     {
-        private PeCoffFile _file;
         private Core.Version _version;
         private int _uniqueIdCounter;
 
@@ -41,41 +40,12 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create2"]/*'/> 
-        public static AssemblyDef Create(PeCoffFile peCoffFile)
-        {
-            AssemblyDefBuilder builder = new AssemblyDefBuilder(peCoffFile);
-            return builder.Build();
-        }
+        public static AssemblyDef Create(PeCoffFile peCoffFile) => new AssemblyDefBuilder(peCoffFile).Build();
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
         public Dictionary<string, List<TypeDef>> GetTypesInNamespaces()
         {
-            // REVIEW: see this.namespaceMap. Also appears to be wasteful
-            List<string> orderedNamespaces = new List<string>();
-            Dictionary<string, List<TypeDef>> temp = new Dictionary<string, List<TypeDef>>();
-
-            foreach(TypeDef current in Types.FindAll(t => !t.IsCompilerGenerated))
-            {
-                if(!orderedNamespaces.Contains(current.Namespace))
-                {
-                    orderedNamespaces.Add(current.Namespace);
-                }
-            }
-
-            orderedNamespaces.Sort();
-
-            foreach(string current in orderedNamespaces)
-            {
-                temp.Add(current, new List<TypeDef>());
-            }
-            foreach(TypeDef current in Types)
-            {
-                if(temp.ContainsKey(current.Namespace))
-                {
-                    temp[current.Namespace].Add(current);
-                }
-            }
-            return temp;
+            return Map.GetAllTypesInNamespaces();
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="isnamespacedefined"]/*'/> 

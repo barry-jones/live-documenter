@@ -37,8 +37,9 @@ namespace TheBoxSoftware.Documentation
 			assemblyEntry.Key = assembly.GetGloballyUniqueId();
 			assemblyEntry.IsSearchable = false;
 
-			// Add the namespaces to the document map
-			foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in assembly.GetTypesInNamespaces())
+            // Add the namespaces to the document map
+            Dictionary<string, List<TypeDef>> typesInNamespaces = assembly.GetTypesInNamespaces();
+			foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in typesInNamespaces)
             {
 				if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0)
                 {

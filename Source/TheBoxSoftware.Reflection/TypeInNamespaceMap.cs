@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using TheBoxSoftware.Reflection.Core;
+
     /// <summary>
     /// Internal mapping class that maps types in to there respective
     /// namespaces. The type itself is not returned only an index to the
@@ -12,28 +12,30 @@ namespace TheBoxSoftware.Reflection
     /// </summary>
     internal class TypeInNamespaceMap
     {
-        private Dictionary<string, List<Entry>> _typeInNamespace = new Dictionary<string, List<Entry>>();
-        private AssemblyDef _assembly;
+        private Dictionary<string, List<TypeDef>> _typeInNamespace = new Dictionary<string, List<TypeDef>>();
+        private PeCoffFile _peCoffFile;
 
         public TypeInNamespaceMap(AssemblyDef inAssembly)
         {
-            _assembly = inAssembly;
+            _peCoffFile = inAssembly.File;
         }
 
         /// <summary>
         /// Adds a new type to a namespaces with a reference to its associated metadata
         /// file.
         /// </summary>
-        /// <param name="inNamespace">The namespace the type is defined in</param>
+        /// <param name="type">The type being added</param>
         /// <param name="table">The table storing the metadata</param>
         /// <param name="row">The row defining the details of the types metadata.</param>
-        public void Add(string inNamespace, Core.COFF.MetadataTables table, Core.COFF.MetadataRow row)
+        public void Add(TypeDef type, Core.COFF.MetadataTables table, Core.COFF.MetadataRow row)
         {
+            string inNamespace = type.Namespace;
+
             if(!_typeInNamespace.ContainsKey(inNamespace))
             {
-                _typeInNamespace.Add(inNamespace, new List<Entry>());
+                _typeInNamespace.Add(inNamespace, new List<TypeDef>());
             }
-            _typeInNamespace[inNamespace].Add(new Entry(table, row.FileOffset));
+            _typeInNamespace[inNamespace].Add(type);
         }
 
         /// <summary>
@@ -43,6 +45,19 @@ namespace TheBoxSoftware.Reflection
         public List<string> GetAllNamespaces()
         {
             return _typeInNamespace.Keys.ToList<string>();
+        }
+
+        public Dictionary<string, List<TypeDef>> GetAllTypesInNamespaces()
+        {
+            // crappy clone of the internal dictionary - we dont want people chaning it
+            Dictionary<string, List<TypeDef>> copy = new Dictionary<string, List<TypeDef>>();
+
+            foreach(KeyValuePair<string, List<TypeDef>> current in _typeInNamespace)
+            {
+                copy.Add(current.Key, new List<TypeDef>(current.Value));
+            }
+
+            return copy;
         }
 
         /// <summary>
@@ -59,11 +74,10 @@ namespace TheBoxSoftware.Reflection
             {
                 return null;
             }
-            List<Entry> entries = _typeInNamespace[inNamespace];
+            List<TypeDef> entries = _typeInNamespace[inNamespace];
             for(int i = 0; i < entries.Count; i++)
             {
-                Entry currentEntry = entries[i];
-                TypeDef def = _assembly.File.Map.GetDefinition(currentEntry.Table, currentEntry.FileOffset) as TypeDef;
+                TypeDef def = entries[i];
                 if(def.Name == typeName)
                     return def;
             }
@@ -79,17 +93,6 @@ namespace TheBoxSoftware.Reflection
         public bool ContainsNamespace(string theNamespace)
         {
             return _typeInNamespace.ContainsKey(theNamespace);
-        }
-
-        private class Entry
-        {
-            public Entry(Core.COFF.MetadataTables table, int fileOffset)
-            {
-                this.Table = table;
-                this.FileOffset = fileOffset;
-            }
-            public Core.COFF.MetadataTables Table;
-            public int FileOffset;
         }
     }
 }

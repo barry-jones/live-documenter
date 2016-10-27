@@ -149,7 +149,8 @@ namespace TheBoxSoftware.Documentation
             Entry namespaceEntry = null;
 
             // Add the namespaces to the document map
-            foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in assembly.GetTypesInNamespaces())
+            Dictionary<string, List<TypeDef>> typesInNamespaces = assembly.GetTypesInNamespaces();
+            foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in typesInNamespaces)
             {
                 if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0)
                 {
