@@ -146,7 +146,7 @@ namespace TheBoxSoftware.Reflection
                     ));
                 TypeDef nested = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, nestedClass);
                 nested.ContainingClass = container;
-                assembly.Map.Add(nested, MetadataTables.TypeDef, nestedClass);
+                assembly.Map.Add(nested);
             }
         }
 
@@ -184,7 +184,7 @@ namespace TheBoxSoftware.Reflection
                 TypeDefMetadataTableRow typeDefRow = (TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][i];
                 TypeDef type = TypeDef.CreateFromMetadata(assembly, metadata, typeDefRow);
                 map.Add(MetadataTables.TypeDef, typeDefRow, type);
-                assembly.Map.Add(type, MetadataTables.TypeDef, typeDefRow);
+                assembly.Map.Add(type);
                 assembly.Types.Add(type);
             }
         }

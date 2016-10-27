@@ -18,7 +18,7 @@ namespace TheBoxSoftware.Reflection
             Modules = new List<ModuleDef>();
             Types = new List<TypeDef>();
             ReferencedAssemblies = new List<AssemblyRef>();
-            Map = new TypeInNamespaceMap(this);
+            Map = new TypeInNamespaceMap();
             base.Assembly = this;
         }
 

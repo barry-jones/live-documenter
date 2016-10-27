@@ -74,12 +74,6 @@
         Searches the assembly for the named type in the specified assembly.
       </summary><param name="theNamespace">The namespace to search for the type in.</param><param name="theTypeName">The name of the type</param><returns>The resolved type definition or null if not found.</returns> 
         </member>
-        <member name="M:TheBoxSoftware.Reflection.AssemblyDef.CreateUniqueId">
-            <summary>
-            Get the next available unique identifier for this assembly.
-            </summary>
-            <returns>The unique identifier</returns>
-        </member>
         <member name="M:TheBoxSoftware.Reflection.AssemblyDef.ResolveMetadataToken(System.Int32)">
             <summary>
         Helps to resolve tokens from the metadata to there associated types and elements inside
@@ -97,6 +91,12 @@
             <summary>
         Returns the unique identifier of the AssemblyDef
       </summary><returns>The assembly unique id</returns> 
+        </member>
+        <member name="M:TheBoxSoftware.Reflection.AssemblyDef.CreateUniqueId">
+            <summary>
+            Get the next available unique identifier for this assembly.
+            </summary>
+            <returns>The unique identifier</returns>
         </member>
         <member name="P:TheBoxSoftware.Reflection.AssemblyDef.File">
             <summary>
@@ -6087,43 +6087,22 @@
             </summary>
         </member>
         <member name="T:TheBoxSoftware.Reflection.TypeInNamespaceMap">
-            <summary>
-            Internal mapping class that maps types in to there respective
-            namespaces. The type itself is not returned only an index to the
-            definition map.
-            </summary>
+            <!-- No matching elements were found for the following include tag --><include file="code-documentation/reflection.xml" path="docs/typeinnamespace/member[@name=&quot;class&quot;]" />
         </member>
-        <member name="M:TheBoxSoftware.Reflection.TypeInNamespaceMap.Add(System.String,TheBoxSoftware.Reflection.Core.COFF.MetadataTables,TheBoxSoftware.Reflection.Core.COFF.MetadataRow)">
-            <summary>
-            Adds a new type to a namespaces with a reference to its associated metadata
-            file.
-            </summary>
-            <param name="inNamespace">The namespace the type is defined in</param>
-            <param name="table">The table storing the metadata</param>
-            <param name="row">The row defining the details of the types metadata.</param>
+        <member name="M:TheBoxSoftware.Reflection.TypeInNamespaceMap.Add(TheBoxSoftware.Reflection.TypeDef)">
+            <!-- No matching elements were found for the following include tag --><include file="code-documentation/reflection.xml" path="docs/typeinnamespace/member[@name=&quot;add&quot;]" />
         </member>
         <member name="M:TheBoxSoftware.Reflection.TypeInNamespaceMap.GetAllNamespaces">
-            <summary>
-            Returns a collection of all the namespaces defined in this map.
-            </summary>
-            <returns>The string collection of namespaces.</returns>
+            <!-- No matching elements were found for the following include tag --><include file="code-documentation/reflection.xml" path="docs/typeinnamespace/member[@name=&quot;getallnamespaces&quot;]" />
+        </member>
+        <member name="M:TheBoxSoftware.Reflection.TypeInNamespaceMap.GetAllTypesInNamespaces">
+            <!-- No matching elements were found for the following include tag --><include file="code-documentation/reflection.xml" path="docs/typeinnamespace/member[@name=&quot;getalltypesinnamespaces&quot;]" />
         </member>
         <member name="M:TheBoxSoftware.Reflection.TypeInNamespaceMap.FindTypeInNamespace(System.String,System.String)">
-            <summary>
-            This is going to be a slow method and it will get slower the more types are
-            defined in an assembly. This is a last resort method for finding types in
-            an assembly.
-            </summary>
-            <param name="inNamespace">The namspace the type is in.</param>
-            <param name="typeName">The name of the type to find</param>
-            <returns>The found TypeDef or null if not found.</returns>
+            <!-- No matching elements were found for the following include tag --><include file="code-documentation/reflection.xml" path="docs/typeinnamespace/member[@name=&quot;getalltypesinnamespaces&quot;]" />
         </member>
         <member name="M:TheBoxSoftware.Reflection.TypeInNamespaceMap.ContainsNamespace(System.String)">
-            <summary>
-            Checks if 'theNamespace' specified is defined in this assembly.
-            </summary>
-            <param name="theNamespace">The namespace to check for.</param>
-            <returns>True if it is else false.</returns>
+            <!-- No matching elements were found for the following include tag --><include file="code-documentation/reflection.xml" path="docs/typeinnamespace/member[@name=&quot;containsnamespace&quot;]" />
         </member>
         <member name="T:TheBoxSoftware.Reflection.TypeRef">
             <summary>
