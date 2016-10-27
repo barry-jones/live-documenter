@@ -30,10 +30,8 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
         public void TypeWithoutNamespaces()
         {
             // [#45] we cant currently find types without namespaces when searching this is a bug and needs to be resolved.
-            bool isNamespaceDefined = _assemblyDef.IsNamespaceDefined(string.Empty);
             TypeDef found = _assemblyDef.FindType(string.Empty, "Issue11");
 
-            Assert.IsTrue(isNamespaceDefined);
             Assert.IsNotNull(found);
             Assert.AreEqual(string.Empty, found.Namespace);
             Assert.AreEqual("Issue11", found.Name);

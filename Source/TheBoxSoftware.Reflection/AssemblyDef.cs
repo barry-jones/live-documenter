@@ -48,12 +48,6 @@ namespace TheBoxSoftware.Reflection
             return Map.GetAllTypesInNamespaces();
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="isnamespacedefined"]/*'/> 
-        public bool IsNamespaceDefined(string theNamespace)
-        {
-            return Map.ContainsNamespace(theNamespace);
-        }
-
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getnamespaces"]/*'/> 
         public List<string> GetNamespaces()
         {

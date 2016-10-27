@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BenchmarkDotNet.Attributes;
-using TheBoxSoftware.Reflection.Core;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace PerformanceTests.Reflection.Core.COFF
 {
+    using System.Collections.Generic;
+    using BenchmarkDotNet.Attributes;
+    using TheBoxSoftware.Reflection.Core;
+    using TheBoxSoftware.Reflection.Core.COFF;
+
     public class StringStreamBenchmark
     {
         private const string TestFile = @"theboxsoftware.reflection.dll";

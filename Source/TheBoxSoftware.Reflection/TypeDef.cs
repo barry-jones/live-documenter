@@ -298,9 +298,6 @@ namespace TheBoxSoftware.Reflection
                 }
             }
 
-            // The methodIndexes variable is used by subsequent loads of properties and events to,
-            // get back to the metedata index for the instantiated definition.
-            Dictionary<MethodDef, int> methodIndexes = new Dictionary<MethodDef, int>();
             typeDef.Methods = new List<MethodDef>();
             if(metadataStream.Tables.ContainsKey(MetadataTables.MethodDef))
             {
@@ -313,10 +310,9 @@ namespace TheBoxSoftware.Reflection
                 // Now load all the methods between our index and the endOfMethodIndex
                 for(int i = row.MethodList; i < endOfMethodIndex; i++)
                 {
-                    MethodMetadataTableRow methodDefRow = (MethodMetadataTableRow)table[i - 1];
+                    MethodMetadataTableRow methodDefRow = table[i - 1] as MethodMetadataTableRow;
                     MethodDef method = MethodDef.CreateFromMetadata(assembly, typeDef, metadata, methodDefRow);
                     map.Add(MetadataTables.MethodDef, methodDefRow, method);
-                    methodIndexes.Add(method, i);
                     typeDef.Methods.Add(method);
                 }
             }
@@ -336,7 +332,7 @@ namespace TheBoxSoftware.Reflection
                 // Now load all the fields between our index and the endOfFieldIndex				
                 for(int i = row.FieldList; i < endOfFieldIndex; i++)
                 {
-                    FieldMetadataTableRow fieldDefRow = (FieldMetadataTableRow)table[i - 1];
+                    FieldMetadataTableRow fieldDefRow = table[i - 1] as FieldMetadataTableRow;
                     FieldDef field = FieldDef.CreateFromMetadata(assembly, typeDef, fieldDefRow);
                     map.Add(MetadataTables.Field, fieldDefRow, field);
                     typeDef.Fields.Add(field);
@@ -372,7 +368,7 @@ namespace TheBoxSoftware.Reflection
                 EventMapMetadataTableRow searchFor = new EventMapMetadataTableRow();
                 searchFor.Parent = indexOfTypeInMetadataTable;
 
-                int mapIndex = Array.BinarySearch<MetadataRow>(metadataStream.Tables[MetadataTables.EventMap],
+                int mapIndex = Array.BinarySearch(metadataStream.Tables[MetadataTables.EventMap],
                     searchFor,
                     new EventMapComparer()
                     );
@@ -397,7 +393,7 @@ namespace TheBoxSoftware.Reflection
                     // Now load all the methods between our index and the endOfMethodIndex
                     for(int i = startEventList; i <= endEventList; i++)
                     {
-                        EventMetadataTableRow eventRow = (EventMetadataTableRow)table[i - 1];
+                        EventMetadataTableRow eventRow = table[i - 1] as EventMetadataTableRow;
                         EventDef eventDef = EventDef.CreateFromMetadata(assembly, typeDef, metadata, eventRow);
 
                         // TODO: Find and set the getter and setter for the property.. at some point
@@ -457,7 +453,7 @@ namespace TheBoxSoftware.Reflection
                     // Now load all the methods between our index and the endOfMethodIndex
                     for(int i = startPropertyList; i <= endPropertyList; i++)
                     {
-                        PropertyMetadataTableRow propertyRow = (PropertyMetadataTableRow)table[i - 1];
+                        PropertyMetadataTableRow propertyRow = table[i - 1] as PropertyMetadataTableRow;
                         PropertyDef property = PropertyDef.CreateFromMetadata(assembly, typeDef, metadata, propertyRow);
 
                         // Get the related getter and setter methods

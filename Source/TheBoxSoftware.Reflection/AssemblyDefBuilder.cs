@@ -8,7 +8,11 @@ namespace TheBoxSoftware.Reflection
 
     internal class AssemblyDefBuilder
     {
-        private readonly PeCoffFile _peCoffFile;
+        private PeCoffFile _peCoffFile;
+        private MetadataToDefinitionMap _map;
+        private MetadataDirectory _metadata;
+        private MetadataStream _stream;
+        private AssemblyDef _assembly;
 
         public AssemblyDefBuilder(PeCoffFile peCoffFile)
         {
@@ -18,51 +22,60 @@ namespace TheBoxSoftware.Reflection
                 throw new NotAManagedLibraryException($"The file '{peCoffFile.FileName}' is not a managed library.");
 
             _peCoffFile = peCoffFile;
+            _map = _peCoffFile.Map;
         }
 
         public AssemblyDef Build()
         {
+            if(_assembly != null) return _assembly; // we have already built it return previous
+
             AssemblyDef assembly = new AssemblyDef();
             assembly.File = _peCoffFile;
-            MetadataToDefinitionMap map = _peCoffFile.Map;
-            map.Assembly = assembly;
+            _map.Assembly = assembly;
 
             // Read the metadata from the file and populate the entries
-            MetadataDirectory metadata = _peCoffFile.GetMetadataDirectory();
-            MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
+            _metadata = _peCoffFile.GetMetadataDirectory();
+            _stream = _metadata.Streams[Streams.MetadataStream] as MetadataStream;
 
-            assembly.StringStream = (IStringStream)metadata.Streams[Streams.StringStream]; // needs to be populated first
-            LoadAssemblyMetadata(assembly, metadataStream);
-            LoadAssemblyRefMetadata(assembly, map, metadata, metadataStream);
-            LoadModuleMetadata(assembly, map, metadata, metadataStream);
-            LoadTypeRefMetadata(assembly, map, metadata, metadataStream);
-            LoadTypeDefMetadata(assembly, map, metadata, metadataStream);
-            LoadMemberRefMetadata(assembly, map, metadata, metadataStream);
-            LoadTypeSpecMetadata(assembly, map, metadata, metadataStream);
-            LoadNestedClassMetadata(assembly, map, metadataStream);
-            LoadInterfaceImplMetadata(map, metadataStream);
-            LoadConstantMetadata(assembly, map, metadataStream);
-            LoadCustomAttributeMetadata(map, metadataStream);
+            assembly.StringStream = _metadata.Streams[Streams.StringStream] as IStringStream; // needs to be populated first
+            LoadAssemblyMetadata(assembly);
+            LoadAssemblyRefMetadata(assembly);
+            LoadModuleMetadata(assembly);
+            LoadTypeRefMetadata(assembly);
+            LoadTypeDefMetadata(assembly);
+            LoadMemberRefMetadata(assembly);
+            LoadTypeSpecMetadata(assembly);
+            LoadNestedClassMetadata(assembly);
+            LoadInterfaceImplMetadata();
+            LoadConstantMetadata(assembly);
+            LoadCustomAttributeMetadata();
 
-            return assembly;
+            // assign the built assembly locally and clear up the unused references
+            _assembly = assembly;
+            _peCoffFile = null;
+            _map = null;
+            _metadata = null;
+            _stream = null;
+
+            return _assembly;
         }
 
-        private void LoadCustomAttributeMetadata(MetadataToDefinitionMap map, MetadataStream metadataStream)
+        private void LoadCustomAttributeMetadata()
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.CustomAttribute))
+            if(!_stream.Tables.ContainsKey(MetadataTables.CustomAttribute))
                 return;
 
-            MetadataRow[] customAttributes = metadataStream.Tables[MetadataTables.CustomAttribute];
+            MetadataRow[] customAttributes = _stream.Tables[MetadataTables.CustomAttribute];
             for(int i = 0; i < customAttributes.Length; i++)
             {
                 CustomAttributeMetadataTableRow customAttributeRow = customAttributes[i] as CustomAttributeMetadataTableRow;
 
-                ReflectedMember attributeTo = map.GetDefinition(customAttributeRow.Parent.Table,
-                    metadataStream.GetEntryFor(customAttributeRow.Parent)
+                ReflectedMember attributeTo = _map.GetDefinition(customAttributeRow.Parent.Table,
+                    _stream.GetEntryFor(customAttributeRow.Parent)
                     );
-                MemberRef ofType = (MemberRef)map.GetDefinition(customAttributeRow.Type.Table,
-                    metadataStream.GetEntryFor(customAttributeRow.Type)
-                    );
+                MemberRef ofType = _map.GetDefinition(customAttributeRow.Type.Table,
+                    _stream.GetEntryFor(customAttributeRow.Type)
+                    ) as MemberRef;
 
                 if(attributeTo != null)
                 {
@@ -72,167 +85,180 @@ namespace TheBoxSoftware.Reflection
             }
         }
 
-        private void LoadConstantMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataStream metadataStream)
+        private void LoadConstantMetadata(AssemblyDef assembly)
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.Constant))
+            if(!_stream.Tables.ContainsKey(MetadataTables.Constant))
                 return;
 
-            MetadataRow[] constants = metadataStream.Tables[MetadataTables.Constant];
+            MetadataRow[] constants = _stream.Tables[MetadataTables.Constant];
+
             for(int i = 0; i < constants.Length; i++)
             {
                 ConstantMetadataTableRow constantRow = constants[i] as ConstantMetadataTableRow;
-                ConstantInfo constant = ConstantInfo.CreateFromMetadata(assembly, metadataStream, constantRow);
+                ConstantInfo constant = ConstantInfo.CreateFromMetadata(assembly, _stream, constantRow);
 
                 switch(constantRow.Parent.Table)
                 {
                     case MetadataTables.Field:
-                        FieldDef field = (FieldDef)map.GetDefinition(MetadataTables.Field,
-                            metadataStream.GetEntryFor(MetadataTables.Field, constantRow.Parent.Index)
-                            );
+                        FieldDef field = _map.GetDefinition(MetadataTables.Field,
+                            _stream.GetEntryFor(MetadataTables.Field, constantRow.Parent.Index)
+                            ) as FieldDef;
                         field.Constants.Add(constant);
                         break;
                     case MetadataTables.Property:
                         break;
                     case MetadataTables.Param:
-                        ParamDef parameter = (ParamDef)map.GetDefinition(MetadataTables.Param,
-                            metadataStream.GetEntryFor(MetadataTables.Param, constantRow.Parent.Index)
-                            );
+                        ParamDef parameter = _map.GetDefinition(MetadataTables.Param,
+                            _stream.GetEntryFor(MetadataTables.Param, constantRow.Parent.Index)
+                            ) as ParamDef;
                         parameter.Constants.Add(constant);
                         break;
                 }
             }
         }
 
-        private void LoadInterfaceImplMetadata(MetadataToDefinitionMap map, MetadataStream metadataStream)
+        private void LoadInterfaceImplMetadata()
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.InterfaceImpl))
+            if(!_stream.Tables.ContainsKey(MetadataTables.InterfaceImpl))
                 return;
 
-            MetadataRow[] interfaceImplementations = metadataStream.Tables[MetadataTables.InterfaceImpl];
+            MetadataRow[] interfaceImplementations = _stream.Tables[MetadataTables.InterfaceImpl];
+
             for(int i = 0; i < interfaceImplementations.Length; i++)
             {
                 InterfaceImplMetadataTableRow interfaceImplRow = interfaceImplementations[i] as InterfaceImplMetadataTableRow;
-                TypeDefMetadataTableRow implementingClassRow = (TypeDefMetadataTableRow)metadataStream.Tables.GetEntryFor(
+                TypeDefMetadataTableRow implementingClassRow = _stream.Tables.GetEntryFor(
                     MetadataTables.TypeDef, interfaceImplRow.Class
-                    );
-                MetadataRow interfaceRow = metadataStream.Tables.GetEntryFor(
+                    ) as TypeDefMetadataTableRow;
+                MetadataRow interfaceRow = _stream.Tables.GetEntryFor(
                     interfaceImplRow.Interface.Table,
                     interfaceImplRow.Interface.Index);
 
-                TypeDef implementingClass = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, implementingClassRow);
-                TypeRef implementedClass = (TypeRef)map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow);
+                TypeDef implementingClass = _map.GetDefinition(MetadataTables.TypeDef, implementingClassRow) as TypeDef;
+                TypeRef implementedClass = _map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow) as TypeRef;
                 if(implementedClass is TypeSpec)
                 {
                     ((TypeSpec)implementedClass).ImplementingType = implementingClass;
                 }
-                implementingClass.Implements.Add((TypeRef)map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow));
+                implementingClass.Implements.Add(_map.GetDefinition(interfaceImplRow.Interface.Table, interfaceRow) as TypeRef);
             }
         }
 
-        private void LoadNestedClassMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataStream metadataStream)
+        private void LoadNestedClassMetadata(AssemblyDef assembly)
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.NestedClass))
+            if(!_stream.Tables.ContainsKey(MetadataTables.NestedClass))
                 return;
 
-            MetadataRow[] nestedClasses = metadataStream.Tables[MetadataTables.NestedClass];
+            MetadataRow[] nestedClasses = _stream.Tables[MetadataTables.NestedClass];
             for(int i = 0; i < nestedClasses.Length; i++)
             {
                 NestedClassMetadataTableRow nestedClassRow = nestedClasses[i] as NestedClassMetadataTableRow;
-                TypeDefMetadataTableRow nestedClass = (TypeDefMetadataTableRow)metadataStream.Tables.GetEntryFor(
+                TypeDefMetadataTableRow nestedClass = _stream.Tables.GetEntryFor(
                     MetadataTables.TypeDef, nestedClassRow.NestedClass
-                    );
-                TypeDef container = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, metadataStream.Tables.GetEntryFor(
+                    ) as TypeDefMetadataTableRow;
+                TypeDef container = _map.GetDefinition(MetadataTables.TypeDef, _stream.Tables.GetEntryFor(
                     MetadataTables.TypeDef, nestedClassRow.EnclosingClass
-                    ));
-                TypeDef nested = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, nestedClass);
+                    )) as TypeDef;
+                TypeDef nested = _map.GetDefinition(MetadataTables.TypeDef, nestedClass) as TypeDef;
                 nested.ContainingClass = container;
                 assembly.Map.Add(nested);
             }
         }
 
-        private void LoadTypeSpecMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
+        private void LoadTypeSpecMetadata(AssemblyDef assembly)
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.TypeSpec))
+            if(!_stream.Tables.ContainsKey(MetadataTables.TypeSpec))
                 return;
 
-            foreach(TypeSpecMetadataTableRow typeSpecRow in metadataStream.Tables[MetadataTables.TypeSpec])
+            foreach(TypeSpecMetadataTableRow typeSpecRow in _stream.Tables[MetadataTables.TypeSpec])
             {
-                TypeSpec typeRef = TypeSpec.CreateFromMetadata(assembly, metadata, typeSpecRow);
-                map.Add(MetadataTables.TypeSpec, typeSpecRow, typeRef);
+                TypeSpec typeRef = TypeSpec.CreateFromMetadata(assembly, _metadata, typeSpecRow);
+                _map.Add(MetadataTables.TypeSpec, typeSpecRow, typeRef);
             }
         }
 
-        private void LoadMemberRefMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
+        private void LoadMemberRefMetadata(AssemblyDef assembly)
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.MemberRef))
+            if(!_stream.Tables.ContainsKey(MetadataTables.MemberRef))
                 return;
 
-            int count = metadataStream.Tables[MetadataTables.MemberRef].Length;
+            int count = _stream.Tables[MetadataTables.MemberRef].Length;
             for(int i = 0; i < count; i++)
             {
-                MemberRefMetadataTableRow memberRefRow = (MemberRefMetadataTableRow)metadataStream.Tables[MetadataTables.MemberRef][i];
-                MemberRef memberRef = MemberRef.CreateFromMetadata(assembly, metadata, memberRefRow);
-                map.Add(MetadataTables.MemberRef, memberRefRow, memberRef);
+                MemberRefMetadataTableRow memberRefRow = _stream.Tables[MetadataTables.MemberRef][i] as MemberRefMetadataTableRow;
+                MemberRef memberRef = MemberRef.CreateFromMetadata(assembly, _metadata, memberRefRow);
+                _map.Add(MetadataTables.MemberRef, memberRefRow, memberRef);
             }
         }
 
-        private void LoadTypeDefMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
+        private void LoadTypeDefMetadata(AssemblyDef assembly)
         {
-            int count = metadataStream.Tables[MetadataTables.TypeDef].Length;
+            MetadataRow[] table = _stream.Tables[MetadataTables.TypeDef];
+            int count = table.Length;
+
             for(int i = 0; i < count; i++)
             {
-                TypeDefMetadataTableRow typeDefRow = (TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][i];
-                TypeDef type = TypeDef.CreateFromMetadata(assembly, metadata, typeDefRow);
-                map.Add(MetadataTables.TypeDef, typeDefRow, type);
+                TypeDefMetadataTableRow typeDefRow = table[i] as TypeDefMetadataTableRow;
+                TypeDef type = TypeDef.CreateFromMetadata(assembly, _metadata, typeDefRow);
+
+                _map.Add(MetadataTables.TypeDef, typeDefRow, type);
                 assembly.Map.Add(type);
                 assembly.Types.Add(type);
             }
         }
 
-        private void LoadTypeRefMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
+        private void LoadTypeRefMetadata(AssemblyDef assembly)
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.TypeRef))
+            if(!_stream.Tables.ContainsKey(MetadataTables.TypeRef))
                 return;
 
-            foreach(TypeRefMetadataTableRow typeRefRow in metadataStream.Tables[MetadataTables.TypeRef])
+            MetadataRow[] table = _stream.Tables[MetadataTables.TypeRef];
+            int count = table.Length;
+
+            for(int i = 0; i < count; i++)
             {
-                TypeRef typeRef = TypeRef.CreateFromMetadata(assembly, metadata, typeRefRow);
-                map.Add(MetadataTables.TypeRef, typeRefRow, typeRef);
+                TypeRefMetadataTableRow row = table[i] as TypeRefMetadataTableRow;
+                TypeRef typeRef = TypeRef.CreateFromMetadata(assembly, _metadata, row);
+                _map.Add(MetadataTables.TypeRef, row, typeRef);
             }
         }
 
-        private void LoadModuleMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
+        private void LoadModuleMetadata(AssemblyDef assembly)
         {
-            foreach(ModuleMetadataTableRow moduleRow in metadataStream.Tables[MetadataTables.Module])
+            MetadataRow[] table = _stream.Tables[MetadataTables.Module];
+            int count = table.Length;
+
+            for(int i = 0; i < count; i++)
             {
-                ModuleDef module = ModuleDef.CreateFromMetadata(assembly, metadata, moduleRow);
-                map.Add(MetadataTables.Module, moduleRow, module);
+                ModuleMetadataTableRow row = table[i] as ModuleMetadataTableRow;
+                ModuleDef module = ModuleDef.CreateFromMetadata(assembly, _metadata, row);
+                _map.Add(MetadataTables.Module, row, module);
                 assembly.Modules.Add(module);
             }
         }
 
-        private void LoadAssemblyRefMetadata(AssemblyDef assembly, MetadataToDefinitionMap map, MetadataDirectory metadata, MetadataStream metadataStream)
+        private void LoadAssemblyRefMetadata(AssemblyDef assembly)
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.AssemblyRef))
+            if(!_stream.Tables.ContainsKey(MetadataTables.AssemblyRef))
                 return;
 
-            MetadataRow[] items = metadataStream.Tables[MetadataTables.AssemblyRef];
+            MetadataRow[] items = _stream.Tables[MetadataTables.AssemblyRef];
             for(int i = 0; i < items.Length; i++)
             {
                 AssemblyRefMetadataTableRow assemblyRefRow = items[i] as AssemblyRefMetadataTableRow;
                 AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(assembly, assemblyRefRow);
-                map.Add(MetadataTables.AssemblyRef, assemblyRefRow, assemblyRef);
+                _map.Add(MetadataTables.AssemblyRef, assemblyRefRow, assemblyRef);
                 assembly.ReferencedAssemblies.Add(assemblyRef);
             }
         }
 
-        private void LoadAssemblyMetadata(AssemblyDef assembly, MetadataStream metadataStream)
+        private void LoadAssemblyMetadata(AssemblyDef assembly)
         {
-            if(!metadataStream.Tables.ContainsKey(MetadataTables.Assembly))
+            if(!_stream.Tables.ContainsKey(MetadataTables.Assembly))
                 return;
 
             // Always one and only
-            AssemblyMetadataTableRow assemblyRow = (AssemblyMetadataTableRow)metadataStream.Tables[MetadataTables.Assembly][0];
+            AssemblyMetadataTableRow assemblyRow = _stream.Tables[MetadataTables.Assembly][0] as AssemblyMetadataTableRow;
             assembly.Name = assembly.StringStream.GetString(assemblyRow.Name.Value);
             assembly.Version = assemblyRow.GetVersion();
         }

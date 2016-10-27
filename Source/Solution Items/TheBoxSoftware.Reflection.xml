@@ -56,14 +56,6 @@
         Returns all the types in their respective namespaces.
       </summary><returns>A dictionary of namespaces and its containing types</returns> 
         </member>
-        <member name="M:TheBoxSoftware.Reflection.AssemblyDef.IsNamespaceDefined(System.String)">
-            <summary>
-        Checks if this assembly defines the namespace specified.
-      </summary><param name="theNamespace">The namespace to check.</param><returns>True if yes else false.</returns><remarks>
-        When using this make sure that you are aware that more than one assembly
-        can specifiy the same namespace.
-      </remarks> 
-        </member>
         <member name="M:TheBoxSoftware.Reflection.AssemblyDef.GetNamespaces">
             <summary>
         Obtains a collection of all the namespaces defined in this assembly.

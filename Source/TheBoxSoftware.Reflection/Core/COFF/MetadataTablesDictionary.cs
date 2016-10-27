@@ -120,7 +120,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
                 for(int i = 0; i < count; i++)
                 {
-                    GenericParamMetadataTableRow current = (GenericParamMetadataTableRow)rows[i];
+                    GenericParamMetadataTableRow current = rows[i] as GenericParamMetadataTableRow;
                     CodedIndex owner = current.Owner;
 
                     if(owner.Index == index && owner.Table == table)
