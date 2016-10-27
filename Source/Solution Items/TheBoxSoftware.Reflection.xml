@@ -3004,6 +3004,13 @@
             </summary>
             <returns>The .NET metadata directory</returns>
         </member>
+        <member name="M:TheBoxSoftware.Reflection.Core.PeCoffFile.ResolveCodedIndex(TheBoxSoftware.Reflection.Core.COFF.CodedIndex)">
+            <summary>
+            Resolves a coded index to it's instantiated reference.
+            </summary>
+            <param name="index">The coded index to resolve</param>
+            <returns>The object referenced by the coded index or null if not found.</returns>
+        </member>
         <member name="M:TheBoxSoftware.Reflection.Core.PeCoffFile.FileAddressFromRVA(System.Int32)">
             <summary>
             Converts a Relative Virtual Address to a file offset

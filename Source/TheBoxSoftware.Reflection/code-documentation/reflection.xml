@@ -107,14 +107,6 @@
       </remarks>
     </member>
 
-    <member name="resolvecodedindex">
-      <summary>
-        Resolves a coded index to its instantiated reference
-      </summary>
-      <param name="index">The coded index to resolve</param>
-      <returns>Null if not resolved else the object referenced by the index</returns>
-    </member>
-
     <member name="getgloballyuniqueid">
       <summary>
         Returns a unique identifier for this AssemblyDef.

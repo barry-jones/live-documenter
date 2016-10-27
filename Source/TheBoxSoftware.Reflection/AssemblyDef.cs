@@ -178,12 +178,6 @@ namespace TheBoxSoftware.Reflection
             return returnItem;
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="resolvecodedindex"]/*'/> 
-        /*public object ResolveCodedIndex(CodedIndex index)
-        {
-            return File.ResolveCodedIndex(index);
-        }*/
-
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getgloballyuniqueid"]/*'/> 
         public override long GetGloballyUniqueId()
         {
@@ -414,7 +408,7 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The <see cref="PeCoffFile"/> the assembly was reflected from.
         /// </summary>
-        public TheBoxSoftware.Reflection.Core.PeCoffFile File
+        public PeCoffFile File
         {
             get { return _file; }
             set { _file = value; }
@@ -423,7 +417,7 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The version details for this assembly.
         /// </summary>
-        public TheBoxSoftware.Reflection.Core.Version Version
+        public Core.Version Version
         {
             get { return _version; }
             set { _version = value; }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using TheBoxSoftware.Diagnostics;
-using TheBoxSoftware.Reflection.Core.PE;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using PE;
+
     /// <summary>
     /// Provides access to the details of a .NET PE/COFF file, implementation is from
     /// the pecoff_v8 Microsoft document.
@@ -44,6 +44,11 @@ namespace TheBoxSoftware.Reflection.Core
             return directory.Metadata;
         }
 
+        /// <summary>
+        /// Resolves a coded index to it's instantiated reference.
+        /// </summary>
+        /// <param name="index">The coded index to resolve</param>
+        /// <returns>The object referenced by the coded index or null if not found.</returns>
         public object ResolveCodedIndex(COFF.CodedIndex index)
         {
             object resolvedReference = null;
