@@ -1,9 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System;
+    using System.Diagnostics;
+    using Core;
+
     /// <summary>
     /// <para>
     /// Class that represents the simplist single element when a type is involved in

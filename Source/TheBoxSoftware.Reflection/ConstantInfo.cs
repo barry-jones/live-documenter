@@ -1,7 +1,8 @@
-﻿using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using Core.COFF;
+
     public class ConstantInfo
     {
         public static ConstantInfo CreateFromMetadata(AssemblyDef assembly, MetadataStream stream, ConstantMetadataTableRow row)

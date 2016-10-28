@@ -1,17 +1,18 @@
-﻿namespace TheBoxSoftware.Reflection
+﻿
+namespace TheBoxSoftware.Reflection
 {
     public class CustomAttribute
     {
-        private MemberRef attributeType;
+        private MemberRef _attributeType;
 
         public CustomAttribute(MemberRef attributeType)
         {
-            this.attributeType = attributeType;
+            _attributeType = attributeType;
         }
 
         public string Name
         {
-            get { return this.attributeType.Type.Name; }
+            get { return _attributeType.Type.Name; }
         }
     }
 }

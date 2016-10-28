@@ -64,6 +64,8 @@
     <Compile Include="Integration\SignatureTests.cs" />
     <Compile Include="Integration\Syntax\CSharp_MethodSyntaxTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\Signitures\ElementTypeSignitureTokenTests.cs" />
+    <Compile Include="Unit\Signitures\SignitureTokenTests.cs" />
     <Compile Include="Unit\Syntax\ClassSyntaxTests.cs" />
     <Compile Include="Unit\Syntax\DelegateSyntaxTests.cs" />
     <Compile Include="Unit\TypeInNamespaceMapTests.cs" />

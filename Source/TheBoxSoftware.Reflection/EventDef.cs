@@ -1,7 +1,8 @@
-﻿using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using Core.COFF;
+
     /// <summary>
     /// Represents a single event for a type. An event is made up from one or two MethodDef entries 
     /// in the type. These are generally prefixed with add_ and remove_. This class allows those 

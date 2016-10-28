@@ -1,8 +1,9 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using TheBoxSoftware.Reflection.Core.COFF;
+
     /// <summary>
     /// Represents an instance of a Member that is referenced from an external source.
     /// </summary>
@@ -89,11 +90,11 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Gets the signiture defined for this member.
         /// </summary>
-        internal Reflection.Signitures.Signiture Signiture
+        internal Signitures.Signiture Signiture
         {
             get
             {
-                if(!this.Assembly.File.IsMetadataLoaded)
+                if(!Assembly.File.IsMetadataLoaded)
                 {
                     throw new InvalidOperationException("The Signiture can not be parsed correctly until the metadata has been loaded.");
                 }

@@ -15,22 +15,20 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Initialises a ParamDef from provided metadata
         /// </summary>
-        /// <param name="owner">The owning method of the parameter</param>
-        /// <param name="metadata">The metadata stream</param>
+        /// <param name="references">The owning method of the parameter</param>
+        /// <param name="container">The method this parameter is for.</param>
         /// <param name="row">The row that details the parameter</param>
         /// <returns>The instantiated defenition</returns>
-        internal static ParamDef CreateFromMetadata(MethodDef owner, MetadataDirectory metadata, ParamMetadataTableRow row)
+        internal static ParamDef CreateFromMetadata(BuildReferences references, MethodDef container, ParamMetadataTableRow row)
         {
             ParamDef parameter = new ParamDef();
-            parameter.Constants = new List<ConstantInfo>();
 
-            AssemblyDef assembly = owner.Assembly;
-            parameter.UniqueId = assembly.CreateUniqueId();
-            parameter.Name = assembly.StringStream.GetString(row.Name.Value);
-            assembly = null;
-            parameter.Method = owner;
+            parameter.Constants = new List<ConstantInfo>();
+            parameter.UniqueId = references.Assembly.CreateUniqueId();
+            parameter.Name = references.Assembly.StringStream.GetString(row.Name.Value);
+            parameter.Method = container;
             parameter.Sequence = row.Sequence;
-            parameter.Assembly = owner.Assembly;
+            parameter.Assembly = references.Assembly;
             parameter._flags = row.Flags;
 
             return parameter;

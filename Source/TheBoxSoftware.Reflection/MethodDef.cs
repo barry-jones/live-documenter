@@ -381,6 +381,8 @@ namespace TheBoxSoftware.Reflection
             private int _rowIndex;
             private int _endOfMethodIndex;
 
+            private BuildReferences _references;
+
             public MethodDefBuilder(BuildReferences references, TypeDef container, MethodMetadataTableRow fromRow)
             {
                 _metadata = references.Metadata;
@@ -390,6 +392,8 @@ namespace TheBoxSoftware.Reflection
                 _fromRow = fromRow;
                 _metadataStream = _metadata.Streams[Streams.MetadataStream] as MetadataStream;
                 _blobStream = _metadata.Streams[Streams.BlobStream] as BlobStream;
+
+                _references = references;
             }
 
             public MethodDef Build()
@@ -415,7 +419,7 @@ namespace TheBoxSoftware.Reflection
                     for(int i = _fromRow.ParamList; i < _endOfMethodIndex; i++)
                     {
                         ParamMetadataTableRow metadataRow = tables[MetadataTables.Param][i - 1] as ParamMetadataTableRow;
-                        ParamDef param = ParamDef.CreateFromMetadata(_methodToBuild, _metadata, metadataRow);
+                        ParamDef param = ParamDef.CreateFromMetadata(_references, _methodToBuild, metadataRow);
 
                         _map.Add(MetadataTables.Param, metadataRow, param);
                         _methodToBuild.Parameters.Add(param);
@@ -445,7 +449,7 @@ namespace TheBoxSoftware.Reflection
                         foreach(GenericParamMetadataTableRow genParam in genericParameters)
                         {
                             _methodToBuild.GenericTypes.Add(
-                                GenericTypeRef.CreateFromMetadata(_assembly, genParam)
+                                GenericTypeRef.CreateFromMetadata(_references, genParam)
                                 );
                         }
                     }
@@ -474,7 +478,7 @@ namespace TheBoxSoftware.Reflection
             private void SetMethodProperties()
             {
                 _methodToBuild.GenericTypes = new List<GenericTypeRef>();
-                _methodToBuild.Parameters = new List<Reflection.ParamDef>();
+                _methodToBuild.Parameters = new List<ParamDef>();
                 _methodToBuild.UniqueId = _assembly.CreateUniqueId();
                 _methodToBuild.Assembly = _assembly;
                 _methodToBuild.Type = _container;

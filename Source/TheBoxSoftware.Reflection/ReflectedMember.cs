@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Base class for all elements that are reflected from a PeCoffFile.
     /// </summary>

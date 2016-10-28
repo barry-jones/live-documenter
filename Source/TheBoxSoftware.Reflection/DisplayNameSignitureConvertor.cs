@@ -1,8 +1,9 @@
-﻿using System;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System;
+    using System.Text;
+
     /// <summary>
     /// A <see cref="SignitureConvertor"/> implementation that creates user
     /// displayable names for types, methods and properties.

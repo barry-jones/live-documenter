@@ -4120,7 +4120,7 @@
             <summary>
             Initialises a new instance of the FieldDef class based on the metadata provided
             </summary>
-            <param name="assembly">The assembly that the field resides in</param>
+            <param name="references">The assembly that the field resides in</param>
             <param name="container">The type this field is contained in</param>
             <param name="row">The metadata row describing the field</param>
             <returns>The initialised field</returns>
@@ -4718,12 +4718,12 @@
             Describes a parameter
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.ParamDef.CreateFromMetadata(TheBoxSoftware.Reflection.MethodDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.ParamMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.ParamDef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.MethodDef,TheBoxSoftware.Reflection.Core.COFF.ParamMetadataTableRow)">
             <summary>
             Initialises a ParamDef from provided metadata
             </summary>
-            <param name="owner">The owning method of the parameter</param>
-            <param name="metadata">The metadata stream</param>
+            <param name="references">The owning method of the parameter</param>
+            <param name="container">The method this parameter is for.</param>
             <param name="row">The row that details the parameter</param>
             <returns>The instantiated defenition</returns>
         </member>

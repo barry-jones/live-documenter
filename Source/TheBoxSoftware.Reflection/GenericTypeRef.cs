@@ -22,16 +22,11 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The populated instance.</returns>
         internal static GenericTypeRef CreateFromMetadata(BuildReferences references, GenericParamMetadataTableRow fromRow)
         {
-            return CreateFromMetadata(references.Assembly, fromRow);
-        }
-
-        internal static GenericTypeRef CreateFromMetadata(AssemblyDef assembly, GenericParamMetadataTableRow fromRow)
-        {
             GenericTypeRef genericType = new GenericTypeRef();
 
-            genericType.UniqueId = assembly.CreateUniqueId();
+            genericType.UniqueId = references.Assembly.CreateUniqueId();
             genericType.Sequence = (Int16)fromRow.Number;
-            genericType.Name = assembly.StringStream.GetString(fromRow.Name.Value);
+            genericType.Name = references.Assembly.StringStream.GetString(fromRow.Name.Value);
             // this.Flags = FieldReader.ToUInt16(contents, offset.Shift(2));
 
             return genericType;

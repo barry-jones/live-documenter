@@ -51,13 +51,22 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create2"]/*'/> 
-        public static AssemblyDef Create(PeCoffFile peCoffFile) => new AssemblyDefBuilder(peCoffFile).Build();
+        public static AssemblyDef Create(PeCoffFile peCoffFile)
+        {
+            return new AssemblyDefBuilder(peCoffFile).Build();
+        }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
-        public Dictionary<string, List<TypeDef>> GetTypesInNamespaces() => Map.GetAllTypesInNamespaces();
+        public Dictionary<string, List<TypeDef>> GetTypesInNamespaces()
+        {
+            return Map.GetAllTypesInNamespaces();
+        }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getnamespaces"]/*'/> 
-        public List<string> GetNamespaces() => Map.GetAllNamespaces();
+        public List<string> GetNamespaces()
+        {
+            return Map.GetAllNamespaces();
+        }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="findtype"]/*'/> 
         public TypeDef FindType(string theNamespace, string theTypeName)
@@ -70,7 +79,7 @@ namespace TheBoxSoftware.Reflection
         public ReflectedMember ResolveMetadataToken(int metadataToken)
         {
             MetadataToDefinitionMap map = this.File.Map;
-            Core.COFF.MetadataStream metadataStream = this.File.GetMetadataDirectory().GetMetadataStream();
+            MetadataStream metadataStream = this.File.GetMetadataDirectory().GetMetadataStream();
 
             // Get the details in the token
             ILMetadataToken token = (ILMetadataToken)(metadataToken & 0xff000000);
@@ -107,10 +116,10 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getgloballyuniqueid"]/*'/> 
-        public override long GetGloballyUniqueId() => ((long)this.UniqueId) << 32;
+        public override long GetGloballyUniqueId() => ((long)UniqueId) << 32;
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
-        public override long GetAssemblyId() => this.UniqueId;
+        public override long GetAssemblyId() => UniqueId;
 
         /// <summary>
         /// Get the next available unique identifier for this assembly.

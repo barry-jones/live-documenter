@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System;
+    using Core;
+
     internal class SignitureToken
     {
-        private const int CompressedByteMask = 0x7f;
-        private const int CompressedShortMask = 0x3fff;
-        private const int CompressedIntMask = 0x1fffffff;
+        private const int CompressedByteMask    = 0x0000007f;
+        private const int CompressedShortMask   = 0x00003fff;
+        private const int CompressedIntMask     = 0x1fffffff;
 
         /// <summary>
         /// Initialises a new instance of the SignitureToken class.

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System.Collections.Generic;
+    using Core.COFF;
+
     /// <summary>
     /// Describes the construction of a field in the CLR metadata.
     /// </summary>
@@ -11,7 +12,7 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Initialises a new instance of the FieldDef class based on the metadata provided
         /// </summary>
-        /// <param name="assembly">The assembly that the field resides in</param>
+        /// <param name="references">The assembly that the field resides in</param>
         /// <param name="container">The type this field is contained in</param>
         /// <param name="row">The metadata row describing the field</param>
         /// <returns>The initialised field</returns>
@@ -38,7 +39,8 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.Name == "value__" || this.Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
+                return Name == "value__" 
+                    || Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
             }
         }
 
@@ -59,7 +61,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.Constants.Count > 0;
+                return Constants.Count > 0;
             }
         }
 
@@ -67,19 +69,19 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                switch(this.Flags & TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FieldAccessMask)
+                switch(this.Flags & FieldAttributes.FieldAccessMask)
                 {
-                    case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Public:
+                    case FieldAttributes.Public:
                         return Visibility.Public;
-                    case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Assembly:
+                    case FieldAttributes.Assembly:
                         return Visibility.Internal;
-                    case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FamANDAssem:
+                    case FieldAttributes.FamANDAssem:
                         return Visibility.Internal;
-                    case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Family:
+                    case FieldAttributes.Family:
                         return Visibility.Protected;
-                    case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.Private:
+                    case FieldAttributes.Private:
                         return Visibility.Private;
-                    case TheBoxSoftware.Reflection.Core.COFF.FieldAttributes.FamORAssem:
+                    case FieldAttributes.FamORAssem:
                         return Visibility.InternalProtected;
                     default:
                         return Visibility.Internal;
