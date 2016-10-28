@@ -54,16 +54,10 @@ namespace TheBoxSoftware.Reflection
         public static AssemblyDef Create(PeCoffFile peCoffFile) => new AssemblyDefBuilder(peCoffFile).Build();
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
-        public Dictionary<string, List<TypeDef>> GetTypesInNamespaces()
-        {
-            return Map.GetAllTypesInNamespaces();
-        }
+        public Dictionary<string, List<TypeDef>> GetTypesInNamespaces() => Map.GetAllTypesInNamespaces();
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getnamespaces"]/*'/> 
-        public List<string> GetNamespaces()
-        {
-            return Map.GetAllNamespaces();
-        }
+        public List<string> GetNamespaces() => Map.GetAllNamespaces();
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="findtype"]/*'/> 
         public TypeDef FindType(string theNamespace, string theTypeName)
@@ -118,6 +112,12 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
         public override long GetAssemblyId() => this.UniqueId;
 
+        /// <summary>
+        /// Get the next available unique identifier for this assembly.
+        /// </summary>
+        /// <returns>The unique identifier</returns>
+        internal int CreateUniqueId() => _uniqueIdCounter++;
+
 #if TEST
         /// <summary>
         /// Prints all the type spec signitures to the Trace stream
@@ -142,15 +142,6 @@ namespace TheBoxSoftware.Reflection
             }
         }
 #endif
-
-        /// <summary>
-        /// Get the next available unique identifier for this assembly.
-        /// </summary>
-        /// <returns>The unique identifier</returns>
-        internal int CreateUniqueId()
-        {
-            return _uniqueIdCounter++;
-        }
 
         /// <summary>
         /// The <see cref="PeCoffFile"/> the assembly was reflected from.

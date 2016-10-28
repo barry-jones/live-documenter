@@ -567,47 +567,47 @@ namespace TheBoxSoftware.Reflection
 
             private void LoadFields()
             {
-                if(_metadataStream.Tables.ContainsKey(MetadataTables.Field))
+                if(!_metadataStream.Tables.ContainsKey(MetadataTables.Field))
+                    return;
+
+                MetadataRow[] table = _metadataStream.Tables[MetadataTables.Field];
+                int endOfFieldIndex = table.Length + 1;
+                if(_nextRowIndex != -1)
                 {
-                    MetadataRow[] table = _metadataStream.Tables[MetadataTables.Field];
-                    int endOfFieldIndex = table.Length + 1;
-                    if(_nextRowIndex != -1)
-                    {
-                        endOfFieldIndex = ((TypeDefMetadataTableRow)_metadataStream.Tables[MetadataTables.TypeDef][_nextRowIndex]).FieldList;
-                    }
+                    endOfFieldIndex = ((TypeDefMetadataTableRow)_metadataStream.Tables[MetadataTables.TypeDef][_nextRowIndex]).FieldList;
+                }
 
-                    // Now load all the fields between our index and the endOfFieldIndex				
-                    for(int i = _fromRow.FieldList; i < endOfFieldIndex; i++)
-                    {
-                        FieldMetadataTableRow fieldDefRow = table[i - 1] as FieldMetadataTableRow;
-                        FieldDef field = FieldDef.CreateFromMetadata(_references, _builtType, fieldDefRow);
+                // Now load all the fields between our index and the endOfFieldIndex				
+                for(int i = _fromRow.FieldList; i < endOfFieldIndex; i++)
+                {
+                    FieldMetadataTableRow fieldDefRow = table[i - 1] as FieldMetadataTableRow;
+                    FieldDef field = FieldDef.CreateFromMetadata(_references, _builtType, fieldDefRow);
 
-                        _map.Add(MetadataTables.Field, fieldDefRow, field);
-                        _builtType.Fields.Add(field);
-                    }
+                    _map.Add(MetadataTables.Field, fieldDefRow, field);
+                    _builtType.Fields.Add(field);
                 }
             }
 
             private void LoadMethods()
             {
-                if(_metadataStream.Tables.ContainsKey(MetadataTables.MethodDef))
+                if(!_metadataStream.Tables.ContainsKey(MetadataTables.MethodDef))
+                    return;
+
+                MetadataRow[] table = _metadataStream.Tables[MetadataTables.MethodDef];
+                int endOfMethodIndex = table.Length + 1;
+                if(_nextRowIndex != -1)
                 {
-                    MetadataRow[] table = _metadataStream.Tables[MetadataTables.MethodDef];
-                    int endOfMethodIndex = table.Length + 1;
-                    if(_nextRowIndex != -1)
-                    {
-                        endOfMethodIndex = ((TypeDefMetadataTableRow)_metadataStream.Tables[MetadataTables.TypeDef][_nextRowIndex]).MethodList;
-                    }
+                    endOfMethodIndex = ((TypeDefMetadataTableRow)_metadataStream.Tables[MetadataTables.TypeDef][_nextRowIndex]).MethodList;
+                }
 
-                    // Now load all the methods between our index and the endOfMethodIndex
-                    for(int i = _fromRow.MethodList; i < endOfMethodIndex; i++)
-                    {
-                        MethodMetadataTableRow methodDefRow = table[i - 1] as MethodMetadataTableRow;
-                        MethodDef method = MethodDef.CreateFromMetadata(_references, _builtType, methodDefRow);
+                // Now load all the methods between our index and the endOfMethodIndex
+                for(int i = _fromRow.MethodList; i < endOfMethodIndex; i++)
+                {
+                    MethodMetadataTableRow methodDefRow = table[i - 1] as MethodMetadataTableRow;
+                    MethodDef method = MethodDef.CreateFromMetadata(_references, _builtType, methodDefRow);
 
-                        _map.Add(MetadataTables.MethodDef, methodDefRow, method);
-                        _builtType.Methods.Add(method);
-                    }
+                    _map.Add(MetadataTables.MethodDef, methodDefRow, method);
+                    _builtType.Methods.Add(method);
                 }
             }
 
@@ -656,47 +656,47 @@ namespace TheBoxSoftware.Reflection
             {
                 // Check if we have a property map and then find the property map for the current type
                 // if it exists.
-                if(_metadataStream.Tables.ContainsKey(MetadataTables.EventMap))
+                if(!_metadataStream.Tables.ContainsKey(MetadataTables.EventMap))
+                    return;
+
+                int startEventList = -1;
+                int endEventList = -1;
+
+                EventMapMetadataTableRow searchFor = new EventMapMetadataTableRow();
+                searchFor.Parent = _indexInMetadataTable;
+
+                int mapIndex = Array.BinarySearch(_metadataStream.Tables[MetadataTables.EventMap],
+                    searchFor,
+                    new EventMapComparer()
+                    );
+                if(mapIndex >= 0)
                 {
-                    int startEventList = -1;
-                    int endEventList = -1;
-
-                    EventMapMetadataTableRow searchFor = new EventMapMetadataTableRow();
-                    searchFor.Parent = _indexInMetadataTable;
-
-                    int mapIndex = Array.BinarySearch(_metadataStream.Tables[MetadataTables.EventMap],
-                        searchFor,
-                        new EventMapComparer()
-                        );
-                    if(mapIndex >= 0)
+                    startEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex]).EventList;
+                    if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.EventMap] - 1)
                     {
-                        startEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex]).EventList;
-                        if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.EventMap] - 1)
-                        {
-                            endEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex + 1]).EventList - 1;
-                        }
-                        else
-                        {
-                            endEventList = _metadataStream.RowsInPresentTables[MetadataTables.Event];
-                        }
+                        endEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex + 1]).EventList - 1;
                     }
-
-                    // If we have properties we need to load them, instantiate a PropertyDef and relate
-                    // it to its getter and setter.
-                    if(startEventList != -1)
+                    else
                     {
-                        MetadataRow[] table = _metadataStream.Tables[MetadataTables.Event];
-                        // Now load all the methods between our index and the endOfMethodIndex
-                        for(int i = startEventList; i <= endEventList; i++)
-                        {
-                            EventMetadataTableRow eventRow = table[i - 1] as EventMetadataTableRow;
-                            EventDef eventDef = EventDef.CreateFromMetadata(_references, _builtType, eventRow);
+                        endEventList = _metadataStream.RowsInPresentTables[MetadataTables.Event];
+                    }
+                }
 
-                            // TODO: Find and set the getter and setter for the property.. at some point
+                // If we have properties we need to load them, instantiate a PropertyDef and relate
+                // it to its getter and setter.
+                if(startEventList != -1)
+                {
+                    MetadataRow[] table = _metadataStream.Tables[MetadataTables.Event];
+                    // Now load all the methods between our index and the endOfMethodIndex
+                    for(int i = startEventList; i <= endEventList; i++)
+                    {
+                        EventMetadataTableRow eventRow = table[i - 1] as EventMetadataTableRow;
+                        EventDef eventDef = EventDef.CreateFromMetadata(_references, _builtType, eventRow);
 
-                            _map.Add(MetadataTables.Event, eventRow, eventDef);
-                            _builtType.Events.Add(eventDef);
-                        }
+                        // TODO: Find and set the getter and setter for the property.. at some point
+
+                        _map.Add(MetadataTables.Event, eventRow, eventDef);
+                        _builtType.Events.Add(eventDef);
                     }
                 }
             }
@@ -705,71 +705,71 @@ namespace TheBoxSoftware.Reflection
             {
                 // Check if we have a property map and then find the property map for the current type
                 // if it exists.
-                if(_metadataStream.Tables.ContainsKey(MetadataTables.PropertyMap))
+                if(!_metadataStream.Tables.ContainsKey(MetadataTables.PropertyMap))
+                    return;
+                 
+                // TODO: The metadata tables are in order, we should use a sorted search algorithm to
+                // find elements we need.
+                int startPropertyList = -1;
+                int endPropertyList = -1;
+                PropertyMapMetadataTableRow searchFor = new PropertyMapMetadataTableRow();
+                searchFor.Parent = _indexInMetadataTable;
+                int mapIndex = Array.BinarySearch(_metadataStream.Tables[MetadataTables.PropertyMap],
+                    searchFor,
+                    new PropertyMapComparer()
+                    );
+                if(mapIndex >= 0)
                 {
-                    // TODO: The metadata tables are in order, we should use a sorted search algorithm to
-                    // find elements we need.
-                    int startPropertyList = -1;
-                    int endPropertyList = -1;
-                    PropertyMapMetadataTableRow searchFor = new PropertyMapMetadataTableRow();
-                    searchFor.Parent = _indexInMetadataTable;
-                    int mapIndex = Array.BinarySearch<MetadataRow>(_metadataStream.Tables[MetadataTables.PropertyMap],
-                        searchFor,
-                        new PropertyMapComparer()
-                        );
-                    if(mapIndex >= 0)
+                    startPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex]).PropertyList;
+                    if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.PropertyMap] - 1)
                     {
-                        startPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex]).PropertyList;
-                        if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.PropertyMap] - 1)
-                        {
-                            endPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex + 1]).PropertyList - 1;
-                        }
-                        else
-                        {
-                            endPropertyList = _metadataStream.RowsInPresentTables[MetadataTables.Property];
-                        }
+                        endPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex + 1]).PropertyList - 1;
                     }
-
-                    // If we have properties we need to load them, instantiate a PropertyDef and relate
-                    // it to its getter and setter.
-                    if(startPropertyList != -1)
+                    else
                     {
-                        MetadataRow[] table = _metadataStream.Tables[MetadataTables.Property];
-                        MetadataRow[] methodSemantics = _metadataStream.Tables[MetadataTables.MethodSemantics];
+                        endPropertyList = _metadataStream.RowsInPresentTables[MetadataTables.Property];
+                    }
+                }
 
-                        // Now load all the methods between our index and the endOfMethodIndex
-                        for(int i = startPropertyList; i <= endPropertyList; i++)
+                // If we have properties we need to load them, instantiate a PropertyDef and relate
+                // it to its getter and setter.
+                if(startPropertyList != -1)
+                {
+                    MetadataRow[] table = _metadataStream.Tables[MetadataTables.Property];
+                    MetadataRow[] methodSemantics = _metadataStream.Tables[MetadataTables.MethodSemantics];
+
+                    // Now load all the methods between our index and the endOfMethodIndex
+                    for(int i = startPropertyList; i <= endPropertyList; i++)
+                    {
+                        PropertyMetadataTableRow propertyRow = table[i - 1] as PropertyMetadataTableRow;
+                        PropertyDef property = PropertyDef.CreateFromMetadata(_references, _builtType, propertyRow);
+
+                        // Get the related getter and setter methods
+                        for(int j = 0; j < methodSemantics.Length; j++)
                         {
-                            PropertyMetadataTableRow propertyRow = table[i - 1] as PropertyMetadataTableRow;
-                            PropertyDef property = PropertyDef.CreateFromMetadata(_references, _builtType, propertyRow);
-
-                            // Get the related getter and setter methods
-                            for(int j = 0; j < methodSemantics.Length; j++)
+                            MethodSemanticsMetadataTableRow semantics = methodSemantics[j] as MethodSemanticsMetadataTableRow;
+                            CodedIndex index = semantics.Association;
+                            if(index.Table == MetadataTables.Property && index.Index == i)
                             {
-                                MethodSemanticsMetadataTableRow semantics = methodSemantics[j] as MethodSemanticsMetadataTableRow;
-                                CodedIndex index = semantics.Association;
-                                if(index.Table == MetadataTables.Property && index.Index == i)
+                                if(semantics.Semantics == MethodSemanticsAttributes.Setter)
                                 {
-                                    if(semantics.Semantics == MethodSemanticsAttributes.Setter)
-                                    {
-                                        property.SetMethod = _map.GetDefinition(
-                                            MetadataTables.MethodDef,
-                                            _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
-                                            ) as MethodDef;
-                                    }
-                                    else if(semantics.Semantics == MethodSemanticsAttributes.Getter)
-                                    {
-                                        property.GetMethod = _map.GetDefinition(
-                                            MetadataTables.MethodDef,
-                                            _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
-                                            ) as MethodDef;
-                                    }
+                                    property.SetMethod = _map.GetDefinition(
+                                        MetadataTables.MethodDef,
+                                        _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
+                                        ) as MethodDef;
+                                }
+                                else if(semantics.Semantics == MethodSemanticsAttributes.Getter)
+                                {
+                                    property.GetMethod = _map.GetDefinition(
+                                        MetadataTables.MethodDef,
+                                        _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
+                                        ) as MethodDef;
                                 }
                             }
-
-                            _map.Add(MetadataTables.Property, propertyRow, property);
-                            _builtType.Properties.Add(property);
                         }
+
+                        _map.Add(MetadataTables.Property, propertyRow, property);
+                        _builtType.Properties.Add(property);
                     }
                 }
             }

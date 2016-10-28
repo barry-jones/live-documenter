@@ -2,7 +2,6 @@
 namespace TheBoxSoftware.Reflection
 {
     using System;
-    using System.Collections.Generic;
     using Core;
     using Core.COFF;
     using Core.PE;
