@@ -109,6 +109,12 @@
         reason.
       </remarks> 
         </member>
+        <member name="T:TheBoxSoftware.Reflection.AssemblyIndex">
+            <summary>
+            An index class that maps relationships between the high level defenitions and
+            low level metadata.
+            </summary>
+        </member>
         <member name="T:TheBoxSoftware.Reflection.AssemblyRef">
             <summary>
             Represents a reference to an external library.
@@ -4557,12 +4563,6 @@
             Represents a method definition as a reflected element.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.MethodDef.GetGenericTypes">
-            <summary>
-            Obtains the list of generic types that are defined and owned only by this member.
-            </summary>
-            <returns>A collection of generic types for this member</returns>
-        </member>
         <member name="M:TheBoxSoftware.Reflection.MethodDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.MethodMetadataTableRow)">
             <summary>
             Initialises a new instance of MethodDef for the provided data
@@ -4579,6 +4579,12 @@
             of the MSIL.
             </summary>
             <returns>The instantiated <see cref="T:TheBoxSoftware.Reflection.MethodBody"/>.</returns>
+        </member>
+        <member name="M:TheBoxSoftware.Reflection.MethodDef.GetGenericTypes">
+            <summary>
+            Obtains the list of generic types that are defined and owned only by this member.
+            </summary>
+            <returns>A collection of generic types for this member</returns>
         </member>
         <member name="M:TheBoxSoftware.Reflection.MethodDef.GetIL(System.Int32,System.Int32)">
             <summary>
@@ -4612,11 +4618,6 @@
         <member name="P:TheBoxSoftware.Reflection.MethodDef.Parameters">
             <summary>
             The parameters for this method.
-            </summary>
-        </member>
-        <member name="P:TheBoxSoftware.Reflection.MethodDef.RVA">
-            <summary>
-            The RVA for the methods IL body.
             </summary>
         </member>
         <member name="P:TheBoxSoftware.Reflection.MethodDef.IsGeneric">

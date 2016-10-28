@@ -2,6 +2,7 @@
 namespace TheBoxSoftware.Reflection
 {
     using System;
+    using System.Collections.Generic;
     using Core;
     using Core.COFF;
     using Core.PE;
@@ -29,6 +30,12 @@ namespace TheBoxSoftware.Reflection
         {
             if(_assembly != null) return _assembly; // we have already built it return previous
 
+            
+            List<TypeDef> types;
+            List<AssemblyRef> assemblyReferences;
+            List<ModuleDef> modules;
+            AssemblyIndex index;
+
             AssemblyDef assembly = new AssemblyDef();
             assembly.File = _peCoffFile;
             _map.Assembly = assembly;
@@ -38,6 +45,7 @@ namespace TheBoxSoftware.Reflection
             _stream = _metadata.Streams[Streams.MetadataStream] as MetadataStream;
 
             assembly.StringStream = _metadata.Streams[Streams.StringStream] as IStringStream; // needs to be populated first
+
             LoadAssemblyMetadata(assembly);
             LoadAssemblyRefMetadata(assembly);
             LoadModuleMetadata(assembly);

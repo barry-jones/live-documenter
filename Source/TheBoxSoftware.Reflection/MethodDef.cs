@@ -1,27 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using TheBoxSoftware.Reflection.Core.COFF;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using Core.COFF;
+    using Signitures;
+
     /// <summary>
     /// Represents a method definition as a reflected element.
     /// </summary>
-    [System.Diagnostics.DebuggerDisplay("Method Name={Name}")]
+    [DebuggerDisplay("Method Name={Name}")]
     public class MethodDef : MemberRef
     {
-        private const int METHOD_BODY_SIZE_MASK = 0x03;
+        private const int MethodBodySizeMask = 0x03;
 
-        /// <summary>
-        /// Obtains the list of generic types that are defined and owned only by this member.
-        /// </summary>
-        /// <returns>A collection of generic types for this member</returns>
-        public List<GenericTypeRef> GetGenericTypes()
-        {
-            return this.GenericTypes;
-        }
+        private uint _rva; // the reletive virtual address of this methods IL body
+        private bool _isGeneric;
+        private List<GenericTypeRef> _genericTypes;
+        private bool _isSpecialName;
+        private MethodAttributes _attributes;
+        private MethodImplFlags _implementationFlags;
+        private bool _isConversionOperator;
+        private List<ParamDef> _parameters;
 
         /// <summary>
         /// Initialises a new instance of MethodDef for the provided data
@@ -37,82 +39,14 @@ namespace TheBoxSoftware.Reflection
                 MetadataDirectory metadata,
                 MethodMetadataTableRow row)
         {
-            MetadataToDefinitionMap map = assembly.File.Map;
-            MethodDef method = new MethodDef();
+            BuildReferences references = new BuildReferences();
+            references.Assembly = assembly;
+            references.PeCoffFile = assembly.File;
+            references.Map = assembly.File.Map;
+            references.Metadata = assembly.File.GetMetadataDirectory();
 
-            method.GenericTypes = new List<GenericTypeRef>();
-            method.UniqueId = assembly.CreateUniqueId();
-            method.Assembly = assembly;
-            method.Type = container;
-            method.RVA = (int)row.RVA;
-            method.Name = assembly.StringStream.GetString(row.Name.Value);
-            method.SignitureBlob = row.Signiture;
-            // Set flag based information
-            method.IsSpecialName = (row.Flags & MethodAttributes.SpecialName) == MethodAttributes.SpecialName;
-            method.Attributes = row.Flags;
-            method.ImplementationFlags = row.ImplFlags;
-            method.Assembly = assembly;
-
-            // See details of MemberRef implementation for issues with this!
-            method.IsConstructor = method.Name.StartsWith(".");
-            method.IsOperator = method.Name.StartsWith("op_");
-            method.IsConversionOperator = method.Name == "op_Explicit" || method.Name == "op_Implicit";
-
-            // Load the parameters for this method
-            MetadataStream metadataStream = (MetadataStream)metadata.Streams[Streams.MetadataStream];
-            int rowIndex = metadataStream.Tables.GetIndexFor(MetadataTables.MethodDef, row);
-            int nextRow = rowIndex < metadataStream.Tables[MetadataTables.MethodDef].Length - 1
-                ? rowIndex + 1
-                : -1;
-            int endOfMethodIndex = 0;
-            if(metadataStream.Tables.ContainsKey(MetadataTables.Param))
-            {
-                endOfMethodIndex = metadataStream.Tables[MetadataTables.Param].Length + 1;
-                if(nextRow != -1)
-                {
-                    endOfMethodIndex = ((MethodMetadataTableRow)metadataStream.Tables[MetadataTables.MethodDef][nextRow]).ParamList;
-                }
-            }
-
-            BlobStream stream = (BlobStream)((Core.COFF.CLRDirectory)assembly.File.Directories[
-                Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
-            if((Signitures.MethodDefSigniture.GetCallingConvention(assembly.File,
-                stream.GetSignitureContents((int)method.SignitureBlob.Value)) & CallingConventions.Generic) == CallingConventions.Generic)
-            {
-                List<GenericParamMetadataTableRow> genericParameters = metadataStream.Tables.GetGenericParametersFor(
-                    MetadataTables.MethodDef, rowIndex + 1);
-                if(genericParameters.Count > 0)
-                {
-                    method.IsGeneric = true;
-                    foreach(GenericParamMetadataTableRow genParam in genericParameters)
-                    {
-                        method.GenericTypes.Add(GenericTypeRef.CreateFromMetadata(
-                            assembly, metadata, genParam
-                            ));
-                    }
-                }
-            }
-
-            // Now load all the methods between our index and the endOfMethodIndex
-            method.Parameters = new List<ParamDef>();
-            if(metadataStream.Tables.ContainsKey(MetadataTables.Param))
-            {
-                for(int i = row.ParamList; i < endOfMethodIndex; i++)
-                {
-                    ParamMetadataTableRow metadataRow = (ParamMetadataTableRow)metadataStream.Tables[MetadataTables.Param][i - 1];
-                    ParamDef param = ParamDef.CreateFromMetadata(method, metadata, metadataRow);
-                    map.Add(MetadataTables.Param, metadataRow, param);
-                    method.Parameters.Add(param);
-                }
-            }
-
-            if(method.IsSpecialName && method.Name.Contains("set_Item"))
-            {
-                // for setter methods on indexers the last parameter is actually the return value
-                method.Parameters.RemoveAt(method.Parameters.Count - 1);
-            }
-
-            return method;
+            MethodDefBuilder builder = new MethodDefBuilder(references, container, row);
+            return builder.Build();
         }
 
         /// <summary>
@@ -125,7 +59,7 @@ namespace TheBoxSoftware.Reflection
             Int16 maxStack = 0;
             Int32 localsToken;
             Int32 codeSize = 0;
-            int address = this.Assembly.File.FileAddressFromRVA(this.RVA);
+            int address = this.Assembly.File.FileAddressFromRVA((int)_rva);
             List<byte> contents = new List<byte>(this.Assembly.File.FileContents);
 
             byte sizeMask = 0x03;
@@ -139,7 +73,7 @@ namespace TheBoxSoftware.Reflection
             }
             else if((firstByte & sizeMask) == 0x03)
             {   // FAT
-                TheBoxSoftware.Reflection.Core.Offset offset = address;
+                Core.Offset offset = address;
                 uint flagsAndSize = BitConverter.ToUInt16(this.Assembly.File.FileContents, offset.Shift(2));
                 uint lengthOfHeader = flagsAndSize >> 12;
                 maxStack = BitConverter.ToInt16(this.Assembly.File.FileContents, offset.Shift(2));
@@ -154,6 +88,15 @@ namespace TheBoxSoftware.Reflection
                 maxStack
                 );
             return body;
+        }
+
+        /// <summary>
+        /// Obtains the list of generic types that are defined and owned only by this member.
+        /// </summary>
+        /// <returns>A collection of generic types for this member</returns>
+        public List<GenericTypeRef> GetGenericTypes()
+        {
+            return GenericTypes;
         }
 
         /// <summary>
@@ -298,24 +241,22 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// A reference to the return type for this method.
-        /// </summary>
-        //public TypeRef ReturnType { get; set; }
-
-        /// <summary>
         /// The parameters for this method.
         /// </summary>
-        public List<ParamDef> Parameters { get; set; }
-
-        /// <summary>
-        /// The RVA for the methods IL body.
-        /// </summary>
-        private int RVA { get; set; }
+        public List<ParamDef> Parameters
+        {
+            get { return _parameters; }
+            set { _parameters = value; }
+        }
 
         /// <summary>
         /// Indicates if this method is a generic method or not.
         /// </summary>
-        public bool IsGeneric { get; set; }
+        public bool IsGeneric
+        {
+            get { return _isGeneric; }
+            set { _isGeneric = value; }
+        }
 
         /// <summary>
         /// Collection of the generic types defined against this method.
@@ -325,37 +266,49 @@ namespace TheBoxSoftware.Reflection
         /// then utilise the <see cref="GetGenericTypes"/> method instead.
         /// </remarks>
         /// <seealso cref="GetGenericTypes"/>
-        public List<GenericTypeRef> GenericTypes { get; set; }
+        public List<GenericTypeRef> GenericTypes
+        {
+            get { return _genericTypes; }
+            set { _genericTypes = value; }
+        }
 
         /// <summary>
         /// Indicates if this method has a special name which is interpreted by the runtime,
         /// this is generally associated with the getters and setters or properties and
         /// events.
         /// </summary>
-        public bool IsSpecialName { get; set; }
+        public bool IsSpecialName
+        {
+            get { return _isSpecialName; }
+            set { _isSpecialName = value; }
+        }
 
         /// <summary>
         /// Gets or sets an set of flags detailing generic information about this method.
         /// </summary>
-        public MethodAttributes Attributes { get; set; }
+        public MethodAttributes Attributes
+        {
+            get { return _attributes; }
+            set { _attributes = value; }
+        }
 
         public override Visibility MemberAccess
         {
             get
             {
-                switch(this.Attributes & TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.MemberAccessMask)
+                switch(Attributes & MethodAttributes.MemberAccessMask)
                 {
-                    case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Public:
+                    case MethodAttributes.Public:
                         return Visibility.Public;
-                    case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Assem:
+                    case MethodAttributes.Assem:
                         return Visibility.Internal;
-                    case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamANDAssem:
+                    case MethodAttributes.FamANDAssem:
                         return Visibility.Internal;
-                    case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Family:
+                    case MethodAttributes.Family:
                         return Visibility.Protected;
-                    case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.Private:
+                    case MethodAttributes.Private:
                         return Visibility.Private;
-                    case TheBoxSoftware.Reflection.Core.COFF.MethodAttributes.FamORAssem:
+                    case MethodAttributes.FamORAssem:
                         return Visibility.InternalProtected;
                     default:
                         return Visibility.Internal;
@@ -367,7 +320,11 @@ namespace TheBoxSoftware.Reflection
         /// Gets or sets a set of flags detailing the implementation details of this
         /// method.
         /// </summary>
-        public MethodImplFlags ImplementationFlags { get; set; }
+        public MethodImplFlags ImplementationFlags
+        {
+            get { return _implementationFlags; }
+            set { _implementationFlags = value; }
+        }
 
         /// <summary>
         /// Denotes if this method is generated and or managed by the compiler and not
@@ -392,7 +349,11 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// A boolean value indicating if this method is a conversion operator.
         /// </summary>
-        public bool IsConversionOperator { get; set; }
+        public bool IsConversionOperator
+        {
+            get { return _isConversionOperator; }
+            set { _isConversionOperator = value; }
+        }
 
         /// <summary>
         /// Indicates if this method is an extension method or not.
@@ -401,6 +362,8 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
+                // TODO: why are we casting to a base type to get access to a property which we have 
+                //  created with the same name!
                 List<CustomAttribute> attributes = ((MemberRef)this).Attributes;
                 if(attributes.Count > 0)
                 {
@@ -413,6 +376,135 @@ namespace TheBoxSoftware.Reflection
                     }
                 }
                 return false;
+            }
+        }
+
+        private class MethodDefBuilder
+        {
+            private MetadataDirectory _metadata;
+            private MetadataToDefinitionMap _map;
+            private AssemblyDef _assembly;
+            private TypeDef _container;
+            private MethodMetadataTableRow _fromRow;
+            private MetadataStream _metadataStream;
+            private BlobStream _blobStream;
+            private MethodDef _methodToBuild;
+            private int _rowIndex;
+            private int _endOfMethodIndex;
+
+            public MethodDefBuilder(BuildReferences references, TypeDef container, MethodMetadataTableRow fromRow)
+            {
+                _metadata = references.Metadata;
+                _map = references.Map;
+                _assembly = references.Assembly;
+                _container = container;
+                _fromRow = fromRow;
+                _metadataStream = _metadata.Streams[Streams.MetadataStream] as MetadataStream;
+                _blobStream = _metadata.Streams[Streams.BlobStream] as BlobStream;
+            }
+
+            public MethodDef Build()
+            {
+                if(_methodToBuild != null) throw new InvalidOperationException("Can not use the same builder twice");
+
+                _methodToBuild = new MethodDef();
+
+                SetMethodProperties();
+                CalculateIndexes();
+                LoadGenericParameters();
+                LoadParameters();
+
+                return _methodToBuild;
+            }
+
+            private void LoadParameters()
+            {
+                MetadataTablesDictionary tables = _metadataStream.Tables;
+
+                if(tables.ContainsKey(MetadataTables.Param))
+                {
+                    for(int i = _fromRow.ParamList; i < _endOfMethodIndex; i++)
+                    {
+                        ParamMetadataTableRow metadataRow = tables[MetadataTables.Param][i - 1] as ParamMetadataTableRow;
+                        ParamDef param = ParamDef.CreateFromMetadata(_methodToBuild, _metadata, metadataRow);
+
+                        _map.Add(MetadataTables.Param, metadataRow, param);
+                        _methodToBuild.Parameters.Add(param);
+                    }
+                }
+
+                if(_methodToBuild.IsSpecialName && _methodToBuild.Name.Contains("set_Item"))
+                {
+                    // for setter methods on indexers the last parameter is actually the return value
+                    _methodToBuild.Parameters.RemoveAt(_methodToBuild.Parameters.Count - 1);
+                }
+            }
+
+            private void LoadGenericParameters()
+            {
+                CallingConventions callingConvention = MethodDefSigniture.GetCallingConvention(_assembly.File,
+                    _blobStream.GetSignitureContents((int)_methodToBuild.SignitureBlob.Value));
+                bool isGenericMethod = (callingConvention & CallingConventions.Generic) == CallingConventions.Generic;
+
+                if(isGenericMethod)
+                {
+                    List<GenericParamMetadataTableRow> genericParameters = _metadataStream.Tables.GetGenericParametersFor(
+                        MetadataTables.MethodDef, _rowIndex + 1);
+                    if(genericParameters.Count > 0)
+                    {
+                        _methodToBuild.IsGeneric = true;
+                        foreach(GenericParamMetadataTableRow genParam in genericParameters)
+                        {
+                            _methodToBuild.GenericTypes.Add(GenericTypeRef.CreateFromMetadata(
+                                _assembly, _metadata, genParam
+                                ));
+                        }
+                    }
+                }
+            }
+
+            private void CalculateIndexes()
+            {
+                _rowIndex = _metadataStream.Tables.GetIndexFor(MetadataTables.MethodDef, _fromRow);
+                int nextRow = _rowIndex < _metadataStream.Tables[MetadataTables.MethodDef].Length - 1
+                    ? _rowIndex + 1
+                    : -1;
+                _endOfMethodIndex = 0;
+
+                // calculate the end of method index so we have the start and end of list of parameters
+                if(_metadataStream.Tables.ContainsKey(MetadataTables.Param))
+                {
+                    _endOfMethodIndex = _metadataStream.Tables[MetadataTables.Param].Length + 1;
+                    if(nextRow != -1)
+                    {
+                        _endOfMethodIndex = ((MethodMetadataTableRow)_metadataStream.Tables[MetadataTables.MethodDef][nextRow]).ParamList;
+                    }
+                }
+            }
+
+            private void SetMethodProperties()
+            {
+                _methodToBuild.GenericTypes = new List<GenericTypeRef>();
+                _methodToBuild.Parameters = new List<Reflection.ParamDef>();
+                _methodToBuild.UniqueId = _assembly.CreateUniqueId();
+                _methodToBuild.Assembly = _assembly;
+                _methodToBuild.Type = _container;
+                _methodToBuild._rva = _fromRow.RVA;
+                _methodToBuild.Name = _assembly.StringStream.GetString(_fromRow.Name.Value);
+                _methodToBuild.SignitureBlob = _fromRow.Signiture;
+                // Set flag based information
+                _methodToBuild._isSpecialName = (_fromRow.Flags & MethodAttributes.SpecialName) == MethodAttributes.SpecialName;
+                _methodToBuild._attributes = _fromRow.Flags;
+                _methodToBuild._implementationFlags = _fromRow.ImplFlags;
+                _methodToBuild.Assembly = _assembly;
+
+                // See details of MemberRef implementation for issues with this!
+                _methodToBuild.IsConstructor = _methodToBuild.Name.StartsWith(".");
+                _methodToBuild.IsOperator = _methodToBuild.Name.StartsWith("op_");
+                if(_methodToBuild.IsOperator)
+                {
+                    _methodToBuild._isConversionOperator = _methodToBuild.Name == "op_Explicit" || _methodToBuild.Name == "op_Implicit";
+                }
             }
         }
     }

@@ -12,6 +12,7 @@ namespace TheBoxSoftware.Reflection
     {
         private Core.Version _version;
         private int _uniqueIdCounter;
+        private readonly AssemblyIndex _index;
 
         internal AssemblyDef()
         {
@@ -19,6 +20,16 @@ namespace TheBoxSoftware.Reflection
             Types = new List<TypeDef>();
             ReferencedAssemblies = new List<AssemblyRef>();
             Map = new TypeInNamespaceMap();
+            base.Assembly = this;
+        }
+
+        internal AssemblyDef(List<ModuleDef> modules, List<TypeDef> types, List<AssemblyRef> assemblyReferences, IStringStream stream, AssemblyIndex index)
+        {
+            Modules = modules;
+            Types = types;
+            ReferencedAssemblies = assemblyReferences;
+            _index = index;
+            StringStream = stream;
             base.Assembly = this;
         }
 
