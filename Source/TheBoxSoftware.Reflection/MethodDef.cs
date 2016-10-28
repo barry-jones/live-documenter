@@ -28,23 +28,12 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Initialises a new instance of MethodDef for the provided data
         /// </summary>
-        /// <param name="assembly">The assembly this method is a part of</param>
+        /// <param name="references">The references required to build the methods</param>
         /// <param name="container">The owning type for this method</param>
-        /// <param name="metadata">The metadata directory</param>
         /// <param name="row">The row detailing the method</param>
         /// <returns>The initialised MethodDef</returns>
-        internal static MethodDef CreateFromMetadata(
-                AssemblyDef assembly,
-                TypeDef container,
-                MetadataDirectory metadata,
-                MethodMetadataTableRow row)
+        internal static MethodDef CreateFromMetadata(BuildReferences references, TypeDef container, MethodMetadataTableRow row)
         {
-            BuildReferences references = new BuildReferences();
-            references.Assembly = assembly;
-            references.PeCoffFile = assembly.File;
-            references.Map = assembly.File.Map;
-            references.Metadata = assembly.File.GetMetadataDirectory();
-
             MethodDefBuilder builder = new MethodDefBuilder(references, container, row);
             return builder.Build();
         }
@@ -455,9 +444,9 @@ namespace TheBoxSoftware.Reflection
                         _methodToBuild.IsGeneric = true;
                         foreach(GenericParamMetadataTableRow genParam in genericParameters)
                         {
-                            _methodToBuild.GenericTypes.Add(GenericTypeRef.CreateFromMetadata(
-                                _assembly, _metadata, genParam
-                                ));
+                            _methodToBuild.GenericTypes.Add(
+                                GenericTypeRef.CreateFromMetadata(_assembly, genParam)
+                                );
                         }
                     }
                 }

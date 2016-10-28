@@ -15,14 +15,14 @@ namespace TheBoxSoftware.Reflection
         /// <param name="container">The type this field is contained in</param>
         /// <param name="row">The metadata row describing the field</param>
         /// <returns>The initialised field</returns>
-        internal static FieldDef CreateFromMetadata(AssemblyDef assembly, TypeDef container, FieldMetadataTableRow row)
+        internal static FieldDef CreateFromMetadata(BuildReferences references, TypeDef container, FieldMetadataTableRow row)
         {
             FieldDef field = new FieldDef();
 
-            field.UniqueId = assembly.CreateUniqueId();
-            field.Assembly = assembly;
+            field.UniqueId = references.Assembly.CreateUniqueId();
+            field.Assembly = references.Assembly;
             field.Type = container;
-            field.Name = assembly.StringStream.GetString(row.Name.Value);
+            field.Name = references.Assembly.StringStream.GetString(row.Name.Value);
             field.SignitureBlob = row.Signiture;
             field.Flags = row.Flags;
             field.Constants = new List<ConstantInfo>();

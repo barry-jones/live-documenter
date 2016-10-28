@@ -12,19 +12,19 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Instantiates a module from the specified row in the metadata
         /// </summary>
-        /// <param name="assembly">The assembly that contains and defines the module.</param>
-        /// <param name="metadataDirectory">The metadata directory</param>
+        /// <param name="references">Container of all the required references to build the type.</param>
         /// <param name="row">The row to instantiate</param>
         /// <returns>The instantiated module</returns>
-        internal static ModuleDef CreateFromMetadata(AssemblyDef assembly,
-                                                    MetadataDirectory metadataDirectory,
-                                                    ModuleMetadataTableRow row)
+        internal static ModuleDef CreateFromMetadata(BuildReferences references, ModuleMetadataTableRow row)
         {
+            GuidStream stream = references.Metadata.Streams[Streams.GuidStream] as GuidStream;
             ModuleDef module = new ModuleDef();
-            module.Name = assembly.StringStream.GetString(row.Name.Value);
-            module.UniqueId = assembly.CreateUniqueId();
-            module.ModuleVersionId = ((GuidStream)metadataDirectory.Streams[Streams.GuidStream]).GetGuid(row.Mvid);
-            module.Assembly = assembly;
+
+            module.Name = references.Assembly.StringStream.GetString(row.Name.Value);
+            module.UniqueId = references.Assembly.CreateUniqueId();
+            module.ModuleVersionId = stream.GetGuid(row.Mvid);
+            module.Assembly = references.Assembly;
+
             return module;
         }
 

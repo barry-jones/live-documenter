@@ -21,24 +21,20 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Initialises a new instance of the TypeRef class.
         /// </summary>
-        /// <param name="assembly">The assembly that defines the type reference.</param>
-        /// <param name="metadata">The assembly metadata</param>
+        /// <param name="references">A container of all the references required to build the typeref.</param>
         /// <param name="row">The metadata row that describes the type reference.</param>
         /// <returns>A reference to a TypeRef that represents the metadata row.</returns>
-        internal static TypeRef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, TypeRefMetadataTableRow row)
+        internal static TypeRef CreateFromMetadata(BuildReferences references, TypeRefMetadataTableRow row)
         {
             TypeRef typeRef = new TypeRef();
 
-            typeRef.UniqueId = assembly.CreateUniqueId();
-            typeRef.Name = assembly.StringStream.GetString(row.Name.Value);
-            typeRef.Namespace = assembly.StringStream.GetString(row.Namespace.Value);
-            typeRef.Assembly = assembly;
+            typeRef.UniqueId = references.Assembly.CreateUniqueId();
+            typeRef.Name = references.Assembly.StringStream.GetString(row.Name.Value);
+            typeRef.Namespace = references.Assembly.StringStream.GetString(row.Namespace.Value);
             typeRef.IsExternalReference = true;
             typeRef._resolutionScope = row.ResolutionScope;
             typeRef.IsGeneric = typeRef.Name.IndexOf('`') != -1;    // Must be a better way :/
-            typeRef.Assembly = assembly;
-
-            // Initialise other collection/properties
+            typeRef.Assembly = references.Assembly;
             typeRef.ExtensionMethods = new List<MethodDef>();
 
             return typeRef;

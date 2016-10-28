@@ -12,10 +12,10 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Initialises a new instance of the AssemblyRef class from the provided details.
         /// </summary>
-        /// <param name="assembly">The assembly this reference is made in.</param>
+        /// <param name="references">Container of all the references required to build this type.</param>
         /// <param name="row">The row that provides the assembly reference details.</param>
         /// <returns>A populated AssemblyRef instance.</returns>
-        public static AssemblyRef CreateFromMetadata(AssemblyDef assembly, AssemblyRefMetadataTableRow row)
+        internal static AssemblyRef CreateFromMetadata(BuildReferences references, AssemblyRefMetadataTableRow row)
         {
             AssemblyRef assemblyRef = new AssemblyRef();
 
@@ -24,10 +24,10 @@ namespace TheBoxSoftware.Reflection
                 row.MinorVersion,
                 row.BuildNumber,
                 row.RevisionNumber);
-            assemblyRef.Culture = assembly.StringStream.GetString(row.Culture.Value);
-            assemblyRef.UniqueId = assembly.CreateUniqueId();
-            assemblyRef.Name = assembly.StringStream.GetString(row.Name.Value);
-            assemblyRef.Assembly = assembly;
+            assemblyRef.Culture = references.Assembly.StringStream.GetString(row.Culture.Value);
+            assemblyRef.UniqueId = references.Assembly.CreateUniqueId();
+            assemblyRef.Name = references.Assembly.StringStream.GetString(row.Name.Value);
+            assemblyRef.Assembly = references.Assembly;
 
             return assemblyRef;
         }

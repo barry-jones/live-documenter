@@ -16,15 +16,17 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         {
             Mock<IStringStream> stringStream = new Mock<IStringStream>();
             AssemblyDef assemblyDef = new AssemblyDef();
+            BuildReferences references = new BuildReferences();
             AssemblyRefMetadataTableRow row = BuildTestMetadataRow();
 
+            references.Assembly = assemblyDef;
             assemblyDef.StringStream = stringStream.Object;
 
             // setup string methods to return strings in createfrom... method
             stringStream.Setup(p => p.GetString(CultureIndex)).Returns("culture");
             stringStream.Setup(p => p.GetString(NameIndex)).Returns("name");
 
-            AssemblyRef reference = AssemblyRef.CreateFromMetadata(assemblyDef, row);
+            AssemblyRef reference = AssemblyRef.CreateFromMetadata(references, row);
 
             Assert.AreEqual("1.4.10.1204", reference.Version.ToString());
             Assert.AreEqual("culture", reference.Culture);

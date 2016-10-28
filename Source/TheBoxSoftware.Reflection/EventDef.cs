@@ -13,22 +13,18 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Factory method for instantiating an event from the details provided in the metadata.
         /// </summary>
-        /// <param name="assembly">The assembly the event is defined in.</param>
+        /// <param name="references">The assembly the event is defined in.</param>
         /// <param name="container">The containing type for the event.</param>
-        /// <param name="metadata">The metadata directory the details are stored in.</param>
-        /// <param name="row">The row that provides access to the details for this event.</param>
+        /// <param name="fromRow">The row that provides access to the details for this event.</param>
         /// <returns>An instantiated EventDef instance.</returns>
-        public static EventDef CreateFromMetadata(AssemblyDef assembly,
-                TypeDef container,
-                MetadataDirectory metadata,
-                EventMetadataTableRow row)
+        internal static EventDef CreateFromMetadata(BuildReferences references, TypeDef container, EventMetadataTableRow fromRow)
         {
             EventDef createdEvent = new EventDef();
 
             createdEvent.Type = container;
-            createdEvent.UniqueId = row.FileOffset;
-            createdEvent.Name = assembly.StringStream.GetString(row.Name.Value);
-            createdEvent.Assembly = assembly;
+            createdEvent.UniqueId = fromRow.FileOffset;
+            createdEvent.Name = references.Assembly.StringStream.GetString(fromRow.Name.Value);
+            createdEvent.Assembly = references.Assembly;
 
             return createdEvent;
         }

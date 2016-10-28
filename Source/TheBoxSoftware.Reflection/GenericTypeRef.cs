@@ -1,8 +1,9 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using Core.COFF;
+
     /// <summary>
     /// A class that represents a generic type; generic types are defined on
     /// types and methods. These types however will never resolve to an actual
@@ -16,17 +17,23 @@ namespace TheBoxSoftware.Reflection
         /// Initialises and populates a new GenericTypeRef instance based on the details
         /// provided in the metadata row.
         /// </summary>
-        /// <param name="assembly">The assembly the type is defined in.</param>
-        /// <param name="metadata">The metadata directory</param>
-        /// <param name="row">The metadata row.</param>
+        /// <param name="references">All the required references the create requires to build the type.</param>
+        /// <param name="fromRow">The metadata row.</param>
         /// <returns>The populated instance.</returns>
-        internal static GenericTypeRef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, GenericParamMetadataTableRow row)
+        internal static GenericTypeRef CreateFromMetadata(BuildReferences references, GenericParamMetadataTableRow fromRow)
+        {
+            return CreateFromMetadata(references.Assembly, fromRow);
+        }
+
+        internal static GenericTypeRef CreateFromMetadata(AssemblyDef assembly, GenericParamMetadataTableRow fromRow)
         {
             GenericTypeRef genericType = new GenericTypeRef();
+
             genericType.UniqueId = assembly.CreateUniqueId();
-            genericType.Sequence = (Int16)row.Number;
-            genericType.Name = assembly.StringStream.GetString(row.Name.Value);
+            genericType.Sequence = (Int16)fromRow.Number;
+            genericType.Name = assembly.StringStream.GetString(fromRow.Name.Value);
             // this.Flags = FieldReader.ToUInt16(contents, offset.Shift(2));
+
             return genericType;
         }
 

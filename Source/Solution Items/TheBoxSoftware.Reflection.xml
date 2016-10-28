@@ -120,11 +120,11 @@
             Represents a reference to an external library.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.AssemblyRef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.AssemblyRefMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.AssemblyRef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.Core.COFF.AssemblyRefMetadataTableRow)">
             <summary>
             Initialises a new instance of the AssemblyRef class from the provided details.
             </summary>
-            <param name="assembly">The assembly this reference is made in.</param>
+            <param name="references">Container of all the references required to build this type.</param>
             <param name="row">The row that provides the assembly reference details.</param>
             <returns>A populated AssemblyRef instance.</returns>
         </member>
@@ -4074,14 +4074,13 @@
             </summary>
             <seealso cref="T:TheBoxSoftware.Reflection.MethodDef"/>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.EventDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.EventMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.EventDef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.EventMetadataTableRow)">
             <summary>
             Factory method for instantiating an event from the details provided in the metadata.
             </summary>
-            <param name="assembly">The assembly the event is defined in.</param>
+            <param name="references">The assembly the event is defined in.</param>
             <param name="container">The containing type for the event.</param>
-            <param name="metadata">The metadata directory the details are stored in.</param>
-            <param name="row">The row that provides access to the details for this event.</param>
+            <param name="fromRow">The row that provides access to the details for this event.</param>
             <returns>An instantiated EventDef instance.</returns>
         </member>
         <member name="M:TheBoxSoftware.Reflection.EventDef.GetAddEventMethod">
@@ -4117,7 +4116,7 @@
             Describes the construction of a field in the CLR metadata.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.FieldDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.FieldMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.FieldDef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.FieldMetadataTableRow)">
             <summary>
             Initialises a new instance of the FieldDef class based on the metadata provided
             </summary>
@@ -4161,14 +4160,13 @@
             <seealso cref="T:TheBoxSoftware.Reflection.TypeDef" />
             <seealso cref="T:TheBoxSoftware.Reflection.MethodDef" />
         </member>
-        <member name="M:TheBoxSoftware.Reflection.GenericTypeRef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.GenericParamMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.GenericTypeRef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.Core.COFF.GenericParamMetadataTableRow)">
             <summary>
             Initialises and populates a new GenericTypeRef instance based on the details
             provided in the metadata row.
             </summary>
-            <param name="assembly">The assembly the type is defined in.</param>
-            <param name="metadata">The metadata directory</param>
-            <param name="row">The metadata row.</param>
+            <param name="references">All the required references the create requires to build the type.</param>
+            <param name="fromRow">The metadata row.</param>
             <returns>The populated instance.</returns>
         </member>
         <member name="P:TheBoxSoftware.Reflection.GenericTypeRef.Sequence">
@@ -4563,13 +4561,12 @@
             Represents a method definition as a reflected element.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.MethodDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.MethodMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.MethodDef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MethodMetadataTableRow)">
             <summary>
             Initialises a new instance of MethodDef for the provided data
             </summary>
-            <param name="assembly">The assembly this method is a part of</param>
+            <param name="references">The references required to build the methods</param>
             <param name="container">The owning type for this method</param>
-            <param name="metadata">The metadata directory</param>
             <param name="row">The row detailing the method</param>
             <returns>The initialised MethodDef</returns>
         </member>
@@ -4678,12 +4675,11 @@
             Provides a definition for a module in an assembly.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.ModuleDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.ModuleMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.ModuleDef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.Core.COFF.ModuleMetadataTableRow)">
             <summary>
             Instantiates a module from the specified row in the metadata
             </summary>
-            <param name="assembly">The assembly that contains and defines the module.</param>
-            <param name="metadataDirectory">The metadata directory</param>
+            <param name="references">Container of all the required references to build the type.</param>
             <param name="row">The row to instantiate</param>
             <returns>The instantiated module</returns>
         </member>
@@ -4767,13 +4763,12 @@
             A class that describes a property that has been defined in an <see cref="T:TheBoxSoftware.Reflection.TypeDef"/>.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.PropertyDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.PropertyMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.PropertyDef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.PropertyMetadataTableRow)">
             <summary>
             Initialises a new instance of the PropertyDef class.
             </summary>
-            <param name="assembly">The assembly the property is defined in.</param>
-            <param name="typeDef">The containing type definition.</param>
-            <param name="metadata">The metadata store where the property is defined</param>
+            <param name="references">An object that contains all of the required references to build the property.</param>
+            <param name="container">The containing type definition.</param>
             <param name="row">The row that defines the details of the property.</param>
             <returns>The instantiated property.</returns>
         </member>
@@ -5850,9 +5845,9 @@
         </member>
         <member name="T:TheBoxSoftware.Reflection.TypeDef">
             <summary>
-            Contains the information regarding the construction and elements
-            of a type reflected from the metadata information. A type definition
-            is a metadata reflected type which is defined in an assembly.
+            Contains the information regarding the construction and elements of a type reflected 
+            from the metadata information. A type definition is a metadata reflected type which 
+            is defined in an assembly.
             </summary>
         </member>
         <member name="M:TheBoxSoftware.Reflection.TypeDef.GetExtendingTypes">
@@ -5935,37 +5930,6 @@
             </summary>
             <returns>The collection of events.</returns>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.TypeDef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.TypeDefMetadataTableRow)">
-            <summary>
-            Creates a new TypeDef instance based on the provided metadata row.
-            </summary>
-            <param name="assembly">The assembly the type was defined in</param>
-            <param name="metadata">The metadata directory</param>
-            <param name="row">The metadata row which describes the type</param>
-            <returns></returns>
-        </member>
-        <member name="M:TheBoxSoftware.Reflection.TypeDef.LoadEvents(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.MetadataToDefinitionMap,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MetadataStream,System.Int32)">
-            <summary>
-            Loads the details of the events defined in this type.
-            </summary>
-            <param name="assembly">The assembly this type is defined in.</param>
-            <param name="metadata">The metadata that defines the type.</param>
-            <param name="map">The map to store and retrieve related information from.</param>
-            <param name="typeDef">The type to populate with the loaded events.</param>
-            <param name="metadataStream">The easy access metadata stream for the metadata.</param>
-            <param name="indexOfTypeInMetadataTable">The index of the parent type in the metadata table.</param>
-        </member>
-        <member name="M:TheBoxSoftware.Reflection.TypeDef.LoadProperties(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.MetadataToDefinitionMap,TheBoxSoftware.Reflection.TypeDef,TheBoxSoftware.Reflection.Core.COFF.MetadataStream,System.Int32)">
-            <summary>
-            Loads the details of the properties defined in this type.
-            </summary>
-            <param name="assembly">The assembly this type is defined in.</param>
-            <param name="metadata">The metadata that defines the type.</param>
-            <param name="map">The map to store and retrieve related information from.</param>
-            <param name="typeDef">The type to populate with the loaded events.</param>
-            <param name="metadataStream">The easy access metadata stream for the metadata.</param>
-            <param name="indexOfTypeInMetadataTable">The index of the parent type in the metadata table.</param>
-        </member>
         <member name="P:TheBoxSoftware.Reflection.TypeDef.Methods">
             <summary>
             The methods this type contains
@@ -5986,10 +5950,20 @@
             The properties this type contains.
             </summary>
         </member>
-        <member name="P:TheBoxSoftware.Reflection.TypeDef.InheritsFrom">
+        <member name="P:TheBoxSoftware.Reflection.TypeDef.ContainingClass">
             <summary>
-            Returns a reference to the TypeDef or Ref which this type
-            inherits from.
+            When this class is a nested class this property will contain the class which
+            owns this class.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.Reflection.TypeDef.Implements">
+            <summary>
+            Collection of <see cref="T:TheBoxSoftware.Reflection.TypeRef"/> instances defining the interfaces this class implements.
+            </summary>
+        </member>
+        <member name="P:TheBoxSoftware.Reflection.TypeDef.Flags">
+            <summary>
+            Flags defining extra information about the type.
             </summary>
         </member>
         <member name="P:TheBoxSoftware.Reflection.TypeDef.GenericTypes">
@@ -6004,6 +5978,12 @@
             Indicates if this class is an Interface.
             </summary>
         </member>
+        <member name="P:TheBoxSoftware.Reflection.TypeDef.InheritsFrom">
+            <summary>
+            Returns a reference to the TypeDef or Ref which this type
+            inherits from.
+            </summary>
+        </member>
         <member name="P:TheBoxSoftware.Reflection.TypeDef.IsEnumeration">
             <summary>
             Indicates if this class is an enumeration.
@@ -6012,11 +5992,6 @@
         <member name="P:TheBoxSoftware.Reflection.TypeDef.IsDelegate">
             <summary>
             Indicates if this class is a delegate
-            </summary>
-        </member>
-        <member name="P:TheBoxSoftware.Reflection.TypeDef.Flags">
-            <summary>
-            Flags defining extra information about the type.
             </summary>
         </member>
         <member name="P:TheBoxSoftware.Reflection.TypeDef.HasMembers">
@@ -6046,17 +6021,6 @@
         <member name="P:TheBoxSoftware.Reflection.TypeDef.IsStructure">
             <summary>
             Indicates if this TypeDef is a structure
-            </summary>
-        </member>
-        <member name="P:TheBoxSoftware.Reflection.TypeDef.ContainingClass">
-            <summary>
-            When this class is a nested class this property will contain the class which
-            owns this class.
-            </summary>
-        </member>
-        <member name="P:TheBoxSoftware.Reflection.TypeDef.Implements">
-            <summary>
-            Collection of <see cref="T:TheBoxSoftware.Reflection.TypeRef"/> instances defining the interfaces this class implements.
             </summary>
         </member>
         <member name="P:TheBoxSoftware.Reflection.TypeDef.MemberAccess">
@@ -6108,12 +6072,11 @@
             us to obtain the details to resolve this reference to its external entry.
             </field>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.TypeRef.CreateFromMetadata(TheBoxSoftware.Reflection.AssemblyDef,TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory,TheBoxSoftware.Reflection.Core.COFF.TypeRefMetadataTableRow)">
+        <member name="M:TheBoxSoftware.Reflection.TypeRef.CreateFromMetadata(TheBoxSoftware.Reflection.BuildReferences,TheBoxSoftware.Reflection.Core.COFF.TypeRefMetadataTableRow)">
             <summary>
             Initialises a new instance of the TypeRef class.
             </summary>
-            <param name="assembly">The assembly that defines the type reference.</param>
-            <param name="metadata">The assembly metadata</param>
+            <param name="references">A container of all the references required to build the typeref.</param>
             <param name="row">The metadata row that describes the type reference.</param>
             <returns>A reference to a TypeRef that represents the metadata row.</returns>
         </member>

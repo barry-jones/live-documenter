@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection.Core.COFF;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Text;
+    using Core.COFF;
+    using Signitures;
+
     /// <summary>
-    /// Contains the information regarding the construction and elements
-    /// of a type reflected from the metadata information. A type definition
-    /// is a metadata reflected type which is defined in an assembly.
+    /// Contains the information regarding the construction and elements of a type reflected 
+    /// from the metadata information. A type definition is a metadata reflected type which 
+    /// is defined in an assembly.
     /// </summary>
     [DebuggerDisplay("Type={ToString()}")]
     public class TypeDef : TypeRef
@@ -19,6 +20,18 @@ namespace TheBoxSoftware.Reflection
         private CodedIndex _extends;
         private MetadataTables _table;
         private int _index;
+
+        public TypeDef()
+        {
+            Methods = new List<MethodDef>();
+            Events = new List<EventDef>();
+            GenericTypes = new List<GenericTypeRef>();
+            Implements = new List<TypeRef>();
+            ExtensionMethods = new List<MethodDef>();
+            Attributes = new List<CustomAttribute>();
+            Fields = new List<FieldDef>();
+            Properties = new List<PropertyDef>();
+        }
 
         /// <summary>
         /// Obtains all of the <see cref="TypeRef"/>s that extend this TypeDef.
@@ -117,7 +130,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The fields in the type.</returns>
         public List<FieldDef> GetFields()
         {
-            return this.GetFields(false);
+            return GetFields(false);
         }
 
         /// <summary>
@@ -128,7 +141,7 @@ namespace TheBoxSoftware.Reflection
         public List<FieldDef> GetFields(bool includeSystemGenerated)
         {
             List<FieldDef> fields = new List<FieldDef>();
-            for(int i = 0; i < this.Fields.Count; i++)
+            for(int i = 0; i < Fields.Count; i++)
             {
                 FieldDef currentField = this.Fields[i];
                 if(includeSystemGenerated || (!includeSystemGenerated && !currentField.IsSystemGenerated))
@@ -145,7 +158,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A collection of MethodDefs representing the methods for this type</returns>
         public List<MethodDef> GetMethods()
         {
-            return this.GetMethods(false);
+            return GetMethods(false);
         }
 
         /// <summary>
@@ -156,16 +169,16 @@ namespace TheBoxSoftware.Reflection
         public List<MethodDef> GetMethods(bool includeSystemGenerated)
         {
             List<MethodDef> methods = new List<MethodDef>();
-            for(int i = 0; i < this.Methods.Count; i++)
+            for(int i = 0; i < Methods.Count; i++)
             {
                 // IsSpecialName denotes (or appears to) that the method is a compiler
                 // generated get|set for properties. Compiler generated code for linq
                 // expressions are not 'special name' so need to be checked for seperately.
                 if(!this.Methods[i].IsSpecialName)
                 {
-                    if(includeSystemGenerated || (!includeSystemGenerated && !this.Methods[i].IsCompilerGenerated))
+                    if(includeSystemGenerated || (!includeSystemGenerated && !Methods[i].IsCompilerGenerated))
                     {
-                        methods.Add(this.Methods[i]);
+                        methods.Add(Methods[i]);
                     }
                 }
             }
@@ -178,7 +191,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The collection of constructors.</returns>
         public List<MethodDef> GetConstructors()
         {
-            return this.GetConstructors(false);
+            return GetConstructors(false);
         }
 
         /// <summary>
@@ -189,11 +202,11 @@ namespace TheBoxSoftware.Reflection
         public List<MethodDef> GetConstructors(bool includeSystemGenerated)
         {
             List<MethodDef> methods = new List<MethodDef>();
-            for(int i = 0; i < this.Methods.Count; i++)
+            for(int i = 0; i < Methods.Count; i++)
             {
-                if(this.Methods[i].IsConstructor && (includeSystemGenerated || (!includeSystemGenerated && !this.Methods[i].IsCompilerGenerated)))
+                if(this.Methods[i].IsConstructor && (includeSystemGenerated || (!includeSystemGenerated && !Methods[i].IsCompilerGenerated)))
                 {
-                    methods.Add(this.Methods[i]);
+                    methods.Add(Methods[i]);
                 }
             }
             return methods;
@@ -205,7 +218,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A collection of zero or more operators defined in this TypeDef.</returns>
         public List<MethodDef> GetOperators()
         {
-            return this.GetOperators(false);
+            return GetOperators(false);
         }
 
         /// <summary>
@@ -216,11 +229,11 @@ namespace TheBoxSoftware.Reflection
         public List<MethodDef> GetOperators(bool includeSystemGenerated)
         {
             List<MethodDef> methods = new List<MethodDef>();
-            for(int i = 0; i < this.Methods.Count; i++)
+            for(int i = 0; i < Methods.Count; i++)
             {
-                if(this.Methods[i].IsOperator && (includeSystemGenerated || (!includeSystemGenerated && !this.Methods[i].IsCompilerGenerated)))
+                if(Methods[i].IsOperator && (includeSystemGenerated || (!includeSystemGenerated && !Methods[i].IsCompilerGenerated)))
                 {
-                    methods.Add(this.Methods[i]);
+                    methods.Add(Methods[i]);
                 }
             }
             return methods;
@@ -235,7 +248,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A collection of properties defined for the type.</returns>
         public List<PropertyDef> GetProperties()
         {
-            return this.Properties;
+            return Properties;
         }
 
         /// <summary>
@@ -244,247 +257,13 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The collection of events.</returns>
         public List<EventDef> GetEvents()
         {
-            return this.Events;
+            return Events;
         }
 
-        /// <summary>
-        /// Creates a new TypeDef instance based on the provided metadata row.
-        /// </summary>
-        /// <param name="assembly">The assembly the type was defined in</param>
-        /// <param name="metadata">The metadata directory</param>
-        /// <param name="row">The metadata row which describes the type</param>
-        /// <returns></returns>
-        internal static TypeDef CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metadata, TypeDefMetadataTableRow row)
+        internal static TypeDef CreateFromMetadata(BuildReferences references, TypeDefMetadataTableRow fromRow)
         {
-            MetadataToDefinitionMap map = assembly.File.Map;
-            TypeDef typeDef = new TypeDef();
-
-            typeDef._index = ((MetadataStream)metadata.Streams[Streams.MetadataStream]).Tables[MetadataTables.TypeDef].ToList().IndexOf(row) + 1;
-            typeDef._table = MetadataTables.TypeDef;
-
-            typeDef.UniqueId = assembly.CreateUniqueId();
-            typeDef.Name = assembly.StringStream.GetString(row.Name.Value);
-            typeDef.Namespace = assembly.StringStream.GetString(row.Namespace.Value);
-            typeDef.Assembly = assembly;
-            typeDef._extends = row.Extends;
-            typeDef.GenericTypes = new List<GenericTypeRef>();
-            typeDef.Flags = row.Flags;
-            typeDef.IsInterface = (typeDef.Flags & TypeAttributes.ClassSemanticMask) == TypeAttributes.Interface;
-            typeDef.Implements = new List<TypeRef>();
-            typeDef.IsGeneric = typeDef.Name.Contains("`"); // Should be quicker then checking the genparam table
-
-            MetadataStream metadataStream = metadata.GetMetadataStream();
-            int indexOfTypeInMetadataTable = metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, row) + 1;
-
-            // Load the methods, first calculate the number of methods in this type
-            int rowIndex = metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, row);
-            int nextRow = rowIndex < metadataStream.Tables[MetadataTables.TypeDef].Length - 1
-                ? rowIndex + 1
-                : -1;
-
-            // Check if this type is generic and load the generic parameters
-            if(true)
-            {
-                List<GenericParamMetadataTableRow> genericParameters = metadataStream.Tables.GetGenericParametersFor(
-                    MetadataTables.TypeDef, rowIndex + 1);
-                if(genericParameters.Count > 0)
-                {
-                    foreach(GenericParamMetadataTableRow genParam in genericParameters)
-                    {
-                        typeDef.GenericTypes.Add(GenericTypeRef.CreateFromMetadata(
-                            assembly, metadata, genParam
-                            ));
-                    }
-                }
-            }
-
-            typeDef.Methods = new List<MethodDef>();
-            if(metadataStream.Tables.ContainsKey(MetadataTables.MethodDef))
-            {
-                MetadataRow[] table = metadataStream.Tables[MetadataTables.MethodDef];
-                int endOfMethodIndex = table.Length + 1;
-                if(nextRow != -1)
-                {
-                    endOfMethodIndex = ((TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][nextRow]).MethodList;
-                }
-                // Now load all the methods between our index and the endOfMethodIndex
-                for(int i = row.MethodList; i < endOfMethodIndex; i++)
-                {
-                    MethodMetadataTableRow methodDefRow = table[i - 1] as MethodMetadataTableRow;
-                    MethodDef method = MethodDef.CreateFromMetadata(assembly, typeDef, metadata, methodDefRow);
-                    map.Add(MetadataTables.MethodDef, methodDefRow, method);
-                    typeDef.Methods.Add(method);
-                }
-            }
-
-            TypeDef.LoadProperties(assembly, metadata, map, typeDef, metadataStream, indexOfTypeInMetadataTable);
-            TypeDef.LoadEvents(assembly, metadata, map, typeDef, metadataStream, indexOfTypeInMetadataTable);
-
-            typeDef.Fields = new List<FieldDef>();
-            if(metadataStream.Tables.ContainsKey(MetadataTables.Field))
-            {
-                MetadataRow[] table = metadataStream.Tables[MetadataTables.Field];
-                int endOfFieldIndex = table.Length + 1;
-                if(nextRow != -1)
-                {
-                    endOfFieldIndex = ((TypeDefMetadataTableRow)metadataStream.Tables[MetadataTables.TypeDef][nextRow]).FieldList;
-                }
-                // Now load all the fields between our index and the endOfFieldIndex				
-                for(int i = row.FieldList; i < endOfFieldIndex; i++)
-                {
-                    FieldMetadataTableRow fieldDefRow = table[i - 1] as FieldMetadataTableRow;
-                    FieldDef field = FieldDef.CreateFromMetadata(assembly, typeDef, fieldDefRow);
-                    map.Add(MetadataTables.Field, fieldDefRow, field);
-                    typeDef.Fields.Add(field);
-                }
-            }
-
-            // Initialise other collection/properties
-            typeDef.ExtensionMethods = new List<MethodDef>();
-
-            return typeDef;
-        }
-
-        /// <summary>
-        /// Loads the details of the events defined in this type.
-        /// </summary>
-        /// <param name="assembly">The assembly this type is defined in.</param>
-        /// <param name="metadata">The metadata that defines the type.</param>
-        /// <param name="map">The map to store and retrieve related information from.</param>
-        /// <param name="typeDef">The type to populate with the loaded events.</param>
-        /// <param name="metadataStream">The easy access metadata stream for the metadata.</param>
-        /// <param name="indexOfTypeInMetadataTable">The index of the parent type in the metadata table.</param>
-        private static void LoadEvents(AssemblyDef assembly, MetadataDirectory metadata, MetadataToDefinitionMap map, TypeDef typeDef, MetadataStream metadataStream, int indexOfTypeInMetadataTable)
-        {
-            typeDef.Events = new List<EventDef>();
-
-            // Check if we have a property map and then find the property map for the current type
-            // if it exists.
-            if(metadataStream.Tables.ContainsKey(MetadataTables.EventMap))
-            {
-                int startEventList = -1;
-                int endEventList = -1;
-
-                EventMapMetadataTableRow searchFor = new EventMapMetadataTableRow();
-                searchFor.Parent = indexOfTypeInMetadataTable;
-
-                int mapIndex = Array.BinarySearch(metadataStream.Tables[MetadataTables.EventMap],
-                    searchFor,
-                    new EventMapComparer()
-                    );
-                if(mapIndex >= 0)
-                {
-                    startEventList = ((EventMapMetadataTableRow)metadataStream.Tables[MetadataTables.EventMap][mapIndex]).EventList;
-                    if(mapIndex < metadataStream.RowsInPresentTables[MetadataTables.EventMap] - 1)
-                    {
-                        endEventList = ((EventMapMetadataTableRow)metadataStream.Tables[MetadataTables.EventMap][mapIndex + 1]).EventList - 1;
-                    }
-                    else
-                    {
-                        endEventList = metadataStream.RowsInPresentTables[MetadataTables.Event];
-                    }
-                }
-
-                // If we have properties we need to load them, instantiate a PropertyDef and relate
-                // it to its getter and setter.
-                if(startEventList != -1)
-                {
-                    MetadataRow[] table = metadataStream.Tables[MetadataTables.Event];
-                    // Now load all the methods between our index and the endOfMethodIndex
-                    for(int i = startEventList; i <= endEventList; i++)
-                    {
-                        EventMetadataTableRow eventRow = table[i - 1] as EventMetadataTableRow;
-                        EventDef eventDef = EventDef.CreateFromMetadata(assembly, typeDef, metadata, eventRow);
-
-                        // TODO: Find and set the getter and setter for the property.. at some point
-
-                        map.Add(MetadataTables.Event, eventRow, eventDef);
-                        typeDef.Events.Add(eventDef);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads the details of the properties defined in this type.
-        /// </summary>
-        /// <param name="assembly">The assembly this type is defined in.</param>
-        /// <param name="metadata">The metadata that defines the type.</param>
-        /// <param name="map">The map to store and retrieve related information from.</param>
-        /// <param name="typeDef">The type to populate with the loaded events.</param>
-        /// <param name="metadataStream">The easy access metadata stream for the metadata.</param>
-        /// <param name="indexOfTypeInMetadataTable">The index of the parent type in the metadata table.</param>
-        private static void LoadProperties(AssemblyDef assembly, MetadataDirectory metadata, MetadataToDefinitionMap map, TypeDef typeDef, MetadataStream metadataStream, int indexOfTypeInMetadataTable)
-        {
-            typeDef.Properties = new List<PropertyDef>();
-            // Check if we have a property map and then find the property map for the current type
-            // if it exists.
-            if(metadataStream.Tables.ContainsKey(MetadataTables.PropertyMap))
-            {
-                // TODO: The metadata tables are in order, we should use a sorted search algorithm to
-                // find elements we need.
-                int startPropertyList = -1;
-                int endPropertyList = -1;
-                PropertyMapMetadataTableRow searchFor = new PropertyMapMetadataTableRow();
-                searchFor.Parent = indexOfTypeInMetadataTable;
-                int mapIndex = Array.BinarySearch<MetadataRow>(metadataStream.Tables[MetadataTables.PropertyMap],
-                    searchFor,
-                    new PropertyMapComparer()
-                    );
-                if(mapIndex >= 0)
-                {
-                    startPropertyList = ((PropertyMapMetadataTableRow)metadataStream.Tables[MetadataTables.PropertyMap][mapIndex]).PropertyList;
-                    if(mapIndex < metadataStream.RowsInPresentTables[MetadataTables.PropertyMap] - 1)
-                    {
-                        endPropertyList = ((PropertyMapMetadataTableRow)metadataStream.Tables[MetadataTables.PropertyMap][mapIndex + 1]).PropertyList - 1;
-                    }
-                    else
-                    {
-                        endPropertyList = metadataStream.RowsInPresentTables[MetadataTables.Property];
-                    }
-                }
-
-                // If we have properties we need to load them, instantiate a PropertyDef and relate
-                // it to its getter and setter.
-                if(startPropertyList != -1)
-                {
-                    MetadataRow[] table = metadataStream.Tables[MetadataTables.Property];
-                    MetadataRow[] methodSemantics = metadataStream.Tables[MetadataTables.MethodSemantics];
-                    // Now load all the methods between our index and the endOfMethodIndex
-                    for(int i = startPropertyList; i <= endPropertyList; i++)
-                    {
-                        PropertyMetadataTableRow propertyRow = table[i - 1] as PropertyMetadataTableRow;
-                        PropertyDef property = PropertyDef.CreateFromMetadata(assembly, typeDef, metadata, propertyRow);
-
-                        // Get the related getter and setter methods
-                        for(int j = 0; j < methodSemantics.Length; j++)
-                        {
-                            MethodSemanticsMetadataTableRow semantics = (MethodSemanticsMetadataTableRow)methodSemantics[j];
-                            CodedIndex index = semantics.Association;
-                            if(index.Table == MetadataTables.Property && index.Index == i)
-                            {
-                                if(semantics.Semantics == MethodSemanticsAttributes.Setter)
-                                {
-                                    property.SetMethod = map.GetDefinition(
-                                        MetadataTables.MethodDef,
-                                        metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
-                                        ) as MethodDef;
-                                }
-                                else if(semantics.Semantics == MethodSemanticsAttributes.Getter)
-                                {
-                                    property.GetMethod = map.GetDefinition(
-                                        MetadataTables.MethodDef,
-                                        metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
-                                        ) as MethodDef;
-                                }
-                            }
-                        }
-
-                        map.Add(MetadataTables.Property, propertyRow, property);
-                        typeDef.Properties.Add(property);
-                    }
-                }
-            }
+            TypeDefBuilder builder = new TypeDefBuilder(references, fromRow);
+            return builder.Build();
         }
 
         /// <summary>
@@ -506,6 +285,34 @@ namespace TheBoxSoftware.Reflection
         /// The properties this type contains.
         /// </summary>
         public List<PropertyDef> Properties { get; set; }
+
+        /// <summary>
+        /// When this class is a nested class this property will contain the class which
+        /// owns this class.
+        /// </summary>
+        public TypeDef ContainingClass { get; set; }
+
+        /// <summary>
+        /// Collection of <see cref="TypeRef"/> instances defining the interfaces this class implements.
+        /// </summary>
+        public List<TypeRef> Implements { get; set; }
+
+        /// <summary>
+        /// Flags defining extra information about the type.
+        /// </summary>
+        public TypeAttributes Flags { get; set; }
+
+        /// <summary>
+        /// Collection of all the generic types that are relevant for this member, this
+        /// includes the types defined in parent and containing classes.
+        /// </summary>
+        /// <seealso cref="GetGenericTypes"/>
+        public List<GenericTypeRef> GenericTypes { get; set; }
+
+        /// <summary>
+        /// Indicates if this class is an Interface.
+        /// </summary>
+        public bool IsInterface { get; set; }
 
         /// <summary>
         /// Returns a reference to the TypeDef or Ref which this type
@@ -543,23 +350,11 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Collection of all the generic types that are relevant for this member, this
-        /// includes the types defined in parent and containing classes.
-        /// </summary>
-        /// <seealso cref="GetGenericTypes"/>
-        public List<GenericTypeRef> GenericTypes { get; set; }
-
-        /// <summary>
-        /// Indicates if this class is an Interface.
-        /// </summary>
-        public bool IsInterface { get; set; }
-
-        /// <summary>
         /// Indicates if this class is an enumeration.
         /// </summary>
         public bool IsEnumeration
         {
-            get { return this.InheritsFrom != null && this.InheritsFrom.GetFullyQualifiedName() == "System.Enum"; }
+            get { return InheritsFrom != null && InheritsFrom.GetFullyQualifiedName() == "System.Enum"; }
         }
 
         /// <summary>
@@ -569,19 +364,14 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                TypeRef parent = this.InheritsFrom;
+                TypeRef parent = InheritsFrom;
                 if(parent != null)
                 {
-                    return (parent.Name == "MulticastDelegate" || (parent.Name == "Delegate" && this.Name != "MulticastDelegate"));
+                    return (parent.Name == "MulticastDelegate" || (parent.Name == "Delegate" && Name != "MulticastDelegate"));
                 }
                 else return false;
             }
         }
-
-        /// <summary>
-        /// Flags defining extra information about the type.
-        /// </summary>
-        public TypeAttributes Flags { get; set; }
 
         /// <summary>
         /// Indicates if this type has any members defined
@@ -590,8 +380,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                return this.Methods.Count > 0 ||
-                    this.Fields.Count > 0;
+                return Methods.Count > 0 || Fields.Count > 0;
             }
         }
 
@@ -610,7 +399,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                if(this.IsNested)
+                if(IsNested)
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append(this.ContainingClass.Namespace);
@@ -645,7 +434,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsNested
         {
-            get { return this.ContainingClass != null; }
+            get { return ContainingClass != null; }
         }
 
         /// <summary>
@@ -653,19 +442,8 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsStructure
         {
-            get { return this.InheritsFrom != null && this.InheritsFrom.GetFullyQualifiedName() == "System.ValueType"; }
+            get { return InheritsFrom != null && InheritsFrom.GetFullyQualifiedName() == "System.ValueType"; }
         }
-
-        /// <summary>
-        /// When this class is a nested class this property will contain the class which
-        /// owns this class.
-        /// </summary>
-        public TypeDef ContainingClass { get; set; }
-
-        /// <summary>
-        /// Collection of <see cref="TypeRef"/> instances defining the interfaces this class implements.
-        /// </summary>
-        public List<TypeRef> Implements { get; set; }
 
         /// <summary>
         /// Returns the <see cref="Visibility"/> of the TypeDef.
@@ -674,20 +452,20 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                switch(this.Flags & TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.VisibilityMask)
+                switch(Flags & TypeAttributes.VisibilityMask)
                 {
-                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPublic:
-                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.Public:
+                    case TypeAttributes.NestedPublic:
+                    case TypeAttributes.Public:
                         return Visibility.Public;
-                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NotPublic:
+                    case TypeAttributes.NotPublic:
                         return Visibility.Internal;
-                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamAndAssem:
+                    case TypeAttributes.NestedFamAndAssem:
                         return Visibility.Internal;
-                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamily:
+                    case TypeAttributes.NestedFamily:
                         return Visibility.Protected;
-                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedPrivate:
+                    case TypeAttributes.NestedPrivate:
                         return Visibility.Private;
-                    case TheBoxSoftware.Reflection.Core.COFF.TypeAttributes.NestedFamOrAssem:
+                    case TypeAttributes.NestedFamOrAssem:
                         return Visibility.InternalProtected;
                     default:
                         return Visibility.Internal;
@@ -736,11 +514,264 @@ namespace TheBoxSoftware.Reflection
             {
                 return this.Compare((PropertyMapMetadataTableRow)x, (PropertyMapMetadataTableRow)y);
             }
+
             public int Compare(PropertyMapMetadataTableRow x, PropertyMapMetadataTableRow y)
             {
                 if(x.Parent < y.Parent) return -1;
                 if(x.Parent == y.Parent) return 0;
                 return 1;
+            }
+        }
+
+        private class TypeDefBuilder
+        {
+            private BuildReferences _references;
+            private TypeDef _builtType;
+            private int _indexInMetadataTable;
+            private int _rowIndex;
+            private int _nextRowIndex;
+            private MetadataStream _metadataStream;
+
+            // would be great to remove these and only use _references above
+            private AssemblyDef _assembly;
+            private TypeDefMetadataTableRow _fromRow;
+            private MetadataDirectory _metadata;
+            private MetadataToDefinitionMap _map;
+
+            public TypeDefBuilder(BuildReferences references, TypeDefMetadataTableRow fromRow)
+            {
+                _references = references;
+
+                _assembly = references.Assembly;
+                _fromRow = fromRow;
+                _metadata = references.Metadata;
+                _map = references.Map;
+                _metadataStream = _metadata.GetMetadataStream();
+            }
+
+            public TypeDef Build()
+            {
+                MetadataToDefinitionMap map = _assembly.File.Map;
+                _builtType = new TypeDef();
+
+                SetTypeProperties();
+                CalculateIndexes();
+                LoadGenericParameters();
+                LoadMethods();
+                LoadProperties();
+                LoadEvents();
+                LoadFields();
+
+                return _builtType;
+            }
+
+            private void LoadFields()
+            {
+                if(_metadataStream.Tables.ContainsKey(MetadataTables.Field))
+                {
+                    MetadataRow[] table = _metadataStream.Tables[MetadataTables.Field];
+                    int endOfFieldIndex = table.Length + 1;
+                    if(_nextRowIndex != -1)
+                    {
+                        endOfFieldIndex = ((TypeDefMetadataTableRow)_metadataStream.Tables[MetadataTables.TypeDef][_nextRowIndex]).FieldList;
+                    }
+
+                    // Now load all the fields between our index and the endOfFieldIndex				
+                    for(int i = _fromRow.FieldList; i < endOfFieldIndex; i++)
+                    {
+                        FieldMetadataTableRow fieldDefRow = table[i - 1] as FieldMetadataTableRow;
+                        FieldDef field = FieldDef.CreateFromMetadata(_references, _builtType, fieldDefRow);
+
+                        _map.Add(MetadataTables.Field, fieldDefRow, field);
+                        _builtType.Fields.Add(field);
+                    }
+                }
+            }
+
+            private void LoadMethods()
+            {
+                if(_metadataStream.Tables.ContainsKey(MetadataTables.MethodDef))
+                {
+                    MetadataRow[] table = _metadataStream.Tables[MetadataTables.MethodDef];
+                    int endOfMethodIndex = table.Length + 1;
+                    if(_nextRowIndex != -1)
+                    {
+                        endOfMethodIndex = ((TypeDefMetadataTableRow)_metadataStream.Tables[MetadataTables.TypeDef][_nextRowIndex]).MethodList;
+                    }
+
+                    // Now load all the methods between our index and the endOfMethodIndex
+                    for(int i = _fromRow.MethodList; i < endOfMethodIndex; i++)
+                    {
+                        MethodMetadataTableRow methodDefRow = table[i - 1] as MethodMetadataTableRow;
+                        MethodDef method = MethodDef.CreateFromMetadata(_references, _builtType, methodDefRow);
+
+                        _map.Add(MetadataTables.MethodDef, methodDefRow, method);
+                        _builtType.Methods.Add(method);
+                    }
+                }
+            }
+
+            private void LoadGenericParameters()
+            {
+                var genericParameters = _metadataStream.Tables.GetGenericParametersFor(MetadataTables.TypeDef, _rowIndex + 1);
+
+                if(genericParameters.Count > 0)
+                {
+                    foreach(GenericParamMetadataTableRow genParam in genericParameters)
+                    {
+                        _builtType.GenericTypes.Add(
+                            GenericTypeRef.CreateFromMetadata(_references, genParam)
+                            );
+                    }
+                }
+            }
+
+            private void CalculateIndexes()
+            {
+                _indexInMetadataTable = _metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, _fromRow) + 1;
+
+                // calculate the first and last infex of methods for this type, -1 means end of stream
+                _rowIndex = _metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, _fromRow);
+                _nextRowIndex = _rowIndex < _metadataStream.Tables[MetadataTables.TypeDef].Length - 1
+                    ? _rowIndex + 1
+                    : -1;
+            }
+
+            private void SetTypeProperties()
+            {
+                _builtType._index = _metadataStream.Tables[MetadataTables.TypeDef].ToList().IndexOf(_fromRow) + 1;
+                _builtType._table = MetadataTables.TypeDef;
+
+                _builtType.UniqueId = _assembly.CreateUniqueId();
+                _builtType.Name = _assembly.StringStream.GetString(_fromRow.Name.Value);
+                _builtType.Namespace = _assembly.StringStream.GetString(_fromRow.Namespace.Value);
+                _builtType.Assembly = _assembly;
+                _builtType._extends = _fromRow.Extends;
+                _builtType.Flags = _fromRow.Flags;
+                _builtType.IsInterface = (_builtType.Flags & TypeAttributes.ClassSemanticMask) == TypeAttributes.Interface;
+                _builtType.IsGeneric = _builtType.Name.Contains("`"); // Should be quicker then checking the genparam table
+            }
+
+            private void LoadEvents()
+            {
+                // Check if we have a property map and then find the property map for the current type
+                // if it exists.
+                if(_metadataStream.Tables.ContainsKey(MetadataTables.EventMap))
+                {
+                    int startEventList = -1;
+                    int endEventList = -1;
+
+                    EventMapMetadataTableRow searchFor = new EventMapMetadataTableRow();
+                    searchFor.Parent = _indexInMetadataTable;
+
+                    int mapIndex = Array.BinarySearch(_metadataStream.Tables[MetadataTables.EventMap],
+                        searchFor,
+                        new EventMapComparer()
+                        );
+                    if(mapIndex >= 0)
+                    {
+                        startEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex]).EventList;
+                        if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.EventMap] - 1)
+                        {
+                            endEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex + 1]).EventList - 1;
+                        }
+                        else
+                        {
+                            endEventList = _metadataStream.RowsInPresentTables[MetadataTables.Event];
+                        }
+                    }
+
+                    // If we have properties we need to load them, instantiate a PropertyDef and relate
+                    // it to its getter and setter.
+                    if(startEventList != -1)
+                    {
+                        MetadataRow[] table = _metadataStream.Tables[MetadataTables.Event];
+                        // Now load all the methods between our index and the endOfMethodIndex
+                        for(int i = startEventList; i <= endEventList; i++)
+                        {
+                            EventMetadataTableRow eventRow = table[i - 1] as EventMetadataTableRow;
+                            EventDef eventDef = EventDef.CreateFromMetadata(_references, _builtType, eventRow);
+
+                            // TODO: Find and set the getter and setter for the property.. at some point
+
+                            _map.Add(MetadataTables.Event, eventRow, eventDef);
+                            _builtType.Events.Add(eventDef);
+                        }
+                    }
+                }
+            }
+
+            private void LoadProperties()
+            {
+                // Check if we have a property map and then find the property map for the current type
+                // if it exists.
+                if(_metadataStream.Tables.ContainsKey(MetadataTables.PropertyMap))
+                {
+                    // TODO: The metadata tables are in order, we should use a sorted search algorithm to
+                    // find elements we need.
+                    int startPropertyList = -1;
+                    int endPropertyList = -1;
+                    PropertyMapMetadataTableRow searchFor = new PropertyMapMetadataTableRow();
+                    searchFor.Parent = _indexInMetadataTable;
+                    int mapIndex = Array.BinarySearch<MetadataRow>(_metadataStream.Tables[MetadataTables.PropertyMap],
+                        searchFor,
+                        new PropertyMapComparer()
+                        );
+                    if(mapIndex >= 0)
+                    {
+                        startPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex]).PropertyList;
+                        if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.PropertyMap] - 1)
+                        {
+                            endPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex + 1]).PropertyList - 1;
+                        }
+                        else
+                        {
+                            endPropertyList = _metadataStream.RowsInPresentTables[MetadataTables.Property];
+                        }
+                    }
+
+                    // If we have properties we need to load them, instantiate a PropertyDef and relate
+                    // it to its getter and setter.
+                    if(startPropertyList != -1)
+                    {
+                        MetadataRow[] table = _metadataStream.Tables[MetadataTables.Property];
+                        MetadataRow[] methodSemantics = _metadataStream.Tables[MetadataTables.MethodSemantics];
+
+                        // Now load all the methods between our index and the endOfMethodIndex
+                        for(int i = startPropertyList; i <= endPropertyList; i++)
+                        {
+                            PropertyMetadataTableRow propertyRow = table[i - 1] as PropertyMetadataTableRow;
+                            PropertyDef property = PropertyDef.CreateFromMetadata(_references, _builtType, propertyRow);
+
+                            // Get the related getter and setter methods
+                            for(int j = 0; j < methodSemantics.Length; j++)
+                            {
+                                MethodSemanticsMetadataTableRow semantics = methodSemantics[j] as MethodSemanticsMetadataTableRow;
+                                CodedIndex index = semantics.Association;
+                                if(index.Table == MetadataTables.Property && index.Index == i)
+                                {
+                                    if(semantics.Semantics == MethodSemanticsAttributes.Setter)
+                                    {
+                                        property.SetMethod = _map.GetDefinition(
+                                            MetadataTables.MethodDef,
+                                            _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
+                                            ) as MethodDef;
+                                    }
+                                    else if(semantics.Semantics == MethodSemanticsAttributes.Getter)
+                                    {
+                                        property.GetMethod = _map.GetDefinition(
+                                            MetadataTables.MethodDef,
+                                            _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
+                                            ) as MethodDef;
+                                    }
+                                }
+                            }
+
+                            _map.Add(MetadataTables.Property, propertyRow, property);
+                            _builtType.Properties.Add(property);
+                        }
+                    }
+                }
             }
         }
     }

@@ -15,6 +15,8 @@ namespace TheBoxSoftware.Reflection
         private MetadataStream _stream;
         private AssemblyDef _assembly;
 
+        private BuildReferences _references;
+
         public AssemblyDefBuilder(PeCoffFile peCoffFile)
         {
             if(peCoffFile == null)
@@ -24,42 +26,41 @@ namespace TheBoxSoftware.Reflection
 
             _peCoffFile = peCoffFile;
             _map = _peCoffFile.Map;
+
+            _references = new BuildReferences();
+            _references.Map = _map;
+            _references.PeCoffFile = _peCoffFile;
+            _references.Metadata = _peCoffFile.GetMetadataDirectory();
         }
 
         public AssemblyDef Build()
         {
             if(_assembly != null) return _assembly; // we have already built it return previous
-
             
-            List<TypeDef> types;
-            List<AssemblyRef> assemblyReferences;
-            List<ModuleDef> modules;
-            AssemblyIndex index;
-
-            AssemblyDef assembly = new AssemblyDef();
-            assembly.File = _peCoffFile;
-            _map.Assembly = assembly;
+            _assembly = new AssemblyDef();
+            _references.Assembly = _assembly;
+            _assembly.File = _peCoffFile;
+            _map.Assembly = _assembly;
 
             // Read the metadata from the file and populate the entries
             _metadata = _peCoffFile.GetMetadataDirectory();
             _stream = _metadata.Streams[Streams.MetadataStream] as MetadataStream;
 
-            assembly.StringStream = _metadata.Streams[Streams.StringStream] as IStringStream; // needs to be populated first
+            _assembly.StringStream = _metadata.Streams[Streams.StringStream] as IStringStream; // needs to be populated first
 
-            LoadAssemblyMetadata(assembly);
-            LoadAssemblyRefMetadata(assembly);
-            LoadModuleMetadata(assembly);
-            LoadTypeRefMetadata(assembly);
-            LoadTypeDefMetadata(assembly);
-            LoadMemberRefMetadata(assembly);
-            LoadTypeSpecMetadata(assembly);
-            LoadNestedClassMetadata(assembly);
+            LoadAssemblyMetadata();
+            LoadAssemblyRefMetadata();
+            LoadModuleMetadata();
+            LoadTypeRefMetadata();
+            LoadTypeDefMetadata();
+            LoadMemberRefMetadata();
+            LoadTypeSpecMetadata();
+            LoadNestedClassMetadata();
             LoadInterfaceImplMetadata();
-            LoadConstantMetadata(assembly);
+            LoadConstantMetadata();
             LoadCustomAttributeMetadata();
 
             // assign the built assembly locally and clear up the unused references
-            _assembly = assembly;
             _peCoffFile = null;
             _map = null;
             _metadata = null;
@@ -93,7 +94,7 @@ namespace TheBoxSoftware.Reflection
             }
         }
 
-        private void LoadConstantMetadata(AssemblyDef assembly)
+        private void LoadConstantMetadata()
         {
             if(!_stream.Tables.ContainsKey(MetadataTables.Constant))
                 return;
@@ -103,7 +104,7 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < constants.Length; i++)
             {
                 ConstantMetadataTableRow constantRow = constants[i] as ConstantMetadataTableRow;
-                ConstantInfo constant = ConstantInfo.CreateFromMetadata(assembly, _stream, constantRow);
+                ConstantInfo constant = ConstantInfo.CreateFromMetadata(_assembly, _stream, constantRow);
 
                 switch(constantRow.Parent.Table)
                 {
@@ -152,7 +153,7 @@ namespace TheBoxSoftware.Reflection
             }
         }
 
-        private void LoadNestedClassMetadata(AssemblyDef assembly)
+        private void LoadNestedClassMetadata()
         {
             if(!_stream.Tables.ContainsKey(MetadataTables.NestedClass))
                 return;
@@ -169,23 +170,23 @@ namespace TheBoxSoftware.Reflection
                     )) as TypeDef;
                 TypeDef nested = _map.GetDefinition(MetadataTables.TypeDef, nestedClass) as TypeDef;
                 nested.ContainingClass = container;
-                assembly.Map.Add(nested);
+                _assembly.Map.Add(nested);
             }
         }
 
-        private void LoadTypeSpecMetadata(AssemblyDef assembly)
+        private void LoadTypeSpecMetadata()
         {
             if(!_stream.Tables.ContainsKey(MetadataTables.TypeSpec))
                 return;
 
             foreach(TypeSpecMetadataTableRow typeSpecRow in _stream.Tables[MetadataTables.TypeSpec])
             {
-                TypeSpec typeRef = TypeSpec.CreateFromMetadata(assembly, _metadata, typeSpecRow);
+                TypeSpec typeRef = TypeSpec.CreateFromMetadata(_assembly, _metadata, typeSpecRow);
                 _map.Add(MetadataTables.TypeSpec, typeSpecRow, typeRef);
             }
         }
 
-        private void LoadMemberRefMetadata(AssemblyDef assembly)
+        private void LoadMemberRefMetadata()
         {
             if(!_stream.Tables.ContainsKey(MetadataTables.MemberRef))
                 return;
@@ -194,12 +195,12 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < count; i++)
             {
                 MemberRefMetadataTableRow memberRefRow = _stream.Tables[MetadataTables.MemberRef][i] as MemberRefMetadataTableRow;
-                MemberRef memberRef = MemberRef.CreateFromMetadata(assembly, _metadata, memberRefRow);
+                MemberRef memberRef = MemberRef.CreateFromMetadata(_assembly, _metadata, memberRefRow);
                 _map.Add(MetadataTables.MemberRef, memberRefRow, memberRef);
             }
         }
 
-        private void LoadTypeDefMetadata(AssemblyDef assembly)
+        private void LoadTypeDefMetadata()
         {
             MetadataRow[] table = _stream.Tables[MetadataTables.TypeDef];
             int count = table.Length;
@@ -207,15 +208,15 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < count; i++)
             {
                 TypeDefMetadataTableRow typeDefRow = table[i] as TypeDefMetadataTableRow;
-                TypeDef type = TypeDef.CreateFromMetadata(assembly, _metadata, typeDefRow);
+                TypeDef type = TypeDef.CreateFromMetadata(_references, typeDefRow);
 
                 _map.Add(MetadataTables.TypeDef, typeDefRow, type);
-                assembly.Map.Add(type);
-                assembly.Types.Add(type);
+                _assembly.Map.Add(type);
+                _assembly.Types.Add(type);
             }
         }
 
-        private void LoadTypeRefMetadata(AssemblyDef assembly)
+        private void LoadTypeRefMetadata()
         {
             if(!_stream.Tables.ContainsKey(MetadataTables.TypeRef))
                 return;
@@ -226,12 +227,13 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < count; i++)
             {
                 TypeRefMetadataTableRow row = table[i] as TypeRefMetadataTableRow;
-                TypeRef typeRef = TypeRef.CreateFromMetadata(assembly, _metadata, row);
+                TypeRef typeRef = TypeRef.CreateFromMetadata(_references, row);
+
                 _map.Add(MetadataTables.TypeRef, row, typeRef);
             }
         }
 
-        private void LoadModuleMetadata(AssemblyDef assembly)
+        private void LoadModuleMetadata()
         {
             MetadataRow[] table = _stream.Tables[MetadataTables.Module];
             int count = table.Length;
@@ -239,13 +241,14 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < count; i++)
             {
                 ModuleMetadataTableRow row = table[i] as ModuleMetadataTableRow;
-                ModuleDef module = ModuleDef.CreateFromMetadata(assembly, _metadata, row);
+                ModuleDef module = ModuleDef.CreateFromMetadata(_references, row);
+
                 _map.Add(MetadataTables.Module, row, module);
-                assembly.Modules.Add(module);
+                _assembly.Modules.Add(module);
             }
         }
 
-        private void LoadAssemblyRefMetadata(AssemblyDef assembly)
+        private void LoadAssemblyRefMetadata()
         {
             if(!_stream.Tables.ContainsKey(MetadataTables.AssemblyRef))
                 return;
@@ -254,21 +257,23 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < items.Length; i++)
             {
                 AssemblyRefMetadataTableRow assemblyRefRow = items[i] as AssemblyRefMetadataTableRow;
-                AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(assembly, assemblyRefRow);
+                AssemblyRef assemblyRef = AssemblyRef.CreateFromMetadata(_references, assemblyRefRow);
+
                 _map.Add(MetadataTables.AssemblyRef, assemblyRefRow, assemblyRef);
-                assembly.ReferencedAssemblies.Add(assemblyRef);
+                _assembly.ReferencedAssemblies.Add(assemblyRef);
             }
         }
 
-        private void LoadAssemblyMetadata(AssemblyDef assembly)
+        private void LoadAssemblyMetadata()
         {
             if(!_stream.Tables.ContainsKey(MetadataTables.Assembly))
                 return;
 
             // Always one and only
             AssemblyMetadataTableRow assemblyRow = _stream.Tables[MetadataTables.Assembly][0] as AssemblyMetadataTableRow;
-            assembly.Name = assembly.StringStream.GetString(assemblyRow.Name.Value);
-            assembly.Version = assemblyRow.GetVersion();
+
+            _assembly.Name = _references.Assembly.StringStream.GetString(assemblyRow.Name.Value);
+            _assembly.Version = assemblyRow.GetVersion();
         }
     }
 }
