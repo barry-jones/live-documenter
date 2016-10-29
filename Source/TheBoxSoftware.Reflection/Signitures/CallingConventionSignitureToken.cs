@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Diagnostics;
+    using Core;
+
     /// <summary>
     /// Represents a calling convention in a signiture.
     /// </summary>

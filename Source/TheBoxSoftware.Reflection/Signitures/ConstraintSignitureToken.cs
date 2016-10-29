@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 /*
  * Signiture defined in: 23.2.9
  * 
@@ -9,6 +7,9 @@ using TheBoxSoftware.Reflection.Core;
 
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Diagnostics;
+    using Core;
+
     /// <summary>
     /// Represents a constraint in a signiture as a token. Constraints can only be
     /// <see cref="ElementTypes.Pinned"/>.
