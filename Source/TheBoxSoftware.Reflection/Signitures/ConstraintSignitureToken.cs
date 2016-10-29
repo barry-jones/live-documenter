@@ -28,7 +28,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public ConstraintSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.Constraint)
         {
-            this.Constraint = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+            _constraint = (ElementTypes)GetCompressedValue(signiture, offset);
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>True if it is a token else false.</returns>
 		public static bool IsToken(byte[] signiture, int offset)
         {
-            ElementTypes type = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
-            return (type & ElementTypes.Pinned) == ElementTypes.Pinned;
+            ElementTypes type = (ElementTypes)GetCompressedValue(signiture, offset);
+            return (type & ElementTypes.Pinned) != 0;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            return string.Format("[Constraint: {0}]", this.Constraint.ToString());
+            return $"[Constraint: {_constraint.ToString()}]";
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
 		public ElementTypes Constraint
         {
-            get { return this._constraint; }
-            private set { this._constraint = value; }
+            get { return _constraint; }
+            private set { _constraint = value; }
         }
     }
 }
