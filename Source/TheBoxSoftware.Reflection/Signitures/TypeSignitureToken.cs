@@ -29,11 +29,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture to parse the type from.</param>
         /// <param name="offset">The offset to start reading from.</param>
-        public TypeSignitureToken(PeCoffFile file, byte[] signiture, Offset offset)
+        public TypeSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.Type)
         {
 
-            ElementTypeSignitureToken type = new ElementTypeSignitureToken(file, signiture, offset);
+            ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
             TypeSignitureToken childType;
             this.Tokens.Add(type);
             this.ElementType = type;
@@ -46,7 +46,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                         CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
                         this.Tokens.Add(modifier);
                     }
-                    childType = new TypeSignitureToken(file, signiture, offset);
+                    childType = new TypeSignitureToken(signiture, offset);
                     this.Tokens.Add(childType);
                     break;
                 case ElementTypes.Ptr:
@@ -55,22 +55,22 @@ namespace TheBoxSoftware.Reflection.Signitures
                         CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
                         this.Tokens.Add(modifier);
                     }
-                    childType = new TypeSignitureToken(file, signiture, offset);
+                    childType = new TypeSignitureToken(signiture, offset);
                     this.Tokens.Add(childType);
                     break;
                 case ElementTypes.GenericInstance:
-                    ElementTypeSignitureToken genericType = new ElementTypeSignitureToken(file, signiture, offset);
+                    ElementTypeSignitureToken genericType = new ElementTypeSignitureToken(signiture, offset);
                     this.Tokens.Add(genericType);
                     GenericArgumentCountSignitureToken argCount = new GenericArgumentCountSignitureToken(signiture, offset);
                     this.Tokens.Add(argCount);
                     for(int i = 0; i < argCount.Count; i++)
                     {
-                        TypeSignitureToken genArgType = new TypeSignitureToken(file, signiture, offset);
+                        TypeSignitureToken genArgType = new TypeSignitureToken(signiture, offset);
                         this.Tokens.Add(genArgType);
                     }
                     break;
                 case ElementTypes.Array:
-                    childType = new TypeSignitureToken(file, signiture, offset);
+                    childType = new TypeSignitureToken(signiture, offset);
                     this.Tokens.Add(childType);
                     this.Tokens.Add(new ArrayShapeSignitureToken(signiture, offset));
                     break;

@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="file">The file the signiture is defined in.</param>
         /// <param name="signiture">The byte contents of the signiture.</param>
-        public MethodDefSigniture(PeCoffFile file, byte[] signiture)
+        public MethodDefSigniture(byte[] signiture)
             : base(Signitures.MethodDef)
         {
             Offset offset = 0;
@@ -27,11 +27,11 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
             this.Tokens.Add(paramCount);
-            ReturnTypeSignitureToken returnType = new ReturnTypeSignitureToken(file, signiture, offset);
+            ReturnTypeSignitureToken returnType = new ReturnTypeSignitureToken(signiture, offset);
             this.Tokens.Add(returnType);
             for(int i = 0; i < paramCount.Count; i++)
             {
-                ParamSignitureToken param = new ParamSignitureToken(file, signiture, offset);
+                ParamSignitureToken param = new ParamSignitureToken(signiture, offset);
                 this.Tokens.Add(param);
             }
         }

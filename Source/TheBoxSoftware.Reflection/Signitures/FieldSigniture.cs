@@ -14,7 +14,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="file">The PeCoffFile that contains the definition.</param>
         /// <param name="signiture">The signiture blob.</param>
-		public FieldSigniture(PeCoffFile file, byte[] signiture)
+		public FieldSigniture(byte[] signiture)
             : base(Signitures.Field)
         {
             List<SignitureToken> tokens = new List<SignitureToken>();
@@ -33,7 +33,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     tokens.Add(modifier);
                 }
 
-                TypeSignitureToken type = new TypeSignitureToken(file, signiture, offset);
+                TypeSignitureToken type = new TypeSignitureToken(signiture, offset);
                 tokens.Add(type);
             }
 

@@ -47,7 +47,7 @@ namespace TheBoxSoftware.Reflection
                 throw new NotAManagedLibraryException($"The file '{fileName}' is not a managed library.");
             }
 
-            return AssemblyDef.Create(peFile);
+            return Create(peFile);
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create2"]/*'/> 

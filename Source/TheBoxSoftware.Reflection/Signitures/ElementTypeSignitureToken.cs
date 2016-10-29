@@ -39,21 +39,20 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// about the type. This class will only ever provide a single item of detail.
         /// </para>
         /// </remarks>
-        public ElementTypeSignitureToken(PeCoffFile file, byte[] signiture, Offset offset)
+        public ElementTypeSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.ElementType)
         {
 
-            MetadataToDefinitionMap map = file.Map;
-            this.ElementType = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+            ElementType = (ElementTypes)GetCompressedValue(signiture, offset);
             int typeMask;
             int token;
 
-            switch(this.ElementType)
+            switch(ElementType)
             {
                 case ElementTypes.Class:
                     // Read the typedef, typeref or typespec token
                     typeMask = 0x00000003;
-                    token = SignitureToken.GetCompressedValue(signiture, offset);
+                    token = GetCompressedValue(signiture, offset);
                     switch(typeMask & token)
                     {
                         case 0: // TypeDef
@@ -71,7 +70,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 case ElementTypes.ValueType:
                     // Read the typedef, typeref or typespec token
                     typeMask = 0x00000003;
-                    token = SignitureToken.GetCompressedValue(signiture, offset);
+                    token = GetCompressedValue(signiture, offset);
                     switch(typeMask & token)
                     {
                         case 0: // TypeDef
@@ -89,24 +88,24 @@ namespace TheBoxSoftware.Reflection.Signitures
                     break;
 
                 // Well known types
-                case ElementTypes.Boolean: this.Definition = map.GetWellKnownType("System", "Boolean"); break;
-                case ElementTypes.I: this.Definition = map.GetWellKnownType("System", "IntPtr"); break;
-                case ElementTypes.I1: this.Definition = map.GetWellKnownType("System", "SByte"); break;
-                case ElementTypes.I2: this.Definition = map.GetWellKnownType("System", "Int16"); break;
-                case ElementTypes.I4: this.Definition = map.GetWellKnownType("System", "Int32"); break;
-                case ElementTypes.I8: this.Definition = map.GetWellKnownType("System", "Int64"); break;
-                case ElementTypes.U: this.Definition = map.GetWellKnownType("System", "UIntPtr"); break;
-                case ElementTypes.U1: this.Definition = map.GetWellKnownType("System", "Byte"); break;
-                case ElementTypes.U2: this.Definition = map.GetWellKnownType("System", "UInt16"); break;
-                case ElementTypes.U4: this.Definition = map.GetWellKnownType("System", "UInt32"); break;
-                case ElementTypes.U8: this.Definition = map.GetWellKnownType("System", "UInt64"); break;
-                case ElementTypes.Char: this.Definition = map.GetWellKnownType("System", "Char"); break;
-                case ElementTypes.R4: this.Definition = map.GetWellKnownType("System", "Single"); break;
-                case ElementTypes.R8: this.Definition = map.GetWellKnownType("System", "Double"); break;
-                case ElementTypes.TypedByRef: this.Definition = map.GetWellKnownType("System", "TypedReference"); break;
-                case ElementTypes.String: this.Definition = map.GetWellKnownType("System", "String"); break;
-                case ElementTypes.Object: this.Definition = map.GetWellKnownType("System", "Object"); break;
-                case ElementTypes.Void: this.Definition = map.GetWellKnownType("System", "Void"); break;
+                case ElementTypes.Boolean: this.Definition = WellKnownTypeDef.Boolean; break;
+                case ElementTypes.I: this.Definition = WellKnownTypeDef.I; break;
+                case ElementTypes.I1: this.Definition = WellKnownTypeDef.I1; break;
+                case ElementTypes.I2: this.Definition = WellKnownTypeDef.I2; break;
+                case ElementTypes.I4: this.Definition = WellKnownTypeDef.I4; break;
+                case ElementTypes.I8: this.Definition = WellKnownTypeDef.I8; break;
+                case ElementTypes.U: this.Definition = WellKnownTypeDef.U; break;
+                case ElementTypes.U1: this.Definition = WellKnownTypeDef.U1; break;
+                case ElementTypes.U2: this.Definition = WellKnownTypeDef.U2; break;
+                case ElementTypes.U4: this.Definition = WellKnownTypeDef.U4; break;
+                case ElementTypes.U8: this.Definition = WellKnownTypeDef.U8; break;
+                case ElementTypes.Char: this.Definition = WellKnownTypeDef.Char; break;
+                case ElementTypes.R4: this.Definition = WellKnownTypeDef.R4; break;
+                case ElementTypes.R8: this.Definition = WellKnownTypeDef.R8; break;
+                case ElementTypes.TypedByRef: this.Definition = WellKnownTypeDef.TypedByRef; break;
+                case ElementTypes.String: this.Definition = WellKnownTypeDef.String; break;
+                case ElementTypes.Object: this.Definition = WellKnownTypeDef.Object; break;
+                case ElementTypes.Void: this.Definition = WellKnownTypeDef.Void; break;
             }
         }
 
@@ -120,7 +119,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>True of false</returns>
 		public static bool IsToken(byte[] signiture, int offset, ElementTypes allowed)
         {
-            ElementTypes value = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+            ElementTypes value = (ElementTypes)GetCompressedValue(signiture, offset);
             return value == allowed;
         }
 

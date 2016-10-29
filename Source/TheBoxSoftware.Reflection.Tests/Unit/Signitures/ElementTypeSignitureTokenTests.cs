@@ -10,9 +10,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
     {
         private ElementTypeSignitureToken CreateToken(byte[] content)
         {
-            PeCoffFile file = new PeCoffFile(string.Empty);
-            file.Map = new MetadataToDefinitionMap();
-            return new ElementTypeSignitureToken(file, content, 0);
+            return new ElementTypeSignitureToken(content, 0);
         }
 
         [Test]

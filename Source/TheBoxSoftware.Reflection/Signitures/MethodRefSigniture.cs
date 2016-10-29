@@ -5,7 +5,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 {
     internal sealed class MethodRefSigniture : Signiture
     {
-        public MethodRefSigniture(PeCoffFile file, byte[] signiture)
+        public MethodRefSigniture(byte[] signiture)
             : base(Signitures.MethodRef)
         {
             List<SignitureToken> tokens = new List<SignitureToken>();
@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
             tokens.Add(paramCount);
-            ReturnTypeSignitureToken returnType = new ReturnTypeSignitureToken(file, signiture, offset);
+            ReturnTypeSignitureToken returnType = new ReturnTypeSignitureToken(signiture, offset);
             tokens.Add(returnType);
             for(int i = 0; i < paramCount.Count; i++)
             {
@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ParamSignitureToken param = new ParamSignitureToken(file, signiture, offset);
+                    ParamSignitureToken param = new ParamSignitureToken(signiture, offset);
                     tokens.Add(param);
                 }
             }

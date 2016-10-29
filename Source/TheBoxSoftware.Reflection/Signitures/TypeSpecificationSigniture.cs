@@ -15,11 +15,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="file">The file containing the signiture</param>
         /// <param name="signiture">The actual signiture contents.</param>
-        public TypeSpecificationSigniture(PeCoffFile file, byte[] signiture)
+        public TypeSpecificationSigniture(byte[] signiture)
             : base(Signitures.TypeSpecification)
         {
 
-            this.Type = new TypeSignitureToken(file, signiture, 0);
+            this.Type = new TypeSignitureToken(signiture, 0);
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="file">The PeCoffFile that contains the signiture block.</param>
         /// <param name="signiture">The signiture blob.</param>
-		internal LocalVariableSigniture(PeCoffFile file, byte[] signiture)
+		internal LocalVariableSigniture(byte[] signiture)
             : base(Signitures.LocalVariable)
         {
             List<SignitureToken> tokens = new List<SignitureToken>();
@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             {
                 if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
                 {
-                    ElementTypeSignitureToken typedByRef = new ElementTypeSignitureToken(file, signiture, offset);
+                    ElementTypeSignitureToken typedByRef = new ElementTypeSignitureToken(signiture, offset);
                     tokens.Add(typedByRef);
                 }
                 else
@@ -50,10 +50,10 @@ namespace TheBoxSoftware.Reflection.Signitures
                         }
                     }
 
-                    ElementTypeSignitureToken byRef = new ElementTypeSignitureToken(file, signiture, offset);
+                    ElementTypeSignitureToken byRef = new ElementTypeSignitureToken(signiture, offset);
                     tokens.Add(byRef);
 
-                    ElementTypeSignitureToken type = new ElementTypeSignitureToken(file, signiture, offset);
+                    ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
                     tokens.Add(type);
                 }
             }

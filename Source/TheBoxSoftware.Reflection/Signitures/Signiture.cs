@@ -15,8 +15,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="tokenType">The type of signiture being represented.</param>
         protected Signiture(Signitures tokenType)
         {
-            this.Type = tokenType;
-            this.Tokens = new List<SignitureToken>();
+            _type = tokenType;
+            _tokens = new List<SignitureToken>();
         }
 
         /// <summary>
@@ -43,11 +43,11 @@ namespace TheBoxSoftware.Reflection.Signitures
             Signiture instantiatedSigniture = null;
             switch(tokenType)
             {
-                case Signitures.MethodDef: instantiatedSigniture = new MethodDefSigniture(file, signiture); break;
-                case Signitures.MethodRef: instantiatedSigniture = new MethodRefSigniture(file, signiture); break;
-                case Signitures.Field: instantiatedSigniture = new FieldSigniture(file, signiture); break;
-                case Signitures.Property: instantiatedSigniture = new PropertySigniture(file, signiture); break;
-                case Signitures.TypeSpecification: instantiatedSigniture = new TypeSpecificationSigniture(file, signiture); break;
+                case Signitures.MethodDef: instantiatedSigniture = new MethodDefSigniture(signiture); break;
+                case Signitures.MethodRef: instantiatedSigniture = new MethodRefSigniture(signiture); break;
+                case Signitures.Field: instantiatedSigniture = new FieldSigniture(signiture); break;
+                case Signitures.Property: instantiatedSigniture = new PropertySigniture(signiture); break;
+                case Signitures.TypeSpecification: instantiatedSigniture = new TypeSpecificationSigniture(signiture); break;
             }
             return instantiatedSigniture;
         }
@@ -71,11 +71,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         public ReturnTypeSignitureToken GetReturnTypeToken()
         {
             ReturnTypeSignitureToken token = null;
-            for(int i = 0; i < this.Tokens.Count; i++)
+            for(int i = 0; i < _tokens.Count; i++)
             {
-                if(this.Tokens[i] is ReturnTypeSignitureToken)
+                if(_tokens[i] is ReturnTypeSignitureToken)
                 {
-                    token = (ReturnTypeSignitureToken)this.Tokens[i];
+                    token = _tokens[i] as ReturnTypeSignitureToken;
                     break;
                 }
             }
@@ -87,14 +87,14 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public Signitures Type
         {
-            get { return this._type; }
-            protected set { this._type = value; }
+            get { return _type; }
+            protected set { _type = value; }
         }
 
         public List<SignitureToken> Tokens
         {
-            get { return this._tokens; }
-            protected set { this._tokens = value; }
+            get { return _tokens; }
+            protected set { _tokens = value; }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture to read.</param>
         /// <param name="offset">The offset to start processing at.</param>
-        public ReturnTypeSignitureToken(PeCoffFile file, byte[] signiture, Offset offset)
+        public ReturnTypeSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.ReturnType)
         {
             while(CustomModifierToken.IsToken(signiture, offset))
@@ -24,16 +24,16 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.ByRef))
             {
-                this.Tokens.Add(new ElementTypeSignitureToken(file, signiture, offset));    // ByRef
-                this.Tokens.Add(new TypeSignitureToken(file, signiture, offset));   // Type
+                this.Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // ByRef
+                this.Tokens.Add(new TypeSignitureToken(signiture, offset));   // Type
             }
             else if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.Void | ElementTypes.TypedByRef))
             {
-                this.Tokens.Add(new ElementTypeSignitureToken(file, signiture, offset));    // Void, TypedByRef
+                this.Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // Void, TypedByRef
             }
             else
             {
-                this.Tokens.Add(new TypeSignitureToken(file, signiture, offset));
+                this.Tokens.Add(new TypeSignitureToken(signiture, offset));
             }
         }
 

@@ -8,7 +8,7 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Model.PEFile peFile;
+        private Model.PEFile _peFile;
 
         /// <summary>
         /// Constructor
@@ -23,7 +23,7 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer
         /// </summary>
         private void InitialiseForNewPEFile()
         {
-            this.peViewMap.ItemsSource = peFile.Entries;
+            this.peViewMap.ItemsSource = _peFile.Entries;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer
                 PeCoffFile coffFile = new PeCoffFile(ofd.FileName);
                 coffFile.Initialise();
 
-                peFile = new Model.PEFile(coffFile);
+                _peFile = new Model.PEFile(coffFile);
                 this.InitialiseForNewPEFile();
             }
         }

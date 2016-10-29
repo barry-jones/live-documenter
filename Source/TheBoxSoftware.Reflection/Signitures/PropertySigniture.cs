@@ -14,13 +14,13 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="file">The file that contains the signiture.</param>
         /// <param name="signiture">The signiture blob.</param>
-		public PropertySigniture(PeCoffFile file, byte[] signiture)
+		public PropertySigniture(byte[] signiture)
             : base(Signitures.Property)
         {
             List<SignitureToken> tokens = new List<SignitureToken>();
             Offset offset = 0;
 
-            ElementTypeSignitureToken property = new ElementTypeSignitureToken(file, signiture, offset);
+            ElementTypeSignitureToken property = new ElementTypeSignitureToken(signiture, offset);
             tokens.Add(property);
 
             ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
@@ -32,12 +32,12 @@ namespace TheBoxSoftware.Reflection.Signitures
                 tokens.Add(modifier);
             }
 
-            ElementTypeSignitureToken type = new ElementTypeSignitureToken(file, signiture, offset);
+            ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
             tokens.Add(type);
 
             for(int i = 0; i < paramCount.Count; i++)
             {
-                ParamSignitureToken param = new ParamSignitureToken(file, signiture, offset);
+                ParamSignitureToken param = new ParamSignitureToken(signiture, offset);
                 tokens.Add(param);
             }
         }

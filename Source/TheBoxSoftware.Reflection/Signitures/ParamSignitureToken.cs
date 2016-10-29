@@ -22,7 +22,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="file">The file which defines the signiture.</param>
         /// <param name="signiture">The contents of the signiture.</param>
         /// <param name="offset">The offset of the current token.</param>
-        public ParamSignitureToken(PeCoffFile file, byte[] signiture, Offset offset)
+        public ParamSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.Param)
         {
 
@@ -35,8 +35,8 @@ namespace TheBoxSoftware.Reflection.Signitures
             // After a custom modifier the parameter can be defined as a ByRef, TypedByRef or Type token.
             if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.ByRef))
             {
-                this.Tokens.Add(new ElementTypeSignitureToken(file, signiture, offset));    // ByRef
-                TypeSignitureToken typeSig = new TypeSignitureToken(file, signiture, offset);
+                this.Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // ByRef
+                TypeSignitureToken typeSig = new TypeSignitureToken(signiture, offset);
                 this.Tokens.Add(typeSig);   // Type
                 this._elementType = typeSig.ElementType;
                 this._isTypeSigniture = true;
@@ -44,13 +44,13 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
             {
-                ElementTypeSignitureToken elementSig = new ElementTypeSignitureToken(file, signiture, offset);
+                ElementTypeSignitureToken elementSig = new ElementTypeSignitureToken(signiture, offset);
                 this.Tokens.Add(elementSig);    // Type
                 this._elementType = elementSig;
             }
             else
             {
-                TypeSignitureToken typeSig = new TypeSignitureToken(file, signiture, offset);
+                TypeSignitureToken typeSig = new TypeSignitureToken(signiture, offset);
                 this.Tokens.Add(typeSig);
                 this._elementType = typeSig.ElementType;
                 this._isTypeSigniture = true;
