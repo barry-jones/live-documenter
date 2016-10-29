@@ -30,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            return string.Format("[CallingConvention: {0}", this.Convention.ToString());
+            return $"[CallingConvention: {_convention.ToString()}]";
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public CallingConventions Convention
         {
-            get { return this._convention; }
-            private set { this._convention = value; }
+            get { return _convention; }
+            private set { _convention = value; }
         }
     }
 }
