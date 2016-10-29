@@ -19,14 +19,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="file">The file the stream should be read from</param>
         /// <param name="address">The start address of the blob stream</param>
         /// <param name="size">The size of the stream</param>
-        internal BlobStream(PeCoffFile file, int address, int size)
+        internal BlobStream(PeCoffFile file, uint address, int size)
         {
             _owningFile = file;
             // Read and store the underlying data for this stream
             _streamContents = new byte[size];
-            int endAddress = address + size;
+            uint endAddress = address + (uint)size;
             byte[] fileContents = file.FileContents;
-            for(int i = address; i < endAddress; i++)
+            for(uint i = address; i < endAddress; i++)
             {
                 this._streamContents[i - address] = fileContents[i];
             }

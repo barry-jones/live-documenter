@@ -2,7 +2,7 @@
 {
     public class CLRDirectory : Directory
     {
-        public CLRDirectory(byte[] fileContents, int address)
+        public CLRDirectory(byte[] fileContents, uint address)
             : base()
         {
             this.Header = new Cor20Header(fileContents, address);
@@ -13,7 +13,7 @@
             base.ReadDirectories(containingFile);
 
             this.Metadata = new MetadataDirectory(containingFile,
-                containingFile.FileAddressFromRVA((int)this.Header.MetaData.VirtualAddress)
+                containingFile.FileAddressFromRVA(this.Header.MetaData.VirtualAddress)
                 );
         }
 

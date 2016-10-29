@@ -2,7 +2,7 @@
 {
     public class Stream
     {
-        public static Stream Create(PeCoffFile file, int address, MetadataStreamHeader header)
+        public static Stream Create(PeCoffFile file, uint address, MetadataStreamHeader header)
         {
             Stream created = null;
 

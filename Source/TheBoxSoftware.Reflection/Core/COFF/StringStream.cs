@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// The application encountered an invalid and unexpected character at the
         /// start of the stream.
         /// </exception>
-        internal StringStream(byte[] fileContents, int address, int size)
+        internal StringStream(byte[] fileContents, uint address, int size)
         {
             // The first entry in the stream should always be a null termination character
             if(fileContents[address] != TerminatingChar)
@@ -38,7 +38,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
             // Read and store the underlying data for this stream
             _streamContents = new byte[size];
-            for(int i = address; i < (address + size); i++)
+            for(uint i = address; i < (address + size); i++)
             {
                 _streamContents[i - address] = fileContents[i];
             }

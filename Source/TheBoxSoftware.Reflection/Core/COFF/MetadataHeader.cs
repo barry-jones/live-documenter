@@ -5,9 +5,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class MetadataHeader
     {
-        public MetadataHeader(byte[] contents, int address)
+        public MetadataHeader(byte[] contents, uint address)
         {
-            Offset offset = address;
+            Offset offset = (int)address;
             List<byte> data = new List<byte>(contents);
             char[] tempName = new char[8];
 

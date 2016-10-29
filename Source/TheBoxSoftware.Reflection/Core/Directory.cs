@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Reflection.Core
         /// <param name="fileContents">The contents of the file being read</param>
         /// <param name="address">The address of the directory</param>
         /// <returns></returns>
-        public static Directory Create(DataDirectories directory, byte[] fileContents, int address)
+        public static Directory Create(DataDirectories directory, byte[] fileContents, uint address)
         {
             Directory createdDirectory = null;
 

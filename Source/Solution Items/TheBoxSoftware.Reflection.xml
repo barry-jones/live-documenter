@@ -1232,7 +1232,7 @@
             the signitures.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.COFF.BlobStream.#ctor(TheBoxSoftware.Reflection.Core.PeCoffFile,System.Int32,System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.Core.COFF.BlobStream.#ctor(TheBoxSoftware.Reflection.Core.PeCoffFile,System.UInt32,System.Int32)">
             <summary>
             Initialises a new instance of the BlobStream class
             </summary>
@@ -1910,7 +1910,7 @@
             access to those details.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.COFF.GuidStream.#ctor(TheBoxSoftware.Reflection.Core.PeCoffFile,System.Int32,System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.Core.COFF.GuidStream.#ctor(TheBoxSoftware.Reflection.Core.PeCoffFile,System.UInt32,System.Int32)">
             <summary>
             Initialises a new instance of the GuidStream class.
             </summary>
@@ -2140,7 +2140,7 @@
             An index in to the blob heap
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory.#ctor(TheBoxSoftware.Reflection.Core.PeCoffFile,System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.Core.COFF.MetadataDirectory.#ctor(TheBoxSoftware.Reflection.Core.PeCoffFile,System.UInt32)">
             <summary>
             Initialises a new instance of the MetadataDirectory
             </summary>
@@ -2812,7 +2812,7 @@
             The string stream which stores the strings for all metadata names and text.
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.COFF.StringStream.#ctor(System.Byte[],System.Int32,System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.Core.COFF.StringStream.#ctor(System.Byte[],System.UInt32,System.Int32)">
             <summary>
             Initialises a new instance of the StringStream class.
             </summary>
@@ -2913,7 +2913,7 @@
             An index in to the blob heap
             </summary>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.Directory.Create(TheBoxSoftware.Reflection.Core.PE.DataDirectories,System.Byte[],System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.Core.Directory.Create(TheBoxSoftware.Reflection.Core.PE.DataDirectories,System.Byte[],System.UInt32)">
             <summary>
             Factory method for instantiating different directories from the file
             </summary>
@@ -3009,7 +3009,7 @@
             <param name="index">The coded index to resolve</param>
             <returns>The object referenced by the coded index or null if not found.</returns>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.PeCoffFile.FileAddressFromRVA(System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.Core.PeCoffFile.FileAddressFromRVA(System.UInt32)">
             <summary>
             Converts a Relative Virtual Address to a file offset
             </summary>
@@ -4583,7 +4583,7 @@
             </summary>
             <returns>A collection of generic types for this member</returns>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.MethodDef.GetIL(System.Int32,System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.MethodDef.GetIL(System.UInt32,System.Int32)">
             <summary>
             Obtains the Intermediate Language instructions for this method
             </summary>

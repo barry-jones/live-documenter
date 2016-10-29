@@ -45,35 +45,35 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The instantiated <see cref="MethodBody"/>.</returns>
         public MethodBody GetMethodBody()
         {
-            Int16 maxStack = 0;
-            Int32 localsToken;
-            Int32 codeSize = 0;
-            int address = this.Assembly.File.FileAddressFromRVA((int)_rva);
-            List<byte> contents = new List<byte>(this.Assembly.File.FileContents);
+            short maxStack = 0;
+            int localsToken;
+            int codeSize = 0;
+            uint address = Assembly.File.FileAddressFromRVA(_rva);
+            byte[] contents = Assembly.File.FileContents;
 
-            byte sizeMask = 0x03;
             byte firstByte = contents[address];
             byte[] instructions = new byte[0];
-            if((firstByte & sizeMask) == 0x02)
-            {       // Tiny
+
+            if((firstByte & MethodBodySizeMask) == 0x02)
+            {   // Tiny
                 codeSize = firstByte >> 2;
                 maxStack = 8;
                 address++;
             }
-            else if((firstByte & sizeMask) == 0x03)
+            else if((firstByte & MethodBodySizeMask) == 0x03)
             {   // FAT
-                Core.Offset offset = address;
-                uint flagsAndSize = BitConverter.ToUInt16(this.Assembly.File.FileContents, offset.Shift(2));
+                Core.Offset offset = (int)address;
+                uint flagsAndSize = BitConverter.ToUInt16(contents, offset.Shift(2));
                 uint lengthOfHeader = flagsAndSize >> 12;
-                maxStack = BitConverter.ToInt16(this.Assembly.File.FileContents, offset.Shift(2));
-                codeSize = BitConverter.ToInt32(this.Assembly.File.FileContents, offset.Shift(4));
-                localsToken = BitConverter.ToInt32(this.Assembly.File.FileContents, offset.Shift(4));
-                address = offset;
+                maxStack = BitConverter.ToInt16(contents, offset.Shift(2));
+                codeSize = BitConverter.ToInt32(contents, offset.Shift(4));
+                localsToken = BitConverter.ToInt32(contents, offset.Shift(4));
+                address = (uint)((int)offset);
             }
 
             // Popualate details of the method body
             MethodBody body = new MethodBody(
-                this.GetInstructions(this.GetIL(address, codeSize)).ToList(),
+                GetInstructions(GetIL(address, codeSize)).ToList(),
                 maxStack
                 );
             return body;
@@ -94,10 +94,10 @@ namespace TheBoxSoftware.Reflection
         /// <param name="address">The address of the start of the actual code</param>
         /// <param name="codeSize">The size of the actual code.</param>
         /// <returns>A byte array of IL operations</returns>
-        private byte[] GetIL(int address, int codeSize)
+        private byte[] GetIL(uint address, int codeSize)
         {
-            List<byte> contents = new List<byte>(this.Assembly.File.FileContents);
-            return contents.GetRange(address, (int)codeSize).ToArray();
+            List<byte> contents = new List<byte>(Assembly.File.FileContents);
+            return contents.GetRange((int)address, codeSize).ToArray();
         }
 
         /// <summary>

@@ -55,10 +55,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Integration Tests", "1. 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentationTest", "1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj", "{2AD369A3-7737-4EC5-A4BA-3E846F80C066}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Perf Helpers", "2. Perf Helpers", "{4186D318-E74F-47A4-873A-34053A5211B8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfHelper", "PerfHelper\PerfHelper.csproj", "{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -294,24 +290,6 @@ Global
 		{2AD369A3-7737-4EC5-A4BA-3E846F80C066}.Test|Mixed Platforms.Build.0 = Test|Any CPU
 		{2AD369A3-7737-4EC5-A4BA-3E846F80C066}.Test|x86.ActiveCfg = Test|Any CPU
 		{2AD369A3-7737-4EC5-A4BA-3E846F80C066}.Test|x86.Build.0 = Test|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Debug|x86.Build.0 = Debug|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Release|x86.ActiveCfg = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Release|x86.Build.0 = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Test|Any CPU.Build.0 = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Test|Mixed Platforms.Build.0 = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Test|x86.ActiveCfg = Release|Any CPU
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3}.Test|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -319,6 +297,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9125D912-81EE-4221-B5FB-7DD63B92FFB2} = {87C0012D-44C8-4F6E-B9BD-56C226A67C93}
 		{2AD369A3-7737-4EC5-A4BA-3E846F80C066} = {3528818F-F8CC-44FD-9483-70B64BF588A0}
-		{5AB84492-18D7-44BA-BC97-2B8B5B7BD5C3} = {4186D318-E74F-47A4-873A-34053A5211B8}
 	EndGlobalSection
 EndGlobal

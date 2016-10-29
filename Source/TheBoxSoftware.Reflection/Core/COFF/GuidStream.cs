@@ -18,11 +18,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="file">The file which owns the stream.</param>
         /// <param name="address">The start address of the stream.</param>
         /// <param name="size">The size of the stream.</param>
-        internal GuidStream(PeCoffFile file, int address, int size)
+        internal GuidStream(PeCoffFile file, uint address, int size)
         {
             // Read and store the underlying data for this stream
             _streamContents = new byte[size];
-            for(int i = address; i < (address + size); i++)
+            for(uint i = address; i < (address + size); i++)
             {
                 _streamContents[i - address] = file.FileContents[i];
             }

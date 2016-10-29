@@ -72,27 +72,27 @@ namespace TheBoxSoftware.Reflection.Core
         /// </summary>
         /// <param name="rva">The RVA to convert</param>
         /// <returns>The file offset address</returns>
-        internal int FileAddressFromRVA(int rva)
+        internal uint FileAddressFromRVA(uint rva)
         {
-            int virtualOffset = 0;
-            int rawOffset = 0;
-            int max = -1;
+            uint virtualOffset = 0;
+            uint rawOffset = 0;
+            uint max = 0;
             int numSectionHeaders = this.SectionHeaders.Count;
 
             // determine which section the RVA belongs too
             for(int i = 0; i < numSectionHeaders; i++)
             {
-                int minAddress = (int)this.SectionHeaders[i].VirtualAddress;
-                int maxAddress = (i + 1 < numSectionHeaders)
-                    ? (int)this.SectionHeaders[i + 1].VirtualAddress
+                uint minAddress = this.SectionHeaders[i].VirtualAddress;
+                uint maxAddress = (i + 1 < numSectionHeaders)
+                    ? this.SectionHeaders[i + 1].VirtualAddress
                     : max;
 
                 if(rva >= minAddress)
                 {
                     if(maxAddress == -1 || rva < maxAddress)
                     {
-                        virtualOffset = (int)this.SectionHeaders[i].VirtualAddress;
-                        rawOffset = (int)this.SectionHeaders[i].PointerToRawData;
+                        virtualOffset = SectionHeaders[i].VirtualAddress;
+                        rawOffset = SectionHeaders[i].PointerToRawData;
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace TheBoxSoftware.Reflection.Core
 
                 if(directory.IsUsed)
                 {
-                    int address = this.FileAddressFromRVA((int)directory.VirtualAddress);
+                    uint address = FileAddressFromRVA(directory.VirtualAddress);
 
                     Directory created = Directory.Create(directory.Directory, _fileContents, address);
                     created.ReadDirectories(this);

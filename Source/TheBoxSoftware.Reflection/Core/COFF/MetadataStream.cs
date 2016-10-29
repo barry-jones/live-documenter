@@ -23,11 +23,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         private byte _sizeOfGuidIndexes = 0;
         private byte _sizeOfBlobIndexes = 0;
 
-        internal MetadataStream(PeCoffFile file, int address)
+        internal MetadataStream(PeCoffFile file, uint address)
         {
             this.OwningFile = file;
             byte[] contents = file.FileContents;
-            Offset offset = address;
+            Offset offset = (int)address;
 
             this.Reserved1 = BitConverter.ToUInt32(contents, offset.Shift(4));
             this.MajorVersion = (byte)contents.GetValue(offset.Shift(1));

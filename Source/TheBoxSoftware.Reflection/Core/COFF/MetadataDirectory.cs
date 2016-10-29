@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="file">The contents of the file</param>
         /// <param name="address">The base address of the directory</param>
-        public MetadataDirectory(PeCoffFile file, int address)
+        public MetadataDirectory(PeCoffFile file, uint address)
         {
             this.Header = new MetadataHeader(file.FileContents, address);
             this.Streams = new Dictionary<Streams, Stream>();
@@ -18,7 +18,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             {
                 Stream current = Stream.Create(
                     file,
-                    (int)this.Header.Headers[i].Offset + address,
+                    Header.Headers[i].Offset + address,
                     this.Header.Headers[i]);
 
                 // Calculate the nice enumerated value which describes the stream

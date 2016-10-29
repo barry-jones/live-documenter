@@ -7,9 +7,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     // REFERS: IMAGE_COR20_HEADER
     public class Cor20Header
     {
-        public Cor20Header(byte[] fileContents, int address)
+        public Cor20Header(byte[] fileContents, uint address)
         {
-            Offset offset = address;
+            Offset offset = (int)address;
             List<byte> tempData = new List<byte>(fileContents);
 
             this.CB = BitConverter.ToUInt32(fileContents, offset.Shift(4));
