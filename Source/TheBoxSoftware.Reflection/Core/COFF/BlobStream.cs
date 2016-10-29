@@ -1,40 +1,40 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// The blob stream controls access to signitures contained in the pe/coff file.
     /// </summary>
     internal sealed class BlobStream : Stream
     {
         private byte[] _streamContents;
-        /// <summary>
-        /// Reference to file which owns the stream, this is stored to make it available to
-        /// the signitures.
-        /// </summary>
-        private PeCoffFile _owningFile;
 
         /// <summary>
         /// Initialises a new instance of the BlobStream class
         /// </summary>
-        /// <param name="file">The file the stream should be read from</param>
+        /// <param name="copyFromContents">
+        /// The array from which to copy the contents of the BlobStream from. Generall PeCoffFile.FileContents.
+        /// </param>
         /// <param name="address">The start address of the blob stream</param>
         /// <param name="size">The size of the stream</param>
-        internal BlobStream(PeCoffFile file, uint address, int size)
+        internal BlobStream(byte[] copyFromContents, uint address, uint size)
         {
-            _owningFile = file;
+            if((address + size) > copyFromContents.Length)
+                throw new InvalidOperationException($"Not enough bytes to read from '{nameof(copyFromContents)}' to complete the operation.");
+
             // Read and store the underlying data for this stream
             _streamContents = new byte[size];
-            uint endAddress = address + (uint)size;
-            byte[] fileContents = file.FileContents;
+            uint endAddress = address + size;
             for(uint i = address; i < endAddress; i++)
             {
-                this._streamContents[i - address] = fileContents[i];
+                _streamContents[i - address] = copyFromContents[i];
             }
         }
 
         public Signitures.Signiture GetSigniture(BlobIndex index)
         {
-            return GetSigniture((int)index.Value, index.SignitureType);
+            return GetSigniture(index.Value, index.SignitureType);
         }
 
         /// <summary>
@@ -44,12 +44,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="startOffset">The start of the signiture in the stream.</param>
         /// <param name="signiture">The type of signiture to parse.</param>
         /// <returns>The parsed signiture.</returns>
-        public Signitures.Signiture GetSigniture(int startOffset, Signitures.Signitures signiture)
+        public Signitures.Signiture GetSigniture(uint startOffset, Signitures.Signitures signiture)
         {
             return Signitures.Signiture.Create(
                 _streamContents,
-                startOffset,
-                _owningFile,
+                (int)startOffset,
                 signiture
                 );
         }
@@ -61,7 +60,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The contents of the signiture as a byte array.</returns>
         public byte[] GetSignitureContents(int startOffset)
         {
-            byte length = this._streamContents[startOffset++];
+            byte length = _streamContents[startOffset++];
             byte[] signitureContents = new byte[length];
             for(int i = startOffset; i < startOffset + length; i++)
             {

@@ -5,23 +5,25 @@ namespace TheBoxSoftware.Reflection.Signitures
 {
     internal sealed class MethodRefSigniture : Signiture
     {
-        public MethodRefSigniture(byte[] signiture)
-            : base(Signitures.MethodRef)
+        public MethodRefSigniture(byte[] signiture) : base(Signitures.MethodRef)
         {
             List<SignitureToken> tokens = new List<SignitureToken>();
             Offset offset = 0;
 
-            CallingConventionSignitureToken callingConvention = new CallingConventionSignitureToken(signiture, offset);
-            tokens.Add(callingConvention);
-            if((callingConvention.Convention & CallingConventions.Generic) == CallingConventions.Generic)
+            var calling = new CallingConventionSignitureToken(signiture, offset);
+            tokens.Add(calling);
+            if((calling.Convention & CallingConventions.Generic) != 0)
             {
-                GenericParamaterCountSignitureToken genParamCount = new GenericParamaterCountSignitureToken(signiture, offset);
+                var genParamCount = new GenericParamaterCountSignitureToken(signiture, offset);
                 tokens.Add(genParamCount);
             }
-            ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
+
+            var paramCount = new ParameterCountSignitureToken(signiture, offset);
             tokens.Add(paramCount);
-            ReturnTypeSignitureToken returnType = new ReturnTypeSignitureToken(signiture, offset);
+
+            var returnType = new ReturnTypeSignitureToken(signiture, offset);
             tokens.Add(returnType);
+
             for(int i = 0; i < paramCount.Count; i++)
             {
                 if(SentinalSignitureToken.IsToken(signiture, offset))
@@ -31,7 +33,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ParamSignitureToken param = new ParamSignitureToken(signiture, offset);
+                    var param = new ParamSignitureToken(signiture, offset);
                     tokens.Add(param);
                 }
             }

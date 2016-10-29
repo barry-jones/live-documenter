@@ -99,9 +99,9 @@ namespace TheBoxSoftware.Reflection
                     throw new InvalidOperationException("The Signiture can not be parsed correctly until the metadata has been loaded.");
                 }
 
-                BlobStream stream = (BlobStream)((Core.COFF.CLRDirectory)this.Assembly.File.Directories[
+                BlobStream stream = (BlobStream)((CLRDirectory)Assembly.File.Directories[
                     Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
-                return stream.GetSigniture((int)this.SignitureBlob.Value, this.SignitureBlob.SignitureType);
+                return stream.GetSigniture(SignitureBlob.Value, SignitureBlob.SignitureType);
             }
         }
     }

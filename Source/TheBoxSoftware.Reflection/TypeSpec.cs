@@ -93,7 +93,7 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The signiture defined for this member.
         /// </summary>
-        internal Reflection.Signitures.TypeSpecificationSigniture Signiture
+        internal TypeSpecificationSigniture Signiture
         {
             get
             {
@@ -105,7 +105,7 @@ namespace TheBoxSoftware.Reflection
                 BlobStream stream = (BlobStream)((CLRDirectory)this.Assembly.File.Directories[
                     Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
                 return stream.GetSigniture(
-                    (int)_signitureIndexInBlob.Value, _signitureIndexInBlob.SignitureType
+                    _signitureIndexInBlob.Value, _signitureIndexInBlob.SignitureType
                     ) as TypeSpecificationSigniture;
             }
         }

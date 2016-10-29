@@ -24,7 +24,7 @@
                     break;
 
                 case "#Blob":
-                    created = new BlobStream(file, address, (int)header.Size);
+                    created = new BlobStream(file.FileContents, address, header.Size);
                     created.StreamType = Streams.BlobStream;
                     break;
 

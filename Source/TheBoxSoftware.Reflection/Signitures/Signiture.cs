@@ -22,21 +22,20 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Factory method for creating new Signitures.
         /// </summary>
-        /// <param name="fileContents">The contents of the library the signiture is being read from</param>
+        /// <param name="source">The contents of the library the signiture is being read from</param>
         /// <param name="offset">The offset to the start of the signiture</param>
-        /// <param name="file">The PeCoffFile that is being read (same as file contents)</param>
         /// <param name="tokenType">The type of signiture being read.</param>
         /// <returns></returns>
-        public static Signiture Create(byte[] fileContents, Offset offset, PeCoffFile file, Signitures tokenType)
+        public static Signiture Create(byte[] source, Offset offset, Signitures tokenType)
         {
             int startingOffset = offset;
-            int lengthOfSigniture = SignitureToken.GetCompressedValue(fileContents, offset);    // The first byte is always the length
+            int lengthOfSigniture = SignitureToken.GetCompressedValue(source, offset);    // The first byte is always the length
 
             // Read the full signiture
             byte[] signiture = new byte[lengthOfSigniture];
             for(int i = 0; i < lengthOfSigniture; i++)
             {
-                signiture[i] = fileContents[offset.Shift(1)];
+                signiture[i] = source[offset.Shift(1)];
             }
 
             // Instatiate the correct signiture reader and pass control

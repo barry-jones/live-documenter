@@ -11,37 +11,33 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Initialises a new instance of the MethoDefSigniture class.
         /// </summary>
-        /// <param name="file">The file the signiture is defined in.</param>
         /// <param name="signiture">The byte contents of the signiture.</param>
-        public MethodDefSigniture(byte[] signiture)
-            : base(Signitures.MethodDef)
+        public MethodDefSigniture(byte[] signiture) : base(Signitures.MethodDef)
         {
             Offset offset = 0;
 
-            CallingConventionSignitureToken callingConvention = new CallingConventionSignitureToken(signiture, offset);
-            this.Tokens.Add(callingConvention);
-            if((callingConvention.Convention & CallingConventions.Generic) == CallingConventions.Generic)
+            var calling = new CallingConventionSignitureToken(signiture, offset);
+            Tokens.Add(calling);
+
+            if((calling.Convention & CallingConventions.Generic) != 0)
             {
-                GenericParamaterCountSignitureToken genParamCount = new GenericParamaterCountSignitureToken(signiture, offset);
-                this.Tokens.Add(genParamCount);
+                var genParamCount = new GenericParamaterCountSignitureToken(signiture, offset);
+                Tokens.Add(genParamCount);
             }
-            ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
-            this.Tokens.Add(paramCount);
-            ReturnTypeSignitureToken returnType = new ReturnTypeSignitureToken(signiture, offset);
-            this.Tokens.Add(returnType);
+
+            var paramCount = new ParameterCountSignitureToken(signiture, offset);
+            Tokens.Add(paramCount);
+
+            var returnType = new ReturnTypeSignitureToken(signiture, offset);
+            Tokens.Add(returnType);
             for(int i = 0; i < paramCount.Count; i++)
             {
-                ParamSignitureToken param = new ParamSignitureToken(signiture, offset);
-                this.Tokens.Add(param);
+                var param = new ParamSignitureToken(signiture, offset);
+                Tokens.Add(param);
             }
         }
 
-        public CallingConventions GetCallingConvention()
-        {
-            return ((CallingConventionSignitureToken)this.Tokens[0]).Convention;
-        }
-
-        public static CallingConventions GetCallingConvention(PeCoffFile file, byte[] signiture)
+        public static CallingConventions GetCallingConvention(byte[] signiture)
         {
             return new CallingConventionSignitureToken(signiture, 0).Convention;
         }

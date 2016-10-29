@@ -19,7 +19,6 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// Initialises a new instance of the ParamSignitureToken class from the provided <paramref name="signiture"/>
         /// at the specified <paramref name="offset"/>.
         /// </summary>
-        /// <param name="file">The file which defines the signiture.</param>
         /// <param name="signiture">The contents of the signiture.</param>
         /// <param name="offset">The offset of the current token.</param>
         public ParamSignitureToken(byte[] signiture, Offset offset)
@@ -28,32 +27,32 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             while(CustomModifierToken.IsToken(signiture, offset))
             {
-                this.Tokens.Add(new CustomModifierToken(signiture, offset));
-                this.HasCustomModifier = true;
+                Tokens.Add(new CustomModifierToken(signiture, offset));
+                HasCustomModifier = true;
             }
 
             // After a custom modifier the parameter can be defined as a ByRef, TypedByRef or Type token.
             if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.ByRef))
             {
-                this.Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // ByRef
+                Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // ByRef
                 TypeSignitureToken typeSig = new TypeSignitureToken(signiture, offset);
-                this.Tokens.Add(typeSig);   // Type
-                this._elementType = typeSig.ElementType;
-                this._isTypeSigniture = true;
-                this.IsByRef = true;
+                Tokens.Add(typeSig);   // Type
+                _elementType = typeSig.ElementType;
+                _isTypeSigniture = true;
+                IsByRef = true;
             }
             else if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
             {
                 ElementTypeSignitureToken elementSig = new ElementTypeSignitureToken(signiture, offset);
-                this.Tokens.Add(elementSig);    // Type
-                this._elementType = elementSig;
+                Tokens.Add(elementSig);    // Type
+                _elementType = elementSig;
             }
             else
             {
                 TypeSignitureToken typeSig = new TypeSignitureToken(signiture, offset);
-                this.Tokens.Add(typeSig);
-                this._elementType = typeSig.ElementType;
-                this._isTypeSigniture = true;
+                Tokens.Add(typeSig);
+                _elementType = typeSig.ElementType;
+                _isTypeSigniture = true;
             }
         }
 
@@ -63,14 +62,15 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             if(this.Tokens.Last() is TypeSignitureToken)
             {
-                details = ((TypeSignitureToken)this.Tokens.Last()).GetTypeDetails(member);
+                details = ((TypeSignitureToken)Tokens.Last()).GetTypeDetails(member);
             }
             else
             {
-                details.Type = ((ElementTypeSignitureToken)this.Tokens.Last()).ResolveToken(member.Assembly);
+                details.Type = ((ElementTypeSignitureToken)Tokens.Last()).ResolveToken(member.Assembly);
             }
 
-            details.IsByRef = this.IsByRef;
+            details.IsByRef = IsByRef;
+
             return details;
         }
 
@@ -78,14 +78,14 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             TypeRef typeRef = null;
 
-            if(this._isTypeSigniture)
+            if(_isTypeSigniture)
             {
-                TypeSignitureToken typeToken = (TypeSignitureToken)this.Tokens.Last();
+                TypeSignitureToken typeToken = Tokens.Last() as TypeSignitureToken;
                 typeRef = typeToken.ResolveType(assembly, declaringParameter);
             }
             else
             {
-                typeRef = this._elementType.ResolveToken(assembly);
+                typeRef = _elementType.ResolveToken(assembly);
             }
 
             return typeRef;
@@ -101,10 +101,10 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[Param: ");
 
-            if(this._isByRef)
+            if(_isByRef)
                 sb.Append("ByRef ");
 
-            foreach(SignitureToken t in this.Tokens)
+            foreach(SignitureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }
@@ -119,7 +119,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public ElementTypeSignitureToken ElementType
         {
-            get { return this._elementType; }
+            get { return _elementType; }
         }
 
         /// <summary>
@@ -127,8 +127,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public bool IsByRef
         {
-            get { return this._isByRef; }
-            private set { this._isByRef = value; }
+            get { return _isByRef; }
+            private set { _isByRef = value; }
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public bool HasCustomModifier
         {
-            get { return this._hasCustomModifier; }
-            private set { this._hasCustomModifier = value; }
+            get { return _hasCustomModifier; }
+            private set { _hasCustomModifier = value; }
         }
     }
 }

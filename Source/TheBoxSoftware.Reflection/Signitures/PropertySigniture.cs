@@ -12,7 +12,6 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Initialises a new instance of the property signiture from the provided <paramref name="signiture"/>.
         /// </summary>
-        /// <param name="file">The file that contains the signiture.</param>
         /// <param name="signiture">The signiture blob.</param>
 		public PropertySigniture(byte[] signiture)
             : base(Signitures.Property)

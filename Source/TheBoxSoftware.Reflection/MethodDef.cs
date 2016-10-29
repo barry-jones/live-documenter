@@ -435,9 +435,10 @@ namespace TheBoxSoftware.Reflection
 
             private void LoadGenericParameters()
             {
-                CallingConventions callingConvention = MethodDefSigniture.GetCallingConvention(_assembly.File,
-                    _blobStream.GetSignitureContents((int)_methodToBuild.SignitureBlob.Value));
-                bool isGenericMethod = (callingConvention & CallingConventions.Generic) == CallingConventions.Generic;
+                CallingConventions callingConvention = MethodDefSigniture.GetCallingConvention(
+                    _blobStream.GetSignitureContents((int)_methodToBuild.SignitureBlob.Value)
+                    );
+                bool isGenericMethod = (callingConvention & CallingConventions.Generic) != 0;
 
                 if(isGenericMethod)
                 {
@@ -486,7 +487,7 @@ namespace TheBoxSoftware.Reflection
                 _methodToBuild.Name = _assembly.StringStream.GetString(_fromRow.Name.Value);
                 _methodToBuild.SignitureBlob = _fromRow.Signiture;
                 // Set flag based information
-                _methodToBuild._isSpecialName = (_fromRow.Flags & MethodAttributes.SpecialName) == MethodAttributes.SpecialName;
+                _methodToBuild._isSpecialName = (_fromRow.Flags & MethodAttributes.SpecialName) != 0;
                 _methodToBuild._attributes = _fromRow.Flags;
                 _methodToBuild._implementationFlags = _fromRow.ImplFlags;
                 _methodToBuild.Assembly = _assembly;

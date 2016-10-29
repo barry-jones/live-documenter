@@ -15,9 +15,9 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// </summary>
 	internal class ArrayShapeSignitureToken : SignitureToken
     {
-        private Int32 _rank;         // specifies the number of dimensions (1 or more)
-        private Int32[] _sizes;      // size of each dimension
-        private Int32[] _loBounds;   // the lower boundaries of those dimensions
+        private int _rank;         // specifies the number of dimensions (1 or more)
+        private int[] _sizes;      // size of each dimension
+        private int[] _loBounds;   // the lower boundaries of those dimensions
 
         /// <summary>
         /// Initialises a new instance of the ArrayShapeSignitureToken which reads the array share
@@ -28,23 +28,23 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public ArrayShapeSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.ArrayShape)
         {
-            Int32 numSizes = 0;
-            Int32 numLoBounds = 0;
+            int numSizes = 0;
+            int numLoBounds = 0;
 
-            this.Rank = SignitureToken.GetCompressedValue(signiture, offset);
+            this.Rank = GetCompressedValue(signiture, offset);
 
-            numSizes = SignitureToken.GetCompressedValue(signiture, offset);
-            this.Sizes = new Int32[numSizes];
+            numSizes = GetCompressedValue(signiture, offset);
+            this.Sizes = new int[numSizes];
             for(int i = 0; i < numSizes; i++)
             {
-                this.Sizes[i] = SignitureToken.GetCompressedValue(signiture, offset);
+                this.Sizes[i] = GetCompressedValue(signiture, offset);
             }
 
-            numLoBounds = SignitureToken.GetCompressedValue(signiture, offset);
-            this.LoBounds = new Int32[numLoBounds];
+            numLoBounds = GetCompressedValue(signiture, offset);
+            this.LoBounds = new int[numLoBounds];
             for(int i = 0; i < numLoBounds; i++)
             {
-                this.LoBounds[i] = SignitureToken.GetCompressedValue(signiture, offset);
+                this.LoBounds[i] = GetCompressedValue(signiture, offset);
             }
         }
 
@@ -82,28 +82,28 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The number of ranks in the array shape.
         /// </summary>
-		public Int32 Rank
+		public int Rank
         {
-            get { return this._rank; }
-            private set { this._rank = value; }
+            get { return _rank; }
+            private set { _rank = value; }
         }
 
         /// <summary>
         /// The defined sizes
         /// </summary>
-		public Int32[] Sizes
+		public int[] Sizes
         {
-            get { return this._sizes; }
-            private set { this._sizes = value; }
+            get { return _sizes; }
+            private set { _sizes = value; }
         }
 
         /// <summary>
         /// The values of those low boundaries.
         /// </summary>
-		public Int32[] LoBounds
+		public int[] LoBounds
         {
-            get { return this._loBounds; }
-            private set { this._loBounds = value; }
+            get { return _loBounds; }
+            private set { _loBounds = value; }
         }
     }
 }

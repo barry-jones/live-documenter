@@ -1226,21 +1226,17 @@
             The blob stream controls access to signitures contained in the pe/coff file.
             </summary>
         </member>
-        <member name="F:TheBoxSoftware.Reflection.Core.COFF.BlobStream._owningFile">
-            <summary>
-            Reference to file which owns the stream, this is stored to make it available to
-            the signitures.
-            </summary>
-        </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.COFF.BlobStream.#ctor(TheBoxSoftware.Reflection.Core.PeCoffFile,System.UInt32,System.Int32)">
+        <member name="M:TheBoxSoftware.Reflection.Core.COFF.BlobStream.#ctor(System.Byte[],System.UInt32,System.UInt32)">
             <summary>
             Initialises a new instance of the BlobStream class
             </summary>
-            <param name="file">The file the stream should be read from</param>
+            <param name="copyFromContents">
+            The array from which to copy the contents of the BlobStream from. Generall PeCoffFile.FileContents.
+            </param>
             <param name="address">The start address of the blob stream</param>
             <param name="size">The size of the stream</param>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Core.COFF.BlobStream.GetSigniture(System.Int32,TheBoxSoftware.Reflection.Signitures.Signitures)">
+        <member name="M:TheBoxSoftware.Reflection.Core.COFF.BlobStream.GetSigniture(System.UInt32,TheBoxSoftware.Reflection.Signitures.Signitures)">
             <summary>
             Retrives a parsed <see cref="T:TheBoxSoftware.Reflection.Signitures.Signiture"/> for the specified
             <paramref name="startOffset"/> and <paramref name="signiture"/> type.
@@ -3626,7 +3622,6 @@
             <summary>
             Initialises a new instance of the MethoDefSigniture class.
             </summary>
-            <param name="file">The file the signiture is defined in.</param>
             <param name="signiture">The byte contents of the signiture.</param>
         </member>
         <member name="T:TheBoxSoftware.Reflection.Signitures.ParameterCountSignitureToken">
@@ -3773,13 +3768,12 @@
             </summary>
             <param name="tokenType">The type of signiture being represented.</param>
         </member>
-        <member name="M:TheBoxSoftware.Reflection.Signitures.Signiture.Create(System.Byte[],TheBoxSoftware.Reflection.Core.Offset,TheBoxSoftware.Reflection.Core.PeCoffFile,TheBoxSoftware.Reflection.Signitures.Signitures)">
+        <member name="M:TheBoxSoftware.Reflection.Signitures.Signiture.Create(System.Byte[],TheBoxSoftware.Reflection.Core.Offset,TheBoxSoftware.Reflection.Signitures.Signitures)">
             <summary>
             Factory method for creating new Signitures.
             </summary>
-            <param name="fileContents">The contents of the library the signiture is being read from</param>
+            <param name="source">The contents of the library the signiture is being read from</param>
             <param name="offset">The offset to the start of the signiture</param>
-            <param name="file">The PeCoffFile that is being read (same as file contents)</param>
             <param name="tokenType">The type of signiture being read.</param>
             <returns></returns>
         </member>
