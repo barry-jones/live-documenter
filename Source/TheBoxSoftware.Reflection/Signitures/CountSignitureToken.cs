@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     [DebuggerDisplay("Count: {Count}")]
     internal sealed class CountSignitureToken : SignitureToken
     {
-        private UInt16 _count;
+        private ushort _count;
 
         /// <summary>
         /// Initialises a new Count token from the provided <paramref name="signiture"/> at 
@@ -18,21 +18,21 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public CountSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.Count)
         {
-            this.Count = FieldReader.ToUInt16(signiture, offset.Shift(2));
+            _count = FieldReader.ToUInt16(signiture, offset.Shift(2));
         }
 
         public override string ToString()
         {
-            return string.Format("[Count: {0}] ", this.Count);
+            return $"[Count: {_count}] ";
         }
 
         /// <summary>
         /// ?
         /// </summary>
-		public UInt16 Count
+		public ushort Count
         {
-            get { return this._count; }
-            set { this._count = value; }
+            get { return _count; }
+            set { _count = value; }
         }
     }
 }
