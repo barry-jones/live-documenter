@@ -3659,7 +3659,6 @@
             Initialises a new instance of the ParamSignitureToken class from the provided <paramref name="signiture"/>
             at the specified <paramref name="offset"/>.
             </summary>
-            <param name="file">The file which defines the signiture.</param>
             <param name="signiture">The contents of the signiture.</param>
             <param name="offset">The offset of the current token.</param>
         </member>
@@ -3716,7 +3715,6 @@
             <summary>
             Initialises a new instance of the property signiture from the provided <paramref name="signiture"/>.
             </summary>
-            <param name="file">The file that contains the signiture.</param>
             <param name="signiture">The signiture blob.</param>
         </member>
         <member name="M:TheBoxSoftware.Reflection.Signitures.PropertySigniture.ToString">

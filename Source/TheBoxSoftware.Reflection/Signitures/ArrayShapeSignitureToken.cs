@@ -25,26 +25,25 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture blob to read this token from.</param>
         /// <param name="offset">The offset where this roken begins.</param>
-		public ArrayShapeSignitureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.ArrayShape)
+		public ArrayShapeSignitureToken(byte[] signiture, Offset offset) : base(SignitureTokens.ArrayShape)
         {
             int numSizes = 0;
             int numLoBounds = 0;
 
-            this.Rank = GetCompressedValue(signiture, offset);
+            _rank = GetCompressedValue(signiture, offset);
 
             numSizes = GetCompressedValue(signiture, offset);
-            this.Sizes = new int[numSizes];
+            _sizes = new int[numSizes];
             for(int i = 0; i < numSizes; i++)
             {
-                this.Sizes[i] = GetCompressedValue(signiture, offset);
+                _sizes[i] = GetCompressedValue(signiture, offset);
             }
 
             numLoBounds = GetCompressedValue(signiture, offset);
-            this.LoBounds = new int[numLoBounds];
+            _loBounds = new int[numLoBounds];
             for(int i = 0; i < numLoBounds; i++)
             {
-                this.LoBounds[i] = GetCompressedValue(signiture, offset);
+                _loBounds[i] = GetCompressedValue(signiture, offset);
             }
         }
 
@@ -60,11 +59,11 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             for(int i = 0; i < this.Rank; i++)
             {
-                if(this.LoBounds.Length < i)
+                if(this.LoBounds.Length > i)
                 {
                     sb.AppendFormat("{0}...", this.LoBounds[i]);
                 }
-                if(this.Sizes.Length < i)
+                if(this.Sizes.Length > i)
                 {
                     sb.AppendFormat("{0}", this.Sizes[i]);
                 }
