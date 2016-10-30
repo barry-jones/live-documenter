@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
     [TestFixture]
     public class CSharp_MethodSyntaxTests
     {
-        private const string TestFile = @"source\solution items\documentationtest.dll";
+        private const string TestFile = @"source\testoutput\documentationtest.dll";
 
         private AssemblyDef _assemblyDef;
 

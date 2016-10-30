@@ -21,14 +21,13 @@ namespace TheBoxSoftware.Reflection.Signitures
     [DebuggerDisplay("ElementType: {ElementType}, {Token}")]
     internal sealed class ElementTypeSignitureToken : SignitureToken
     {
-        private Int32 _token;
+        private int _token;
         private object _definition;
         private ElementTypes _elementType;
 
         /// <summary>
         /// Instantiates a new instance of the ElementTypeSignitureToken class.
         /// </summary>
-        /// <param name="file">The file which contains the signiture definition.</param>
         /// <param name="signiture">The signiture where this token is defined.</param>
         /// <param name="offset">The current offset in the signiture to read the token.</param>
         /// <remarks>

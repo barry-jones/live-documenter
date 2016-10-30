@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
     [TestFixture]
     public class PeCoffFileTests
     {
-        private const string TEST_LIBRARY = @"source\solution items\documentationtest.dll";
+        private const string TEST_LIBRARY = @"source\testoutput\documentationtest.dll";
 
         [Test]
         public void PeCoffFile_WhenInitialisedWithEmptyString_ThrowsArgumentException()

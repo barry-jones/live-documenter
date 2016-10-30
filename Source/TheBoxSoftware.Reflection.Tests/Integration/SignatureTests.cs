@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
     [TestFixture]
     public class SignatureTests
     {
-        private const string TestFile = @"source\solution items\documentationtest.dll";
+        private const string TestFile = @"source\testoutput\documentationtest.dll";
 
         private AssemblyDef _assemblyDef;
 

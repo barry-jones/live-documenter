@@ -38,7 +38,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{194E1A63-508
 		Solution Items\saxon9he-api.dll = Solution Items\saxon9he-api.dll
 		Solution Items\saxon9he.dll = Solution Items\saxon9he.dll
 		Solution Items\System.Windows.Controls.Input.Toolkit.dll = Solution Items\System.Windows.Controls.Input.Toolkit.dll
-		Solution Items\TheBoxSoftware.Reflection.dll = Solution Items\TheBoxSoftware.Reflection.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Utilities", "4. Utilities", "{87C0012D-44C8-4F6E-B9BD-56C226A67C93}"

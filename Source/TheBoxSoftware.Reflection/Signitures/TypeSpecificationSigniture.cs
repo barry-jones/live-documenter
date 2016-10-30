@@ -1,9 +1,10 @@
-﻿using System.Text;
-using TheBoxSoftware.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Text;
+    using TheBoxSoftware.Diagnostics;
+    using TheBoxSoftware.Reflection.Core;
+
     /// <summary>
     /// Represents a signiture for a type specification as detailed in
     /// section 23.2.14 in ECMA 335.
@@ -13,13 +14,12 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Instantiates a new instance of the TypeSpecificationSigniture class.
         /// </summary>
-        /// <param name="file">The file containing the signiture</param>
         /// <param name="signiture">The actual signiture contents.</param>
         public TypeSpecificationSigniture(byte[] signiture)
             : base(Signitures.TypeSpecification)
         {
 
-            this.Type = new TypeSignitureToken(signiture, 0);
+            TypeToken = new TypeSignitureToken(signiture, 0);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>The details of the type having the specification.</returns>
         public TypeDetails GetTypeDetails(ReflectedMember member)
         {
-            return this.Type.GetTypeDetails(member);
+            return TypeToken.GetTypeDetails(member);
         }
 
 #if TEST
@@ -72,9 +72,6 @@ namespace TheBoxSoftware.Reflection.Signitures
         }
 #endif
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public TypeSignitureToken Type { get; set; }
+        public TypeSignitureToken TypeToken { get; set; }
     }
 }

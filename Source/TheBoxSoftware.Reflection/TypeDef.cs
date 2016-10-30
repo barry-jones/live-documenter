@@ -61,12 +61,12 @@ namespace TheBoxSoftware.Reflection
                         // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
                         // for example. Each one of these will be a different type spec.
                         TypeSpec spec = (TypeSpec)this.Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row);
-                        SignitureToken token = spec.Signiture.Type.Tokens[0];
+                        SignitureToken token = spec.Signiture.TypeToken.Tokens[0];
 
                         // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
                         if(token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignitureToken)token).ElementType == ElementTypes.GenericInstance)
                         {
-                            ElementTypeSignitureToken typeToken = spec.Signiture.Type.Tokens[1] as ElementTypeSignitureToken;
+                            ElementTypeSignitureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignitureToken;
 
                             TypeRef typeRef = typeToken.ResolveToken(this.Assembly);
                             if(typeRef == this)

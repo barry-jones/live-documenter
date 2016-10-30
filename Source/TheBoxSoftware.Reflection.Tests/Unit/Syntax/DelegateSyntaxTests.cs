@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Syntax
     [TestFixture]
     public class DelegateSyntaxTests
     {
-        private const string TestFile = @"source\solution items\documentationtest.dll";
+        private const string TestFile = @"source\testoutput\documentationtest.dll";
 
         private TypeDef GetDelegateFromTestAssembly()
         {
