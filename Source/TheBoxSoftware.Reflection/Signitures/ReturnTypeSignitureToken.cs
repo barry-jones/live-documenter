@@ -40,27 +40,30 @@ namespace TheBoxSoftware.Reflection.Signitures
 
         internal TypeRef ResolveType(AssemblyDef assembly, ReflectedMember member)
         {
-            if(Tokens.Last() is TypeSignitureToken)
+            SignitureToken token = Tokens.Last();
+
+            if(token is TypeSignitureToken)
             {
-                return ((TypeSignitureToken)Tokens.Last()).ResolveType(assembly, member);
+                return ((TypeSignitureToken)token).ResolveType(assembly, member);
             }
             else
             {
-                return ((ElementTypeSignitureToken)Tokens.Last()).ResolveToken(assembly);
+                return ((ElementTypeSignitureToken)token).ResolveToken(assembly);
             }
         }
 
         public TypeDetails GetTypeDetails(ReflectedMember member)
         {
             TypeDetails details = new TypeDetails();
+            SignitureToken token = Tokens.Last();
 
-            if(Tokens.Last() is TypeSignitureToken)
+            if(token is TypeSignitureToken)
             {
-                details = ((TypeSignitureToken)Tokens.Last()).GetTypeDetails(member);
+                details = ((TypeSignitureToken)token).GetTypeDetails(member);
             }
             else
             {
-                details.Type = ((ElementTypeSignitureToken)Tokens.Last()).ResolveToken(member.Assembly);
+                details.Type = ((ElementTypeSignitureToken)token).ResolveToken(member.Assembly);
             }
 
             return details;

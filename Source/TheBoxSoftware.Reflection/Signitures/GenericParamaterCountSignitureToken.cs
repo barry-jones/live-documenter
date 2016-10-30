@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Signitures
 {
     using System.Diagnostics;
-    using TheBoxSoftware.Reflection.Core;
+    using Core;
 
     /// <summary>
     /// A token that represents the number of generic parameters.
@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public GenericParamaterCountSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.GenericParameterCount)
         {
-            Count = GetCompressedValue(signiture, offset);
+            _count = GetCompressedValue(signiture, offset);
         }
 
         /// <summary>
@@ -30,16 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string</returns>
         public override string ToString()
         {
-            return $"[GenParamCount: {Count}]";
-        }
-
-        /// <summary>
-        /// The number of generic parameters in this signiture.
-        /// </summary>
-        public int Count
-        {
-            get { return _count; }
-            private set { _count = value; }
+            return $"[GenParamCount: {_count}]";
         }
     }
 }

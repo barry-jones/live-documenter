@@ -65,7 +65,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             return (from token in Tokens
                     where token is ParamSignitureToken
-                    select (ParamSignitureToken)token).ToList<ParamSignitureToken>();
+                    select (ParamSignitureToken)token).ToList();
         }
 
         /// <summary>

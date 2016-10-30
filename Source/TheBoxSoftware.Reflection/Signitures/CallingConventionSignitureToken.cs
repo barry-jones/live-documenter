@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public CallingConventionSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.CallingConvention)
         {
-            this.Convention = (CallingConventions)signiture[offset.Shift(1)];
+            _convention = (CallingConventions)signiture[offset.Shift(1)];
         }
 
         /// <summary>

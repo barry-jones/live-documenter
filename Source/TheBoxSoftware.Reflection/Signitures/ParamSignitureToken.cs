@@ -60,14 +60,15 @@ namespace TheBoxSoftware.Reflection.Signitures
         public TypeDetails GetTypeDetails(ReflectedMember member)
         {
             TypeDetails details = new TypeDetails();
+            SignitureToken token = Tokens.Last();
 
-            if(this.Tokens.Last() is TypeSignitureToken)
+            if(token is TypeSignitureToken)
             {
-                details = ((TypeSignitureToken)Tokens.Last()).GetTypeDetails(member);
+                details = ((TypeSignitureToken)token).GetTypeDetails(member);
             }
             else
             {
-                details.Type = ((ElementTypeSignitureToken)Tokens.Last()).ResolveToken(member.Assembly);
+                details.Type = ((ElementTypeSignitureToken)token).ResolveToken(member.Assembly);
             }
 
             details.IsByRef = IsByRef;

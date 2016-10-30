@@ -29,10 +29,6 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>The converted string.</returns>
         protected string Convert(MethodDef method)
         {
-            if(method == null)
-            {
-                throw new ArgumentNullException("method");
-            }
             Signiture loadedSigniture = method.Signiture;
             StringBuilder convertedSigniture = new StringBuilder();
 
@@ -50,7 +46,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                         hadReturnParameter = true;
                         continue;
                     }
-                    if(!this.IncludeFirstParameter && (i == 0 || hadReturnParameter && i == 1)) continue;
+                    if(!IncludeFirstParameter && (i == 0 || hadReturnParameter && i == 1)) continue;
 
                     ParamSignitureToken currentToken = parametersToConvert[hadReturnParameter ? i - 1 : i];
                     TypeRef typeRef = currentToken.ResolveParameter(method.Assembly, currentParameter);
@@ -64,11 +60,11 @@ namespace TheBoxSoftware.Reflection.Signitures
                         convertedSigniture.Append(ParameterSeperater);
                     }
 
-                    if(this.ByRefAtFront)
+                    if(ByRefAtFront)
                     {
                         if(currentToken.IsByRef)
                         {
-                            convertedSigniture.Append(this.ByRef);
+                            convertedSigniture.Append(ByRef);
                         }
                     }
 
@@ -80,11 +76,11 @@ namespace TheBoxSoftware.Reflection.Signitures
                         currentToken.ElementType.ElementType,
                         typeRef);
 
-                    if(!this.ByRefAtFront)
+                    if(!ByRefAtFront)
                     {
                         if(currentToken.IsByRef)
                         {
-                            convertedSigniture.Append(this.ByRef);
+                            convertedSigniture.Append(ByRef);
                         }
                     }
                 }
@@ -107,28 +103,30 @@ namespace TheBoxSoftware.Reflection.Signitures
         private void Convert(StringBuilder sb, AssemblyDef assembly, ParamDef param, SignitureToken currentToken, ElementTypes elementType, TypeRef resolvedType)
         {
             StringBuilder convertedSigniture = sb;
+
             if(currentToken.TokenType == SignitureTokens.Param)
             {
-                SignitureToken paramToken = ((ParamSignitureToken)currentToken).Tokens[
-                    ((ParamSignitureToken)currentToken).Tokens.Count - 1
-                    ];
-                if(paramToken.TokenType == SignitureTokens.Type)
+                ParamSignitureToken paramToken = currentToken as ParamSignitureToken;
+                SignitureToken childToken = paramToken.Tokens[paramToken.Tokens.Count - 1];
+
+                if(childToken.TokenType == SignitureTokens.Type)
                 {
-                    currentToken = (TypeSignitureToken)paramToken;
-                    elementType = ((TypeSignitureToken)paramToken).ElementType.ElementType;
+                    currentToken = childToken;
+                    elementType = ((TypeSignitureToken)childToken).ElementType.ElementType;
                 }
                 else
                 {
-                    currentToken = (ElementTypeSignitureToken)paramToken;
-                    elementType = ((ElementTypeSignitureToken)paramToken).ElementType;
+                    currentToken = childToken;
+                    elementType = ((ElementTypeSignitureToken)childToken).ElementType;
                 }
             }
+
             TypeSignitureToken typeToken = currentToken as TypeSignitureToken;
             ElementTypeSignitureToken elementToken = currentToken as ElementTypeSignitureToken;
             switch(elementType)
             {
-                case ElementTypes.Var: this.ConvertVar(convertedSigniture, typeToken.ElementType.Token, param); break;
-                case ElementTypes.MVar: this.ConvertMVar(convertedSigniture, typeToken.ElementType.Token, param); break;
+                case ElementTypes.Var: ConvertVar(convertedSigniture, typeToken.ElementType.Token, param); break;
+                case ElementTypes.MVar: ConvertMVar(convertedSigniture, typeToken.ElementType.Token, param); break;
                 case ElementTypes.SZArray:
                     // TODO: Fix the custom modifier section
                     if(typeToken.Tokens[0] is CustomModifierToken)
@@ -137,6 +135,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                         ex.Data["token"] = currentToken;
                         throw ex;
                     }
+
                     ElementTypes szArrayElementType;
                     if(typeToken.Tokens[1].TokenType == SignitureTokens.Type)
                     {
@@ -146,29 +145,30 @@ namespace TheBoxSoftware.Reflection.Signitures
                     {
                         szArrayElementType = ((ElementTypeSignitureToken)typeToken.Tokens[1]).ElementType;
                     }
-                    this.Convert(
+
+                    Convert(
                         sb,
                         assembly,
                         param,
                         typeToken.Tokens[1],
                         szArrayElementType,
                         resolvedType);
+
                     convertedSigniture.Append("[]");
                     break;
                 case ElementTypes.Array:
                     ArrayShapeSignitureToken shape = typeToken.Tokens.Last() as ArrayShapeSignitureToken;
-                    this.ConvertArray(convertedSigniture, resolvedType, shape);
+                    ConvertArray(convertedSigniture, resolvedType, shape);
                     break;
                 case ElementTypes.GenericInstance:
                     TypeRef genericType = ((ElementTypeSignitureToken)typeToken.Tokens[1]).ResolveToken(assembly);
-                    //string fullName = genericType.GetFullyQualifiedName();
-                    //convertedSigniture.Append(fullName.Substring(0, fullName.IndexOf('`')));
-                    this.GetTypeName(convertedSigniture, genericType);
+                    GetTypeName(convertedSigniture, genericType);
+
                     GenericArgumentCountSignitureToken argsCount = typeToken.GetGenericArgumentCount();
                     bool isFirstArgument = true;
                     if(argsCount.Count > 0)
                     {
-                        sb.Append(this.GenericStart);
+                        sb.Append(GenericStart);
                         for(int j = 0; j < argsCount.Count; j++)
                         {
                             if(isFirstArgument)
@@ -195,7 +195,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                                 elType = gTSig.ElementType.ElementType;
                             }
 
-                            this.Convert(
+                            Convert(
                                 sb,
                                 assembly,
                                 param,
@@ -203,7 +203,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                                 elType,
                                 argResolvedType);
                         }
-                        sb.Append(this.GenericEnd);
+                        sb.Append(GenericEnd);
                     }
                     break;
                 case ElementTypes.Class:
@@ -227,18 +227,16 @@ namespace TheBoxSoftware.Reflection.Signitures
                 case ElementTypes.U8:
                 case ElementTypes.TypedByRef:
                 case ElementTypes.Boolean:
-                    this.GetTypeName(convertedSigniture, resolvedType);
+                    GetTypeName(convertedSigniture, resolvedType);
                     break;
                 case ElementTypes.Ptr:
-                    this.GetTypeName(convertedSigniture, resolvedType);
-                    //convertedSigniture.Append(resolvedType.GetFullyQualifiedName());
+                    GetTypeName(convertedSigniture, resolvedType);
                     convertedSigniture.Append("*");
                     break;
                 case ElementTypes.FunctionPointer:
                     NotImplementedException fnPtrEx = new NotImplementedException("Function Pointer is not implemented yet.");
                     fnPtrEx.Data["token"] = currentToken;
                     throw fnPtrEx;
-                    break;
             }
         }
 
@@ -293,7 +291,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="shape">The signiture token detailing the shape of the array.</param>
         internal virtual void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape)
         {
-            this.GetTypeName(sb, resolvedType);
+            GetTypeName(sb, resolvedType);
             sb.Append("[");
             for(int i = 0; i < shape.Rank; i++)
             {

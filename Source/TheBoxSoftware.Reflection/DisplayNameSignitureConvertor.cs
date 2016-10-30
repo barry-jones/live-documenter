@@ -43,7 +43,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         public DisplayNameSignitureConvertor(MethodDef method, bool includeNamespace, bool includeParameters, bool isFromExtendedType)
             : this(method, includeNamespace, includeParameters)
         {
-            this.IncludeFirstParameter = false;
+            IncludeFirstParameter = false;
         }
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         private DisplayNameSignitureConvertor()
         {
             // Set the generic element tags
-            this.GenericEnd = ">";
-            this.GenericStart = "<";
-            this.ByRef = "ref ";
-            this.ByRefAtFront = true;
-            this.ParameterSeperater = ", ";
+            GenericEnd = ">";
+            GenericStart = "<";
+            ByRef = "ref ";
+            ByRefAtFront = true;
+            ParameterSeperater = ", ";
         }
 
         /// <summary>

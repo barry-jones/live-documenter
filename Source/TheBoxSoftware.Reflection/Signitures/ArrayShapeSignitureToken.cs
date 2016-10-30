@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 /*
  * Signiture defined in: 23.2.13
  * 
@@ -10,6 +7,9 @@ using TheBoxSoftware.Reflection.Core;
 
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Text;
+    using Core;
+
     /// <summary>
     /// A signiture that describes the shape of an array as defined.
     /// </summary>
@@ -57,17 +57,17 @@ namespace TheBoxSoftware.Reflection.Signitures
             StringBuilder sb = new StringBuilder();
             sb.Append("[ArraySize: [");
 
-            for(int i = 0; i < this.Rank; i++)
+            for(int i = 0; i < _rank; i++)
             {
-                if(this.LoBounds.Length > i)
+                if(_loBounds.Length > i)
                 {
-                    sb.AppendFormat("{0}...", this.LoBounds[i]);
+                    sb.AppendFormat("{0}...", _loBounds[i]);
                 }
-                if(this.Sizes.Length > i)
+                if(_sizes.Length > i)
                 {
-                    sb.AppendFormat("{0}", this.Sizes[i]);
+                    sb.AppendFormat("{0}", _loBounds[i]);
                 }
-                if(i != this.Rank - 1)
+                if(i != _rank - 1)
                 {
                     sb.Append(",");
                 }

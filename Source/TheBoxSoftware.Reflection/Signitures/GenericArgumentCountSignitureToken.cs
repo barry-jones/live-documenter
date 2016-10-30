@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public GenericArgumentCountSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.GenericArgumentCount)
         {
-            Count = GetCompressedValue(signiture, offset);
+            _count = GetCompressedValue(signiture, offset);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            return $"[GenericArgumentCount: {Count}] ";
+            return $"[GenericArgumentCount: {_count}] ";
         }
 
         /// <summary>
