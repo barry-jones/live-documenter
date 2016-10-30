@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Linq;
+    using System.Text;
+    using Core;
+
     /// <summary>
     /// Represents the group of SignitureTokens that are read together.
     /// </summary>
@@ -19,33 +20,33 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             while(CustomModifierToken.IsToken(signiture, offset))
             {
-                this.Tokens.Add(new CustomModifierToken(signiture, offset));
+                Tokens.Add(new CustomModifierToken(signiture, offset));
             }
 
             if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.ByRef))
             {
-                this.Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // ByRef
-                this.Tokens.Add(new TypeSignitureToken(signiture, offset));   // Type
+                Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // ByRef
+                Tokens.Add(new TypeSignitureToken(signiture, offset));   // Type
             }
             else if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.Void | ElementTypes.TypedByRef))
             {
-                this.Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // Void, TypedByRef
+                Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // Void, TypedByRef
             }
             else
             {
-                this.Tokens.Add(new TypeSignitureToken(signiture, offset));
+                Tokens.Add(new TypeSignitureToken(signiture, offset));
             }
         }
 
         internal TypeRef ResolveType(AssemblyDef assembly, ReflectedMember member)
         {
-            if(this.Tokens.Last() is TypeSignitureToken)
+            if(Tokens.Last() is TypeSignitureToken)
             {
-                return ((TypeSignitureToken)this.Tokens.Last()).ResolveType(assembly, member);
+                return ((TypeSignitureToken)Tokens.Last()).ResolveType(assembly, member);
             }
             else
             {
-                return ((ElementTypeSignitureToken)this.Tokens.Last()).ResolveToken(assembly);
+                return ((ElementTypeSignitureToken)Tokens.Last()).ResolveToken(assembly);
             }
         }
 
@@ -53,13 +54,13 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             TypeDetails details = new TypeDetails();
 
-            if(this.Tokens.Last() is TypeSignitureToken)
+            if(Tokens.Last() is TypeSignitureToken)
             {
-                details = ((TypeSignitureToken)this.Tokens.Last()).GetTypeDetails(member);
+                details = ((TypeSignitureToken)Tokens.Last()).GetTypeDetails(member);
             }
             else
             {
-                details.Type = ((ElementTypeSignitureToken)this.Tokens.Last()).ResolveToken(member.Assembly);
+                details.Type = ((ElementTypeSignitureToken)Tokens.Last()).ResolveToken(member.Assembly);
             }
 
             return details;
@@ -75,7 +76,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[ReturnType: ");
 
-            foreach(SignitureToken t in this.Tokens)
+            foreach(SignitureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

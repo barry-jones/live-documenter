@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Diagnostics;
+    using Core;
+
     /// <summary>
     /// A representation of a ParameterCount token in a signiture.
     /// </summary>
@@ -20,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public ParameterCountSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.ParameterCount)
         {
-            this.Count = SignitureToken.GetCompressedValue(signiture, offset);
+            _count = GetCompressedValue(signiture, offset);
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            return string.Format("[ParamCount: {0}]", this.Count);
+            return $"[ParamCount: {_count}]";
         }
 
         /// <summary>
@@ -37,8 +38,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public int Count
         {
-            get { return this._count; }
-            private set { this._count = value; }
+            get { return _count; }
+            private set { _count = value; }
         }
     }
 }

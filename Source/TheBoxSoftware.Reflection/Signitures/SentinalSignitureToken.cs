@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Signitures
 {
     using System.Diagnostics;
-    using TheBoxSoftware.Reflection.Core;
+    using Core;
 
     /// <summary>
     /// Represents a sentinal signiture token.

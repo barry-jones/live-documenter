@@ -1,14 +1,14 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using Core;
+
     /// <summary>
     /// A class which represents a prolog for a <see cref="CustomAttributeSigniture"/>.
     /// </summary>
     internal sealed class PrologSignitureToken : SignitureToken
     {
-        private UInt16 _value;
+        private ushort _value;
 
         /// <summary>
         /// Initialises a new instance of the PrologSignitureToken class.
@@ -18,7 +18,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         public PrologSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.Prolog)
         {
-            this.Value = FieldReader.ToUInt16(signiture, offset.Shift(2));
+            _value = FieldReader.ToUInt16(signiture, offset.Shift(2));
         }
 
         /// <summary>
@@ -27,16 +27,16 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            return string.Format("[Prolog: {0}]", this.Value);
+            return $"[Prolog: {_value}]";
         }
 
         /// <summary>
         /// The value of the token.
         /// </summary>
-        public UInt16 Value
+        public ushort Value
         {
-            get { return this._value; }
-            private set { this._value = value; }
+            get { return _value; }
+            private set { _value = value; }
         }
     }
 }

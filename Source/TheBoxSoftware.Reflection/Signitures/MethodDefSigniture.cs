@@ -1,7 +1,8 @@
-﻿using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using Core;
+
     /// <summary>
     /// A signiture for a method definition as described in section 23.2.1 in
     /// ECMA 335.

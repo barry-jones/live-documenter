@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Diagnostics;
+    using Core;
+
     /// <summary>
     /// An Int32 numeric value that indicates the number of generics arguments in a signiture.
     /// </summary>
@@ -20,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public GenericArgumentCountSignitureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.GenericArgumentCount)
         {
-            this.Count = SignitureToken.GetCompressedValue(signiture, offset);
+            Count = GetCompressedValue(signiture, offset);
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            return string.Format("[GenericArgumentCount: {0}] ", this.Count);
+            return $"[GenericArgumentCount: {Count}] ";
         }
 
         /// <summary>
@@ -37,8 +38,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public int Count
         {
-            get { return this._count; }
-            private set { this._count = value; }
+            get { return _count; }
+            private set { _count = value; }
         }
     }
 }

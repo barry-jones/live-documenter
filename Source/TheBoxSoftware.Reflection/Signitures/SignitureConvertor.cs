@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     /// <summary>
     /// A base implementation of a class that converts a signiture
     /// to another medium.
     /// </summary>
-    /// <seealso cref="TheBoxSoftware.Reflection.Comments.CRefPath"/>
-    /// <seealso cref="TheBoxSoftware.Reflection.DisplayNameSignitureConvertor"/>
+    /// <seealso cref="Comments.CRefPath"/>
+    /// <seealso cref="Reflection.DisplayNameSignitureConvertor"/>
     public abstract class SignitureConvertor
     {
         protected string GenericStart = "{";
@@ -293,9 +294,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         internal virtual void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape)
         {
             this.GetTypeName(sb, resolvedType);
-            //convertedSigniture.Append(resolvedType.GetFullyQualifiedName());
             sb.Append("[");
-            //ArrayShapeSignitureToken shape = typeToken.Tokens.Last() as ArrayShapeSignitureToken;
             for(int i = 0; i < shape.Rank; i++)
             {
                 if(i != 0 && i != shape.Rank)

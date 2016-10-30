@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Collections.Generic;
+    using System.Text;
+    using Core;
+
     /// <summary>
     /// Describes a field signiture, which is specified in the ECMA 23.2.4.
     /// </summary>
@@ -12,12 +13,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Initialises a field signiture from the specified <paramref name="signiture"/> blob.
         /// </summary>
-        /// <param name="file">The PeCoffFile that contains the definition.</param>
         /// <param name="signiture">The signiture blob.</param>
 		public FieldSigniture(byte[] signiture)
             : base(Signitures.Field)
         {
-            List<SignitureToken> tokens = new List<SignitureToken>();
             Offset offset = 0;
 
             if(signiture[offset] != 0x06)
@@ -30,16 +29,13 @@ namespace TheBoxSoftware.Reflection.Signitures
                 while(CustomModifierToken.IsToken(signiture, offset))
                 {
                     CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
-                    tokens.Add(modifier);
+                    Tokens.Add(modifier);
                 }
 
                 TypeSignitureToken type = new TypeSignitureToken(signiture, offset);
-                tokens.Add(type);
+                Tokens.Add(type);
             }
-
-            this.Tokens = tokens;
         }
-
 
         /// <summary>
         /// Produces a string representation of the field signiture.
@@ -51,7 +47,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[Field: ");
 
-            foreach(SignitureToken t in this.Tokens)
+            foreach(SignitureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

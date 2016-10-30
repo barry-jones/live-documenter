@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Text;
+    using Core;
+
     /// <summary>
     /// Represents a local variable signiture in the signiture blob. Details of the signiture are
     /// available in the ECMA at 23.2.6.
@@ -14,25 +14,22 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// Initialise a new instance of a local variable signiture from the <paramref name="signiture"/>
         /// provided.
         /// </summary>
-        /// <param name="file">The PeCoffFile that contains the signiture block.</param>
         /// <param name="signiture">The signiture blob.</param>
-		internal LocalVariableSigniture(byte[] signiture)
-            : base(Signitures.LocalVariable)
+		internal LocalVariableSigniture(byte[] signiture) : base(Signitures.LocalVariable)
         {
-            List<SignitureToken> tokens = new List<SignitureToken>();
             Offset offset = 0;
 
             offset.Shift(1);    // jump passed the 0x7 indicator
 
             CountSignitureToken count = new CountSignitureToken(signiture, offset);
-            tokens.Add(count);
+            Tokens.Add(count);
 
             for(int i = 0; i < count.Count; i++)
             {
                 if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
                 {
                     ElementTypeSignitureToken typedByRef = new ElementTypeSignitureToken(signiture, offset);
-                    tokens.Add(typedByRef);
+                    Tokens.Add(typedByRef);
                 }
                 else
                 {
@@ -41,20 +38,20 @@ namespace TheBoxSoftware.Reflection.Signitures
                         if(CustomModifierToken.IsToken(signiture, offset))
                         {
                             CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
-                            tokens.Add(modifier);
+                            Tokens.Add(modifier);
                         }
                         else
                         {
                             ConstraintSignitureToken constraint = new ConstraintSignitureToken(signiture, offset);
-                            tokens.Add(constraint);
+                            Tokens.Add(constraint);
                         }
                     }
 
                     ElementTypeSignitureToken byRef = new ElementTypeSignitureToken(signiture, offset);
-                    tokens.Add(byRef);
+                    Tokens.Add(byRef);
 
                     ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
-                    tokens.Add(type);
+                    Tokens.Add(type);
                 }
             }
         }
@@ -69,7 +66,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[LocalVar: ");
 
-            foreach(SignitureToken t in this.Tokens)
+            foreach(SignitureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Signitures
+﻿
+namespace TheBoxSoftware.Reflection.Signitures
 {
     /// <summary>
     /// Enumeration of available major signiture types that can be defined

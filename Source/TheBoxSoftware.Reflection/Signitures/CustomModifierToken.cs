@@ -1,10 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System;
+    using System.Diagnostics;
+    using Core;
+    using Core.COFF;
+
     /// <summary>
     /// A token that describes a modified reference to a TypeDef, TypeRef or TypeSpec
     /// entry in the metadata tables.
@@ -13,7 +14,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     internal sealed class CustomModifierToken : SignitureToken
     {
         private ElementTypes _modifier;
-        private CodedIndex index;
+        private CodedIndex _index;
 
         /// <summary>
         /// Initialises a CustomModifier token from the <paramref name="signiture"/> blob at the
@@ -24,8 +25,8 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public CustomModifierToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.CustomModifier)
         {
-            this.Modifier = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
-            this.Index = this.ReadEncodedDefOrRefToken(signiture, offset);
+            Modifier = (ElementTypes)GetCompressedValue(signiture, offset);
+            Index = ReadEncodedDefOrRefToken(signiture, offset);
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             // Read the typedef, typeref or typespec token
             int typeMask = 0x00000003;
-            int token = SignitureToken.GetCompressedValue(signiture, offset);
+            int token = GetCompressedValue(signiture, offset);
 
             // Resolved values
             MetadataTables table;
@@ -71,7 +72,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns></returns>
         public static bool IsToken(byte[] signiture, int offset)
         {
-            ElementTypes modifier = (ElementTypes)SignitureToken.GetCompressedValue(signiture, offset);
+            ElementTypes modifier = (ElementTypes)GetCompressedValue(signiture, offset);
             return modifier == ElementTypes.CModOptional || modifier == ElementTypes.CModRequired;
         }
 
@@ -81,7 +82,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            return string.Format("[CustomMod: {0} Index <{1},{2}>]", this.Modifier, this.Index.Table, this.Index.Index);
+            return $"[CustomMod: {Modifier} Index <{Index.Table},{Index.Index}>]";
         }
 
         /// <summary>
@@ -89,8 +90,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public ElementTypes Modifier
         {
-            get { return this._modifier; }
-            private set { this._modifier = value; }
+            get { return _modifier; }
+            private set { _modifier = value; }
         }
 
         /// <summary>
@@ -98,8 +99,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public CodedIndex Index
         {
-            get { return this.index; }
-            private set { this.index = value; }
+            get { return _index; }
+            private set { _index = value; }
         }
     }
 }

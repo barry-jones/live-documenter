@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Diagnostics;
+    using Core;
+
     [DebuggerDisplay("Count: {Count}")]
     internal sealed class CountSignitureToken : SignitureToken
     {

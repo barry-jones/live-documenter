@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Core;
+
     internal abstract class Signiture
     {
         private Signitures _type;
@@ -42,6 +43,10 @@ namespace TheBoxSoftware.Reflection.Signitures
             Signiture instantiatedSigniture = null;
             switch(tokenType)
             {
+                case Signitures.CustomAttribute: // instantiatedSigniture = new CustomAttributeSigniture(signiture); break;
+                case Signitures.MethodSpecification:  // to do: implement
+                    break;
+                case Signitures.LocalVariable: instantiatedSigniture = new LocalVariableSigniture(signiture); break;
                 case Signitures.MethodDef: instantiatedSigniture = new MethodDefSigniture(signiture); break;
                 case Signitures.MethodRef: instantiatedSigniture = new MethodRefSigniture(signiture); break;
                 case Signitures.Field: instantiatedSigniture = new FieldSigniture(signiture); break;
@@ -58,7 +63,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A collection of parameter tokens.</returns>
         public List<ParamSignitureToken> GetParameterTokens()
         {
-            return (from token in this.Tokens
+            return (from token in Tokens
                     where token is ParamSignitureToken
                     select (ParamSignitureToken)token).ToList<ParamSignitureToken>();
         }

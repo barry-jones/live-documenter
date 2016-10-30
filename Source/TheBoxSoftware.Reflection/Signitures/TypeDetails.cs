@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Provides details about a type and its surounding information.
     /// </summary>

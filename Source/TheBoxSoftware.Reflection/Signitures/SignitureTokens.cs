@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Signitures
+﻿
+namespace TheBoxSoftware.Reflection.Signitures
 {
     internal enum SignitureTokens
     {

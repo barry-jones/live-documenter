@@ -1,11 +1,11 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System;
+    using Core;
+
     /// <summary>
-    /// The signiture for a custom attribute as described in section 23.3 of
-    /// ECMA 335.
+    /// The signiture for a custom attribute as described in section 23.3 of ECMA 335.
     /// </summary>
     internal sealed class CustomAttributeSigniture : Signiture
     {
@@ -19,8 +19,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// the incorrect signiture type is being read or the signiture contents
         /// are invalid.
         /// </exception>
-        public CustomAttributeSigniture(PeCoffFile file, byte[] signiture)
-            : base(Signitures.CustomAttribute)
+        public CustomAttributeSigniture(byte[] signiture) : base(Signitures.CustomAttribute)
         {
             Offset offset = 0;
 
@@ -33,7 +32,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     );
                 throw ex;
             }
-            this.Tokens.Add(prolog);
+            Tokens.Add(prolog);
 
             // Fixed arguments
             // Num named arguments

@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Linq;
+    using System.Text;
+    using Core;
+
     /// <summary>
     /// This class is able to parse and store details about Param entries in signitures. The
     /// Param signiture type is detailed in ECMA 335 at section 23.2.10.

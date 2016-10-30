@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Text;
+    using Core;
+
     /// <summary>
     /// A rerepresentation of the property signiture as described in ECMA 23.2.5.
     /// </summary>
@@ -16,28 +16,27 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public PropertySigniture(byte[] signiture)
             : base(Signitures.Property)
         {
-            List<SignitureToken> tokens = new List<SignitureToken>();
             Offset offset = 0;
 
             ElementTypeSignitureToken property = new ElementTypeSignitureToken(signiture, offset);
-            tokens.Add(property);
+            Tokens.Add(property);
 
             ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
-            tokens.Add(paramCount);
+            Tokens.Add(paramCount);
 
             while(CustomModifierToken.IsToken(signiture, offset))
             {
                 CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
-                tokens.Add(modifier);
+                Tokens.Add(modifier);
             }
 
             ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
-            tokens.Add(type);
+            Tokens.Add(type);
 
             for(int i = 0; i < paramCount.Count; i++)
             {
                 ParamSignitureToken param = new ParamSignitureToken(signiture, offset);
-                tokens.Add(param);
+                Tokens.Add(param);
             }
         }
 
@@ -51,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[Property: ");
 
-            foreach(SignitureToken t in this.Tokens)
+            foreach(SignitureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

@@ -1,7 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
-    using System;
     using System.Diagnostics;
     using Core;
 
@@ -55,13 +54,13 @@ namespace TheBoxSoftware.Reflection.Signitures
                     switch(typeMask & token)
                     {
                         case 0: // TypeDef
-                            this.Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
+                            Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
                             break;
                         case 1: // TypeRef
-                            this.Token = token >> 2 | (int)ILMetadataToken.TypeRef; //(token & typeMask) | token >> 2;
+                            Token = token >> 2 | (int)ILMetadataToken.TypeRef; //(token & typeMask) | token >> 2;
                             break;
                         case 2: // TypeSpec
-                            this.Token = token >> 2 | (int)ILMetadataToken.TypeSpec; // (token & typeMask) | token >> 2;
+                            Token = token >> 2 | (int)ILMetadataToken.TypeSpec; // (token & typeMask) | token >> 2;
                             break;
                     }
                     break;
@@ -73,38 +72,38 @@ namespace TheBoxSoftware.Reflection.Signitures
                     switch(typeMask & token)
                     {
                         case 0: // TypeDef
-                            this.Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
+                            Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
                             break;
                         case 1: // TypeRef
-                            this.Token = token >> 2 | (int)ILMetadataToken.TypeRef; //(token & typeMask) | token >> 2;
+                            Token = token >> 2 | (int)ILMetadataToken.TypeRef; //(token & typeMask) | token >> 2;
                             break;
                     }
                     break;
 
                 case ElementTypes.MVar:
                 case ElementTypes.Var:
-                    this.Token = SignitureToken.GetCompressedValue(signiture, offset);
+                    Token = SignitureToken.GetCompressedValue(signiture, offset);
                     break;
 
                 // Well known types
-                case ElementTypes.Boolean: this.Definition = WellKnownTypeDef.Boolean; break;
-                case ElementTypes.I: this.Definition = WellKnownTypeDef.I; break;
-                case ElementTypes.I1: this.Definition = WellKnownTypeDef.I1; break;
-                case ElementTypes.I2: this.Definition = WellKnownTypeDef.I2; break;
-                case ElementTypes.I4: this.Definition = WellKnownTypeDef.I4; break;
-                case ElementTypes.I8: this.Definition = WellKnownTypeDef.I8; break;
-                case ElementTypes.U: this.Definition = WellKnownTypeDef.U; break;
-                case ElementTypes.U1: this.Definition = WellKnownTypeDef.U1; break;
-                case ElementTypes.U2: this.Definition = WellKnownTypeDef.U2; break;
-                case ElementTypes.U4: this.Definition = WellKnownTypeDef.U4; break;
-                case ElementTypes.U8: this.Definition = WellKnownTypeDef.U8; break;
-                case ElementTypes.Char: this.Definition = WellKnownTypeDef.Char; break;
-                case ElementTypes.R4: this.Definition = WellKnownTypeDef.R4; break;
-                case ElementTypes.R8: this.Definition = WellKnownTypeDef.R8; break;
-                case ElementTypes.TypedByRef: this.Definition = WellKnownTypeDef.TypedByRef; break;
-                case ElementTypes.String: this.Definition = WellKnownTypeDef.String; break;
-                case ElementTypes.Object: this.Definition = WellKnownTypeDef.Object; break;
-                case ElementTypes.Void: this.Definition = WellKnownTypeDef.Void; break;
+                case ElementTypes.Boolean: Definition = WellKnownTypeDef.Boolean; break;
+                case ElementTypes.I: Definition = WellKnownTypeDef.I; break;
+                case ElementTypes.I1: Definition = WellKnownTypeDef.I1; break;
+                case ElementTypes.I2: Definition = WellKnownTypeDef.I2; break;
+                case ElementTypes.I4: Definition = WellKnownTypeDef.I4; break;
+                case ElementTypes.I8: Definition = WellKnownTypeDef.I8; break;
+                case ElementTypes.U: Definition = WellKnownTypeDef.U; break;
+                case ElementTypes.U1: Definition = WellKnownTypeDef.U1; break;
+                case ElementTypes.U2: Definition = WellKnownTypeDef.U2; break;
+                case ElementTypes.U4: Definition = WellKnownTypeDef.U4; break;
+                case ElementTypes.U8: Definition = WellKnownTypeDef.U8; break;
+                case ElementTypes.Char: Definition = WellKnownTypeDef.Char; break;
+                case ElementTypes.R4: Definition = WellKnownTypeDef.R4; break;
+                case ElementTypes.R8: Definition = WellKnownTypeDef.R8; break;
+                case ElementTypes.TypedByRef: Definition = WellKnownTypeDef.TypedByRef; break;
+                case ElementTypes.String: Definition = WellKnownTypeDef.String; break;
+                case ElementTypes.Object: Definition = WellKnownTypeDef.Object; break;
+                case ElementTypes.Void: Definition = WellKnownTypeDef.Void; break;
             }
         }
 
@@ -129,13 +128,13 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>The resolved type reference.</returns>
 		internal TypeRef ResolveToken(AssemblyDef assembly)
         {
-            if(this.Definition != null)
+            if(Definition != null)
             {
-                return (TypeRef)this.Definition;
+                return (TypeRef)Definition;
             }
             else
             {
-                return (TypeRef)assembly.ResolveMetadataToken(this.Token);
+                return (TypeRef)assembly.ResolveMetadataToken(Token);
             }
         }
 
@@ -145,17 +144,17 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string</returns>
         public override string ToString()
         {
-            return string.Format("[ElementType: {0}] ", this._token);
+            return $"[ElementType: {_token}] ";
         }
 
         /// <summary>
         /// The token parameter to this element type, this is not always relevant
         /// so can be zero.
         /// </summary>
-        public Int32 Token
+        public int Token
         {
-            get { return this._token; }
-            private set { this._token = value; }
+            get { return _token; }
+            private set { _token = value; }
         }
 
         /// <summary>
@@ -164,8 +163,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public object Definition
         {
-            get { return this._definition; }
-            set { this._definition = value; }
+            get { return _definition; }
+            set { _definition = value; }
         }
 
         /// <summary>
@@ -173,8 +172,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         public ElementTypes ElementType
         {
-            get { return this._elementType; }
-            private set { this._elementType = value; }
+            get { return _elementType; }
+            private set { _elementType = value; }
         }
     }
 }
