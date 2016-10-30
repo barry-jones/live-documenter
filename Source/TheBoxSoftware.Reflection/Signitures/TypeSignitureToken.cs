@@ -28,10 +28,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture to parse the type from.</param>
         /// <param name="offset">The offset to start reading from.</param>
-        public TypeSignitureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.Type)
+        public TypeSignitureToken(byte[] signiture, Offset offset) : base(SignitureTokens.Type)
         {
-
             ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
             TypeSignitureToken childType;
             Tokens.Add(type);
@@ -167,7 +165,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             {
                 if(current.TokenType == SignitureTokens.GenericArgumentCount)
                 {
-                    return (GenericArgumentCountSignitureToken)current;
+                    return current as GenericArgumentCountSignitureToken;
                 }
             }
             return null;
@@ -185,7 +183,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             if(ElementType.ElementType == ElementTypes.SZArray)
             {
                 TypeSignitureToken childType = (TypeSignitureToken)Tokens.Last();
-                type = (TypeRef)childType.ResolveType(assembly, member);
+                type = childType.ResolveType(assembly, member);
             }
             else if(
                 ElementType.ElementType == ElementTypes.Class ||
@@ -250,7 +248,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else if(member is PropertyDef)
                 {
-                    theType = (TypeDef)((PropertyDef)member).Type;
+                    theType = ((PropertyDef)member).Type;
                 }
                 else if(member is FieldDef)
                 {
@@ -298,28 +296,41 @@ namespace TheBoxSoftware.Reflection.Signitures
         internal TypeRef ResolveType(AssemblyDef assembly, ParamDef parameter)
         {
             TypeRef type = null;
-            if(this.ElementType.ElementType == ElementTypes.SZArray)
+            if(ElementType.ElementType == ElementTypes.SZArray)
             {
-                TypeSignitureToken childType = (TypeSignitureToken)this.Tokens.Last();
-                type = (TypeRef)childType.ResolveType(assembly, parameter);
+                TypeSignitureToken childType = Tokens.Last() as TypeSignitureToken;
+                type = childType.ResolveType(assembly, parameter);
             }
             else if(
-                this.ElementType.ElementType == ElementTypes.Class ||
-                this.ElementType.ElementType == ElementTypes.ValueType
+                ElementType.ElementType == ElementTypes.Class ||
+                ElementType.ElementType == ElementTypes.ValueType
                 )
             {
-                type = (TypeRef)assembly.ResolveMetadataToken(this.ElementType.Token);
+                type = (TypeRef)assembly.ResolveMetadataToken(ElementType.Token);
             }
-            else if(this.ElementType.ElementType == ElementTypes.GenericInstance)
+            else if(ElementType.ElementType == ElementTypes.GenericInstance)
             {
-                ElementTypeSignitureToken childType = (ElementTypeSignitureToken)this.Tokens[1];
+                ElementTypeSignitureToken childType = Tokens[1] as ElementTypeSignitureToken;
                 type = childType.ResolveToken(assembly);
             }
-            else if(this.ElementType.ElementType == ElementTypes.Ptr)
+            else if(ElementType.ElementType == ElementTypes.Ptr)
             {
-                if(this.Tokens[1].TokenType == SignitureTokens.Type)
+                if(Tokens[1].TokenType == SignitureTokens.Type)
                 {
-                    TypeSignitureToken childType = (TypeSignitureToken)this.Tokens[1];
+                    TypeSignitureToken childType = Tokens[1] as TypeSignitureToken;
+                    type = childType.ResolveType(assembly, parameter);
+                }
+                else
+                {
+                    ElementTypeSignitureToken childType = Tokens[1] as ElementTypeSignitureToken;
+                    type = childType.ResolveToken(assembly);
+                }
+            }
+            else if(ElementType.ElementType == ElementTypes.Array)
+            {
+                if(Tokens[1].TokenType == SignitureTokens.Type)
+                {
+                    TypeSignitureToken childType = Tokens[1] as TypeSignitureToken;
                     type = childType.ResolveType(assembly, parameter);
                 }
                 else
@@ -328,35 +339,22 @@ namespace TheBoxSoftware.Reflection.Signitures
                     type = childType.ResolveToken(assembly);
                 }
             }
-            else if(this.ElementType.ElementType == ElementTypes.Array)
+            else if(ElementType.ElementType == ElementTypes.MVar)
             {
-                if(this.Tokens[1].TokenType == SignitureTokens.Type)
-                {
-                    TypeSignitureToken childType = (TypeSignitureToken)this.Tokens[1];
-                    type = childType.ResolveType(assembly, parameter);
-                }
-                else
-                {
-                    ElementTypeSignitureToken childType = (ElementTypeSignitureToken)this.Tokens[1];
-                    type = childType.ResolveToken(assembly);
-                }
+                type = parameter.Method.GenericTypes[ElementType.Token];
             }
-            else if(this.ElementType.ElementType == ElementTypes.MVar)
-            {
-                type = parameter.Method.GenericTypes[this.ElementType.Token];
-            }
-            else if(this.ElementType.ElementType == ElementTypes.Var)
+            else if(ElementType.ElementType == ElementTypes.Var)
             {
                 List<GenericTypeRef> genericParameters = ((TypeDef)parameter.Method.Type).GenericTypes;
-                if(genericParameters.Count < this.ElementType.Token)
+                if(genericParameters.Count < ElementType.Token)
                 {
                     throw new InvalidOperationException("The generic token refers to a parameter that is not available.");
                 }
-                type = genericParameters[this.ElementType.Token];
+                type = genericParameters[ElementType.Token];
             }
-            else if(this.ElementType.Definition != null)
+            else if(ElementType.Definition != null)
             {
-                type = (TypeRef)this.ElementType.Definition;
+                type = ElementType.Definition as TypeRef;
             }
             return type;
         }
@@ -370,7 +368,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             StringBuilder sb = new StringBuilder();
 
             sb.Append("[Type: ");
-            foreach(SignitureToken current in this.Tokens)
+            foreach(SignitureToken current in Tokens)
                 sb.Append(current.ToString());
             sb.Append("] ");
 

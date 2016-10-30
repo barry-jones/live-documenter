@@ -78,8 +78,8 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="resolvemetadatatoken"]/*'/> 
         public ReflectedMember ResolveMetadataToken(int metadataToken)
         {
-            MetadataToDefinitionMap map = this.File.Map;
-            MetadataStream metadataStream = this.File.GetMetadataDirectory().GetMetadataStream();
+            MetadataToDefinitionMap map = File.Map;
+            MetadataStream metadataStream = File.GetMetadataDirectory().GetMetadataStream();
 
             // Get the details in the token
             ILMetadataToken token = (ILMetadataToken)(metadataToken & 0xff000000);
