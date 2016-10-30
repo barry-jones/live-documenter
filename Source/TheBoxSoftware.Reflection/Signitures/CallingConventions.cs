@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System;
+
     [Flags]
     internal enum CallingConventions
     {

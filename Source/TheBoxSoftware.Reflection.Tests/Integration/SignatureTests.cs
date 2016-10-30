@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Reflection.Tests.Integration
 {
+    using System.Linq;
+    using NUnit.Framework;
+    using Signitures;
+
     [TestFixture]
     public class SignatureTests
     {
