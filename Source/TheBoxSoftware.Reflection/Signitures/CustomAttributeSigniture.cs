@@ -12,7 +12,6 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Initialises a new instance of the CustomAttributeSigniture class.
         /// </summary>
-        /// <param name="file">The file the signiture is defined in.</param>
         /// <param name="signiture">The byte contents of the signiture.</param>
         /// <exception cref="InvalidOperationException">
         /// Thrown when a value for the prolog differs from 0x0001. This indicates
@@ -23,20 +22,14 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             Offset offset = 0;
 
-            // Prolog
+            // Prolog (0x00001) always and only one instance
             PrologSignitureToken prolog = new PrologSignitureToken(signiture, offset);
-            if(prolog.Value != 0x0001)
-            {
-                InvalidOperationException ex = new InvalidOperationException(
-                    "The CustomAttribute signiture happened upon an unexpected prolog value"
-                    );
-                throw ex;
-            }
             Tokens.Add(prolog);
-
-            // Fixed arguments
-            // Num named arguments
-            // Named arguments
+            
+            // TODO: Incomplete
+            //  Fixed arguments
+            //  Num named arguments
+            //  Named arguments
         }
     }
 }
