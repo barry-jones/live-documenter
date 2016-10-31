@@ -26,16 +26,29 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
             _assemblyDef = AssemblyDef.Create(TestFile);
         }
 
-        // [Test, Category("Integration")]
-        public void TypeWithoutNamespaces()
+        [Test, Category("Integration")]
+        public void Bug45_ClassesWithNoNamspace_WhenFindTypeInAssembly_TypeReturned()
         {
-            // [#45] we cant currently find types without namespaces when searching this is a bug and needs to be resolved.
-            TypeDef found = _assemblyDef.FindType(string.Empty, "Issue11");
+            // [#45] we cant currently find types without namespaces when searching this is a bug and 
+            // needs to be resolved. This however also manifests itself in the document mappers and we 
+            // need to check the export code as well (which uses document mappers).
+            TypeDef found = _assemblyDef.FindType(string.Empty, "Issue45_TypeWithNoNamespace");
 
             Assert.IsNotNull(found);
             Assert.AreEqual(string.Empty, found.Namespace);
-            Assert.AreEqual("Issue11", found.Name);
+            Assert.AreEqual("Issue45_TypeWithNoNamespace", found.Name);
         }
+
+        [Test, Category("Integration")]
+        public void Bug45_ClassesWithNoNamspace_NamespaceIsNull_ReturnsNull()
+        {
+            // With generic types they can sometimes have a null namespace value, this is to make sure
+            // we do not throw an exception in those instances.
+            TypeDef found = _assemblyDef.FindType(null, "T");
+
+            Assert.IsNull(found);
+        }
+
 
         [Test, Category("Integration")]
         public void TypeVisibility_TypeVisibilityShouldBeCorrectlyDefined()

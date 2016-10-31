@@ -187,6 +187,10 @@
       <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
       <Name>TheBoxSoftware.Reflection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
+      <Project>{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}</Project>
+      <Name>TheBoxSoftware</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

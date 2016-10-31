@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <document>C:\projects\mysolution.sln</document>
+  <document>D:\Development\Personal\tbs-developersuite\Source\1. Tests\99. Old\DocumentationTest\bin\Debug\documentationtest.dll</document>
 	
 	<!-- can be Public|Internal|Protected|ProtectedInternal|Private only those detailed will be output,
 		not specifiying a filter section will result in only the Public members being exported.

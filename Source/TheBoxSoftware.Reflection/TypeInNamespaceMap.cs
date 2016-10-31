@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="getalltypesinnamespaces"]'/>
         public TypeDef FindTypeInNamespace(string inNamespace, string typeName)
         {
-            if(!_typeInNamespace.ContainsKey(inNamespace))
+            if(inNamespace == null || !_typeInNamespace.ContainsKey(inNamespace))
             {
                 return null;
             }

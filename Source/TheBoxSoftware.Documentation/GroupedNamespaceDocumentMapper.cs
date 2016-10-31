@@ -1,9 +1,16 @@
-﻿using System.Collections.Generic;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
+﻿
+// This currently loads the assembly defs as required and then interates over them, in 
+// reality though it should be possible to provide the class with already loaded AssemblyDef
+// files - which should open a door to being able to pass specific values through and to 
+// create explicit tests.
 
 namespace TheBoxSoftware.Documentation
 {
+    using System.Collections.Generic;
+    using Reflection;
+    using Reflection.Comments;
+    using TheBoxSoftware;
+
     /// <summary>
     /// <para>A DocumentMapper that generates a map starting from namespaces. Where those namespaces
     /// have been grouped together to simplify the starting point.</para>
@@ -11,15 +18,35 @@ namespace TheBoxSoftware.Documentation
     /// </summary>
     public class GroupedNamespaceDocumentMapper : DocumentMapper
     {
+        private readonly IFileSystem _fileSystem;
+
         /// <summary>
         /// Initialises a new instance of the NamespaceFirstDocumentMapper.
         /// </summary>
         /// <param name="assemblies">The assemblies being documented.</param>
         /// <param name="useObservableCollection">Indicates if an observable collection should be used instead of a normal one.</param>
         /// <param name="creator">The factory class for creating new <see cref="Entry"/> instances.</param>
-        public GroupedNamespaceDocumentMapper(List<DocumentedAssembly> assemblies, bool useObservableCollection, EntryCreator creator)
+        public GroupedNamespaceDocumentMapper
+            (
+            List<DocumentedAssembly> assemblies, 
+            bool useObservableCollection, 
+            EntryCreator creator
+            )
             : base(assemblies, useObservableCollection, creator)
         {
+            _fileSystem = FileSystem.Singleton;
+        }
+
+        public GroupedNamespaceDocumentMapper
+            (
+            List<DocumentedAssembly> assemblies, 
+            bool useObservableCollection, 
+            EntryCreator creator, 
+            IFileSystem fileSystem
+            )
+            :base(assemblies, useObservableCollection, creator)
+        {
+            _fileSystem = fileSystem;
         }
 
         /// <summary>
@@ -127,20 +154,8 @@ namespace TheBoxSoftware.Documentation
 
         protected override Entry GenerateDocumentForAssembly(DocumentMap map, DocumentedAssembly current, ref int fileCounter)
         {
-            AssemblyDef assembly = AssemblyDef.Create(current.FileName);
-            current.LoadedAssembly = assembly;
-
-            XmlCodeCommentFile xmlComments = null;
-
-            bool fileExists = System.IO.File.Exists(current.XmlFileName);
-            if (fileExists)
-            {
-                xmlComments = new XmlCodeCommentFile(current.XmlFileName).GetReusableFile();
-            }
-            else
-            {
-                xmlComments = new XmlCodeCommentFile();
-            }
+            AssemblyDef assembly = GetAssemblyDef(current);
+            XmlCodeCommentFile xmlComments = GetXmlCommentFile(current);
 
             Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
             current.UniqueId = assembly.UniqueId = fileCounter++;
@@ -150,16 +165,17 @@ namespace TheBoxSoftware.Documentation
 
             // Add the namespaces to the document map
             Dictionary<string, List<TypeDef>> typesInNamespaces = assembly.GetTypesInNamespaces();
-            foreach (KeyValuePair<string, List<TypeDef>> currentNamespace in typesInNamespaces)
+            foreach(KeyValuePair<string, List<TypeDef>> currentNamespace in typesInNamespaces)
             {
-                if (string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0)
+                // bug 45 shouldnt check for empty keys
+                if(string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0)
                 {
                     continue;
                 }
                 string namespaceSubKey = BuildSubkey(currentNamespace);
 
                 namespaceEntry = Find(map, namespaceSubKey);
-                if (namespaceEntry == null)
+                if(namespaceEntry == null)
                 {
                     namespaceEntry = EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
                     namespaceEntry.Key = assemblyEntry.Key;
@@ -168,15 +184,13 @@ namespace TheBoxSoftware.Documentation
                 }
 
                 // Add the types from that namespace to its map
-                foreach (TypeDef currentType in currentNamespace.Value)
+                foreach(TypeDef currentType in currentNamespace.Value)
                 {
-                    if (currentType.Name.StartsWith("<"))
-                    {
-                        continue;
-                    }
+                    if(currentType.IsCompilerGenerated) continue;
+
                     PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentType);
                     this.OnPreEntryAdded(e);
-                    if (!e.Filter)
+                    if(!e.Filter)
                     {
                         Entry typeEntry = EntryCreator.Create(currentType, currentType.GetDisplayName(false), xmlComments, namespaceEntry);
                         typeEntry.Key = currentType.GetGloballyUniqueId();
@@ -187,7 +201,8 @@ namespace TheBoxSoftware.Documentation
                         if
                             (
                             currentType.InheritsFrom != null && currentType.InheritsFrom.GetFullyQualifiedName() == "System.Enum" ||
-                            currentType.IsDelegate) {
+                            currentType.IsDelegate)
+                        {
                             // Ignore children
                         }
                         else
@@ -199,12 +214,12 @@ namespace TheBoxSoftware.Documentation
                         namespaceEntry.Children.Add(typeEntry);
                     }
                 }
-                if (namespaceEntry.Children.Count > 0)
+                if(namespaceEntry.Children.Count > 0)
                 {
                     namespaceEntry.Children.Sort();
                     // we still need to add here otherwise we get duplicate namespaces.
                     assemblyEntry.Children.Add(namespaceEntry);
-                    if (!map.Contains(namespaceEntry))
+                    if(!map.Contains(namespaceEntry))
                     {
                         map.Add(namespaceEntry);
                     }
@@ -219,6 +234,35 @@ namespace TheBoxSoftware.Documentation
 
             // we are not interested in assemblies being used here so make them childless
             return this.EntryCreator.Create(null, string.Empty, null);
+        }
+
+        private XmlCodeCommentFile GetXmlCommentFile(DocumentedAssembly current)
+        {
+            XmlCodeCommentFile xmlComments;
+            if(_fileSystem.FileExists(current.XmlFileName))
+            {
+                xmlComments = new XmlCodeCommentFile(current.XmlFileName).GetReusableFile();
+            }
+            else
+            {
+                xmlComments = new XmlCodeCommentFile();
+            }
+            return xmlComments;
+        }
+
+        private static AssemblyDef GetAssemblyDef(DocumentedAssembly current)
+        {
+            AssemblyDef assembly;
+            if(current.LoadedAssembly == null)
+            {
+                assembly = AssemblyDef.Create(current.FileName);
+                current.LoadedAssembly = assembly;
+            }
+            else
+            {
+                assembly = current.LoadedAssembly;
+            }
+            return assembly;
         }
     }
 }

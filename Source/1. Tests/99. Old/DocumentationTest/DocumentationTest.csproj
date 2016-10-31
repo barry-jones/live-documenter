@@ -126,7 +126,7 @@
     <Compile Include="InternalDocumentedClass.cs" />
     <Compile Include="Issues\Bug6.cs" />
     <Compile Include="Issues\Issue103.cs" />
-    <Compile Include="Issues\Issue11.cs" />
+    <Compile Include="Issues\Issue45_TypeWithNoNamespace.cs" />
     <Compile Include="Issues\Issue120.cs" />
     <Compile Include="Issues\Issue130.cs" />
     <Compile Include="Issues\Issue135.cs" />
