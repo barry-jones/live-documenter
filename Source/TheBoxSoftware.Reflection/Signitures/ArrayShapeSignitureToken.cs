@@ -65,7 +65,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 if(_sizes.Length > i)
                 {
-                    sb.AppendFormat("{0}", _loBounds[i]);
+                    sb.AppendFormat("{0}", _sizes[i]);
                 }
                 if(i != _rank - 1)
                 {
