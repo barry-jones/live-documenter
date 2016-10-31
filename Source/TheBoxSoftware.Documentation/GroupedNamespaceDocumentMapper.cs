@@ -117,7 +117,15 @@ namespace TheBoxSoftware.Documentation
                 {
                     Entry namespaceContainer = EntryCreator.Create(EntryTypes.NamespaceContainer, counter[cI], null);
                     namespaceContainer.Key = id++;
-                    namespaceContainer.SubKey = counter[cI] + "Namespaces";
+                    if(string.IsNullOrEmpty(counter[cI]))
+                    {
+                        // this is the no name namespace
+                        namespaceContainer.SubKey = "No Namespace";
+                    }
+                    else
+                    {
+                        namespaceContainer.SubKey = counter[cI] + "Namespaces";
+                    }
                     namespaceContainers.Add(namespaceContainer);
                 }
 
@@ -167,7 +175,6 @@ namespace TheBoxSoftware.Documentation
             Dictionary<string, List<TypeDef>> typesInNamespaces = assembly.GetTypesInNamespaces();
             foreach(KeyValuePair<string, List<TypeDef>> currentNamespace in typesInNamespaces)
             {
-                // bug 45 shouldnt check for empty keys
                 if(currentNamespace.Value.Count == 0)
                 {
                     continue;
@@ -177,7 +184,14 @@ namespace TheBoxSoftware.Documentation
                 namespaceEntry = Find(map, namespaceSubKey);
                 if(namespaceEntry == null)
                 {
-                    namespaceEntry = EntryCreator.Create(currentNamespace, currentNamespace.Key, xmlComments);
+                    string displayName = currentNamespace.Key;
+
+                    if(string.IsNullOrEmpty(currentNamespace.Key))
+                    {
+                        displayName = "None";
+                    }
+
+                    namespaceEntry = EntryCreator.Create(currentNamespace, displayName, xmlComments);
                     namespaceEntry.Key = assemblyEntry.Key;
                     namespaceEntry.SubKey = namespaceSubKey;
                     namespaceEntry.IsSearchable = false;
@@ -186,7 +200,7 @@ namespace TheBoxSoftware.Documentation
                 // Add the types from that namespace to its map
                 foreach(TypeDef currentType in currentNamespace.Value)
                 {
-                    if(currentType.IsCompilerGenerated) continue;
+                    if(currentType.IsCompilerGenerated || currentType.Name[0] == '<') continue;
 
                     PreEntryAddedEventArgs e = new PreEntryAddedEventArgs(currentType);
                     this.OnPreEntryAdded(e);
