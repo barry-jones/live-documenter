@@ -67,6 +67,9 @@
     <Compile Include="Unit\Signitures\ArrayShapeSignitureTests.cs" />
     <Compile Include="Unit\Signitures\CallingConventionSignitureTokenTests.cs" />
     <Compile Include="Unit\Signitures\ConstraintSignitureTokenTests.cs" />
+    <Compile Include="Unit\Signitures\CountSignitureTokenTests.cs" />
+    <Compile Include="Unit\Signitures\CustomAttributeSignitureTests.cs" />
+    <Compile Include="Unit\Signitures\CustomModifierTokenTests.cs" />
     <Compile Include="Unit\Signitures\ElementTypeSignitureTokenTests.cs" />
     <Compile Include="Unit\Signitures\SignitureTokenTests.cs" />
     <Compile Include="Unit\Signitures\TypeSignitureTokenTests.cs" />
