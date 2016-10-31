@@ -25,8 +25,8 @@ namespace TheBoxSoftware.Reflection.Signitures
 		public CustomModifierToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.CustomModifier)
         {
-            Modifier = (ElementTypes)GetCompressedValue(signiture, offset);
-            Index = ReadEncodedDefOrRefToken(signiture, offset);
+            _modifier = (ElementTypes)GetCompressedValue(signiture, offset);
+            _index = ReadEncodedDefOrRefToken(signiture, offset);
         }
 
         /// <summary>
