@@ -3,6 +3,7 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
 {
     using System.Collections.Generic;
     using NUnit.Framework;
+    using Moq;
     using Reflection;
 
     [TestFixture]
@@ -13,6 +14,8 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
         [Test]
         public void Create()
         {
+            Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
+
             EntryCreator creator = new EntryCreator();
             bool useObservableCollection = false;
             List<DocumentedAssembly> documentedAssemblies = new List<DocumentedAssembly>();
@@ -23,7 +26,7 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
             documentedAssemblies.Add(new DocumentedAssembly { FileName = DocumentationFile });
 
             GroupedNamespaceDocumentMapper mapper = new GroupedNamespaceDocumentMapper(
-                documentedAssemblies, useObservableCollection, creator
+                documentedAssemblies, useObservableCollection, creator, fileSystem.Object
                 );
 
             mapper.GenerateMap();

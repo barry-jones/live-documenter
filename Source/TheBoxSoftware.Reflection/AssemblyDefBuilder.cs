@@ -164,10 +164,14 @@ namespace TheBoxSoftware.Reflection
                 TypeDefMetadataTableRow nestedClass = _stream.Tables.GetEntryFor(
                     MetadataTables.TypeDef, nestedClassRow.NestedClass
                     ) as TypeDefMetadataTableRow;
+
                 TypeDef container = _map.GetDefinition(MetadataTables.TypeDef, _stream.Tables.GetEntryFor(
                     MetadataTables.TypeDef, nestedClassRow.EnclosingClass
                     )) as TypeDef;
                 TypeDef nested = _map.GetDefinition(MetadataTables.TypeDef, nestedClass) as TypeDef;
+
+                _assembly.Map.Remove(nested); // remove type originally added when loading typedef records
+
                 nested.ContainingClass = container;
                 _assembly.Map.Add(nested);
             }

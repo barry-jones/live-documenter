@@ -402,7 +402,7 @@ namespace TheBoxSoftware.Reflection
                 if(IsNested)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(this.ContainingClass.Namespace);
+                    sb.Append(ContainingClass.Namespace);
 
                     List<string> containingClassNames = new List<string>();
                     TypeDef currentType = this;

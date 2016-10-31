@@ -44,7 +44,7 @@ namespace TheBoxSoftware.Documentation
             EntryCreator creator, 
             IFileSystem fileSystem
             )
-            :base(assemblies, useObservableCollection, creator)
+            : base(assemblies, useObservableCollection, creator)
         {
             _fileSystem = fileSystem;
         }
@@ -96,7 +96,7 @@ namespace TheBoxSoftware.Documentation
                         }
                     }
 
-                    currentPercentage = ((float)counter.Count) / ((float)map.Count);
+                    currentPercentage = counter.Count / ((float)map.Count);
                     if (parentPercentage < 0.1 && currentPercentage > 0.65 && currentLevel > 0)
                     {
                         dontGroupNamespaces = true;
@@ -104,9 +104,9 @@ namespace TheBoxSoftware.Documentation
                     }
 
                     currentLevel++;
-                    parentPercentage = ((float)counter.Count) / ((float)map.Count);
+                    parentPercentage = counter.Count / ((float)map.Count);
                 }
-                while (((float)counter.Count) / ((float)map.Count) < 0.1306);
+                while (counter.Count / ((float)map.Count) < 0.1306);
             }
 
             if (!dontGroupNamespaces)
@@ -157,7 +157,7 @@ namespace TheBoxSoftware.Documentation
             AssemblyDef assembly = GetAssemblyDef(current);
             XmlCodeCommentFile xmlComments = GetXmlCommentFile(current);
 
-            Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
+            Entry assemblyEntry = EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
             current.UniqueId = assembly.UniqueId = fileCounter++;
             assemblyEntry.Key = assembly.GetGloballyUniqueId();
             assemblyEntry.IsSearchable = false;
@@ -168,7 +168,7 @@ namespace TheBoxSoftware.Documentation
             foreach(KeyValuePair<string, List<TypeDef>> currentNamespace in typesInNamespaces)
             {
                 // bug 45 shouldnt check for empty keys
-                if(string.IsNullOrEmpty(currentNamespace.Key) || currentNamespace.Value.Count == 0)
+                if(currentNamespace.Value.Count == 0)
                 {
                     continue;
                 }
@@ -250,7 +250,7 @@ namespace TheBoxSoftware.Documentation
             return xmlComments;
         }
 
-        private static AssemblyDef GetAssemblyDef(DocumentedAssembly current)
+        private AssemblyDef GetAssemblyDef(DocumentedAssembly current)
         {
             AssemblyDef assembly;
             if(current.LoadedAssembly == null)

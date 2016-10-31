@@ -3,7 +3,6 @@ namespace TheBoxSoftware.Reflection
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Core;
 
     /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="class"]'/>
     internal class TypeInNamespaceMap
@@ -25,11 +24,21 @@ namespace TheBoxSoftware.Reflection
             }
             _typeInNamespace[inNamespace].Add(type);
         }
+
+        public void Remove(TypeDef type)
+        {
+            string inNamespace = type.Namespace;
+
+            if(_typeInNamespace.ContainsKey(inNamespace))
+            {
+                _typeInNamespace[inNamespace].Remove(type);
+            }
+        }
         
         /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="getallnamespaces"]'/>
         public List<string> GetAllNamespaces()
         {
-            return _typeInNamespace.Keys.ToList<string>();
+            return _typeInNamespace.Keys.ToList();
         }
 
         /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="getalltypesinnamespaces"]'/>
