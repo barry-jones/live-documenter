@@ -27,6 +27,7 @@ namespace TheBoxSoftware.Reflection.Syntax
     public class SyntaxToken
     {
         private SyntaxTokens _tokenType;
+        private string _content;
 
         /// <summary>
         /// Initialises a new instance of the SyntaxToken class.
@@ -35,7 +36,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <param name="tokenType">The type of token.</param>
         public SyntaxToken(string content, SyntaxTokens tokenType)
         {
-            Content = content;
+            _content = content;
             _tokenType = tokenType;
         }
 
@@ -51,6 +52,9 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// A string representing the actual displayable content for the
         /// token.
         /// </summary>
-        public string Content { get; set; }
+        public string Content
+        {
+            get { return _content; }
+        }
     }
 }

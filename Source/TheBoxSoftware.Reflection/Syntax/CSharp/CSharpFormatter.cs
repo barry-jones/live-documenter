@@ -135,7 +135,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 }
                 if(details.IsMultidemensionalArray)
                 {
-                    tokens.AddRange(this.FormatTypeDetails(details.ArrayOf));
+                    tokens.AddRange(FormatTypeDetails(details.ArrayOf));
                     tokens.Add(Constants.ArrayStart);
                     tokens.Add(new SyntaxToken(new String(',', details.ArrayShape.Rank - 1), SyntaxTokens.Text));
                     tokens.Add(Constants.ArrayEnd);
