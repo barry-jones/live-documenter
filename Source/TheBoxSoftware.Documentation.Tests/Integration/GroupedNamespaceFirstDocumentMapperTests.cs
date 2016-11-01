@@ -3,7 +3,6 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using Moq;
     using Reflection;
 
     [TestFixture]
@@ -11,45 +10,29 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
     {
         private const string DocumentationFile = @"source\testoutput\documentationtest.dll";
 
-        // [Test]
-        public void Create()
+        [Test]
+        public void GenerateMap_WhenAssemblyHasTypesWithoutNamespace_TypesAreContainedInNoneNamespaceContainer()
         {
-            Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
+            const string TypeName = "Issue45_TypeWithNoNamespace";
+            const string NoneNamespaceName = "NoneNamespaces";
 
+            List<DocumentedAssembly> assemblies = new List<DocumentedAssembly>();
+            DocumentedAssembly documentedAssembly = new DocumentedAssembly { FileName = DocumentationFile };
             EntryCreator creator = new EntryCreator();
-            bool useObservableCollection = false;
-            List<DocumentedAssembly> documentedAssemblies = new List<DocumentedAssembly>();
-            DocumentedAssembly documentedAssembly = new DocumentedAssembly();
-            AssemblyDef assembly = new AssemblyDef();
-            TypeInNamespaceMap map = assembly.Map;
 
-            documentedAssemblies.Add(new DocumentedAssembly { FileName = DocumentationFile, LoadedAssembly = assembly });
+            assemblies.Add(documentedAssembly);
 
-            // add the type we want to test
-            TypeDef container = new TypeDef();
-            container.Name = "Parent";
-            container.Namespace = "Testing";
-            container.Assembly = assembly;
-
-            TypeDef child = new TypeDef();
-            child.Name = "Nested";
-            child.ContainingClass = container;
-            container.Assembly = assembly;
-
-            TypeDef noNamespace = new TypeDef();
-            noNamespace.Name = "NoNamespace";
-            noNamespace.Namespace = string.Empty;
-            container.Assembly = assembly;
-
-            map.Add(container);
-            map.Add(child);
-            map.Add(noNamespace);
-
-            GroupedNamespaceDocumentMapper mapper = new GroupedNamespaceDocumentMapper(
-                documentedAssemblies, useObservableCollection, creator, fileSystem.Object
-                );
+            GroupedNamespaceDocumentMapper mapper = new GroupedNamespaceDocumentMapper(assemblies, false, creator);
 
             DocumentMap result = mapper.GenerateMap();
+
+            AssemblyDef assembly = documentedAssembly.LoadedAssembly;
+
+            TypeDef type = assembly.FindType(string.Empty, TypeName);
+            Entry entry = result.FindById(type.GetGloballyUniqueId());
+
+            Assert.AreSame(type, entry.Item); // the type has been mapped
+            Assert.AreEqual(NoneNamespaceName, entry.Parent.Parent.SubKey); // is part of the nonenamespace container
         }
     }
 }
