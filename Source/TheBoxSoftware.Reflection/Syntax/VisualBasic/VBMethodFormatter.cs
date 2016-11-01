@@ -46,10 +46,15 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
                 {
                     tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
                 }
+
+                tokens.AddRange(FormatParameterModifiers(parameters[i]));
+
                 tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
+
                 tokens.Add(Constants.Space);
                 tokens.Add(Constants.KeywordAs);
                 tokens.Add(Constants.Space);
+
                 tokens.AddRange(FormatTypeDetails(parameters[i].TypeDetails));
             }
             if(parameters.Count > 0)

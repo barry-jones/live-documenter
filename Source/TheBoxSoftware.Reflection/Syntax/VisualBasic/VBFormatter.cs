@@ -156,6 +156,20 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
             return tokens;
         }
 
+        protected List<SyntaxToken> FormatParameterModifiers(ParameterDetails details)
+        {
+            ParamDef parameterDefinition = details.Parameter;
+            List<SyntaxToken> tokens = new List<SyntaxToken>();
+
+            if(details.TypeDetails.IsByRef)
+            {
+                tokens.Add(new SyntaxToken("ByRef", SyntaxTokens.Keyword));
+                tokens.Add(Constants.Space);
+            }
+
+            return tokens;
+        }
+
         protected bool IsMethodFunction(TypeDetails details)
         {
             return details.IsArray || details.Type.GetFullyQualifiedName() != "System.Void";
