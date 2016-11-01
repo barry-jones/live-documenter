@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         }
 
         [TestCase("ParameterNormal", "Public Sub ParameterNormal(\n\ttest As Int\n\t)")]
-        // bug 52 [TestCase("ParameterRef", "public void ParameterRef(\n\tByRef test As Int\n\t)")]
+        [TestCase("ParameterRef", "public void ParameterRef(\n\tByRef test As Int\n\t)")]
         // bug 51 [TestCase("ParameterOut", "public void ParameterOut(\n\tByRef test as Int\n\t)")]
         // bug 49 [TestCase("ParameterDefault", "public void ParameterDefault(\n\tint test = 3\n\t)")]
         public void VBSyntax_Method_ParameterModifiers(string method, string expected)

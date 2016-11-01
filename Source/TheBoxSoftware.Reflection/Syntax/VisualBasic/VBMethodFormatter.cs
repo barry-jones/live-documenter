@@ -1,108 +1,125 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
+{
+    using System.Collections.Generic;
+    using Signitures;
 
-namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	using TheBoxSoftware.Reflection.Signitures;
+    internal sealed class VBMethodFormatter : VBFormatter, IMethodFormatter
+    {
+        private MethodSyntax _syntax;
+        private Signiture _signiture;
 
-	internal sealed class VBMethodFormatter : VBFormatter, IMethodFormatter {
-		private MethodSyntax syntax;
-		private Signiture signiture;
+        public VBMethodFormatter(MethodSyntax syntax)
+        {
+            _syntax = syntax;
+            _signiture = syntax.Method.Signiture;
+        }
 
-		public VBMethodFormatter(MethodSyntax syntax) {
-			this.syntax = syntax;
-			this.signiture = syntax.Method.Signiture;
-		}
+        public SyntaxTokenCollection Format()
+        {
+            return Format(_syntax);
+        }
 
-		public SyntaxTokenCollection Format() {
-			return this.Format(this.syntax);
-		}
+        public List<SyntaxToken> FormatVisibility(MethodSyntax syntax)
+        {
+            return FormatVisibility(syntax.GetVisibility());
+        }
 
-		public List<SyntaxToken> FormatVisibility(MethodSyntax syntax) {
-			return this.FormatVisibility(syntax.GetVisibility());
-		}
+        public SyntaxToken FormatInheritance(MethodSyntax syntax)
+        {
+            return FormatInheritance(syntax.GetInheritance());
+        }
 
-		public SyntaxToken FormatInheritance(MethodSyntax syntax) {
-			return this.FormatInheritance(syntax.GetInheritance());
-		}
+        public List<SyntaxToken> FormatParameters(MethodSyntax syntax)
+        {
+            List<SyntaxToken> tokens = new List<SyntaxToken>();
+            List<ParameterDetails> parameters = syntax.GetParameters();
 
-		public List<SyntaxToken> FormatParameters(MethodSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
-			List<ParameterDetails> parameters = syntax.GetParameters();
+            tokens.Add(new SyntaxToken("(", SyntaxTokens.Text));
+            for(int i = 0; i < parameters.Count; i++)
+            {
+                if(i != 0)
+                {
+                    tokens.Add(new SyntaxToken(",\n\t", SyntaxTokens.Text));
+                }
+                else
+                {
+                    tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
+                }
+                tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
+                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(new SyntaxToken("As", SyntaxTokens.Keyword));
+                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.AddRange(this.FormatTypeDetails(parameters[i].TypeDetails));
+            }
+            if(parameters.Count > 0)
+            {
+                tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
+            }
+            tokens.Add(new SyntaxToken(")", SyntaxTokens.Text));
 
-			tokens.Add(new SyntaxToken("(", SyntaxTokens.Text));
-			for (int i = 0; i < parameters.Count; i++) {
-				if (i != 0) {
-					tokens.Add(new SyntaxToken(",\n\t", SyntaxTokens.Text));
-				}
-				else {
-					tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
-				}
-				tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
-				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-				tokens.Add(new SyntaxToken("As", SyntaxTokens.Keyword));
-				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-				tokens.AddRange(this.FormatTypeDetails(parameters[i].TypeDetails));
-			}
-			if (parameters.Count > 0) {
-				tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
-			}
-			tokens.Add(new SyntaxToken(")", SyntaxTokens.Text));
+            return tokens;
+        }
 
-			return tokens;
-		}
+        public List<SyntaxToken> FormatReturnType(MethodSyntax syntax)
+        {
+            return this.FormatTypeDetails(syntax.GetReturnType());
+        }
 
-		public List<SyntaxToken> FormatReturnType(MethodSyntax syntax) {
-			return this.FormatTypeDetails(syntax.GetReturnType());
-		}
+        public SyntaxTokenCollection Format(MethodSyntax syntax)
+        {
+            SyntaxTokenCollection tokens = new SyntaxTokenCollection();
+            TypeDetails returnType = syntax.GetReturnType();
+            bool isFunction = IsMethodFunction(returnType);
 
-		public SyntaxTokenCollection Format(MethodSyntax syntax) {
-			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
-			TypeDetails returnType = syntax.GetReturnType();
-			bool isFunction = this.IsMethodFunction(returnType);
+            SyntaxToken inheritanceModifier = FormatInheritance(syntax);
 
-			SyntaxToken inheritanceModifier = this.FormatInheritance(syntax);
+            tokens.AddRange(FormatVisibility(syntax));
+            if(inheritanceModifier != null)
+            {
+                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(inheritanceModifier);
+            }
 
-			tokens.AddRange(this.FormatVisibility(syntax));
-			if (inheritanceModifier != null) {
-				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-				tokens.Add(inheritanceModifier);
-			}
+            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            if(isFunction)
+            {
+                tokens.Add(new SyntaxToken("Function", SyntaxTokens.Keyword));
+            }
+            else
+            {
+                tokens.Add(new SyntaxToken("Sub", SyntaxTokens.Keyword));
+            }
 
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			if (isFunction) {
-				tokens.Add(new SyntaxToken("Function", SyntaxTokens.Keyword));
-			}
-			else {
-				tokens.Add(new SyntaxToken("Sub", SyntaxTokens.Keyword));
-			}
+            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
+            if(syntax.Method.IsGeneric)
+            {
+                tokens.Add(new SyntaxToken("(", SyntaxTokens.Text));
+                tokens.Add(new SyntaxToken("Of", SyntaxTokens.Keyword));
+                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                List<GenericTypeRef> genericTypes = syntax.GetGenericParameters();
+                for(int i = 0; i < genericTypes.Count; i++)
+                {
+                    if(i != 0)
+                    {
+                        tokens.Add(new SyntaxToken(", ", SyntaxTokens.Text));
+                    }
+                    tokens.Add(FormatTypeName(genericTypes[i]));
+                }
+                tokens.Add(new SyntaxToken(")", SyntaxTokens.Text));
+            }
+            tokens.AddRange(FormatParameters(syntax));
 
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
-			if (syntax.Method.IsGeneric) {
-				tokens.Add(new SyntaxToken("(", SyntaxTokens.Text));
-				tokens.Add(new SyntaxToken("Of", SyntaxTokens.Keyword));
-				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-				List<GenericTypeRef> genericTypes = syntax.GetGenericParameters();
-				for (int i = 0; i < genericTypes.Count; i++) {
-					if (i != 0) {
-						tokens.Add(new SyntaxToken(", ", SyntaxTokens.Text));
-					}
-					tokens.Add(this.FormatTypeName(genericTypes[i]));
-				}
-				tokens.Add(new SyntaxToken(")", SyntaxTokens.Text));
-			}
-			tokens.AddRange(this.FormatParameters(syntax));
+            if(isFunction)
+            {
+                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(new SyntaxToken("As", SyntaxTokens.Keyword));
+                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.AddRange(this.FormatReturnType(syntax));
+            }
 
-			if (isFunction) {
-				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-				tokens.Add(new SyntaxToken("As", SyntaxTokens.Keyword));
-				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-				tokens.AddRange(this.FormatReturnType(syntax));
-			}
-
-			return tokens;
-		}
-	}
+            return tokens;
+        }
+    }
 }
