@@ -73,10 +73,10 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             tokens.AddRange(FormatVisibility(syntax));
             if(inheritanceModifier != null)
             {
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.Space);
                 tokens.Add(inheritanceModifier);
             }
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
             tokens.AddRange(FormatParameters(syntax));
 

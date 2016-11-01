@@ -46,19 +46,19 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             tokens.AddRange(FormatVisibility(syntax));
             if(inheritanceModifier != null)
             {
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.Space);
                 tokens.Add(inheritanceModifier);
             }
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken("event", SyntaxTokens.Keyword));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
+            tokens.Add(Constants.KeywordEvent);
+            tokens.Add(Constants.Space);
             tokens.AddRange(FormatType(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
             tokens.Add(new SyntaxToken(" {\n\t", SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken("add", SyntaxTokens.Keyword));
+            tokens.Add(Constants.KeywordEventAdd);
             tokens.Add(new SyntaxToken(";\n\t", SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken("remove", SyntaxTokens.Keyword));
+            tokens.Add(Constants.KeywordEventRemove);
             tokens.Add(new SyntaxToken(";\n\t", SyntaxTokens.Text));
             tokens.Add(new SyntaxToken("}", SyntaxTokens.Text));
 

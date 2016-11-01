@@ -46,7 +46,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 }
                 tokens.AddRange(FormatParameterModifiers(parameters[i]));
                 tokens.AddRange(FormatTypeDetails(parameters[i].TypeDetails));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.Space);
                 tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
             }
             if(parameters.Count > 0)
@@ -63,11 +63,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
             tokens.AddRange(FormatVisibility(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken("delegate", SyntaxTokens.Keyword));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
+            tokens.Add(Constants.KeywordDelegate);
+            tokens.Add(Constants.Space);
             tokens.AddRange(FormatReturnType(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
             if(_syntax.Class.IsGeneric)
             {

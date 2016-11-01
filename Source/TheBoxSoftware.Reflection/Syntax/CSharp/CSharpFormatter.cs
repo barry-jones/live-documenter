@@ -173,11 +173,13 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
 
             if(parameterDefinition.IsOut)
             {
-                tokens.Add(new SyntaxToken("out ", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordOut);
+                tokens.Add(Constants.Space);
             }
             else if(details.TypeDetails.IsByRef)
             {
-                tokens.Add(new SyntaxToken("ref ", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordRef);
+                tokens.Add(Constants.Space);
             }
 
             return tokens;

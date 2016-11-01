@@ -51,11 +51,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
             tokens.AddRange(FormatVisibility(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken("struct", SyntaxTokens.Keyword));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
+            tokens.Add(Constants.KeywordStruct);
+            tokens.Add(Constants.Space);
             tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.AddRange(FormatInterfaces(syntax));
 
             return tokens;

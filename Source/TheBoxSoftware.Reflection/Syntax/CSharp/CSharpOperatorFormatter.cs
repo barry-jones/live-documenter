@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 }
                 tokens.AddRange(FormatParameterModifiers(parameters[i]));
                 tokens.AddRange(FormatTypeDetails(parameters[i].TypeDetails));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.Space);
                 tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
             }
             if(parameters.Count > 0)
@@ -68,11 +68,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
 
             if(identifier == "op_Explicit")
             {
-                tokens.Add(new SyntaxToken("explicit", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordExplicit);
             }
             else if(identifier == "op_Implicit")
             {
-                tokens.Add(new SyntaxToken("implicit", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordImplicit);
             }
             else
             {
@@ -141,18 +141,18 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             tokens.AddRange(FormatVisibility(syntax));
             if(inheritanceModifier != null)
             {
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.Space);
                 tokens.Add(inheritanceModifier);
             }
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.AddRange(FormatReturnType(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken("operator", SyntaxTokens.Keyword));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
+            tokens.Add(Constants.KeywordOperator);
+            tokens.Add(Constants.Space);
             tokens.AddRange(FormatName(syntax));
             if(syntax.Method.IsGeneric)
             {
-                tokens.Add(new SyntaxToken("<", SyntaxTokens.Text));
+                tokens.Add(Constants.GenericStart);
                 List<GenericTypeRef> genericTypes = syntax.GetGenericParameters();
                 for(int i = 0; i < genericTypes.Count; i++)
                 {
@@ -162,7 +162,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                     }
                     tokens.Add(FormatTypeName(genericTypes[i]));
                 }
-                tokens.Add(new SyntaxToken(">", SyntaxTokens.Text));
+                tokens.Add(Constants.GenericEnd);
             }
             tokens.AddRange(FormatParameters(syntax));
 

@@ -51,7 +51,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
 
         public SyntaxToken FormatIdentifier(IndexorSyntax syntax)
         {
-            return new SyntaxToken("this", SyntaxTokens.Text);
+            return Constants.KeywordThis;
         }
 
         public List<SyntaxToken> FormatType(IndexorSyntax syntax)
@@ -89,9 +89,9 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         {
             SyntaxTokenCollection tokens = new SyntaxTokenCollection();
             tokens.AddRange(FormatVisibility(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.AddRange(FormatType(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.Add(FormatIdentifier(syntax));
 
             // Provide the properties to access the indexer, these are
@@ -107,7 +107,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 ParameterDetails current = parameters[i];
 
                 tokens.AddRange(FormatTypeDetails(current.TypeDetails));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.Space);
                 tokens.Add(new SyntaxToken(current.Name, SyntaxTokens.Text));
 
                 if(i < parameters.Count - 1)
@@ -124,9 +124,9 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 if(syntax.GetVisibility() != syntax.GetGetterVisibility())
                 {
                     tokens.AddRange(FormatGetVisibility(syntax));
-                    tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                    tokens.Add(Constants.Space);
                 }
-                tokens.Add(new SyntaxToken("get", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordGet);
                 tokens.Add(new SyntaxToken(";", SyntaxTokens.Text));
             }
             if(this._syntax.SetMethod != null)
@@ -135,9 +135,9 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 if(syntax.GetVisibility() != syntax.GetSetterVisibility())
                 {
                     tokens.AddRange(FormatSetVisibility(syntax));
-                    tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                    tokens.Add(Constants.Space);
                 }
-                tokens.Add(new SyntaxToken("set", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordSet);
                 tokens.Add(new SyntaxToken(";", SyntaxTokens.Text));
             }
             tokens.Add(new SyntaxToken("\n\t}", SyntaxTokens.Text));

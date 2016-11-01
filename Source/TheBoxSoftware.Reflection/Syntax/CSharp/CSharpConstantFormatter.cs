@@ -32,11 +32,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
             tokens.AddRange(GetVisibility(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-            tokens.Add(new SyntaxToken("const", SyntaxTokens.Keyword));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
+            tokens.Add(Constants.KeywordConstant);
+            tokens.Add(Constants.Space);
             tokens.Add(GetType(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
 
             return tokens;

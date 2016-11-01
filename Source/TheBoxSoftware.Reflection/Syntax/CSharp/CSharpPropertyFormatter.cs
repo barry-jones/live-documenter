@@ -51,20 +51,20 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         {
             SyntaxTokenCollection tokens = new SyntaxTokenCollection();
             tokens.AddRange(FormatVisibility(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.AddRange(FormatType(syntax));
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.Add(FormatIdentifier(syntax));
             tokens.Add(new SyntaxToken(" {", SyntaxTokens.Text));
-            if(this._syntax.GetMethod != null)
+            if(_syntax.GetMethod != null)
             {
                 tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
                 if(syntax.GetVisibility() != syntax.GetGetterVisibility())
                 {
                     tokens.AddRange(FormatGetVisibility(syntax));
-                    tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                    tokens.Add(Constants.Space);
                 }
-                tokens.Add(new SyntaxToken("get", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordGet);
                 tokens.Add(new SyntaxToken(";", SyntaxTokens.Text));
             }
             if(_syntax.SetMethod != null)
@@ -73,9 +73,9 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 if(syntax.GetVisibility() != syntax.GetSetterVisibility())
                 {
                     tokens.AddRange(FormatSetVisibility(syntax));
-                    tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                    tokens.Add(Constants.Space);
                 }
-                tokens.Add(new SyntaxToken("set", SyntaxTokens.Keyword));
+                tokens.Add(Constants.Space);
                 tokens.Add(new SyntaxToken(";", SyntaxTokens.Text));
             }
             tokens.Add(new SyntaxToken("\n\t}", SyntaxTokens.Text));

@@ -17,8 +17,27 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         public static SyntaxToken ArrayEnd = new SyntaxToken("]", SyntaxTokens.Text);
         public static SyntaxToken ArrayEmpty = new SyntaxToken("[]", SyntaxTokens.Text);
 
+
+        public static SyntaxToken KeywordThis = new SyntaxToken("this", SyntaxTokens.Keyword);
         public static SyntaxToken KeywordClass = new SyntaxToken("class", SyntaxTokens.Keyword);
         public static SyntaxToken KeywordPointer = new SyntaxToken("*", SyntaxTokens.Text);
+        public static SyntaxToken KeywordConstant = new SyntaxToken("const", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordDelegate = new SyntaxToken("delegate", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordEnumeration = new SyntaxToken("enum", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordEvent = new SyntaxToken("event", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordEventAdd = new SyntaxToken("add", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordEventRemove = new SyntaxToken("remove", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordGet = new SyntaxToken("get", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordSet = new SyntaxToken("set", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordInterface = new SyntaxToken("interface", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordImplicit = new SyntaxToken("implicit", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordExplicit = new SyntaxToken("explicit", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordOperator = new SyntaxToken("operator", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordStruct = new SyntaxToken("struct", SyntaxTokens.Keyword);
+
+
+        public static SyntaxToken KeywordRef = new SyntaxToken("ref", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordOut = new SyntaxToken("out", SyntaxTokens.Keyword);
 
         
         // access modifiers
@@ -28,7 +47,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         public static SyntaxToken KeywordPublic = new SyntaxToken("public", SyntaxTokens.Keyword);
 
 
-        // modifiers
+        // inheritance modifiers
         public static SyntaxToken KeywordAbstract = new SyntaxToken("abstract", SyntaxTokens.Keyword);
         public static SyntaxToken KeywordSealed = new SyntaxToken("sealed", SyntaxTokens.Keyword);
         public static SyntaxToken KeywordStatic = new SyntaxToken("static", SyntaxTokens.Keyword);
