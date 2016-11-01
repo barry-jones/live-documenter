@@ -39,6 +39,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp {
 				else {
 					tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
 				}
+                tokens.AddRange(FormatParameterModifiers(parameters[i]));
 				tokens.AddRange(this.FormatTypeDetails(parameters[i].TypeDetails));
 				tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
 				tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));

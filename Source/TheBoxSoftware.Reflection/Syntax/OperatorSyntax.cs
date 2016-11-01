@@ -75,7 +75,7 @@ namespace TheBoxSoftware.Reflection.Syntax
             for(int i = 0; i < parameters.Count; i++)
             {
                 details.Add(new ParameterDetails(
-                    parameters[i].Name,
+                    parameters[i],
                     definedParameters[i].GetTypeDetails(_method)
                     ));
             }

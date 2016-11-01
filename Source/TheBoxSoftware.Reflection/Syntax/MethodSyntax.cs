@@ -83,7 +83,7 @@ namespace TheBoxSoftware.Reflection.Syntax
                     continue;
                 }
                 details.Add(new ParameterDetails(
-                    parameters[i].Name,
+                    parameters[i],
                     definedParameters[hasReturnParam ? i - 1 : i].GetTypeDetails(_method)
                     ));
             }

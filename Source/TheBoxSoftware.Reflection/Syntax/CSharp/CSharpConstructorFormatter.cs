@@ -47,7 +47,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 {
                     tokens.Add(new SyntaxToken(Environment.NewLine, SyntaxTokens.Text));
                 }
+
+                // need to check out first as out is also by ref
+                tokens.AddRange(FormatParameterModifiers(parameters[i]));
                 tokens.AddRange(FormatTypeDetails(parameters[i].TypeDetails));
+
                 tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
                 tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
             }

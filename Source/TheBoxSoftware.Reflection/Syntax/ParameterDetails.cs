@@ -8,6 +8,8 @@ namespace TheBoxSoftware.Reflection.Syntax
     /// <see cref="Signitures.TypeDetails"/>
     internal class ParameterDetails
     {
+        private ParamDef _parameter;
+
         /// <summary>
         /// Initialises a new instance of the ParameterDetails class.
         /// </summary>
@@ -16,12 +18,20 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <summary>
         /// Initialises a new instance of the ParameterDetails class.
         /// </summary>
-        /// <param name="name">The name of the parameter.</param>
+        /// <param name="parameter">The details of the parameter.</param>
         /// <param name="details">The details of the type for the parameter.</param>
-        public ParameterDetails(string name, Signitures.TypeDetails details)
+        public ParameterDetails(ParamDef parameter, Signitures.TypeDetails details)
         {
             TypeDetails = details;
-            Name = name;
+            _parameter = parameter;
+        }
+
+        /// <summary>
+        /// The underlying parameter
+        /// </summary>
+        public ParamDef Parameter
+        {
+            get { return _parameter; }
         }
 
         /// <summary>
@@ -32,6 +42,9 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <summary>
         /// The name of the parameter.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _parameter.Name; }
+        }
     }
 }

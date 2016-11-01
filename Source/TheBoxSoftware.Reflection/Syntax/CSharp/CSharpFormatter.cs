@@ -38,7 +38,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         /// <summary>
         /// Foramts the visibility modifier.
         /// </summary>
-        /// <param name="syntax">The visibility to format.</param>
+        /// <param name="visibility">The visibility to format.</param>
         /// <returns>A formatted string representing the syntaxs.</returns>
         protected List<SyntaxToken> FormatVisibility(Visibility visibility)
         {
@@ -126,11 +126,6 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         protected List<SyntaxToken> FormatTypeDetails(TypeDetails details)
         {
             List<SyntaxToken> tokens = new List<SyntaxToken>();
-            if(details.IsByRef)
-            {
-                tokens.Add(new SyntaxToken("ref", SyntaxTokens.Keyword));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-            }
 
             // If the type is an array the type ref details are no longer valid
             if(details.IsArray || details.IsMultidemensionalArray)
@@ -150,7 +145,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             }
             else
             {
-                tokens.Add(this.FormatTypeName(details.Type));
+                tokens.Add(FormatTypeName(details.Type));
                 if(details.IsGenericInstance)
                 {
                     tokens.Add(new SyntaxToken("<", SyntaxTokens.Text));
@@ -160,7 +155,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                         {
                             tokens.Add(new SyntaxToken(", ", SyntaxTokens.Text));
                         }
-                        tokens.AddRange(this.FormatTypeDetails(details.GenericParameters[i]));
+                        tokens.AddRange(FormatTypeDetails(details.GenericParameters[i]));
                     }
                     tokens.Add(new SyntaxToken(">", SyntaxTokens.Text));
                 }
@@ -170,6 +165,23 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             {
                 tokens.Add(new SyntaxToken("*", SyntaxTokens.Text));
             }
+            return tokens;
+        }
+
+        protected List<SyntaxToken> FormatParameterModifiers(ParameterDetails details)
+        {
+            ParamDef parameterDefinition = details.Parameter;
+            List<SyntaxToken> tokens = new List<SyntaxToken>();
+
+            if(parameterDefinition.IsOut)
+            {
+                tokens.Add(new SyntaxToken("out ", SyntaxTokens.Keyword));
+            }
+            else if(details.TypeDetails.IsByRef)
+            {
+                tokens.Add(new SyntaxToken("ref ", SyntaxTokens.Keyword));
+            }
+
             return tokens;
         }
 

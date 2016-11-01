@@ -1,33 +1,33 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Syntax.CSharp
 {
-    using TheBoxSoftware.Reflection.Signitures;
+    using System.Collections.Generic;
+    using Signitures;
 
     internal sealed class CSharpMethodFormatter : CSharpFormatter, IMethodFormatter
     {
-        private MethodSyntax syntax;
-        private Signiture signiture;
+        private MethodSyntax _syntax;
+        private Signiture _signiture;
 
         public CSharpMethodFormatter(MethodSyntax syntax)
         {
-            this.syntax = syntax;
-            this.signiture = syntax.Method.Signiture;
+            _syntax = syntax;
+            _signiture = syntax.Method.Signiture;
         }
 
         public SyntaxTokenCollection Format()
         {
-            return this.Format(this.syntax);
+            return Format(_syntax);
         }
 
         public List<SyntaxToken> FormatVisibility(MethodSyntax syntax)
         {
-            return this.FormatVisibility(syntax.GetVisibility());
+            return FormatVisibility(syntax.GetVisibility());
         }
 
         public SyntaxToken FormatInheritance(MethodSyntax syntax)
         {
-            return this.FormatInheritance(syntax.GetInheritance());
+            return FormatInheritance(syntax.GetInheritance());
         }
 
         public List<SyntaxToken> FormatParameters(MethodSyntax syntax)
@@ -50,7 +50,10 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                         tokens.Add(new SyntaxToken("this ", SyntaxTokens.Keyword));
                     }
                 }
-                tokens.AddRange(this.FormatTypeDetails(parameters[i].TypeDetails));
+
+                tokens.AddRange(FormatParameterModifiers(parameters[i]));
+                tokens.AddRange(FormatTypeDetails(parameters[i].TypeDetails));
+
                 tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
                 tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
             }
@@ -72,16 +75,16 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         {
             SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
-            SyntaxToken inheritanceModifier = this.FormatInheritance(syntax);
+            SyntaxToken inheritanceModifier = FormatInheritance(syntax);
 
-            tokens.AddRange(this.FormatVisibility(syntax));
+            tokens.AddRange(FormatVisibility(syntax));
             if(inheritanceModifier != null)
             {
                 tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
                 tokens.Add(inheritanceModifier);
             }
             tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-            tokens.AddRange(this.FormatReturnType(syntax));
+            tokens.AddRange(FormatReturnType(syntax));
             tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
             tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
             if(syntax.Method.IsGeneric)
@@ -94,11 +97,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                     {
                         tokens.Add(new SyntaxToken(", ", SyntaxTokens.Text));
                     }
-                    tokens.Add(this.FormatTypeName(genericTypes[i]));
+                    tokens.Add(FormatTypeName(genericTypes[i]));
                 }
                 tokens.Add(new SyntaxToken(">", SyntaxTokens.Text));
             }
-            tokens.AddRange(this.FormatParameters(syntax));
+            tokens.AddRange(FormatParameters(syntax));
 
             return tokens;
         }
