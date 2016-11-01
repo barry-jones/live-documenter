@@ -1,38 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.Reflection.Syntax.CSharp
+{
+    using System.Collections.Generic;
 
-namespace TheBoxSoftware.Reflection.Syntax.CSharp {
-	internal sealed class CSharpFieldFormatter : CSharpFormatter, IFieldFormatter {
-		private FieldSyntax syntax;
+    internal sealed class CSharpFieldFormatter : CSharpFormatter, IFieldFormatter
+    {
+        private FieldSyntax _syntax;
 
-		public CSharpFieldFormatter(FieldSyntax syntax) {
-			this.syntax = syntax;
-		}
+        public CSharpFieldFormatter(FieldSyntax syntax)
+        {
+            _syntax = syntax;
+        }
 
-		public SyntaxTokenCollection Format() {
-			return this.Format(this.syntax);
-		}
+        public SyntaxTokenCollection Format()
+        {
+            return Format(_syntax);
+        }
 
-		public SyntaxToken GetType(FieldSyntax syntax) {
-			return this.FormatTypeName(syntax.GetType());
-		}
+        public SyntaxToken GetType(FieldSyntax syntax)
+        {
+            return FormatTypeName(syntax.GetType());
+        }
 
-		public List<SyntaxToken> GetVisibility(FieldSyntax syntax) {
-			return this.FormatVisibility(syntax.GetVisibility());
-		}
+        public List<SyntaxToken> GetVisibility(FieldSyntax syntax)
+        {
+            return FormatVisibility(syntax.GetVisibility());
+        }
 
-		public SyntaxTokenCollection Format(FieldSyntax syntax) {
-			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
+        public SyntaxTokenCollection Format(FieldSyntax syntax)
+        {
+            SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
-			tokens.AddRange(this.GetVisibility(syntax));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(this.GetType(syntax));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
+            tokens.AddRange(GetVisibility(syntax));
+            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(GetType(syntax));
+            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
 
-			return tokens;
-		}
-	}
+            return tokens;
+        }
+    }
 }

@@ -3,7 +3,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
 {
     using System;
     using System.Collections.Generic;
-    using Reflection.Signitures;
+    using Signitures;
 
     internal sealed class CSharpConstructorFormatter : CSharpFormatter, IConstructorFormatter
     {

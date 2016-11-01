@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Syntax.CSharp
 {
-    using TheBoxSoftware.Reflection.Signitures;
+    using System;
+    using System.Collections.Generic;
+    using Signitures;
 
     /// <summary>
     /// Base class with methods that are useful for all C# formatting
@@ -97,9 +95,9 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         protected SyntaxToken FormatTypeName(TypeRef type)
         {
             string name = type.GetFullyQualifiedName();
-            if(this.defaultTypes.ContainsKey(name))
+            if(defaultTypes.ContainsKey(name))
             {
-                return new SyntaxToken(this.defaultTypes[name], SyntaxTokens.Keyword);
+                return new SyntaxToken(defaultTypes[name], SyntaxTokens.Keyword);
             }
             else
             {
@@ -118,7 +116,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             List<SyntaxToken> tokens = new List<SyntaxToken>();
             for(int i = 0; i < types.Length; i++)
             {
-                tokens.Add(this.FormatTypeName(types[i]));
+                tokens.Add(FormatTypeName(types[i]));
             }
             return tokens;
         }
@@ -132,7 +130,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             {
                 if(details.IsArray)
                 {
-                    tokens.AddRange(this.FormatTypeDetails(details.ArrayOf));
+                    tokens.AddRange(FormatTypeDetails(details.ArrayOf));
                     tokens.Add(new SyntaxToken("[]", SyntaxTokens.Text));
                 }
                 if(details.IsMultidemensionalArray)
@@ -196,7 +194,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 {
                     tokens.Add(new SyntaxToken(",", SyntaxTokens.Text));
                 }
-                tokens.Add(this.FormatTypeName(genericTypes[i]));
+                tokens.Add(FormatTypeName(genericTypes[i]));
             }
 
             tokens.Add(new SyntaxToken(">", SyntaxTokens.Text));

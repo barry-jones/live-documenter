@@ -1,56 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.Reflection.Syntax.CSharp
+{
+    using System.Collections.Generic;
 
-namespace TheBoxSoftware.Reflection.Syntax.CSharp {
-	internal sealed class CSharpStructFormatter : CSharpFormatter, IStructFormatter {
-		private StructSyntax syntax;
+    internal sealed class CSharpStructFormatter : CSharpFormatter, IStructFormatter
+    {
+        private StructSyntax _syntax;
 
-		public CSharpStructFormatter(StructSyntax syntax) {
-			this.syntax = syntax;
-		}
+        public CSharpStructFormatter(StructSyntax syntax)
+        {
+            _syntax = syntax;
+        }
 
-		public SyntaxTokenCollection Format() {
-			return this.Format(this.syntax);
-		}
+        public SyntaxTokenCollection Format()
+        {
+            return Format(_syntax);
+        }
 
-		public List<SyntaxToken> FormatVisibility(StructSyntax syntax) {
-			return this.FormatVisibility(syntax.GetVisibility());
-		}
+        public List<SyntaxToken> FormatVisibility(StructSyntax syntax)
+        {
+            return FormatVisibility(syntax.GetVisibility());
+        }
 
-		public List<SyntaxToken> FormatInterfaces(StructSyntax syntax) {
-			List<SyntaxToken> tokens = new List<SyntaxToken>();
+        public List<SyntaxToken> FormatInterfaces(StructSyntax syntax)
+        {
+            List<SyntaxToken> tokens = new List<SyntaxToken>();
 
-			// Create the list of types and interfaces
-			List<TypeRef> baseTypesAndInterfaces = new List<TypeRef>();
-			baseTypesAndInterfaces.AddRange(syntax.GetInterfaces());
+            // Create the list of types and interfaces
+            List<TypeRef> baseTypesAndInterfaces = new List<TypeRef>();
+            baseTypesAndInterfaces.AddRange(syntax.GetInterfaces());
 
-			if (baseTypesAndInterfaces.Count > 0) {
-				tokens.Add(new SyntaxToken(": ", SyntaxTokens.Text));
-				for (int i = 0; i < baseTypesAndInterfaces.Count; i++) {
-					if (i != 0) {
-						tokens.Add(new SyntaxToken(", ", SyntaxTokens.Text));
-					}
-					tokens.Add(this.FormatTypeName(baseTypesAndInterfaces[i]));
-				}
-			}
+            if(baseTypesAndInterfaces.Count > 0)
+            {
+                tokens.Add(new SyntaxToken(": ", SyntaxTokens.Text));
+                for(int i = 0; i < baseTypesAndInterfaces.Count; i++)
+                {
+                    if(i != 0)
+                    {
+                        tokens.Add(new SyntaxToken(", ", SyntaxTokens.Text));
+                    }
+                    tokens.Add(FormatTypeName(baseTypesAndInterfaces[i]));
+                }
+            }
 
-			return tokens;
-		}
+            return tokens;
+        }
 
-		public SyntaxTokenCollection Format(StructSyntax syntax) {
-			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
+        public SyntaxTokenCollection Format(StructSyntax syntax)
+        {
+            SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
-			tokens.AddRange(this.FormatVisibility(syntax));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken("struct", SyntaxTokens.Keyword));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.AddRange(this.FormatInterfaces(syntax));
+            tokens.AddRange(FormatVisibility(syntax));
+            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(new SyntaxToken("struct", SyntaxTokens.Keyword));
+            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
+            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.AddRange(FormatInterfaces(syntax));
 
-			return tokens;
-		}
-	}
+            return tokens;
+        }
+    }
 }
