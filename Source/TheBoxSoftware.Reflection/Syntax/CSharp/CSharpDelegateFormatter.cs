@@ -38,11 +38,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             {
                 if(i != 0)
                 {
-                    tokens.Add(new SyntaxToken($",{Environment.NewLine}", SyntaxTokens.Text));
+                    tokens.Add(new SyntaxToken($",\n\t", SyntaxTokens.Text));
                 }
                 else
                 {
-                    tokens.Add(new SyntaxToken(Environment.NewLine, SyntaxTokens.Text));
+                    tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
                 }
                 tokens.AddRange(FormatParameterModifiers(parameters[i]));
                 tokens.AddRange(FormatTypeDetails(parameters[i].TypeDetails));
@@ -51,7 +51,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             }
             if(parameters.Count > 0)
             {
-                tokens.Add(new SyntaxToken(Environment.NewLine, SyntaxTokens.Text));
+                tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
             }
             tokens.Add(new SyntaxToken(")", SyntaxTokens.Text));
 
