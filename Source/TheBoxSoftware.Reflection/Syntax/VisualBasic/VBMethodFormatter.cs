@@ -47,10 +47,10 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
                     tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
                 }
                 tokens.Add(new SyntaxToken(parameters[i].Name, SyntaxTokens.Text));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-                tokens.Add(new SyntaxToken("As", SyntaxTokens.Keyword));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-                tokens.AddRange(this.FormatTypeDetails(parameters[i].TypeDetails));
+                tokens.Add(Constants.Space);
+                tokens.Add(Constants.KeywordAs);
+                tokens.Add(Constants.Space);
+                tokens.AddRange(FormatTypeDetails(parameters[i].TypeDetails));
             }
             if(parameters.Count > 0)
             {
@@ -77,27 +77,26 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
             tokens.AddRange(FormatVisibility(syntax));
             if(inheritanceModifier != null)
             {
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.Space);
                 tokens.Add(inheritanceModifier);
             }
 
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             if(isFunction)
             {
-                tokens.Add(new SyntaxToken("Function", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordFunction);
             }
             else
             {
-                tokens.Add(new SyntaxToken("Sub", SyntaxTokens.Keyword));
+                tokens.Add(Constants.KeywordSub);
             }
 
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
             tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
             if(syntax.Method.IsGeneric)
             {
-                tokens.Add(new SyntaxToken("(", SyntaxTokens.Text));
-                tokens.Add(new SyntaxToken("Of", SyntaxTokens.Keyword));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
+                tokens.Add(Constants.GenericStart);
+                tokens.Add(Constants.Space);
                 List<GenericTypeRef> genericTypes = syntax.GetGenericParameters();
                 for(int i = 0; i < genericTypes.Count; i++)
                 {
@@ -107,16 +106,16 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
                     }
                     tokens.Add(FormatTypeName(genericTypes[i]));
                 }
-                tokens.Add(new SyntaxToken(")", SyntaxTokens.Text));
+                tokens.Add(Constants.GenericEnd);
             }
             tokens.AddRange(FormatParameters(syntax));
 
             if(isFunction)
             {
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-                tokens.Add(new SyntaxToken("As", SyntaxTokens.Keyword));
-                tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-                tokens.AddRange(this.FormatReturnType(syntax));
+                tokens.Add(Constants.Space);
+                tokens.Add(Constants.KeywordAs);
+                tokens.Add(Constants.Space);
+                tokens.AddRange(FormatReturnType(syntax));
             }
 
             return tokens;

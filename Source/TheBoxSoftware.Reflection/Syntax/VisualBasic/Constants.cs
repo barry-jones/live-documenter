@@ -12,9 +12,13 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
         public static SyntaxToken ArrayEnd = new SyntaxToken(")", SyntaxTokens.Text);
         public static SyntaxToken ArrayEmpty = new SyntaxToken("()", SyntaxTokens.Text);
 
-        public static SyntaxToken KeywordClass = new SyntaxToken("Class", SyntaxTokens.Keyword);
         public static SyntaxToken KeywordPointer = new SyntaxToken("*", SyntaxTokens.Text);
 
+
+        public static SyntaxToken KeywordClass = new SyntaxToken("Class", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordFunction = new SyntaxToken("Function", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordSub = new SyntaxToken("Sub", SyntaxTokens.Keyword);
+        public static SyntaxToken KeywordAs = new SyntaxToken("As", SyntaxTokens.Keyword);
 
         // access modifiers
         public static SyntaxToken KeywordPrivate = new SyntaxToken("Private", SyntaxTokens.Keyword);
