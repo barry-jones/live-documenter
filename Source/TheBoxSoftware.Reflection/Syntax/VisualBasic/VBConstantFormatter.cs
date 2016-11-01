@@ -1,43 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
+{
+    using System.Collections.Generic;
 
-namespace TheBoxSoftware.Reflection.Syntax.VisualBasic {
-	internal sealed class VBConstantFormatter : VBFormatter, IConstantFormatter {
-		private ConstantSyntax syntax;
+    internal sealed class VBConstantFormatter : VBFormatter, IConstantFormatter
+    {
+        private ConstantSyntax _syntax;
 
-		public VBConstantFormatter(ConstantSyntax syntax) {
-			this.syntax = syntax;
-		}
+        public VBConstantFormatter(ConstantSyntax syntax)
+        {
+            _syntax = syntax;
+        }
 
-		public SyntaxTokenCollection Format() {
-			return this.Format(this.syntax);
-		}
+        public SyntaxTokenCollection Format()
+        {
+            return Format(_syntax);
+        }
 
-		public SyntaxToken GetType(ConstantSyntax syntax) {
-			return this.FormatTypeName(syntax.GetType());
-		}
+        public SyntaxToken GetType(ConstantSyntax syntax)
+        {
+            return FormatTypeName(syntax.GetType());
+        }
 
-		public List<SyntaxToken> GetVisibility(ConstantSyntax syntax) {
-			return this.FormatVisibility(syntax.GetVisibility());
-		}
+        public List<SyntaxToken> GetVisibility(ConstantSyntax syntax)
+        {
+            return FormatVisibility(syntax.GetVisibility());
+        }
 
-		public SyntaxTokenCollection Format(ConstantSyntax syntax) {
-			SyntaxTokenCollection tokens = new SyntaxTokenCollection();
+        public SyntaxTokenCollection Format(ConstantSyntax syntax)
+        {
+            SyntaxTokenCollection tokens = new SyntaxTokenCollection();
 
-			// e.g. Protected Const MyConstant As Integer
-			tokens.AddRange(this.GetVisibility(syntax));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken("Const", SyntaxTokens.Keyword));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(new SyntaxToken("As", SyntaxTokens.Keyword));
-			tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-			tokens.Add(this.GetType(syntax));
+            // e.g. Protected Const MyConstant As Integer
+            tokens.AddRange(GetVisibility(syntax));
+            tokens.Add(Constants.Space);
+            tokens.Add(new SyntaxToken("Const", SyntaxTokens.Keyword));
+            tokens.Add(Constants.Space);
+            tokens.Add(new SyntaxToken(syntax.GetIdentifier(), SyntaxTokens.Text));
+            tokens.Add(Constants.Space);
+            tokens.Add(Constants.KeywordAs);
+            tokens.Add(Constants.Space);
+            tokens.Add(GetType(syntax));
 
-			return tokens;
-		}
-	}
+            return tokens;
+        }
+    }
 }
