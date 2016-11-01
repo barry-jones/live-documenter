@@ -22,39 +22,39 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
             _assemblyDef = AssemblyDef.Create(TestFile);
         }
 
-        [TestCase("SyntaxTests", "ClassPublic", "public class ClassPublic")]
-        [TestCase("SyntaxTests", "ClassInternal", "internal class ClassInternal")]
-        [TestCase("SyntaxTests.ClassPublic", "ClassProtected", "protected class ClassProtected")]
-        [TestCase("SyntaxTests.ClassPublic", "ClassPrivate", "private class ClassPrivate")]
+        [TestCase("SyntaxTests.ForClass", "ClassPublic", "public class ClassPublic")]
+        [TestCase("SyntaxTests.ForClass", "ClassInternal", "internal class ClassInternal")]
+        [TestCase("SyntaxTests.ForClass.ClassPublic", "ClassProtected", "protected class ClassProtected")]
+        [TestCase("SyntaxTests.ForClass.ClassPublic", "ClassPrivate", "private class ClassPrivate")]
         public void CSharpSyntax_Class_Visibility(string namespaceName, string typeName, string expected)
         {
             DoTest(namespaceName, typeName, expected);
         }
 
-        [TestCase("SyntaxTests", "AbstractClass", "public abstract class AbstractClass")]
-        [TestCase("SyntaxTests", "SealedClass", "public sealed class SealedClass")]
-        [TestCase("SyntaxTests", "StaticClass", "public static class StaticClass")]
-        // Bug 48 [TestCase("SyntaxTests.ContainerB", "NestedClass", "public new class NestedClass")]
+        [TestCase("SyntaxTests.ForClass", "AbstractClass", "public abstract class AbstractClass")]
+        [TestCase("SyntaxTests.ForClass", "SealedClass", "public sealed class SealedClass")]
+        [TestCase("SyntaxTests.ForClass", "StaticClass", "public static class StaticClass")]
+        // Bug 48 [TestCase("SyntaxTests.ForClass.ContainerB", "NestedClass", "public new class NestedClass")]
         public void CSharpSyntax_Class_Modifiers(string namespaceName, string typeName, string expected)
         {
             DoTest(namespaceName, typeName, expected);
         }
 
-        [TestCase("SyntaxTests", "DerivedClass", "public class DerivedClass : BaseClass")]
-        [TestCase("SyntaxTests", "DerivedClassWithInterface", "public class DerivedClassWithInterface : BaseClass,\r\nITest")]
+        [TestCase("SyntaxTests.ForClass", "DerivedClass", "public class DerivedClass : BaseClass")]
+        [TestCase("SyntaxTests.ForClass", "DerivedClassWithInterface", "public class DerivedClassWithInterface : BaseClass,\r\nITest")]
         public void CSharp_Class_BaseClasses(string namespaceName, string typeName, string expected)
         {
             DoTest(namespaceName, typeName, expected);
         }
 
-        [TestCase("SyntaxTests", "GenericClass`1", "public class GenericClass<T>")]
-        [TestCase("SyntaxTests", "GenericClass`2", "public class GenericClass<T,U>")]
+        [TestCase("SyntaxTests.ForClass", "GenericClass`1", "public class GenericClass<T>")]
+        [TestCase("SyntaxTests.ForClass", "GenericClass`2", "public class GenericClass<T,U>")]
         // Bug 47
-        //[TestCase("SyntaxTests", "GenericClassWhereNew`1", "public class GenericClassWithWhere<T> where T : new()")]
-        //[TestCase("SyntaxTests", "GenericClassWhereStruct`1", "public class GenericClassWithWhere<T> where T : stuct")]
-        //[TestCase("SyntaxTests", "GenericClassWhereClass`1", "public class GenericClassWithWhere<T> where T : class")]
-        //[TestCase("SyntaxTests", "GenericClassWhereClassAndInteface`1", "public class GenericClassWithWhere<T> where T : class, ITest")]
-        //[TestCase("SyntaxTests", "GenericClassWhereAll`1", "public class GenericClassWithWhere<T> where T : class, ITest, new()")]
+        //[TestCase("SyntaxTests.ForClass", "GenericClassWhereNew`1", "public class GenericClassWithWhere<T> where T : new()")]
+        //[TestCase("SyntaxTests.ForClass", "GenericClassWhereStruct`1", "public class GenericClassWithWhere<T> where T : stuct")]
+        //[TestCase("SyntaxTests.ForClass", "GenericClassWhereClass`1", "public class GenericClassWithWhere<T> where T : class")]
+        //[TestCase("SyntaxTests.ForClass", "GenericClassWhereClassAndInteface`1", "public class GenericClassWithWhere<T> where T : class, ITest")]
+        //[TestCase("SyntaxTests.ForClass", "GenericClassWhereAll`1", "public class GenericClassWithWhere<T> where T : class, ITest, new()")]
         public void CSharp_Class_Generic(string namespaceName, string typeName, string expected)
         {
             DoTest(namespaceName, typeName, expected);

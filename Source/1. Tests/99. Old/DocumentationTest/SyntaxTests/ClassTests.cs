@@ -1,5 +1,5 @@
 ﻿
-namespace SyntaxTests
+namespace SyntaxTests.ForClass
 {
     public interface ITest
     {
