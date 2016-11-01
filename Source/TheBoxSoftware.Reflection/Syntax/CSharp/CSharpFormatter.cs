@@ -15,22 +15,22 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         /// Collection of all the types defined in this language with a language
         /// specific short form.
         /// </summary>
-        private Dictionary<string, string> defaultTypes = new Dictionary<string, string>() {
-            {"System.Object", "object"},
-            {"System.Boolean", "bool"},
-            {"System.SByte", "sbyte"},
-            {"System.Byte", "byte"},
-            {"System.Char", "char"},
-            {"System.Double", "double"},
-            {"System.Int16", "short"},
-            {"System.Int32", "int"},
-            {"System.Int64", "long"},
-            {"System.Single", "float"},
-            {"System.String", "string"},
-            {"System.UInt16", "ushort"},
-            {"System.UInt32", "uint"},
-            {"System.UInt64", "ulong"},
-            {"System.Void", "void"}
+        private Dictionary<string, SyntaxToken> defaultTypes = new Dictionary<string, SyntaxToken>() {
+            {"System.Object", Constants.TypeObject},
+            {"System.Boolean", Constants.TypeBoolean},
+            {"System.SByte", Constants.TypeSByte},
+            {"System.Byte", Constants.TypeByte},
+            {"System.Char", Constants.TypeChar},
+            {"System.Double", Constants.TypeDouble},
+            {"System.Int16", Constants.TypeShort},
+            {"System.Int32", Constants.TypeInt},
+            {"System.Int64", Constants.TypeLong},
+            {"System.Single", Constants.TypeFloat},
+            {"System.String", Constants.TypeString},
+            {"System.UInt16", Constants.TypeUShort},
+            {"System.UInt32", Constants.TypeUInt},
+            {"System.UInt64", Constants.TypeULong},
+            {"System.Void", Constants.TypeVoid}
             };
 
         /// <summary>
@@ -44,21 +44,21 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             switch(visibility)
             {
                 case Visibility.Internal:
-                    tokens.Add(new SyntaxToken("internal", SyntaxTokens.Keyword));
+                    tokens.Add(Constants.KeywordInternal);
                     break;
                 case Visibility.InternalProtected:
-                    tokens.Add(new SyntaxToken("internal", SyntaxTokens.Keyword));
-                    tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
-                    tokens.Add(new SyntaxToken("protected", SyntaxTokens.Keyword));
+                    tokens.Add(Constants.KeywordInternal);
+                    tokens.Add(Constants.Space);
+                    tokens.Add(Constants.KeywordProtected);
                     break;
                 case Visibility.Protected:
-                    tokens.Add(new SyntaxToken("protected", SyntaxTokens.Keyword));
+                    tokens.Add(Constants.KeywordProtected);
                     break;
                 case Visibility.Private:
-                    tokens.Add(new SyntaxToken("private", SyntaxTokens.Keyword));
+                    tokens.Add(Constants.KeywordPrivate);
                     break;
                 case Visibility.Public:
-                    tokens.Add(new SyntaxToken("public", SyntaxTokens.Keyword));
+                    tokens.Add(Constants.KeywordPublic);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -76,11 +76,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             switch(inheritance)
             {
                 case Inheritance.Abstract:
-                    return new SyntaxToken("abstract", SyntaxTokens.Keyword);
+                    return Constants.KeywordAbstract;
                 case Inheritance.Sealed:
-                    return new SyntaxToken("sealed", SyntaxTokens.Keyword);
+                    return Constants.KeywordSealed;
                 case Inheritance.Static:
-                    return new SyntaxToken("static", SyntaxTokens.Keyword);
+                    return Constants.KeywordStatic;
                 default:
                     return null;
             }
@@ -97,7 +97,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             string name = type.GetFullyQualifiedName();
             if(defaultTypes.ContainsKey(name))
             {
-                return new SyntaxToken(defaultTypes[name], SyntaxTokens.Keyword);
+                return defaultTypes[name];
             }
             else
             {
@@ -131,14 +131,14 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 if(details.IsArray)
                 {
                     tokens.AddRange(FormatTypeDetails(details.ArrayOf));
-                    tokens.Add(new SyntaxToken("[]", SyntaxTokens.Text));
+                    tokens.Add(Constants.ArrayEmpty);
                 }
                 if(details.IsMultidemensionalArray)
                 {
                     tokens.AddRange(this.FormatTypeDetails(details.ArrayOf));
-                    tokens.Add(new SyntaxToken("[", SyntaxTokens.Text));
+                    tokens.Add(Constants.ArrayStart);
                     tokens.Add(new SyntaxToken(new String(',', details.ArrayShape.Rank - 1), SyntaxTokens.Text));
-                    tokens.Add(new SyntaxToken("]", SyntaxTokens.Text));
+                    tokens.Add(Constants.ArrayEnd);
                 }
             }
             else
@@ -146,7 +146,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 tokens.Add(FormatTypeName(details.Type));
                 if(details.IsGenericInstance)
                 {
-                    tokens.Add(new SyntaxToken("<", SyntaxTokens.Text));
+                    tokens.Add(Constants.GenericStart);
                     for(int i = 0; i < details.GenericParameters.Count; i++)
                     {
                         if(i != 0)
@@ -155,13 +155,13 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                         }
                         tokens.AddRange(FormatTypeDetails(details.GenericParameters[i]));
                     }
-                    tokens.Add(new SyntaxToken(">", SyntaxTokens.Text));
+                    tokens.Add(Constants.GenericEnd);
                 }
             }
 
             if(details.IsPointer)
             {
-                tokens.Add(new SyntaxToken("*", SyntaxTokens.Text));
+                tokens.Add(Constants.KeywordPointer);
             }
             return tokens;
         }
@@ -186,7 +186,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         protected List<SyntaxToken> FormatGenericParameters(List<GenericTypeRef> genericTypes)
         {
             List<SyntaxToken> tokens = new List<SyntaxToken>();
-            tokens.Add(new SyntaxToken("<", SyntaxTokens.Text));
+            tokens.Add(Constants.GenericStart);
 
             for(int i = 0; i < genericTypes.Count; i++)
             {
@@ -197,7 +197,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 tokens.Add(FormatTypeName(genericTypes[i]));
             }
 
-            tokens.Add(new SyntaxToken(">", SyntaxTokens.Text));
+            tokens.Add(Constants.GenericEnd);
             return tokens;
         }
     }

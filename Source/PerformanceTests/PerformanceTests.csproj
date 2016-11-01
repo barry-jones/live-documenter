@@ -155,6 +155,7 @@
     <Compile Include="Reflection\AssemblyDefBenchmark.cs" />
     <Compile Include="Reflection\Core\COFF\StringStreamBenchmark.cs" />
     <Compile Include="Reflection\Core\PeCoffFileBenchmark.cs" />
+    <Compile Include="Reflection\Syntax\CSharp\ClassFormatterBenchmark.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -166,6 +167,10 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj">
+      <Project>{2ad369a3-7737-4ec5-a4ba-3e846f80c066}</Project>
+      <Name>DocumentationTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
       <Project>{b8749831-5746-4443-bee9-9b01792c0d98}</Project>
       <Name>TheBoxSoftware.Reflection</Name>

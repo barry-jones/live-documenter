@@ -291,6 +291,7 @@
     <Compile Include="Syntax\CSharp\CSharpOperatorFormatter.cs" />
     <Compile Include="Syntax\CSharp\CSharpPropertyFormatter.cs" />
     <Compile Include="Syntax\CSharp\CSharpStructFormatter.cs" />
+    <Compile Include="Syntax\CSharp\Constants.cs" />
     <Compile Include="Syntax\DelegateSyntax.cs" />
     <Compile Include="Syntax\EnumSyntax.cs" />
     <Compile Include="Syntax\EventSyntax.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="Syntax\SyntaxToken.cs" />
     <Compile Include="Syntax\SyntaxTokenCollection.cs" />
     <Compile Include="Syntax\SyntaxTokens.cs" />
+    <Compile Include="Syntax\VisualBasic\Constants.cs" />
     <Compile Include="Syntax\VisualBasic\VBClassFormatter.cs" />
     <Compile Include="Syntax\VisualBasic\VBConstantFormatter.cs" />
     <Compile Include="Syntax\VisualBasic\VBConstructorFormatter.cs" />

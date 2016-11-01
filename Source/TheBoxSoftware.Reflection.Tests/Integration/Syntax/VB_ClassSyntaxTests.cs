@@ -47,9 +47,8 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
             DoTest(namespaceName, typeName, expected);
         }
 
-        // Bug 53
-        //[TestCase("GenericClass`1", "public class GenericClass(Of T)")]
-        //[TestCase("GenericClass`2", "public class GenericClass(Of T, U)")]
+        [TestCase("GenericClass`1", "Public Class GenericClass(Of T)")]
+        [TestCase("GenericClass`2", "Public Class GenericClass(Of T,U)")]
         // Bug 54
         //[TestCase("GenericClassWhereNew`1", "public class GenericClassWithWhere<T> where T : new()")]
         //[TestCase("GenericClassWhereStruct`1", "public class GenericClassWithWhere<T> where T : stuct")]

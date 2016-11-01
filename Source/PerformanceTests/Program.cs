@@ -15,8 +15,10 @@ namespace PerformanceTests
 
             //BenchmarkRunner.Run<Reflection.Core.PeCoffFileBenchmark>();
             //BenchmarkRunner.Run<Reflection.Core.COFF.StringStreamBenchmark>();
-            BenchmarkRunner.Run<Reflection.AssemblyDefBenchmark>();
+            //BenchmarkRunner.Run<Reflection.AssemblyDefBenchmark>();
             //BenchmarkRunner.Run<RandomTests>();
+
+            BenchmarkRunner.Run<Reflection.Syntax.CSharp.ClassFormatterBenchmark>();
         }
     }
 }
