@@ -58,7 +58,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
 
         [TestCase("RefParameters", "public void RefParameters(\n\tref int first\n\t)")]
         [TestCase("NormalParameters", "public void NormalParameters(\n\tint first\n\t)")]
-        [TestCase("OutParameter", "public void OutParameter(\n\tref int first\n\t)")] // TODO: Bug Out parameters - ref not out
+        [TestCase("OutParameter", "public void OutParameter(\n\tout int first\n\t)")]
         [TestCase("DefaultParameter", "public void DefaultParameter(\n\tint first\n\t)")] // TODO: But default parameters - no default value provided
         [TestCase("MultipleParameters", "public void MultipleParameters(\n\tint first,\n\tref int second,\n\tstring test,\n\tAllOutputTypesClass allOut\n\t)")]
         public void Syntax_TestParametersAreCorrectlyCreated(string method, string expected)

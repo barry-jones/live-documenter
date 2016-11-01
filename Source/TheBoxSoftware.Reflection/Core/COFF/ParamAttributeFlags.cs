@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     [Flags]
-    public enum ParamAttributeFlags : UInt16
+    public enum ParamAttributeFlags : ushort
     {
         In = 0x0001,
         Out = 0x0002,
