@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
     {
         private const string DocumentationFile = @"source\testoutput\documentationtest.dll";
 
-        [Test]
+        // [Test]
         public void Create()
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();

@@ -39,8 +39,8 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A collection of derived types.</returns>
         public List<TypeRef> GetExtendingTypes()
         {
-            MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
-            MetadataToDefinitionMap map = this.Assembly.File.Map;
+            MetadataStream stream = Assembly.File.GetMetadataDirectory().GetMetadataStream();
+            MetadataToDefinitionMap map = Assembly.File.Map;
             CodedIndex ciForThisType = new CodedIndex(_table, (uint)_index);
             List<TypeRef> inheritingTypes = new List<TypeRef>();
             List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata signitures
@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection
 
             // All types in this assembly that extend another use the TypeDef.Extends data in the metadata
             // table.
-            if(this.IsGeneric)
+            if(IsGeneric)
             {
                 MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
                 for(int i = 0; i < typeSpecs.Length; i++)
@@ -60,7 +60,7 @@ namespace TheBoxSoftware.Reflection
                         // We need to find all of the TypeSpec references that point back to us, remember
                         // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
                         // for example. Each one of these will be a different type spec.
-                        TypeSpec spec = (TypeSpec)this.Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row);
+                        TypeSpec spec = Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row) as TypeSpec;
                         SignitureToken token = spec.Signiture.TypeToken.Tokens[0];
 
                         // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
@@ -68,7 +68,7 @@ namespace TheBoxSoftware.Reflection
                         {
                             ElementTypeSignitureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignitureToken;
 
-                            TypeRef typeRef = typeToken.ResolveToken(this.Assembly);
+                            TypeRef typeRef = typeToken.ResolveToken(Assembly);
                             if(typeRef == this)
                             {
                                 ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1));
@@ -106,17 +106,17 @@ namespace TheBoxSoftware.Reflection
         public List<GenericTypeRef> GetGenericTypes()
         {
             List<GenericTypeRef> parameters = new List<GenericTypeRef>();
-            string generic = this.Name.Substring(
-                this.Name.Length - 1,
+            string generic = Name.Substring(
+                Name.Length - 1,
                 1);
             int numberOfParams = 0;
 
             if(int.TryParse(generic, out numberOfParams))
             {
-                int index = this.GenericTypes.Count - numberOfParams;
-                for(int i = index; i < this.GenericTypes.Count; i++)
+                int index = GenericTypes.Count - numberOfParams;
+                for(int i = index; i < GenericTypes.Count; i++)
                 {
-                    parameters.Add(this.GenericTypes[i]);
+                    parameters.Add(GenericTypes[i]);
                 }
             }
 
@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Reflection
             List<FieldDef> fields = new List<FieldDef>();
             for(int i = 0; i < Fields.Count; i++)
             {
-                FieldDef currentField = this.Fields[i];
+                FieldDef currentField = Fields[i];
                 if(includeSystemGenerated || (!includeSystemGenerated && !currentField.IsSystemGenerated))
                 {
                     fields.Add(currentField);
@@ -204,7 +204,7 @@ namespace TheBoxSoftware.Reflection
             List<MethodDef> methods = new List<MethodDef>();
             for(int i = 0; i < Methods.Count; i++)
             {
-                if(this.Methods[i].IsConstructor && (includeSystemGenerated || (!includeSystemGenerated && !Methods[i].IsCompilerGenerated)))
+                if(Methods[i].IsConstructor && (includeSystemGenerated || (!includeSystemGenerated && !Methods[i].IsCompilerGenerated)))
                 {
                     methods.Add(Methods[i]);
                 }
@@ -328,10 +328,10 @@ namespace TheBoxSoftware.Reflection
                     MetadataToDefinitionMap map = this.Assembly.File.Map;
                     TypeRef inheritsFrom = null;
 
-                    if(this._extends.Index != 0)
+                    if(_extends.Index != 0)
                     {
-                        inheritsFrom = map.GetDefinition(this._extends.Table,
-                            stream.Tables.GetEntryFor(this._extends.Table, this._extends.Index)) as TypeRef;
+                        inheritsFrom = map.GetDefinition(_extends.Table,
+                            stream.Tables.GetEntryFor(_extends.Table, _extends.Index)) as TypeRef;
                         // We have to handle type spec based classes, as if they use the parent generic types
                         // we need the type to have a reference to its container.
                         if(inheritsFrom is TypeSpec)
