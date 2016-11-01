@@ -120,7 +120,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 }
                 else if(hasBaseType && i == 0 || i != 0)
                 {
-                    tokens.Add(new SyntaxToken($",{Environment.NewLine}", SyntaxTokens.Text));
+                    tokens.Add(new SyntaxToken($",\n\t", SyntaxTokens.Text));
                 }
                 tokens.AddRange(FormatTypeDetails(details[i]));
             }
