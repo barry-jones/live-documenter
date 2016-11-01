@@ -9,6 +9,8 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
     public class CSharp_MethodSyntaxTests
     {
         private const string TestFile = @"source\testoutput\documentationtest.dll";
+        private const string NamespaceName = "SyntaxTests";
+        private const string TypeName = "ForMethod";
 
         private AssemblyDef _assemblyDef;
 
@@ -23,60 +25,57 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
             _assemblyDef = AssemblyDef.Create(TestFile);
         }
 
-        [TestCase("BasicPublicMethod", "public void BasicPublicMethod()")]
-        [TestCase("BasicInternalMethod", "internal void BasicInternalMethod()")]
-        [TestCase("BasicProtectedInternalMethod", "internal protected void BasicProtectedInternalMethod()")]
-        [TestCase("BasicProtectedMethod", "protected void BasicProtectedMethod()")]
-        [TestCase("BasicPrivateMethod", "private void BasicPrivateMethod()")]
-        public void Syntax_TestMethodVisibilityIsCorrectlyCreated(string method, string expected)
+        [TestCase("PublicMethod", "public void PublicMethod()")]
+        [TestCase("InternalMethod", "internal void InternalMethod()")]
+        [TestCase("ProtectedInternalMethod", "internal protected void ProtectedInternalMethod()")]
+        [TestCase("ProtectedMethod", "protected void ProtectedMethod()")]
+        [TestCase("PrivateMethod", "private void PrivateMethod()")]
+        public void CSharpSyntax_Method_AccessModifiers(string method, string expected)
         {
-            TypeDef container = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
-            MethodDef testMethod = container.Methods.First(p => p.Name == method);
-            IFormatter formatter = CreateFormatter(testMethod);
-
-            SyntaxTokenCollection tokens = formatter.Format();
-
-            Assert.AreEqual(expected, tokens.ToString());
+            TestIt(method, expected);
         }
 
-        [TestCase("BasicPublicMethod", "public void BasicPublicMethod()")]
-        [TestCase("f", "public int f()")]
-        [TestCase("JaggedReturnArray", "public string[][] JaggedReturnArray(\n\tstring[][] jaggy\n\t)")]
-        [TestCase("ReturnsOurClass", "public AllOutputTypesClass ReturnsOurClass()")]
-        [TestCase("BuildInLongTypeReturned", "public long BuildInLongTypeReturned()")]
-        [TestCase("ArrayReturnType", "public int[] ArrayReturnType()")]
-        public void Syntax_TestMethodReturnsTypesAreCorrectlyCreated(string method, string expected)
+        [TestCase("StaticMethod", "public static void StaticMethod()")]
+        public void CSharpSyntax_Method_Static(string method, string expected)
         {
-            TypeDef container = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
-            MethodDef testMethod = container.Methods.First(p => p.Name == method);
-            IFormatter formatter = CreateFormatter(testMethod);
-
-            SyntaxTokenCollection tokens = formatter.Format();
-
-            Assert.AreEqual(expected, tokens.ToString());
+            TestIt(method, expected);
         }
 
-        [TestCase("RefParameters", "public void RefParameters(\n\tref int first\n\t)")]
-        [TestCase("NormalParameters", "public void NormalParameters(\n\tint first\n\t)")]
-        [TestCase("OutParameter", "public void OutParameter(\n\tout int first\n\t)")]
-        [TestCase("DefaultParameter", "public void DefaultParameter(\n\tint first\n\t)")] // TODO: But default parameters - no default value provided
-        [TestCase("MultipleParameters", "public void MultipleParameters(\n\tint first,\n\tref int second,\n\tstring test,\n\tAllOutputTypesClass allOut\n\t)")]
-        public void Syntax_TestParametersAreCorrectlyCreated(string method, string expected)
+        [TestCase("ReturnVoid", "public void ReturnVoid()")]
+        [TestCase("ReturnWellKnownType", "public int ReturnWellKnownType()")]
+        [TestCase("ReturnJaggedArray", "public int[][] ReturnJaggedArray()")]
+        [TestCase("ReturnClass", "public ForMethod ReturnClass()")]
+        [TestCase("ReturnArray", "public byte[] ReturnArray()")]
+        [TestCase("ReturnGeneric", "public GenericClass<string> ReturnGeneric()")]
+        public void CSharpSyntax_Method_ReturnTypes(string method, string expected)
         {
-            TypeDef container = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
-            MethodDef testMethod = container.Methods.First(p => p.Name == method);
-            IFormatter formatter = CreateFormatter(testMethod);
-
-            SyntaxTokenCollection tokens = formatter.Format();
-
-            Assert.AreEqual(expected, tokens.ToString());
+            TestIt(method, expected);
         }
 
-        [TestCase("GenericReturnType", "public List<int> GenericReturnType()")]
-        [TestCase("GenericMethodOfT", "public List<T> GenericMethodOfT<T>()")]
-        public void Syntax_TestMethodsForGenerics(string method, string expected)
+        [TestCase("ParameterNormal", "public void ParameterNormal(\n\tint test\n\t)")]
+        [TestCase("ParameterRef", "public void ParameterRef(\n\tref int test\n\t)")]
+        [TestCase("ParameterOut", "public void ParameterOut(\n\tout int test\n\t)")]
+        // bug 49 [TestCase("ParameterDefault", "public void ParameterDefault(\n\tint test = 3\n\t)")]
+        public void CSharpSyntax_Method_ParameterModifiers(string method, string expected)
         {
-            TypeDef container = _assemblyDef.FindType("DocumentationTest", "AllOutputTypesClass");
+            TestIt(method, expected);
+        }
+
+        [TestCase("Generic", "public void Generic<T>()")]
+        // bug 50
+        //[TestCase("GenericWhereClass", "public void GenericWhereClass<T>() where T : class")]
+        //[TestCase("GenericWhereStruct", "public void GenericWhereStruct<T>() where T : struct")]
+        //[TestCase("GenericWhereInterface", "public void GenericWhereInteface<T>() where T : ITest")]
+        //[TestCase("GenericWhereNew", "public void GenericWhereNew<T>() where T : new()")]
+        //[TestCase("GenericWhereAll", "public void GenericWhereAll<T>() where T : class, ITest, new()")]
+        public void CSharpSyntax_Method_Generics(string method, string expected)
+        {
+            TestIt(method, expected);
+        }
+
+        private void TestIt(string method, string expected)
+        {
+            TypeDef container = _assemblyDef.FindType(NamespaceName, TypeName);
             MethodDef testMethod = container.Methods.First(p => p.Name == method);
             IFormatter formatter = CreateFormatter(testMethod);
 

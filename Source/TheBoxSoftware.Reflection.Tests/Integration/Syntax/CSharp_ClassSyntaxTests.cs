@@ -42,7 +42,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
 
         [TestCase("SyntaxTests.ForClass", "DerivedClass", "public class DerivedClass : BaseClass")]
         [TestCase("SyntaxTests.ForClass", "DerivedClassWithInterface", "public class DerivedClassWithInterface : BaseClass,\r\nITest")]
-        public void CSharp_Class_BaseClasses(string namespaceName, string typeName, string expected)
+        public void CSharpSyntax_Class_BaseClasses(string namespaceName, string typeName, string expected)
         {
             DoTest(namespaceName, typeName, expected);
         }
@@ -55,7 +55,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         //[TestCase("SyntaxTests.ForClass", "GenericClassWhereClass`1", "public class GenericClassWithWhere<T> where T : class")]
         //[TestCase("SyntaxTests.ForClass", "GenericClassWhereClassAndInteface`1", "public class GenericClassWithWhere<T> where T : class, ITest")]
         //[TestCase("SyntaxTests.ForClass", "GenericClassWhereAll`1", "public class GenericClassWithWhere<T> where T : class, ITest, new()")]
-        public void CSharp_Class_Generic(string namespaceName, string typeName, string expected)
+        public void CSharpSyntax_Class_Generic(string namespaceName, string typeName, string expected)
         {
             DoTest(namespaceName, typeName, expected);
         }
