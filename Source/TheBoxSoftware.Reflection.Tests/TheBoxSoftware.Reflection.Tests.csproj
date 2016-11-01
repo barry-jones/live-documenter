@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\Syntax\CSharp_ClassSyntaxTests.cs" />
     <Compile Include="Integration\Syntax\VB_MethodSyntaxTests.cs" />
     <Compile Include="Unit\AssemblyDefTests.cs" />
     <Compile Include="Unit\AssemblyRefTests.cs" />

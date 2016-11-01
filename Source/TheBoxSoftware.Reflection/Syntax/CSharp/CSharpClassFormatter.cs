@@ -107,7 +107,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             List<SyntaxToken> baseTypesAndInterfaces = new List<SyntaxToken>();
             if(syntax.Class.InheritsFrom != null && syntax.Class.InheritsFrom.GetFullyQualifiedName() != "System.Object")
             {
-                tokens.Add(new SyntaxToken(": ", SyntaxTokens.Text));
+                tokens.Add(new SyntaxToken(" : ", SyntaxTokens.Text));
                 tokens.AddRange(FormatTypeDetails(syntax.GetBaseClass()));
                 hasBaseType = true;
             }
@@ -155,7 +155,6 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 List<GenericTypeRef> genericTypes = _syntax.GetGenericParameters();
                 tokens.AddRange(FormatGenericParameters(genericTypes));
             }
-            tokens.Add(new SyntaxToken(" ", SyntaxTokens.Text));
             tokens.AddRange(FormatClassBase(syntax));
 
             return tokens;

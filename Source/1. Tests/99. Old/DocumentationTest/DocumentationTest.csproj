@@ -147,6 +147,7 @@
     <Compile Include="ReferenceInterfaceDocumentationTest.cs" />
     <Compile Include="SeeDocumentationTest.cs" />
     <Compile Include="StaticConstructorTest_25.cs" />
+    <Compile Include="SyntaxTests\ClassTests.cs" />
     <Compile Include="TestException.cs" />
     <Compile Include="VisibilityTest.cs" />
   </ItemGroup>
