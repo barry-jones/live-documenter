@@ -64,7 +64,6 @@
     <Compile Include="Documentation.cs" />
     <Compile Include="DocumentationException.cs" />
     <Compile Include="EntryNotFoundException.cs" />
-    <Compile Include="LicenseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableOfContents.cs" />
   </ItemGroup>
