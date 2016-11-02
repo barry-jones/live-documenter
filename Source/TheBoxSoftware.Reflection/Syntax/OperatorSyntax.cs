@@ -22,7 +22,7 @@ namespace TheBoxSoftware.Reflection.Syntax
 
         public Inheritance GetInheritance()
         {
-            return ConvertMethodInheritance(_method.Attributes);
+            return ConvertMethodInheritance(_method.MethodAttributes);
         }
 
         /// <summary>

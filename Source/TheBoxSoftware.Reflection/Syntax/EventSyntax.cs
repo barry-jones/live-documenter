@@ -44,7 +44,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         public Inheritance GetInheritance()
         {
             MethodDef method = _add ?? _remove;
-            return ConvertMethodInheritance(method.Attributes);
+            return ConvertMethodInheritance(method.MethodAttributes);
         }
 
         public new TypeDetails GetType()

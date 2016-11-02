@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Syntax
             //  it seems as if .cctor is a static constructor and .ctor is not in IL though they both have static set.
             //  When viewing the metadata via the peviewer it shows .cctor but here it is displayed as .ctor - I think we
             //  must be changing it somewhere.
-            return ConvertMethodInheritance(_method.Attributes);
+            return ConvertMethodInheritance(_method.MethodAttributes);
         }
 
         /// <summary>

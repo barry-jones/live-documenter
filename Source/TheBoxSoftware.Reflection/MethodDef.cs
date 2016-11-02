@@ -275,7 +275,7 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Gets or sets an set of flags detailing generic information about this method.
         /// </summary>
-        public MethodAttributes Attributes
+        public MethodAttributes MethodAttributes
         {
             get { return _attributes; }
             set { _attributes = value; }
@@ -285,7 +285,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                switch(Attributes & MethodAttributes.MemberAccessMask)
+                switch(MethodAttributes & MethodAttributes.MemberAccessMask)
                 {
                     case MethodAttributes.Public:
                         return Visibility.Public;
