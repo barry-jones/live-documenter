@@ -111,8 +111,6 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public abstract void Export();
 
-        public abstract Stream ExportMember(Entry entry);
-
         /// <summary>
         /// When implemented in a dervied class checks to see if there are any issues with running
         /// the exporter.

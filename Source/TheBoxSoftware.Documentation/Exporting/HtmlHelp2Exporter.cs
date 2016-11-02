@@ -1,14 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Xml;
-using Microsoft.Win32;
-using Saxon.Api;
-using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Xml;
+    using Microsoft.Win32;
+    using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Produces HTML Help 2 compiled help documentation.
     /// </summary>
@@ -93,62 +93,52 @@ namespace TheBoxSoftware.Documentation.Exporting
 
                 if (!this.IsCancelled)
                 {
-                    Processor p = new Processor();
-                    using (Stream xsltStream = this.Config.GetXslt())
+                    IXsltProcessor xsltProcessor = new MsXsltProcessor(TempDirectory);
+                    using(Stream xsltStream = Config.GetXslt())
                     {
-                        XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
-                        transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
+                        xsltProcessor.CompileXslt(xsltStream);
+                    }
 
-                        // set output files
-                        this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-                        this.Config.SaveOutputFilesTo(this.OutputDirectory);
+                    // set output files
+                    this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+                    this.Config.SaveOutputFilesTo(this.OutputDirectory);
 
-                        this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+                    this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
-                        // export the project xml, we cant render the XML because the DTD protocol causes loads of probs with Saxon
-                        CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.Document.Map, string.Empty);
-                        using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", this.OutputDirectory)))
+                    // export the project xml, we cant render the XML because the DTD protocol causes loads of probs with Saxon
+                    CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.Document.Map, string.Empty);
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", this.OutputDirectory)))
+                    {
+                        collectionXml.Render(writer);
+                    }
+
+                    // export the incldue file xml
+                    IncludeFileXmlRenderer includeXml = new IncludeFileXmlRenderer(this.Config);
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxF", this.OutputDirectory)))
+                    {
+                        includeXml.Render(writer);
+                    }
+
+                    string outputFile = OutputDirectory + "Documentation.HxT";
+                    string inputFile = $"{TempDirectory}/toc.xml";
+                    xsltProcessor.Transform(inputFile, outputFile);
+
+                    // export the content files
+                    int counter = 0;
+                    foreach (string current in Directory.GetFiles(this.TempDirectory))
+                    {
+                        if (current.Substring(this.TempDirectory.Length) == "toc.xml")
+                            continue;
+
+                        outputFile = OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm";
+                        xsltProcessor.Transform(current, outputFile);
+
+                        counter++;
+                        if (counter % this.XmlExportStep == 0)
                         {
-                            collectionXml.Render(writer);
+                            this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
                         }
-
-                        // export the incldue file xml
-                        IncludeFileXmlRenderer includeXml = new IncludeFileXmlRenderer(this.Config);
-                        using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxF", this.OutputDirectory)))
-                        {
-                            includeXml.Render(writer);
-                        }
-
-                        // export the content file
-                        using (FileStream fs = File.OpenRead(string.Format("{0}/toc.xml", this.TempDirectory)))
-                        {
-                            Serializer s = new Serializer();
-                            s.SetOutputFile(this.OutputDirectory + "Documentation.HxT");
-                            transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-                            transform.Run(s);
-                        }
-
-                        // export the content files
-                        int counter = 0;
-                        foreach (string current in Directory.GetFiles(this.TempDirectory))
-                        {
-                            if (current.Substring(this.TempDirectory.Length) == "toc.xml")
-                                continue;
-                            using (FileStream fs = File.OpenRead(current))
-                            {
-                                Serializer s = new Serializer();
-                                s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
-                                transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-                                transform.Run(s);
-                                s.Close();
-                            }
-                            counter++;
-                            if (counter % this.XmlExportStep == 0)
-                            {
-                                this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
-                            }
-                            if (this.IsCancelled) break;
-                        }
+                        if (this.IsCancelled) break;
                     }
                 }
 
@@ -189,6 +179,7 @@ namespace TheBoxSoftware.Documentation.Exporting
             }
         }
 
+        /*
         /// <summary>
         /// Member level exporting is not supported in this exporter.
         /// </summary>
@@ -197,6 +188,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             throw new InvalidOperationException("Member level exporting is not supported in this exporter.");
         }
+        */
 
         /// <summary>
         /// Returns a collection of messages that describe any issues that this exporter has with

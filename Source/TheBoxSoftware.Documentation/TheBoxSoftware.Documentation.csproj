@@ -129,6 +129,8 @@
     <Compile Include="Exporting\HtmlHelp2Exporter.cs" />
     <Compile Include="Exporting\HtmlHelp2\IncludeFileXmlRenderer.cs" />
     <Compile Include="Exporting\Issue.cs" />
+    <Compile Include="Exporting\IXsltProcessor.cs" />
+    <Compile Include="Exporting\MsXsltProcessor.cs" />
     <Compile Include="Exporting\Rendering\AssemblyXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\DocumentMapXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\EventXmlRenderer.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Exporting\Rendering\TypeXmlRenderer.cs" />
     <Compile Include="Exporting\Rendering\XmlElementRenderer.cs" />
     <Compile Include="Exporting\Rendering\XmlRenderer.cs" />
+    <Compile Include="Exporting\SaxonXsltProcessor.cs" />
     <Compile Include="Exporting\WebsiteExporter.cs" />
     <Compile Include="Exporting\Website\IndexXmlRenderer.cs" />
     <Compile Include="Exporting\XmlExporter.cs" />

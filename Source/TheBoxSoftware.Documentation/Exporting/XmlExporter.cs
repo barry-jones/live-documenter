@@ -105,6 +105,7 @@ namespace TheBoxSoftware.Documentation.Exporting
             }
         }
 
+        /*
         /// <summary>
         /// Exports an individual <paramref name="entry"/>.
         /// </summary>
@@ -118,6 +119,7 @@ namespace TheBoxSoftware.Documentation.Exporting
             writer.Write(File.ReadAllText(filename));
             return exportedMember;
         }
+        */
 
         /// <summary>
         /// Returns a collection of messages that describe any issues that this exporter has with
