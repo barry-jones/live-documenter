@@ -41,7 +41,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         }
 
         [TestCase("SyntaxTests.ForClass", "DerivedClass", "public class DerivedClass : BaseClass")]
-        [TestCase("SyntaxTests.ForClass", "DerivedClassWithInterface", "public class DerivedClassWithInterface : BaseClass,\r\nITest")]
+        [TestCase("SyntaxTests.ForClass", "DerivedClassWithInterface", "public class DerivedClassWithInterface : BaseClass,\n\tITest")]
         public void CSharpSyntax_Class_BaseClasses(string namespaceName, string typeName, string expected)
         {
             DoTest(namespaceName, typeName, expected);

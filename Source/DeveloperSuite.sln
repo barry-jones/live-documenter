@@ -24,19 +24,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{194E1A63-5082-45C6-BD0F-9C15A4A7A22E}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\ExporterVersionInfo.cs = Solution Items\ExporterVersionInfo.cs
-		Solution Items\IKVM.OpenJDK.Charsets.dll = Solution Items\IKVM.OpenJDK.Charsets.dll
-		Solution Items\IKVM.OpenJDK.Core.dll = Solution Items\IKVM.OpenJDK.Core.dll
-		Solution Items\IKVM.OpenJDK.Text.dll = Solution Items\IKVM.OpenJDK.Text.dll
-		Solution Items\IKVM.OpenJDK.Util.dll = Solution Items\IKVM.OpenJDK.Util.dll
-		Solution Items\IKVM.OpenJDK.XML.API.dll = Solution Items\IKVM.OpenJDK.XML.API.dll
-		Solution Items\IKVM.Runtime.dll = Solution Items\IKVM.Runtime.dll
 		Solution Items\Ionic.Zip.dll = Solution Items\Ionic.Zip.dll
 		Solution Items\LibraryVersionInfo.cs = Solution Items\LibraryVersionInfo.cs
 		Solution Items\LiveDocumenterVersionInfo.cs = Solution Items\LiveDocumenterVersionInfo.cs
 		Solution Items\Performance.psess = Solution Items\Performance.psess
 		Solution Items\PEViewerVersionInfo.cs = Solution Items\PEViewerVersionInfo.cs
-		Solution Items\saxon9he-api.dll = Solution Items\saxon9he-api.dll
-		Solution Items\saxon9he.dll = Solution Items\saxon9he.dll
 		Solution Items\System.Windows.Controls.Input.Toolkit.dll = Solution Items\System.Windows.Controls.Input.Toolkit.dll
 	EndProjectSection
 EndProject

@@ -1,7 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Syntax.CSharp
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -11,6 +10,26 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
     /// <code>
     /// class-declaration:
     ///		attributes(opt) class-modifiers(opt) class identifier class-base(opt) class-body
+    ///		
+    /// class-modifiers:
+    ///     class-modifier
+    ///     class-modifiers   class-modifier
+    /// class-modifier:
+    ///     new
+    ///     public
+    ///     protected
+    ///     internal
+    ///     private
+    ///     abstract
+    ///     sealed 
+    ///     
+    /// class-base:
+    ///     :   class-type
+    ///     :   interface-type-list
+    ///     :   class-type   ,   interface-type-list
+    /// interface-type-list:
+    ///     interface-type
+    ///     interface-type-list   ,   interface-type 
     /// </code>
     /// </remarks>
     internal sealed class CSharpClassFormatter : CSharpFormatter, IClassFormatter
@@ -35,19 +54,6 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         /// <remarks>
         /// The visibility of a class is part of the modifiers section of the
         /// decleration. The modifiers are defined as:
-        /// <code>
-        /// class-modifiers:
-        ///     class-modifier
-        ///     class-modifiers   class-modifier
-        /// class-modifier:
-        ///     new
-        ///     public
-        ///     protected
-        ///     internal
-        ///     private
-        ///     abstract
-        ///     sealed 
-        /// </code>
         /// </remarks>
         public List<SyntaxToken> FormatVisibility(ClassSyntax syntax)
         {
@@ -62,19 +68,6 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         /// <remarks>
         /// The inheritance of a class is part of the modifiers section of the
         /// decleration. The modifiers are defined as:
-        /// <code>
-        /// class-modifiers:
-        ///     class-modifier
-        ///     class-modifiers   class-modifier
-        /// class-modifier:
-        ///     new
-        ///     public
-        ///     protected
-        ///     internal
-        ///     private
-        ///     abstract
-        ///     sealed 
-        /// </code>
         /// </remarks>
         public SyntaxToken FormatInheritance(ClassSyntax syntax)
         {
@@ -86,18 +79,6 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
         /// </summary>
         /// <param name="syntax">The syntax details for the class.</param>
         /// <returns>The string representing the class base.</returns>
-        /// <remarks>
-        /// The class base decleration is:
-        /// <code>
-        /// class-base:
-        ///     :   class-type
-        ///     :   interface-type-list
-        ///     :   class-type   ,   interface-type-list
-        /// interface-type-list:
-        ///     interface-type
-        ///     interface-type-list   ,   interface-type 
-        /// </code>
-        /// </remarks>
         public List<SyntaxToken> FormatClassBase(ClassSyntax syntax)
         {
             List<SyntaxToken> tokens = new List<SyntaxToken>();

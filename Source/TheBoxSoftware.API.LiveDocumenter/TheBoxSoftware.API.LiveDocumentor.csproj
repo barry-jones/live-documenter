@@ -83,6 +83,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Documentation\tableofcontents.xml">
       <SubType>Designer</SubType>
     </None>
