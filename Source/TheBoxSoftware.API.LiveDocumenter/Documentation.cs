@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Xml;
-using TheBoxSoftware.Documentation;
-using TheBoxSoftware.Documentation.Exporting;
-using TheBoxSoftware.Documentation.Exporting.Rendering;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Licencing;
-using System.Reflection;
 
 namespace TheBoxSoftware.API.LiveDocumenter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+    using TheBoxSoftware.Documentation;
+    using TheBoxSoftware.Documentation.Exporting;
+    using TheBoxSoftware.Documentation.Exporting.Rendering;
+    using Reflection;
+    using System.Reflection;
+
     // Things people are going to need to be able to do with an API
     //  * read the contents of a single entry (class/method/parameter) which constitues a page
     //  * recieve that information in a format that can be searched/modified converted (xml)
@@ -39,30 +39,25 @@ namespace TheBoxSoftware.API.LiveDocumenter
     /// <include file='Documentation\documentation.xml' path='members/member[@name="Documentation"]/*'/>
     public sealed class Documentation
     {
-
-        private string forDocument = string.Empty;
-        private Document baseDocument;
-        private bool isLoaded = false;
-        private XmlWriterSettings outputSettings;
+        private string _forDocument = string.Empty;
+        private Document _baseDocument;
+        private bool _isLoaded = false;
+        private XmlWriterSettings _outputSettings;
 
         private Documentation() { } // do not allow them to instatiate this without providing details
 
         /// <include file='Documentation\documentation.xml' path='members/member[@name="Documentation.ctor"]/*'/>
         public Documentation(string forDocument)
         {
-#if !DEBUG
-            this.CheckLicense();
-#endif
-
             if (string.IsNullOrEmpty(forDocument))
                 throw new ArgumentNullException("forDocument");
-            this.forDocument = forDocument;
-            this.isLoaded = false;
+            _forDocument = forDocument;
+            _isLoaded = false;
 
             // set any xml output details for producing xml in the documentation
-            this.outputSettings = new XmlWriterSettings();
-            this.outputSettings.Indent = true;
-            this.outputSettings.IndentChars = "\t";
+            _outputSettings = new XmlWriterSettings();
+            _outputSettings.Indent = true;
+            _outputSettings.IndentChars = "\t";
         }
 
         /// <summary>
@@ -78,23 +73,23 @@ namespace TheBoxSoftware.API.LiveDocumenter
             ExportSettings settings = new ExportSettings();
             settings.Settings = new DocumentSettings();
 
-            if (!File.Exists(this.forDocument))
-                throw new InvalidOperationException(string.Format("The file {0} does not exist.", this.forDocument));
+            if (!File.Exists(this._forDocument))
+                throw new InvalidOperationException(string.Format("The file {0} does not exist.", this._forDocument));
 
             // initialise the assemblies, ldproj file will detail all assemblies, we are only working
             // with ldproj, vs projects/solutions and dll files
-            if (Path.GetExtension(this.forDocument) == ".ldproj")
+            if (Path.GetExtension(_forDocument) == ".ldproj")
             {
-                project = Project.Deserialize(this.forDocument);
+                project = Project.Deserialize(_forDocument);
                 foreach (string file in project.Files)
                 {
                     files.Add(new DocumentedAssembly(file));
                 }
                 settings.Settings.VisibilityFilters = project.VisibilityFilters;
             }
-            else if (Path.GetExtension(this.forDocument) == ".dll")
+            else if (Path.GetExtension(_forDocument) == ".dll")
             {
-                files.Add(new DocumentedAssembly(this.forDocument));
+                files.Add(new DocumentedAssembly(_forDocument));
             }
             else
             {
@@ -102,14 +97,14 @@ namespace TheBoxSoftware.API.LiveDocumenter
                 {
                     files.AddRange(
                         InputFileReader.Read(
-                        this.forDocument,
+                        _forDocument,
                         "Release"
                         ));
                 }
                 catch (ArgumentException)
                 {
                     throw new DocumentationException(
-                        string.Format("The provided file [{0}] and extension is not supported", this.forDocument)
+                        string.Format("The provided file [{0}] and extension is not supported", this._forDocument)
                         );
                 }
             }
@@ -122,8 +117,8 @@ namespace TheBoxSoftware.API.LiveDocumenter
             d.Settings = settings.Settings;
             d.UpdateDocumentMap();
 
-            this.baseDocument = d; // store it for future references
-            this.isLoaded = true; // if we are here we have loaded successfully
+            _baseDocument = d; // store it for future references
+            _isLoaded = true; // if we are here we have loaded successfully
         }
 
         /// <summary>
@@ -133,10 +128,10 @@ namespace TheBoxSoftware.API.LiveDocumenter
         public TableOfContents GetTableOfContents()
         {
             //  NOTE: a TOC does not necessarily need to be delivered via XML. There is probably better ways...
-            if (!this.isLoaded)
+            if (!_isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
 
-            return new TableOfContents(this.baseDocument);
+            return new TableOfContents(_baseDocument);
         }
 
         /// <summary>
@@ -147,10 +142,10 @@ namespace TheBoxSoftware.API.LiveDocumenter
         public string GetDocumentationFor(long key)
         {
             // this is the quickest way to retrieve documentation
-            if (!this.isLoaded)
+            if (!_isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
 
-            Entry entry = this.baseDocument.Find(key, string.Empty);
+            Entry entry = _baseDocument.Find(key, string.Empty);
             if (entry == null)
                 throw new EntryNotFoundException("The provided key {0} did not resolve to a member.");
 
@@ -166,18 +161,18 @@ namespace TheBoxSoftware.API.LiveDocumenter
         {
             if (string.IsNullOrEmpty(crefPath))
                 throw new ArgumentNullException("crefPath");
-            if (!this.isLoaded)
+            if (!_isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
 
             Reflection.Comments.CRefPath path = Reflection.Comments.CRefPath.Parse(crefPath);
             if (path.PathType == Reflection.Comments.CRefTypes.Error)
                 throw new DocumentationException("The provided cref path {0} did not parse correctly.");
 
-            Entry entry = this.baseDocument.Find(path);
+            Entry entry = _baseDocument.Find(path);
             if (entry == null)
                 throw new EntryNotFoundException("The provided path {0} did not resolve to a member.");
 
-            return this.GetDocumentationFor(entry);
+            return GetDocumentationFor(entry);
         }
 
         /// <summary>
@@ -189,10 +184,10 @@ namespace TheBoxSoftware.API.LiveDocumenter
         {
             if (entry == null)
                 throw new ArgumentNullException("entry");
-            if (!this.isLoaded)
+            if (!_isLoaded)
                 throw new InvalidOperationException("The documentation is not loaded, call Load first");
 
-            return this.GetDocumentationFor(entry.Entry);
+            return GetDocumentationFor(entry.Entry);
         }
 
         /// <summary>
@@ -214,7 +209,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
 
                 using (XmlWriter writer = XmlWriter.Create(output, settings))
                 {
-                    XmlRenderer r = XmlRenderer.Create(entry, this.baseDocument);
+                    XmlRenderer r = XmlRenderer.Create(entry, _baseDocument);
                     if (r == null)
                     {
                         return null;    // simply return a null reference if we cant find the renderer for the entry
@@ -236,74 +231,11 @@ namespace TheBoxSoftware.API.LiveDocumenter
         }
 
         /// <summary>
-        /// Checks the license and informs the user if there is an issue.
-        /// </summary>
-        private void CheckLicense()
-        {
-            return;
-
-            string file = "livedocumenter.lic";
-            Licencing.Licence license;
-
-            // bug #18 need to check the location of this library for the licence file as this could be run under 
-            // many different services
-            string assemblyFile = System.IO.Path.GetDirectoryName(
-                new System.Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath
-                );
-            string licenceFile = assemblyFile + "\\" + file;
-
-            if (!File.Exists(licenceFile))
-            {
-                throw new LicenceException(
-                    string.Format("No license was located in {1}. Please add your license file '{0}' to the same directory as this executable.\n\n", file, licenceFile)
-                    );
-            }
-
-            try
-            {                
-                license = Licencing.Licence.Decrypt(licenceFile);
-            }
-            catch (Exception ex)
-            {
-                throw new LicenceException(
-                    "There was an error reading your license file. Please make sure it is correct. If this issue continues please contact support@theboxsoftware.com\n\n"
-                    );
-            }
-            finally { }
-
-            // validate the license.
-            Assembly assembly = typeof(Documentation).Assembly;
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-
-            Licencing.Licence.ValidationInfo info = license.Validate("ld-api", fvi.ProductVersion);
-            if (info.HasExpired)
-            {
-                throw new LicenceException(
-                    "Trial expired. Thank you for trying out our software. You can purchase a full copy from http://livedocumenter.com\n\n"
-                    );
-            }
-            if (!info.IsComponentValid)
-            {
-                throw new LicenceException(
-                    "Your license does not cover this application. You can purchase a full copy from http://livedocumenter.com\n\n"
-                    );
-            }
-            if (info.IsVersionInvalid)
-            {
-                throw new LicenceException(
-                    string.Format("Unfortuntely your license does not cover this version {0} of the software. Please upgrade or install an earlier version.\n\n",
-                        fvi.ProductVersion
-                        )
-                    );
-            }
-        }
-
-        /// <summary>
         /// Indicates if the documentation is loaded and is ready to be used.
         /// </summary>
         internal bool IsLoaded
         {
-            get { return this.isLoaded; }
+            get { return _isLoaded; }
         }
     }
 }
