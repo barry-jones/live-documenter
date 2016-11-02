@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using System.Linq;
+    using Reflection;
+    using Reflection.Comments;
+    using Reflection.Signitures;
+
     internal sealed class TypeMembersXmlRenderer : XmlRenderer
     {
-        private TypeDef containingType = null;
-        private XmlCodeCommentFile xmlComments;
+        private TypeDef _containingType = null;
+        private XmlCodeCommentFile _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeMembersXmlRenderer"/> class.
@@ -20,9 +17,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// <param name="entry">The associated entry.</param>
         public TypeMembersXmlRenderer(Entry entry)
         {
-            this.containingType = (TypeDef)entry.Parent.Item;
-            this.xmlComments = entry.XmlCommentFile;
-            this.AssociatedEntry = entry;
+            _containingType = (TypeDef)entry.Parent.Item;
+            _xmlComments = entry.XmlCommentFile;
+            AssociatedEntry = entry;
         }
 
         public override void Render(System.Xml.XmlWriter writer)
@@ -32,10 +29,10 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             writer.WriteStartElement("members");
             writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
             writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
-            this.WriteCref(this.AssociatedEntry, writer);
+            WriteCref(this.AssociatedEntry, writer);
 
-            string typeDisplayName = this.containingType.GetDisplayName(false);
-            string pageDisplayName = string.Format("{0} {1}", typeDisplayName, this.AssociatedEntry.Name);
+            string typeDisplayName = _containingType.GetDisplayName(false);
+            string pageDisplayName = $"{typeDisplayName} {this.AssociatedEntry.Name}";
             writer.WriteStartElement("name");
             writer.WriteAttributeString("safename", Exporter.CreateSafeName(pageDisplayName));
             writer.WriteAttributeString("type", typeDisplayName);
@@ -45,14 +42,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             // we need to write the entries that appear as children to this document map
             // entry. it is going to be easier to use the Entry elements
             writer.WriteStartElement("entries");
-            switch (this.AssociatedEntry.SubKey.ToLower())
+            switch (AssociatedEntry.SubKey.ToLower())
             {
                 case "properties":
                 case "fields":
                 case "constants":
                 case "operators":
                 case "constructors":
-                    foreach (Entry current in this.AssociatedEntry.Children)
+                    foreach (Entry current in AssociatedEntry.Children)
                     {
                         ReflectedMember m = current.Item as ReflectedMember;
                         this.WriteEntry(writer, m, ReflectionHelper.GetDisplayName(m));
@@ -61,17 +58,19 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 
                 case "methods":
                     // write normal methods
-                    foreach (Entry current in this.AssociatedEntry.Children)
+                    foreach (Entry current in AssociatedEntry.Children)
                     {
                         ReflectedMember m = current.Item as ReflectedMember;
-                        this.WriteEntry(writer, m, ReflectionHelper.GetDisplayName(m));
+                        WriteEntry(writer, m, ReflectionHelper.GetDisplayName(m));
                     }
                     // write extension methods
-                    var extensionMethods = from method in ((TypeRef)this.AssociatedEntry.Parent.Item).ExtensionMethods orderby method.Name select method;
+                    var extensionMethods = from method in ((TypeRef)AssociatedEntry.Parent.Item).ExtensionMethods
+                                           orderby method.Name
+                                           select method;
                     foreach (MethodDef currentMethod in extensionMethods)
                     {
                         DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
-                        this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
+                        WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
                     }
                     break;
             }
@@ -83,7 +82,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type)
         {
             CRefPath currentPath = CRefPath.Create(entryMember);
-            XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
+            XmlCodeComment currentComment = _xmlComments.ReadComment(currentPath);
 
             writer.WriteStartElement("entry");
             writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());
@@ -102,7 +101,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
                 if (summary != null)
                 {
-                    this.Serialize(summary, writer);
+                    Serialize(summary, writer);
                 }
             }
             writer.WriteEndElement();
@@ -110,7 +109,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 
         private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName)
         {
-            this.WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
+            WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
         }
     }
 }

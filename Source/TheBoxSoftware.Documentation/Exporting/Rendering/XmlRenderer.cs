@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection.Syntax;
-using TheBoxSoftware.Reflection.Comments;
-using TheBoxSoftware.Reflection;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using System;
+    using System.Collections.Generic;
+    using Reflection.Syntax;
+    using Reflection.Comments;
+    using Reflection;
+
     /// <summary>
     /// Renders the <see cref="Entry"/> to XML
     /// </summary>
     public abstract class XmlRenderer : IRenderer<System.Xml.XmlWriter>
     {
-        // 12 bytes
-        private bool includeCRefPath;
-        private Entry associatedEntry;
-        private Document document;
+        private bool _includeCRefPath;
+        private Entry _associatedEntry;
+        private Document _document;
 
         public abstract void Render(System.Xml.XmlWriter writer);
 
@@ -389,14 +387,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// </summary>
         public bool IncludeCRefPath
         {
-            get
-            {
-                return this.includeCRefPath;
-            }
-            set
-            {
-                this.includeCRefPath = value;
-            }
+            get { return _includeCRefPath; }
+            set { _includeCRefPath = value; }
         }
 
         /// <summary>
@@ -404,14 +396,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// </summary>
         protected Entry AssociatedEntry
         {
-            get
-            {
-                return this.associatedEntry;
-            }
-            set
-            {
-                this.associatedEntry = value;
-            }
+            get { return _associatedEntry; }
+            set { _associatedEntry = value; }
         }
 
         /// <summary>
@@ -419,14 +405,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// </summary>
         public Document Document
         {
-            get
-            {
-                return this.document;
-            }
-            set
-            {
-                this.document = value;
-            }
+            get { return _document; }
+            set { _document = value; }
         }
     }
 }

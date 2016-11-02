@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using System;
+    using Reflection;
+    using Reflection.Comments;
+
     /// <summary>
     /// Renders an <see cref="AssemblyDef"/> via a <see cref="DocumentMap"/> in XML.
     /// </summary>
     internal class AssemblyXmlRenderer : XmlRenderer
     {
-        private AssemblyDef member;
-        private XmlCodeCommentFile xmlComments;
+        private AssemblyDef _member;
+        private XmlCodeCommentFile _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NamespaceXmlRenderer"/> class.
@@ -22,14 +20,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// <exception cref="InvalidOperationException">Thrown when an Entry with an invalid Item is provided.</exception>
         public AssemblyXmlRenderer(Entry entry)
         {
-            this.member = entry.Item as AssemblyDef;
-            this.xmlComments = entry.XmlCommentFile;
-            this.AssociatedEntry = entry;
+            _member = entry.Item as AssemblyDef;
+            _xmlComments = entry.XmlCommentFile;
+            AssociatedEntry = entry;
 
-            if (member == null)
+            if (_member == null)
             {
                 throw new InvalidOperationException(
-                    string.Format("Entry in DocumentMap is being exported as AssemblyDef when type is '{0}'", entry.Item.GetType())
+                    $"Entry in DocumentMap is being exported as AssemblyDef when type is '{entry.Item.GetType()}'"
                     );
             }
         }
@@ -41,19 +39,19 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         public override void Render(System.Xml.XmlWriter writer)
         {
             writer.WriteStartElement("assembly");
-            writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
+            writer.WriteAttributeString("id", AssociatedEntry.Key.ToString());
 
             writer.WriteStartElement("name");
-            writer.WriteString(string.Format("{0} Assembly", this.member.Name));
+            writer.WriteString($"{_member.Name} Assembly");
             writer.WriteEndElement();
 
-            foreach (Entry current in this.AssociatedEntry.Children)
+            foreach (Entry current in AssociatedEntry.Children)
             {
                 writer.WriteStartElement("parent");
                 writer.WriteAttributeString("name", current.Name);
                 writer.WriteAttributeString("key", current.Key.ToString());
                 writer.WriteAttributeString("type", "namespace");
-                if (this.IncludeCRefPath)
+                if (IncludeCRefPath)
                     writer.WriteAttributeString("cref", string.Format("N:{0}", current.Name));
                 writer.WriteEndElement(); // parent
             }

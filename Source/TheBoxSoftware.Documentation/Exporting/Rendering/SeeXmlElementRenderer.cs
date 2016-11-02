@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using Reflection;
+    using Reflection.Comments;
+
     /// <summary>
     /// Renders the XML for SeeXmlCodeElements.
     /// </summary>
     internal class SeeXmlElementRenderer : XmlElementRenderer
     {
-        private SeeXmlCodeElement element;
+        private SeeXmlCodeElement _element;
 
         /// <summary>
         /// Initialises a new instance of the SeeXmlElementRenderer class.
@@ -21,18 +18,18 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// <param name="element"></param>
         public SeeXmlElementRenderer(Entry associatedEntry, SeeXmlCodeElement element)
         {
-            this.AssociatedEntry = associatedEntry;
-            this.element = element;
+            AssociatedEntry = associatedEntry;
+            _element = element;
         }
 
         public override void Render(System.Xml.XmlWriter writer)
         {
-            Entry entry = this.Document.Find(this.element.Member);
-            string displayName = string.IsNullOrEmpty(this.element.Member.ElementName)
-                ? this.element.Member.TypeName
-                : this.element.Member.ElementName;
+            Entry entry = Document.Find(_element.Member);
+            string displayName = string.IsNullOrEmpty(_element.Member.ElementName)
+                ? _element.Member.TypeName
+                : _element.Member.ElementName;
 
-            if (this.element.Member.PathType != CRefTypes.Error)
+            if (_element.Member.PathType != CRefTypes.Error)
             {
                 writer.WriteStartElement("see");
 
@@ -40,9 +37,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 {
                     displayName = entry.Name;
                     writer.WriteAttributeString("id", entry.Key.ToString());
-                    writer.WriteAttributeString("cref", this.element.Member.ToString());
+                    writer.WriteAttributeString("cref", _element.Member.ToString());
 
-                    switch (this.element.Member.PathType)
+                    switch (_element.Member.PathType)
                     {
                         case CRefTypes.Namespace:
                             writer.WriteAttributeString("type", "namespace");

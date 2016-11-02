@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using Reflection.Comments;
+
     /// <summary>
     /// Base class for XmlRenderers that are designed to handle specific
     /// XmlCodeComment elements.
@@ -31,7 +28,6 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 
             return isHandled;
         }
-
 
         /// <summary>
         /// Factory method for instantiating correct XmlElementRenderers for the specified

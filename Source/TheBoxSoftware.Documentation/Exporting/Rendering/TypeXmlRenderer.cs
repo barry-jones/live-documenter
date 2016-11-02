@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Reflection;
+    using Reflection.Comments;
+    using Reflection.Signitures;
+
     internal sealed class TypeXmlRenderer : XmlRenderer
     {
-        private TypeDef member;
-        private XmlCodeCommentFile xmlComments;
+        private TypeDef _member;
+        private XmlCodeCommentFile _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeXmlRenderer"/> class.
@@ -19,44 +18,44 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// <param name="entry">The entry in the document map to initialise the renderer with.</param>
         public TypeXmlRenderer(Entry entry)
         {
-            this.member = (TypeDef)entry.Item;
-            this.xmlComments = entry.XmlCommentFile;
-            this.AssociatedEntry = entry;
+            _member = (TypeDef)entry.Item;
+            _xmlComments = entry.XmlCommentFile;
+            AssociatedEntry = entry;
         }
 
         public override void Render(System.Xml.XmlWriter writer)
         {
-            CRefPath crefPath = new CRefPath(this.member);
-            XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
+            CRefPath crefPath = new CRefPath(_member);
+            XmlCodeComment comment = _xmlComments.ReadComment(crefPath);
 
             writer.WriteStartElement("member");
             writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
             writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
-            writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
-            this.WriteCref(this.AssociatedEntry, writer);
+            writer.WriteAttributeString("type", ReflectionHelper.GetType(_member));
+            WriteCref(AssociatedEntry, writer);
 
             writer.WriteStartElement("assembly");
-            writer.WriteAttributeString("file", System.IO.Path.GetFileName(this.member.Assembly.File.FileName));
-            writer.WriteString(this.member.Assembly.Name);
+            writer.WriteAttributeString("file", System.IO.Path.GetFileName(_member.Assembly.File.FileName));
+            writer.WriteString(_member.Assembly.Name);
             writer.WriteEndElement();
 
-            string displayName = this.member.GetDisplayName(false);
+            string displayName = _member.GetDisplayName(false);
             writer.WriteStartElement("name");
             writer.WriteAttributeString("safename", Exporter.CreateSafeName(displayName));
             writer.WriteString(displayName);
             writer.WriteEndElement();
 
             writer.WriteStartElement("namespace");
-            Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Namespace);
+            Entry namespaceEntry = this.AssociatedEntry.FindNamespace(_member.Namespace);
             writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
             writer.WriteAttributeString("name", namespaceEntry.SubKey);
-            writer.WriteAttributeString("cref", string.Format("N:{0}", this.member.Namespace));
-            writer.WriteString(this.member.Namespace);
+            writer.WriteAttributeString("cref", $"N:{_member.Namespace}");
+            writer.WriteString(_member.Namespace);
             writer.WriteEndElement();
 
-            if (this.member.IsGeneric)
+            if (_member.IsGeneric)
             {
-                this.RenderGenericTypeParameters(this.member.GetGenericTypes(), writer, comment);
+                RenderGenericTypeParameters(_member.GetGenericTypes(), writer, comment);
             }
 
             // find and output the summary
@@ -69,8 +68,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 }
             }
 
-            this.RenderSyntaxBlocks(this.member, writer);
-            this.RenderPermissionBlock(this.member, writer, comment);
+            RenderSyntaxBlocks(_member, writer);
+            RenderPermissionBlock(_member, writer, comment);
 
             // find and output the remarks
             if (comment != XmlCodeComment.Empty)
@@ -78,7 +77,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
                 if (remarks != null)
                 {
-                    this.Serialize(remarks, writer);
+                    Serialize(remarks, writer);
                 }
             }
 
@@ -88,22 +87,22 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement);
                 if (remarks != null)
                 {
-                    this.Serialize(remarks, writer);
+                    Serialize(remarks, writer);
                 }
             }
 
-            this.RenderSeeAlsoBlock(member, writer, comment);
+            RenderSeeAlsoBlock(_member, writer, comment);
 
-            if (this.member.IsEnumeration)
+            if (_member.IsEnumeration)
             {
                 writer.WriteStartElement("values");
-                List<FieldDef> fields = this.member.Fields;
+                List<FieldDef> fields = _member.Fields;
                 for (int i = 0; i < fields.Count; i++)
                 {
                     if (fields[i].IsSystemGenerated)
                         continue;
                     CRefPath currentPath = CRefPath.Create(fields[i]);
-                    XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
+                    XmlCodeComment currentComment = _xmlComments.ReadComment(currentPath);
 
                     writer.WriteStartElement("value");
                     writer.WriteStartElement("name");
@@ -115,7 +114,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                         XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
                         if (summary != null)
                         {
-                            this.Serialize(summary, writer);
+                            Serialize(summary, writer);
                         }
                     }
                     writer.WriteEndElement();
@@ -125,15 +124,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             }
             else
             {
-                if (this.member.HasMembers)
+                if (_member.HasMembers)
                 {
-                    this.OutputMembers(writer);
+                    OutputMembers(writer);
                 }
             }
 
-            if (!this.member.IsDelegate && !this.member.IsEnumeration && !this.member.IsInterface && !this.member.IsStructure)
+            if (!_member.IsDelegate && !_member.IsEnumeration && !_member.IsInterface && !_member.IsStructure)
             {
-                this.AddInheritanceTree(this.member, writer);
+                AddInheritanceTree(_member, writer);
             }
 
             writer.WriteEndElement();   // member
@@ -144,7 +143,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             if (this.AssociatedEntry.Children.Count == 0) return;
 
             writer.WriteStartElement("entries");
-            List<Entry> children = this.AssociatedEntry.Children;
+            List<Entry> children = AssociatedEntry.Children;
 
             Entry constructors = children.Find(entry => entry.Name == "Constructors");
             if (constructors != null)
@@ -153,7 +152,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 foreach (Entry current in s)
                 {
                     MethodDef currentMember = (MethodDef)current.Item;
-                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
+                    WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
                 }
             }
 
@@ -164,7 +163,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 foreach (Entry current in s)
                 {
                     FieldDef currentMember = (FieldDef)current.Item;
-                    this.WriteEntry(writer, currentMember, currentMember.Name);
+                    WriteEntry(writer, currentMember, currentMember.Name);
                 }
             }
 
@@ -175,7 +174,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 foreach (Entry current in s)
                 {
                     PropertyDef currentMember = (PropertyDef)current.Item;
-                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
+                    WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
                 }
             }
 
@@ -186,7 +185,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 foreach (Entry current in s)
                 {
                     EventDef currentMember = (EventDef)current.Item;
-                    this.WriteEntry(writer, currentMember, currentMember.Name);
+                    WriteEntry(writer, currentMember, currentMember.Name);
                 }
             }
 
@@ -197,7 +196,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 foreach (Entry current in s)
                 {
                     MethodDef currentMember = (MethodDef)current.Item;
-                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
+                    WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
                 }
             }
 
@@ -208,16 +207,16 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 foreach (Entry current in s)
                 {
                     MethodDef currentMember = (MethodDef)current.Item;
-                    this.WriteEntry(writer, currentMember, currentMember.GetDisplayName(false));
+                    WriteEntry(writer, currentMember, currentMember.GetDisplayName(false));
                 }
             }
 
             // I dont think we have any extension methods anymore - perhaps we can just delete this code?
-            var extensionMethods = from method in this.member.ExtensionMethods orderby method.Name select method;
+            var extensionMethods = from method in this._member.ExtensionMethods orderby method.Name select method;
             foreach (MethodDef currentMethod in extensionMethods)
             {
                 DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
-                this.WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
+                WriteEntry(writer, currentMethod, currentMethod.GetDisplayName(false, true), "extensionmethod");
             }
 
             writer.WriteEndElement();
@@ -226,7 +225,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type)
         {
             CRefPath currentPath = CRefPath.Create(entryMember);
-            XmlCodeComment currentComment = this.xmlComments.ReadComment(currentPath);
+            XmlCodeComment currentComment = this._xmlComments.ReadComment(currentPath);
 
             writer.WriteStartElement("entry");
             writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());
@@ -245,7 +244,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement summary = currentComment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
                 if (summary != null)
                 {
-                    this.Serialize(summary, writer);
+                    Serialize(summary, writer);
                 }
             }
             writer.WriteEndElement();
@@ -253,7 +252,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 
         private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName)
         {
-            this.WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
+            WriteEntry(writer, entryMember, displayName, ReflectionHelper.GetType(entryMember));
         }
 
         /// <summary>
@@ -286,7 +285,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 reverseInheritanceTree.Reverse();
                 writer.WriteStartElement("inheritance");
 
-                this.WriteType(0, reverseInheritanceTree, writer);
+                WriteType(0, reverseInheritanceTree, writer);
 
                 writer.WriteEndElement(); // inheritance
             }
@@ -305,20 +304,20 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 }
                 writer.WriteAttributeString("name", current.GetDisplayName(true));
 
-                this.WriteType(++index, tree, writer);
+                WriteType(++index, tree, writer);
                 writer.WriteEndElement();
             }
             else if (index == tree.Count)
             {
                 writer.WriteStartElement("type");
                 writer.WriteAttributeString("current", "true");
-                writer.WriteAttributeString("name", this.member.GetDisplayName(true));
-                this.WriteType(++index, tree, writer);
+                writer.WriteAttributeString("name", _member.GetDisplayName(true));
+                WriteType(++index, tree, writer);
                 writer.WriteEndElement();
             }
             else if (index > tree.Count)
             {
-                foreach (TypeRef current in this.member.GetExtendingTypes())
+                foreach (TypeRef current in this._member.GetExtendingTypes())
                 {
                     Entry found = this.Document.Find(CRefPath.Create(current));
                     if (found != null)

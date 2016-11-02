@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using System.Collections.Generic;
+    using Reflection.Comments;
+
     /// <summary>
     /// Renders the ListXmlCodeElement as XML.
     /// </summary>
     internal class ListXmlElementRenderer : XmlElementRenderer
     {
-        private ListXmlCodeElement element;
+        private ListXmlCodeElement _element;
 
         /// <summary>
         /// Initialises a new instance of the ListXmlElementRenderer class.
@@ -21,19 +18,19 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// <param name="element"></param>
         public ListXmlElementRenderer(Entry associatedEntry, ListXmlCodeElement element)
         {
-            this.AssociatedEntry = associatedEntry;
-            this.element = element;
+            AssociatedEntry = associatedEntry;
+            _element = element;
         }
 
         public override void Render(System.Xml.XmlWriter writer)
         {
-            if (element.IsTable())
+            if (_element.IsTable())
             {
-                this.RenderTable(writer);
+                RenderTable(writer);
             }
             else
             {
-                this.RenderList(writer);
+                RenderList(writer);
             }
         }
 
@@ -42,14 +39,14 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             writer.WriteStartElement("table");
 
             // create the table header
-            ListHeaderXmlCodeElement header = (ListHeaderXmlCodeElement)this.element.Elements.Find(
+            ListHeaderXmlCodeElement header = (ListHeaderXmlCodeElement)_element.Elements.Find(
                 e => e.Element == XmlCodeElements.ListHeader);
             writer.WriteStartElement("header");
             if (header != null)
             {
-                XmlContainerCodeElement description = (XmlContainerCodeElement)this.element.Elements.Find(
+                XmlContainerCodeElement description = (XmlContainerCodeElement)_element.Elements.Find(
                     e => e.Element == XmlCodeElements.Description);
-                XmlContainerCodeElement term = (XmlContainerCodeElement)this.element.Elements.Find(
+                XmlContainerCodeElement term = (XmlContainerCodeElement)_element.Elements.Find(
                     e => e.Element == XmlCodeElements.Term);
 
                 writer.WriteStartElement("cell");
@@ -71,7 +68,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 {
                     foreach (XmlCodeElement child in description.Elements)
                     { // miss out the listitem and just focus on children
-                        this.Serialize(child, writer);
+                        Serialize(child, writer);
                     }
                 }
                 else
@@ -92,7 +89,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             writer.WriteEndElement(); // header
 
             // rows
-            List<XmlCodeElement> items = this.element.Elements.FindAll(e => e.Element == XmlCodeElements.ListItem);
+            List<XmlCodeElement> items = _element.Elements.FindAll(e => e.Element == XmlCodeElements.ListItem);
             foreach (ListItemXmlCodeElement currentItem in items)
             {
                 if (currentItem.Elements.Count == 2)
@@ -108,7 +105,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                     {
                         foreach (XmlCodeElement child in term.Elements)
                         { // miss out the listitem and just focus on children
-                            this.Serialize(child, writer);
+                            Serialize(child, writer);
                         }
                     }
                     writer.WriteEndElement();
@@ -117,7 +114,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                     {
                         foreach (XmlCodeElement child in description.Elements)
                         { // miss out the listitem and just focus on children
-                            this.Serialize(child, writer);
+                            Serialize(child, writer);
                         }
                     }
                     writer.WriteEndElement();
@@ -132,9 +129,9 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         {
             writer.WriteStartElement("list");
             // listtype can be bullet or number
-            writer.WriteAttributeString("type", this.element.ListType.ToString().ToLower());
+            writer.WriteAttributeString("type", _element.ListType.ToString().ToLower());
 
-            List<XmlCodeElement> elements = this.element.Elements.FindAll(e => e.Element == XmlCodeElements.ListItem);
+            List<XmlCodeElement> elements = _element.Elements.FindAll(e => e.Element == XmlCodeElements.ListItem);
             foreach (ListItemXmlCodeElement item in elements)
             {
                 writer.WriteStartElement("item");

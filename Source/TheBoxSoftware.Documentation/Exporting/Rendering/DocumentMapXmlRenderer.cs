@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection.Comments;
-using TheBoxSoftware.Reflection;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
     /// <summary>
@@ -12,8 +6,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
     /// </summary>
     public class DocumentMapXmlRenderer : XmlRenderer
     {
-        private DocumentMap documentMap;
-        private bool includeSafeName;
+        private DocumentMap _documentMap;
+        private bool _includeSafeName;
 
         /// <summary>
         /// Initialises a new instance of the DocumentMapXmlRenderer.
@@ -32,8 +26,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             DocumentMap documentMap,
             bool includeSafeName)
         {
-            this.documentMap = documentMap;
-            this.includeSafeName = includeSafeName;
+            _documentMap = documentMap;
+            _includeSafeName = includeSafeName;
         }
 
         /// <summary>
@@ -44,19 +38,19 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         {
             writer.WriteStartElement("toc");
 
-            foreach (Entry current in this.documentMap)
+            foreach (Entry current in _documentMap)
             {
                 writer.WriteStartElement("item");
                 writer.WriteAttributeString("name", current.Name);
-                if (this.includeSafeName)
+                if (_includeSafeName)
                     writer.WriteAttributeString("safename", Exporter.CreateSafeName(current.Name));
                 writer.WriteAttributeString("key", current.Key.ToString());
                 writer.WriteAttributeString("subkey", current.SubKey);
-                this.WriteCref(current, writer);
+                WriteCref(current, writer);
 
                 foreach (Entry child in current.Children)
                 {
-                    this.Render(child, writer);
+                    Render(child, writer);
                 }
 
                 writer.WriteEndElement();
@@ -74,15 +68,15 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         {
             writer.WriteStartElement("item");
             writer.WriteAttributeString("name", entry.Name);
-            if (this.includeSafeName)
+            if (_includeSafeName)
                 writer.WriteAttributeString("safename", Exporter.CreateSafeName(entry.Name));
             writer.WriteAttributeString("key", entry.Key.ToString());
             writer.WriteAttributeString("subkey", entry.SubKey);
-            this.WriteCref(entry, writer);
+            WriteCref(entry, writer);
 
             foreach (Entry child in entry.Children)
             {
-                this.Render(child, writer);
+                Render(child, writer);
             }
 
             writer.WriteEndElement();

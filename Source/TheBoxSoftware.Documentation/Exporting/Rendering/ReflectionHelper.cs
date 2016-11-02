@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Core;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using Reflection;
+
     public static class ReflectionHelper
     {
         public static string GetType(ReflectedMember member)

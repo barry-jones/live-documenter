@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
     /// <summary>
@@ -14,10 +10,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// <summary>
         /// The Exporter rendering the content.
         /// </summary>
-        Document Document
-        {
-            get; set;
-        }
+        Document Document { get; set; }
 
         /// <summary>
         /// The method to render the content to <paramref name="T"/>.

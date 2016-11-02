@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
+    using Reflection;
+    using Reflection.Comments;
+
     class FieldXmlRenderer : XmlRenderer
     {
-        private FieldDef member;
-        private XmlCodeCommentFile xmlComments;
+        private FieldDef _member;
+        private XmlCodeCommentFile _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldXmlRenderer"/> class.
@@ -18,36 +15,36 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         /// <param name="entry">The entry to initialise the renderer with.</param>
         public FieldXmlRenderer(Entry entry)
         {
-            this.member = (FieldDef)entry.Item;
-            this.xmlComments = entry.XmlCommentFile;
-            this.AssociatedEntry = entry;
+            _member = (FieldDef)entry.Item;
+            _xmlComments = entry.XmlCommentFile;
+            AssociatedEntry = entry;
         }
 
         public override void Render(System.Xml.XmlWriter writer)
         {
-            CRefPath crefPath = new CRefPath(this.member);
-            XmlCodeComment comment = this.xmlComments.ReadComment(crefPath);
+            CRefPath crefPath = new CRefPath(_member);
+            XmlCodeComment comment = _xmlComments.ReadComment(crefPath);
 
             writer.WriteStartElement("member");
-            writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
-            writer.WriteAttributeString("subId", this.AssociatedEntry.SubKey);
-            writer.WriteAttributeString("type", ReflectionHelper.GetType(this.member));
+            writer.WriteAttributeString("id", AssociatedEntry.Key.ToString());
+            writer.WriteAttributeString("subId", AssociatedEntry.SubKey);
+            writer.WriteAttributeString("type", ReflectionHelper.GetType(_member));
             writer.WriteAttributeString("cref", crefPath.ToString());
             writer.WriteStartElement("name");
-            writer.WriteAttributeString("safename", Exporter.CreateSafeName(this.member.Name));
-            writer.WriteString(this.member.Name);
+            writer.WriteAttributeString("safename", Exporter.CreateSafeName(_member.Name));
+            writer.WriteString(_member.Name);
             writer.WriteEndElement();
 
             writer.WriteStartElement("namespace");
-            Entry namespaceEntry = this.AssociatedEntry.FindNamespace(this.member.Type.Namespace);
+            Entry namespaceEntry = this.AssociatedEntry.FindNamespace(_member.Type.Namespace);
             writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
             writer.WriteAttributeString("name", namespaceEntry.SubKey);
-            writer.WriteAttributeString("cref", string.Format("N:{0}", this.member.Type.Namespace));
-            writer.WriteString(this.member.Type.Namespace);
+            writer.WriteAttributeString("cref", $"N:{_member.Type.Namespace}");
+            writer.WriteString(_member.Type.Namespace);
             writer.WriteEndElement();
             writer.WriteStartElement("assembly");
-            writer.WriteAttributeString("file", System.IO.Path.GetFileName(this.member.Assembly.File.FileName));
-            writer.WriteString(this.member.Assembly.Name);
+            writer.WriteAttributeString("file", System.IO.Path.GetFileName(_member.Assembly.File.FileName));
+            writer.WriteString(_member.Assembly.Name);
             writer.WriteEndElement();
 
             // find and output the summary
@@ -56,12 +53,12 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
                 if (summary != null)
                 {
-                    this.Serialize(summary, writer);
+                    Serialize(summary, writer);
                 }
             }
 
-            this.RenderPermissionBlock(this.member, writer, comment);
-            this.RenderSyntaxBlocks(this.member, writer);
+            this.RenderPermissionBlock(_member, writer, comment);
+            this.RenderSyntaxBlocks(_member, writer);
 
             // find and output the value
             if (comment != XmlCodeComment.Empty)
@@ -69,7 +66,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ValueXmlCodeElement);
                 if (remarks != null)
                 {
-                    this.Serialize(remarks, writer);
+                    Serialize(remarks, writer);
                 }
             }
 
@@ -79,7 +76,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
                 if (remarks != null)
                 {
-                    this.Serialize(remarks, writer);
+                    Serialize(remarks, writer);
                 }
             }
 
@@ -89,11 +86,11 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement);
                 if (remarks != null)
                 {
-                    this.Serialize(remarks, writer);
+                    Serialize(remarks, writer);
                 }
             }
 
-            this.RenderSeeAlsoBlock(member, writer, comment);
+            RenderSeeAlsoBlock(_member, writer, comment);
 
             writer.WriteEndElement();
         }
