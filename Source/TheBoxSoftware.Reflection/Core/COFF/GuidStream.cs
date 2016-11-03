@@ -40,7 +40,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </exception>
         public Guid GetGuid(int index)
         {
-            if(index <= 0 || index > this._streamContents.Length / sizeOfGuid)
+            if(index <= 0 || index > _streamContents.Length / sizeOfGuid)
             {
                 ArgumentException ex = new ArgumentException("index");
                 ex.Data["index"] = index;
@@ -52,7 +52,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             byte[] guid = new byte[16];
             for(int i = offset; i < offset + sizeOfGuid; i++)
             {
-                guid[i - offset] = this._streamContents[i];
+                guid[i - offset] = _streamContents[i];
             }
             return new Guid(guid);
         }

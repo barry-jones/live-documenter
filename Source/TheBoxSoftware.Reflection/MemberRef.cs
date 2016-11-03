@@ -101,6 +101,7 @@ namespace TheBoxSoftware.Reflection
 
                 BlobStream stream = (BlobStream)((CLRDirectory)Assembly.File.Directories[
                     Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
+
                 return stream.GetSigniture(SignitureBlob.Value, SignitureBlob.SignitureType);
             }
         }

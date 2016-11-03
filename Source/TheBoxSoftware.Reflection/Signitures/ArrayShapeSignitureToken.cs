@@ -61,11 +61,11 @@ namespace TheBoxSoftware.Reflection.Signitures
             {
                 if(_loBounds.Length > i)
                 {
-                    sb.AppendFormat("{0}...", _loBounds[i]);
+                    sb.Append(_loBounds[i].ToString() + "...");
                 }
                 if(_sizes.Length > i)
                 {
-                    sb.AppendFormat("{0}", _sizes[i]);
+                    sb.Append(_sizes[i].ToString());
                 }
                 if(i != _rank - 1)
                 {

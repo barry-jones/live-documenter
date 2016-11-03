@@ -37,7 +37,6 @@ namespace TheBoxSoftware.Reflection
         private void LoadDetails()
         {
             TypeSpecificationSigniture signiture = this.Signiture;
-            ElementTypes elementType = signiture.TypeToken.ElementType.ElementType;
 
             _details = signiture.GetTypeDetails(this);
         }

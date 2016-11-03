@@ -75,7 +75,7 @@ namespace TheBoxSoftware.Reflection.Comments
             }
             if(method.IsGeneric)
             {
-                this.ElementName += "``" + method.GenericTypes.Count;
+                this.ElementName += "``" + method.GenericTypes.Count.ToString();
             }
             this.Parameters = this.Convert(method);
             if(method.IsOperator && method.IsConversionOperator)
@@ -197,21 +197,21 @@ namespace TheBoxSoftware.Reflection.Comments
         public override string ToString()
         {
             string toString = string.Empty;
-            string pathIndicator = CRefConstants.GetIndicatorFor(this.PathType);
+            string pathIndicator = CRefConstants.GetIndicatorFor(PathType);
 
             switch(this.PathType)
             {
                 case CRefTypes.Namespace:
-                    toString = $"{pathIndicator}:{Namespace}";
+                    toString = pathIndicator + ":" + Namespace;
                     break;
 
                 case CRefTypes.Error: break;
 
                 default:
-                    string typePortion = $"{pathIndicator}:{Namespace}.{TypeName}";
+                    string typePortion = pathIndicator + ":" + Namespace + "." + TypeName;
                     if(PathType != CRefTypes.Type)
                     {
-                        typePortion += $".{ElementName}";
+                        typePortion += "." + ElementName;
                     }
                     // [#32] - Added code to make cref paths add parameters for
                     //	parameterised properties.
@@ -224,7 +224,7 @@ namespace TheBoxSoftware.Reflection.Comments
                     //	http://msdn.microsoft.com/en-us/library/fsbx0t7x(VS.71).aspx
                     if(_isOperator && !string.IsNullOrEmpty(_returnType))
                     {
-                        typePortion += $"~{_returnType}";
+                        typePortion += "~" + _returnType;
                     }
 
                     toString = typePortion;
