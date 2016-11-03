@@ -6,6 +6,7 @@ namespace TheBoxSoftware.Reflection
     using Core.COFF;
     using Core.PE;
     using Core;
+    using Signitures;
 
     /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="class"]/*'/> 
     public class AssemblyDef : ReflectedMember
@@ -13,16 +14,33 @@ namespace TheBoxSoftware.Reflection
         private Core.Version _version;
         private int _uniqueIdCounter;
 
+        private List<ModuleDef> _modules;
+        private List<TypeDef> _types;
+        private List<AssemblyRef> _referencedAssemblies;
+
         // attempt to remove the PeCoffFile references
+        private PeCoffFile _peCoffFile;
         private string _fileName;
+        private TypeInNamespaceMap _map;
+        private IStringStream _stringStream;
+        private BlobStream _blobStream;
+        private MetadataDirectory _metadataDirectory;
+        private MetadataStream _metadataStream;
+        private MetadataToDefinitionMap _metadataMap;
+        private byte[] _fileContents;
 
         internal AssemblyDef()
         {
-            Modules = new List<ModuleDef>();
-            Types = new List<TypeDef>();
-            ReferencedAssemblies = new List<AssemblyRef>();
-            Map = new TypeInNamespaceMap();
+            _modules = new List<ModuleDef>();
+            _types = new List<TypeDef>();
+            _referencedAssemblies = new List<AssemblyRef>();
+            _map = new TypeInNamespaceMap();
             base.Assembly = this;
+        }
+
+        internal AssemblyDef(PeCoffFile peCoffFile) : this()
+        {
+            _peCoffFile = peCoffFile;
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create"]/*'/> 
@@ -48,6 +66,11 @@ namespace TheBoxSoftware.Reflection
             AssemblyDef created = new AssemblyDefBuilder(peCoffFile).Build();
 
             created._fileName = peCoffFile.FileName;
+            created._metadataDirectory = peCoffFile.GetMetadataDirectory();
+            created._metadataStream = created._metadataDirectory.GetMetadataStream();
+            created._blobStream = created._metadataDirectory.Streams[Streams.BlobStream] as BlobStream;
+            created._metadataMap = peCoffFile.Map;
+            created._fileContents = peCoffFile.FileContents;
 
             return created;
         }
@@ -55,27 +78,27 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
         public Dictionary<string, List<TypeDef>> GetTypesInNamespaces()
         {
-            return Map.GetAllTypesInNamespaces();
+            return _map.GetAllTypesInNamespaces();
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getnamespaces"]/*'/> 
         public List<string> GetNamespaces()
         {
-            return Map.GetAllNamespaces();
+            return _map.GetAllNamespaces();
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="findtype"]/*'/> 
         public TypeDef FindType(string theNamespace, string theTypeName)
         {
             if(string.IsNullOrEmpty(theTypeName)) return null;
-            return Map.FindTypeInNamespace(theNamespace, theTypeName);
+            return _map.FindTypeInNamespace(theNamespace, theTypeName);
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="resolvemetadatatoken"]/*'/> 
         public ReflectedMember ResolveMetadataToken(uint metadataToken)
         {
-            MetadataToDefinitionMap map = File.Map;
-            MetadataStream metadataStream = File.GetMetadataDirectory().GetMetadataStream();
+            MetadataToDefinitionMap map = _peCoffFile.Map;
+            MetadataStream metadataStream = _peCoffFile.GetMetadataDirectory().GetMetadataStream();
 
             // Get the details in the token
             ILMetadataToken token = (ILMetadataToken)(metadataToken & 0xff000000);
@@ -120,6 +143,96 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
         public override long GetAssemblyId() => UniqueId;
 
+        internal Signitures.Signiture GetSigniture(BlobIndex fromIndex)
+        {
+            return _blobStream.GetSigniture(fromIndex.Value, fromIndex.SignitureType);
+        }
+
+        internal List<TypeRef> GetExtendindTypes(TypeDef type, CodedIndex ciForThisType)
+        {
+            List<TypeRef> inheritingTypes = new List<TypeRef>();
+            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata signitures
+
+            ourIndexes.Add(ciForThisType);
+
+            // All types in this assembly that extend another use the TypeDef.Extends data in the metadata
+            // table.
+            if(type.IsGeneric)
+            {
+                MetadataRow[] typeSpecs = _metadataStream.Tables[MetadataTables.TypeSpec];
+                for(int i = 0; i < typeSpecs.Length; i++)
+                {
+                    TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
+                    if(row != null)
+                    {
+                        // We need to find all of the TypeSpec references that point back to us, remember
+                        // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
+                        // for example. Each one of these will be a different type spec.
+                        TypeSpec spec = _metadataMap.GetDefinition(MetadataTables.TypeSpec, row) as TypeSpec;
+                        SignitureToken token = spec.Signiture.TypeToken.Tokens[0];
+
+                        // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
+                        if(token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignitureToken)token).ElementType == ElementTypes.GenericInstance)
+                        {
+                            ElementTypeSignitureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignitureToken;
+
+                            TypeRef typeRef = typeToken.ResolveToken(Assembly);
+                            if(typeRef == type)
+                            {
+                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1));
+                            }
+                        }
+                    }
+                }
+            }
+
+            MetadataRow[] typeDefs = _metadataStream.Tables[MetadataTables.TypeDef];
+            for(int i = 0; i < typeDefs.Length; i++)
+            {
+                for(int j = 0; j < ourIndexes.Count; j++)
+                {
+                    TypeDefMetadataTableRow row = (TypeDefMetadataTableRow)typeDefs[i];
+                    CodedIndex ourCi = ourIndexes[j];
+
+                    if(row.Extends == ourCi)
+                    {
+                        inheritingTypes.Add(
+                            (TypeDef)_metadataMap.GetDefinition(MetadataTables.TypeDef, _metadataStream.Tables[MetadataTables.TypeDef][i])
+                            );
+                        continue; // a type can only be extending once so if we find ourselves we are done
+                    }
+                }
+            }
+
+            return inheritingTypes;
+        }
+
+        internal object ResolveCodedIndex(CodedIndex index)
+        {
+            object resolvedReference = null;
+
+            if(_metadataStream.Tables.ContainsKey(index.Table))
+            {
+                if(_metadataStream.Tables[index.Table].Length + 1 > index.Index)
+                {
+                    MetadataRow metadataRow = _metadataStream.GetEntryFor(index);
+                    resolvedReference = _metadataMap.GetDefinition(index.Table, metadataRow);
+                }
+            }
+
+            return resolvedReference;
+        }
+
+        internal byte[] GetFileContents()
+        {
+            return _fileContents;
+        }
+
+        internal uint FileAddressFromRVA(uint rva)
+        {
+            return _peCoffFile.FileAddressFromRVA(rva);
+        }
+
         /// <summary>
         /// Get the next available unique identifier for this assembly.
         /// </summary>
@@ -152,11 +265,6 @@ namespace TheBoxSoftware.Reflection
 #endif
 
         /// <summary>
-        /// The <see cref="PeCoffFile"/> the assembly was reflected from.
-        /// </summary>
-        public PeCoffFile File { get; set; }
-
-        /// <summary>
         /// The filename of the underlying assembly used to build this assembly definition.
         /// </summary>
         public string FileName
@@ -174,14 +282,34 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="stringstream"]/*'/> 
-        public IStringStream StringStream { get; set; }
+        public IStringStream StringStream
+        {
+            get { return _stringStream; }
+            set { _stringStream = value; }
+        }
 
-        public List<AssemblyRef> ReferencedAssemblies { get; set; }
+        public List<AssemblyRef> ReferencedAssemblies
+        {
+            get { return _referencedAssemblies; }
+            set { _referencedAssemblies = value; }
+        }
 
-        public List<ModuleDef> Modules { get; set; }
+        public List<ModuleDef> Modules
+        {
+            get { return _modules; }
+            set { _modules = value; }
+        }
 
-        public List<TypeDef> Types { get; set; }
+        public List<TypeDef> Types
+        {
+            get { return _types; }
+            set { _types = value; }
+        }
 
-        internal TypeInNamespaceMap Map { get; set; }
+        internal TypeInNamespaceMap Map
+        {
+            get { return _map; }
+            set { _map = value; }
+        }
     }
 }

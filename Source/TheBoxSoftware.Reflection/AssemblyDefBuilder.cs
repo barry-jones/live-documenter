@@ -36,9 +36,8 @@ namespace TheBoxSoftware.Reflection
         {
             if(_assembly != null) return _assembly; // we have already built it return previous
             
-            _assembly = new AssemblyDef();
+            _assembly = new AssemblyDef(_peCoffFile);
             _references.Assembly = _assembly;
-            _assembly.File = _peCoffFile;
             _map.Assembly = _assembly;
 
             // Read the metadata from the file and populate the entries

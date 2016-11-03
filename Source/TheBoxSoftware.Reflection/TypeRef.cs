@@ -127,22 +127,11 @@ namespace TheBoxSoftware.Reflection
         {
             get 
             {
-                MetadataStream stream = Assembly.File.GetMetadataDirectory().GetMetadataStream();
-                MetadataToDefinitionMap map = Assembly.File.Map;
                 AssemblyRef inheritsFrom = null;
 
                 if (_resolutionScope.Index != 0)
                 {
-                    if (_resolutionScope.Table != MetadataTables.AssemblyRef)
-                    {
-                        NotImplementedException ex = new NotImplementedException("We can only resolve TypeRef entries to AssemblyRef entries at the moment");
-                        ex.Data["reference"] = this;
-                        throw ex;
-                    }
-                    inheritsFrom = map.GetDefinition(
-                        _resolutionScope.Table,
-                        stream.Tables.GetEntryFor(_resolutionScope.Table, _resolutionScope.Index)
-                        ) as AssemblyRef;
+                    inheritsFrom = Assembly.ResolveCodedIndex(_resolutionScope) as AssemblyRef;
                 }
 
                 return inheritsFrom;

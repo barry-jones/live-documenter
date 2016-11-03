@@ -5,6 +5,7 @@ namespace TheBoxSoftware.Reflection
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using Core;
     using Core.COFF;
     using Signitures;
 
@@ -48,8 +49,8 @@ namespace TheBoxSoftware.Reflection
             short maxStack = 0;
             int localsToken;
             int codeSize = 0;
-            uint address = Assembly.File.FileAddressFromRVA(_rva);
-            byte[] contents = Assembly.File.FileContents;
+            uint address = Assembly.FileAddressFromRVA(_rva);
+            byte[] contents = Assembly.GetFileContents();
 
             byte firstByte = contents[address];
             byte[] instructions = new byte[0];
@@ -96,8 +97,13 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A byte array of IL operations</returns>
         private byte[] GetIL(uint address, int codeSize)
         {
-            List<byte> contents = new List<byte>(Assembly.File.FileContents);
-            return contents.GetRange((int)address, codeSize).ToArray();
+            byte[] contents = Assembly.GetFileContents();
+            byte[] il = new byte[codeSize];
+            for(int i = 0; i < codeSize; i++)
+            {
+                il[i] = contents[address + i];
+            }
+            return il;
         }
 
         /// <summary>

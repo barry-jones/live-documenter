@@ -96,16 +96,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                if(!this.Assembly.File.IsMetadataLoaded)
-                {
-                    throw new InvalidOperationException(Resources.ExceptionMessages.Ex_SignatureParsing_NoMetadata);
-                }
-
-                BlobStream stream = (BlobStream)((CLRDirectory)this.Assembly.File.Directories[
-                    Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
-                return stream.GetSigniture(
-                    _signitureIndexInBlob.Value, _signitureIndexInBlob.SignitureType
-                    ) as TypeSpecificationSigniture;
+                return Assembly.GetSigniture(_signitureIndexInBlob) as TypeSpecificationSigniture;
             }
         }
 

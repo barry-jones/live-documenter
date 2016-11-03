@@ -38,64 +38,9 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A collection of derived types.</returns>
         public List<TypeRef> GetExtendingTypes()
         {
-            MetadataStream stream = Assembly.File.GetMetadataDirectory().GetMetadataStream();
-            MetadataToDefinitionMap map = Assembly.File.Map;
             CodedIndex ciForThisType = new CodedIndex(_table, (uint)_index);
-            List<TypeRef> inheritingTypes = new List<TypeRef>();
-            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata signitures
 
-            ourIndexes.Add(ciForThisType);
-
-            // All types in this assembly that extend another use the TypeDef.Extends data in the metadata
-            // table.
-            if(IsGeneric)
-            {
-                MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
-                for(int i = 0; i < typeSpecs.Length; i++)
-                {
-                    TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
-                    if(row != null)
-                    {
-                        // We need to find all of the TypeSpec references that point back to us, remember
-                        // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
-                        // for example. Each one of these will be a different type spec.
-                        TypeSpec spec = Assembly.File.Map.GetDefinition(MetadataTables.TypeSpec, row) as TypeSpec;
-                        SignitureToken token = spec.Signiture.TypeToken.Tokens[0];
-
-                        // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
-                        if(token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignitureToken)token).ElementType == ElementTypes.GenericInstance)
-                        {
-                            ElementTypeSignitureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignitureToken;
-
-                            TypeRef typeRef = typeToken.ResolveToken(Assembly);
-                            if(typeRef == this)
-                            {
-                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1));
-                            }
-                        }
-                    }
-                }
-            }
-
-            MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
-            for(int i = 0; i < typeDefs.Length; i++)
-            {
-                for(int j = 0; j < ourIndexes.Count; j++)
-                {
-                    TypeDefMetadataTableRow row = (TypeDefMetadataTableRow)typeDefs[i];
-                    CodedIndex ourCi = ourIndexes[j];
-
-                    if(row.Extends == ourCi)
-                    {
-                        inheritingTypes.Add(
-                            (TypeDef)map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i])
-                            );
-                        continue; // a type can only be extending once so if we find ourselves we are done
-                    }
-                }
-            }
-
-            return inheritingTypes;
+            return Assembly.GetExtendindTypes(this, ciForThisType);
         }
 
         /// <summary>
@@ -323,14 +268,12 @@ namespace TheBoxSoftware.Reflection
             {
                 try
                 {
-                    MetadataStream stream = this.Assembly.File.GetMetadataDirectory().GetMetadataStream();
-                    MetadataToDefinitionMap map = this.Assembly.File.Map;
                     TypeRef inheritsFrom = null;
 
                     if(_extends.Index != 0)
                     {
-                        inheritsFrom = map.GetDefinition(_extends.Table,
-                            stream.Tables.GetEntryFor(_extends.Table, _extends.Index)) as TypeRef;
+                        inheritsFrom = Assembly.ResolveCodedIndex(_extends) as TypeRef;
+
                         // We have to handle type spec based classes, as if they use the parent generic types
                         // we need the type to have a reference to its container.
                         if(inheritsFrom is TypeSpec)
@@ -557,7 +500,6 @@ namespace TheBoxSoftware.Reflection
 
             public TypeDef Build()
             {
-                MetadataToDefinitionMap map = _assembly.File.Map;
                 _builtType = new TypeDef();
 
                 SetTypeProperties();

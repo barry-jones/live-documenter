@@ -11,6 +11,8 @@ namespace TheBoxSoftware.Reflection
     {
         private bool _isConstructor = false;
         private bool _isOperator = false;
+        private CodedIndex _class;
+        private TypeRef _type;
 
         /// <summary>
         /// Factor method for instantiating and populating MemberRef instances from
@@ -28,23 +30,10 @@ namespace TheBoxSoftware.Reflection
             MemberRef memberRef = new MemberRef();
 
             memberRef.UniqueId = assembly.CreateUniqueId();
-
-            // as per page: 126 of the ECMA, the class column can contain a reference to a TypeRef,
-            // MemberRef, TypeSpec or ModuleRef entry
-            // TODO: Handle TypeSpec and ModuleRef references
-            object o = assembly.File.ResolveCodedIndex(row.Class);
-            if(o is TypeRef)
-            {
-                memberRef.Type = (TypeRef)o;
-            }
-            else if(o is MethodDef)
-            {
-                memberRef.Type = ((MethodDef)o).Type;
-            }
-
             memberRef.Name = assembly.StringStream.GetString(row.Name.Value);
             memberRef.SignitureBlob = row.Signiture;
             memberRef.Assembly = assembly;
+            memberRef._class = row.Class;
 
             // These methods of detecting different method types are not
             // infalable. A user can create a method for example that starts iwth
@@ -59,7 +48,30 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Gets or sets the type which defines this member
         /// </summary>
-        public TypeRef Type { get; set; }
+        public TypeRef Type
+        {
+            get
+            {
+                if(_type == null)
+                {
+                    // as per page: 126 of the ECMA, the class column can contain a reference to a TypeRef,
+                    // MemberRef, TypeSpec or ModuleRef entry
+                    // TODO: Handle TypeSpec and ModuleRef references
+                    object o = Assembly.ResolveCodedIndex(_class);
+                    if(o is TypeRef)
+                    {
+                        _type = (TypeRef)o;
+                    }
+                    else if(o is MethodDef)
+                    {
+                        _type = ((MethodDef)o).Type;
+                    }
+                }
+
+                return _type;
+            }
+            set { _type = value; }
+        }
 
         /// <summary>
         /// Obtains the index in the BlobStream where the methods signiture
@@ -94,15 +106,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                if(!Assembly.File.IsMetadataLoaded)
-                {
-                    throw new InvalidOperationException("The Signiture can not be parsed correctly until the metadata has been loaded.");
-                }
-
-                BlobStream stream = (BlobStream)((CLRDirectory)Assembly.File.Directories[
-                    Core.PE.DataDirectories.CommonLanguageRuntimeHeader]).Metadata.Streams[Streams.BlobStream];
-
-                return stream.GetSigniture(SignitureBlob.Value, SignitureBlob.SignitureType);
+                return Assembly.GetSigniture(SignitureBlob);
             }
         }
     }
