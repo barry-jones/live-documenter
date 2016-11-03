@@ -15,6 +15,10 @@ namespace Runner
 
         static void Main(string[] args)
         {
+            Program p = new Program();
+            p.LoadAssemblyDefOnly();
+            return;
+
             Console.WriteLine(string.Empty);
             Console.WriteLine("Please select from one of the options:");
             Console.WriteLine("\t1: Load PeCoffFile");

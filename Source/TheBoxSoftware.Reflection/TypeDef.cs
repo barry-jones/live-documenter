@@ -409,7 +409,14 @@ namespace TheBoxSoftware.Reflection
                     if(currentType.IsNested)
                     {
                         currentType = currentType.ContainingClass;
-                        containingClassNames.Add(currentType.GetDisplayName(false));
+                        if(currentType.IsGeneric)
+                        {
+                            containingClassNames.Add(currentType.GetDisplayName(false));
+                        }
+                        else
+                        {
+                            containingClassNames.Add(currentType.Name);
+                        }
                     }
 
                     for(int i = containingClassNames.Count - 1; i >= 0; i--)
@@ -639,7 +646,9 @@ namespace TheBoxSoftware.Reflection
 
             private void SetTypeProperties()
             {
-                _builtType._index = _metadataStream.Tables[MetadataTables.TypeDef].ToList().IndexOf(_fromRow) + 1;
+                int index = _metadataStream.Tables.GetIndexFor(MetadataTables.TypeDef, _fromRow);
+
+                _builtType._index = index + 1;
                 _builtType._table = MetadataTables.TypeDef;
 
                 _builtType.UniqueId = _assembly.CreateUniqueId();

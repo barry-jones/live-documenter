@@ -15,6 +15,7 @@ namespace TheBoxSoftware.Reflection.Core
         private const int PeSignitureOffsetLocation = 0x3c;
 
         private byte[] _fileContents;
+        private COFF.MetadataDirectory _metadataDirectory;
         
         /// <summary>
         /// Initialises a new instance of the PeCoffFile
@@ -40,8 +41,12 @@ namespace TheBoxSoftware.Reflection.Core
         /// <returns>The .NET metadata directory</returns>
         public COFF.MetadataDirectory GetMetadataDirectory()
         {
-            COFF.CLRDirectory directory = Directories[DataDirectories.CommonLanguageRuntimeHeader] as COFF.CLRDirectory;
-            return directory.Metadata;
+            if(_metadataDirectory == null)
+            {
+                COFF.CLRDirectory directory = Directories[DataDirectories.CommonLanguageRuntimeHeader] as COFF.CLRDirectory;
+                _metadataDirectory = directory.Metadata;
+            }
+            return _metadataDirectory;
         }
 
         /// <summary>
@@ -54,7 +59,8 @@ namespace TheBoxSoftware.Reflection.Core
             object resolvedReference = null;
 
             COFF.MetadataDirectory metadata = GetMetadataDirectory();
-            COFF.MetadataStream metadataStream = (COFF.MetadataStream)metadata.Streams[COFF.Streams.MetadataStream];
+            COFF.MetadataStream metadataStream = metadata.GetMetadataStream();
+
             if(metadataStream.Tables.ContainsKey(index.Table))
             {
                 if(metadataStream.Tables[index.Table].Length + 1 > index.Index)
@@ -89,7 +95,7 @@ namespace TheBoxSoftware.Reflection.Core
 
                 if(rva >= minAddress)
                 {
-                    if(maxAddress == -1 || rva < maxAddress)
+                    if(rva < maxAddress)
                     {
                         virtualOffset = SectionHeaders[i].VirtualAddress;
                         rawOffset = SectionHeaders[i].PointerToRawData;

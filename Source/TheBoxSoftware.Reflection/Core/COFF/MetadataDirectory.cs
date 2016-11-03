@@ -4,6 +4,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class MetadataDirectory : Directory
     {
+        private MetadataStream _metadata;
+
         /// <summary>
         /// Initialises a new instance of the MetadataDirectory
         /// </summary>
@@ -33,7 +35,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The .NET metadata stream</returns>
         internal COFF.MetadataStream GetMetadataStream()
         {
-            return (COFF.MetadataStream)this.Streams[COFF.Streams.MetadataStream];
+            if(_metadata == null)
+            {
+                _metadata = this.Streams[COFF.Streams.MetadataStream] as MetadataStream;
+            }
+            return _metadata;
         }
 
         public MetadataHeader Header { get; set; }

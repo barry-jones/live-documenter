@@ -493,11 +493,14 @@ namespace TheBoxSoftware.Reflection
                 _methodToBuild.Assembly = _assembly;
 
                 // See details of MemberRef implementation for issues with this!
-                _methodToBuild.IsConstructor = _methodToBuild.Name.StartsWith(".");
-                _methodToBuild.IsOperator = _methodToBuild.Name.StartsWith("op_");
-                if(_methodToBuild.IsOperator)
+                if(_methodToBuild.Name.Length > 0)
                 {
-                    _methodToBuild._isConversionOperator = _methodToBuild.Name == "op_Explicit" || _methodToBuild.Name == "op_Implicit";
+                    _methodToBuild.IsConstructor = _methodToBuild.Name[0] == '.';
+                    _methodToBuild.IsOperator = !_methodToBuild.IsConstructor && _methodToBuild.Name.StartsWith("op_");
+                    if(_methodToBuild.IsOperator)
+                    {
+                        _methodToBuild._isConversionOperator = _methodToBuild.Name == "op_Explicit" || _methodToBuild.Name == "op_Implicit";
+                    }
                 }
             }
         }
