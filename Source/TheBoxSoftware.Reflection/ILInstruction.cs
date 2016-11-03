@@ -2,7 +2,6 @@
 namespace TheBoxSoftware.Reflection
 {
     using System;
-    using TheBoxSoftware.Reflection.Core.COFF;
 
     /// <summary>
     /// Represents a single Intermediate Language Instruction
@@ -334,26 +333,7 @@ namespace TheBoxSoftware.Reflection
         internal InlineTypeILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
-            MetadataToDefinitionMap map = assembly.File.Map;
-            Core.COFF.MetadataStream metadataStream = assembly.File.GetMetadataDirectory().GetMetadataStream();
-
-            // Get the details in the token
-            _token = (ILMetadataToken)(metadataToken & 0xff000000);
-            _index = metadataToken & 0x00ffffff;
-
-            // 
-            if(_token == ILMetadataToken.TypeDef)
-            {
-                _typeDef = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, _index));
-            }
-            else if(_token == ILMetadataToken.TypeRef)
-            {
-                _typeDef = (TypeRef)map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, _index));
-            }
-            else if(_token == ILMetadataToken.TypeSpec)
-            {
-                _typeDef = (TypeDef)map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, _index));
-            }
+            _typeDef = assembly.ResolveMetadataToken(metadataToken) as TypeRef;
         }
 
         /// <summary>
@@ -382,42 +362,7 @@ namespace TheBoxSoftware.Reflection
         internal InlineTokenILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
-            MetadataToDefinitionMap map = assembly.File.Map;
-            Core.COFF.MetadataStream metadataStream = assembly.File.GetMetadataDirectory().GetMetadataStream();
-
-            // Get the details in the token
-            _token = (ILMetadataToken)(metadataToken & 0xff000000);
-            _index = metadataToken & 0x00ffffff;
-
-            // 
-            if(_token == ILMetadataToken.TypeDef)
-            {
-                _entry = map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, _index));
-            }
-            else if(_token == ILMetadataToken.TypeRef)
-            {
-                _entry = map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, _index));
-            }
-            else if(_token == ILMetadataToken.TypeSpec)
-            {
-                _entry = map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, _index));
-            }
-            else if(_token == ILMetadataToken.MethodDef)
-            {
-                _entry = map.GetDefinition(MetadataTables.MethodDef, metadataStream.GetEntryFor(MetadataTables.MethodDef, _index));
-            }
-            else if(_token == ILMetadataToken.MemberRef)
-            {
-                _entry = map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, _index));
-            }
-            else if(_token == ILMetadataToken.MethodSpec)
-            {
-                _entry = map.GetDefinition(MetadataTables.MethodSpec, metadataStream.GetEntryFor(MetadataTables.MethodSpec, _index));
-            }
-            else if(_token == ILMetadataToken.FieldDef)
-            {
-                _entry = map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, _index));
-            }
+            _entry = assembly.ResolveMetadataToken(metadataToken);
         }
 
         /// <summary>
@@ -446,22 +391,7 @@ namespace TheBoxSoftware.Reflection
         internal InlineFieldILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
-            MetadataToDefinitionMap map = assembly.File.Map;
-            Core.COFF.MetadataStream metadataStream = assembly.File.GetMetadataDirectory().GetMetadataStream();
-
-            // Get the details in the token
-            _token = (ILMetadataToken)(metadataToken & 0xff000000);
-            _index = metadataToken & 0x00ffffff;
-
-            // 
-            if(_token == ILMetadataToken.FieldDef)
-            {
-                _fieldDef = (FieldDef)map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, _index));
-            }
-            else if(_token == ILMetadataToken.MemberRef)
-            {
-                _fieldDef = (MemberRef)map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, _index));
-            }
+            _fieldDef = assembly.ResolveMetadataToken(metadataToken) as MemberRef;
         }
 
         /// <summary>

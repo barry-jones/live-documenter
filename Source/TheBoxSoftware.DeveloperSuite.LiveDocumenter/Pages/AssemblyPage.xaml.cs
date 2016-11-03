@@ -38,7 +38,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// </summary>
 		public override void Generate() {
 			if (!this.IsGenerated) {
-				this.Blocks.Add(new Header1(System.IO.Path.GetFileName(assembly.File.FileName)));
+				this.Blocks.Add(new Header1(System.IO.Path.GetFileName(assembly.FileName)));
 				Paragraph versionDetails = new Paragraph();
 				versionDetails.Inlines.Add(new Bold(new Run("Version: ")));
 				versionDetails.Inlines.Add(new Run(assembly.Version.ToString()));

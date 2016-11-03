@@ -16,7 +16,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements
 
             this.Inlines.Add(new Run(
                 string.Format("No XML comments file found for declaring assembly '{0}'. ", 
-                System.IO.Path.GetFileName(entry.Assembly.File.FileName))
+                System.IO.Path.GetFileName(entry.Assembly.FileName))
                 ));
 
             Hyperlink info = new Hyperlink(new Run("More information."));

@@ -12,10 +12,9 @@ namespace TheBoxSoftware.Reflection
     {
         private Core.Version _version;
         private int _uniqueIdCounter;
-        private readonly AssemblyIndex _index;
 
         // attempt to remove the PeCoffFile references
-
+        private string _fileName;
 
         internal AssemblyDef()
         {
@@ -23,16 +22,6 @@ namespace TheBoxSoftware.Reflection
             Types = new List<TypeDef>();
             ReferencedAssemblies = new List<AssemblyRef>();
             Map = new TypeInNamespaceMap();
-            base.Assembly = this;
-        }
-
-        internal AssemblyDef(List<ModuleDef> modules, List<TypeDef> types, List<AssemblyRef> assemblyReferences, IStringStream stream, AssemblyIndex index)
-        {
-            Modules = modules;
-            Types = types;
-            ReferencedAssemblies = assemblyReferences;
-            _index = index;
-            StringStream = stream;
             base.Assembly = this;
         }
 
@@ -56,7 +45,11 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create2"]/*'/> 
         public static AssemblyDef Create(PeCoffFile peCoffFile)
         {
-            return new AssemblyDefBuilder(peCoffFile).Build();
+            AssemblyDef created = new AssemblyDefBuilder(peCoffFile).Build();
+
+            created._fileName = peCoffFile.FileName;
+
+            return created;
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
@@ -113,6 +106,9 @@ namespace TheBoxSoftware.Reflection
                 case ILMetadataToken.TypeSpec:
                     returnItem = map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, index));
                     break;
+                case ILMetadataToken.FieldDef:
+                    returnItem = map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, index));
+                    break;
             }
 
             return returnItem;
@@ -159,6 +155,14 @@ namespace TheBoxSoftware.Reflection
         /// The <see cref="PeCoffFile"/> the assembly was reflected from.
         /// </summary>
         public PeCoffFile File { get; set; }
+
+        /// <summary>
+        /// The filename of the underlying assembly used to build this assembly definition.
+        /// </summary>
+        public string FileName
+        {
+            get { return _fileName; }
+        }
 
         /// <summary>
         /// The version details for this assembly.

@@ -35,7 +35,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             WriteCref(AssociatedEntry, writer);
 
             writer.WriteStartElement("assembly");
-            writer.WriteAttributeString("file", System.IO.Path.GetFileName(_member.Assembly.File.FileName));
+            writer.WriteAttributeString("file", System.IO.Path.GetFileName(_member.Assembly.FileName));
             writer.WriteString(_member.Assembly.Name);
             writer.WriteEndElement();
 

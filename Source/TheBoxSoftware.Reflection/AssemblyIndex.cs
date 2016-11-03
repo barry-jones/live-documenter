@@ -1,8 +1,8 @@
 ﻿
-using System.Collections.Generic;
-
 namespace TheBoxSoftware.Reflection
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// An index class that maps relationships between the high level defenitions and
     /// low level metadata.
