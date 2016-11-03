@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <summary>
     /// Used to store compile time, constant values for fields, parameters and properties
@@ -25,7 +26,7 @@
             this.Type = contents[offset.Shift(1)];
             this.PaddingZero = contents[offset.Shift(1)];
             this.Parent = new CodedIndex(stream, offset, CodedIndexes.HasConstant);
-            this.Value = new BlobIndex(stream.SizeOfBlobIndexes, contents, TheBoxSoftware.Reflection.Signitures.Signitures.MethodDef, offset);
+            this.Value = new BlobIndex(stream.SizeOfBlobIndexes, contents, Signitures.Signitures.MethodDef, offset);
         }
 
         /// <summary>

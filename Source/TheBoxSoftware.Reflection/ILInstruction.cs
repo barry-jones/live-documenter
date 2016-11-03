@@ -1,8 +1,9 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using TheBoxSoftware.Reflection.Core.COFF;
+
     /// <summary>
     /// Represents a single Intermediate Language Instruction
     /// </summary>
@@ -17,7 +18,7 @@ namespace TheBoxSoftware.Reflection
         /// <param name="code">The OpCode describing the operation of the instruction</param>
         internal ILInstruction(OpCode code)
         {
-            this._code = code;
+            _code = code;
         }
 
         /// <summary>
@@ -25,10 +26,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public OpCode OpCode
         {
-            get
-            {
-                return this._code;
-            }
+            get { return _code; }
         }
     }
 
@@ -72,17 +70,13 @@ namespace TheBoxSoftware.Reflection
         internal InlineBrTargetILInstruction(OpCode code, Int32 target)
             : base(code)
         {
-            this.Target = target;
+            Target = target;
         }
 
         /// <summary>
         /// The target offset for this instruction
         /// </summary>
-        public Int32 Target
-        {
-            get;
-            set;
-        }
+        public int Target { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, Constant={Constant}")]
@@ -96,17 +90,13 @@ namespace TheBoxSoftware.Reflection
         internal ShortInlineIILInstruction(OpCode code, byte constant) :
             base(code)
         {
-            this.Constant = constant;
+            Constant = constant;
         }
 
         /// <summary>
         /// The constant being pushed on to the stack in this operation
         /// </summary>
-        public uint Constant
-        {
-            get;
-            set;
-        }
+        public uint Constant { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, Constant={Constant}")]
@@ -120,17 +110,13 @@ namespace TheBoxSoftware.Reflection
         internal ShortInlineVarILInstruction(OpCode code, byte constant) :
             base(code)
         {
-            this.Constant = constant;
+            Constant = constant;
         }
 
         /// <summary>
         /// The constant being pushed on to the stack in this operation
         /// </summary>
-        public uint Constant
-        {
-            get;
-            set;
-        }
+        public uint Constant { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, Constant={Constant}")]
@@ -144,17 +130,13 @@ namespace TheBoxSoftware.Reflection
         internal ShortInlineRILInstruction(OpCode code, Single constant) :
             base(code)
         {
-            this.Constant = constant;
+            Constant = constant;
         }
 
         /// <summary>
         /// The constant being pushed on to the stack in this operation
         /// </summary>
-        public Single Constant
-        {
-            get;
-            set;
-        }
+        public float Constant { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, Constant={Constant}")]
@@ -168,17 +150,13 @@ namespace TheBoxSoftware.Reflection
         internal InlineIILInstruction(OpCode code, uint constant)
             : base(code)
         {
-            this.Constant = constant;
+            Constant = constant;
         }
 
         /// <summary>
         /// The integer constant to be pushed on to the stack
         /// </summary>
-        public uint Constant
-        {
-            get;
-            set;
-        }
+        public uint Constant { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, Constant={Constant}")]
@@ -192,17 +170,13 @@ namespace TheBoxSoftware.Reflection
         internal InlineVarILInstruction(OpCode code, UInt16 constant)
             : base(code)
         {
-            this.Constant = constant;
+            Constant = constant;
         }
 
         /// <summary>
         /// The integer constant to be pushed on to the stack
         /// </summary>
-        public UInt16 Constant
-        {
-            get;
-            set;
-        }
+        public ushort Constant { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, StringToken={UDStringToken}, String={String}")]
@@ -216,7 +190,7 @@ namespace TheBoxSoftware.Reflection
         internal InlineStringILInstruction(AssemblyDef assembly, OpCode code, Int32 udStringToken)
             : base(code)
         {
-            this.UDStringToken = udStringToken;
+            UDStringToken = udStringToken;
         }
 
         /// <summary>
@@ -225,20 +199,12 @@ namespace TheBoxSoftware.Reflection
         /// <remarks>
         /// THIS WILL BE REMOVED WHEN THE STRING IS PROPERLY LOADED
         /// </remarks>
-        public Int32 UDStringToken
-        {
-            get;
-            set;
-        }
+        public int UDStringToken { get; set; }
 
         /// <summary>
         /// The string being loaded by the instruction
         /// </summary>
-        public string String
-        {
-            get;
-            set;
-        }
+        public string String { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, SignitureToken={SignitureToken}")]
@@ -252,7 +218,7 @@ namespace TheBoxSoftware.Reflection
         internal InlineSigILInstruction(AssemblyDef assembly, OpCode code, int signitureToken)
             : base(code)
         {
-            this.SignitureToken = signitureToken;
+            SignitureToken = signitureToken;
         }
 
         /// <summary>
@@ -261,11 +227,7 @@ namespace TheBoxSoftware.Reflection
         /// <remarks>
         /// THIS WILL BE REMOVED WHEN THE STRING IS PROPERLY LOADED
         /// </remarks>
-        public Int32 SignitureToken
-        {
-            get;
-            set;
-        }
+        public int SignitureToken { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, Constant={Constant}")]
@@ -279,17 +241,13 @@ namespace TheBoxSoftware.Reflection
         internal InlineRILInstruction(OpCode code, Double constant)
             : base(code)
         {
-            this.Constant = constant;
+            Constant = constant;
         }
 
         /// <summary>
         /// The integer constant to be pushed on to the stack
         /// </summary>
-        public Double Constant
-        {
-            get;
-            set;
-        }
+        public double Constant { get; set; }
     }
 
     [System.Diagnostics.DebuggerDisplay("OpCode={OpCode}, Constant={Constant}")]
@@ -303,17 +261,13 @@ namespace TheBoxSoftware.Reflection
         internal InlineI8ILInstruction(OpCode code, UInt64 constant)
             : base(code)
         {
-            this.Constant = constant;
+            Constant = constant;
         }
 
         /// <summary>
         /// The long constant to be pushed on to the stack
         /// </summary>
-        public UInt64 Constant
-        {
-            get;
-            set;
-        }
+        public ulong Constant { get; set; }
     }
 
     /// <summary>
@@ -330,14 +284,10 @@ namespace TheBoxSoftware.Reflection
         internal ShortInlineBrTargetILInstruction(OpCode code, byte target)
             : base(code)
         {
-            this.Target = target;
+            Target = target;
         }
 
-        public byte Target
-        {
-            get;
-            set;
-        }
+        public byte Target { get; set; }
     }
 
     /// <summary>
@@ -355,7 +305,7 @@ namespace TheBoxSoftware.Reflection
         internal InlineMethodILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
-            this._methodDef = (MemberRef)assembly.ResolveMetadataToken(metadataToken);
+            _methodDef = assembly.ResolveMetadataToken(metadataToken) as MemberRef;
         }
 
         /// <summary>
@@ -363,10 +313,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public MemberRef Method
         {
-            get
-            {
-                return this._methodDef;
-            }
+            get { return _methodDef; }
         }
     }
 
@@ -397,15 +344,15 @@ namespace TheBoxSoftware.Reflection
             // 
             if(_token == ILMetadataToken.TypeDef)
             {
-                this._typeDef = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, _index));
+                _typeDef = (TypeDef)map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, _index));
             }
             else if(_token == ILMetadataToken.TypeRef)
             {
-                this._typeDef = (TypeRef)map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, _index));
+                _typeDef = (TypeRef)map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, _index));
             }
             else if(_token == ILMetadataToken.TypeSpec)
             {
-                this._typeDef = (TypeDef)map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, _index));
+                _typeDef = (TypeDef)map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, _index));
             }
         }
 
@@ -414,10 +361,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public TypeRef Type
         {
-            get
-            {
-                return this._typeDef;
-            }
+            get { return _typeDef; }
         }
     }
 
@@ -448,31 +392,31 @@ namespace TheBoxSoftware.Reflection
             // 
             if(_token == ILMetadataToken.TypeDef)
             {
-                this._entry = map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, _index));
+                _entry = map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, _index));
             }
             else if(_token == ILMetadataToken.TypeRef)
             {
-                this._entry = map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, _index));
+                _entry = map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, _index));
             }
             else if(_token == ILMetadataToken.TypeSpec)
             {
-                this._entry = map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, _index));
+                _entry = map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, _index));
             }
             else if(_token == ILMetadataToken.MethodDef)
             {
-                this._entry = map.GetDefinition(MetadataTables.MethodDef, metadataStream.GetEntryFor(MetadataTables.MethodDef, _index));
+                _entry = map.GetDefinition(MetadataTables.MethodDef, metadataStream.GetEntryFor(MetadataTables.MethodDef, _index));
             }
             else if(_token == ILMetadataToken.MemberRef)
             {
-                this._entry = map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, _index));
+                _entry = map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, _index));
             }
             else if(_token == ILMetadataToken.MethodSpec)
             {
-                this._entry = map.GetDefinition(MetadataTables.MethodSpec, metadataStream.GetEntryFor(MetadataTables.MethodSpec, _index));
+                _entry = map.GetDefinition(MetadataTables.MethodSpec, metadataStream.GetEntryFor(MetadataTables.MethodSpec, _index));
             }
             else if(_token == ILMetadataToken.FieldDef)
             {
-                this._entry = map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, _index));
+                _entry = map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, _index));
             }
         }
 
@@ -481,10 +425,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public object Type
         {
-            get
-            {
-                return this._entry;
-            }
+            get { return _entry; }
         }
     }
 
@@ -515,11 +456,11 @@ namespace TheBoxSoftware.Reflection
             // 
             if(_token == ILMetadataToken.FieldDef)
             {
-                this._fieldDef = (FieldDef)map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, _index));
+                _fieldDef = (FieldDef)map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, _index));
             }
             else if(_token == ILMetadataToken.MemberRef)
             {
-                this._fieldDef = (MemberRef)map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, _index));
+                _fieldDef = (MemberRef)map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, _index));
             }
         }
 
@@ -528,10 +469,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public MemberRef Field
         {
-            get
-            {
-                return this._fieldDef;
-            }
+            get { return _fieldDef; }
         }
     }
 
@@ -548,16 +486,12 @@ namespace TheBoxSoftware.Reflection
         internal InlineSwitchILInstruction(OpCode code, Int32[] jumpTargets)
             : base(code)
         {
-            this.JumpTargets = jumpTargets;
+            JumpTargets = jumpTargets;
         }
 
         /// <summary>
         /// The offset targets for each of the case statements in the switch operation
         /// </summary>
-        public Int32[] JumpTargets
-        {
-            get;
-            set;
-        }
+        public int[] JumpTargets { get; set; }
     }
 }

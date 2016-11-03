@@ -7,11 +7,13 @@ namespace TheBoxSoftware.Reflection
     {
         public static ConstantInfo CreateFromMetadata(AssemblyDef assembly, MetadataStream stream, ConstantMetadataTableRow row)
         {
-            ConstantInfo constant = new ConstantInfo();
-            constant.Value = (int)row.Value.Value;
-            return constant;
-        }
+            // we are not doing anything with this at the moment but it stores the details of constants
+            // indirectly via the BlobIndex, it's parent is obtainable via a HasConstant CodedIndex in
+            // the metadata row.
+            // The values here are for fields and parameters, so we can say that the default values for
+            // parameters are accessible via these records.
 
-        public int Value { get; set; }
+            return new ConstantInfo();
+        }
     }
 }

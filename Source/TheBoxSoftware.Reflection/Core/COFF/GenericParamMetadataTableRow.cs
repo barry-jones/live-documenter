@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class GenericParamMetadataTableRow : MetadataRow
@@ -22,12 +21,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// A 2-byte index of the generic parameter, numbered left to right
         /// </summary>
-        public UInt16 Number { get; set; }
+        public ushort Number { get; set; }
 
         /// <summary>
         /// A 2-byte bitmask of GenericParamAttributes
         /// </summary>
-        public UInt16 Flags { get; set; }
+        public ushort Flags { get; set; }
 
         /// <summary>
         /// An index in to the TypeDef, MethodDef; more precisley a TypeOrMethodDef

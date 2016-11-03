@@ -1,7 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection
 {
-    using System;
     using Core.COFF;
 
     /// <summary>
@@ -25,7 +24,7 @@ namespace TheBoxSoftware.Reflection
             GenericTypeRef genericType = new GenericTypeRef();
 
             genericType.UniqueId = references.Assembly.CreateUniqueId();
-            genericType.Sequence = (Int16)fromRow.Number;
+            genericType.Sequence = fromRow.Number;
             genericType.Name = references.Assembly.StringStream.GetString(fromRow.Name.Value);
             // this.Flags = FieldReader.ToUInt16(contents, offset.Shift(2));
 
@@ -41,6 +40,6 @@ namespace TheBoxSoftware.Reflection
         /// number is used by the metadata to distinguish which type is being called
         /// or passed in signitures.
         /// </remarks>
-        public Int16 Sequence { get; set; }
+        public ushort Sequence { get; set; }
     }
 }
