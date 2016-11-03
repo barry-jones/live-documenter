@@ -105,22 +105,6 @@ namespace TheBoxSoftware.Documentation.Exporting
             }
         }
 
-        /*
-        /// <summary>
-        /// Exports an individual <paramref name="entry"/>.
-        /// </summary>
-        /// <param name="entry"></param>
-        public override Stream ExportMember(Entry entry)
-        {
-            string filename = this.Export(entry);
-
-            MemoryStream exportedMember = new MemoryStream();
-            StreamWriter writer = new StreamWriter(exportedMember);
-            writer.Write(File.ReadAllText(filename));
-            return exportedMember;
-        }
-        */
-
         /// <summary>
         /// Returns a collection of messages that describe any issues that this exporter has with
         /// running.

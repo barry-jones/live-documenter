@@ -2,6 +2,7 @@
 namespace TheBoxSoftware.Documentation.Exporting
 {
     using System;
+    using System.Linq;
     using System.IO;
     using System.Xml;
     using Website;
