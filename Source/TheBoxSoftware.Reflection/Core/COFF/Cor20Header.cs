@@ -10,20 +10,29 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         public Cor20Header(byte[] fileContents, uint address)
         {
             Offset offset = (int)address;
-            List<byte> tempData = new List<byte>(fileContents);
 
             this.CB = BitConverter.ToUInt32(fileContents, offset.Shift(4));
             this.MajorRuntimeVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
             this.MinorRuntimeVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.MetaData = new DataDirectory(tempData.GetRange(offset.Shift(8), 8).ToArray());
+            this.MetaData = new DataDirectory(GetRange(fileContents, offset.Shift(8), 8));
             this.Flags = (Cor20Flags)BitConverter.ToUInt32(fileContents, offset.Shift(4));
             this.EntryPointToken = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.Resources = new DataDirectory(tempData.GetRange(offset.Shift(8), 8).ToArray());
-            this.StrongNameSigniture = new DataDirectory(tempData.GetRange(offset.Shift(8), 8).ToArray());
-            this.CodeManagerTable = new DataDirectory(tempData.GetRange(offset.Shift(8), 8).ToArray());
-            this.VTableFixups = new DataDirectory(tempData.GetRange(offset.Shift(8), 8).ToArray());
-            this.ExportAddressTableJumps = new DataDirectory(tempData.GetRange(offset.Shift(8), 8).ToArray());
-            this.ManagedNativeHeader = new DataDirectory(tempData.GetRange(offset.Shift(8), 8).ToArray());
+            this.Resources = new DataDirectory(GetRange(fileContents, offset.Shift(8), 8));
+            this.StrongNameSigniture = new DataDirectory(GetRange(fileContents, offset.Shift(8), 8));
+            this.CodeManagerTable = new DataDirectory(GetRange(fileContents, offset.Shift(8), 8));
+            this.VTableFixups = new DataDirectory(GetRange(fileContents, offset.Shift(8), 8));
+            this.ExportAddressTableJumps = new DataDirectory(GetRange(fileContents, offset.Shift(8), 8));
+            this.ManagedNativeHeader = new DataDirectory(GetRange(fileContents, offset.Shift(8), 8));
+        }
+
+        private byte[] GetRange(byte[] fileContents, Offset start, int length)
+        {
+            byte[] range = new byte[length];
+            for(int i = 0; i < length; i++)
+            {
+                range[i] = fileContents[i + start];
+            }
+            return range;
         }
        
         /// <summary>

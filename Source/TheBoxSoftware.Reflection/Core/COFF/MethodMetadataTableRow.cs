@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <summary>
@@ -21,14 +20,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             this.ImplFlags = (MethodImplFlags)FieldReader.ToUInt16(contents, offset.Shift(2));
             this.Flags = (MethodAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
             this.Name = new StringIndex(stream, offset);
-            this.Signiture = new BlobIndex(stream.SizeOfBlobIndexes, contents, Reflection.Signitures.Signitures.MethodDef, offset);
+            this.Signiture = new BlobIndex(stream.SizeOfBlobIndexes, contents, Signitures.Signitures.MethodDef, offset);
             this.ParamList = new Index(stream, contents, offset, MetadataTables.Param);
         }
 
         /// <summary>
         /// Address of the CIL method data
         /// </summary>
-        public UInt32 RVA { get; set; }
+        public uint RVA { get; set; }
 
         /// <summary>
         /// 2-byte bitmask of MethodImplAttributes

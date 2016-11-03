@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1A6328A9-90BB-4BF5-8A96-FFF72D260AF6}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Runner</RootNamespace>
+    <AssemblyName>Runner</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\documentation.msha">
+      <Link>ApplicationData\documentation.msha</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\helpviewer1-msdn.ldec">
+      <Link>ApplicationData\helpviewer1-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\htmlhelp1-msdn.ldec">
+      <Link>ApplicationData\htmlhelp1-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\htmlhelp2-msdn.ldec">
+      <Link>ApplicationData\htmlhelp2-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\web-msdn.ldec">
+      <Link>ApplicationData\web-msdn.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\TheBoxSoftware.DeveloperSuite.LiveDocumenter\ApplicationData\xml.ldec">
+      <Link>ApplicationData\xml.ldec</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj">
+      <Project>{2ad369a3-7737-4ec5-a4ba-3e846f80c066}</Project>
+      <Name>DocumentationTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj">
+      <Project>{0b3f2a4c-8ddf-4dab-b676-44c927921eff}</Project>
+      <Name>TheBoxSoftware.Documentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
+      <Project>{b8749831-5746-4443-bee9-9b01792c0d98}</Project>
+      <Name>TheBoxSoftware.Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="configuration.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
