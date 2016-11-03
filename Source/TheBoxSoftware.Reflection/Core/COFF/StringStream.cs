@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     /// <summary>
     /// The string stream which stores the strings for all metadata names and text.
     /// </summary>
@@ -51,17 +52,17 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The string at the specified index.</returns>
-        public string GetString(int index)
+        public string GetString(uint index)
         {
             int lengthOfString = 0;
             int length = _streamContents.Length;
 
             // calculate the length of the string
-            for(int i = index; i < length && _streamContents[i] != TerminatingChar; i++, lengthOfString++) ;
+            for(uint i = index; i < length && _streamContents[i] != TerminatingChar; i++, lengthOfString++) ;
 
             // Read the string in to an array
             byte[] currentString = new byte[lengthOfString];
-            for(int i = index, current = 0; i < (index + lengthOfString); i++, current++)
+            for(uint i = index, current = 0; i < (index + lengthOfString); i++, current++)
             {
                 currentString[current] = _streamContents[i];
             }
@@ -98,7 +99,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 }
 
                 byte current = _streamContents[i];
-                if((char)current != TerminatingChar)
+                if(current != TerminatingChar)
                 {
                     currentString.Add(current);
                 }
@@ -109,7 +110,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
                 if(newString)
                 {
-                    strings.Add(startOffset, System.Text.ASCIIEncoding.UTF8.GetString(currentString.ToArray()));
+                    strings.Add(startOffset, ASCIIEncoding.UTF8.GetString(currentString.ToArray()));
                 }
             }
 

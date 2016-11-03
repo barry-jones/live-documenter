@@ -14,6 +14,9 @@ namespace TheBoxSoftware.Reflection
         private int _uniqueIdCounter;
         private readonly AssemblyIndex _index;
 
+        // attempt to remove the PeCoffFile references
+
+
         internal AssemblyDef()
         {
             Modules = new List<ModuleDef>();

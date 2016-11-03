@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System.Collections.Generic;
+
     public interface IStringStream
     {
-        string GetString(int index);
+        string GetString(uint index);
 
         Dictionary<int, string> GetAllStrings();
     }

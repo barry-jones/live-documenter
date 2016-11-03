@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection
 {
     using System;
-    using TheBoxSoftware.Reflection.Core.COFF;
+    using Core.COFF;
 
     /// <summary>
     /// Represents an instance of a Member that is referenced from an external source.

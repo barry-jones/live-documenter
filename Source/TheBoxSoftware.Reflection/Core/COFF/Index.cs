@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// Represents a simple index item, where the item is an entry in to - generall -
     /// a metadata table.
@@ -11,7 +12,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <field>
         /// The value for the index.
         /// </field>
-        public UInt32 Value;
+        public uint Value;
 
         /// <summary>
         /// Private constructor which initialises the structure to a known
@@ -22,9 +23,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// between an integer and an Index structure.
         /// </remarks>
         /// <param name="value">The value for the index.</param>
-        private Index(UInt32 value)
+        private Index(uint value)
         {
-            this.Value = value;
+            Value = value;
         }
 
         /// <summary>
@@ -36,8 +37,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="table">The table this index points to</param>
         public Index(MetadataStream stream, byte[] contents, Offset offset, MetadataTables table)
         {
-            int bytesToRead = stream.RowsInPresentTables.ContainsKey(table) && stream.RowsInPresentTables[table] > UInt16.MaxValue ? 4 : 2;
-            this.Value = FieldReader.ToUInt32(contents, offset.Shift(bytesToRead), bytesToRead);
+            int bytesToRead = stream.RowsInPresentTables.ContainsKey(table) && stream.RowsInPresentTables[table] > ushort.MaxValue ? 4 : 2;
+            Value = FieldReader.ToUInt32(contents, offset.Shift(bytesToRead), bytesToRead);
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
         public override string ToString()
         {
-            return this.Value.ToString();
+            return Value.ToString();
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="index">The index to convert</param>
         /// <returns>The UInt32 representation of the Index</returns>
-        public static implicit operator UInt32(Index index)
+        public static implicit operator uint(Index index)
         {
             return index.Value;
         }
@@ -71,19 +72,19 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="index">The index to initialise the Index with</param>
         /// <returns>The instance of Index initialised appropriately</returns>
-        public static implicit operator Index(UInt32 index)
+        public static implicit operator Index(uint index)
         {
             return new Index(index);
         }
-
+        
         /// <summary>
         /// Implicitly allow the Index to be converted to an Int32
         /// </summary>
         /// <param name="index">The index to convert</param>
         /// <returns>The UInt32 representation of the Index</returns>
-        public static implicit operator Int32(Index index)
+        public static implicit operator int(Index index)
         {
-            return (Int32)index.Value;
+            return (int)index.Value;
         }
 
         /// <summary>
@@ -91,9 +92,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="index">The index to initialise the Index with</param>
         /// <returns>The instance of Index initialised appropriately</returns>
-        public static implicit operator Index(Int32 index)
+        public static implicit operator Index(int index)
         {
-            return new Index((UInt32)index);
+            return new Index((uint)index);
         }
     }
 
@@ -102,7 +103,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </summary>
     public struct StringIndex
     {
-        public Int32 Value;
+        public uint Value;
 
         /// <summary>
         /// Initialises a new instance of the StringStream.
@@ -111,9 +112,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="offset">The offset for the index in the file.</param>
         public StringIndex(MetadataStream stream, Offset offset)
         {
-            // This is always an unsigned int, reading an int here will get negative
-            // indexes; so always cast to int after.
-            this.Value = (int)FieldReader.ToUInt32(
+            Value = FieldReader.ToUInt32(
                 stream.OwningFile.FileContents,
                 offset.Shift(stream.SizeOfStringIndexes),
                 stream.SizeOfStringIndexes);
@@ -126,13 +125,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </summary>
     public struct BlobIndex
     {
-        public UInt32 Value;
+        public uint Value;
         public Signitures.Signitures SignitureType;
 
         public BlobIndex(byte sizeOfBlobIndexes, byte[] fileContents, Signitures.Signitures signitureType, Offset offset)
         {
-            this.SignitureType = signitureType;
-            this.Value = FieldReader.ToUInt32(
+            SignitureType = signitureType;
+            Value = FieldReader.ToUInt32(
                 fileContents,
                 offset.Shift(sizeOfBlobIndexes),
                 sizeOfBlobIndexes);
