@@ -124,7 +124,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
                 {
                     tokens.AddRange(this.FormatTypeDetails(details.ArrayOf));
                     tokens.Add(Constants.ArrayStart);
-                    tokens.Add(new SyntaxToken(new String(',', details.ArrayShape.Rank - 1), SyntaxTokens.Text));
+                    tokens.Add(new SyntaxToken(new String(',', (int)details.ArrayShape.Rank - 1), SyntaxTokens.Text));
                     tokens.Add(Constants.ArrayEnd);
                 }
             }

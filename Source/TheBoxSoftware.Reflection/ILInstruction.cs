@@ -249,7 +249,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         /// <param name="code">The OpCode describing the operation of the instruction</param>
         /// <param name="constant">The integer constant to be pushed on to the stack</param>
-        internal InlineSigILInstruction(AssemblyDef assembly, OpCode code, Int32 signitureToken)
+        internal InlineSigILInstruction(AssemblyDef assembly, OpCode code, int signitureToken)
             : base(code)
         {
             this.SignitureToken = signitureToken;
@@ -352,7 +352,7 @@ namespace TheBoxSoftware.Reflection
         /// Initialises a new instance of the InlineMethodILInstruction class
         /// </summary>
         /// <param name="code">The OpCode describing the operation of the instruction</param>
-        internal InlineMethodILInstruction(AssemblyDef assembly, OpCode code, int metadataToken)
+        internal InlineMethodILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
             this._methodDef = (MemberRef)assembly.ResolveMetadataToken(metadataToken);
@@ -377,14 +377,14 @@ namespace TheBoxSoftware.Reflection
     public class InlineTypeILInstruction : ILInstruction
     {
         private ILMetadataToken _token;
-        private int _index;
+        private uint _index;
         private TypeRef _typeDef;
 
         /// <summary>
         /// Initialises a new instance of the InlineMethodILInstruction class
         /// </summary>
         /// <param name="code">The OpCode describing the operation of the instruction</param>
-        internal InlineTypeILInstruction(AssemblyDef assembly, OpCode code, int metadataToken)
+        internal InlineTypeILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
             MetadataToDefinitionMap map = assembly.File.Map;
@@ -428,14 +428,14 @@ namespace TheBoxSoftware.Reflection
     public class InlineTokenILInstruction : ILInstruction
     {
         private ILMetadataToken _token;
-        private int _index;
+        private uint _index;
         private object _entry;
 
         /// <summary>
         /// Initialises a new instance of the InlineMethodILInstruction class
         /// </summary>
         /// <param name="code">The OpCode describing the operation of the instruction</param>
-        internal InlineTokenILInstruction(AssemblyDef assembly, OpCode code, int metadataToken)
+        internal InlineTokenILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
             MetadataToDefinitionMap map = assembly.File.Map;
@@ -495,14 +495,14 @@ namespace TheBoxSoftware.Reflection
     public class InlineFieldILInstruction : ILInstruction
     {
         private ILMetadataToken _token;
-        private int _index;
+        private uint _index;
         private MemberRef _fieldDef;
 
         /// <summary>
         /// Initialises a new instance of the InlineMethodILInstruction class
         /// </summary>
         /// <param name="code">The OpCode describing the operation of the instruction</param>
-        internal InlineFieldILInstruction(AssemblyDef assembly, OpCode code, int metadataToken)
+        internal InlineFieldILInstruction(AssemblyDef assembly, OpCode code, uint metadataToken)
             : base(code)
         {
             MetadataToDefinitionMap map = assembly.File.Map;

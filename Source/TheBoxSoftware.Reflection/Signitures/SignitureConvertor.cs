@@ -264,7 +264,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="sb">The current cref name for the signiture to append details to.</param>
         /// <param name="sequence">The sequence number of the current generic variable</param>
         /// <param name="parameter">The parameter definition information.</param>
-        protected virtual void ConvertVar(StringBuilder sb, int sequence, ParamDef parameter)
+        protected virtual void ConvertVar(StringBuilder sb, uint sequence, ParamDef parameter)
         {
             sb.Append("`");
             sb.Append(sequence);
@@ -276,7 +276,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="sb">The current cref name for the signiture to append details to.</param>
         /// <param name="sequence">The sequence number of the current generic variable</param>
         /// <param name="parameter">The parameter definition information.</param>
-        protected virtual void ConvertMVar(StringBuilder sb, int sequence, ParamDef parameter)
+        protected virtual void ConvertMVar(StringBuilder sb, uint sequence, ParamDef parameter)
         {
             sb.Append("``");
             sb.Append(sequence);

@@ -235,7 +235,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                         ));
                     throw ex;
                 }
-                type = method.GenericTypes[ElementType.Token];
+                type = method.GenericTypes[(int)ElementType.Token];
             }
             else if(ElementType.ElementType == ElementTypes.Var)
             {
@@ -278,7 +278,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 {
                     throw new InvalidOperationException("The generic token refers to a parameter that is not available.");
                 }
-                type = genericParameters[ElementType.Token];
+                type = genericParameters[(int)ElementType.Token];
             }
             else if(ElementType.Definition != null)
             {
@@ -341,7 +341,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.MVar)
             {
-                type = parameter.Method.GenericTypes[ElementType.Token];
+                type = parameter.Method.GenericTypes[(int)ElementType.Token];
             }
             else if(ElementType.ElementType == ElementTypes.Var)
             {
@@ -350,7 +350,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 {
                     throw new InvalidOperationException("The generic token refers to a parameter that is not available.");
                 }
-                type = genericParameters[ElementType.Token];
+                type = genericParameters[(int)ElementType.Token];
             }
             else if(ElementType.Definition != null)
             {

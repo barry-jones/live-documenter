@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 	[DebuggerDisplay("Generic Argument Count: {Count}")]
     internal sealed class GenericArgumentCountSignitureToken : SignitureToken
     {
-        private int _count;
+        private uint _count;
 
         /// <summary>
         /// Initiailses a GenericArgumentCount token from the <paramref name="signiture"/> at the
@@ -36,7 +36,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The number of generic arguments.
         /// </summary>
-        public int Count
+        public uint Count
         {
             get { return _count; }
             private set { _count = value; }

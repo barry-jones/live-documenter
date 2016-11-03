@@ -15,9 +15,9 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// </summary>
 	internal class ArrayShapeSignitureToken : SignitureToken
     {
-        private int _rank;         // specifies the number of dimensions (1 or more)
-        private int[] _sizes;      // size of each dimension
-        private int[] _loBounds;   // the lower boundaries of those dimensions
+        private uint _rank;         // specifies the number of dimensions (1 or more)
+        private uint[] _sizes;      // size of each dimension
+        private uint[] _loBounds;   // the lower boundaries of those dimensions
 
         /// <summary>
         /// Initialises a new instance of the ArrayShapeSignitureToken which reads the array share
@@ -27,20 +27,20 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="offset">The offset where this roken begins.</param>
 		public ArrayShapeSignitureToken(byte[] signiture, Offset offset) : base(SignitureTokens.ArrayShape)
         {
-            int numSizes = 0;
-            int numLoBounds = 0;
+            uint numSizes = 0;
+            uint numLoBounds = 0;
 
             _rank = GetCompressedValue(signiture, offset);
 
             numSizes = GetCompressedValue(signiture, offset);
-            _sizes = new int[numSizes];
+            _sizes = new uint[numSizes];
             for(int i = 0; i < numSizes; i++)
             {
                 _sizes[i] = GetCompressedValue(signiture, offset);
             }
 
             numLoBounds = GetCompressedValue(signiture, offset);
-            _loBounds = new int[numLoBounds];
+            _loBounds = new uint[numLoBounds];
             for(int i = 0; i < numLoBounds; i++)
             {
                 _loBounds[i] = GetCompressedValue(signiture, offset);
@@ -81,7 +81,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The number of ranks in the array shape.
         /// </summary>
-		public int Rank
+		public uint Rank
         {
             get { return _rank; }
             private set { _rank = value; }
@@ -90,7 +90,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The defined sizes
         /// </summary>
-		public int[] Sizes
+		public uint[] Sizes
         {
             get { return _sizes; }
             private set { _sizes = value; }
@@ -99,7 +99,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The values of those low boundaries.
         /// </summary>
-		public int[] LoBounds
+		public uint[] LoBounds
         {
             get { return _loBounds; }
             private set { _loBounds = value; }

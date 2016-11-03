@@ -318,7 +318,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="table">The table to get the metadata for</param>
         /// <param name="index">The index in the table</param>
         /// <returns>The MetadataTableRow or null if not found</returns>
-        public MetadataRow GetEntryFor(MetadataTables table, int index)
+        public MetadataRow GetEntryFor(MetadataTables table, uint index)
         {
             MetadataRow o = null;
             if(index <= this.Tables[table].Length)

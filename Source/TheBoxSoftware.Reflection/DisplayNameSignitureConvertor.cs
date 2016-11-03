@@ -246,11 +246,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="sb">The current display name for the signiture to append details to.</param>
         /// <param name="sequence">The sequence number of the current generic variable.</param>
         /// <param name="parameter">The parameter definition information.</param>
-        protected override void ConvertMVar(StringBuilder sb, int sequence, ParamDef parameter)
+        protected override void ConvertMVar(StringBuilder sb, uint sequence, ParamDef parameter)
         {
             // Type Generic Parameter
             GenericTypeRef foundGenericType = null;
-            foreach(GenericTypeRef current in this._method.GenericTypes)
+            foreach(GenericTypeRef current in _method.GenericTypes)
             {
                 if(current.Sequence == sequence)
                 {
@@ -270,7 +270,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="sb">The current display name for the signiture to append details to.</param>
         /// <param name="sequence">The sequence number of the current generic variable</param>
         /// <param name="parameter">The parameter definition information.</param>
-        protected override void ConvertVar(StringBuilder sb, int sequence, ParamDef parameter)
+        protected override void ConvertVar(StringBuilder sb, uint sequence, ParamDef parameter)
         {
             // Type Generic Parameter
             GenericTypeRef foundGenericType = null;

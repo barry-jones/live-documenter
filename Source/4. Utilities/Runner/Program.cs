@@ -16,7 +16,7 @@ namespace Runner
         static void Main(string[] args)
         {
             Program p = new Program();
-            p.LoadAssemblyDefOnly();
+            p.LoadAssemblyDefAndExport();
             return;
 
             Console.WriteLine(string.Empty);
@@ -64,13 +64,24 @@ namespace Runner
             DocumentedAssembly documentedAssembly = new DocumentedAssembly(TestFile);
             assemblies.Add(documentedAssembly);
 
-            Document document = new Document(assemblies);
-
-            ExportSettings settings = new ExportSettings();
-            settings.PublishDirectory = string.Empty; // current directory
             ExportConfigFile config = ExportConfigFile.Create(ConfigFile);
+            ExportSettings settings = new ExportSettings();
+            settings.PublishDirectory = string.Empty;
+            settings.Settings = new DocumentSettings();
+            settings.Settings.VisibilityFilters = new List<Visibility> {
+                Visibility.Public,
+                Visibility.Internal,
+                Visibility.InternalProtected,
+                Visibility.Protected,
+                Visibility.Private
+            };
+
+            Document document = new Document(assemblies);
+            document.Settings = settings.Settings;
+            document.UpdateDocumentMap();
 
             WebsiteExporter exporter = new WebsiteExporter(document, settings, config);
+            exporter.Export();
         }
     }
 }

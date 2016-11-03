@@ -172,19 +172,19 @@ namespace TheBoxSoftware.Reflection
                         i += 4;
                         break;
                     case OperandType.InlineField:
-                        instruction = new InlineFieldILInstruction(this.Assembly, code, BitConverter.ToInt32(fromILBytes, i + 1));
+                        instruction = new InlineFieldILInstruction(this.Assembly, code, BitConverter.ToUInt32(fromILBytes, i + 1));
                         i += 4;
                         break;
                     case OperandType.InlineMethod:
-                        instruction = new InlineMethodILInstruction(this.Assembly, code, BitConverter.ToInt32(fromILBytes, i + 1));
+                        instruction = new InlineMethodILInstruction(this.Assembly, code, BitConverter.ToUInt32(fromILBytes, i + 1));
                         i += 4;
                         break;
                     case OperandType.InlineType:
-                        instruction = new InlineTypeILInstruction(this.Assembly, code, BitConverter.ToInt32(fromILBytes, i + 1));
+                        instruction = new InlineTypeILInstruction(this.Assembly, code, BitConverter.ToUInt32(fromILBytes, i + 1));
                         i += 4;
                         break;
                     case OperandType.InlineTok:
-                        instruction = new InlineTokenILInstruction(this.Assembly, code, BitConverter.ToInt32(fromILBytes, i + 1));
+                        instruction = new InlineTokenILInstruction(this.Assembly, code, BitConverter.ToUInt32(fromILBytes, i + 1));
                         i += 4;
                         break;
                     case OperandType.InlineSwitch:

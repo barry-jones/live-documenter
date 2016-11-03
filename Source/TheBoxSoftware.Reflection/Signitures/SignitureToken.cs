@@ -6,9 +6,9 @@ namespace TheBoxSoftware.Reflection.Signitures
 
     internal class SignitureToken
     {
-        private const int CompressedByteMask    = 0x0000007f;
-        private const int CompressedShortMask   = 0x00003fff;
-        private const int CompressedIntMask     = 0x1fffffff;
+        private const uint CompressedByteMask    = 0x0000007f;
+        private const uint CompressedShortMask   = 0x00003fff;
+        private const uint CompressedIntMask     = 0x1fffffff;
 
         /// <summary>
         /// Initialises a new instance of the SignitureToken class.
@@ -30,10 +30,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <exception cref="InvalidOperationException">
         /// The first byte of the compressed value is not a valid value.
         /// </exception>
-        internal static int GetCompressedValue(byte[] contents, Offset offset)
+        internal static uint GetCompressedValue(byte[] contents, Offset offset)
         {
             int currentOffset = offset;
-            byte firstByte = contents[offset];
+            byte firstByte = contents[currentOffset];
             uint value = 0;
 
             // These values are always stored as big-endian, big end first. We need to read the
@@ -42,7 +42,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             if(firstByte <= 127)
             {
-                value = (uint)(((int)contents[currentOffset]) & CompressedByteMask);
+                value = contents[currentOffset] & CompressedByteMask;
                 offset.Shift(1);
             }
             else if(firstByte <= 191)
@@ -68,7 +68,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 throw new InvalidOperationException("The value of the first byte is not a valid compressed value.");
             }
 
-            return (int)value;
+            return value;
         }
 
         /// <summary>

@@ -40,11 +40,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             // Read the typedef, typeref or typespec token
             int typeMask = 0x00000003;
-            int token = GetCompressedValue(signiture, offset);
+            uint token = GetCompressedValue(signiture, offset);
 
             // Resolved values
             MetadataTables table;
-            int index = token >> 2;
+            uint index = token >> 2;
 
             switch(typeMask & token)
             {
@@ -60,7 +60,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 default:
                     throw new InvalidOperationException("Metadata Table could not be resolved for this Signiture");
             }
-            return new CodedIndex(table, (uint)index);
+            return new CodedIndex(table, index);
         }
 
         /// <summary>

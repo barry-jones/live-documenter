@@ -30,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         public static Signiture Create(byte[] source, Offset offset, Signitures tokenType)
         {
             int startingOffset = offset;
-            int lengthOfSigniture = SignitureToken.GetCompressedValue(source, offset);    // The first byte is always the length
+            uint lengthOfSigniture = SignitureToken.GetCompressedValue(source, offset);    // The first byte is always the length
 
             // Read the full signiture
             byte[] signiture = new byte[lengthOfSigniture];

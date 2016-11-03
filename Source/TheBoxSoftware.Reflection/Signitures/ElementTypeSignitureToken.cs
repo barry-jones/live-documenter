@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     [DebuggerDisplay("ElementType: {ElementType}, {Token}")]
     internal sealed class ElementTypeSignitureToken : SignitureToken
     {
-        private int _token;
+        private uint _token;
         private object _definition;
         private ElementTypes _elementType;
 
@@ -43,7 +43,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             ElementType = (ElementTypes)GetCompressedValue(signiture, offset);
             int typeMask;
-            int token;
+            uint token;
 
             switch(ElementType)
             {
@@ -151,7 +151,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// The token parameter to this element type, this is not always relevant
         /// so can be zero.
         /// </summary>
-        public int Token
+        public uint Token
         {
             get { return _token; }
             private set { _token = value; }

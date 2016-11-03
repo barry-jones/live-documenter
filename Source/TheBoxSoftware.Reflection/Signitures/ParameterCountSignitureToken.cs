@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 	[DebuggerDisplay("Parameter Count: {Count}")]
     internal sealed class ParameterCountSignitureToken : SignitureToken
     {
-        private int _count;
+        private uint _count;
 
         /// <summary>
         /// Initialises a new paramater count token from the provided <paramref name="signiture"/>
@@ -36,7 +36,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The number of parameters.
         /// </summary>
-        public int Count
+        public uint Count
         {
             get { return _count; }
             private set { _count = value; }

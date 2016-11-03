@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] content = new byte[] { 126 };
             Offset offset = 0;
 
-            int result = SignitureToken.GetCompressedValue(content, offset);
+            uint result = SignitureToken.GetCompressedValue(content, offset);
 
             Assert.AreEqual(126, result);
         }
@@ -27,7 +27,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] content = new byte[] { 190, 10 };
             Offset offset = 0;
 
-            int result = SignitureToken.GetCompressedValue(content, offset);
+            uint result = SignitureToken.GetCompressedValue(content, offset);
 
             Assert.AreEqual(15882, result);
         }
@@ -39,7 +39,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] content = new byte[] { 222, 10, 17, 180 };
             Offset offset = 0;
 
-            int result = SignitureToken.GetCompressedValue(content, offset);
+            uint result = SignitureToken.GetCompressedValue(content, offset);
 
             Assert.AreEqual(503976372, result);
         }

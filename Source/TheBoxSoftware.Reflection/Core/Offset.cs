@@ -42,7 +42,7 @@
         /// <returns>The converted integer value</returns>
         public static implicit operator int(Offset offset)
         {
-            return offset.Current;
+            return offset._current;
         }
 
         /// <summary>
