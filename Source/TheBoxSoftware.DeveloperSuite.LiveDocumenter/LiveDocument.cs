@@ -58,34 +58,5 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
         {
             this.Map = this.Mapper.GenerateMap();
 		}
-
-		/// <summary>
-		/// Returns the assembly currently selected by the user.
-		/// </summary>
-		public DocumentedAssembly SelectedAssembly 
-        {
-			get 
-            {
-				DocumentedAssembly selected = null;
-				if (this.Map != null && this.Assemblies != null)
-                {
-					foreach (LiveDocumenterEntry entry in this.Map)
-                    {
-						if (entry.IsSelected) {
-							long assemblyId = ReflectedMember.GetAssemblyId(entry.Key);
-							foreach (DocumentedAssembly assembly in this.Assemblies)
-                            {
-								if (assembly.UniqueId == assemblyId) 
-                                {
-									selected = assembly;
-									break;
-								}
-							}
-						}
-					}
-				}
-				return selected;
-			}
-		}
 	}
 }

@@ -25,16 +25,6 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Returns the unique assembly identifier from a global id.
-        /// </summary>
-        /// <param name="id">The global identifier</param>
-        /// <returns>The id of the assembly</returns>
-        public static long GetAssemblyId(long id)
-        {
-            return id >> 32;
-        }
-
-        /// <summary>
         /// Represents an identifier that uniquly identifies this reflected element inside 
         /// its containing <see cref="AssemblyDef"/>.
         /// </summary>
