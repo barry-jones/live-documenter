@@ -67,6 +67,7 @@
     <Compile Include="Integration\SignatureTests.cs" />
     <Compile Include="Integration\Syntax\CSharp_MethodSyntaxTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\ParamDefTests.cs" />
     <Compile Include="Unit\PropertyDefTests.cs" />
     <Compile Include="Unit\Signitures\ArrayShapeSignitureTests.cs" />
     <Compile Include="Unit\Signitures\CallingConventionSignitureTokenTests.cs" />

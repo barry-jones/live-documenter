@@ -16,26 +16,26 @@ namespace TheBoxSoftware.Reflection
         private int _sequence;
         private MethodDef _method;
 
-        /// <summary>
-        /// Initialises a ParamDef from provided metadata
-        /// </summary>
-        /// <param name="references">The owning method of the parameter</param>
-        /// <param name="container">The method this parameter is for.</param>
-        /// <param name="row">The row that details the parameter</param>
-        /// <returns>The instantiated defenition</returns>
-        internal static ParamDef CreateFromMetadata(BuildReferences references, MethodDef container, ParamMetadataTableRow row)
+        public ParamDef()
         {
-            ParamDef parameter = new ParamDef();
+            _constants = new List<ConstantInfo>();
+        }
 
-            parameter.Constants = new List<ConstantInfo>();
-            parameter.UniqueId = references.Assembly.CreateUniqueId();
-            parameter.Name = references.Assembly.StringStream.GetString(row.Name.Value);
-            parameter.Method = container;
-            parameter.Sequence = row.Sequence;
-            parameter.Assembly = references.Assembly;
-            parameter._flags = row.Flags;
-
-            return parameter;
+        /// <summary>
+        /// Constructs a ParamDef from the PeCoffFile metadata.
+        /// </summary>
+        /// <param name="references">The collection of references required to build from metadata</param>
+        /// <param name="container">The method which defines this parameter</param>
+        /// <param name="row">The metadata row to initialise this parameter with</param>
+        internal ParamDef(BuildReferences references, MethodDef container, ParamMetadataTableRow row)
+        {
+            _constants = new List<ConstantInfo>();
+            UniqueId = references.Assembly.CreateUniqueId();
+            Name = references.Assembly.StringStream.GetString(row.Name.Value);
+            _method = container;
+            _sequence = row.Sequence;
+            Assembly = references.Assembly;
+            _flags = row.Flags;
         }
 
         public TypeRef GetTypeRef()
@@ -86,7 +86,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsIn
         {
-            get { return (_flags & ParamAttributeFlags.In) == ParamAttributeFlags.In; }
+            get { return (_flags & ParamAttributeFlags.In) != 0; }
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsOut
         {
-            get { return (_flags & ParamAttributeFlags.Out) == ParamAttributeFlags.Out; }
+            get { return (_flags & ParamAttributeFlags.Out) != 0; }
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsOptional
         {
-            get { return (_flags & ParamAttributeFlags.Optional) == ParamAttributeFlags.Optional; }
+            get { return (_flags & ParamAttributeFlags.Optional) != 0; }
         }
     }
 }
