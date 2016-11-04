@@ -11,6 +11,8 @@ namespace TheBoxSoftware.Reflection
     /// <seealso cref="MethodDef"/>
     public sealed class EventDef : ReflectedMember
     {
+        private TypeDef _containingType;
+
         /// <summary>
         /// Factory method for instantiating an event from the details provided in the metadata.
         /// </summary>
@@ -73,7 +75,11 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The type which contains this event.
         /// </summary>
-        public TypeDef Type { get; set; }
+        public TypeDef Type
+        {
+            get { return _containingType; }
+            set { _containingType = value; }
+        }
 
         public override Visibility MemberAccess
         {

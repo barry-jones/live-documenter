@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection
+﻿
+namespace TheBoxSoftware.Reflection
 {
     /// <summary>
     /// Enumeration of members that can be defined in an assembly.

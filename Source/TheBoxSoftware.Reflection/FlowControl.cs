@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+
     /// <summary>
     /// Describes how the instruction effects the flow of execution.
     /// </summary>

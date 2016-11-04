@@ -9,6 +9,9 @@ namespace TheBoxSoftware.Reflection
     /// </summary>
     public sealed class AssemblyRef : ReflectedMember
     {
+        private Version _version;
+        private string _culture;
+
         /// <summary>
         /// Initialises a new instance of the AssemblyRef class from the provided details.
         /// </summary>
@@ -35,11 +38,19 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The full version details of the referenced assembly.
         /// </summary>
-        public Version Version { get; set; }
+        public Version Version
+        {
+            get { return _version; }
+            set { _version = value; }
+        }
 
         /// <summary>
         /// The string representing the culture of the assembly.
         /// </summary>
-        public string Culture { get; set; }
+        public string Culture
+        {
+            get { return _culture; }
+            set { _culture = value; }
+        }
     }
 }

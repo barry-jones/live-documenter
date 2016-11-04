@@ -9,6 +9,9 @@ namespace TheBoxSoftware.Reflection
     /// </summary>
     public class FieldDef : MemberRef
     {
+        private List<ConstantInfo> _constants;
+        private FieldAttributes _flags;
+
         /// <summary>
         /// Initialises a new instance of the FieldDef class based on the metadata provided
         /// </summary>
@@ -47,12 +50,20 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The flags detailing information about the field
         /// </summary>
-        public FieldAttributes Flags { get; set; }
+        public FieldAttributes Flags
+        {
+            get { return _flags; }
+            set { _flags = value; }
+        }
 
         /// <summary>
         /// TODO: Document
         /// </summary>
-        public List<ConstantInfo> Constants { get; set; }
+        public List<ConstantInfo> Constants
+        {
+            get { return _constants; }
+            set { _constants = value; }
+        }
 
         /// <summary>
         /// Indicates if the field is declared as a constant.

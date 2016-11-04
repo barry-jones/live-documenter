@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// A mapper class that allows the quick retrieval of metadata or
     /// definition information, from either direction.
@@ -9,6 +10,7 @@ namespace TheBoxSoftware.Reflection
     internal sealed class MetadataToDefinitionMap
     {
         private long _uniqueCounter = 0;
+        private AssemblyDef _assembly;
 
         // This is currently used to map a table and index to an instantiated definition
         // of the metadata (e.g. for TypeRef, TypeDef, TypeSpec, MemberRef, MethodDef, 
@@ -17,7 +19,7 @@ namespace TheBoxSoftware.Reflection
         // We however also need to obtain a definition for an unknown table and index, where
         // wo only know the name of that metadata.
         private Dictionary<Core.COFF.MetadataTables, Dictionary<int, ReflectedMember>> internalMap = new Dictionary<Core.COFF.MetadataTables, Dictionary<int, ReflectedMember>>();
-
+        
         /// <summary>
         /// Adds a new entry in to the definition map.
         /// </summary>
@@ -65,20 +67,12 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Obtains the definition for the specified metadata table with the specified
-        /// uniqueId.
-        /// </summary>
-        /// <param name="name">The name of the well known type</param>
-        /// <param name="space">The namespace for the well known type</param>
-        /// <returns>The found definition or null if not found</returns>
-        public object GetWellKnownType(string space, string name)
-        {
-            return new WellKnownTypeDef(this.Assembly, space, name);
-        }
-
-        /// <summary>
         /// The instance of the Assembly this defenition map is used for.
         /// </summary>
-        public AssemblyDef Assembly { get; set; }
+        public AssemblyDef Assembly
+        {
+            get { return _assembly; }
+            set { _assembly = value; }
+        }
     }
 }

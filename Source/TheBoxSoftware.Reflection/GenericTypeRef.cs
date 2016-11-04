@@ -12,6 +12,8 @@ namespace TheBoxSoftware.Reflection
     /// <seealso cref="MethodDef" />
     public sealed class GenericTypeRef : TypeRef
     {
+        private short _sequence;
+
         /// <summary>
         /// Initialises and populates a new GenericTypeRef instance based on the details
         /// provided in the metadata row.
@@ -24,7 +26,7 @@ namespace TheBoxSoftware.Reflection
             GenericTypeRef genericType = new GenericTypeRef();
 
             genericType.UniqueId = references.Assembly.CreateUniqueId();
-            genericType.Sequence = fromRow.Number;
+            genericType.Sequence = (short)fromRow.Number;
             genericType.Name = references.Assembly.StringStream.GetString(fromRow.Name.Value);
             // this.Flags = FieldReader.ToUInt16(contents, offset.Shift(2));
 
@@ -40,6 +42,10 @@ namespace TheBoxSoftware.Reflection
         /// number is used by the metadata to distinguish which type is being called
         /// or passed in signitures.
         /// </remarks>
-        public ushort Sequence { get; set; }
+        public short Sequence
+        {
+            get { return _sequence; }
+            set { _sequence = value; }
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace TheBoxSoftware.Reflection
         private bool _isOperator = false;
         private CodedIndex _class;
         private TypeRef _type;
+        private BlobIndex _signitureBlob;
 
         /// <summary>
         /// Factor method for instantiating and populating MemberRef instances from
@@ -78,7 +79,11 @@ namespace TheBoxSoftware.Reflection
         /// is stored.
         /// </summary>
         /// <seealso cref="Signiture"/>
-        protected BlobIndex SignitureBlob { get; set; }
+        protected BlobIndex SignitureBlob
+        {
+            get { return _signitureBlob; }
+            set { _signitureBlob = value; }
+        }
 
         /// <summary>
         /// Gets a value indicating if this member is a constructor.
