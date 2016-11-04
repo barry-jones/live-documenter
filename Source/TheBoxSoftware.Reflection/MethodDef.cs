@@ -5,7 +5,6 @@ namespace TheBoxSoftware.Reflection
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using Core;
     using Core.COFF;
     using Signitures;
 
@@ -20,10 +19,8 @@ namespace TheBoxSoftware.Reflection
         private uint _rva; // the reletive virtual address of this methods IL body
         private bool _isGeneric;
         private List<GenericTypeRef> _genericTypes;
-        private bool _isSpecialName;
         private MethodAttributes _attributes;
         private MethodImplFlags _implementationFlags;
-        private bool _isConversionOperator;
         private List<ParamDef> _parameters;
 
         public MethodDef()
@@ -299,8 +296,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsSpecialName
         {
-            get { return _isSpecialName; }
-            set { _isSpecialName = value; }
+            get { return (_attributes & MethodAttributes.SpecialName) != 0; }
         }
 
         /// <summary>
@@ -371,8 +367,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsConversionOperator
         {
-            get { return _isConversionOperator; }
-            set { _isConversionOperator = value; }
+            get { return Name == "op_Explicit" || Name == "op_Implicit"; }
         }
 
         /// <summary>
@@ -382,9 +377,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                // TODO: why are we casting to a base type to get access to a property which we have 
-                //  created with the same name!
-                List<CustomAttribute> attributes = ((MemberRef)this).Attributes;
+                List<CustomAttribute> attributes = Attributes;
                 if(attributes.Count > 0)
                 {
                     for(int i = 0; i < attributes.Count; i++)
@@ -527,7 +520,6 @@ namespace TheBoxSoftware.Reflection
                 _methodToBuild.Name = _assembly.StringStream.GetString(_fromRow.Name.Value);
                 _methodToBuild.SignitureBlob = _fromRow.Signiture;
                 // Set flag based information
-                _methodToBuild._isSpecialName = (_fromRow.Flags & MethodAttributes.SpecialName) != 0;
                 _methodToBuild._attributes = _fromRow.Flags;
                 _methodToBuild._implementationFlags = _fromRow.ImplFlags;
                 _methodToBuild.Assembly = _assembly;
@@ -537,10 +529,6 @@ namespace TheBoxSoftware.Reflection
                 {
                     _methodToBuild.IsConstructor = _methodToBuild.Name[0] == '.';
                     _methodToBuild.IsOperator = !_methodToBuild.IsConstructor && _methodToBuild.Name.StartsWith("op_");
-                    if(_methodToBuild.IsOperator)
-                    {
-                        _methodToBuild._isConversionOperator = _methodToBuild.Name == "op_Explicit" || _methodToBuild.Name == "op_Implicit";
-                    }
                 }
             }
         }
