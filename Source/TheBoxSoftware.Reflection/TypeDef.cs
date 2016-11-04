@@ -6,7 +6,6 @@ namespace TheBoxSoftware.Reflection
     using System.Diagnostics;
     using System.Text;
     using Core.COFF;
-    using Signitures;
 
     /// <summary>
     /// Contains the information regarding the construction and elements of a type reflected 
@@ -19,6 +18,14 @@ namespace TheBoxSoftware.Reflection
         private CodedIndex _extends;
         private MetadataTables _table;
         private int _index;
+        private List<MethodDef> _methods;
+        private List<FieldDef> _fields;
+        private List<EventDef> _events;
+        private List<PropertyDef> _properties;
+        private TypeDef _containingClass;
+        private List<TypeRef> _implements;
+        private TypeAttributes _flags;
+        private List<GenericTypeRef> _genericTypes;
 
         public TypeDef()
         {
@@ -213,50 +220,85 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The methods this type contains
         /// </summary>
-        public List<MethodDef> Methods { get; set; }
+        public List<MethodDef> Methods
+        {
+            get { return _methods; }
+            set { _methods = value; }
+        }
 
         /// <summary>
         /// The fields this type contains
         /// </summary>
-        public List<FieldDef> Fields { get; set; }
+        public List<FieldDef> Fields
+        {
+            get { return _fields; }
+            set { _fields = value; }
+        }
 
         /// <summary>
         /// The events this type contains.
         /// </summary>
-        public List<EventDef> Events { get; set; }
+        public List<EventDef> Events
+        {
+            get { return _events; }
+            set { _events = value; }
+        }
 
         /// <summary>
         /// The properties this type contains.
         /// </summary>
-        public List<PropertyDef> Properties { get; set; }
+        public List<PropertyDef> Properties
+        {
+            get { return _properties; }
+            set { _properties = value; }
+        }
 
         /// <summary>
         /// When this class is a nested class this property will contain the class which
         /// owns this class.
         /// </summary>
-        public TypeDef ContainingClass { get; set; }
+        public TypeDef ContainingClass
+        {
+            get { return _containingClass; }
+            set { _containingClass = value; }
+        }
 
         /// <summary>
         /// Collection of <see cref="TypeRef"/> instances defining the interfaces this class implements.
         /// </summary>
-        public List<TypeRef> Implements { get; set; }
+        public List<TypeRef> Implements
+        {
+            get { return _implements; }
+            set { _implements = value; }
+        }
 
         /// <summary>
         /// Flags defining extra information about the type.
         /// </summary>
-        public TypeAttributes Flags { get; set; }
+        public TypeAttributes Flags
+        {
+            get { return _flags; }
+            set { _flags = value; }
+        }
 
         /// <summary>
         /// Collection of all the generic types that are relevant for this member, this
         /// includes the types defined in parent and containing classes.
         /// </summary>
         /// <seealso cref="GetGenericTypes"/>
-        public List<GenericTypeRef> GenericTypes { get; set; }
+        public List<GenericTypeRef> GenericTypes
+        {
+            get { return _genericTypes; }
+            set { _genericTypes = value; }
+        }
 
         /// <summary>
         /// Indicates if this class is an Interface.
         /// </summary>
-        public bool IsInterface { get; set; }
+        public bool IsInterface
+        {
+            get { return (_flags & TypeAttributes.ClassSemanticMask) == TypeAttributes.Interface; }
+        }
 
         /// <summary>
         /// Returns a reference to the TypeDef or Ref which this type
@@ -598,7 +640,6 @@ namespace TheBoxSoftware.Reflection
                 _builtType.Assembly = _assembly;
                 _builtType._extends = _fromRow.Extends;
                 _builtType.Flags = _fromRow.Flags;
-                _builtType.IsInterface = (_builtType.Flags & TypeAttributes.ClassSemanticMask) == TypeAttributes.Interface;
                 _builtType.IsGeneric = _builtType.Name.Contains("`"); // Should be quicker then checking the genparam table
             }
 
