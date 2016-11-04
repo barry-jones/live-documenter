@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using System.Text;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Exception that describes issues working with reflection based code.
     /// </summary>

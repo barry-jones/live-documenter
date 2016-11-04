@@ -733,7 +733,11 @@ namespace TheBoxSoftware.Reflection
                     for(int i = startPropertyList; i <= endPropertyList; i++)
                     {
                         PropertyMetadataTableRow propertyRow = table[i - 1] as PropertyMetadataTableRow;
-                        PropertyDef property = PropertyDef.CreateFromMetadata(_references, _builtType, propertyRow);
+
+                        PropertyDef property = new PropertyDef(
+                            _references.Assembly, 
+                            _references.Assembly.StringStream.GetString(propertyRow.NameIndex.Value),
+                            _builtType);
 
                         // Get the related getter and setter methods
                         for(int j = 0; j < methodSemantics.Length; j++)

@@ -16,22 +16,17 @@ namespace TheBoxSoftware.Reflection
         public PropertyDef() { }
 
         /// <summary>
-        /// Initialises a new instance of the PropertyDef class.
+        /// Initialises an instance of the PropertyDef with the specified details.
         /// </summary>
-        /// <param name="references">An object that contains all of the required references to build the property.</param>
-        /// <param name="container">The containing type definition.</param>
-        /// <param name="row">The row that defines the details of the property.</param>
-        /// <returns>The instantiated property.</returns>
-        internal static PropertyDef CreateFromMetadata(BuildReferences references, TypeDef container, PropertyMetadataTableRow row)
+        /// <param name="definingAssembly">The assembly in which the property is defined.</param>
+        /// <param name="name">The name of the property</param>
+        /// <param name="containingType">The type that the property is defined in.</param>
+        public PropertyDef(AssemblyDef definingAssembly, string name, TypeDef containingType)
         {
-            PropertyDef property = new PropertyDef();
-
-            property.UniqueId = references.Assembly.CreateUniqueId();
-            property.OwningType = container;
-            property.Name = references.Assembly.StringStream.GetString(row.NameIndex.Value);
-            property.Assembly = references.Assembly;
-
-            return property;
+            UniqueId = definingAssembly.CreateUniqueId();
+            Assembly = definingAssembly;
+            Name = name;
+            _owningType = containingType;
         }
 
         /// <summary>
