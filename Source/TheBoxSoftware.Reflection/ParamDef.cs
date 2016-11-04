@@ -22,20 +22,22 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Constructs a ParamDef from the PeCoffFile metadata.
+        /// Constructs a ParamDef with the provided details.
         /// </summary>
-        /// <param name="references">The collection of references required to build from metadata</param>
-        /// <param name="container">The method which defines this parameter</param>
-        /// <param name="row">The metadata row to initialise this parameter with</param>
-        internal ParamDef(BuildReferences references, MethodDef container, ParamMetadataTableRow row)
+        /// <param name="name">The name for the parameter</param>
+        /// <param name="container">The method that defines and contains the parameter</param>
+        /// <param name="sequence">The sequence in the parameter list for this parameter</param>
+        /// <param name="definingAssembly">The assembly in which the parameter is defined</param>
+        /// <param name="flags">The attribute flags for the parameter</param>
+        public ParamDef(string name, MethodDef container, int sequence, AssemblyDef definingAssembly, ParamAttributeFlags flags)
         {
             _constants = new List<ConstantInfo>();
-            UniqueId = references.Assembly.CreateUniqueId();
-            Name = references.Assembly.StringStream.GetString(row.Name.Value);
             _method = container;
-            _sequence = row.Sequence;
-            Assembly = references.Assembly;
-            _flags = row.Flags;
+            _sequence = sequence;
+            _flags = flags;
+            UniqueId = definingAssembly.CreateUniqueId();
+            Assembly = definingAssembly;
+            Name = name;
         }
 
         public TypeRef GetTypeRef()

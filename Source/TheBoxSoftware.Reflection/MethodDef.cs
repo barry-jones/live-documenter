@@ -431,7 +431,16 @@ namespace TheBoxSoftware.Reflection
                     for(int i = _fromRow.ParamList; i < _endOfMethodIndex; i++)
                     {
                         ParamMetadataTableRow metadataRow = tables[MetadataTables.Param][i - 1] as ParamMetadataTableRow;
-                        ParamDef param = new ParamDef(_references, _methodToBuild, metadataRow);
+
+                        ParamDef param = new ParamDef(
+                            _references.Assembly.StringStream.GetString(metadataRow.Name.Value),
+                            _methodToBuild,
+                            metadataRow.Sequence,
+                            _references.Assembly,
+                            metadataRow.Flags
+                            );
+
+                        //ParamDef param = new ParamDef(_references, _methodToBuild, metadataRow);
 
                         _map.Add(MetadataTables.Param, metadataRow, param);
                         _methodToBuild.Parameters.Add(param);

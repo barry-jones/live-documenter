@@ -19,10 +19,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </remarks>
     public class ParamMetadataTableRow : MetadataRow
     {
-        public ParamMetadataTableRow()
-        {
-        }
-
         /// <summary>
         /// Initialises a new instance of the ParamMetadataTableRow class
         /// </summary>

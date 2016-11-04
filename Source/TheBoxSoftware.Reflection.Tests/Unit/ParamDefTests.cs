@@ -71,18 +71,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
 
         private ParamDef CreateWithSpecifiedAttributes(ParamAttributeFlags flags)
         {
-            Mock<IStringStream> stringStream = new Mock<IStringStream>();
-
-            BuildReferences buildReferences = new BuildReferences();
-            buildReferences.Assembly = new AssemblyDef();
-            buildReferences.Assembly.StringStream = stringStream.Object;
-
-            MethodDef container = new MethodDef();
-
-            ParamMetadataTableRow row = new ParamMetadataTableRow();
-            row.Flags = flags;
-
-            return new ParamDef(buildReferences, container, row);
+            AssemblyDef assembly = new AssemblyDef();
+            return new ParamDef(string.Empty, null, 0, assembly, flags);
         }
     }
 }
