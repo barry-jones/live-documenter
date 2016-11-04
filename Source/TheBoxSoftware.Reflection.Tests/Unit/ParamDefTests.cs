@@ -1,7 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit
 {
-    using Moq;
     using NUnit.Framework;
     using Reflection;
     using Reflection.Core.COFF;
