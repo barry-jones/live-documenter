@@ -40,21 +40,6 @@ namespace TheBoxSoftware.Reflection
             Name = name;
         }
 
-        public TypeRef GetTypeRef()
-        {
-            if(_sequence == 0)
-            {
-                // TODO: Need to understand this more, but it generally
-                // refers to information about the return type for the method.
-                return null;
-            }
-            else
-            {
-                Signitures.ParamSignitureToken token = _method.Signiture.GetParameterTokens()[_sequence - 1];
-                return token.ResolveParameter(_method.Assembly, this);
-            }
-        }
-
         /// <summary>
         /// Reference to the method that owns the parameter
         /// </summary>

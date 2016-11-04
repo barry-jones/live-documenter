@@ -46,6 +46,25 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
+        /// Resolves the parameter indicated by the <paramref name="sequence"/> to it's defining type.
+        /// </summary>
+        /// <param name="sequence">The sequence in the parameter list.</param>
+        /// <returns>Null if it could not be resolved otherwise the TypeRef for the parameter.</returns>
+        public TypeRef ResolveParameter(int sequence)
+        {
+            TypeRef resolvedType = null;
+
+            // zero indicates the return parameter for a method, this is handled differently
+            if(sequence != 0)
+            {
+                ParamSignitureToken token = Signiture.GetParameterTokens()[sequence - 1];
+                return token.ResolveParameter(Assembly, Parameters[sequence - 1]);
+            }
+
+            return resolvedType;
+        }
+
+        /// <summary>
         /// Obtains the details about the IL and body of this method and the contents
         /// of the MSIL.
         /// </summary>

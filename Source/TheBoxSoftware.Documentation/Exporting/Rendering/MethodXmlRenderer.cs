@@ -68,7 +68,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                     if (_member.Parameters[i].Sequence == 0)
                         continue;
 
-                    TypeRef parameterType = _member.Parameters[i].GetTypeRef();
+                    TypeRef parameterType = _member.ResolveParameter(_member.Parameters[i].Sequence);
                     TypeDef foundEntry = _member.Assembly.FindType(parameterType.Namespace, parameterType.Name);
 
                     writer.WriteStartElement("parameter");

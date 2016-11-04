@@ -72,7 +72,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                     if (internalMethod.Parameters[i].Sequence == 0)
                         continue;
 
-                    TypeRef parameterType = internalMethod.Parameters[i].GetTypeRef();
+                    TypeRef parameterType = internalMethod.ResolveParameter(internalMethod.Parameters[i].Sequence);
                     TypeDef foundEntry = _member.Assembly.FindType(parameterType.Namespace, parameterType.Name);
 
                     writer.WriteStartElement("parameter");
