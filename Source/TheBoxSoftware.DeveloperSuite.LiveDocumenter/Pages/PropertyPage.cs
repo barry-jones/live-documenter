@@ -46,7 +46,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 this.AddSyntaxBlock(this.property);
 
                 // add parameters for indexers
-                if(this.property.IsIndexer)
+                if(property.IsIndexer())
                 {
                     this.AddParametersForMethod(this.property.Getter != null ? this.property.Getter : this.property.Setter, parsedBlocks);
                 }

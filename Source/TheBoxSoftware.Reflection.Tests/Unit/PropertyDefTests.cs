@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
             PropertyDef property = new PropertyDef();
             property.Getter = getMethod;
 
-            bool result = property.IsIndexer;
+            bool result = property.IsIndexer();
 
             Assert.AreEqual(true, result);
         }
@@ -67,7 +67,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
             PropertyDef property = new PropertyDef();
             property.Setter = setMethod;
 
-            bool result = property.IsIndexer;
+            bool result = property.IsIndexer();
 
             Assert.AreEqual(true, result);
         }
@@ -82,7 +82,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
             property.Getter = getMethod;
             property.Setter = setMethod;
 
-            bool result = property.IsIndexer;
+            bool result = property.IsIndexer();
 
             Assert.AreEqual(false, result);
         }

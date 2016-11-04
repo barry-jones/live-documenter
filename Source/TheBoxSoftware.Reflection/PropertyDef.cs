@@ -34,7 +34,10 @@ namespace TheBoxSoftware.Reflection
             return property;
         }
 
-        private bool IsPropertyAnIndexer()
+        /// <summary>
+        /// Indicates if this property is an Indexer
+        /// </summary>
+        public bool IsIndexer()
         {
             bool isIndexer = false;
             bool getHasParameters = _getMethod != null && _getMethod.Parameters.Count > 0;
@@ -84,17 +87,12 @@ namespace TheBoxSoftware.Reflection
             set { _setMethod = value; }
         }
 
+        /// <summary>
+        /// Obtains the level of access for this member
+        /// </summary>
         public override Visibility MemberAccess
         {
             get { return CalculateVisibility(); }
-        }
-
-        /// <summary>
-        /// Indicates if this property is an Indexer
-        /// </summary>
-        public bool IsIndexer
-        {
-            get { return IsPropertyAnIndexer(); }
         }
     }
 }

@@ -110,7 +110,7 @@ namespace TheBoxSoftware.Reflection.Syntax
             {
                 // A property can be a noram property or an indexor
                 PropertyDef property = member as PropertyDef;
-                if(property.IsIndexer)
+                if(property.IsIndexer())
                 {
                     syntax = new IndexorSyntax(member as PropertyDef);
                 }

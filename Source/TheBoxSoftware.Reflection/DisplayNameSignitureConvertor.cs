@@ -181,7 +181,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     }
 
                     if(this._includeParameters && !_method.IsConversionOperator &&
-                        (_property == null || _property.IsIndexer) // only display parameters for indexer properties
+                        (_property == null || _property.IsIndexer()) // only display parameters for indexer properties
                         )
                     {
                         string parameters = this.Convert(_method);

@@ -64,7 +64,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             RenderSyntaxBlocks(_member, writer);
 
             MethodDef internalMethod = _member.Getter == null ? _member.Setter : _member.Getter;
-            if (_member.IsIndexer && internalMethod.Parameters.Count > 0)
+            if (_member.IsIndexer() && internalMethod.Parameters.Count > 0)
             {
                 writer.WriteStartElement("parameters");
                 for (int i = 0; i < internalMethod.Parameters.Count; i++)

@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection.Comments
             : this(CRefTypes.Property, property.OwningType, property.Name)
         {
             MethodDef method = property.Getter ?? property.Setter;
-            this.Parameters = property.IsIndexer ? this.Convert(method) : string.Empty;
+            this.Parameters = property.IsIndexer() ? this.Convert(method) : string.Empty;
         }
 
         /// <summary>
