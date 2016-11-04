@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Creates a nice searchable and iterable version of the
     /// OpCodes class.
