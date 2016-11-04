@@ -26,6 +26,12 @@ namespace TheBoxSoftware.Reflection
         private bool _isConversionOperator;
         private List<ParamDef> _parameters;
 
+        public MethodDef()
+        {
+            _genericTypes = new List<GenericTypeRef>();
+            _parameters = new List<ParamDef>();
+        }
+
         /// <summary>
         /// Initialises a new instance of MethodDef for the provided data
         /// </summary>

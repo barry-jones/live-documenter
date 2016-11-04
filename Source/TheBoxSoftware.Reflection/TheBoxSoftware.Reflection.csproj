@@ -188,6 +188,7 @@
     <Compile Include="Core\COFF\NestedClassMetadataTableRow.cs" />
     <Compile Include="Core\COFF\ParamAttributeFlags.cs" />
     <Compile Include="Core\COFF\ParamMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\PropertyAttributes.cs" />
     <Compile Include="Core\COFF\PropertyMapMetadataTableRow.cs" />
     <Compile Include="Core\COFF\PropertyMetadataTableRow.cs" />
     <Compile Include="Core\COFF\StandAloneSigMetadataTableRow.cs" />

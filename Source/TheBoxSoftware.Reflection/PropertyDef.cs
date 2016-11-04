@@ -28,30 +28,33 @@ namespace TheBoxSoftware.Reflection
 
             property.UniqueId = row.FileOffset;
             property.OwningType = container;
-            property.Name = references.Assembly.StringStream.GetString(row.Name.Value);
+            property.Name = references.Assembly.StringStream.GetString(row.NameIndex.Value);
             property.Assembly = references.Assembly;
 
             return property;
         }
 
+        private bool IsPropertyAnIndexer()
+        {
+            bool isIndexer = false;
+            bool getHasParameters = _getMethod != null && _getMethod.Parameters.Count > 0;
+            bool setHasParaemters = _setMethod != null && _setMethod.Parameters.Count > 0;
+
+            if(getHasParameters || setHasParaemters)
+            {
+                isIndexer = true;
+            }
+
+            return isIndexer;
+        }
+
         private Visibility CalculateVisibility()
         {
-            Visibility setterVisibility = 0;
-            Visibility getterVisibility = 0;
+            Visibility setterVisibility = _setMethod != null ? _setMethod.MemberAccess : 0;
+            Visibility getterVisibility = _getMethod != null ? _getMethod.MemberAccess : 0;
 
-            if(_setMethod != null)
-            {
-                setterVisibility = _setMethod.MemberAccess;
-            }
-            if(_getMethod != null)
-            {
-                getterVisibility = _getMethod.MemberAccess;
-            }
-
-            // The more public, the greater the number
-            return (setterVisibility > getterVisibility)
-                ? setterVisibility
-                : getterVisibility;
+            // The more public, the greater the value of the visibilty enumeration value
+            return (setterVisibility > getterVisibility) ? setterVisibility : getterVisibility;
         }
 
         /// <summary>
@@ -91,18 +94,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsIndexer
         {
-            get
-            {
-                bool isIndexer = false;
-                if(
-                    (this.Getter != null && this.Getter.Parameters.Count > 0)
-                    || (this.Setter != null && this.Setter.Parameters.Count > 1)
-                    )
-                {
-                    isIndexer = true;
-                }
-                return isIndexer;
-            }
+            get { return IsPropertyAnIndexer(); }
         }
     }
 }

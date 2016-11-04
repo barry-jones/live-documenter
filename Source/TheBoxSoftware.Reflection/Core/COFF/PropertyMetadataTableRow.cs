@@ -1,11 +1,13 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    // p241 ECMA-335
+
     public sealed class PropertyMetadataTableRow : MetadataRow
     {
-        private ushort _propertyAttributes;
-        private StringIndex _indexToNameInStringStream;
-        private uint _indexToTypeInBlobHeap;
+        private PropertyAttributes _attributes;
+        private StringIndex _nameIndex;
+        private uint _typeIndex;
 
         /// <summary>
         /// Initialises a new instance of the PropertyMetadataTableRow class
@@ -15,25 +17,37 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="offset">The offset of this row</param>
         public PropertyMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
         {
-            this.FileOffset = offset;
-            this.Flags = FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.Name = new StringIndex(stream, offset);
-            this.Type = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+            FileOffset = offset;
+            _attributes = (PropertyAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
+            _nameIndex = new StringIndex(stream, offset);
+            _typeIndex = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
         }
 
         /// <summary>
-        /// A 2-byte bitmask of PropertyAttributes
+        /// A 2-byte bitmask of PropertyAttributes, only the values set are specified.
         /// </summary>
-        public ushort Flags { get; set; }
+        public PropertyAttributes Attributes
+        {
+            get { return _attributes; }
+            set { _attributes = value; }
+        }
 
         /// <summary>
         /// An index in to the string heap
         /// </summary>
-        public StringIndex Name { get; set; }
+        public StringIndex NameIndex
+        {
+            get { return _nameIndex; }
+            set { _nameIndex = value; }
+        }
 
         /// <summary>
         /// An index in to the blob heap for the signiture
         /// </summary>
-        public uint Type { get; set; }
+        public uint TypeIndex
+        {
+            get { return _typeIndex; }
+            set { _typeIndex = value; }
+        }
     }
 }
