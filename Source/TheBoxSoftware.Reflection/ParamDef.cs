@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using Core.COFF;
+
     /// <summary>
     /// Describes a parameter
     /// </summary>
@@ -11,6 +12,9 @@ namespace TheBoxSoftware.Reflection
     public class ParamDef : ReflectedMember
     {
         private ParamAttributeFlags _flags;
+        private List<ConstantInfo> _constants;
+        private int _sequence;
+        private MethodDef _method;
 
         /// <summary>
         /// Initialises a ParamDef from provided metadata
@@ -36,7 +40,7 @@ namespace TheBoxSoftware.Reflection
 
         public TypeRef GetTypeRef()
         {
-            if(this.Sequence == 0)
+            if(_sequence == 0)
             {
                 // TODO: Need to understand this more, but it generally
                 // refers to information about the return type for the method.
@@ -44,41 +48,38 @@ namespace TheBoxSoftware.Reflection
             }
             else
             {
-                Reflection.Signitures.ParamSignitureToken token = this.Method.Signiture.GetParameterTokens()[this.Sequence - 1];
-                return token.ResolveParameter(this.Method.Assembly, this);
-            }
-        }
-
-        private TypeRef ResolveParameterType()
-        {
-            if(this.Sequence == 0)
-            {
-                // TODO: Need to understand this more, but it generally
-                // refers to information about the return type for the method.
-                return null;
-            }
-            else
-            {
-                Reflection.Signitures.ParamSignitureToken token = this.Method.Signiture.GetParameterTokens()[this.Sequence - 1];
-                return token.ResolveParameter(this.Method.Assembly, this);
+                Signitures.ParamSignitureToken token = _method.Signiture.GetParameterTokens()[_sequence - 1];
+                return token.ResolveParameter(_method.Assembly, this);
             }
         }
 
         /// <summary>
         /// Reference to the method that owns the parameter
         /// </summary>
-        public MethodDef Method { get; set; }
+        public MethodDef Method
+        {
+            get { return _method; }
+            set { _method = value; }
+        }
 
         /// <Summary>
         /// A number that indicates the sequence in the parameter list this ParamDef
         /// refers to on its parent method.
         /// </Summary>
-        public int Sequence { get; set; }
+        public int Sequence
+        {
+            get { return _sequence; }
+            set { _sequence = value; }
+        }
 
         /// <summary>
         /// The constant values associated with the parameters if any.
         /// </summary>
-        public List<ConstantInfo> Constants { get; set; }
+        public List<ConstantInfo> Constants
+        {
+            get { return _constants; }
+            set { _constants = value; }
+        }
 
         /// <summary>
         /// Indicates if the parameter has been declared as an in paramter
