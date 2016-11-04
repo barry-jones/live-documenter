@@ -1,13 +1,20 @@
-﻿using TheBoxSoftware.Reflection.Core.COFF;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using Core.COFF;
+
     /// <summary>
     /// A class that describes a property that has been defined in an <see cref="TypeDef"/>.
     /// </summary>
     public sealed class PropertyDef : ReflectedMember
     {
+        // name, assembly, uniqueid, memberaccess and attributes
+        private TypeDef _owningType;
+        private MethodDef _getMethod;
+        private MethodDef _setMethod;
+
+        public PropertyDef() { }
+
         /// <summary>
         /// Initialises a new instance of the PropertyDef class.
         /// </summary>
@@ -20,76 +27,63 @@ namespace TheBoxSoftware.Reflection
             PropertyDef property = new PropertyDef();
 
             property.UniqueId = row.FileOffset;
-            property.Type = container;
+            property.OwningType = container;
             property.Name = references.Assembly.StringStream.GetString(row.Name.Value);
             property.Assembly = references.Assembly;
-            // row.Type; // Contains details of the properties signiture
 
             return property;
         }
-        
-        /// <summary>
-        /// Returns a display name for the Property.
-        /// </summary>
-        /// <param name="includeNamespace">Indicates if the namespace should be included.</param>
-        /// <param name="includeParameters">indicates if the parameters should be included.</param>
-        /// <returns>A string representing the display name for the property.</returns>
-        public string GetDisplayName(bool includeNamespace, bool includeParameters)
+
+        private Visibility CalculateVisibility()
         {
-            DisplayNameSignitureConvertor convertor = new DisplayNameSignitureConvertor(this, includeNamespace, includeParameters);
-            return convertor.Convert();
+            Visibility setterVisibility = 0;
+            Visibility getterVisibility = 0;
+
+            if(_setMethod != null)
+            {
+                setterVisibility = _setMethod.MemberAccess;
+            }
+            if(_getMethod != null)
+            {
+                getterVisibility = _getMethod.MemberAccess;
+            }
+
+            // The more public, the greater the number
+            return (setterVisibility > getterVisibility)
+                ? setterVisibility
+                : getterVisibility;
         }
 
         /// <summary>
-        /// Returns a display name for the property.
+        /// Reference to the TypeDef where this property is defined.
         /// </summary>
-        /// <param name="includeNamespace">Indicates if the namespace should be included.</param>
-        /// <returns>A string representing the display name for the property.</returns>
-        public string GetDisplayName(bool includeNamespace)
+        public TypeDef OwningType
         {
-            DisplayNameSignitureConvertor convertor = new DisplayNameSignitureConvertor(this, includeNamespace, true);
-            return convertor.Convert();
+            get { return _owningType; }
+            set { _owningType = value; }
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets the <see cref="MethodDef"/> which relates to the associated get method for the property. 
         /// </summary>
-        public TypeDef Type { get; set; }
+        public MethodDef Getter
+        {
+            get { return _getMethod; }
+            set { _getMethod = value; }
+        }
 
         /// <summary>
-        /// Gets or sets the <see cref="MethodDef"/> which relates to the 
-        /// associated get method for the property. This can be null if there is no
-        /// getter defined.
+        /// Gest or sets the <see cref="MethodDef"/> which relates to the associated set method for the property. 
         /// </summary>
-        public MethodDef GetMethod { get; set; }
-
-        /// <summary>
-        /// Gest or sets the <see cref="MethodDef"/> which relates to the
-        /// associated set method for the property. This can be null if there is no
-        /// setter defined.
-        /// </summary>
-        public MethodDef SetMethod { get; set; }
+        public MethodDef Setter
+        {
+            get { return _setMethod; }
+            set { _setMethod = value; }
+        }
 
         public override Visibility MemberAccess
         {
-            get
-            {
-                int setterVisibility = 0;
-                int getterVisibility = 0;
-                if(this.SetMethod != null)
-                {
-                    setterVisibility = (int)this.SetMethod.MemberAccess;
-                }
-                if(this.GetMethod != null)
-                {
-                    getterVisibility = (int)this.GetMethod.MemberAccess;
-                }
-
-                // The more public, the greater the number
-                return (setterVisibility > getterVisibility)
-                    ? (Visibility)setterVisibility
-                    : (Visibility)getterVisibility;
-            }
+            get { return CalculateVisibility(); }
         }
 
         /// <summary>
@@ -101,8 +95,8 @@ namespace TheBoxSoftware.Reflection
             {
                 bool isIndexer = false;
                 if(
-                    (this.GetMethod != null && this.GetMethod.Parameters.Count > 0)
-                    || (this.SetMethod != null && this.SetMethod.Parameters.Count > 1)
+                    (this.Getter != null && this.Getter.Parameters.Count > 0)
+                    || (this.Setter != null && this.Setter.Parameters.Count > 1)
                     )
                 {
                     isIndexer = true;

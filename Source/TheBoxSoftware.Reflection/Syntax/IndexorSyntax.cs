@@ -20,8 +20,8 @@ namespace TheBoxSoftware.Reflection.Syntax
         public IndexorSyntax(PropertyDef propertyDef)
         {
             _propertyDef = propertyDef;
-            _get = propertyDef.GetMethod;
-            _set = propertyDef.SetMethod;
+            _get = propertyDef.Getter;
+            _set = propertyDef.Setter;
         }
 
         /// <summary>

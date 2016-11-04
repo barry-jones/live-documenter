@@ -703,14 +703,14 @@ namespace TheBoxSoftware.Reflection
                             {
                                 if(semantics.Semantics == MethodSemanticsAttributes.Setter)
                                 {
-                                    property.SetMethod = _map.GetDefinition(
+                                    property.Setter = _map.GetDefinition(
                                         MetadataTables.MethodDef,
                                         _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
                                         ) as MethodDef;
                                 }
                                 else if(semantics.Semantics == MethodSemanticsAttributes.Getter)
                                 {
-                                    property.GetMethod = _map.GetDefinition(
+                                    property.Getter = _map.GetDefinition(
                                         MetadataTables.MethodDef,
                                         _metadataStream.GetEntryFor(MetadataTables.MethodDef, semantics.Method)
                                         ) as MethodDef;

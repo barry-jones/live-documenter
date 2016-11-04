@@ -3,6 +3,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
     using Reflection;
     using Reflection.Comments;
+    using Reflection.Signitures;
 
     class PropertyXmlRenderer : XmlRenderer
     {
@@ -24,7 +25,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         {
             CRefPath crefPath = new CRefPath(_member);
             XmlCodeComment comment = _xmlComments.ReadComment(crefPath);
-            string displayName = _member.GetDisplayName(false);
+            string displayName = new DisplayNameSignitureConvertor(_member, false, true).Convert();
 
             writer.WriteStartElement("member");
             writer.WriteAttributeString("id", AssociatedEntry.Key.ToString());
@@ -37,11 +38,11 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             writer.WriteEndElement();
 
             writer.WriteStartElement("namespace");
-            Entry namespaceEntry = AssociatedEntry.FindNamespace(_member.Type.Namespace);
+            Entry namespaceEntry = AssociatedEntry.FindNamespace(_member.OwningType.Namespace);
             writer.WriteAttributeString("id", namespaceEntry.Key.ToString());
             writer.WriteAttributeString("name", namespaceEntry.SubKey);
-            writer.WriteAttributeString("cref", $"N:{_member.Type.Namespace}");
-            writer.WriteString(_member.Type.Namespace);
+            writer.WriteAttributeString("cref", $"N:{_member.OwningType.Namespace}");
+            writer.WriteString(_member.OwningType.Namespace);
             writer.WriteEndElement();
             writer.WriteStartElement("assembly");
             writer.WriteAttributeString("file", System.IO.Path.GetFileName(_member.Assembly.FileName));
@@ -62,7 +63,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             RenderPermissionBlock(_member, writer, comment);
             RenderSyntaxBlocks(_member, writer);
 
-            MethodDef internalMethod = _member.GetMethod == null ? _member.SetMethod : _member.GetMethod;
+            MethodDef internalMethod = _member.Getter == null ? _member.Setter : _member.Getter;
             if (_member.IsIndexer && internalMethod.Parameters.Count > 0)
             {
                 writer.WriteStartElement("parameters");

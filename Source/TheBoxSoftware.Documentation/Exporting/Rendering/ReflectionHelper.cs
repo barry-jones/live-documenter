@@ -2,6 +2,7 @@
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
     using Reflection;
+    using Reflection.Signitures;
 
     public static class ReflectionHelper
     {
@@ -94,7 +95,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             }
             else if (entry is PropertyDef)
             {
-                displayName = ((PropertyDef)entry).GetDisplayName(false);
+                PropertyDef property = entry as PropertyDef;
+                displayName = new DisplayNameSignitureConvertor(property, false, true).Convert();
             }
             else if (entry is MethodDef)
             {

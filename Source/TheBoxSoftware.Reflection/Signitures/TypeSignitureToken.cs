@@ -248,7 +248,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else if(member is PropertyDef)
                 {
-                    theType = ((PropertyDef)member).Type;
+                    theType = ((PropertyDef)member).OwningType;
                 }
                 else if(member is FieldDef)
                 {

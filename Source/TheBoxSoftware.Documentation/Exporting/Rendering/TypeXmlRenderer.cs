@@ -173,8 +173,8 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 var s = from child in properties.Children orderby child.Name select child;
                 foreach (Entry current in s)
                 {
-                    PropertyDef currentMember = (PropertyDef)current.Item;
-                    WriteEntry(writer, currentMember, currentMember.GetDisplayName(false, true));
+                    PropertyDef currentMember = current.Item as PropertyDef;
+                    WriteEntry(writer, currentMember, new DisplayNameSignitureConvertor(currentMember, false, true).Convert());
                 }
             }
 

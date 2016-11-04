@@ -306,7 +306,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 			}
 			else if (forItem is PropertyDef) {
 				PropertyDef property = forItem as PropertyDef;
-				TraceHelper.WriteLine("property ({0}.{1}.{2})", property.Type.Namespace, property.Type.Name, property.Name);
+				TraceHelper.WriteLine("property ({0}.{1}.{2})", property.OwningType.Namespace, property.OwningType.Name, property.Name);
 				created = new PropertyPage(property, commentsXml);
 			}
 			else if (forItem is List<EventDef>) {

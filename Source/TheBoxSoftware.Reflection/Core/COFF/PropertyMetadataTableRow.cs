@@ -1,9 +1,12 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    public class PropertyMetadataTableRow : MetadataRow
+    public sealed class PropertyMetadataTableRow : MetadataRow
     {
+        private ushort _propertyAttributes;
+        private StringIndex _indexToNameInStringStream;
+        private uint _indexToTypeInBlobHeap;
+
         /// <summary>
         /// Initialises a new instance of the PropertyMetadataTableRow class
         /// </summary>
@@ -21,7 +24,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// A 2-byte bitmask of PropertyAttributes
         /// </summary>
-        public UInt16 Flags { get; set; }
+        public ushort Flags { get; set; }
 
         /// <summary>
         /// An index in to the string heap
@@ -31,6 +34,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// An index in to the blob heap for the signiture
         /// </summary>
-        public UInt32 Type { get; set; }
+        public uint Type { get; set; }
     }
 }
