@@ -10,16 +10,6 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         // currently can not be mocked out without some work.
 
         [Test]
-        public void AssemblyDef()
-        {
-            AssemblyDef assemblyDef = new AssemblyDef();
-
-            long id = assemblyDef.GetAssemblyId();
-
-            Assert.AreEqual(0, id);
-        }
-
-        [Test]
         public void AssemblyDef_GetTypesInNamespace_WhenNoTypesOrNamespaces_ShouldReturnAZeroLengthList()
         {
             AssemblyDef assemblyDef = new AssemblyDef();

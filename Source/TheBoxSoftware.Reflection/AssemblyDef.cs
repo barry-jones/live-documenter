@@ -141,7 +141,7 @@ namespace TheBoxSoftware.Reflection
         public override long GetGloballyUniqueId() => ((long)UniqueId) << 32;
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
-        public override long GetAssemblyId() => UniqueId;
+        // public override long GetAssemblyId() => UniqueId;
 
         internal Signitures.Signiture GetSigniture(BlobIndex fromIndex)
         {
