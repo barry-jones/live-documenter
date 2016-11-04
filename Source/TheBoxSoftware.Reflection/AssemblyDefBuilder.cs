@@ -183,7 +183,7 @@ namespace TheBoxSoftware.Reflection
 
             foreach(TypeSpecMetadataTableRow typeSpecRow in _stream.Tables[MetadataTables.TypeSpec])
             {
-                TypeSpec typeRef = TypeSpec.CreateFromMetadata(_assembly, _metadata, typeSpecRow);
+                TypeSpec typeRef = new TypeSpec(_assembly, typeSpecRow.Signiture);
                 _map.Add(MetadataTables.TypeSpec, typeSpecRow, typeRef);
             }
         }
@@ -229,7 +229,13 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < count; i++)
             {
                 TypeRefMetadataTableRow row = table[i] as TypeRefMetadataTableRow;
-                TypeRef typeRef = TypeRef.CreateFromMetadata(_references, row);
+
+                TypeRef typeRef = new TypeRef(
+                    _assembly,
+                    _assembly.StringStream.GetString(row.Name.Value),
+                    _assembly.StringStream.GetString(row.Namespace.Value),
+                    row.ResolutionScope
+                    );
 
                 _map.Add(MetadataTables.TypeRef, row, typeRef);
             }

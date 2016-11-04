@@ -1,7 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection
 {
-    using System;
     using Reflection.Core.COFF;
     using Reflection.Signitures;
 
@@ -14,21 +13,20 @@ namespace TheBoxSoftware.Reflection
     {
         private TypeDetails _details = null;
         private BlobIndex _signitureIndexInBlob;
+        private TypeDef _implementingType;
+
+        public TypeSpec() { }
 
         /// <summary>
-        /// Creates a new instance of the TypeSpec class, using the provided information.
+        /// Creates a new instance of the TypeSpec class using the provided information.
         /// </summary>
-        /// <param name="assembly">The assembly this type specification is defined.</param>
-        /// <param name="metatadata">The metadata directory containing the information.</param>
-        /// <param name="row">The metadata row containing the actual details.</param>
-        /// <returns>The instantiated type specification.</returns>
-        public static TypeSpec CreateFromMetadata(AssemblyDef assembly, MetadataDirectory metatadata, TypeSpecMetadataTableRow row)
+        /// <param name="definingAssembly">The assembly which defines the type specification</param>
+        /// <param name="signitureIndex">The index in to the blod where the signiture for this type is defined.</param>
+        public TypeSpec(AssemblyDef definingAssembly, BlobIndex signitureIndex)
         {
-            TypeSpec spec = new TypeSpec();
-            spec.UniqueId = assembly.CreateUniqueId();
-            spec.Assembly = assembly;
-            spec._signitureIndexInBlob = row.Signiture;
-            return spec;
+            UniqueId = definingAssembly.CreateUniqueId();
+            Assembly = definingAssembly;
+            _signitureIndexInBlob = signitureIndex;
         }
 
         /// <summary>
@@ -118,6 +116,10 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Gets or sets the type which is implementing this base type or interface.
         /// </summary>
-        public TypeDef ImplementingType { get; set; }
+        public TypeDef ImplementingType
+        {
+            get { return _implementingType; }
+            set { _implementingType = value; }
+        }
     }
 }

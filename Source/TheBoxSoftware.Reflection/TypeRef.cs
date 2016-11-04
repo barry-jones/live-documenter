@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using TheBoxSoftware.Reflection.Core.COFF;
-using TheBoxSoftware.Reflection.Signitures;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using TheBoxSoftware.Reflection.Core.COFF;
+    using TheBoxSoftware.Reflection.Signitures;
+
     /// <summary>
     /// Details a reference to a Type that resides in another assembly.
     /// </summary>
@@ -17,27 +18,30 @@ namespace TheBoxSoftware.Reflection
         /// us to obtain the details to resolve this reference to its external entry.
         /// </field>
         private CodedIndex _resolutionScope;
+        private List<MethodDef> _extensionMethods;
+        private bool _isExternalReference;
+        private bool _isGeneric;
+        private string _namespace;
+
+        public TypeRef() { }
 
         /// <summary>
-        /// Initialises a new instance of the TypeRef class.
+        /// Initiliases a new instance of the TypeRef class using the provided details.
         /// </summary>
-        /// <param name="references">A container of all the references required to build the typeref.</param>
-        /// <param name="row">The metadata row that describes the type reference.</param>
-        /// <returns>A reference to a TypeRef that represents the metadata row.</returns>
-        internal static TypeRef CreateFromMetadata(BuildReferences references, TypeRefMetadataTableRow row)
+        /// <param name="definingAssembly">The assembly which defines the type reference</param>
+        /// <param name="name">The name of the type reference</param>
+        /// <param name="namespaceName">The namespace it is defined in</param>
+        /// <param name="resolutionScope">A CodedIndex determining the resolve the external reference</param>
+        public TypeRef(AssemblyDef definingAssembly, string name, string namespaceName, CodedIndex resolutionScope)
         {
-            TypeRef typeRef = new TypeRef();
-
-            typeRef.UniqueId = references.Assembly.CreateUniqueId();
-            typeRef.Name = references.Assembly.StringStream.GetString(row.Name.Value);
-            typeRef.Namespace = references.Assembly.StringStream.GetString(row.Namespace.Value);
-            typeRef.IsExternalReference = true;
-            typeRef._resolutionScope = row.ResolutionScope;
-            typeRef.IsGeneric = typeRef.Name.IndexOf('`') != -1;    // Must be a better way :/
-            typeRef.Assembly = references.Assembly;
-            typeRef.ExtensionMethods = new List<MethodDef>();
-
-            return typeRef;
+            UniqueId = definingAssembly.CreateUniqueId();
+            Assembly = definingAssembly;
+            Name = name;
+            Namespace = namespaceName;
+            _isExternalReference = true;
+            _resolutionScope = resolutionScope;
+            _isGeneric = name.IndexOf('`') != -1;
+            _extensionMethods = new List<MethodDef>();
         }
 
         /// <summary>
@@ -141,22 +145,29 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The namespace in which this type resides.
         /// </summary>
-        public virtual string Namespace { get; set; }
-
-        /// <summary>
-        /// Indicates if this TypeRef is an array instance or not
-        /// </summary>
-        public virtual bool IsArray { get; set; }
+        public virtual string Namespace
+        {
+            get { return _namespace; }
+            set { _namespace = value; }
+        }
 
         /// <summary>
         /// TODO Should implement this properly for TypeDef, TypeRef entries
         /// </summary>
-        public virtual bool IsGeneric { get; set; }
+        public virtual bool IsGeneric
+        {
+            get { return _isGeneric; }
+            set { _isGeneric = value; }
+        }
 
         /// <summary>
         /// Indicates wether or not this member is a reference to an external type.
         /// </summary>
-        public virtual bool IsExternalReference { get; set; }
+        public virtual bool IsExternalReference
+        {
+            get { return _isExternalReference; }
+            set { _isExternalReference = value; }
+        }
 
         /// <summary>
         /// Extension methods associated with this type.
@@ -167,6 +178,10 @@ namespace TheBoxSoftware.Reflection
         /// derives for this type too, which means all assembly defined types will get this
         /// functionality.
         /// </remarks>
-        public List<MethodDef> ExtensionMethods { get; set; }
+        public List<MethodDef> ExtensionMethods
+        {
+            get { return _extensionMethods; }
+            set { _extensionMethods = value; }
+        }
     }
 }
