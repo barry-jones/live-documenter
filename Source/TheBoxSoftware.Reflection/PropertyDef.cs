@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection
         {
             PropertyDef property = new PropertyDef();
 
-            property.UniqueId = row.FileOffset;
+            property.UniqueId = references.Assembly.CreateUniqueId();
             property.OwningType = container;
             property.Name = references.Assembly.StringStream.GetString(row.NameIndex.Value);
             property.Assembly = references.Assembly;
@@ -35,7 +35,7 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Indicates if this property is an Indexer
+        /// Indicates if this property is an Indexer based on the Getter and Setter methods.
         /// </summary>
         public bool IsIndexer()
         {
