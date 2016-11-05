@@ -1,7 +1,8 @@
-﻿using System.Xml;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System.Xml;
+
     public sealed class SeeXmlCodeElement : XmlCodeElement
     {
         internal SeeXmlCodeElement(XmlNode node)

@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <summary>
     /// Records the interfaces a type implements explicitly

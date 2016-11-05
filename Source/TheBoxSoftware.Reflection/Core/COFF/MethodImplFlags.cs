@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// Flags describing a <see cref="MethodMetadataTableRow"/>s implementation.
     /// </summary>

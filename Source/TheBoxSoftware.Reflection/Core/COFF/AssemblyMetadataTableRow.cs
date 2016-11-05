@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// Represents the details of an Assembly stored in metadata.
     /// </summary>
@@ -36,9 +37,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// assembly.
         /// </summary>
         /// <returns>The populated <see cref="Version"/> instance.</returns>
-        public Version GetVersion()
+        public Core.Version GetVersion()
         {
-            return new Version(
+            return new Core.Version(
                 this.MajorVersion,
                 this.MinorVersion,
                 this.BuildNumber,

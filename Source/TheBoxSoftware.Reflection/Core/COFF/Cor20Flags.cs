@@ -1,6 +1,6 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
-
     public enum Cor20Flags : ulong
     {
         /// <summary>The image file contains IL code only</summary>

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System.Xml;
+
     /// <summary>
     /// CodeElement that describes an exception that can be thrown.
     /// </summary>

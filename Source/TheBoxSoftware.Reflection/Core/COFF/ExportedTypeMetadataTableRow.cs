@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// A type which is defined within other modules of this assembly. In essance, it stores
     /// TypeDef row numbers of all types tha are marked public in other modules that

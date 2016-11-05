@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <summary>
     /// Allows the compiler to override the default inheritance rules provided

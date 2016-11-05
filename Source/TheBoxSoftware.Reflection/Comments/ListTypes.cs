@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Comments
+﻿
+namespace TheBoxSoftware.Reflection.Comments
 {
     /// <summary>
     /// An enumeration of the available types that a <see cref="ListXmlCodeElement"/>

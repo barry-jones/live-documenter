@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Comments
+﻿
+namespace TheBoxSoftware.Reflection.Comments
 {
     /// <summary>
     /// Enumeration of supported XML Code Comment tags

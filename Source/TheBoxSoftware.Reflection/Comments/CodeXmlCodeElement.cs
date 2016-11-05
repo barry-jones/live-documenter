@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
-	/// <summary>
-	/// Represents a pre-formatted code entry as a block level element.
-	/// </summary>
-	public sealed class CodeXmlCodeElement : XmlCodeElement 
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Xml;
+
+    /// <summary>
+    /// Represents a pre-formatted code entry as a block level element.
+    /// </summary>
+    public sealed class CodeXmlCodeElement : XmlCodeElement 
     {
 		/// <summary>
 		/// Initialises a new instance of the CodeXmlCodeElement class.

@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <remarks>
     /// Updated for 4-byte heap indexes

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TheBoxSoftware.Reflection.Comments 
+﻿
+namespace TheBoxSoftware.Reflection.Comments
 {
-	/// <summary>
-	/// Exception which details that an attribute on one of the XmlCodeElements
-	/// is missing when it is required.
-	/// </summary>
-	public sealed class AttributeRequiredException : ApplicationException
+    using System;
+
+    /// <summary>
+    /// Exception which details that an attribute on one of the XmlCodeElements
+    /// is missing when it is required.
+    /// </summary>
+    public sealed class AttributeRequiredException : ApplicationException
     {
 		/// <summary>
 		/// Initialises a new instance of the AttributeRequiredException class.

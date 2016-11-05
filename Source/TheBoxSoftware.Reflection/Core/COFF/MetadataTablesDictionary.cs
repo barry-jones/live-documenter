@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a dictionary of all of the metadata rows loaded from an assembly.
     /// </summary>

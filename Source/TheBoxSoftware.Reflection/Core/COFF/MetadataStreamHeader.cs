@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+    using System.Collections.Generic;
+
     public struct MetadataStreamHeader
     {
         public uint Offset;

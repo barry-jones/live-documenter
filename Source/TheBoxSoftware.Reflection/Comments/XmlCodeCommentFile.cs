@@ -1,9 +1,10 @@
-﻿using System;
-using System.Xml;
-using System.Xml.XPath;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System;
+    using System.Xml;
+    using System.Xml.XPath;
+
     /// <summary>
     /// A container and manager class for the xml code comments files associated
     /// with libraries.

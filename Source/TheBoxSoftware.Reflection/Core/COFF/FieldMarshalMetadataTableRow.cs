@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// Links an existing row in the Field or Param table to information
     /// in the blob heap that defines how that field or parameter should

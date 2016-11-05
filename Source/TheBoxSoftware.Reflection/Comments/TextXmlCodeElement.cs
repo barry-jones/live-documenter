@@ -1,8 +1,9 @@
-﻿using System.Text.RegularExpressions;
-using System.Xml;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System.Text.RegularExpressions;
+    using System.Xml;
+
     /// <summary>
     /// Not really an allowed xml code comment element; but this is used by the system to aid in the 
     /// parsing of inline textual elements from other <see cref="XmlCodeElement"/> implementations.

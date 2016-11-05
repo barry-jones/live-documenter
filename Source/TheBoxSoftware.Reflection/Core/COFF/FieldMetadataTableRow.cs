@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <remarks>Modified to use 4-byte heap fields</remarks>
     public class FieldMetadataTableRow : MetadataRow

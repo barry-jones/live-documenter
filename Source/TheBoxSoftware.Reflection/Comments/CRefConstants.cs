@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
-	/// <summary>
-	/// Set of constants that define all of the different cref identifiers
-	/// that can be used in code comments.
-	/// </summary>
-	internal static class CRefConstants
+    using System;
+
+    /// <summary>
+    /// Set of constants that define all of the different cref identifiers
+    /// that can be used in code comments.
+    /// </summary>
+    internal static class CRefConstants
     {
 		/// <summary>
 		/// Constant that defines a field reference.

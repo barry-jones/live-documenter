@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using TheBoxSoftware.Diagnostics;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using TheBoxSoftware.Diagnostics;
+
     /// <summary>
     /// Class that handles and parses a CRef comment path. A CRef path can contain a fully qualified 
     /// link to a type, property, method etc in an assembly.

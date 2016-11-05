@@ -1,8 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    using System;
-
     /// <summary>
     /// Represents a simple index item, where the item is an entry in to - generall -
     /// a metadata table.

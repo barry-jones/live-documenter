@@ -1,8 +1,9 @@
-﻿using System;
-using System.Xml;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System;
+    using System.Xml;
+
     /// <summary>
     /// The details of the comments associated with a single member.
     /// </summary>

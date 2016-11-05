@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Manages a map of details required for calculating coded indexes.
     /// </summary>

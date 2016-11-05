@@ -1,9 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Runtime.Serialization;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System;
+    using System.Text;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Describes errors that occur while using the members and methods defined
     /// to read XML code comments

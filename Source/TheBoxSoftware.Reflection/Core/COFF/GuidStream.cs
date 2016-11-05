@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents the metadata GUID stream available in .net pe/coff files. And provides
     /// access to those details.

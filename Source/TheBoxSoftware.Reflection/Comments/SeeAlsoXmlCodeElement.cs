@@ -1,7 +1,8 @@
-﻿using System.Xml;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System.Xml;
+
     /// <summary>
     /// This XML element allows people to associate other useful elements to the
     /// current documentation. I.e. for further reading.

@@ -3,10 +3,10 @@
  * at: http://msdn.microsoft.com/en-us/library/vstudio/y3ww3c7e(v=vs.100).aspx
  */
 
-using System.Xml;
-
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System.Xml;
+
     /// <summary>
     /// An internal representation of the list XML element.
     /// </summary>

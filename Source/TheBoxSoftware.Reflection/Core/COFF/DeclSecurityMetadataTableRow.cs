@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// Security attributes which derive from SecurityAttribute, can be attached to
     /// TypeDef, a Method or an Assembly

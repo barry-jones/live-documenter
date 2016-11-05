@@ -1,3 +1,4 @@
+
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <summary>

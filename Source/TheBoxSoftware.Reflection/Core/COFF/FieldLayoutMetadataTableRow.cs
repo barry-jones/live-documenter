@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     public class FieldLayoutMetadataTableRow : MetadataRow
     {
         /// <summary>

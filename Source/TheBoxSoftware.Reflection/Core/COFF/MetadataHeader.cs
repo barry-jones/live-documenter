@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     public class MetadataHeader
     {
         public MetadataHeader(byte[] contents, uint address)

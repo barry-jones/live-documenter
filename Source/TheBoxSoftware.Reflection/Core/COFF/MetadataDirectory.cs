@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System.Collections.Generic;
+
     public class MetadataDirectory : Directory
     {
         private MetadataStream _metadata;

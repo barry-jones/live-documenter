@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using TheBoxSoftware.Reflection.Core.PE;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+    using TheBoxSoftware.Reflection.Core.PE;
+
     // REFERS: IMAGE_COR20_HEADER
     public class Cor20Header
     {

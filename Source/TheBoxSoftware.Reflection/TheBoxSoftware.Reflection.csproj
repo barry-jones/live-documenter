@@ -92,7 +92,6 @@
     </Compile>
     <Compile Include="AssemblyDef.cs" />
     <Compile Include="AssemblyDefBuilder.cs" />
-    <Compile Include="AssemblyIndex.cs" />
     <Compile Include="AssemblyRef.cs" />
     <Compile Include="BuildReferences.cs" />
     <Compile Include="Comments\AttributeRequiredException.cs" />

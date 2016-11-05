@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
+﻿
 namespace TheBoxSoftware.Reflection.Comments
 {
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Base class for all the implementations of the XmlCodeComments.
     /// </summary>
