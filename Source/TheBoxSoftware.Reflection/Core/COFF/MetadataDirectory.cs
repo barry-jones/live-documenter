@@ -20,10 +20,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
             for(int i = 0; i < _header.NumberOfMetaDataStreams; i++)
             {
+                var streamHeader = _header.Headers[i];
+
                 Stream current = Stream.Create(
                     file,
-                    Header.Headers[i].Offset + address,
-                    _header.Headers[i]
+                    streamHeader.Offset + address,
+                    (int)streamHeader.Size,
+                    streamHeader.Name
                     );
 
                 _streams.Add(current.StreamType, current);
@@ -38,7 +41,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         {
             if(_metadata == null)
             {
-                _metadata = this.Streams[COFF.Streams.MetadataStream] as MetadataStream;
+                _metadata = _streams[COFF.Streams.MetadataStream] as MetadataStream;
             }
             return _metadata;
         }

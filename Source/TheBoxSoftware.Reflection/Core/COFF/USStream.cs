@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public sealed class USStream : Stream
     {

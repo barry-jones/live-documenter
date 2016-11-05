@@ -206,7 +206,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.TypeSpec:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new TypeSpecMetadataTableRow(this, contents, offset);
+                            rows[j] = new TypeSpecMetadataTableRow(this.SizeOfBlobIndexes, contents, offset);
                         }
                         break;
                     case MetadataTables.ImplMap:

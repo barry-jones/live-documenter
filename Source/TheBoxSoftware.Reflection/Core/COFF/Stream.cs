@@ -1,15 +1,16 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class Stream
     {
         private Streams _streamType;
         private string _name;
 
-        public static Stream Create(PeCoffFile file, uint address, MetadataStreamHeader header)
+        public static Stream Create(PeCoffFile file, uint address, int size, string name)
         {
             Stream created = null;
 
-            switch(header.Name)
+            switch(name)
             {
                 case "#~":
                     created = new MetadataStream(file, address);
@@ -17,17 +18,17 @@
                     break;
 
                 case "#Strings":
-                    created = new StringStream(file.FileContents, address, (int)header.Size);
+                    created = new StringStream(file.FileContents, address, size);
                     created.StreamType = Streams.StringStream;
                     break;
 
                 case "#GUID":
-                    created = new GuidStream(file, address, (int)header.Size);
+                    created = new GuidStream(file, address, size);
                     created.StreamType = Streams.GuidStream;
                     break;
 
                 case "#Blob":
-                    created = new BlobStream(file.FileContents, address, header.Size);
+                    created = new BlobStream(file.FileContents, address, size);
                     created.StreamType = Streams.BlobStream;
                     break;
 
@@ -37,7 +38,8 @@
                     break;
             }
 
-            created.Name = header.Name;
+            created.Name = name;
+
             return created;
         }
 

@@ -18,14 +18,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </param>
         /// <param name="address">The start address of the blob stream</param>
         /// <param name="size">The size of the stream</param>
-        internal BlobStream(byte[] copyFromContents, uint address, uint size)
+        internal BlobStream(byte[] copyFromContents, uint address, int size)
         {
             if((address + size) > copyFromContents.Length)
                 throw new InvalidOperationException($"Not enough bytes to read from '{nameof(copyFromContents)}' to complete the operation.");
 
             // Read and store the underlying data for this stream
             _streamContents = new byte[size];
-            uint endAddress = address + size;
+            uint endAddress = address + (uint)size;
             for(uint i = address; i < endAddress; i++)
             {
                 _streamContents[i - address] = copyFromContents[i];
