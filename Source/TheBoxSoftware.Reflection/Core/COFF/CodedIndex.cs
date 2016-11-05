@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a value which specifies both a table and an index in to that table
     /// from a single UInt16 or UInt32. <see cref="Details"/>
     /// </summary>
     public struct CodedIndex
     {
+        private MetadataTables _table;
+        private Index _index;
+
         /// <summary>
         /// Initialises a new CodedIndex.
         /// </summary>
@@ -20,16 +24,16 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             // is represented by 2 or 4 bytes depending on code and max index size in table(s)
             // if tag bits + rid bits <= 16 bits use 2 bytes else 4 bytes
             Details details = CodedIndex.GetDetails(stream, codedIndex);
-            UInt32 value = FieldReader.ToUInt32(stream.OwningFile.FileContents,
+            uint value = FieldReader.ToUInt32(stream.OwningFile.FileContents,
                 offset.Shift(details.RequiredNumberOfBytes()),
                 details.RequiredNumberOfBytes());
 
             byte table;
             uint index = 0;
-            details.GetCodedIndex(value, out table, out index);
-            this.Table = CodedIndex.GetTableForCode(codedIndex, table);
 
-            this.Index = index;
+            details.GetCodedIndex(value, out table, out index);
+            _table = CodedIndex.GetTableForCode(codedIndex, table);
+            _index = index;
         }
 
         /// <summary>
@@ -39,8 +43,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="index">The index in the table</param>
         public CodedIndex(MetadataTables table, UInt32 index)
         {
-            this.Table = table;
-            this.Index = index;
+            _table = table;
+            _index = index;
         }
 
         public static bool operator ==(CodedIndex first, CodedIndex second)
@@ -354,18 +358,26 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>A string</returns>
         public override string ToString()
         {
-            return string.Format("Table: {0}, Index:{1}", this.Table.ToString(), this.Index.ToString());
+            return $"Table: {_table.ToString()}, Index:{_index.ToString()}";
         }
 
         /// <field>
         /// The MetadataTables value indicating the table this index is for.
         /// </field>
-        public MetadataTables Table { get; set; }
+        public MetadataTables Table
+        {
+            get { return _table; }
+            set { _table = value; }
+        }
 
         /// <field>
         /// The index in to the MetadataTable.
         /// </field>
-        public Index Index { get; set; }
+        public Index Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
 
         /// <summary>
         /// Basic details for this coded index
