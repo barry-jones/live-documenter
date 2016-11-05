@@ -58,17 +58,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         }
 
         /// <summary>
-        /// Obtains the size of the specified <paramref name="codedIndex"/>.
-        /// </summary>
-        /// <param name="stream">The stream that contains the metadata.</param>
-        /// <param name="codedIndex">The coded index to find the size of.</param>
-        /// <returns>A byte containing the number of bytes to represent the index.</returns>
-        public static byte SizeOfIndex(MetadataStream stream, CodedIndexes codedIndex)
-        {
-            return (byte)CodedIndex.GetDetails(stream, codedIndex).RequiredNumberOfBytes();
-        }
-
-        /// <summary>
         /// Returns the MetadaDataTable represented by the specified code
         /// </summary>
         /// <param name="codedIndex">The coded index being used</param>

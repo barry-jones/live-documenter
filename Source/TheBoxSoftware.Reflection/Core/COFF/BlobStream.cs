@@ -32,11 +32,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             }
         }
 
-        public Signitures.Signiture GetSigniture(BlobIndex index)
-        {
-            return GetSigniture(index.Value, index.SignitureType);
-        }
-
         /// <summary>
         /// Retrives a parsed <see cref="Signitures.Signiture"/> for the specified
         /// <paramref name="startOffset"/> and <paramref name="signiture"/> type.
