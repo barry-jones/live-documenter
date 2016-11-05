@@ -99,100 +99,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             try
             {
-                StringBuilder converted = new StringBuilder();
-
-                // Convert the type portion
-                if(_includeTypeName)
-                {
-                    this.GetTypeName(converted, _type);
-                    if(this._type.IsGeneric)
-                    {
-                        converted.Append(this.GenericStart);
-                        bool first = true;
-                        foreach(GenericTypeRef type in _type.GetGenericTypes())
-                        {
-                            if(first)
-                            {
-                                first = false;
-                            }
-                            else
-                            {
-                                converted.Append(", ");
-                            }
-                            converted.Append(type.Name);
-                        }
-                        converted.Append(this.GenericEnd);
-                    }
-                }
-
-                // Convert the method portion
-                if(_method != null)
-                {
-                    if(_method.IsConstructor && _property == null)
-                    {
-                        this.GetTypeName(converted, this._type);
-                    }
-                    else if(_method.IsOperator && _property == null)
-                    {
-                        if(_method.IsConversionOperator)
-                        {
-                            Signiture sig = _method.Signiture;
-                            TypeRef convertToRef = sig.GetReturnTypeToken().ResolveType(_method.Assembly, _method);
-                            TypeRef convertFromRef = sig.GetParameterTokens()[0].ResolveParameter(_method.Assembly, _method.Parameters[0]);
-
-                            converted.Append(_method.Name.Substring(3));
-                            converted.Append("(");
-                            converted.Append(convertToRef.GetDisplayName(false));
-                            converted.Append(" to ");
-                            converted.Append(convertFromRef.GetDisplayName(false));
-                            converted.Append(")");
-                        }
-                        else
-                        {
-                            converted.Append(_method.Name.Substring(3));
-                        }
-                    }
-                    else if(_property == null)
-                    {
-                        converted.Append(_method.Name);
-                    }
-                    else
-                    {
-                        converted.Append(_property.Name);
-                    }
-
-                    if(_method.IsGeneric)
-                    {
-                        converted.Append(this.GenericStart);
-                        bool first = true;
-                        foreach(GenericTypeRef type in _method.GetGenericTypes())
-                        {
-                            if(first)
-                            {
-                                first = false;
-                            }
-                            else
-                            {
-                                converted.Append(", ");
-                            }
-                            converted.Append(type.Name);
-                        }
-                        converted.Append(this.GenericEnd);
-                    }
-
-                    if(_includeParameters && !_method.IsConversionOperator &&
-                        (_property == null || _property.IsIndexer()) // only display parameters for indexer properties
-                        )
-                    {
-                        string parameters = "()";
-                        if(_method.Parameters.Count > 0 && _property == null)
-                        {
-                            parameters = Convert(_method);
-                        }
-                        converted.Append(parameters);
-                    }
-                }
-                return converted.ToString();
+                return ConvertMember();
             }
             catch(Exception ex)
             {
@@ -219,7 +126,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         protected override void GetTypeName(StringBuilder sb, TypeRef type)
         {
             string typeName = type.GetFullyQualifiedName();
-            if(!this._includeNamespace)
+            if(!_includeNamespace)
             {
                 typeName = type.Name;
             }
@@ -297,7 +204,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="shape">The signiture token detailing the shape of the array.</param>
         internal override void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape)
         {
-            this.GetTypeName(sb, resolvedType);
+            GetTypeName(sb, resolvedType);
             sb.Append("[");
             for(int i = 0; i < shape.Rank; i++)
             {
@@ -317,6 +224,122 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
             }
             sb.Append("]");
+        }
+
+        private string ConvertMember()
+        {
+            StringBuilder converted = new StringBuilder();
+
+            ConvertAndIncludeTypeName(converted);
+            ConvertAndIncludeParameters(converted);
+
+            return converted.ToString();
+        }
+
+        private void ConvertAndIncludeParameters(StringBuilder converted)
+        {
+            if(_method != null)
+            {
+                if(_method.IsConstructor && _property == null)
+                {
+                    GetTypeName(converted, _type);
+                }
+                else if(_method.IsOperator && _property == null)
+                {
+                    if(_method.IsConversionOperator)
+                    {
+                        Signiture sig = _method.Signiture;
+                        TypeRef convertToRef = sig.GetReturnTypeToken().ResolveType(_method.Assembly, _method);
+                        TypeRef convertFromRef = sig.GetParameterTokens()[0].ResolveParameter(_method.Assembly, _method.Parameters[0]);
+
+                        converted.Append(_method.Name.Substring(3));
+                        converted.Append("(");
+                        converted.Append(convertToRef.GetDisplayName(false));
+                        converted.Append(" to ");
+                        converted.Append(convertFromRef.GetDisplayName(false));
+                        converted.Append(")");
+                    }
+                    else
+                    {
+                        converted.Append(_method.Name.Substring(3));
+                    }
+                }
+                else if(_property == null)
+                {
+                    converted.Append(_method.Name);
+                }
+                else
+                {
+                    converted.Append(_property.Name);
+                }
+
+                if(_method.IsGeneric)
+                {
+                    converted.Append(GenericStart);
+                    bool first = true;
+                    foreach(GenericTypeRef type in _method.GetGenericTypes())
+                    {
+                        if(first)
+                        {
+                            first = false;
+                        }
+                        else
+                        {
+                            converted.Append(", ");
+                        }
+                        converted.Append(type.Name);
+                    }
+                    converted.Append(GenericEnd);
+                }
+
+                if(ShouldIncludeParameters())
+                {
+                    string parameters = "()";
+                    if(ShouldConvertParameters())
+                    {
+                        parameters = Convert(_method);
+                    }
+                    converted.Append(parameters);
+                }
+            }
+        }
+
+        private bool ShouldIncludeParameters()
+        {
+            return _includeParameters
+                && !_method.IsConversionOperator
+                && (_property == null || _property.IsIndexer()); // only display parameters for indexer properties
+        }
+
+        private bool ShouldConvertParameters()
+        {
+            return _method.Parameters.Count > 0 && _property == null;
+        }
+
+        private void ConvertAndIncludeTypeName(StringBuilder converted)
+        {
+            if(_includeTypeName)
+            {
+                GetTypeName(converted, _type);
+                if(_type.IsGeneric)
+                {
+                    converted.Append(GenericStart);
+                    bool first = true;
+                    foreach(GenericTypeRef type in _type.GetGenericTypes())
+                    {
+                        if(first)
+                        {
+                            first = false;
+                        }
+                        else
+                        {
+                            converted.Append(", ");
+                        }
+                        converted.Append(type.Name);
+                    }
+                    converted.Append(GenericEnd);
+                }
+            }
         }
     }
 }
