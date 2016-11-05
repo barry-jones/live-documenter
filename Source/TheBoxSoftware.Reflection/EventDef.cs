@@ -13,32 +13,23 @@ namespace TheBoxSoftware.Reflection
     {
         private TypeDef _containingType;
 
-        /// <summary>
-        /// Factory method for instantiating an event from the details provided in the metadata.
-        /// </summary>
-        /// <param name="references">The assembly the event is defined in.</param>
-        /// <param name="container">The containing type for the event.</param>
-        /// <param name="fromRow">The row that provides access to the details for this event.</param>
-        /// <returns>An instantiated EventDef instance.</returns>
-        internal static EventDef CreateFromMetadata(BuildReferences references, TypeDef container, EventMetadataTableRow fromRow)
+        public EventDef() { }
+
+        public EventDef(string name, AssemblyDef definingAssembly, TypeDef containingType)
         {
-            EventDef createdEvent = new EventDef();
-
-            createdEvent.Type = container;
-            createdEvent.UniqueId = fromRow.FileOffset;
-            createdEvent.Name = references.Assembly.StringStream.GetString(fromRow.Name.Value);
-            createdEvent.Assembly = references.Assembly;
-
-            return createdEvent;
+            Name = name;
+            Assembly = definingAssembly;
+            UniqueId = definingAssembly.CreateUniqueId();
+            _containingType = containingType;
         }
-
+        
         /// <summary>
         /// Attemps to find the add method for this event from its containing type.
         /// </summary>
         /// <returns>
         /// The method defenition for add portion of the event or null if not found.
         /// </returns>
-        public MethodDef GetAddEventMethod()
+        public MethodDef FindAddMethod()
         {
             // build the event name, some event have full namespaces declared
             string eventName = this.GetInternalName("add");
@@ -52,7 +43,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>
         /// The method defenition for remove portion of the event or null if not found.
         /// </returns>
-        public MethodDef GetRemoveEventMethod()
+        public MethodDef FindRemoveMethod()
         {
             // build the event name, some event have full namespaces declared
             string eventName = this.GetInternalName("remove");
@@ -87,8 +78,8 @@ namespace TheBoxSoftware.Reflection
             {
                 int addVisibility = 0;
                 int removeVisibility = 0;
-                MethodDef addMethod = this.GetAddEventMethod();
-                MethodDef removeMethod = this.GetRemoveEventMethod();
+                MethodDef addMethod = this.FindAddMethod();
+                MethodDef removeMethod = this.FindRemoveMethod();
                 if(addMethod != null)
                 {
                     addVisibility = (int)addMethod.MemberAccess;

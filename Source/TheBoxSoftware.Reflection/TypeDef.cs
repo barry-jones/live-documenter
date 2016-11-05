@@ -689,9 +689,12 @@ namespace TheBoxSoftware.Reflection
                     for(int i = startEventList; i <= endEventList; i++)
                     {
                         EventMetadataTableRow eventRow = table[i - 1] as EventMetadataTableRow;
-                        EventDef eventDef = EventDef.CreateFromMetadata(_references, _builtType, eventRow);
 
-                        // TODO: Find and set the getter and setter for the property.. at some point
+                        EventDef eventDef = new EventDef(
+                            _references.Assembly.StringStream.GetString(eventRow.Name.Value),
+                            _references.Assembly,
+                            _builtType
+                            );
 
                         _map.Add(MetadataTables.Event, eventRow, eventDef);
                         _builtType.Events.Add(eventDef);

@@ -19,8 +19,8 @@ namespace TheBoxSoftware.Reflection.Syntax
         public EventSyntax(EventDef eventDef)
         {
             _eventDef = eventDef;
-            _add = eventDef.GetAddEventMethod();
-            _remove = eventDef.GetRemoveEventMethod();
+            _add = eventDef.FindAddMethod();
+            _remove = eventDef.FindRemoveMethod();
         }
 
         public string GetIdentifier()
