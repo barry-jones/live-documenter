@@ -12,26 +12,17 @@ namespace TheBoxSoftware.Reflection
         private List<ConstantInfo> _constants;
         private FieldAttributes _flags;
 
-        /// <summary>
-        /// Initialises a new instance of the FieldDef class based on the metadata provided
-        /// </summary>
-        /// <param name="references">The assembly that the field resides in</param>
-        /// <param name="container">The type this field is contained in</param>
-        /// <param name="row">The metadata row describing the field</param>
-        /// <returns>The initialised field</returns>
-        internal static FieldDef CreateFromMetadata(BuildReferences references, TypeDef container, FieldMetadataTableRow row)
+        public FieldDef() { }
+
+        public FieldDef(string name, AssemblyDef definingAssembly, TypeDef containingType, FieldAttributes attributes, BlobIndex signitureIndex)
         {
-            FieldDef field = new FieldDef();
-
-            field.UniqueId = references.Assembly.CreateUniqueId();
-            field.Assembly = references.Assembly;
-            field.Type = container;
-            field.Name = references.Assembly.StringStream.GetString(row.Name.Value);
-            field.SignitureBlob = row.Signiture;
-            field.Flags = row.Flags;
-            field.Constants = new List<ConstantInfo>();
-
-            return field;
+            UniqueId = definingAssembly.CreateUniqueId();
+            Assembly = definingAssembly;
+            Type = containingType;
+            Name = name;
+            SignitureBlob = signitureIndex;
+            _flags = attributes;
+            _constants = new List<ConstantInfo>();
         }
 
         /// <summary>

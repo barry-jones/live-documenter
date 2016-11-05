@@ -571,7 +571,14 @@ namespace TheBoxSoftware.Reflection
                 for(int i = _fromRow.FieldList; i < endOfFieldIndex; i++)
                 {
                     FieldMetadataTableRow fieldDefRow = table[i - 1] as FieldMetadataTableRow;
-                    FieldDef field = FieldDef.CreateFromMetadata(_references, _builtType, fieldDefRow);
+
+                    FieldDef field = new FieldDef(
+                        _references.Assembly.StringStream.GetString(fieldDefRow.Name.Value),
+                        _references.Assembly,
+                        _builtType,
+                        fieldDefRow.Flags,
+                        fieldDefRow.Signiture
+                        );
 
                     _map.Add(MetadataTables.Field, fieldDefRow, field);
                     _builtType.Fields.Add(field);

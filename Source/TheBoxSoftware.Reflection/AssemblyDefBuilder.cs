@@ -249,7 +249,14 @@ namespace TheBoxSoftware.Reflection
             for(int i = 0; i < count; i++)
             {
                 ModuleMetadataTableRow row = table[i] as ModuleMetadataTableRow;
-                ModuleDef module = ModuleDef.CreateFromMetadata(_references, row);
+
+                GuidStream stream = _references.Metadata.Streams[Streams.GuidStream] as GuidStream;
+
+                ModuleDef module = new ModuleDef(
+                    _assembly.StringStream.GetString(row.Name.Value),
+                    _assembly,
+                    stream.GetGuid(row.Mvid)
+                    );
 
                 _map.Add(MetadataTables.Module, row, module);
                 _assembly.Modules.Add(module);

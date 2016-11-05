@@ -1,8 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection
 {
-    using Core.COFF;
-
     /// <summary>
     /// A class that describes a property that has been defined in an <see cref="TypeDef"/>.
     /// </summary>
