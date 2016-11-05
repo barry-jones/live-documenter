@@ -336,12 +336,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 int count = details.Tables.Count;
                 for(int i = 0; i < count; i++)
                 {
+                    MetadataTables table = details.Tables[i];
+
                     // check if the table is used, otherwise it will fail on some index checks
-                    if(stream.Tables.ContainsKey(details.Tables[i]))
+                    if(stream.Tables.ContainsKey(table))
                     {
-                        if(details.MaxRowsInTables < stream.RowsInPresentTables[details.Tables[i]])
+                        int numEntries = stream.Tables[table].Length;
+                        if(details.MaxRowsInTables < numEntries)
                         {
-                            details.MaxRowsInTables = (UInt32)stream.RowsInPresentTables[details.Tables[i]];
+                            details.MaxRowsInTables = (uint)numEntries;
                         }
                     }
                 }

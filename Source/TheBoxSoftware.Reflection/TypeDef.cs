@@ -670,13 +670,13 @@ namespace TheBoxSoftware.Reflection
                 if(mapIndex >= 0)
                 {
                     startEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex]).EventList;
-                    if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.EventMap] - 1)
+                    if(mapIndex < _metadataStream.Tables[MetadataTables.EventMap].Length - 1)
                     {
                         endEventList = ((EventMapMetadataTableRow)_metadataStream.Tables[MetadataTables.EventMap][mapIndex + 1]).EventList - 1;
                     }
                     else
                     {
-                        endEventList = _metadataStream.RowsInPresentTables[MetadataTables.Event];
+                        endEventList = _metadataStream.Tables[MetadataTables.Event].Length;
                     }
                 }
 
@@ -722,13 +722,13 @@ namespace TheBoxSoftware.Reflection
                 if(mapIndex >= 0)
                 {
                     startPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex]).PropertyList;
-                    if(mapIndex < _metadataStream.RowsInPresentTables[MetadataTables.PropertyMap] - 1)
+                    if(mapIndex < _metadataStream.Tables[MetadataTables.PropertyMap].Length - 1)
                     {
                         endPropertyList = ((PropertyMapMetadataTableRow)_metadataStream.Tables[MetadataTables.PropertyMap][mapIndex + 1]).PropertyList - 1;
                     }
                     else
                     {
-                        endPropertyList = _metadataStream.RowsInPresentTables[MetadataTables.Property];
+                        endPropertyList = _metadataStream.Tables[MetadataTables.Property].Length;
                     }
                 }
 

@@ -43,9 +43,7 @@ namespace TheBoxSoftware.Reflection.Core
         {
         }
 
-        /// <summary>
-        /// The name of the directory
-        /// </summary>
+        /// <summary>The internal name of the directory</summary>
         public string Name
         {
             get { return _name; }

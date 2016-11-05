@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="table">The table this index points to</param>
         public Index(MetadataStream stream, byte[] contents, Offset offset, MetadataTables table)
         {
-            int bytesToRead = stream.RowsInPresentTables.ContainsKey(table) && stream.RowsInPresentTables[table] > ushort.MaxValue ? 4 : 2;
+            int bytesToRead = SizeOfIndex(table, stream);
             Value = FieldReader.ToUInt32(contents, offset.Shift(bytesToRead), bytesToRead);
         }
 
@@ -47,9 +47,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="table">The table to get the index size for.</param>
         /// <param name="stream">The stream containing the table information.</param>
         /// <returns>A byte that indicates the size of the indexes for that table in bytes.</returns>
-        public static byte SizeOfIndex(MetadataTables table, MetadataStream stream)
+        public static int SizeOfIndex(MetadataTables table, MetadataStream stream)
         {
-            return (byte)(stream.RowsInPresentTables.ContainsKey(table) && stream.RowsInPresentTables[table] > UInt16.MaxValue ? 4 : 2);
+            return stream.Tables.ContainsKey(table) && stream.Tables[table].Length > ushort.MaxValue ? 4 : 2;
         }
 
         public override string ToString()

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+    using System.Collections.Generic;
+
     public sealed class MetadataStream : Stream
     {
         /// <summary>
@@ -22,47 +23,56 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         private byte _sizeOfStringIndexes = 0;
         private byte _sizeOfGuidIndexes = 0;
         private byte _sizeOfBlobIndexes = 0;
+        private PeCoffFile _owningFile;
+        private MetadataTablesDictionary _tables;
+        private ulong _sorted;
+        private ulong _valid;
+        private byte _reserved2;
+        private HeapOffsetSizes _heapOffsetSizes;
+        private ushort _minorVersion;
+        private ushort _majorVersion;
+        private uint _reserved1;
 
         internal MetadataStream(PeCoffFile file, uint address)
         {
-            this.OwningFile = file;
+            _owningFile = file;
             byte[] contents = file.FileContents;
             Offset offset = (int)address;
 
-            this.Reserved1 = BitConverter.ToUInt32(contents, offset.Shift(4));
-            this.MajorVersion = (byte)contents.GetValue(offset.Shift(1));
-            this.MinorVersion = (byte)contents.GetValue(offset.Shift(1));
-            this.HeapOffsetSizes = (HeapOffsetSizes)contents.GetValue(offset.Shift(1));
-            this.Reserved2 = (byte)contents.GetValue(offset.Shift(1));
-            this.Valid = BitConverter.ToUInt64(contents, offset.Shift(8));
-            this.Sorted = BitConverter.ToUInt64(contents, offset.Shift(8));
+            _reserved1 = BitConverter.ToUInt32(contents, offset.Shift(4));
+            _majorVersion = (byte)contents.GetValue(offset.Shift(1));
+            _minorVersion = (byte)contents.GetValue(offset.Shift(1));
+            _heapOffsetSizes = (HeapOffsetSizes)contents.GetValue(offset.Shift(1));
+            _reserved2 = (byte)contents.GetValue(offset.Shift(1));
+            _valid = BitConverter.ToUInt64(contents, offset.Shift(8));
+            _sorted = BitConverter.ToUInt64(contents, offset.Shift(8));
 
             // Now we need to read the number of rows present in the available tables, we have
             // had to add the unused tables to the MEtadatTables as mscorlib seems to use one. Not
             // sure which though.
-            this.RowsInPresentTables = new Dictionary<MetadataTables, int>();
-            System.Array values = Enum.GetValues(typeof(MetadataTables));
+            Dictionary<MetadataTables, int> rowsInPresentTables = new Dictionary<MetadataTables, int>();
+            Array values = Enum.GetValues(typeof(MetadataTables));
             for(int i = 0; i < values.Length - 1; i++)
             {
                 MetadataTables current = (MetadataTables)values.GetValue(i);
                 ulong mask = (ulong)1 << (int)current;
-                if((mask & this.Valid) == mask)
+                if((mask & _valid) == mask)
                 {
-                    this.RowsInPresentTables.Add(current, BitConverter.ToInt32(contents, (int)offset.Shift(4)));
+                    rowsInPresentTables.Add(current, BitConverter.ToInt32(contents, (int)offset.Shift(4)));
                 }
             }
 
             // Following the array of row size we get the actual metadata tables
-            this.Tables = new MetadataTablesDictionary(this.RowsInPresentTables.Count);
+            _tables = new MetadataTablesDictionary(rowsInPresentTables.Count);
             for(int i = 0; i < values.Length; i++)
             {
                 MetadataTables current = (MetadataTables)values.GetValue(i);
-                if(!this.RowsInPresentTables.ContainsKey(current))
+                if(!rowsInPresentTables.ContainsKey(current))
                 {
                     continue;
                 }
 
-                int numRows = this.RowsInPresentTables[current];
+                int numRows = rowsInPresentTables[current];
                 MetadataRow[] rows = new MetadataRow[numRows];
 
                 switch(current)
@@ -298,7 +308,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                         break;
                 }
 
-                this.Tables.SetMetadataTable(current, rows);
+                _tables.SetMetadataTable(current, rows);
             }
         }
 
@@ -309,7 +319,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The MetadataTableRow or null if not found</returns>
         public MetadataRow GetEntryFor(CodedIndex codedIndex)
         {
-            return this.GetEntryFor(codedIndex.Table, codedIndex.Index);
+            return GetEntryFor(codedIndex.Table, codedIndex.Index);
         }
 
         /// <summary>
@@ -321,30 +331,60 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         public MetadataRow GetEntryFor(MetadataTables table, uint index)
         {
             MetadataRow o = null;
-            if(index <= this.Tables[table].Length)
+            if(index <= _tables[table].Length)
             {
-                o = this.Tables[table][index - 1];
+                o = _tables[table][index - 1];
             }
             return o;
         }
 
-        public uint Reserved1 { get; set; }
+        public uint Reserved1
+        {
+            get { return _reserved1; }
+            set { _reserved1 = value; }
+        }
 
-        public ushort MajorVersion { get; set; }
+        public ushort MajorVersion
+        {
+            get { return _majorVersion; }
+            set { _majorVersion = value; }
+        }
 
-        public ushort MinorVersion { get; set; }
+        public ushort MinorVersion
+        {
+            get { return _minorVersion; }
+            set { _minorVersion = value; }
+        }
 
-        public HeapOffsetSizes HeapOffsetSizes { get; set; }
+        public HeapOffsetSizes HeapOffsetSizes
+        {
+            get { return _heapOffsetSizes; }
+            set { _heapOffsetSizes = value; }
+        }
 
-        public byte Reserved2 { get; set; }
+        public byte Reserved2
+        {
+            get { return _reserved2; }
+            set { _reserved2 = value; }
+        }
 
-        public ulong Valid { get; set; }
+        public ulong Valid
+        {
+            get { return _valid; }
+            set { _valid = value; }
+        }
 
-        public ulong Sorted { get; set; }
+        public ulong Sorted
+        {
+            get { return _sorted; }
+            set { _sorted = value; }
+        }
 
-        public Dictionary<MetadataTables, int> RowsInPresentTables { get; set; }
-
-        public MetadataTablesDictionary Tables { get; set; }
+        public MetadataTablesDictionary Tables
+        {
+            get { return _tables; }
+            set { _tables = value; }
+        }
 
         /// <summary>
         /// Returns the size (in bytes) of the indexes to the string heap
@@ -397,6 +437,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             }
         }
 
-        public PeCoffFile OwningFile { get; private set; }
+        public PeCoffFile OwningFile
+        {
+            get { return _owningFile; }
+            private set { _owningFile = value; }
+        }
     }
 }

@@ -5,6 +5,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     public class MetadataDirectory : Directory
     {
         private MetadataStream _metadata;
+        private MetadataHeader _header;
+        private Dictionary<Streams, Stream> _streams;
 
         /// <summary>
         /// Initialises a new instance of the MetadataDirectory
@@ -13,19 +15,18 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="address">The base address of the directory</param>
         public MetadataDirectory(PeCoffFile file, uint address)
         {
-            this.Header = new MetadataHeader(file.FileContents, address);
-            this.Streams = new Dictionary<Streams, Stream>();
+            _header = new MetadataHeader(file.FileContents, address);
+            _streams = new Dictionary<Streams, Stream>();
 
-            for(int i = 0; i < this.Header.NumberOfMetaDataStreams; i++)
+            for(int i = 0; i < _header.NumberOfMetaDataStreams; i++)
             {
                 Stream current = Stream.Create(
                     file,
                     Header.Headers[i].Offset + address,
-                    this.Header.Headers[i]);
+                    _header.Headers[i]
+                    );
 
-                // Calculate the nice enumerated value which describes the stream
-
-                this.Streams.Add(current.StreamType, current);
+                _streams.Add(current.StreamType, current);
             }
         }
 
@@ -42,8 +43,16 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             return _metadata;
         }
 
-        public MetadataHeader Header { get; set; }
+        public MetadataHeader Header
+        {
+            get { return _header; }
+            set { _header = value; }
+        }
 
-        public Dictionary<Streams, Stream> Streams { get; set; }
+        public Dictionary<Streams, Stream> Streams
+        {
+            get { return _streams; }
+            set { _streams = value; }
+        }
     }
 }
