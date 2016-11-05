@@ -1,8 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection
 {
-    using Core.COFF;
-
     /// <summary>
     /// Represents a single event for a type. An event is made up from one or two MethodDef entries 
     /// in the type. These are generally prefixed with add_ and remove_. This class allows those 
@@ -31,10 +29,8 @@ namespace TheBoxSoftware.Reflection
         /// </returns>
         public MethodDef FindAddMethod()
         {
-            // build the event name, some event have full namespaces declared
-            string eventName = this.GetInternalName("add");
-
-            return this.Type.Methods.Find(method => method.Name == eventName);
+            string eventName = GetInternalName("add");
+            return Type.Methods.Find(method => method.Name == eventName);
         }
 
         /// <summary>
@@ -45,10 +41,8 @@ namespace TheBoxSoftware.Reflection
         /// </returns>
         public MethodDef FindRemoveMethod()
         {
-            // build the event name, some event have full namespaces declared
-            string eventName = this.GetInternalName("remove");
-
-            return this.Type.Methods.Find(method => method.Name == eventName);
+            string eventName = GetInternalName("remove");
+            return Type.Methods.Find(method => method.Name == eventName);
         }
 
         /// <summary>
@@ -58,9 +52,29 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A string containing the implementing method name</returns>
         private string GetInternalName(string addOrRemove)
         {
-            // build the event name, some event have full namespaces declared
-            // [#109] this is a bug fix but should be implemented properly when the eventdef is loaded
-            return $"{addOrRemove}_{this.Name.Substring(this.Name.LastIndexOf('.') + 1)}";
+            // method names are in the format add_Name and remove_Name.
+            return addOrRemove + "_" + Name.Substring(Name.LastIndexOf('.') + 1);
+        }
+
+        private Visibility CalculateVisibility()
+        {
+            Visibility addVisibility = 0;
+            Visibility removeVisibility = 0;
+            MethodDef addMethod = FindAddMethod();
+            MethodDef removeMethod = FindRemoveMethod();
+            if(addMethod != null)
+            {
+                addVisibility = addMethod.MemberAccess;
+            }
+            if(removeMethod != null)
+            {
+                removeVisibility = removeMethod.MemberAccess;
+            }
+
+            // The more public, the greater the number
+            return (addVisibility > removeVisibility)
+                ? addVisibility
+                : removeVisibility;
         }
 
         /// <summary>
@@ -74,26 +88,7 @@ namespace TheBoxSoftware.Reflection
 
         public override Visibility MemberAccess
         {
-            get
-            {
-                int addVisibility = 0;
-                int removeVisibility = 0;
-                MethodDef addMethod = this.FindAddMethod();
-                MethodDef removeMethod = this.FindRemoveMethod();
-                if(addMethod != null)
-                {
-                    addVisibility = (int)addMethod.MemberAccess;
-                }
-                if(removeMethod != null)
-                {
-                    removeVisibility = (int)removeMethod.MemberAccess;
-                }
-
-                // The more public, the greater the number
-                return (addVisibility > removeVisibility)
-                    ? (Visibility)addVisibility
-                    : (Visibility)removeVisibility;
-            }
+            get { return CalculateVisibility(); }
         }
     }
 }
