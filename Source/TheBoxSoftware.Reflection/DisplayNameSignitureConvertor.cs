@@ -54,7 +54,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="includeParamaters">Should the parameters for the property be included?</param>
         public DisplayNameSignitureConvertor(PropertyDef property, bool includeNamespace, bool includeParamaters)
         {
-            _type = (TypeDef)property.OwningType;
+            _type = property.OwningType;
             _property = property;
             _method = property.Getter != null ? property.Getter : property.Setter;
             _includeNamespace = includeNamespace;
@@ -180,14 +180,14 @@ namespace TheBoxSoftware.Reflection.Signitures
                         converted.Append(this.GenericEnd);
                     }
 
-                    if(this._includeParameters && !_method.IsConversionOperator &&
+                    if(_includeParameters && !_method.IsConversionOperator &&
                         (_property == null || _property.IsIndexer()) // only display parameters for indexer properties
                         )
                     {
-                        string parameters = this.Convert(_method);
-                        if(string.IsNullOrEmpty(parameters) && _property == null)
+                        string parameters = "()";
+                        if(_method.Parameters.Count > 0 && _property == null)
                         {
-                            parameters = "()";
+                            parameters = Convert(_method);
                         }
                         converted.Append(parameters);
                     }
