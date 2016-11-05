@@ -38,7 +38,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="method">The method to obtain a display name for.</param>
         /// <param name="includeNamespace">Should the details of the namespace be included.</param>
-        /// <param name="includeParamaters">Should the methods parameters be included.</param>
+        /// <param name="includeParameters">Should the methods parameters be included.</param>
         /// <param name="isFromExtendedType">Indicates this is an extension method from the type it is extending.</param>
         public DisplayNameSignitureConvertor(MethodDef method, bool includeNamespace, bool includeParameters, bool isFromExtendedType)
             : this(method, includeNamespace, includeParameters)

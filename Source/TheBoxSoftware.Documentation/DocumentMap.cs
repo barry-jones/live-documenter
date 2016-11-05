@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Represents the structure and content of a document that is being
     /// used by the documentation consumers to access, search and display

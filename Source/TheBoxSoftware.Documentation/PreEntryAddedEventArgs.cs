@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using TheBoxSoftware.Reflection;
+
     /// <summary>
     /// Event arguments information detailing entries being added to the document map.
     /// </summary>
@@ -23,18 +21,12 @@ namespace TheBoxSoftware.Documentation
         /// <summary>
         /// The member being added to the documentation map.
         /// </summary>
-        public ReflectedMember Member
-        {
-            get; set;
-        }
+        public ReflectedMember Member { get; set; }
 
         /// <summary>
         /// A boolean value which tells the <see cref="DocumentMapper"/> to filter or not
         /// the <see cref="ReflectedMember"/>.
         /// </summary>
-        public bool Filter
-        {
-            get; set;
-        }
+        public bool Filter { get; set; }
     }
 }

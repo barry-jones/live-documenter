@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Documentation;
-
+﻿
 namespace TheBoxSoftware.API.LiveDocumenter
 {
+    using System.Collections.Generic;
+    using TheBoxSoftware.Reflection;
+    using TheBoxSoftware.Documentation;
+
     // The content entry class is a basic wrapper to the Entry class, it is supposed to provide
     // read only access to the entries members and children.
 

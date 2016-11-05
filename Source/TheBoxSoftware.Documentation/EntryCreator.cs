@@ -1,8 +1,9 @@
-﻿using System;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using TheBoxSoftware.Reflection.Comments;
+
     /// <summary>
     /// A class that controls the creation of <see cref="Entry"/> instances and subtypes for
     /// a <see cref="DocumentMap"/>.
@@ -64,14 +65,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public int Created
         {
-            get
-            {
-                return _created;
-            }
-            set
-            {
-                _created = value;
-            }
+            get { return _created; }
+            set { _created = value; }
         }
     }
 }

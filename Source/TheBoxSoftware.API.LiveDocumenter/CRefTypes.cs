@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.API.LiveDocumenter
 {
-	/// <summary>
-	/// An enumeration of the available types of element that can be referenced
-	/// by a cref path in the xml code comments for an assembly.
-	/// </summary>
-	public enum CRefTypes : byte 
+    /// <summary>
+    /// An enumeration of the available types of element that can be referenced
+    /// by a cref path in the xml code comments for an assembly.
+    /// </summary>
+    public enum CRefTypes : byte 
     {
 		/// <summary>
 		/// Represents a cref link to a namespace; these can not have commented directly

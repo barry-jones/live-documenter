@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using System.Collections.Generic;
+    using Reflection;
+    using Reflection.Comments;
+
     /// <summary>
     /// Represents the entire documentation for a set of assemblies.
     /// </summary>
@@ -242,10 +243,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         protected IDocumentMapper Mapper
         {
-            get
-            {
-                return _mapper;
-            }
+            get { return _mapper; }
         }
 
         /// <summary>
@@ -253,14 +251,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public DocumentSettings Settings
         {
-            get
-            {
-                return _settings;
-            }
-            set
-            {
-                _settings = value;
-            }
+            get { return _settings; }
+            set { _settings = value; }
         }
 
         /// <summary>
@@ -268,14 +260,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public DocumentMap Map
         {
-            get
-            {
-                return _map;
-            }
-            protected set
-            {
-                _map = value;
-            }
+            get { return _map; }
+            protected set { _map = value; }
         }
 
         /// <summary>
@@ -283,10 +269,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public List<DocumentedAssembly> Assemblies
         {
-            get
-            {
-                return _assemblies;
-            }
+            get { return _assemblies; }
         }
 
         /// <summary>

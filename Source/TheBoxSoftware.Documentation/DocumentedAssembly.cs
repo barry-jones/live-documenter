@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using TheBoxSoftware.Reflection;
+
     /// <summary>
     /// An assembly that is being documented by the application. Acts as a wrapper to the file
     /// and associated xml file.
@@ -19,7 +17,6 @@ namespace TheBoxSoftware.Documentation
         private DateTime _timeLoaded;
         private string _name;
         private string _xmlFilename;
-        private List<string> _referencedAssemblies;
         private long _uniqueId;
 
         public DocumentedAssembly()
@@ -89,14 +86,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public string FileName
         {
-            get
-            {
-                return _filename;
-            }
-            set
-            {
-                _filename = value;
-            }
+            get { return _filename; }
+            set { _filename = value; }
         }
 
         /// <summary>
@@ -104,14 +95,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public DateTime TimeLoaded
         {
-            get
-            {
-                return _timeLoaded;
-            }
-            private set
-            {
-                _timeLoaded = value;
-            }
+            get { return _timeLoaded; }
+            private set { _timeLoaded = value; }
         }
 
         /// <summary>
@@ -119,14 +104,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public string Name
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
+            get { return _name; }
+            set { _name = value; }
         }
 
         /// <summary>
@@ -134,32 +113,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public string XmlFileName
         {
-            get
-            {
-                return _xmlFilename;
-            }
-            set
-            {
-                _xmlFilename = value;
-            }
-        }
-
-        /// <summary>
-        /// A collection of assemblies that are known to be referenced from this assembly
-        /// this can only be populated when this documented assembly has been loaded from
-        /// a project file directly or via a solution. When it is not the assembly will have
-        /// to be queried for its references.
-        /// </summary>
-        public List<string> ReferencedAssemblies
-        {
-            get
-            {
-                return _referencedAssemblies;
-            }
-            set
-            {
-                _referencedAssemblies = value;
-            }
+            get { return _xmlFilename; }
+            set { _xmlFilename = value; }
         }
 
         /// <summary>
@@ -167,10 +122,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public bool IsCompiled
         {
-            get
-            {
-                return System.IO.File.Exists(FileName);
-            }
+            get { return System.IO.File.Exists(FileName); }
         }
 
         /// <summary>
@@ -178,14 +130,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public long UniqueId
         {
-            get
-            {
-                return _uniqueId;
-            }
-            set
-            {
-                _uniqueId = value;
-            }
+            get { return _uniqueId; }
+            set { _uniqueId = value; }
         }
 
         /// <summary>
@@ -193,10 +139,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public AssemblyDef LoadedAssembly
         {
-            get
-            {
-                return _assembly;
-            }
+            get { return _assembly; }
             set
             {
                 _assembly = value;

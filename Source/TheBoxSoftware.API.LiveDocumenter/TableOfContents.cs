@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Documentation;
-using System.Collections;
-using System.Xml;
-
-namespace TheBoxSoftware.API.LiveDocumenter 
+﻿
+namespace TheBoxSoftware.API.LiveDocumenter
 {
+    using System;
+    using System.Collections.Generic;
+    using TheBoxSoftware.Documentation;
+    using System.Collections;
+
     /// <summary>
     /// Provides access to the table of contents for <see cref="Documentation"/>.
     /// </summary>

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System.Collections.Generic;
+    using TheBoxSoftware.Reflection;
+    using TheBoxSoftware.Reflection.Comments;
+
     /// <file name='code-documentation\entry.xml' path='docs/namespacefirstdocumentmapper/member[@name="class"]/*' />
 	internal class NamespaceFirstDocumentMapper : DocumentMapper
     {

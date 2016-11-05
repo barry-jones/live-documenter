@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Xml;
-using System.Text.RegularExpressions;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.IO;
+    using System.Xml;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Class that reads solutions, projects and libraries and converts them in to
     /// DocumentedAssembly lists.

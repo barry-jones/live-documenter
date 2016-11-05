@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TheBoxSoftware.API.LiveDocumenter 
+﻿
+namespace TheBoxSoftware.API.LiveDocumenter
 {
+    using System;
+
     /// <summary>
     /// Details an error where an entry was not found in the documentation.
     /// </summary>

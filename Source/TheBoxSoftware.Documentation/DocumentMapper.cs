@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using System.Collections.Generic;
+    using TheBoxSoftware.Reflection;
+    using TheBoxSoftware.Reflection.Comments;
+
     /// <summary>
     /// Creates <see cref="DocumentMap"/>s based on the <see cref="Assemblies"/> and <see cref="Settings"/> provided.
     /// </summary>
@@ -356,10 +354,7 @@ namespace TheBoxSoftware.Documentation
         /// <param name="e">The event arguments</param>
         protected void OnPreEntryAdded(PreEntryAddedEventArgs e)
         {
-            if (_preEntryAddedEvent != null)
-            {
-                _preEntryAddedEvent(this, e);
-            }
+            _preEntryAddedEvent?.Invoke(this, e);
         }
 
         /// <summary>
@@ -367,14 +362,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public event EventHandler<PreEntryAddedEventArgs> PreEntryAdded
         {
-            add
-            {
-                _preEntryAddedEvent += value;
-            }
-            remove
-            {
-                _preEntryAddedEvent -= value;
-            }
+            add { _preEntryAddedEvent += value; }
+            remove { _preEntryAddedEvent -= value; }
         }
 
         /// <summary>
@@ -383,14 +372,8 @@ namespace TheBoxSoftware.Documentation
         /// <remarks>If this is updated you need to call <see cref="GenerateMap()"/> to update the DocumentMap.</remarks>
         protected List<DocumentedAssembly> CurrentFiles
         {
-            get
-            {
-                return _currentFiles;
-            }
-            set
-            {
-                _currentFiles = value;
-            }
+            get { return _currentFiles; }
+            set { _currentFiles = value; }
         }
 
         /// <summary>
@@ -398,14 +381,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         protected bool UseObservableCollection
         {
-            get
-            {
-                return this._useObservableCollection;
-            }
-            set
-            {
-                this._useObservableCollection = value;
-            }
+            get { return _useObservableCollection; }
+            set { _useObservableCollection = value; }
         }
 
         /// <summary>
@@ -413,14 +390,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         protected EntryCreator EntryCreator
         {
-            get
-            {
-                return _entryCreator;
-            }
-            set
-            {
-                _entryCreator = value;
-            }
+            get { return _entryCreator; }
+            set { _entryCreator = value; }
         }
     }
 }

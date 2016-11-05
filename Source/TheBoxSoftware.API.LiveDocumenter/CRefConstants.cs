@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.API.LiveDocumenter
+{
+    using System;
 
-namespace TheBoxSoftware.API.LiveDocumenter {
-	/// <summary>
-	/// Set of constants that define all of the different cref identifiers
-	/// that can be used in code comments.
-	/// </summary>
-	internal static class CRefConstants 
+    /// <summary>
+    /// Set of constants that define all of the different cref identifiers
+    /// that can be used in code comments.
+    /// </summary>
+    internal static class CRefConstants 
     {
 		/// <summary>
 		/// Constant that defines a field reference.

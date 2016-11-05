@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// A DocumentMap that informs observers that entries have been modified, added, changed etc.
     /// </summary>

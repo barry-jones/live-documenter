@@ -1,94 +1,107 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Comments;
-	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
+﻿
+namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using TheBoxSoftware.Reflection;
+    using TheBoxSoftware.Reflection.Comments;
+    using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
     using TheBoxSoftware.Reflection.Signitures;
 
-	public class TypeMethodsPage : Page {
-		private List<MethodDef> typesMethods;
-		private XmlCodeCommentFile xmlComments;
+    public class TypeMethodsPage : Page
+    {
+        private List<MethodDef> _typesMethods;
+        private XmlCodeCommentFile _xmlComments;
 
-		public TypeMethodsPage(List<MethodDef> typesMethods, XmlCodeCommentFile xmlComments) {
-			this.typesMethods = typesMethods;
-			this.xmlComments = xmlComments;
-		}
+        public TypeMethodsPage(List<MethodDef> typesMethods, XmlCodeCommentFile xmlComments)
+        {
+            _typesMethods = typesMethods;
+            _xmlComments = xmlComments;
+        }
 
-		public override void Generate() {
-			if (!this.IsGenerated) {
-				TypeDef definingType = null;
-				if(this.typesMethods != null && this.typesMethods.Count > 0) {
-					definingType = (TypeDef)this.typesMethods[0].Type;
-				}
-				XmlCodeCommentFile comments = this.xmlComments.GetReusableFile();
+        public override void Generate()
+        {
+            if(!IsGenerated)
+            {
+                TypeDef definingType = null;
+                if(_typesMethods != null && _typesMethods.Count > 0)
+                {
+                    definingType = _typesMethods[0].Type as TypeDef;
+                }
+                XmlCodeCommentFile comments = _xmlComments.GetReusableFile();
 
-				if (!this.xmlComments.Exists) {
-					this.Blocks.Add(new NoXmlComments(definingType));
-				}
+                if(!_xmlComments.Exists)
+                {
+                    Blocks.Add(new NoXmlComments(definingType));
+                }
 
-				this.Blocks.Add(new Header1(definingType.GetDisplayName(false) + " Methods"));
+                Blocks.Add(new Header1(definingType.GetDisplayName(false) + " Methods"));
 
-				if (this.typesMethods != null && this.typesMethods.Count > 0) {
-					SummaryTable methods = new SummaryTable();
+                if(_typesMethods != null && _typesMethods.Count > 0)
+                {
+                    SummaryTable methods = new SummaryTable();
 
-					var sortedMethods = from method in this.typesMethods
-										where !method.IsConstructor
-										orderby method.Name
-										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
-										select method;
-					foreach(MethodDef currentMethod in sortedMethods) {
-						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
-						link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
-						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
-						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+                    var sortedMethods = from method in this._typesMethods
+                                        where !method.IsConstructor
+                                        orderby method.Name
+                                        where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
+                                        select method;
 
-						CRefPath path = new CRefPath(currentMethod);
+                    foreach(MethodDef currentMethod in sortedMethods)
+                    {
+                        System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
+                        link.Inlines.Add(new System.Windows.Documents.Run(currentMethod.GetDisplayName(false)));
+                        link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
+                        link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-						System.Windows.Documents.Block description = this.GetSummaryFor(comments, 
-							currentMethod.Assembly, 
-							"/doc/members/member[@name='" + path.ToString() + "']/summary"
-							);
+                        CRefPath path = new CRefPath(currentMethod);
 
-						methods.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
-					}
-					this.Blocks.Add(methods);
-				}
+                        System.Windows.Documents.Block description = this.GetSummaryFor(comments,
+                            currentMethod.Assembly,
+                            "/doc/members/member[@name='" + path.ToString() + "']/summary"
+                            );
 
-				if (definingType != null && definingType.ExtensionMethods.Count > 0) {
-					SummaryTable methods = new SummaryTable();
+                        methods.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
+                    }
+                    Blocks.Add(methods);
+                }
 
-					var sortedMethods = from method in definingType.ExtensionMethods
-										where !method.IsConstructor
-										orderby method.Name
-										where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
-										select method;
-					foreach (MethodDef currentMethod in sortedMethods) {
-						DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
-						System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
-						link.Inlines.Add(new System.Windows.Documents.Run(displayNameSig.Convert()));
-						link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
-						link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+                if(definingType != null && definingType.ExtensionMethods.Count > 0)
+                {
+                    SummaryTable methods = new SummaryTable();
 
-						CRefPath path = new CRefPath(currentMethod);
+                    var sortedMethods = from method in definingType.ExtensionMethods
+                                        where !method.IsConstructor
+                                        orderby method.Name
+                                        where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(method)
+                                        select method;
 
-						System.Windows.Documents.Block description = this.GetSummaryFor(comments,
-							currentMethod.Assembly,
-							"/doc/members/member[@name='" + path.ToString() + "']/summary"
-							);
+                    foreach(MethodDef currentMethod in sortedMethods)
+                    {
+                        DisplayNameSignitureConvertor displayNameSig = new DisplayNameSignitureConvertor(currentMethod, false, true, true);
+                        System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
+                        link.Inlines.Add(new System.Windows.Documents.Run(displayNameSig.Convert()));
+                        link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
+                        link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-						methods.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
-					}
-					this.Blocks.Add(new Header2("Extension Methods"));
-					this.Blocks.Add(methods);
-				}
+                        CRefPath path = new CRefPath(currentMethod);
 
-				this.IsGenerated = true;
-			}
-		}
-	}
+                        System.Windows.Documents.Block description = this.GetSummaryFor(comments,
+                            currentMethod.Assembly,
+                            "/doc/members/member[@name='" + path.ToString() + "']/summary"
+                            );
+
+                        methods.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
+                    }
+                    Blocks.Add(new Header2("Extension Methods"));
+                    Blocks.Add(methods);
+                }
+
+                IsGenerated = true;
+                // we also no longer need to store a reference to the XML file I think so we can remove it
+                _xmlComments = null;
+                _typesMethods = null;
+            }
+        }
+    }
 }

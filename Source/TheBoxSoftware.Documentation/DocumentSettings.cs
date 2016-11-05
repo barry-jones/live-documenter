@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System.Collections.Generic;
+    using TheBoxSoftware.Reflection;
+
     /// <summary>
     /// Stores the settings which describe how the documentation should be produced and viewed.
     /// </summary>
     public sealed class DocumentSettings
     {
+        private List<Visibility> _filters;
+
         // TODO: use for both export and live, allow live to be used as export (checkbox on settings)
         // TODO: implement other things such as inherited members, inherited documentation settings ala sandcastle
 
@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public DocumentSettings()
         {
-            this.VisibilityFilters = new List<Visibility>();
+            _filters = new List<Visibility>();
         }
 
         /// <summary>
@@ -27,7 +27,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public List<Visibility> VisibilityFilters
         {
-            get; set;
+            get { return _filters; }
+            set { _filters = value; }
         }
     }
 }

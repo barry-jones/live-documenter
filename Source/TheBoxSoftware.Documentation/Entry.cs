@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using TheBoxSoftware.Reflection;
-using TheBoxSoftware.Reflection.Comments;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using TheBoxSoftware.Reflection;
+    using Reflection.Comments;
+
     /// <include file='code-documentation\entry.xml' path='docs/entry/member[@name="entry"]/*' />
 	[System.Diagnostics.DebuggerDisplay("Key: {Key} SubKey: {SubKey}")]
     public class Entry : INotifyPropertyChanged, IComparable<Entry>
@@ -110,14 +111,8 @@ namespace TheBoxSoftware.Documentation
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="name"]/*' />
         public string Name
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
+            get { return _name; }
+            set { _name = value; }
         }
 
         /// <summary>
@@ -125,14 +120,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public long Key
         {
-            get
-            {
-                return _key;
-            }
-            set
-            {
-                _key = value;
-            }
+            get { return _key; }
+            set { _key = value; }
         }
 
         /// <summary>
@@ -142,14 +131,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public string SubKey
         {
-            get
-            {
-                return _subKey;
-            }
-            set
-            {
-                _subKey = value;
-            }
+            get { return _subKey; }
+            set { _subKey = value; }
         }
 
         /// <summary>
@@ -157,27 +140,15 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public bool IsSearchable
         {
-            get
-            {
-                return _isSearchable;
-            }
-            set
-            {
-                _isSearchable = value;
-            }
+            get { return _isSearchable; }
+            set { _isSearchable = value; }
         }
 
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="parent"]/*' />
 		public Entry Parent
         {
-            get
-            {
-                return _parent;
-            }
-            set
-            {
-                _parent = value;
-            }
+            get { return _parent; }
+            set { _parent = value; }
         }
 
         /// <summary>
@@ -185,14 +156,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public List<Entry> Children
         {
-            get
-            {
-                return _children;
-            }
-            set
-            {
-                _children = value;
-            }
+            get { return _children; }
+            set { _children = value; }
         }
 
         /// <summary>
@@ -204,10 +169,7 @@ namespace TheBoxSoftware.Documentation
         /// </remarks>
         public XmlCodeCommentFile XmlCommentFile
         {
-            get
-            {
-                return _xmlComments;
-            }
+            get { return _xmlComments; }
         }
 
         /// <summary>
@@ -215,10 +177,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public bool IsSelected
         {
-            get
-            {
-                return _isSelected;
-            }
+            get { return _isSelected; }
             set
             {
                 if (value != this._isSelected)
@@ -234,13 +193,10 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public bool IsExpanded
         {
-            get
-            {
-                return _isExpanded;
-            }
+            get { return _isExpanded; }
             set
             {
-                if (value != this._isExpanded)
+                if (value != _isExpanded)
                 {
                     _isExpanded = value;
                     OnPropertyChanged("IsExpanded");
@@ -257,14 +213,8 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public object Item
         {
-            get
-            {
-                return _item;
-            }
-            set
-            {
-                _item = value;
-            }
+            get { return _item; }
+            set { _item = value; }
         }
 
         /// <summary>

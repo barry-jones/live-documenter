@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.API.LiveDocumenter
 {
+    using System;
 
-	/// <summary>
-	/// Class that handles and parses a CRef comment path. A CRef path can contain
-	/// a fully qualified link to a type, property, method etc in an assembly.
-	/// </summary>
+    /// <summary>
+    /// Class that handles and parses a CRef comment path. A CRef path can contain
+    /// a fully qualified link to a type, property, method etc in an assembly.
+    /// </summary>
     /// <include file='Documentation\contententry.xml' path='members/member[@name="CRefPath"]/*'/>
-	[System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
+    [System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
 	public sealed class CRefPath 
     {
-		private string crefPath;
-		private string returnType;
-		private bool isOperator = false;
+		private string _crefPath;
+		private string _returnType;
+		private bool _isOperator = false;
 
-		#region Constructors
 		/// <summary>
 		/// Initialises a new instance of the CRefPath class.
 		/// </summary>
 		public CRefPath() { }
-		#endregion
 
-		#region Methods
 		/// <summary>
 		/// Parses the provided path and returns a populated cref path instance.
 		/// </summary>
@@ -36,7 +30,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
 			if (string.IsNullOrEmpty(crefPath))
 				throw new ArgumentNullException("path");
 			CRefPath parsedPath = new CRefPath();
-			parsedPath.crefPath = crefPath;
+			parsedPath._crefPath = crefPath;
 			parsedPath.Parse();
 			return parsedPath;
 		}
@@ -52,15 +46,15 @@ namespace TheBoxSoftware.API.LiveDocumenter
 			if (this.PathType != CRefTypes.Error)
             {
 				string[] items;
-				int startParams = this.crefPath.IndexOf('(');
+				int startParams = this._crefPath.IndexOf('(');
 				if (startParams == -1) 
                 {
-					items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1).Split('.');
+					items = this._crefPath.Substring(this._crefPath.IndexOf(':') + 1).Split('.');
 				}
 				else 
                 {
-					items = this.crefPath.Substring(this.crefPath.IndexOf(':') + 1, this.crefPath.IndexOf('(') - 2).Split('.');
-					this.Parameters = this.crefPath.Substring(this.crefPath.IndexOf('('));
+					items = this._crefPath.Substring(this._crefPath.IndexOf(':') + 1, this._crefPath.IndexOf('(') - 2).Split('.');
+					this.Parameters = this._crefPath.Substring(this._crefPath.IndexOf('('));
 				}
 
 				switch (this.PathType)
@@ -97,13 +91,13 @@ namespace TheBoxSoftware.API.LiveDocumenter
 		/// </exception>
 		private void ParseType() 
         {
-			if (this.crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(this.crefPath.Substring(0, this.crefPath.IndexOf(':'))))
+			if (this._crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(this._crefPath.Substring(0, this._crefPath.IndexOf(':'))))
             {
 				this.PathType = CRefTypes.Error;
 				return;
 			}
 
-			string typePortion = this.crefPath.Substring(0, this.crefPath.IndexOf(':'));
+			string typePortion = this._crefPath.Substring(0, this._crefPath.IndexOf(':'));
 			switch (typePortion) 
             {
 				case CRefConstants.TypeIndicator: this.PathType = CRefTypes.Type; break;
@@ -151,10 +145,10 @@ namespace TheBoxSoftware.API.LiveDocumenter
 
 					// Operators provide the return types after a "~" character as specified in:
 					//	http://msdn.microsoft.com/en-us/library/fsbx0t7x(VS.71).aspx
-					if (this.isOperator && !string.IsNullOrEmpty(this.returnType)) 
+					if (this._isOperator && !string.IsNullOrEmpty(this._returnType)) 
                     {
 						typePortion += "~";
-						typePortion += this.returnType;
+						typePortion += this._returnType;
 					}
 
 					toString = typePortion;
@@ -162,9 +156,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
 			}
 			return toString;
 		}
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// Indicates the type of element that is referenced by the CRef path.
 		/// </summary>
@@ -191,6 +183,5 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// A string representing the parameter section of the CRefPath.
         /// </summary>
         public string Parameters { get; set; }
-		#endregion
 	}
 }

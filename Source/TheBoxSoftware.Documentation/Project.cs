@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using System.IO;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.Serialization;
+    using System.IO;
+
     /// <summary>
     /// Represents the details and configuration of a documentation project.
     /// </summary>
@@ -171,18 +171,12 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         [XmlArray("files")]
         [XmlArrayItem("file")]
-        public List<string> Files
-        {
-            get; set;
-        }
+        public List<string> Files { get; set; }
 
         /// <summary>
         /// The list of assemblies that the user has marked as not requiring documentation.
         /// </summary>
-        public List<string> RemovedAssemblies
-        {
-            get; set;
-        }
+        public List<string> RemovedAssemblies { get; set; }
 
         /// <summary>
         /// Collection of filters that define what is and is not shown in this
@@ -190,36 +184,24 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         [XmlArray("filters")]
         [XmlArrayItem("filter")]
-        public List<Reflection.Visibility> VisibilityFilters
-        {
-            get; set;
-        }
+        public List<Reflection.Visibility> VisibilityFilters { get; set; }
 
         /// <summary>
         /// The currently selected build configuration.
         /// </summary>
         [XmlElement("configuration")]
-        public string Configuration
-        {
-            get; set;
-        }
+        public string Configuration { get; set; }
 
         /// <summary>
         /// The selected syntax language for the document.
         /// </summary>
         [XmlElement("language")]
-        public Reflection.Syntax.Languages Language
-        {
-            get; set;
-        }
+        public Reflection.Syntax.Languages Language { get; set; }
 
         /// <summary>
         /// The output location used for this documentation set
         /// </summary>
         [XmlElement("outputlocation")]
-        public string OutputLocation
-        {
-            get; set;
-        }
+        public string OutputLocation { get; set; }
     }
 }
