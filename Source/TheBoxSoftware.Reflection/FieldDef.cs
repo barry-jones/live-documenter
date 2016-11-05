@@ -71,7 +71,7 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                switch(this.Flags & FieldAttributes.FieldAccessMask)
+                switch(_flags & FieldAttributes.FieldAccessMask)
                 {
                     case FieldAttributes.Public:
                         return Visibility.Public;
