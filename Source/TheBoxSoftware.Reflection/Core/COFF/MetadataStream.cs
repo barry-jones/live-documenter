@@ -25,13 +25,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         private byte _sizeOfBlobIndexes = 0;
         private PeCoffFile _owningFile;
         private MetadataTablesDictionary _tables;
-        private ulong _sorted;
-        private ulong _valid;
-        private byte _reserved2;
         private HeapOffsetSizes _heapOffsetSizes;
-        private ushort _minorVersion;
-        private ushort _majorVersion;
-        private uint _reserved1;
 
         internal MetadataStream(PeCoffFile file, uint address)
         {
@@ -39,13 +33,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             byte[] contents = file.FileContents;
             Offset offset = (int)address;
 
-            _reserved1 = BitConverter.ToUInt32(contents, offset.Shift(4));
-            _majorVersion = contents[offset.Shift(1)];
-            _minorVersion = contents[offset.Shift(1)];
+            offset.Shift(4);        // reserved1 = BitConverter.ToUInt32(contents, offset.Shift(4));
+            offset.Shift(1);        // majorVersion = contents[offset.Shift(1)];
+            offset.Shift(1);        // minorVersion = contents[offset.Shift(1)];
             _heapOffsetSizes = (HeapOffsetSizes)contents.GetValue(offset.Shift(1));
-            _reserved2 = contents[offset.Shift(1)];
-            _valid = BitConverter.ToUInt64(contents, offset.Shift(8));
-            _sorted = BitConverter.ToUInt64(contents, offset.Shift(8));
+            offset.Shift(1);        // reserved2 = contents[offset.Shift(1)];
+            ulong valid = BitConverter.ToUInt64(contents, offset.Shift(8));
+            offset.Shift(8);        // sorted = BitConverter.ToUInt64(contents, offset.Shift(8));
 
             // Now we need to read the number of rows present in the available tables, we have
             // had to add the unused tables to the MEtadatTables as mscorlib seems to use one. Not
@@ -56,9 +50,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             {
                 MetadataTables current = (MetadataTables)values.GetValue(i);
                 ulong mask = (ulong)1 << (int)current;
-                if((mask & _valid) == mask)
+                if((mask & valid) == mask)
                 {
-                    rowsInPresentTables.Add(current, BitConverter.ToInt32(contents, (int)offset.Shift(4)));
+                    rowsInPresentTables.Add(current, BitConverter.ToInt32(contents, offset.Shift(4)));
                 }
             }
 
@@ -131,7 +125,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                             rows[j] = new ConstantMetadataTableRow(this, contents, offset);
                         }
                         break;
-                    // TODO: Start
                     case MetadataTables.CustomAttribute:
                         for(int j = 0; j < numRows; j++)
                         {
@@ -338,48 +331,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             return o;
         }
 
-        public uint Reserved1
-        {
-            get { return _reserved1; }
-            set { _reserved1 = value; }
-        }
-
-        public ushort MajorVersion
-        {
-            get { return _majorVersion; }
-            set { _majorVersion = value; }
-        }
-
-        public ushort MinorVersion
-        {
-            get { return _minorVersion; }
-            set { _minorVersion = value; }
-        }
-
-        public HeapOffsetSizes HeapOffsetSizes
-        {
-            get { return _heapOffsetSizes; }
-            set { _heapOffsetSizes = value; }
-        }
-
-        public byte Reserved2
-        {
-            get { return _reserved2; }
-            set { _reserved2 = value; }
-        }
-
-        public ulong Valid
-        {
-            get { return _valid; }
-            set { _valid = value; }
-        }
-
-        public ulong Sorted
-        {
-            get { return _sorted; }
-            set { _sorted = value; }
-        }
-
         public MetadataTablesDictionary Tables
         {
             get { return _tables; }
@@ -395,7 +346,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             {
                 if(_sizeOfStringIndexes == 0)
                 {
-                    _sizeOfStringIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.StringIsLarge) == HeapOffsetSizes.StringIsLarge)
+                    _sizeOfStringIndexes = ((_heapOffsetSizes & HeapOffsetSizes.StringIsLarge) == HeapOffsetSizes.StringIsLarge)
                         ? (byte)4
                         : (byte)2;
                 }
@@ -412,7 +363,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             {
                 if(_sizeOfGuidIndexes == 0)
                 {
-                    _sizeOfGuidIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.GuidIsLarge) == HeapOffsetSizes.GuidIsLarge)
+                    _sizeOfGuidIndexes = ((_heapOffsetSizes & HeapOffsetSizes.GuidIsLarge) == HeapOffsetSizes.GuidIsLarge)
                         ? (byte)4
                         : (byte)2;
                 }
@@ -429,7 +380,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             {
                 if(_sizeOfBlobIndexes == 0)
                 {
-                    _sizeOfBlobIndexes = ((this.HeapOffsetSizes & HeapOffsetSizes.BlobIsLarge) == HeapOffsetSizes.BlobIsLarge)
+                    _sizeOfBlobIndexes = ((_heapOffsetSizes & HeapOffsetSizes.BlobIsLarge) == HeapOffsetSizes.BlobIsLarge)
                         ? (byte)4
                         : (byte)2;
                 }
