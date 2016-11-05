@@ -67,6 +67,7 @@
     <Compile Include="Integration\SignatureTests.cs" />
     <Compile Include="Integration\Syntax\CSharp_MethodSyntaxTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\DisplayNameSignitureConvertorTests.cs" />
     <Compile Include="Unit\EventDefTests.cs" />
     <Compile Include="Unit\FieldDefTests.cs" />
     <Compile Include="Unit\MethodDefTests.cs" />
