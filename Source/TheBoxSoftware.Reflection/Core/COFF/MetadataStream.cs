@@ -40,10 +40,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             Offset offset = (int)address;
 
             _reserved1 = BitConverter.ToUInt32(contents, offset.Shift(4));
-            _majorVersion = (byte)contents.GetValue(offset.Shift(1));
-            _minorVersion = (byte)contents.GetValue(offset.Shift(1));
+            _majorVersion = contents[offset.Shift(1)];
+            _minorVersion = contents[offset.Shift(1)];
             _heapOffsetSizes = (HeapOffsetSizes)contents.GetValue(offset.Shift(1));
-            _reserved2 = (byte)contents.GetValue(offset.Shift(1));
+            _reserved2 = contents[offset.Shift(1)];
             _valid = BitConverter.ToUInt64(contents, offset.Shift(8));
             _sorted = BitConverter.ToUInt64(contents, offset.Shift(8));
 
