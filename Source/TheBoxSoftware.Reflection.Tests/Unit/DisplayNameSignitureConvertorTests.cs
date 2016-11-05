@@ -110,6 +110,25 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
             Assert.AreEqual(string.Empty, result);
         }
 
+        [Test]
+        public void Convert_PropertyDef_WhenPropertyHasNoParameters_ShouldReturnTheName()
+        {
+            PropertyDef property = new PropertyDef();
+            property.Name = "MyProperty";
+            MethodDef getter = new MethodDef();
+            getter.Name = "get_MyProperty";
+            property.Getter = getter;
+            TypeDef container = new TypeDef();
+            container.Properties.Add(property);
+            property.OwningType = container;
+
+            var convertor = new DisplayNameSignitureConvertor(property, false, false);
+
+            string result = convertor.Convert();
+
+            Assert.AreEqual("MyProperty", result);
+        }
+
         private static MethodDef CreateMethod()
         {
             TypeDef type = CreateTypeDef("Container", "Reflection");
