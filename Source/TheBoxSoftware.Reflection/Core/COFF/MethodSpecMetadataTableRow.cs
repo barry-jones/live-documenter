@@ -1,9 +1,13 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     public class MethodSpecMetadataTableRow : MetadataRow
     {
+        private uint _instantiation;
+        private CodedIndex _method;
+
         /// <summary>
         /// Initialises a new instance of the MethodSpecMetadataTableRow class
         /// </summary>
@@ -21,11 +25,19 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// An index in to a MethodDef or MemberRef table, a MethodDefOrRef
         /// encoded index
         /// </summary>
-        public CodedIndex Method { get; set; }
+        public CodedIndex Method
+        {
+            get { return _method; }
+            set { _method = value; }
+        }
 
         /// <summary>
         /// An index in to the blob heap
         /// </summary>
-        public UInt32 Instantiation { get; set; }
+        public uint Instantiation
+        {
+            get { return _instantiation; }
+            set { _instantiation = value; }
+        }
     }
 }

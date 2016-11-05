@@ -1,7 +1,11 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class PropertyMapMetadataTableRow : MetadataRow
     {
+        private Index _parent;
+        private Index _propertyList;
+
         public PropertyMapMetadataTableRow()
         {
         }
@@ -22,11 +26,19 @@
         /// <summary>
         /// An index in to the TypeDef table
         /// </summary>
-        public Index Parent { get; set; }
+        public Index Parent
+        {
+            get { return _parent; }
+            set { _parent = value; }
+        }
 
         /// <summary>
         /// An index in to the Property table
         /// </summary>
-        public Index PropertyList { get; set; }
+        public Index PropertyList
+        {
+            get { return _propertyList; }
+            set { _propertyList = value; }
+        }
     }
 }

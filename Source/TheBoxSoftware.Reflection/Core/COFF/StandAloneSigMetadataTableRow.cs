@@ -1,7 +1,10 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class StandAloneSigMetadataTableRow : MetadataRow
     {
+        private BlobIndex _signiture;
+
         /// <summary>
         /// Initialises a new instnace of the StandAloneSigMetadataTableRow
         /// </summary>
@@ -23,6 +26,10 @@
         /// An index in to the blob heap, which points to a signiture which is
         /// note referenced by a normal member
         /// </summary>
-        public BlobIndex Signiture { get; set; }
+        public BlobIndex Signiture
+        {
+            get { return _signiture; }
+            set { _signiture = value; }
+        }
     }
 }

@@ -17,6 +17,14 @@ namespace TheBoxSoftware.Reflection.Core.PE
 
     public sealed class FileHeader
     {
+        private FileCharacteristics _characteristics;
+        private ushort _sizeOfOptionalHeader;
+        private uint _numberOfSymbols;
+        private uint _pointerToSymbolTable;
+        private uint _timeDateStamp;
+        private ushort _numberOfSections;
+        private MachineTypes _machine;
+
         /// <summary>
         /// Initialises the ImageFileHeader class and populates it with
         /// the specific data from the file contents
@@ -34,18 +42,46 @@ namespace TheBoxSoftware.Reflection.Core.PE
             this.Characteristics = (FileCharacteristics)BitConverter.ToUInt16(fileContents, offset.Shift(2));
         }
 
-        public MachineTypes Machine { get; set; }
+        public MachineTypes Machine
+        {
+            get { return _machine; }
+            set { _machine = value; }
+        }
 
-        public UInt16 NumberOfSections { get; set; }
+        public ushort NumberOfSections
+        {
+            get { return _numberOfSections; }
+            set { _numberOfSections = value; }
+        }
 
-        public UInt32 TimeDateStamp { get; set; }
+        public uint TimeDateStamp
+        {
+            get { return _timeDateStamp; }
+            set { _timeDateStamp = value; }
+        }
 
-        public UInt32 PointerToSymbolTable { get; set; }
+        public uint PointerToSymbolTable
+        {
+            get { return _pointerToSymbolTable; }
+            set { _pointerToSymbolTable = value; }
+        }
 
-        public UInt32 NumberOfSymbols { get; set; }
+        public uint NumberOfSymbols
+        {
+            get { return _numberOfSymbols; }
+            set { _numberOfSymbols = value; }
+        }
 
-        public UInt16 SizeOfOptionalHeader { get; set; }
+        public ushort SizeOfOptionalHeader
+        {
+            get { return _sizeOfOptionalHeader; }
+            set { _sizeOfOptionalHeader = value; }
+        }
 
-        public FileCharacteristics Characteristics { get; set; }
+        public FileCharacteristics Characteristics
+        {
+            get { return _characteristics; }
+            set { _characteristics = value; }
+        }
     }
 }

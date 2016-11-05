@@ -1,4 +1,5 @@
-﻿namespace TheBoxSoftware.Reflection.Core
+﻿
+namespace TheBoxSoftware.Reflection.Core
 {
     /// <summary>
     /// Represents a cursor through a large file, the current value

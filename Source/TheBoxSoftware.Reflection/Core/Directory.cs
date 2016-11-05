@@ -1,10 +1,13 @@
-﻿using TheBoxSoftware.Reflection.Core.PE;
-using TheBoxSoftware.Reflection.Core.COFF;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core
 {
+    using TheBoxSoftware.Reflection.Core.PE;
+    using TheBoxSoftware.Reflection.Core.COFF;
+
     public class Directory
     {
+        private string _name;
+
         public Directory()
         {
         }
@@ -43,6 +46,10 @@ namespace TheBoxSoftware.Reflection.Core
         /// <summary>
         /// The name of the directory
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
     }
 }

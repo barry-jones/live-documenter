@@ -2,6 +2,9 @@
 {
     public class Stream
     {
+        private Streams _streamType;
+        private string _name;
+
         public static Stream Create(PeCoffFile file, uint address, MetadataStreamHeader header)
         {
             Stream created = null;
@@ -38,10 +41,16 @@
             return created;
         }
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
-        public Streams StreamType { get; set; }
-
-        protected PeCoffFile OwningFile { get; set; }
+        public Streams StreamType
+        {
+            get { return _streamType; }
+            set { _streamType = value; }
+        }
     }
 }

@@ -1,10 +1,13 @@
-﻿namespace TheBoxSoftware.Reflection.Core.COFF
+﻿
+namespace TheBoxSoftware.Reflection.Core.COFF
 {
     /// <summary>
     /// Created by a .module extern directive in the assembly
     /// </summary>
     public class ModuleRefMetadataTableRow : MetadataRow
     {
+        private StringIndex _name;
+
         /// <summary>
         /// Initialises a new instance of the ModuleRefMetadataTableRow class
         /// </summary>
@@ -20,6 +23,10 @@
         /// <summary>
         /// An index in to the string heap
         /// </summary>
-        public StringIndex Name { get; set; }
+        public StringIndex Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
     }
 }

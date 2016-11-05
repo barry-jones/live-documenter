@@ -16,7 +16,12 @@ namespace TheBoxSoftware.Reflection.Core
 
         private byte[] _fileContents;
         private COFF.MetadataDirectory _metadataDirectory;
-        
+        private MetadataToDefinitionMap _map;
+        private bool _isMetadataLoaded;
+        private Dictionary<DataDirectories, Directory> _directories;
+        private List<SectionHeader> _sectionHeaders;
+        private string _fileName;
+
         /// <summary>
         /// Initialises a new instance of the PeCoffFile
         /// </summary>
@@ -167,23 +172,39 @@ namespace TheBoxSoftware.Reflection.Core
         /// <summary>
         /// The full path and filename for the disk location of this PE/COFF file.
         /// </summary>
-        public string FileName { get; set; }
+        public string FileName
+        {
+            get { return _fileName; }
+            set { _fileName = value; }
+        }
 
         /// <summary>
         /// The headers for all the sections defined in the file
         /// </summary>
-        public List<SectionHeader> SectionHeaders { get; set; }
+        public List<SectionHeader> SectionHeaders
+        {
+            get { return _sectionHeaders; }
+            set { _sectionHeaders = value; }
+        }
 
         /// <summary>
         /// All of the directories for the PE/COFF file.
         /// </summary>
-        public Dictionary<DataDirectories, Directory> Directories { get; set; }
+        public Dictionary<DataDirectories, Directory> Directories
+        {
+            get { return _directories; }
+            set { _directories = value; }
+        }
 
         /// <summary>
         /// Indicates if the metadata has been loaded in its entirety from the
         /// PE/COFF file.
         /// </summary>
-        public bool IsMetadataLoaded { get; set; }
+        public bool IsMetadataLoaded
+        {
+            get { return _isMetadataLoaded; }
+            set { _isMetadataLoaded = value; }
+        }
 
         /// <summary>
         /// The byte contents of the file.
@@ -196,6 +217,10 @@ namespace TheBoxSoftware.Reflection.Core
         /// <summary>
         /// Internal mapping of metadata to reflected definitions.
         /// </summary>
-        internal MetadataToDefinitionMap Map { get; set; }
+        internal MetadataToDefinitionMap Map
+        {
+            get { return _map; }
+            set { _map = value; }
+        }
     }
 }

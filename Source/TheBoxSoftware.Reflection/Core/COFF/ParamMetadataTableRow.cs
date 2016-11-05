@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     // TODO: When resolving these metadata rows, we should also look in to the constant metadata
     //  table and resolve optional parameters to the constant defenitions this will enable us
     //  to correctly output the syntax for these parameters.
@@ -19,6 +20,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </remarks>
     public class ParamMetadataTableRow : MetadataRow
     {
+        private StringIndex _name;
+        private ushort _sequence;
+        private ParamAttributeFlags _flags;
+
         /// <summary>
         /// Initialises a new instance of the ParamMetadataTableRow class
         /// </summary>
@@ -36,16 +41,28 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// A 2-byte bitmask of ParamAttributes
         /// </summary>
-        public ParamAttributeFlags Flags { get; set; }
+        public ParamAttributeFlags Flags
+        {
+            get { return _flags; }
+            set { _flags = value; }
+        }
 
         /// <summary>
         /// The sequence of the parameter
         /// </summary>
-        public UInt16 Sequence { get; set; }
+        public ushort Sequence
+        {
+            get { return _sequence; }
+            set { _sequence = value; }
+        }
 
         /// <summary>
         /// Index in to the string heap
         /// </summary>
-        public StringIndex Name { get; set; }
+        public StringIndex Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
     }
 }

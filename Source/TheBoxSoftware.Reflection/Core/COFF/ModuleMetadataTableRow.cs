@@ -1,10 +1,17 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <remarks>Updated for 4-byte heap indexes</remarks>
     public class ModuleMetadataTableRow : MetadataRow
     {
+        private int _encBaseId;
+        private int _encId;
+        private int _mvid;
+        private StringIndex _name;
+        private ushort _generation;
+
         /// <summary>
         /// Initialises a new instance of the ModuleMetadataTableRow class
         /// </summary>
@@ -22,21 +29,41 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         }
 
         /// <summary>Reserved, shall be zero</summary>
-        public UInt16 Generation { get; set; }
+        public ushort Generation
+        {
+            get { return _generation; }
+            set { _generation = value; }
+        }
 
         /// <summary>Index to the string heap</summary>
-        public StringIndex Name { get; set; }
+        public StringIndex Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         /// <summary>
         /// An index to the Guid heap, to distinguish between two versions of
         /// the same module
         /// </summary>
-        public Int32 Mvid { get; set; }
+        public Int32 Mvid
+        {
+            get { return _mvid; }
+            set { _mvid = value; }
+        }
 
         /// <summary>An index to the Guid heap, reserved shall be zero</summary>
-        public Int32 EncId { get; set; }
+        public int EncId
+        {
+            get { return _encId; }
+            set { _encId = value; }
+        }
 
         /// <summary>An index to the Guid heap, reserved shall be zero</summary>
-        public Int32 EncBaseId { get; set; }
+        public int EncBaseId
+        {
+            get { return _encBaseId; }
+            set { _encBaseId = value; }
+        }
     }
 }

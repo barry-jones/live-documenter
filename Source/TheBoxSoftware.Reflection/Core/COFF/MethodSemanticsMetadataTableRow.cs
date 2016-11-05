@@ -1,10 +1,15 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <seealso cref="MethodSemanticsAttributes"/>
     public class MethodSemanticsMetadataTableRow : MetadataRow
     {
+        private CodedIndex _association;
+        private Index _method;
+        private MethodSemanticsAttributes _semantics;
+
         /// <summary>
         /// Initialises a new instance of the MethodSemanticsMetadataTableRow class
         /// </summary>
@@ -22,16 +27,28 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// A 2-byte bitmask of type <see cref="MethodSemanticsAttributes"/>.
         /// </summary>
-        public MethodSemanticsAttributes Semantics { get; set; }
+        public MethodSemanticsAttributes Semantics
+        {
+            get { return _semantics; }
+            set { _semantics = value; }
+        }
 
         /// <summary>
         /// An index into the MethodDef table
         /// </summary>
-        public Index Method { get; set; }
+        public Index Method
+        {
+            get { return _method; }
+            set { _method = value; }
+        }
 
         /// <summary>
         /// An index into the Event or Property table, a HasSemantics coded index
         /// </summary>
-        public CodedIndex Association { get; set; }
+        public CodedIndex Association
+        {
+            get { return _association; }
+            set { _association = value; }
+        }
     }
 }

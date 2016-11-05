@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core
 {
+    using System;
+
     /// <summary>
     /// Represents an error in the application where someone has attempted
     /// to load a native or non-managed library.

@@ -137,7 +137,7 @@ namespace TheBoxSoftware.Reflection.Core.PE
 
         public UInt32 LoaderFlags { get; set; }
 
-        public UInt32 NumberOfRVAAndSizes { get; set; }
+        public uint NumberOfRVAAndSizes { get; set; }
 
         public Dictionary<DataDirectories, DataDirectory> DataDirectories { get; set; }
     }

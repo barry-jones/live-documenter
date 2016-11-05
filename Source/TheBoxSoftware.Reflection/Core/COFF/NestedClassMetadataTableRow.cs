@@ -2,6 +2,9 @@
 {
     public class NestedClassMetadataTableRow : MetadataRow
     {
+        private Index _enclosingClass;
+        private Index _nestedClass;
+
         /// <summary>
         /// Initialises a new instance of the NestedClassMetadataTableRow class
         /// </summary>
@@ -18,11 +21,19 @@
         /// <summary>
         /// An index in to the TypeDef table
         /// </summary>
-        public Index NestedClass { get; set; }
+        public Index NestedClass
+        {
+            get { return _nestedClass; }
+            set { _nestedClass = value; }
+        }
 
         /// <summary>
         /// An index in to teh TypeDef table
         /// </summary>
-        public Index EnclosingClass { get; set; }
+        public Index EnclosingClass
+        {
+            get { return _enclosingClass; }
+            set { _enclosingClass = value; }
+        }
     }
 }

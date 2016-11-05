@@ -2,6 +2,8 @@
 {
     public class TypeSpecMetadataTableRow : MetadataRow
     {
+        private BlobIndex _signiture;
+
         /// <summary>
         /// Initialises a new instance of the TypeSpecMetadataTableRow class
         /// </summary>
@@ -17,6 +19,10 @@
         /// <summary>
         /// An index in to the blob heap
         /// </summary>
-        public BlobIndex Signiture { get; set; }
+        public BlobIndex Signiture
+        {
+            get { return _signiture; }
+            set { _signiture = value; }
+        }
     }
 }

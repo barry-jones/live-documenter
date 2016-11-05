@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
+    using System;
+
     /// <summary>
     /// An enumeration of available relationship references
     /// for methods to properties, events etc.

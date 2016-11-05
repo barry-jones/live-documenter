@@ -1,7 +1,8 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Reflection.Core
 {
+    using System;
+
     public static class FieldReader
     {
         public static Int32 ToInt32(byte[] value, int offset)
