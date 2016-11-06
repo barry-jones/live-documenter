@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         private ushort _packingSize;
 
         /// <summary>
-        /// Initialises a new instnace of the ClassLayoutMetadataTableRow
+        /// Initialises a new instance of the ClassLayoutMetadataTableRow
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of this row</param>
@@ -24,7 +24,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
             _packingSize = BitConverter.ToUInt16(contents, offset.Shift(2));
             _classSize = BitConverter.ToUInt32(contents, offset.Shift(4));
-
             _parentIndex = new Index(contents, offset, sizeOfTypeDefIndex);
         }
 
