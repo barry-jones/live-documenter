@@ -14,16 +14,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             _detailsMap = BuildDetailsMap(rowsPerTableData);
         }
 
-        public CodedIndex Resolve(CodedIndexes indexType, byte[] content, Offset offset)
-        {
-            IndexDetails details = _detailsMap[indexType];
-            int size = details.RequiredNumberOfBytes();
-
-            uint value = FieldReader.ToUInt32(content, offset.Shift(size), size);
-
-            return DecodeIndex(value, _detailsMap[indexType]);
-        }
-
         public CodedIndex Resolve(CodedIndexes indexType, uint value)
         {
             return DecodeIndex(value, _detailsMap[indexType]);
