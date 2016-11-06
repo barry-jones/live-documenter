@@ -133,6 +133,7 @@
     <Compile Include="Comments\XmlContainerCodeElement.cs" />
     <Compile Include="ConstantInfo.cs" />
     <Compile Include="Core\COFF\AssemblyFlags.cs" />
+    <Compile Include="Core\COFF\AssemblyHashAlgorithms.cs" />
     <Compile Include="Core\COFF\AssemblyMetadataTableRow.cs" />
     <Compile Include="Core\COFF\AssemblyOSMetadataTableRow.cs" />
     <Compile Include="Core\COFF\AssemblyProcessorMetadataTableRow.cs" />

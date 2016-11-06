@@ -103,6 +103,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     {
         public uint Value;
 
+        public StringIndex(byte[] fileContents, byte sizeOfStringIndexes, Offset offset)
+        {
+            Value = FieldReader.ToUInt32(
+                fileContents,
+                offset.Shift(sizeOfStringIndexes),
+                sizeOfStringIndexes
+                );
+        }
+
         /// <summary>
         /// Initialises a new instance of the StringStream.
         /// </summary>
