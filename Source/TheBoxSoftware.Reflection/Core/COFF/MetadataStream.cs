@@ -130,7 +130,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.CustomAttribute:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new CustomAttributeMetadataTableRow(this, contents, offset);
+                            rows[j] = new CustomAttributeMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.FieldMarshal:

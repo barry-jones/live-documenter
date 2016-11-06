@@ -1,37 +1,59 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    using System;
-
     public class CustomAttributeMetadataTableRow : MetadataRow
     {
+        private CodedIndex _parentIndex;
+        private CodedIndex _typeIndex;
+        private uint _value;
+
         /// <summary>
         /// Initialises a new instance of the CustomAttributeMetadataTableRow
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public CustomAttributeMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public CustomAttributeMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfBlobIndexes)
         {
+            int hasCustomAttributeIndexSize = resolver.GetSizeOfIndex(CodedIndexes.HasCustomAttribute);
+            int customAttributeIndexSize = resolver.GetSizeOfIndex(CodedIndexes.CustomAttributeType);
+
             this.FileOffset = offset;
-            this.Parent = new CodedIndex(stream, offset, CodedIndexes.HasCustomAttribute);
-            this.Type = new CodedIndex(stream, offset, CodedIndexes.CustomAttributeType);
-            this.Value = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+
+            _parentIndex = resolver.Resolve(
+                CodedIndexes.HasCustomAttribute,
+                FieldReader.ToUInt32(contents, offset.Shift(hasCustomAttributeIndexSize), hasCustomAttributeIndexSize)
+                );
+            _typeIndex = resolver.Resolve(CodedIndexes.CustomAttributeType,
+                FieldReader.ToUInt32(contents, offset.Shift(customAttributeIndexSize), customAttributeIndexSize)
+                );
+            _value = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
         }
 
         /// <summary>
         /// A HasCustomAttribute encoded index
         /// </summary>
-        public CodedIndex Parent { get; set; }
+        public CodedIndex Parent
+        {
+            get { return _parentIndex; }
+            set { _parentIndex = value; }
+        }
 
         /// <summary>
         /// A CustomAttributeType encoded index (Def or Ref tables)
         /// </summary>
-        public CodedIndex Type { get; set; }
+        public CodedIndex Type
+        {
+            get { return _typeIndex; }
+            set { _typeIndex = value; }
+        }
 
         /// <summary>
         /// An index in to the blob heap
         /// </summary>
-        public UInt32 Value { get; set; }
+        public uint Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
     }
 }
