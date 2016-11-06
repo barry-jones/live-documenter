@@ -2,6 +2,7 @@
 namespace TheBoxSoftware.Reflection.Core
 {
     using System;
+    using System.Text;
 
     public static class FieldReader
     {
@@ -52,5 +53,22 @@ namespace TheBoxSoftware.Reflection.Core
         {
             return BitConverter.ToUInt16(value, offset);
         }
+
+#if DEBUG
+        public static string ToHexString(byte[] source, int start, int length)
+        {
+            byte[] temp = new byte[length];
+
+            Array.Copy(source, start, temp, 0, length);
+
+            StringBuilder builder = new StringBuilder();
+            foreach(byte current in temp)
+            {
+                builder.Append($"0x{current.ToString("X2")}, ");
+            }
+
+            return builder.ToString();
+        }
+#endif
     }
 }
