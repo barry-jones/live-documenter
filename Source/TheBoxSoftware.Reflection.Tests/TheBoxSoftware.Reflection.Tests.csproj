@@ -61,6 +61,7 @@
     <Compile Include="Unit\Comments\CRefPathTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyOSMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\AssemblyProcessorMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />

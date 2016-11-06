@@ -19,8 +19,17 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
             Assert.AreEqual(0, row.OSPlatformID);
             Assert.AreEqual(0, row.OSMajorVersion);
             Assert.AreEqual(0, row.OSMinorVersion);
-            // offset is moved on 12 bytes to index 11 and ready to read next byte index 12
-            Assert.AreEqual(12, offset.Current); 
+        }
+
+        [Test]
+        public void AssemblyOS_WhenConstructed_OffsetIsMovedBy12()
+        {
+            byte[] contents = new byte[12];
+            Offset offset = 0;
+
+            AssemblyOSMetadataTableRow row = new AssemblyOSMetadataTableRow(contents, offset);
+
+            Assert.AreEqual(12, offset.Current);
         }
     }
 }

@@ -230,7 +230,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.AssemblyProcessor:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new AssemblyProcessorMetadataTableRow(this, contents, offset);
+                            rows[j] = new AssemblyProcessorMetadataTableRow(contents, offset);
                         }
                         break;
                     case MetadataTables.AssemblyOS:
