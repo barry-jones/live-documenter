@@ -16,16 +16,20 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the DeclSecurityMetadataTableRow
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the this row</param>
-        public DeclSecurityMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public DeclSecurityMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte blobIndexSize)
         {
             this.FileOffset = offset;
 
+            int declSecurityIndexSize = resolver.GetSizeOfIndex(CodedIndexes.HasDeclSecurity);
+
             _action = BitConverter.ToUInt16(contents, offset.Shift(2));
-            _parentIndex = new CodedIndex(stream, offset, CodedIndexes.HasDeclSecurity);
-            _permissionSet = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+            _parentIndex = resolver.Resolve(
+                CodedIndexes.HasDeclSecurity,
+                FieldReader.ToUInt32(contents, offset.Shift(declSecurityIndexSize), declSecurityIndexSize)
+                );
+            _permissionSet = FieldReader.ToUInt32(contents, offset.Shift(blobIndexSize), blobIndexSize);
         }
 
         /// <summary>

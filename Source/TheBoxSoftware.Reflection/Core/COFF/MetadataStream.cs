@@ -142,7 +142,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.DeclSecurity:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new DeclSecurityMetadataTableRow(this, contents, offset);
+                            rows[j] = new DeclSecurityMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.ClassLayout:
