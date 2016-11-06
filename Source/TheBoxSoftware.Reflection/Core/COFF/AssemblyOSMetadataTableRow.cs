@@ -1,7 +1,10 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    using System;
+    // this record is defined in the ECMA 335, but it states it should never
+    // be emitted in to any PE file. If it is all records should be treated as
+    // zero. This is here to make sure we move the offset on while reading the
+    // file in the event it is found.
 
     public class AssemblyOSMetadataTableRow : MetadataRow
     {
@@ -12,16 +15,21 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the AssemblyOSMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the file</param>
-        public AssemblyOSMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public AssemblyOSMetadataTableRow(byte[] contents, Offset offset)
         {
             this.FileOffset = offset;
 
-            _osPlatformId = FieldReader.ToUInt32(contents, offset.Shift(4));
-            _osMajorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
-            _osMinorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
+            // move the offset on for 3 fields each being 4 bytes
+            offset.Shift(4);
+            offset.Shift(4);
+            offset.Shift(4);
+
+            // set all values to 0 as per ECMA 335 p.212
+            _osPlatformId = 0;
+            _osMajorVersion = 0;
+            _osMinorVersion = 0;
         }
 
         /// <summary>
