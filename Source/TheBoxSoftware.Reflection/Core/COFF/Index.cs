@@ -26,6 +26,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             Value = value;
         }
 
+        public Index(byte[] contents, Offset offset, int sizeOfIndexes)
+        {
+            Value = FieldReader.ToUInt32(contents, offset.Shift(sizeOfIndexes), sizeOfIndexes);
+        }
+
         /// <summary>
         /// Initialises a new instance of the Index.
         /// </summary>

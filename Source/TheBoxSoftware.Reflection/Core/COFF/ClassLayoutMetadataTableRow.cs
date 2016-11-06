@@ -4,8 +4,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     using System;
 
     /// <summary>
-    /// Describes a layout of a type when it is required to be layed out
-    /// much like unmanaged structures
+    /// Describes a layout of a type when it is required to be layed out the same as unmanaged structures
     /// </summary>
     public class ClassLayoutMetadataTableRow : MetadataRow
     {
@@ -25,7 +24,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
             _packingSize = BitConverter.ToUInt16(contents, offset.Shift(2));
             _classSize = BitConverter.ToUInt32(contents, offset.Shift(4));
-            _parentIndex = new Index(FieldReader.ToUInt32(contents, offset.Shift(sizeOfTypeDefIndex)));
+
+            _parentIndex = new Index(contents, offset, sizeOfTypeDefIndex);
         }
 
         public ushort PackingSize
