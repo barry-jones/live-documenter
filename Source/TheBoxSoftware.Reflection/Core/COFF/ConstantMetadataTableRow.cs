@@ -15,6 +15,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </remarks>
     public class ConstantMetadataTableRow : MetadataRow
     {
+        private BlobIndex _valueIndex;
+        private CodedIndex _parentIndex;
+        private byte _type;
+
         /// <summary>
         /// Initialises a new instance of the ConstantMetadataTableRow
         /// </summary>
@@ -23,10 +27,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         public ConstantMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
         {
             this.FileOffset = offset;
-            this.Type = contents[offset.Shift(1)];
-            this.PaddingZero = contents[offset.Shift(1)];
-            this.Parent = new CodedIndex(stream, offset, CodedIndexes.HasConstant);
-            this.Value = new BlobIndex(stream.SizeOfBlobIndexes, contents, Signitures.Signitures.MethodDef, offset);
+
+            _type = contents[offset.Shift(1)];
+            offset.Shift(1);
+            _parentIndex = new CodedIndex(stream, offset, CodedIndexes.HasConstant);
+            _valueIndex = new BlobIndex(stream.SizeOfBlobIndexes, contents, Signitures.Signitures.MethodDef, offset);
         }
 
         /// <summary>
@@ -37,22 +42,29 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// with a 4-byte zero. Unlike uses of <c>ELEMENT_TYPE_CLASS</c> in signitures, this one is
         /// <i>not</i> followed by a type token.
         /// </remarks>
-        public byte Type { get; set; }
-
-        /// <summary>
-        /// Padding
-        /// </summary>
-        private byte PaddingZero { get; set; }
+        public byte Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
 
         /// <summary>
         /// An index in to the Param, Field, or Property table. More precisely
         /// a HasConstant coded index
         /// </summary>
-        public CodedIndex Parent { get; set; }
+        public CodedIndex Parent
+        {
+            get { return _parentIndex; }
+            set { _parentIndex = value; }
+        }
 
         /// <summary>
         /// An index in to the Blob heap
         /// </summary>
-        public BlobIndex Value { get; set; }
+        public BlobIndex Value
+        {
+            get { return _valueIndex; }
+            set { _valueIndex = value; }
+        }
     }
 }
