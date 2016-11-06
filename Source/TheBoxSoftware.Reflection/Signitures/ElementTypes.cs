@@ -1,7 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
-    internal enum ElementTypes
+    public enum ElementTypes
     {
         End = 0x0,
         Void = 0x1,

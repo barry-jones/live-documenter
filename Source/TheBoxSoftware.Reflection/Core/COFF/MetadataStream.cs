@@ -56,6 +56,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 }
             }
 
+            ICodedIndexResolver resolver = new CodedIndexResolver(rowsInPresentTables);
+
             // Following the array of row size we get the actual metadata tables
             _tables = new MetadataTablesDictionary(rowsInPresentTables.Count);
             for(int i = 0; i < values.Length; i++)
@@ -122,7 +124,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.Constant:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ConstantMetadataTableRow(this, contents, offset);
+                            rows[j] = new ConstantMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.CustomAttribute:

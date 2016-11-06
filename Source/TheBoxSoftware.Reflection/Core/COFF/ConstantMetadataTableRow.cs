@@ -17,21 +17,26 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     {
         private BlobIndex _valueIndex;
         private CodedIndex _parentIndex;
-        private byte _type;
+        private Signitures.ElementTypes _type;
 
         /// <summary>
         /// Initialises a new instance of the ConstantMetadataTableRow
         /// </summary>
         /// <param name="contents">The contents fo the file</param>
         /// <param name="offset">The offset for the current row</param>
-        public ConstantMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public ConstantMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfBlobIndex)
         {
             this.FileOffset = offset;
 
-            _type = contents[offset.Shift(1)];
+            int hasConstantIndexSize = resolver.GetSizeOfIndex(CodedIndexes.HasConstant);
+
+            _type = (Signitures.ElementTypes)contents[offset.Shift(1)];
             offset.Shift(1);
-            _parentIndex = new CodedIndex(stream, offset, CodedIndexes.HasConstant);
-            _valueIndex = new BlobIndex(stream.SizeOfBlobIndexes, contents, Signitures.Signitures.MethodDef, offset);
+            _parentIndex = resolver.Resolve(
+                CodedIndexes.HasConstant, 
+                FieldReader.ToUInt32(contents, offset.Shift(hasConstantIndexSize), hasConstantIndexSize)
+                );
+            _valueIndex = new BlobIndex(sizeOfBlobIndex, contents, Signitures.Signitures.MethodDef, offset);
         }
 
         /// <summary>
@@ -42,7 +47,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// with a 4-byte zero. Unlike uses of <c>ELEMENT_TYPE_CLASS</c> in signitures, this one is
         /// <i>not</i> followed by a type token.
         /// </remarks>
-        public byte Type
+        public Signitures.ElementTypes Type
         {
             get { return _type; }
             set { _type = value; }

@@ -24,6 +24,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             // is represented by 2 or 4 bytes depending on code and max index size in table(s)
             // if tag bits + rid bits <= 16 bits use 2 bytes else 4 bytes
             Details details = CodedIndex.GetDetails(stream, codedIndex);
+
             uint value = FieldReader.ToUInt32(stream.OwningFile.FileContents,
                 offset.Shift(details.RequiredNumberOfBytes()),
                 details.RequiredNumberOfBytes());
