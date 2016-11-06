@@ -5,6 +5,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
     public class AssemblyOSMetadataTableRow : MetadataRow
     {
+        private uint _osPlatformId;
+        private uint _osMajorVersion;
+        private uint _osMinorVersion;
+
         /// <summary>
         /// Initialises a new instance of the AssemblyOSMetadataTableRow class
         /// </summary>
@@ -14,24 +18,37 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         public AssemblyOSMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
         {
             this.FileOffset = offset;
-            this.OSPlatformID = FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.OSMajorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.OSMinorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
+
+            _osPlatformId = FieldReader.ToUInt32(contents, offset.Shift(4));
+            _osMajorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
+            _osMinorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
         }
 
         /// <summary>
         /// 4-byte constant
         /// </summary>
-        public UInt32 OSPlatformID { get; set; }
+        public uint OSPlatformID
+        {
+            get { return _osPlatformId; }
+            set { _osPlatformId = value; }
+        }
 
         /// <summary>
         /// 4-byte constant
         /// </summary>
-        public UInt32 OSMajorVersion { get; set; }
+        public uint OSMajorVersion
+        {
+            get { return _osMajorVersion; }
+            set { _osMajorVersion = value; }
+        }
 
         /// <summary>
         /// 4-byte constant
         /// </summary>
-        public UInt32 OSMinorVersion { get; set; }
+        public uint OSMinorVersion
+        {
+            get { return _osMinorVersion; }
+            set { _osMinorVersion = value; }
+        }
     }
 }
