@@ -1,7 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
-    using Moq;
+    using Helpers;
     using NUnit.Framework;
     using Reflection.Core;
     using Reflection.Core.COFF;
@@ -9,12 +9,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
     [TestFixture]
     public class CustomAttributeMetadataTableRowTests
     {
-        private CodedIndex _codedIndex;
-
         [Test]
         public void CustomAttribute_WhenCreated_FieldsAreReadCorrectly()
         {
-            ICodedIndexResolver resolver = CreateResolver();
+            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
             byte sizeOfBlobIndexes = 2;
             byte[] contents = new byte[] {
                 0x00, 0x00,
@@ -24,36 +22,22 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 
             CustomAttributeMetadataTableRow row = new CustomAttributeMetadataTableRow(contents, 0, resolver, sizeOfBlobIndexes);
 
-            Assert.AreEqual(_codedIndex, row.Parent);
-            Assert.AreEqual(_codedIndex, row.Type);
+            Assert.IsNotNull(row.Parent);
+            Assert.IsNotNull(row.Type);
             Assert.AreEqual(1, row.Value);
         }
 
-        [Test]
-        public void CustomAttribute_WhenCreated_OffsetIsMovedOn()
+        [TestCase(2, 2, 6)]
+        public void CustomAttribute_WhenCreated_OffsetIsMovedOn(byte blobIndexSize, int codedIndexSize, int expected)
         {
-            ICodedIndexResolver resolver = CreateResolver();
-            byte sizeOfBlobIndexes = 2;
+            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(codedIndexSize);
+            byte sizeOfBlobIndexes = blobIndexSize;
             Offset offset = 0;
             byte[] contents = new byte[10];
 
             CustomAttributeMetadataTableRow row = new CustomAttributeMetadataTableRow(contents, offset, resolver, sizeOfBlobIndexes);
 
-            Assert.AreEqual(6, offset.Current);
-        }
-
-        private ICodedIndexResolver CreateResolver()
-        {
-            Mock<ICodedIndexResolver> resolver = new Mock<ICodedIndexResolver>();
-
-            _codedIndex = new CodedIndex();
-            _codedIndex.Table = MetadataTables.Assembly;
-            _codedIndex.Index = new Index(10);
-
-            resolver.Setup(p => p.Resolve(It.IsAny<CodedIndexes>(), It.IsAny<uint>())).Returns(_codedIndex);
-            resolver.Setup(p => p.GetSizeOfIndex(It.IsAny<CodedIndexes>())).Returns(2);
-
-            return resolver.Object;
+            Assert.AreEqual(expected, offset.Current);
         }
     }
 }
