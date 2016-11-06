@@ -1,31 +1,41 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    using System;
+    // these records should not be emitted in to the PE file and if they are they should
+    // treat all values as zero
 
     public class AssemblyRefProcessorMetadataTableRow : MetadataRow
     {
+        private Index _assemblyRef;
+        private uint _processor;
+
         /// <summary>
         /// Initialises a new instance of the AssemblyRefProcessorMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public AssemblyRefProcessorMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        /// <param name="sizeOfAssemblyRefIndex">The size of the indexes to the assemblyref metadata table</param>
+        public AssemblyRefProcessorMetadataTableRow(byte[] contents, Offset offset, int sizeOfAssemblyRefIndex)
         {
             this.FileOffset = offset;
-            this.Processor = FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.AssemblyRef = new Index(stream, contents, offset, MetadataTables.AssemblyRef);
+
+            offset.Shift(4);
+            offset.Shift(sizeOfAssemblyRefIndex);
+
+            _processor = 0;
+            _assemblyRef = new Index();
         }
 
-        /// <summary>
-        /// 4-byte constant
-        /// </summary>
-        public UInt32 Processor { get; set; }
+        public uint Processor
+        {
+            get { return _processor; }
+            set { _processor = value; }
+        }
 
-        /// <summary>
-        /// An index in to the AssemblyRef table
-        /// </summary>
-        public Index AssemblyRef { get; set; }
+        public Index AssemblyRef
+        {
+            get { return _assemblyRef; }
+            set { _assemblyRef = value; }
+        }
     }
 }
