@@ -9,6 +9,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </summary>
     public class DeclSecurityMetadataTableRow : MetadataRow
     {
+        private ushort _action;
+        private CodedIndex _parentIndex;
+        private uint _permissionSet;
+
         /// <summary>
         /// Initialises a new instance of the DeclSecurityMetadataTableRow
         /// </summary>
@@ -18,25 +22,38 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         public DeclSecurityMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
         {
             this.FileOffset = offset;
-            this.Action = BitConverter.ToUInt16(contents, offset.Shift(2));
-            this.Parent = new CodedIndex(stream, offset, CodedIndexes.HasDeclSecurity);
-            this.PermissionSet = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+
+            _action = BitConverter.ToUInt16(contents, offset.Shift(2));
+            _parentIndex = new CodedIndex(stream, offset, CodedIndexes.HasDeclSecurity);
+            _permissionSet = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
         }
 
         /// <summary>
         /// A 2 byte value
         /// </summary>
-        public UInt16 Action { get; set; }
+        public ushort Action
+        {
+            get { return _action; }
+            set { _action = value; }
+        }
 
         /// <summary>
         /// An index  into the MethodDef, TypeDef or Assembly tables. A HasDeclSecurity
         /// encoded index
         /// </summary>
-        public CodedIndex Parent { get; set; }
+        public CodedIndex Parent
+        {
+            get { return _parentIndex; }
+            set { _parentIndex = value; }
+        }
 
         /// <summary>
         /// An index in to the blob heap
         /// </summary>
-        public UInt32 PermissionSet { get; set; }
+        public uint PermissionSet
+        {
+            get { return _permissionSet; }
+            set { _permissionSet = value; }
+        }
     }
 }
