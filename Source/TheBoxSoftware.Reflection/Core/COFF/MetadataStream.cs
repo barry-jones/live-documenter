@@ -146,7 +146,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.ClassLayout:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ClassLayoutMetadataTableRow(this, contents, offset);
+                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.AssemblyRef, this);
+                            rows[j] = new ClassLayoutMetadataTableRow(contents, offset, sizeOfTypeDefIndex);
                         }
                         break;
                     case MetadataTables.FieldLayout:

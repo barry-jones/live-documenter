@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// between an integer and an Index structure.
         /// </remarks>
         /// <param name="value">The value for the index.</param>
-        private Index(uint value)
+        public Index(uint value)
         {
             Value = value;
         }
