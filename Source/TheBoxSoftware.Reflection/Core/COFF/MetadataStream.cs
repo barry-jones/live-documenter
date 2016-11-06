@@ -248,7 +248,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.AssemblyRefProcessor:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new AssemblyRefProcessorMetadataTableRow(this, contents, offset);
+                            int sizeOfAssemblyRefIndex = Index.SizeOfIndex(MetadataTables.AssemblyRef, this);
+                            rows[j] = new AssemblyRefProcessorMetadataTableRow(contents, offset, sizeOfAssemblyRefIndex);
                         }
                         break;
                     case MetadataTables.AssemblyRefOS:

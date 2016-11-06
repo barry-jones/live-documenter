@@ -64,6 +64,7 @@
     <Compile Include="Unit\Core\COFF\AssemblyProcessorMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyRefMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyRefOSMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\AssemblyRefProcessorMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
