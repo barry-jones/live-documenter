@@ -34,8 +34,6 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
             Assert.AreEqual(0, row.PublicKey);
             Assert.AreEqual(0x1D9A, row.Name.Value);
             Assert.AreEqual(0x0000, row.Culture.Value);
-            // read 22 bytes index 21, and ready to read 23 bytes index 22
-            Assert.AreEqual(22, offset.Current);
         }
 
         [Test]
@@ -64,8 +62,21 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
             Assert.AreEqual(0, row.PublicKey);
             Assert.AreEqual(0x1D9A, row.Name.Value);
             Assert.AreEqual(0x0000, row.Culture.Value);
-            // read 28 bytes index 27, and ready to read 29 bytes index 28
-            Assert.AreEqual(28, offset.Current);
+        }
+
+        [TestCase(2, 2, 22)]
+        [TestCase(4, 2, 26)]
+        [TestCase(2, 4, 24)]
+        public void AssemblyMetadata_WhenConstructedWithIndexSizes_ShouldMoveOffset(byte sizeStringIndex, byte sizeBlobIndex, int expected)
+        {
+            byte sizeOfStringIndexes = sizeStringIndex;
+            byte sizeOfBlobIndexes = sizeBlobIndex;
+            Offset offset = 0;
+            byte[] contents = new byte[30];
+
+            AssemblyMetadataTableRow row = new AssemblyMetadataTableRow(contents, offset, sizeOfBlobIndexes, sizeOfStringIndexes);
+
+            Assert.AreEqual(expected, offset.Current);
         }
     }
 }
