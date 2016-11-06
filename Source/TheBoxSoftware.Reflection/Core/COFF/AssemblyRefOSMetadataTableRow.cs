@@ -1,43 +1,61 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    using System;
+    // these records should not be emitted to any PE file as per the specification,
+    // if they are present then all values should be zero
 
     public class AssemblyRefOSMetadataTableRow : MetadataRow
     {
+        private Index _assemblyRef;
+        private uint _osMinorVersion;
+        private uint _osMajorVersion;
+        private uint _osPlatformId;
+
         /// <summary>
         /// Initialises a new instance of AssemblyRefOSMetadataTableRow
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public AssemblyRefOSMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        /// <param name="sizeOfAssemblyRefIndex">The size of the indexes to the assembly ref table</param>
+        public AssemblyRefOSMetadataTableRow(byte[] contents, Offset offset, int sizeOfAssemblyRefIndex)
         {
             this.FileOffset = offset;
-            this.OSPlatformID = FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.OSMajorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.OSMinorVersion = FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.AssemblyRef = new Index(stream, contents, offset, MetadataTables.AssemblyRef);
+
+            // make sure we move the offset on enough if the table is present
+            offset.Shift(4);
+            offset.Shift(4);
+            offset.Shift(4);
+            offset.Shift(sizeOfAssemblyRefIndex);
+
+            // set all values to zero as per spec
+            _osPlatformId = 0;
+            _osMajorVersion = 0;
+            _osMinorVersion = 0;
+            _assemblyRef = new Index();
         }
 
-        /// <summary>
-        /// 4-byte constant
-        /// </summary>
-        public UInt32 OSPlatformID { get; set; }
+        public uint OSPlatformID
+        {
+            get { return _osPlatformId; }
+            set { _osPlatformId = value; }
+        }
 
-        /// <summary>
-        /// 4-byte constant
-        /// </summary>
-        public UInt32 OSMajorVersion { get; set; }
+        public uint OSMajorVersion
+        {
+            get { return _osMajorVersion; }
+            set { _osMajorVersion = value; }
+        }
 
-        /// <summary>
-        /// 4-byte constant
-        /// </summary>
-        public UInt32 OSMinorVersion { get; set; }
+        public uint OSMinorVersion
+        {
+            get { return _osMinorVersion; }
+            set { _osMinorVersion = value; }
+        }
 
-        /// <summary>
-        /// An index in to the AssemblyRef table
-        /// </summary>
-        public Index AssemblyRef { get; set; }
+        public Index AssemblyRef
+        {
+            get { return _assemblyRef; }
+            set { _assemblyRef = value; }
+        }
     }
 }
