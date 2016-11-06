@@ -5,26 +5,38 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
     public class AssemblyRefMetadataTableRow : MetadataRow
     {
+        private uint _hashValue;
+        private StringIndex _cultureIndex;
+        private StringIndex _nameIndex;
+        private uint _publicKeyOrToken;
+        private AssemblyFlags _flags;
+        private ushort _revisionNumber;
+        private ushort _buildNumber;
+        private ushort _minorVersion;
+        private ushort _majorVersion;
+
         public AssemblyRefMetadataTableRow() { }
 
         /// <summary>
         /// Initialises an instance of the AssemblyRefMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public AssemblyRefMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        /// <param name="sizeOfBlobIndexes">Size in bytes of the indexes to the blob stream</param>
+        /// <param name="sizeOfStringIndexes">Size in bytes of the indexes to the string stream</param>
+        public AssemblyRefMetadataTableRow(byte[] contents, Offset offset, byte sizeOfBlobIndexes, byte sizeOfStringIndexes)
         {
             this.FileOffset = offset;
-            this.MajorVersion = FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.MinorVersion = FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.BuildNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.RevisionNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.Flags = (AssemblyFlags)FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.PublicKeyOrToken = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
-            this.Name = new StringIndex(stream, offset);
-            this.Culture = new StringIndex(stream, offset);
-            this.HashValue = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+
+            _majorVersion = FieldReader.ToUInt16(contents, offset.Shift(2));
+            _minorVersion = FieldReader.ToUInt16(contents, offset.Shift(2));
+            _buildNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
+            _revisionNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
+            _flags = (AssemblyFlags)FieldReader.ToUInt32(contents, offset.Shift(4));
+            _publicKeyOrToken = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
+            _nameIndex = new StringIndex(contents, sizeOfStringIndexes, offset);
+            _cultureIndex = new StringIndex(contents, sizeOfStringIndexes, offset);
+            _hashValue = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
         }
 
         /// <summary>
@@ -32,58 +44,67 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// assembly.
         /// </summary>
         /// <returns>The populated <see cref="Version"/> instance.</returns>
-        public Version GetVersion()
+        public Core.Version GetVersion()
         {
-            return new Version(
+            return new Core.Version(
                 this.MajorVersion,
                 this.MinorVersion,
                 this.BuildNumber,
                 this.RevisionNumber);
         }
 
-        /// <summary>
-        /// Version details
-        /// </summary>
-        public UInt16 MajorVersion { get; set; }
+        public ushort MajorVersion
+        {
+            get { return _majorVersion; }
+            set { _majorVersion = value; }
+        }
 
-        /// <summary>
-        /// Version details
-        /// </summary>
-        public UInt16 MinorVersion { get; set; }
+        public ushort MinorVersion
+        {
+            get { return _minorVersion; }
+            set { _minorVersion = value; }
+        }
 
-        /// <summary>
-        /// Version details
-        /// </summary>
-        public UInt16 BuildNumber { get; set; }
+        public ushort BuildNumber
+        {
+            get { return _buildNumber; }
+            set { _buildNumber = value; }
+        }
 
-        /// <summary>
-        /// Version details
-        /// </summary>
-        public UInt16 RevisionNumber { get; set; }
+        public ushort RevisionNumber
+        {
+            get { return _revisionNumber; }
+            set { _revisionNumber = value; }
+        }
 
-        /// <summary>
-        /// 4-byte bitmask of AssemblyFlags
-        /// </summary>
-        public AssemblyFlags Flags { get; set; }
+        public AssemblyFlags Flags
+        {
+            get { return _flags; }
+            set { _flags = value; }
+        }
 
-        /// <summary>
-        /// An index in to the blob heap
-        /// </summary>
-        public UInt32 PublicKeyOrToken { get; set; }
+        public uint PublicKeyOrToken
+        {
+            get { return _publicKeyOrToken; }
+            set { _publicKeyOrToken = value; }
+        }
 
-        /// <summary>
-        /// An index in to the string heap
-        /// </summary>
-        public StringIndex Name { get; set; }
+        public StringIndex Name
+        {
+            get { return _nameIndex; }
+            set { _nameIndex = value; }
+        }
 
-        /// <summary>
-        /// An index in to the string heap
-        /// </summary>
-        public StringIndex Culture { get; set; }
+        public StringIndex Culture
+        {
+            get { return _cultureIndex; }
+            set { _cultureIndex = value; }
+        }
 
-        /// <summary>
-        /// An index in to the blob heap
-        /// </summary>
-        public UInt32 HashValue { get; set; }
+        public uint HashValue
+        {
+            get { return _hashValue; }
+            set { _hashValue = value; }
+        }
     }
 }
