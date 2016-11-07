@@ -155,7 +155,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.FieldLayout:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FieldLayoutMetadataTableRow(this, contents, offset);
+                            int sizeOfFieldIndex = Index.SizeOfIndex(MetadataTables.Field, this);
+
+                            rows[j] = new FieldLayoutMetadataTableRow(contents, offset, sizeOfFieldIndex);
                         }
                         break;
                     case MetadataTables.StandAloneSig:

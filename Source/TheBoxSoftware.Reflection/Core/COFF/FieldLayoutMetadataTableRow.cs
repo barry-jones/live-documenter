@@ -5,27 +5,35 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
     public class FieldLayoutMetadataTableRow : MetadataRow
     {
+        private Index _fieldIndex;
+        private uint _offset;
+
         /// <summary>
         /// Initialises a new instance of the FieldLayoutMetadataTableRow
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public FieldLayoutMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public FieldLayoutMetadataTableRow(byte[] contents, Offset offset, int sizeOfFieldIndex)
         {
             this.FileOffset = offset;
-            this.Offset = BitConverter.ToUInt32(contents, offset.Shift(4));
-            this.Field = new Index(stream, contents, offset, MetadataTables.Field);
+
+            _offset = BitConverter.ToUInt32(contents, offset.Shift(4));
+            _fieldIndex = new Index(contents, offset, sizeOfFieldIndex);
         }
 
-        /// <summary>
-        /// A 4-byte constant
-        /// </summary>
-        public UInt32 Offset { get; set; }
+        public uint Offset
+        {
+            get { return _offset; }
+            set { _offset = value; }
+        }
 
         /// <summary>
         /// An index to the field table
         /// </summary>
-        public Index Field { get; set; }
+        public Index Field
+        {
+            get { return _fieldIndex; }
+            set { _fieldIndex = value; }
+        }
     }
 }
