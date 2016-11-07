@@ -73,6 +73,7 @@
     <Compile Include="Unit\Core\COFF\DeclSecurityMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\EventMapMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\EventMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\ExportedTypeMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
