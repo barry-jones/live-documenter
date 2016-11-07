@@ -165,7 +165,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.StandAloneSig:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new StandAloneSigMetadataTableRow(this, contents, offset);
+                            rows[j] = new StandAloneSigMetadataTableRow(contents, offset, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.EventMap:

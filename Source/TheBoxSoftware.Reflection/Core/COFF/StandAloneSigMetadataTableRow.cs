@@ -8,16 +8,16 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instnace of the StandAloneSigMetadataTableRow
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of teh file</param>
         /// <param name="offset">The offset for this row</param>
-        public StandAloneSigMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public StandAloneSigMetadataTableRow(byte[] contents, Offset offset, byte sizeOfBlobIndexes)
         {
             this.FileOffset = offset;
+
             // TODO: Fix; stand alone is not forced to be a methoddef.. i think
-            this.Signiture = new BlobIndex(
-                stream.SizeOfBlobIndexes,
-                stream.OwningFile.FileContents,
+            _signiture = new BlobIndex(
+                sizeOfBlobIndexes,
+                contents,
                 TheBoxSoftware.Reflection.Signitures.Signitures.MethodDef,
                 offset);
         }
