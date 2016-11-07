@@ -71,6 +71,7 @@
     <Compile Include="Unit\Core\COFF\ConstantMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\CustomAttributeMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\DeclSecurityMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\EventMapMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
