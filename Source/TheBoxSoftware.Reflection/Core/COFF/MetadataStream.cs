@@ -167,7 +167,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.EventMap:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new EventMapMetadataTableRow(this, contents, offset);
+                            int typeDefIndexSize = Index.SizeOfIndex(MetadataTables.TypeDef, this);
+                            int eventIndexSize = Index.SizeOfIndex(MetadataTables.Event, this);
+
+                            rows[j] = new EventMapMetadataTableRow(contents, offset, typeDefIndexSize, eventIndexSize);
                         }
                         break;
                     case MetadataTables.Event:

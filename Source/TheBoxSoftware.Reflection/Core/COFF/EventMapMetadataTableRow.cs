@@ -3,6 +3,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 {
     public class EventMapMetadataTableRow : MetadataRow
     {
+        private Index _eventListIndex;
+        private Index _parentIndex;
+
         public EventMapMetadataTableRow()
         {
         }
@@ -12,22 +15,31 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public EventMapMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public EventMapMetadataTableRow(byte[] contents, Offset offset, int typeDefIndexSize, int eventIndexSize)
         {
             this.FileOffset = offset;
-            this.Parent = new Index(stream, contents, offset, MetadataTables.TypeDef);
-            this.EventList = new Index(stream, contents, offset, MetadataTables.Event);
+
+            _parentIndex = new Index(contents, offset, typeDefIndexSize);
+            _eventListIndex = new Index(contents, offset, eventIndexSize);
         }
 
         /// <summary>
         /// An index into the TypeDef table
         /// </summary>
-        public Index Parent { get; set; }
+        public Index Parent
+        {
+            get { return _parentIndex; }
+            set { _parentIndex = value; }
+        }
 
         /// <summary>
         /// An index in to the Event table. Marking the first of a contiguos list
         /// of Events.
         /// </summary>
-        public Index EventList { get; set; }
+        public Index EventList
+        {
+            get { return _eventListIndex; }
+            set { _eventListIndex = value; }
+        }
     }
 }
