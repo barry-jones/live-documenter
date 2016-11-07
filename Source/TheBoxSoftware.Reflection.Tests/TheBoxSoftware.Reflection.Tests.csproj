@@ -97,6 +97,7 @@
     <Compile Include="Unit\Core\COFF\PropertyMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StandAloneSigMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
+    <Compile Include="Unit\Core\COFF\TypeDefMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
     <Compile Include="Unit\Core\PeCoffFileTests.cs" />

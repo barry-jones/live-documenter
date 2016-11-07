@@ -88,7 +88,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.TypeDef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new TypeDefMetadataTableRow(this, contents, offset);
+                            int sizeOfMethodIndex = Index.SizeOfIndex(MetadataTables.MethodDef, this);
+                            int sizeOfFieldIndex = Index.SizeOfIndex(MetadataTables.Field, this);
+                            rows[j] = new TypeDefMetadataTableRow(contents, offset, resolver, sizeOfFieldIndex, sizeOfMethodIndex, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.Field:

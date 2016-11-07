@@ -18,15 +18,20 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public TypeDefMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public TypeDefMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, int sizeOfFieldIndex, int sizeOfMethodIndex, byte sizeOfStringIndex)
         {
             this.FileOffset = offset;
-            this.Flags = (TypeAttributes)FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.Name = new StringIndex(stream, offset);
-            this.Namespace = new StringIndex(stream, offset);
-            this.Extends = new CodedIndex(stream, offset, CodedIndexes.TypeDefOrRef);
-            this.FieldList = new Index(stream, contents, offset, MetadataTables.Field);
-            this.MethodList = new Index(stream, contents, offset, MetadataTables.MethodDef);
+
+            int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.TypeDefOrRef);
+
+            _flags = (TypeAttributes)FieldReader.ToUInt32(contents, offset.Shift(4));
+            _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);
+            _namespaceIndex = new StringIndex(contents, sizeOfStringIndex, offset);
+            _extends = resolver.Resolve(CodedIndexes.TypeDefOrRef,
+                FieldReader.ToUInt32(contents, offset.Shift(sizeOfCodedIndex), sizeOfCodedIndex)
+                );
+            _fieldList = new Index(contents, offset, sizeOfFieldIndex);
+            _methodList = new Index(contents, offset, sizeOfMethodIndex);
         }
 
         /// <summary>A 4-byte bitmask of TypeAttributes</summary>
