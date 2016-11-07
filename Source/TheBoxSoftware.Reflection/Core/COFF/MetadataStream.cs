@@ -271,7 +271,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.File:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FileMetadataTableRow(this, contents, offset);
+                            rows[j] = new FileMetadataTableRow(contents, offset, SizeOfBlobIndexes, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.ExportedType:

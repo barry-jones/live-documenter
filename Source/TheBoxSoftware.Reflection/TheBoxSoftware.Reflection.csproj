@@ -161,6 +161,7 @@
     <Compile Include="Core\COFF\FieldMarshalMetadataTableRow.cs" />
     <Compile Include="Core\COFF\FieldMetadataTableRow.cs" />
     <Compile Include="Core\COFF\FieldRVAMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\FileAttributes.cs" />
     <Compile Include="Core\COFF\FileMetadataTableRow.cs" />
     <Compile Include="Core\COFF\GenericParamConstraintMetadataTableRow.cs" />
     <Compile Include="Core\COFF\GenericParamMetadataTableRow.cs" />
