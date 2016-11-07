@@ -294,7 +294,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.NestedClass:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new NestedClassMetadataTableRow(this, contents, offset);
+                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
+                            rows[j] = new NestedClassMetadataTableRow(contents, offset, sizeOfTypeDefIndex);
                         }
                         break;
                     case MetadataTables.GenericParam:

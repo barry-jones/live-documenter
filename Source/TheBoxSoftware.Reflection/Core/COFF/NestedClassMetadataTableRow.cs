@@ -9,14 +9,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the NestedClassMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public NestedClassMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public NestedClassMetadataTableRow(byte[] contents, Offset offset, int sizeOfTypeDefIndex)
         {
             this.FileOffset = offset;
-            this.NestedClass = new Index(stream, contents, offset, MetadataTables.TypeDef);
-            this.EnclosingClass = new Index(stream, contents, offset, MetadataTables.TypeDef);
+
+            _nestedClass = new Index(contents, offset, sizeOfTypeDefIndex);
+            _enclosingClass = new Index(contents, offset, sizeOfTypeDefIndex);
         }
 
         /// <summary>
