@@ -212,7 +212,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.ModuleRef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ModuleRefMetadataTableRow(this, contents, offset);
+                            rows[j] = new ModuleRefMetadataTableRow(contents, offset, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.TypeSpec:

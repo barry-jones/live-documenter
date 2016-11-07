@@ -11,13 +11,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the ModuleRefMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public ModuleRefMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public ModuleRefMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex)
         {
             this.FileOffset = offset;
-            this.Name = new StringIndex(stream, offset);
+
+            _name = new StringIndex(contents, sizeOfStringIndex, offset);
         }
 
         /// <summary>
