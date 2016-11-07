@@ -173,6 +173,7 @@
     <Compile Include="Core\COFF\InterfaceImplMetadataTableRow.cs" />
     <Compile Include="Core\COFF\ICodedIndexResolver.cs" />
     <Compile Include="Core\COFF\IStringStream.cs" />
+    <Compile Include="Core\COFF\ManifestResourceAttributes.cs" />
     <Compile Include="Core\COFF\ManifestResourceMetadataTableRow.cs" />
     <Compile Include="Core\COFF\MemberRefMetadataTableRow.cs" />
     <Compile Include="Core\COFF\MetadataDirectory.cs" />

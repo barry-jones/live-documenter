@@ -285,7 +285,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.ManifestResource:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ManifestResourceMetadataTableRow(this, contents, offset);
+                            rows[j] = new ManifestResourceMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.NestedClass:
