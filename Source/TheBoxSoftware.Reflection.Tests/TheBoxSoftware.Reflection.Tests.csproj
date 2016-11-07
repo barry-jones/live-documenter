@@ -79,6 +79,7 @@
     <Compile Include="Unit\Core\COFF\FieldMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\FieldRVAMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\FileMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\GenericParamMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />

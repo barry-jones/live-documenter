@@ -295,7 +295,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.GenericParam:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new GenericParamMetadataTableRow(this, contents, offset);
+                            rows[j] = new GenericParamMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.MethodSpec:

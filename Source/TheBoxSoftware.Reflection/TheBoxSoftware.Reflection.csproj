@@ -163,6 +163,7 @@
     <Compile Include="Core\COFF\FieldRVAMetadataTableRow.cs" />
     <Compile Include="Core\COFF\FileAttributes.cs" />
     <Compile Include="Core\COFF\FileMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\GenericParamAttributes.cs" />
     <Compile Include="Core\COFF\GenericParamConstraintMetadataTableRow.cs" />
     <Compile Include="Core\COFF\GenericParamMetadataTableRow.cs" />
     <Compile Include="Core\COFF\GuidStream.cs" />
