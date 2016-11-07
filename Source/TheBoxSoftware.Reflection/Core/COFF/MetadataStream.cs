@@ -306,7 +306,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.MethodSpec:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new MethodSpecMetadataTableRow(this, contents, offset);
+                            rows[j] = new MethodSpecMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.GenericParamConstraint:

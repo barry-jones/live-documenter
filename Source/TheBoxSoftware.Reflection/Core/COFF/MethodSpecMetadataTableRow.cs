@@ -1,8 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    using System;
-
     public class MethodSpecMetadataTableRow : MetadataRow
     {
         private uint _instantiation;
@@ -11,14 +9,18 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the MethodSpecMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public MethodSpecMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public MethodSpecMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfBlobIndexes)
         {
             this.FileOffset = offset;
-            this.Method = new CodedIndex(stream, offset, CodedIndexes.MethodDefOrRef);
-            this.Instantiation = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+
+            int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.MethodDefOrRef);
+
+            _method = resolver.Resolve(CodedIndexes.MethodDefOrRef,
+                FieldReader.ToUInt32(contents, offset.Shift(sizeOfCodedIndex), sizeOfCodedIndex)
+                );
+            _instantiation = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
         }
 
         /// <summary>

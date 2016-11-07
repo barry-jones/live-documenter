@@ -88,6 +88,7 @@
     <Compile Include="Unit\Core\COFF\MethodImplMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\MethodMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\MethodSemanticsMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\MethodSpecMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
