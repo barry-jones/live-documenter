@@ -94,7 +94,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.Field:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FieldMetadataTableRow(this, contents, offset);
+                            rows[j] = new FieldMetadataTableRow(contents, offset, SizeOfStringIndexes, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.MethodDef:
