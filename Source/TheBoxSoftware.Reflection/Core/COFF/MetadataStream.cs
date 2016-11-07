@@ -220,7 +220,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.ImplMap:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ImplMapMetadataTableRow(this, contents, offset);
+                            int sizeOfModuleRefIndex = Index.SizeOfIndex(MetadataTables.ModuleRef, this);
+                            rows[j] = new ImplMapMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes, sizeOfModuleRefIndex);
                         }
                         break;
                     case MetadataTables.FieldRVA:
