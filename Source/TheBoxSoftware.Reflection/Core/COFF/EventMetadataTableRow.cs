@@ -14,13 +14,18 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public EventMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public EventMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex)
         {
             this.FileOffset = offset;
 
+            int typeDefOrRefIndexSize = resolver.GetSizeOfIndex(CodedIndexes.TypeDefOrRef);
+
             _eventFlags = (EventAttributes)BitConverter.ToUInt16(contents, offset.Shift(2));
-            _nameIndex = new StringIndex(stream, offset);
-            _eventTypeIndex = new CodedIndex(stream, offset, CodedIndexes.TypeDefOrRef);
+            _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);
+            _eventTypeIndex = resolver.Resolve(
+                CodedIndexes.TypeDefOrRef, 
+                FieldReader.ToUInt32(contents, offset.Shift(typeDefOrRefIndexSize), typeDefOrRefIndexSize)
+                );
         }
 
         /// <summary>

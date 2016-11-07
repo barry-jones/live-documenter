@@ -176,7 +176,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.Event:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new EventMetadataTableRow(this, contents, offset);
+                            rows[j] = new EventMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.PropertyMap:
