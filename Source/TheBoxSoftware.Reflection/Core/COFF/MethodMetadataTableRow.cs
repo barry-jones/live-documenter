@@ -7,51 +7,82 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </summary>
     public class MethodMetadataTableRow : MetadataRow
     {
+        private Index _paramList;
+        private BlobIndex _signiture;
+        private StringIndex _name;
+        private MethodAttributes _flags;
+        private MethodImplFlags _implFlags;
+        private uint _rva;
+
         /// <summary>
         /// Initialises a new instance of the MethodMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public MethodMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public MethodMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex, byte sizeOfBlobIndex, int sizeOfParamIndex)
         {
             this.FileOffset = offset;
-            this.RVA = FieldReader.ToUInt32(contents, offset.Shift(4));
-            this.ImplFlags = (MethodImplFlags)FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.Flags = (MethodAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.Name = new StringIndex(stream, offset);
-            this.Signiture = new BlobIndex(stream.SizeOfBlobIndexes, contents, Signitures.Signitures.MethodDef, offset);
-            this.ParamList = new Index(stream, contents, offset, MetadataTables.Param);
+
+            _rva = FieldReader.ToUInt32(contents, offset.Shift(4));
+            _implFlags = (MethodImplFlags)FieldReader.ToUInt16(contents, offset.Shift(2));
+            _flags = (MethodAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
+            _name = new StringIndex(contents, sizeOfStringIndex, offset);
+            _signiture = new BlobIndex(sizeOfBlobIndex, contents, Signitures.Signitures.MethodDef, offset);
+            _paramList = new Index(contents, offset, sizeOfParamIndex);
         }
 
         /// <summary>
         /// Address of the CIL method data
         /// </summary>
-        public uint RVA { get; set; }
+        public uint RVA
+        {
+            get { return _rva; }
+            set { _rva = value; }
+        }
 
         /// <summary>
         /// 2-byte bitmask of MethodImplAttributes
         /// </summary>
-        public MethodImplFlags ImplFlags { get; set; }
+        public MethodImplFlags ImplFlags
+        {
+            get { return _implFlags; }
+            set { _implFlags = value; }
+        }
 
         /// <summary>
         /// A 2-byte bitmask of MethodAttributes
         /// </summary>
-        public MethodAttributes Flags { get; set; }
+        public MethodAttributes Flags
+        {
+            get { return _flags; }
+            set { _flags = value; }
+        }
 
         /// <summary>
         /// An index in to the string heap
         /// </summary>
-        public StringIndex Name { get; set; }
+        public StringIndex Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         /// <summary>
         /// An index in to the blob heap
         /// </summary>
-        public BlobIndex Signiture { get; set; }
+        public BlobIndex Signiture
+        {
+            get { return _signiture; }
+            set { _signiture = value; }
+        }
 
         /// <summary>
         /// An index in to the param table
         /// </summary>
-        public Index ParamList { get; set; }
+        public Index ParamList
+        {
+            get { return _paramList; }
+            set { _paramList = value; }
+        }
     }
 }

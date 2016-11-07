@@ -100,7 +100,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.MethodDef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new MethodMetadataTableRow(this, contents, offset);
+                            int sizeOfParamIndex = Index.SizeOfIndex(MetadataTables.Param, this);
+                            rows[j] = new MethodMetadataTableRow(contents, offset, SizeOfStringIndexes, SizeOfBlobIndexes, sizeOfParamIndex);
                         }
                         break;
                     case MetadataTables.Param:
