@@ -136,7 +136,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.FieldMarshal:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FieldMarshalMetadataTableRow(this, contents, offset);
+                            rows[j] = new FieldMarshalMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.DeclSecurity:

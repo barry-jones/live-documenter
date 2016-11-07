@@ -1,8 +1,6 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    using System;
-
     /// <summary>
     /// Links an existing row in the Field or Param table to information
     /// in the blob heap that defines how that field or parameter should
@@ -10,27 +8,44 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     /// </summary>
     public class FieldMarshalMetadataTableRow : MetadataRow
     {
+        private uint _nativeTypeIndex;
+        private CodedIndex _parentIndex;
+
         /// <summary>
         /// Initialises a new instance of the FieldMarshalMEtadataTableRow class
         /// </summary>
         /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public FieldMarshalMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public FieldMarshalMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfBlobIndex)
         {
             this.FileOffset = offset;
-            this.Parent = new CodedIndex(stream, offset, CodedIndexes.HasFieldMarshall);
-            this.NativeType = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+
+            int sizeOfHasFieldMarshalIndex = resolver.GetSizeOfIndex(CodedIndexes.HasFieldMarshall);
+
+            _parentIndex = resolver.Resolve(
+                CodedIndexes.HasFieldMarshall,
+                FieldReader.ToUInt32(contents, offset.Shift(sizeOfHasFieldMarshalIndex), sizeOfHasFieldMarshalIndex)
+                );
+            _nativeTypeIndex = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndex), sizeOfBlobIndex);
         }
 
         /// <summary>
         /// A HasFieldMarshal encoded index to the Field or Param tables
         /// </summary>
-        public CodedIndex Parent { get; set; }
+        public CodedIndex Parent
+        {
+            get { return _parentIndex; }
+            set { _parentIndex = value; }
+        }
 
         /// <summary>
         /// An index in to the blob heap
         /// </summary>
-        public UInt32 NativeType { get; set; }
+        public uint NativeType
+        {
+            get { return _nativeTypeIndex; }
+            set { _nativeTypeIndex = value; }
+        }
     }
 }
