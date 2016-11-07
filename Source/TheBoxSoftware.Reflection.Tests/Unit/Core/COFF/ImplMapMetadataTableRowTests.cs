@@ -12,7 +12,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void ImplMap_WhenCreated_FieldsAreReadCorrectly()
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte[] contents = new byte[] {
                 0x01, 0x00,
                 0x01, 0x00,
@@ -20,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x01, 0x00
             };
 
-            ImplMapMetadataTableRow row = new ImplMapMetadataTableRow(contents, 0, resolver, 2, 2);
+            ImplMapMetadataTableRow row = new ImplMapMetadataTableRow(contents, 0, resolver, indexDetails);
 
             Assert.AreEqual(PInvokeAttributes.NoMangle, row.MappingFlags);
             Assert.IsNotNull(row.MemberForward);
@@ -31,11 +32,12 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void ImplMap_WhenCreated_OffsetIsMovedOn()
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             Offset offset = 0;
             byte[] contents = new byte[10];
 
-            ImplMapMetadataTableRow row = new ImplMapMetadataTableRow(contents, offset, resolver, 2, 2);
+            ImplMapMetadataTableRow row = new ImplMapMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(8, offset.Current);
         }

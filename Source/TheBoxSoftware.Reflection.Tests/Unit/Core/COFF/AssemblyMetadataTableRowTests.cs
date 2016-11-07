@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
+    using Helpers;
     using NUnit.Framework;
     using Reflection.Core;
     using Reflection.Core.COFF;
@@ -11,8 +12,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void AssemblyMetadata_WhenCreated_ShouldHaveCorrectValues()
         {
-            byte sizeOfStringIndexes = 2;
-            byte sizeOfBlobIndexes = 2;
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             Offset offset = 0;
             byte[] contents = {
                 0x04, 0x80, 0x00, 0x00,
@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x00, 0x00
             };
 
-            AssemblyMetadataTableRow row = new AssemblyMetadataTableRow(contents, offset, sizeOfBlobIndexes, sizeOfStringIndexes);
+            AssemblyMetadataTableRow row = new AssemblyMetadataTableRow(contents, offset, indexDetails);
 
             Assert.AreEqual(AssemblyHashAlgorithms.SHA1, row.HashAlgId);
             Assert.AreEqual("1.0.0.0", row.GetVersion().ToString());
@@ -39,8 +39,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void AssemblyMetadata_WhenCreatedAndIndexesAre4Bytes_ShouldHaveCorrectValues()
         {
-            byte sizeOfStringIndexes = 4;
-            byte sizeOfBlobIndexes = 4;
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(4);
             Offset offset = 0;
             byte[] contents = {
                 0x04, 0x80, 0x00, 0x00,
@@ -54,7 +53,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x00, 0x00, 0x00, 0x00
             };
 
-            AssemblyMetadataTableRow row = new AssemblyMetadataTableRow(contents, offset, sizeOfBlobIndexes, sizeOfStringIndexes);
+            AssemblyMetadataTableRow row = new AssemblyMetadataTableRow(contents, offset, indexDetails);
 
             Assert.AreEqual(AssemblyHashAlgorithms.SHA1, row.HashAlgId);
             Assert.AreEqual("1.0.0.0", row.GetVersion().ToString());
@@ -69,12 +68,11 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [TestCase(2, 4, 24)]
         public void AssemblyMetadata_WhenConstructedWithIndexSizes_ShouldMoveOffset(byte sizeStringIndex, byte sizeBlobIndex, int expected)
         {
-            byte sizeOfStringIndexes = sizeStringIndex;
-            byte sizeOfBlobIndexes = sizeBlobIndex;
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2, sizeStringIndex, sizeBlobIndex, 2);
             Offset offset = 0;
             byte[] contents = new byte[30];
 
-            AssemblyMetadataTableRow row = new AssemblyMetadataTableRow(contents, offset, sizeOfBlobIndexes, sizeOfStringIndexes);
+            AssemblyMetadataTableRow row = new AssemblyMetadataTableRow(contents, offset, indexDetails);
 
             Assert.AreEqual(expected, offset.Current);
         }

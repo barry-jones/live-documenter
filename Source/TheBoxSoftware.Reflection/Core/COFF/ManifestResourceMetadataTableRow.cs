@@ -15,11 +15,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of this current row</param>
-        public ManifestResourceMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex)
+        public ManifestResourceMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int sizeOfImplementationIndex = resolver.GetSizeOfIndex(CodedIndexes.Implementation);
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
 
             _offset = BitConverter.ToUInt32(contents, offset.Shift(4));
             _flags = (ManifestResourceAttributes)BitConverter.ToUInt32(contents, offset.Shift(4));

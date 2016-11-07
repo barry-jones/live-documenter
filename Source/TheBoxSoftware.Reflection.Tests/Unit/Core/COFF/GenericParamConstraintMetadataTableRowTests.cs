@@ -16,9 +16,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x01, 0x00,
                 0x01, 0x00
             };
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            GenericParamConstraintMetadataTableRow row = new GenericParamConstraintMetadataTableRow(contents, 0, resolver, 2);
+            GenericParamConstraintMetadataTableRow row = new GenericParamConstraintMetadataTableRow(contents, 0, resolver, indexDetails);
 
             Assert.AreEqual(1, row.Owner.Value);
             Assert.IsNotNull(row.Owner);
@@ -29,9 +30,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         {
             byte[] contents = new byte[10];
             Offset offset = 0;
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            GenericParamConstraintMetadataTableRow row = new GenericParamConstraintMetadataTableRow(contents, offset, resolver, 2);
+            GenericParamConstraintMetadataTableRow row = new GenericParamConstraintMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(4, offset.Current);
         }

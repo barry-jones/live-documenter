@@ -18,9 +18,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of this row</param>
         /// <param name="sizeOfTypeDefIndex">The size of the indexes to the type def table.</param>
-        public ClassLayoutMetadataTableRow(byte[] contents, Offset offset, int sizeOfTypeDefIndex)
+        public ClassLayoutMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfTypeDefIndex = indexDetails.GetSizeOfIndex(MetadataTables.TypeDef);
 
             _packingSize = BitConverter.ToUInt16(contents, offset.Shift(2));
             _classSize = BitConverter.ToUInt32(contents, offset.Shift(4));

@@ -16,11 +16,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public FieldMarshalMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfBlobIndex)
+        public FieldMarshalMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int sizeOfHasFieldMarshalIndex = resolver.GetSizeOfIndex(CodedIndexes.HasFieldMarshall);
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
 
             _parentIndex = resolver.Resolve(
                 CodedIndexes.HasFieldMarshall,

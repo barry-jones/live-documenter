@@ -24,11 +24,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents fo the file</param>
         /// <param name="offset">The offset for the current row</param>
-        public ConstantMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfBlobIndex)
+        public ConstantMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int hasConstantIndexSize = resolver.GetSizeOfIndex(CodedIndexes.HasConstant);
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
 
             _type = (Signitures.ElementTypes)contents[offset.Shift(1)];
             offset.Shift(1);

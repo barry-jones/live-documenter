@@ -16,11 +16,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The file contents</param>
         /// <param name="offset">The offset for this entry</param>
-        public TypeRefMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex)
+        public TypeRefMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.ResolutionScope);
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
 
             _resolutionScope = resolver.Resolve(CodedIndexes.ResolutionScope,
                 FieldReader.ToUInt32(contents, offset.Shift(sizeOfCodedIndex), sizeOfCodedIndex)

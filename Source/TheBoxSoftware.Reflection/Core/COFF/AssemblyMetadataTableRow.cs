@@ -29,9 +29,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="offset">The offset of the current row</param>
         /// <param name="sizeOfBlobIndexes">Size in bytes of the indexes to the blob stream</param>
         /// <param name="sizeOfStringIndexes">Size in bytes of the indexes to the string stream</param>
-        public AssemblyMetadataTableRow(byte[] contents, Offset offset, byte sizeOfBlobIndexes, byte sizeOfStringIndexes)
+        public AssemblyMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             FileOffset = offset;
+
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
 
             _hashAlgId = (AssemblyHashAlgorithms)FieldReader.ToUInt32(contents, offset.Shift(4));
             _majorVersion = FieldReader.ToUInt16(contents, offset.Shift(2));
@@ -39,9 +42,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             _buildNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
             _revisionNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
             _flags = (AssemblyFlags)FieldReader.ToUInt32(contents, offset.Shift(4));
-            _publicKey = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
-            _nameIndex = new StringIndex(contents, sizeOfStringIndexes, offset);
-            _culture = new StringIndex(contents, sizeOfStringIndexes, offset);
+            _publicKey = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndex), sizeOfBlobIndex);
+            _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);
+            _culture = new StringIndex(contents, sizeOfStringIndex, offset);
         }
 
         /// <summary>

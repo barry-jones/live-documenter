@@ -15,9 +15,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public EventMapMetadataTableRow(byte[] contents, Offset offset, int typeDefIndexSize, int eventIndexSize)
+        public EventMapMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte typeDefIndexSize = indexDetails.GetSizeOfIndex(MetadataTables.TypeDef);
+            byte eventIndexSize = indexDetails.GetSizeOfIndex(MetadataTables.Event);
 
             _parentIndex = new Index(contents, offset, typeDefIndexSize);
             _eventListIndex = new Index(contents, offset, eventIndexSize);

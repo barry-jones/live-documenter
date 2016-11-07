@@ -19,10 +19,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public ExportedTypeMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex)
+        public ExportedTypeMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
             int sizeOfImplementationIndex = resolver.GetSizeOfIndex(CodedIndexes.Implementation);
 
             _flags = (TypeAttributes)FieldReader.ToUInt32(contents, offset.Shift(4));

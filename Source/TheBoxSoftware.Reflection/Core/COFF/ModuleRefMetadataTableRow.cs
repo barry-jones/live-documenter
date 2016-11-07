@@ -13,9 +13,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public ModuleRefMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex)
+        public ModuleRefMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
 
             _name = new StringIndex(contents, sizeOfStringIndex, offset);
         }

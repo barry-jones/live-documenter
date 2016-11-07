@@ -19,7 +19,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// the number of row searches and lookups in the metadata tables.
         /// </para>
         /// </summary>
-        internal CodedIndexMap codedIndexMap = new CodedIndexMap();
         private byte _sizeOfStringIndexes = 0;
         private byte _sizeOfGuidIndexes = 0;
         private byte _sizeOfBlobIndexes = 0;
@@ -56,7 +55,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 }
             }
 
+            // build index helper classes for metadata row creation
             ICodedIndexResolver resolver = new CodedIndexResolver(rowsInPresentTables);
+            IIndexDetails indexDetails = new IndexDetails(rowsInPresentTables,
+                SizeOfStringIndexes,
+                SizeOfBlobIndexes,
+                SizeOfGuidIndexes
+                );
 
             // Following the array of row size we get the actual metadata tables
             _tables = new MetadataTablesDictionary(rowsInPresentTables.Count);
@@ -76,34 +81,31 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.Module:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ModuleMetadataTableRow(contents, offset, SizeOfStringIndexes, SizeOfGuidIndexes);
+                            rows[j] = new ModuleMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.TypeRef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new TypeRefMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
+                            rows[j] = new TypeRefMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.TypeDef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfMethodIndex = Index.SizeOfIndex(MetadataTables.MethodDef, this);
-                            int sizeOfFieldIndex = Index.SizeOfIndex(MetadataTables.Field, this);
-                            rows[j] = new TypeDefMetadataTableRow(contents, offset, resolver, sizeOfFieldIndex, sizeOfMethodIndex, SizeOfStringIndexes);
+                            rows[j] = new TypeDefMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.Field:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FieldMetadataTableRow(contents, offset, SizeOfStringIndexes, SizeOfBlobIndexes);
+                            rows[j] = new FieldMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.MethodDef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfParamIndex = Index.SizeOfIndex(MetadataTables.Param, this);
-                            rows[j] = new MethodMetadataTableRow(contents, offset, SizeOfStringIndexes, SizeOfBlobIndexes, sizeOfParamIndex);
+                            rows[j] = new MethodMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.Param:
@@ -115,135 +117,121 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.InterfaceImpl:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
-                            rows[j] = new InterfaceImplMetadataTableRow(contents, offset, resolver, sizeOfTypeDefIndex);
+                            rows[j] = new InterfaceImplMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.MemberRef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new MemberRefMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes, SizeOfBlobIndexes);
+                            rows[j] = new MemberRefMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.Constant:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ConstantMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
+                            rows[j] = new ConstantMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.CustomAttribute:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new CustomAttributeMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
+                            rows[j] = new CustomAttributeMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.FieldMarshal:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FieldMarshalMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
+                            rows[j] = new FieldMarshalMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.DeclSecurity:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new DeclSecurityMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
+                            rows[j] = new DeclSecurityMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.ClassLayout:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.AssemblyRef, this);
-                            rows[j] = new ClassLayoutMetadataTableRow(contents, offset, sizeOfTypeDefIndex);
+                            rows[j] = new ClassLayoutMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.FieldLayout:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfFieldIndex = Index.SizeOfIndex(MetadataTables.Field, this);
-
-                            rows[j] = new FieldLayoutMetadataTableRow(contents, offset, sizeOfFieldIndex);
+                            rows[j] = new FieldLayoutMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.StandAloneSig:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new StandAloneSigMetadataTableRow(contents, offset, SizeOfBlobIndexes);
+                            rows[j] = new StandAloneSigMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.EventMap:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int typeDefIndexSize = Index.SizeOfIndex(MetadataTables.TypeDef, this);
-                            int eventIndexSize = Index.SizeOfIndex(MetadataTables.Event, this);
-
-                            rows[j] = new EventMapMetadataTableRow(contents, offset, typeDefIndexSize, eventIndexSize);
+                            rows[j] = new EventMapMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.Event:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new EventMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
+                            rows[j] = new EventMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.PropertyMap:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
-                            int sizeOfPropertyIndex = Index.SizeOfIndex(MetadataTables.Property, this);
-
-                            rows[j] = new PropertyMapMetadataTableRow(contents, offset, sizeOfTypeDefIndex, sizeOfPropertyIndex);
+                            rows[j] = new PropertyMapMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.Property:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new PropertyMetadataTableRow(contents, offset, SizeOfStringIndexes, SizeOfBlobIndexes);
+                            rows[j] = new PropertyMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.MethodSemantics:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfMethodDefIndex = Index.SizeOfIndex(MetadataTables.MethodDef, this);
-                            rows[j] = new MethodSemanticsMetadataTableRow(contents, offset, resolver, sizeOfMethodDefIndex);
+                            rows[j] = new MethodSemanticsMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.MethodImpl:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
-                            rows[j] = new MethodImplMetadataTableRow(contents, offset, resolver, sizeOfTypeDefIndex);
+                            rows[j] = new MethodImplMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.ModuleRef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ModuleRefMetadataTableRow(contents, offset, SizeOfStringIndexes);
+                            rows[j] = new ModuleRefMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.TypeSpec:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new TypeSpecMetadataTableRow(this.SizeOfBlobIndexes, contents, offset);
+                            rows[j] = new TypeSpecMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.ImplMap:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfModuleRefIndex = Index.SizeOfIndex(MetadataTables.ModuleRef, this);
-                            rows[j] = new ImplMapMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes, sizeOfModuleRefIndex);
+                            rows[j] = new ImplMapMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.FieldRVA:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfFieldIndex = Index.SizeOfIndex(MetadataTables.Field, this);
-                            rows[j] = new FieldRVAMetadataTableRow(contents, offset, sizeOfFieldIndex);
+                            rows[j] = new FieldRVAMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.Assembly:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new AssemblyMetadataTableRow(contents, offset, SizeOfBlobIndexes, SizeOfStringIndexes);
+                            rows[j] = new AssemblyMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.AssemblyProcessor:
@@ -261,65 +249,61 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.AssemblyRef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new AssemblyRefMetadataTableRow(contents, offset, SizeOfBlobIndexes, SizeOfStringIndexes);
+                            rows[j] = new AssemblyRefMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.AssemblyRefProcessor:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfAssemblyRefIndex = Index.SizeOfIndex(MetadataTables.AssemblyRef, this);
-                            rows[j] = new AssemblyRefProcessorMetadataTableRow(contents, offset, sizeOfAssemblyRefIndex);
+                            rows[j] = new AssemblyRefProcessorMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.AssemblyRefOS:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfAssemblyRefIndex = Index.SizeOfIndex(MetadataTables.AssemblyRef, this);
-                            rows[j] = new AssemblyRefOSMetadataTableRow(contents, offset, sizeOfAssemblyRefIndex);
+                            rows[j] = new AssemblyRefOSMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.File:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FileMetadataTableRow(contents, offset, SizeOfBlobIndexes, SizeOfStringIndexes);
+                            rows[j] = new FileMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.ExportedType:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ExportedTypeMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
+                            rows[j] = new ExportedTypeMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.ManifestResource:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ManifestResourceMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
+                            rows[j] = new ManifestResourceMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.NestedClass:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
-                            rows[j] = new NestedClassMetadataTableRow(contents, offset, sizeOfTypeDefIndex);
+                            rows[j] = new NestedClassMetadataTableRow(contents, offset, indexDetails);
                         }
                         break;
                     case MetadataTables.GenericParam:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new GenericParamMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
+                            rows[j] = new GenericParamMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.MethodSpec:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new MethodSpecMetadataTableRow(contents, offset, resolver, SizeOfBlobIndexes);
+                            rows[j] = new MethodSpecMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                     case MetadataTables.GenericParamConstraint:
                         for(int j = 0; j < numRows; j++)
                         {
-                            int sizeOfGenericParamIndex = Index.SizeOfIndex(MetadataTables.GenericParam, this);
-                            rows[j] = new GenericParamConstraintMetadataTableRow(contents, offset, resolver, sizeOfGenericParamIndex);
+                            rows[j] = new GenericParamConstraintMetadataTableRow(contents, offset, resolver, indexDetails);
                         }
                         break;
                 }

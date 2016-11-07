@@ -17,9 +17,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x00, 0x00,
                 0x00, 0x00
             };
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            MethodImplMetadataTableRow row = new MethodImplMetadataTableRow(contents, 0, resolver, 2);
+            MethodImplMetadataTableRow row = new MethodImplMetadataTableRow(contents, 0, resolver, indexDetails);
 
             Assert.AreEqual(1, row.Class.Value);
             Assert.IsNotNull(row.MethodBody);
@@ -31,9 +32,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         {
             byte[] contents = new byte[6];
             Offset offset = 0;
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            MethodImplMetadataTableRow row = new MethodImplMetadataTableRow(contents, offset, resolver, 2);
+            MethodImplMetadataTableRow row = new MethodImplMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(6, offset.Current);
         }

@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
+    using Helpers;
     using NUnit.Framework;
     using Reflection.Core;
     using Reflection.Core.COFF;
@@ -18,8 +19,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0, 10, 0, 0,
                 0, 20
             };
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            AssemblyRefOSMetadataTableRow row = new AssemblyRefOSMetadataTableRow(content, offset, 2);
+            AssemblyRefOSMetadataTableRow row = new AssemblyRefOSMetadataTableRow(content, offset, indexDetails);
 
             Assert.AreEqual(0, row.OSPlatformID);
             Assert.AreEqual(0, row.OSMajorVersion);
@@ -29,12 +31,13 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 
         [TestCase(2, 14)]
         [TestCase(4, 16)]
-        public void AssemblyRefOS_WhenCreated_OffsetIsMovedOn(int sizeOfIndex, int expected)
+        public void AssemblyRefOS_WhenCreated_OffsetIsMovedOn(byte sizeOfIndex, int expected)
         {
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(sizeOfIndex);
             Offset offset = 0;
             byte[] content = new byte[20];
 
-            AssemblyRefOSMetadataTableRow row = new AssemblyRefOSMetadataTableRow(content, offset, sizeOfIndex);
+            AssemblyRefOSMetadataTableRow row = new AssemblyRefOSMetadataTableRow(content, offset, indexDetails);
 
             Assert.AreEqual(expected, offset.Current);
         }

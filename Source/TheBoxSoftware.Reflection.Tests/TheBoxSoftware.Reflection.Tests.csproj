@@ -53,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CodedIndexHelper.cs" />
+    <Compile Include="Helpers\IndexHelper.cs" />
     <Compile Include="Integration\Syntax\CSharp_ClassSyntaxTests.cs" />
     <Compile Include="Integration\Syntax\VB_ClassSyntaxTests.cs" />
     <Compile Include="Integration\Syntax\VB_MethodSyntaxTests.cs" />

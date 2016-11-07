@@ -11,9 +11,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public NestedClassMetadataTableRow(byte[] contents, Offset offset, int sizeOfTypeDefIndex)
+        public NestedClassMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfTypeDefIndex = indexDetails.GetSizeOfIndex(MetadataTables.TypeDef);
 
             _nestedClass = new Index(contents, offset, sizeOfTypeDefIndex);
             _enclosingClass = new Index(contents, offset, sizeOfTypeDefIndex);

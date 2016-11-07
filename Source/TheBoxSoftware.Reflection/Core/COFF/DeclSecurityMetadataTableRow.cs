@@ -18,18 +18,19 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the this row</param>
-        public DeclSecurityMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte blobIndexSize)
+        public DeclSecurityMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int declSecurityIndexSize = resolver.GetSizeOfIndex(CodedIndexes.HasDeclSecurity);
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
 
             _action = BitConverter.ToUInt16(contents, offset.Shift(2));
             _parentIndex = resolver.Resolve(
                 CodedIndexes.HasDeclSecurity,
                 FieldReader.ToUInt32(contents, offset.Shift(declSecurityIndexSize), declSecurityIndexSize)
                 );
-            _permissionSet = FieldReader.ToUInt32(contents, offset.Shift(blobIndexSize), blobIndexSize);
+            _permissionSet = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndex), sizeOfBlobIndex);
         }
 
         /// <summary>

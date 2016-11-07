@@ -17,11 +17,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="content">The content of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public ImplMapMetadataTableRow(byte[] content, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex, int sizeOfModuleRefIndex)
+        public ImplMapMetadataTableRow(byte[] content, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int sizeOfMemberForwardedIndex = resolver.GetSizeOfIndex(CodedIndexes.MemberForwarded);
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
+            byte sizeOfModuleRefIndex = indexDetails.GetSizeOfIndex(MetadataTables.ModuleRef);
 
             _mappingFlags = (PInvokeAttributes)FieldReader.ToUInt16(content, offset.Shift(2));
             _memberForward = resolver.Resolve(CodedIndexes.MemberForwarded,

@@ -15,11 +15,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public MethodSemanticsMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, int sizeOfMethodDefIndex)
+        public MethodSemanticsMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.HasSemantics);
+            byte sizeOfMethodDefIndex = indexDetails.GetSizeOfIndex(MetadataTables.MethodDef);
 
             _semantics = (MethodSemanticsAttributes)BitConverter.ToUInt16(contents, offset.Shift(2));
             _method = new Index(contents, offset, sizeOfMethodDefIndex);

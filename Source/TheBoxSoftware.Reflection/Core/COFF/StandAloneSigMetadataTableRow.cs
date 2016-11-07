@@ -10,13 +10,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of teh file</param>
         /// <param name="offset">The offset for this row</param>
-        public StandAloneSigMetadataTableRow(byte[] contents, Offset offset, byte sizeOfBlobIndexes)
+        public StandAloneSigMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
+
             // TODO: Fix; stand alone is not forced to be a methoddef.. i think
             _signiture = new BlobIndex(
-                sizeOfBlobIndexes,
+                sizeOfBlobIndex,
                 contents,
                 TheBoxSoftware.Reflection.Signitures.Signitures.MethodDef,
                 offset);

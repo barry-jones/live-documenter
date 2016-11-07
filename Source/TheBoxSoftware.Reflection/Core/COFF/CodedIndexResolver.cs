@@ -194,7 +194,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             /// <returns>A boolean</returns>
             public bool IsLarge()
             {
-                return this.MaxRowsInTables > System.Math.Pow(2, 16 - this.BitsToRepresentTag);
+                return MaxRowsInTables > Math.Pow(2, 16 - BitsToRepresentTag);
             }
 
             /// <summary>
@@ -203,7 +203,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             /// <returns>The number of bytes</returns>
             public int RequiredNumberOfBytes()
             {
-                return this.IsLarge() ? 4 : 2;
+                return IsLarge() ? 4 : 2;
             }
         }
     }

@@ -11,9 +11,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="content">The content of the file</param>
         /// <param name="offset">The offset for the current row</param>
-        public FieldRVAMetadataTableRow(byte[] content, Offset offset, int sizeOfFieldIndex)
+        public FieldRVAMetadataTableRow(byte[] content, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfFieldIndex = indexDetails.GetSizeOfIndex(MetadataTables.Field);
 
             _rva = FieldReader.ToUInt32(content, offset.Shift(4));
             _fieldIndex = new Index(content, offset, sizeOfFieldIndex);

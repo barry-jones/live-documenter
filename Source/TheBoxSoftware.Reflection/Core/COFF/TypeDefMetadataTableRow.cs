@@ -18,11 +18,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public TypeDefMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, int sizeOfFieldIndex, int sizeOfMethodIndex, byte sizeOfStringIndex)
+        public TypeDefMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.TypeDefOrRef);
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
+            byte sizeOfFieldIndex = indexDetails.GetSizeOfIndex(MetadataTables.Field);
+            byte sizeOfMethodIndex = indexDetails.GetSizeOfIndex(MetadataTables.MethodDef);
 
             _flags = (TypeAttributes)FieldReader.ToUInt32(contents, offset.Shift(4));
             _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);

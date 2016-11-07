@@ -12,8 +12,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void GenericParam_WhenCreated_FieldsAreReadCorrectly()
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
-
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte[] contents = new byte[] {
                 0x01, 0x00,
                 0x01, 0x00,
@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x01, 0x00
             };
 
-            GenericParamMetadataTableRow row = new GenericParamMetadataTableRow(contents, 0, resolver, 2);
+            GenericParamMetadataTableRow row = new GenericParamMetadataTableRow(contents, 0, resolver, indexDetails);
 
             Assert.AreEqual(1, row.Number);
             Assert.AreEqual(GenericParamAttributes.Covariant, row.Flags);
@@ -34,9 +34,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         {
             Offset offset = 0;
             byte[] contents = new byte[10];
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
 
-            GenericParamMetadataTableRow row = new GenericParamMetadataTableRow(contents, offset, resolver, 2);
+            GenericParamMetadataTableRow row = new GenericParamMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(8, offset.Current);
         }

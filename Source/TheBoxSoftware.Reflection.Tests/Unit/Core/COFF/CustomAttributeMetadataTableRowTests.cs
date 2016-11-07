@@ -12,7 +12,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void CustomAttribute_WhenCreated_FieldsAreReadCorrectly()
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte sizeOfBlobIndexes = 2;
             byte[] contents = new byte[] {
                 0x00, 0x00,
@@ -20,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x01, 0x00
             };
 
-            CustomAttributeMetadataTableRow row = new CustomAttributeMetadataTableRow(contents, 0, resolver, sizeOfBlobIndexes);
+            CustomAttributeMetadataTableRow row = new CustomAttributeMetadataTableRow(contents, 0, resolver, indexDetails);
 
             Assert.IsNotNull(row.Parent);
             Assert.IsNotNull(row.Type);
@@ -30,12 +31,13 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [TestCase(2, 2, 6)]
         public void CustomAttribute_WhenCreated_OffsetIsMovedOn(byte blobIndexSize, int codedIndexSize, int expected)
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(codedIndexSize);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(codedIndexSize);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2, 2, blobIndexSize, 2);
             byte sizeOfBlobIndexes = blobIndexSize;
             Offset offset = 0;
             byte[] contents = new byte[10];
 
-            CustomAttributeMetadataTableRow row = new CustomAttributeMetadataTableRow(contents, offset, resolver, sizeOfBlobIndexes);
+            CustomAttributeMetadataTableRow row = new CustomAttributeMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(expected, offset.Current);
         }

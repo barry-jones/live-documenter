@@ -14,10 +14,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        /// <param name="sizeOfAssemblyRefIndex">The size of the indexes to the assemblyref metadata table</param>
-        public AssemblyRefProcessorMetadataTableRow(byte[] contents, Offset offset, int sizeOfAssemblyRefIndex)
+        public AssemblyRefProcessorMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfAssemblyRefIndex = indexDetails.GetSizeOfIndex(MetadataTables.AssemblyRef);
 
             offset.Shift(4);
             offset.Shift(sizeOfAssemblyRefIndex);

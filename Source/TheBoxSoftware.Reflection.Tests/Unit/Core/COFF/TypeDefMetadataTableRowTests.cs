@@ -12,6 +12,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void TypeDef_WhenCreated_FieldsAreReadCorrectly()
         {
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte[] contents = new byte[] {
                 0x80, 0x00, 0x00, 0x00,
                 0x01, 0x00, 
@@ -20,10 +21,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x03, 0x00,
                 0x04, 0x00
             };
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
             Offset offset = 0;
 
-            TypeDefMetadataTableRow row = new TypeDefMetadataTableRow(contents, offset, resolver, 2, 2, 2);
+            TypeDefMetadataTableRow row = new TypeDefMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(TypeAttributes.Abstract, row.Flags);
             Assert.AreEqual(1, row.Name.Value);
@@ -36,11 +37,12 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void TypeDef_WhenCreated_OffsetIsMovedOn()
         {
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte[] contents = new byte[14];
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
             Offset offset = 0;
 
-            TypeDefMetadataTableRow row = new TypeDefMetadataTableRow(contents, offset, resolver, 2, 2, 2);
+            TypeDefMetadataTableRow row = new TypeDefMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(14, offset.Current);
         }

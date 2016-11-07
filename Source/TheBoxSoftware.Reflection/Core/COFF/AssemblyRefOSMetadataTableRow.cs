@@ -17,9 +17,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
         /// <param name="sizeOfAssemblyRefIndex">The size of the indexes to the assembly ref table</param>
-        public AssemblyRefOSMetadataTableRow(byte[] contents, Offset offset, int sizeOfAssemblyRefIndex)
+        public AssemblyRefOSMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfAssemblyRefIndex = indexDetails.GetSizeOfIndex(MetadataTables.AssemblyRef);
 
             // make sure we move the offset on enough if the table is present
             offset.Shift(4);

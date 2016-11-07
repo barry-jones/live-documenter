@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
+    using Helpers;
     using NUnit.Framework;
     using Reflection.Core;
     using Reflection.Core.COFF;
@@ -11,8 +12,6 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void AssemblyRef_WhenConstructed_ValuesAreCorrect()
         {
-            byte stringIndex = 2;
-            byte blobIndex = 2;
             byte[] content = {
                 0x04, 0x00,
                 0x01, 0x00,
@@ -24,8 +23,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x00, 0x00,
                 0x00, 0x00
             };
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            AssemblyRefMetadataTableRow row = new AssemblyRefMetadataTableRow(content, 0, blobIndex, stringIndex);
+            AssemblyRefMetadataTableRow row = new AssemblyRefMetadataTableRow(content, 0, indexDetails);
 
             Assert.AreEqual("4.1.0.0", row.GetVersion().ToString());
             Assert.AreEqual(AssemblyFlags.SideBySideCompatible, row.Flags);
@@ -41,10 +41,11 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [TestCase(4, 4, 28)]
         public void AssemblyRef_WhenConstructedWithIndexSizes_OffsetIsMovedOn(byte blobIndex, byte stringIndex, int expected)
         {
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2, stringIndex, blobIndex, 2);
             Offset offset = 0;
             byte[] content = new byte[30];
 
-            AssemblyRefMetadataTableRow row = new AssemblyRefMetadataTableRow(content, offset, blobIndex, stringIndex);
+            AssemblyRefMetadataTableRow row = new AssemblyRefMetadataTableRow(content, offset, indexDetails);
 
             Assert.AreEqual(expected, offset.Current);
         }

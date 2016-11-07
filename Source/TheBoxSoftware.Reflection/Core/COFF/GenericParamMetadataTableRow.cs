@@ -13,11 +13,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public GenericParamMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex)
+        public GenericParamMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
             int sizeOfCodeIndex = resolver.GetSizeOfIndex(CodedIndexes.TypeOrMethodDef);
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
 
             _number = FieldReader.ToUInt16(contents, offset.Shift(2));
             _flags = (GenericParamAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));

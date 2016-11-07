@@ -19,9 +19,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public MethodMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex, byte sizeOfBlobIndex, int sizeOfParamIndex)
+        public MethodMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
+            byte sizeOfParamIndex = indexDetails.GetSizeOfIndex(MetadataTables.Param);
 
             _rva = FieldReader.ToUInt32(contents, offset.Shift(4));
             _implFlags = (MethodImplFlags)FieldReader.ToUInt16(contents, offset.Shift(2));

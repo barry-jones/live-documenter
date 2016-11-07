@@ -14,9 +14,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of this row</param>
-        public PropertyMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex, byte sizeOfBlobIndex)
+        public PropertyMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             FileOffset = offset;
+
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
 
             _attributes = (PropertyAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
             _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);

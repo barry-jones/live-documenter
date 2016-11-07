@@ -17,12 +17,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The byte contents of the file</param>
         /// <param name="offset">The offset of this row</param>
-        public ModuleMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex, byte sizeOfGuidIndex)
+        public ModuleMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
+            byte sizeOfGuidIndex = indexDetails.GetSizeOfGuidIndex();
+
             _generation = FieldReader.ToUInt16(contents, offset.Shift(2));
-            _name = new StringIndex(contents, sizeOfStringIndex, offset);
+            _name = new StringIndex(contents, indexDetails.GetSizeOfStringIndex(), offset);
             _mvid = FieldReader.ToInt32(contents, offset.Shift(sizeOfGuidIndex), sizeOfGuidIndex);
             _encId = FieldReader.ToInt32(contents, offset.Shift(sizeOfGuidIndex), sizeOfGuidIndex);
             _encBaseId = FieldReader.ToInt32(contents, offset.Shift(sizeOfGuidIndex), sizeOfGuidIndex);

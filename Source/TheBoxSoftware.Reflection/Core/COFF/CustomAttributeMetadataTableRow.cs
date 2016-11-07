@@ -12,10 +12,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public CustomAttributeMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfBlobIndexes)
+        public CustomAttributeMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             int hasCustomAttributeIndexSize = resolver.GetSizeOfIndex(CodedIndexes.HasCustomAttribute);
             int customAttributeIndexSize = resolver.GetSizeOfIndex(CodedIndexes.CustomAttributeType);
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
 
             this.FileOffset = offset;
 
@@ -26,7 +27,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             _typeIndex = resolver.Resolve(CodedIndexes.CustomAttributeType,
                 FieldReader.ToUInt32(contents, offset.Shift(customAttributeIndexSize), customAttributeIndexSize)
                 );
-            _value = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
+            _value = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndex), sizeOfBlobIndex);
         }
 
         /// <summary>

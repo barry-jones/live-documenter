@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
+    using Helpers;
     using NUnit.Framework;
     using Reflection.Core;
     using Reflection.Core.COFF;
@@ -16,8 +17,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x00, 0x00,
                 0x00, 0x00
             };
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            FileMetadataTableRow row = new FileMetadataTableRow(contents, 0, 2, 2);
+            FileMetadataTableRow row = new FileMetadataTableRow(contents, 0, indexDetails);
 
             Assert.AreEqual(FileAttributes.ContainsMetadata, row.Flags);
             Assert.AreEqual(0, row.Name.Value);
@@ -29,8 +31,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         {
             Offset offset = 0;
             byte[] contents = new byte[10];
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            FileMetadataTableRow row = new FileMetadataTableRow(contents, offset, 2, 2);
+            FileMetadataTableRow row = new FileMetadataTableRow(contents, offset, indexDetails);
 
             Assert.AreEqual(8, offset.Current);
         }

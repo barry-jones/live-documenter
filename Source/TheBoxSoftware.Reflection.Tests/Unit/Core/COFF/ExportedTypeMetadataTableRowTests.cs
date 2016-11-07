@@ -12,7 +12,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void ExportedType_WhenCreated_ReadFields()
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte[] contents = new byte[] {
                 0x01, 0x00, 0x00, 0x00,
                 0x05, 0x00, 0x00, 0x00,
@@ -21,7 +22,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x00, 0x00
             };
 
-            ExportedTypeMetadataTableRow row = new ExportedTypeMetadataTableRow(contents, 0, resolver, 2);
+            ExportedTypeMetadataTableRow row = new ExportedTypeMetadataTableRow(contents, 0, resolver, indexDetails);
 
             Assert.AreEqual(TypeAttributes.Public, row.Flags);
             Assert.AreEqual(5, row.TypeDefId);
@@ -35,9 +36,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         {
             Offset offset = 0;
             byte[] contents = new byte[20];
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            ExportedTypeMetadataTableRow row = new ExportedTypeMetadataTableRow(contents, offset, resolver, 2);
+            ExportedTypeMetadataTableRow row = new ExportedTypeMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(14, offset.Current);
         }

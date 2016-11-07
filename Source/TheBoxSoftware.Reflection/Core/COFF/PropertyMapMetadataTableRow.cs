@@ -15,9 +15,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset for this row</param>
-        public PropertyMapMetadataTableRow(byte[] contents, Offset offset, int sizeOfTypeDefIndex, int sizeOfPropertyIndex)
+        public PropertyMapMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfTypeDefIndex = indexDetails.GetSizeOfIndex(MetadataTables.TypeDef);
+            byte sizeOfPropertyIndex = indexDetails.GetSizeOfIndex(MetadataTables.Property);
 
             _parent = new Index(contents, offset, sizeOfTypeDefIndex);
             _propertyList = new Index(contents, offset, sizeOfPropertyIndex);

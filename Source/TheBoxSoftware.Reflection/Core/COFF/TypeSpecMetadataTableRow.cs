@@ -5,11 +5,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     {
         private BlobIndex _signiture;
 
-        public TypeSpecMetadataTableRow(byte sizeOfBlobIndexes, byte[] contents, Offset offset)
+        public TypeSpecMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
 
-            _signiture = new BlobIndex(sizeOfBlobIndexes, contents, Signitures.Signitures.TypeSpecification, offset);
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
+
+            _signiture = new BlobIndex(sizeOfBlobIndex, contents, Signitures.Signitures.TypeSpecification, offset);
         }
 
         /// <summary>An index in to the blob heap</summary>

@@ -22,21 +22,22 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        /// <param name="sizeOfBlobIndexes">Size in bytes of the indexes to the blob stream</param>
-        /// <param name="sizeOfStringIndexes">Size in bytes of the indexes to the string stream</param>
-        public AssemblyRefMetadataTableRow(byte[] contents, Offset offset, byte sizeOfBlobIndexes, byte sizeOfStringIndexes)
+        public AssemblyRefMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             this.FileOffset = offset;
+
+            byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
+            byte sizeOfStringIndex = indexDetails.GetSizeOfStringIndex();
 
             _majorVersion = FieldReader.ToUInt16(contents, offset.Shift(2));
             _minorVersion = FieldReader.ToUInt16(contents, offset.Shift(2));
             _buildNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
             _revisionNumber = FieldReader.ToUInt16(contents, offset.Shift(2));
             _flags = (AssemblyFlags)FieldReader.ToUInt32(contents, offset.Shift(4));
-            _publicKeyOrToken = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
-            _nameIndex = new StringIndex(contents, sizeOfStringIndexes, offset);
-            _cultureIndex = new StringIndex(contents, sizeOfStringIndexes, offset);
-            _hashValue = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndexes), sizeOfBlobIndexes);
+            _publicKeyOrToken = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndex), sizeOfBlobIndex);
+            _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);
+            _cultureIndex = new StringIndex(contents, sizeOfStringIndex, offset);
+            _hashValue = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndex), sizeOfBlobIndex);
         }
 
         /// <summary>

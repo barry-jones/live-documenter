@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 {
+    using Helpers;
     using NUnit.Framework;
     using Reflection.Core;
     using Reflection.Core.COFF;
@@ -19,8 +20,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x02, 0x00, 
                 0x01, 0x00
             };
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            MethodMetadataTableRow row = new MethodMetadataTableRow(contents, 0, 2, 2, 2);
+            MethodMetadataTableRow row = new MethodMetadataTableRow(contents, 0, indexDetails);
 
             Assert.AreEqual(1, row.RVA);
             Assert.AreEqual(MethodImplFlags.OPTIL, row.ImplFlags);
@@ -35,8 +37,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         {
             byte[] contents = new byte[14];
             Offset offset = 0;
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
 
-            MethodMetadataTableRow row = new MethodMetadataTableRow(contents, offset, 2, 2, 2);
+            MethodMetadataTableRow row = new MethodMetadataTableRow(contents, offset, indexDetails);
 
             Assert.AreEqual(14, offset.Current);
         }

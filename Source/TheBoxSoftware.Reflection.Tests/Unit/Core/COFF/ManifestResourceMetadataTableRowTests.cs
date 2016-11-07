@@ -12,7 +12,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void ManifestResource_WhenCreated_FieldsAreReadCorrectly()
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte[] contents = new byte[] {
                 0x01, 0x00, 0x00, 0x00,
                 0x01, 0x00, 0x00, 0x00,
@@ -20,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
                 0x00, 0x00
             };
 
-            ManifestResourceMetadataTableRow row = new ManifestResourceMetadataTableRow(contents, 0, resolver, 2);
+            ManifestResourceMetadataTableRow row = new ManifestResourceMetadataTableRow(contents, 0, resolver, indexDetails);
 
             Assert.AreEqual(1, row.Offset);
             Assert.AreEqual(ManifestResourceAttributes.Public, row.Flags);
@@ -31,11 +32,12 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
         [Test]
         public void ManifestResource_WhenCreated_OffsetIsMovedOn()
         {
-            ICodedIndexResolver resolver = CodedIndexHelper.CreateCodedIndexResolver(2);
+            ICodedIndexResolver resolver = IndexHelper.CreateCodedIndexResolver(2);
+            IIndexDetails indexDetails = IndexHelper.CreateIndexDetails(2);
             byte[] contents = new byte[12];
             Offset offset = 0;
 
-            ManifestResourceMetadataTableRow row = new ManifestResourceMetadataTableRow(contents, offset, resolver, 2);
+            ManifestResourceMetadataTableRow row = new ManifestResourceMetadataTableRow(contents, offset, resolver, indexDetails);
 
             Assert.AreEqual(12, offset.Current);
         }

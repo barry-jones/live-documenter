@@ -12,11 +12,12 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public GenericParamConstraintMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, int sizeOfGenericParamIndex)
+        public GenericParamConstraintMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, IIndexDetails indexDetails)
         {
             FileOffset = offset;
 
             int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.TypeDefOrRef);
+            byte sizeOfGenericParamIndex = indexDetails.GetSizeOfIndex(MetadataTables.GenericParam);
 
             _owner = new Index(contents, offset, sizeOfGenericParamIndex);
             _constraint = resolver.Resolve(
