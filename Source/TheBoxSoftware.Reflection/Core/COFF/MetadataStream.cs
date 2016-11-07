@@ -307,7 +307,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.GenericParamConstraint:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new GenericParamConstraintMetadataTableRow(this, contents, offset);
+                            int sizeOfGenericParamIndex = Index.SizeOfIndex(MetadataTables.GenericParam, this);
+                            rows[j] = new GenericParamConstraintMetadataTableRow(contents, offset, resolver, sizeOfGenericParamIndex);
                         }
                         break;
                 }
