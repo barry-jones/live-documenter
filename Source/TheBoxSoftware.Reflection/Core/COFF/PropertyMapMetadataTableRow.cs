@@ -13,14 +13,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the PropertyMapMetadataTableRow
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset for this row</param>
-        public PropertyMapMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public PropertyMapMetadataTableRow(byte[] contents, Offset offset, int sizeOfTypeDefIndex, int sizeOfPropertyIndex)
         {
             this.FileOffset = offset;
-            this.Parent = new Index(stream, contents, offset, MetadataTables.TypeDef);
-            this.PropertyList = new Index(stream, contents, offset, MetadataTables.Property);
+
+            _parent = new Index(contents, offset, sizeOfTypeDefIndex);
+            _propertyList = new Index(contents, offset, sizeOfPropertyIndex);
         }
 
         /// <summary>

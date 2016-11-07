@@ -186,7 +186,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.PropertyMap:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new PropertyMapMetadataTableRow(this, contents, offset);
+                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
+                            int sizeOfPropertyIndex = Index.SizeOfIndex(MetadataTables.Property, this);
+
+                            rows[j] = new PropertyMapMetadataTableRow(contents, offset, sizeOfTypeDefIndex, sizeOfPropertyIndex);
                         }
                         break;
                     case MetadataTables.Property:
