@@ -152,6 +152,7 @@
     <Compile Include="Core\COFF\Cor20Header.cs" />
     <Compile Include="Core\COFF\CustomAttributeMetadataTableRow.cs" />
     <Compile Include="Core\COFF\DeclSecurityMetadataTableRow.cs" />
+    <Compile Include="Core\COFF\EventAttributes.cs" />
     <Compile Include="Core\COFF\EventMapMetadataTableRow.cs" />
     <Compile Include="Core\COFF\EventMetadataTableRow.cs" />
     <Compile Include="Core\COFF\ExportedTypeMetadataTableRow.cs" />
