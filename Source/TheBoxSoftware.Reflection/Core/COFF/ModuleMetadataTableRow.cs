@@ -15,17 +15,17 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the ModuleMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The metadata stream containing the details</param>
         /// <param name="contents">The byte contents of the file</param>
         /// <param name="offset">The offset of this row</param>
-        public ModuleMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public ModuleMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex, byte sizeOfGuidIndex)
         {
             this.FileOffset = offset;
-            this.Generation = FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.Name = new StringIndex(stream, offset);
-            this.Mvid = FieldReader.ToInt32(contents, offset.Shift(stream.SizeOfGuidIndexes), stream.SizeOfGuidIndexes);
-            this.EncId = FieldReader.ToInt32(contents, offset.Shift(stream.SizeOfGuidIndexes), stream.SizeOfGuidIndexes);
-            this.EncBaseId = FieldReader.ToInt32(contents, offset.Shift(stream.SizeOfGuidIndexes), stream.SizeOfGuidIndexes);
+
+            _generation = FieldReader.ToUInt16(contents, offset.Shift(2));
+            _name = new StringIndex(contents, sizeOfStringIndex, offset);
+            _mvid = FieldReader.ToInt32(contents, offset.Shift(sizeOfGuidIndex), sizeOfGuidIndex);
+            _encId = FieldReader.ToInt32(contents, offset.Shift(sizeOfGuidIndex), sizeOfGuidIndex);
+            _encBaseId = FieldReader.ToInt32(contents, offset.Shift(sizeOfGuidIndex), sizeOfGuidIndex);
         }
 
         /// <summary>Reserved, shall be zero</summary>
@@ -46,7 +46,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// An index to the Guid heap, to distinguish between two versions of
         /// the same module
         /// </summary>
-        public Int32 Mvid
+        public int Mvid
         {
             get { return _mvid; }
             set { _mvid = value; }
