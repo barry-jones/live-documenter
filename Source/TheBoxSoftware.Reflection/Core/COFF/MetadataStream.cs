@@ -82,7 +82,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.TypeRef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new TypeRefMetadataTableRow(this, contents, offset);
+                            rows[j] = new TypeRefMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.TypeDef:

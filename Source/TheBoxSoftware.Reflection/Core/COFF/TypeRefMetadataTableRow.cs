@@ -16,12 +16,17 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The file contents</param>
         /// <param name="offset">The offset for this entry</param>
-        public TypeRefMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public TypeRefMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex)
         {
             this.FileOffset = offset;
-            this.ResolutionScope = new CodedIndex(stream, offset, CodedIndexes.ResolutionScope);
-            this.Name = new StringIndex(stream, offset);
-            this.Namespace = new StringIndex(stream, offset);
+
+            int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.ResolutionScope);
+
+            _resolutionScope = resolver.Resolve(CodedIndexes.ResolutionScope,
+                FieldReader.ToUInt32(contents, offset.Shift(sizeOfCodedIndex), sizeOfCodedIndex)
+                );
+            _nameIndex= new StringIndex(contents, sizeOfStringIndex, offset);
+            _namespaceIndex = new StringIndex(contents, sizeOfStringIndex, offset);
         }
 
         /// <summary>
