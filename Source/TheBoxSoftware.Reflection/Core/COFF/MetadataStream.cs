@@ -119,7 +119,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.MemberRef:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new MemberRefMetadataTableRow(this, contents, offset);
+                            rows[j] = new MemberRefMetadataTableRow(contents, offset, resolver, SizeOfStringIndexes, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.Constant:

@@ -1,38 +1,56 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core.COFF
 {
-    /// <remarks>
-    /// Updated for 4-byte heap indexes
-    /// </remarks>
     public class MemberRefMetadataTableRow : MetadataRow
     {
+        private CodedIndex _class;
+        private StringIndex _name;
+        private BlobIndex _signiture;
+
         /// <summary>
         /// Initialises a new instance of the MemberRefMetadataTableRow
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of this row</param>
-        public MemberRefMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public MemberRefMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, byte sizeOfStringIndex, byte sizeOfBlobIndex)
         {
             this.FileOffset = offset;
-            this.Class = new CodedIndex(stream, offset, CodedIndexes.MemberRefParent);
-            this.Name = new StringIndex(stream, offset);
-            this.Signiture = new BlobIndex(stream.SizeOfBlobIndexes, contents, Reflection.Signitures.Signitures.MethodDef, offset);
+
+            int sizeOfMemberRefParentIndex = resolver.GetSizeOfIndex(CodedIndexes.MemberRefParent);
+
+            _class = resolver.Resolve(CodedIndexes.MemberRefParent,
+                FieldReader.ToUInt32(contents, offset.Shift(sizeOfMemberRefParentIndex), sizeOfMemberRefParentIndex)
+                );
+            _name = new StringIndex(contents, sizeOfStringIndex, offset);
+            _signiture = new BlobIndex(sizeOfBlobIndex, contents, Reflection.Signitures.Signitures.MethodDef, offset);
         }
 
         /// <summary>
         /// An index in to the MethodDef, ModuleRef, TypeRef, or TypeSpec tables,
         /// more precisely a MemberRefParent coded index.
         /// </summary>
-        public CodedIndex Class { get; set; }
+        public CodedIndex Class
+        {
+            get { return _class; }
+            set { _class = value; }
+        }
 
         /// <summary>
         /// An index in to the string heap
         /// </summary>
-        public StringIndex Name { get; set; }
+        public StringIndex Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         /// <summary>
         /// An index in to the blob heap
         /// </summary>
-        public BlobIndex Signiture { get; set; }
+        public BlobIndex Signiture
+        {
+            get { return _signiture; }
+            set { _signiture = value; }
+        }
     }
 }
