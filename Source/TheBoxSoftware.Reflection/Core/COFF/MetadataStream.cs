@@ -204,7 +204,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.MethodImpl:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new MethodImplMetadataTableRow(this, contents, offset);
+                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
+                            rows[j] = new MethodImplMetadataTableRow(contents, offset, resolver, sizeOfTypeDefIndex);
                         }
                         break;
                     case MetadataTables.ModuleRef:
