@@ -13,15 +13,19 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the MethodSemanticsMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public MethodSemanticsMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public MethodSemanticsMetadataTableRow(byte[] contents, Offset offset, ICodedIndexResolver resolver, int sizeOfMethodDefIndex)
         {
             this.FileOffset = offset;
-            this.Semantics = (MethodSemanticsAttributes)BitConverter.ToUInt16(contents, offset.Shift(2));
-            this.Method = new Index(stream, contents, offset, MetadataTables.MethodDef);
-            this.Association = new CodedIndex(stream, offset, CodedIndexes.HasSemantics);
+
+            int sizeOfCodedIndex = resolver.GetSizeOfIndex(CodedIndexes.HasSemantics);
+
+            _semantics = (MethodSemanticsAttributes)BitConverter.ToUInt16(contents, offset.Shift(2));
+            _method = new Index(contents, offset, sizeOfMethodDefIndex);
+            _association = resolver.Resolve(CodedIndexes.HasSemantics,
+                FieldReader.ToUInt32(contents, offset.Shift(sizeOfCodedIndex), sizeOfCodedIndex)
+                );
         }
 
         /// <summary>

@@ -198,7 +198,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.MethodSemantics:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new MethodSemanticsMetadataTableRow(this, contents, offset);
+                            int sizeOfMethodDefIndex = Index.SizeOfIndex(MetadataTables.MethodDef, this);
+                            rows[j] = new MethodSemanticsMetadataTableRow(contents, offset, resolver, sizeOfMethodDefIndex);
                         }
                         break;
                     case MetadataTables.MethodImpl:
