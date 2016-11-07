@@ -12,15 +12,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the PropertyMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of this row</param>
-        public PropertyMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public PropertyMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex, byte sizeOfBlobIndex)
         {
             FileOffset = offset;
+
             _attributes = (PropertyAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
-            _nameIndex = new StringIndex(stream, offset);
-            _typeIndex = FieldReader.ToUInt32(contents, offset.Shift(stream.SizeOfBlobIndexes), stream.SizeOfBlobIndexes);
+            _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);
+            _typeIndex = FieldReader.ToUInt32(contents, offset.Shift(sizeOfBlobIndex), sizeOfBlobIndex);
         }
 
         /// <summary>

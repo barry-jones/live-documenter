@@ -93,6 +93,7 @@
     <Compile Include="Unit\Core\COFF\ModuleRefMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\NestedClassMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\ParamMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\PropertyMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />

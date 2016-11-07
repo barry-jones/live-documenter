@@ -192,7 +192,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.Property:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new PropertyMetadataTableRow(this, contents, offset);
+                            rows[j] = new PropertyMetadataTableRow(contents, offset, SizeOfStringIndexes, SizeOfBlobIndexes);
                         }
                         break;
                     case MetadataTables.MethodSemantics:
