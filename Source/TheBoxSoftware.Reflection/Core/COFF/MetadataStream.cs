@@ -112,7 +112,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.InterfaceImpl:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new InterfaceImplMetadataTableRow(this, contents, offset);
+                            int sizeOfTypeDefIndex = Index.SizeOfIndex(MetadataTables.TypeDef, this);
+                            rows[j] = new InterfaceImplMetadataTableRow(contents, offset, resolver, sizeOfTypeDefIndex);
                         }
                         break;
                     case MetadataTables.MemberRef:
