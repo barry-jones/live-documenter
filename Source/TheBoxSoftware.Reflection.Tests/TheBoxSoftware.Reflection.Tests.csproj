@@ -75,6 +75,7 @@
     <Compile Include="Unit\Core\COFF\EventMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\ExportedTypeMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\FieldLayoutMetadataTableRowTests.cs" />
+    <Compile Include="Unit\Core\COFF\FieldMarshalMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\FieldMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\StringStreamTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
