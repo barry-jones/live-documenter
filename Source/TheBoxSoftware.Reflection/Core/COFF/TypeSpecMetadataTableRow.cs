@@ -8,7 +8,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         public TypeSpecMetadataTableRow(byte sizeOfBlobIndexes, byte[] contents, Offset offset)
         {
             this.FileOffset = offset;
-            this.Signiture = new BlobIndex(sizeOfBlobIndexes, contents, Signitures.Signitures.TypeSpecification, offset);
+
+            _signiture = new BlobIndex(sizeOfBlobIndexes, contents, Signitures.Signitures.TypeSpecification, offset);
         }
 
         /// <summary>An index in to the blob heap</summary>
