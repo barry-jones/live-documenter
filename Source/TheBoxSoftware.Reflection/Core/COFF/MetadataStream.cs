@@ -226,7 +226,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.FieldRVA:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new FieldRVAMetadataTableRow(this, contents, offset);
+                            int sizeOfFieldIndex = Index.SizeOfIndex(MetadataTables.Field, this);
+                            rows[j] = new FieldRVAMetadataTableRow(contents, offset, sizeOfFieldIndex);
                         }
                         break;
                     case MetadataTables.Assembly:
