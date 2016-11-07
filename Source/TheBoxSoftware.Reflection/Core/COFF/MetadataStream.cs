@@ -107,7 +107,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                     case MetadataTables.Param:
                         for(int j = 0; j < numRows; j++)
                         {
-                            rows[j] = new ParamMetadataTableRow(this, contents, offset);
+                            rows[j] = new ParamMetadataTableRow(contents, offset, SizeOfStringIndexes);
                         }
                         break;
                     case MetadataTables.InterfaceImpl:

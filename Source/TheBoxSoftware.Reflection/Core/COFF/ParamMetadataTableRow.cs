@@ -27,15 +27,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <summary>
         /// Initialises a new instance of the ParamMetadataTableRow class
         /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        public ParamMetadataTableRow(MetadataStream stream, byte[] contents, Offset offset)
+        public ParamMetadataTableRow(byte[] contents, Offset offset, byte sizeOfStringIndex)
         {
             this.FileOffset = offset;
-            this.Flags = (ParamAttributeFlags)FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.Sequence = FieldReader.ToUInt16(contents, offset.Shift(2));
-            this.Name = new StringIndex(stream, offset);
+
+            _flags = (ParamAttributeFlags)FieldReader.ToUInt16(contents, offset.Shift(2));
+            _sequence = FieldReader.ToUInt16(contents, offset.Shift(2));
+            _name = new StringIndex(contents, sizeOfStringIndex, offset);
         }
 
         /// <summary>
