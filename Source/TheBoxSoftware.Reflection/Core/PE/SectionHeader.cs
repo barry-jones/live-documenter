@@ -16,6 +16,8 @@ namespace TheBoxSoftware.Reflection.Core.PE
         private uint _virtualSize;
         private string _name;
 
+        public SectionHeader() { }
+
         public SectionHeader(byte[] fileContents, Offset offset)
         {
             _name = ReadName(fileContents, offset);

@@ -66,32 +66,67 @@ namespace TheBoxSoftware.Reflection.Core
         /// </summary>
         /// <param name="rva">The RVA to convert</param>
         /// <returns>The file offset address</returns>
-        internal uint FileAddressFromRVA(uint rva)
+        internal uint GetAddressFromRVA(uint rva)
         {
             uint virtualOffset = 0;
             uint rawOffset = 0;
-            uint max = 0;
-            int numSectionHeaders = this.SectionHeaders.Count;
+            int numSectionHeaders = _sectionHeaders.Count;
+            uint calculated = 0;
+            bool found = false;
 
             // determine which section the RVA belongs too
             for(int i = 0; i < numSectionHeaders; i++)
             {
-                uint minAddress = this.SectionHeaders[i].VirtualAddress;
-                uint maxAddress = (i + 1 < numSectionHeaders)
-                    ? this.SectionHeaders[i + 1].VirtualAddress
-                    : max;
+                SectionHeader header = _sectionHeaders[i];
 
-                if(rva >= minAddress)
+                // p277 or ECMA 335
+                // our RVA r, header RVA s, header size l, header pointer p
+                // s <= r < s + l then p + (r - s)
+
+                uint minAddress = header.VirtualAddress;
+                uint maxAddress = header.VirtualAddress + header.SizeOfRawData;
+
+                if(minAddress <= rva && rva < maxAddress)
                 {
-                    if(rva < maxAddress)
-                    {
-                        virtualOffset = SectionHeaders[i].VirtualAddress;
-                        rawOffset = SectionHeaders[i].PointerToRawData;
-                    }
+                    virtualOffset = SectionHeaders[i].VirtualAddress;
+                    rawOffset = SectionHeaders[i].PointerToRawData;
+                    calculated = rawOffset + (rva - virtualOffset);
+                    found = true;
                 }
             }
 
-            return rva - virtualOffset + rawOffset;
+            if(!found)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return calculated;
+        }
+
+        public bool CanGetAddressFromRva(uint rva)
+        {
+            int numSectionHeaders = _sectionHeaders.Count;
+            bool found = false;
+
+            // determine which section the RVA belongs too
+            for(int i = 0; i < numSectionHeaders; i++)
+            {
+                SectionHeader header = _sectionHeaders[i];
+
+                // p277 or ECMA 335
+                // our RVA r, header RVA s, header size l, header pointer p
+                // s <= r < s + l then p + (r - s)
+
+                uint minAddress = header.VirtualAddress;
+                uint maxAddress = header.VirtualAddress + header.SizeOfRawData;
+
+                if(minAddress <= rva && rva < maxAddress)
+                {
+                    found = true;
+                }
+            }
+
+            return found;
         }
 
         /// <summary>
@@ -143,11 +178,21 @@ namespace TheBoxSoftware.Reflection.Core
 
                 if(directory.IsUsed)
                 {
-                    uint address = FileAddressFromRVA(directory.VirtualAddress);
+                    if(!CanGetAddressFromRva(directory.VirtualAddress))
+                    {
+                        if(directory.Directory == DataDirectories.CommonLanguageRuntimeHeader)
+                        {
+                            throw new Exception();
+                        }
+                    }
+                    else
+                    {
+                        uint address = GetAddressFromRVA(directory.VirtualAddress);
 
-                    Directory created = Directory.Create(directory.Directory, _fileContents, address);
-                    created.ReadDirectories(this);
-                    this.Directories.Add(current.Key, created);
+                        Directory created = Directory.Create(directory.Directory, _fileContents, address);
+                        created.ReadDirectories(this);
+                        this.Directories.Add(current.Key, created);
+                    }
                 }
             }
         }

@@ -230,7 +230,7 @@ namespace TheBoxSoftware.Reflection
 
         internal uint FileAddressFromRVA(uint rva)
         {
-            return _peCoffFile.FileAddressFromRVA(rva);
+            return _peCoffFile.GetAddressFromRVA(rva);
         }
 
         /// <summary>

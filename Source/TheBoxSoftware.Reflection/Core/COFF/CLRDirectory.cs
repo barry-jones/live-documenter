@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         {
             _metadata = new MetadataDirectory(
                 containingFile,
-                containingFile.FileAddressFromRVA(this.Header.MetaData.VirtualAddress)
+                containingFile.GetAddressFromRVA(this.Header.MetaData.VirtualAddress)
                 );
         }
 
