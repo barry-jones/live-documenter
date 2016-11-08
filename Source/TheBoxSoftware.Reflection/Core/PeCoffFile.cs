@@ -68,45 +68,27 @@ namespace TheBoxSoftware.Reflection.Core
         /// <returns>The file offset address</returns>
         internal uint GetAddressFromRVA(uint rva)
         {
-            uint virtualOffset = 0;
-            uint rawOffset = 0;
-            int numSectionHeaders = _sectionHeaders.Count;
-            uint calculated = 0;
-            bool found = false;
-
-            // determine which section the RVA belongs too
-            for(int i = 0; i < numSectionHeaders; i++)
-            {
-                SectionHeader header = _sectionHeaders[i];
-
-                // p277 or ECMA 335
-                // our RVA r, header RVA s, header size l, header pointer p
-                // s <= r < s + l then p + (r - s)
-
-                uint minAddress = header.VirtualAddress;
-                uint maxAddress = header.VirtualAddress + header.SizeOfRawData;
-
-                if(minAddress <= rva && rva < maxAddress)
-                {
-                    virtualOffset = SectionHeaders[i].VirtualAddress;
-                    rawOffset = SectionHeaders[i].PointerToRawData;
-                    calculated = rawOffset + (rva - virtualOffset);
-                    found = true;
-                }
-            }
-
-            if(!found)
+            SectionHeader found = FindHeaderForRva(rva);
+            if(found == null)
             {
                 throw new InvalidOperationException();
             }
 
-            return calculated;
+            uint virtualOffset = found.VirtualAddress;
+            uint fileLocation = found.PointerToRawData;
+
+            return fileLocation + (rva - virtualOffset);
         }
 
         public bool CanGetAddressFromRva(uint rva)
         {
+            return FindHeaderForRva(rva) != null;
+        }
+
+        private SectionHeader FindHeaderForRva(uint rva)
+        {
+            SectionHeader found = null;
             int numSectionHeaders = _sectionHeaders.Count;
-            bool found = false;
 
             // determine which section the RVA belongs too
             for(int i = 0; i < numSectionHeaders; i++)
@@ -122,7 +104,7 @@ namespace TheBoxSoftware.Reflection.Core
 
                 if(minAddress <= rva && rva < maxAddress)
                 {
-                    found = true;
+                    found = header;
                 }
             }
 
