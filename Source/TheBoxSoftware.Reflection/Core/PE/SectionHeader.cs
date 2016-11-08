@@ -5,18 +5,29 @@ namespace TheBoxSoftware.Reflection.Core.PE
 
     public class SectionHeader
     {
+        private SectionCharacteristics _characteristics;
+        private ushort _numberOfLines;
+        private ushort _numberOfRelocations;
+        private uint _pointerToLineNumbers;
+        private uint _pointerToRelocations;
+        private uint _pointerToRawData;
+        private uint _sizeOfRawData;
+        private uint _virtualAddress;
+        private uint _virtualSize;
+        private string _name;
+
         public SectionHeader(byte[] fileContents, Offset offset)
         {
-            Name = ReadName(fileContents, offset);
-            VirtualSize = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            VirtualAddress = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            SizeOfRawData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            PointerToRawData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            PointerToRelocations = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            PointerToLinenumbers = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            NumberOfRelocations = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            NumberOfLineNumbers = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            Characteristics = (SectionCharacteristics)BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _name = ReadName(fileContents, offset);
+            _virtualSize = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _virtualAddress = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _sizeOfRawData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _pointerToRawData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _pointerToRelocations = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _pointerToLineNumbers = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _numberOfRelocations = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _numberOfLines = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _characteristics = (SectionCharacteristics)BitConverter.ToUInt32(fileContents, offset.Shift(4));
         }
 
         private string ReadName(byte[] fileContents, Offset offset)
@@ -38,24 +49,64 @@ namespace TheBoxSoftware.Reflection.Core.PE
             return new string(tempName).Trim(TerminatingChar);
         }
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
-        public UInt32 VirtualSize { get; set; }
+        public uint VirtualSize
+        {
+            get { return _virtualSize; }
+            set { _virtualSize = value; }
+        }
 
-        public UInt32 VirtualAddress { get; set; }
+        public uint VirtualAddress
+        {
+            get { return _virtualAddress; }
+            set { _virtualAddress = value; }
+        }
 
-        public UInt32 SizeOfRawData { get; set; }
+        public uint SizeOfRawData
+        {
+            get { return _sizeOfRawData; }
+            set { _sizeOfRawData = value; }
+        }
 
-        public UInt32 PointerToRawData { get; set; }
+        public uint PointerToRawData
+        {
+            get { return _pointerToRawData; }
+            set { _pointerToRawData = value; }
+        }
 
-        public UInt32 PointerToRelocations { get; set; }
+        public uint PointerToRelocations
+        {
+            get { return _pointerToRelocations; }
+            set { _pointerToRelocations = value; }
+        }
 
-        public UInt32 PointerToLinenumbers { get; set; }
+        public uint PointerToLinenumbers
+        {
+            get { return _pointerToLineNumbers; }
+            set { _pointerToLineNumbers = value; }
+        }
 
-        public UInt16 NumberOfRelocations { get; set; }
+        public ushort NumberOfRelocations
+        {
+            get { return _numberOfRelocations; }
+            set { _numberOfRelocations = value; }
+        }
 
-        public UInt16 NumberOfLineNumbers { get; set; }
+        public ushort NumberOfLineNumbers
+        {
+            get { return _numberOfLines; }
+            set { _numberOfLines = value; }
+        }
 
-        public SectionCharacteristics Characteristics { get; set; }
+        public SectionCharacteristics Characteristics
+        {
+            get { return _characteristics; }
+            set { _characteristics = value; }
+        }
     }
 }
