@@ -34,7 +34,7 @@ namespace TheBoxSoftware.Documentation
             )
             : base(assemblies, useObservableCollection, creator)
         {
-            _fileSystem = FileSystem.Singleton;
+            _fileSystem = new FileSystem();
         }
 
         public GroupedNamespaceDocumentMapper

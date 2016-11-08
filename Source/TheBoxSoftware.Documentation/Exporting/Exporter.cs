@@ -21,6 +21,8 @@ namespace TheBoxSoftware.Documentation.Exporting
     /// </remarks>
     public abstract class Exporter
     {
+        private readonly IFileSystem _fileSystem;
+
         private ExportCalculatedEventHandler _exportCalculated;
         private ExportStepEventHandler _exportStep;
         private ExportExceptionHandler _exportException;
@@ -42,8 +44,10 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <summary>
         /// Initializes a new instance of the <see cref="Exporter"/> class.
         /// </summary>
-        protected Exporter(Document document, ExportSettings settings, ExportConfigFile config)
+        protected Exporter(Document document, ExportSettings settings, ExportConfigFile config, IFileSystem fileSystem)
         {
+            _fileSystem = fileSystem;
+
             _config = config;
             _settings = settings;
             _document = document;
@@ -210,12 +214,12 @@ namespace TheBoxSoftware.Documentation.Exporting
             // create the working directory
             string tempFileName = Path.GetTempFileName();
             _baseTempDirectory = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(tempFileName));
-            File.Delete(tempFileName);  // dont leave zero byte files all over the place.
+            _fileSystem.DeleteFile(tempFileName);
 
             TempDirectory = Path.Combine(_baseTempDirectory, "XML\\");
-            Directory.CreateDirectory(TempDirectory);
+            _fileSystem.CreateDirectory(TempDirectory);
             OutputDirectory = Path.Combine(_baseTempDirectory, "Output\\");
-            Directory.CreateDirectory(OutputDirectory);
+            _fileSystem.CreateDirectory(OutputDirectory);
 
             // get the publish path and clean/create the directory
             if (string.IsNullOrEmpty(this.Settings.PublishDirectory))
@@ -234,21 +238,21 @@ namespace TheBoxSoftware.Documentation.Exporting
             DateTime now = DateTime.Now;
             this.PublishDirectory = Path.Combine(PublishDirectory, string.Format("LD Export - {4:0000}{3:00}{2:00} {1:00}{0:00}\\", now.Minute, now.Hour, now.Day, now.Month, now.Year));
 
-            if (Directory.Exists(this.PublishDirectory))
+            if (_fileSystem.DirectoryExists(PublishDirectory))
             {
-                Directory.Delete(this.PublishDirectory, true);
+                _fileSystem.DeleteDirectory(PublishDirectory, true);
                 System.Threading.Thread.Sleep(0);
             }
 
             // #183 fixes issue as directory is not recreated when user has folder open in explorer
             int counter = 0;
-            while (counter < 10 && Directory.Exists(PublishDirectory))
+            while (counter < 10 && _fileSystem.DirectoryExists(PublishDirectory))
             {
                 counter++;
                 System.Threading.Thread.Sleep(60);
             }
 
-            Directory.CreateDirectory(PublishDirectory);
+            _fileSystem.CreateDirectory(PublishDirectory);
 
             // read the current application directory
             this.ApplicationDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
@@ -259,7 +263,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected void Cleanup()
         {
-            Directory.Delete(_baseTempDirectory, true);
+            _fileSystem.DeleteDirectory(_baseTempDirectory, true);
         }
         
         /// <summary>
@@ -283,10 +287,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportStepEventArgs"/> instance containing the event data.</param>
         protected void OnExportStep(ExportStepEventArgs e)
         {
-            if (_exportStep != null)
-            {
-                _exportStep(this, e);
-            }
+            _exportStep?.Invoke(this, e);
         }
 
         /// <summary>
@@ -310,10 +311,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportCalculatedEventArgs"/> instance containing the event data.</param>
         protected void OnExportCalculated(ExportCalculatedEventArgs e)
         {
-            if (_exportCalculated != null)
-            {
-                _exportCalculated(this, e);
-            }
+            _exportCalculated?.Invoke(this, e);
         }
 
         /// <summary>
@@ -337,10 +335,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="e">The <see cref="TheBoxSoftware.Documentation.Exporting.ExportExceptionEventArgs"/> instance containing the event data.</param>
         protected void OnExportException(ExportExceptionEventArgs e)
         {
-            if (_exportException != null)
-            {
-                _exportException(this, e);
-            }
+            _exportException?.Invoke(this, e);
         }
 
         /// <summary>
@@ -364,10 +359,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="e">The details of the failure.</param>
         protected void OnExportFailed(ExportFailedEventArgs e)
         {
-            if (_exportFailure != null)
-            {
-                _exportFailure(e);
-            }
+            _exportFailure?.Invoke(e);
         }
 
         /// <summary>
@@ -533,6 +525,11 @@ namespace TheBoxSoftware.Documentation.Exporting
             {
                 _exportExceptions = value;
             }
+        }
+
+        protected IFileSystem FileSystem
+        {
+            get { return _fileSystem; }
         }
     }
 }

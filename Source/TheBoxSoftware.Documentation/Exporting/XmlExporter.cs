@@ -1,11 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Xml;
-using TheBoxSoftware.Documentation.Exporting.Website;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
+    using System;
+    using System.IO;
+    using System.Xml;
+    using TheBoxSoftware.Documentation.Exporting.Website;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Exporter that exports the docuementation to XML.
     /// </summary>
@@ -20,7 +21,15 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="settings">Any settings for the export.</param>
         /// <param name="config">The export configuration.</param>
         public XmlExporter(Document document, ExportSettings settings, ExportConfigFile config)
-            : base(document, settings, config)
+            : base(document, settings, config, new FileSystem())
+        {
+            this.outputSettings = new XmlWriterSettings();
+            this.outputSettings.Indent = true;
+            this.outputSettings.IndentChars = "\t";
+        }
+
+        public XmlExporter(Document document, ExportSettings settings, ExportConfigFile config, IFileSystem fileSystem)
+            : base(document, settings, config, fileSystem)
         {
             this.outputSettings = new XmlWriterSettings();
             this.outputSettings.Indent = true;

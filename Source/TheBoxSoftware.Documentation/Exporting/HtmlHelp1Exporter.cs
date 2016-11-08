@@ -24,7 +24,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="document">The document to be exported.</param>
         /// <param name="config">The export config file, from the LDEC container.</param>
         public HtmlHelp1Exporter(Document document, ExportSettings settings, ExportConfigFile config)
-            : base(document, settings, config)
+            : base(document, settings, config, new FileSystem())
         {
             string regex = string.Format("{0}{1}",
                  new string(Path.GetInvalidFileNameChars()),

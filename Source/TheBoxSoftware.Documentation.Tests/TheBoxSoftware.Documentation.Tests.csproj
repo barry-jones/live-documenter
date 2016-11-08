@@ -86,6 +86,7 @@
     <Compile Include="Unit\DocumentTest.cs" />
     <Compile Include="Unit\EntryTests.cs" />
     <Compile Include="Integration\GroupedNamespaceFirstDocumentMapperTests.cs" />
+    <Compile Include="Unit\Exporting\WebsiteExporterTests.cs" />
     <Compile Include="Unit\ProjectTests.cs" />
   </ItemGroup>
   <ItemGroup>

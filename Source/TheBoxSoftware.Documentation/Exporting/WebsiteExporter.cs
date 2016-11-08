@@ -2,7 +2,6 @@
 namespace TheBoxSoftware.Documentation.Exporting
 {
     using System;
-    using System.Linq;
     using System.IO;
     using System.Xml;
     using Website;
@@ -16,7 +15,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="document">The document to be exported.</param>
         /// <param name="config">The export configuration.</param>
         public WebsiteExporter(Document document, ExportSettings settings, ExportConfigFile config)
-            : base(document, settings, config)
+            : base(document, settings, config, new FileSystem())
         {
         }
 

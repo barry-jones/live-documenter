@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="document">The document to export.</param>
         /// <param name="config">The export configuration.</param>
         public HelpViewer1Exporter(Document document, ExportSettings settings, ExportConfigFile config)
-            : base(document, settings, config)
+            : base(document, settings, config, new FileSystem())
         {
         }
 
