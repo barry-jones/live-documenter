@@ -60,6 +60,7 @@
     <Compile Include="Unit\AssemblyDefTests.cs" />
     <Compile Include="Unit\AssemblyRefTests.cs" />
     <Compile Include="Unit\Comments\CRefPathTests.cs" />
+    <Compile Include="Unit\Comments\XmlCommentFileTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyOSMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyProcessorMetadataTableRowTests.cs" />
@@ -151,6 +152,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\xmlcommentfile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

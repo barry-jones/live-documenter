@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Reflection.Comments
         public XmlCodeComment ReadComment(CRefPath forMember)
         {
             string xpath = $"/doc/members/member[@name=\"{forMember.ToString()}\"]";
-            return this.GetComment(xpath);
+            return GetComment(xpath);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <returns>The XmlCodeComment</returns>
         public XmlCodeComment ReadComment(string xpath)
         {
-            return this.GetComment(xpath);
+            return GetComment(xpath);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace TheBoxSoftware.Reflection.Comments
         {
             XmlCodeComment parsedComment = XmlCodeComment.Empty;
 
-            if(this.Exists)
+            if(Exists)
             {
                 XPathDocument commentsDocument = new XPathDocument(_xmlCommentFileName);
                 XPathNavigator n = commentsDocument.CreateNavigator();
@@ -105,10 +105,9 @@ namespace TheBoxSoftware.Reflection.Comments
         public virtual string GetXmlFor(CRefPath cref)
         {
             string xpath = $"/doc/members/member[@name=\"{cref.ToString()}\"]";
-
             string xml = string.Empty;
 
-            if(this.Exists)
+            if(Exists)
             {
                 XPathDocument commentsDocument = new XPathDocument(_xmlCommentFileName);
                 XPathNavigator n = commentsDocument.CreateNavigator();
@@ -139,7 +138,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <returns>The instance.</returns>
         public ReusableXmlCodeCommentFile GetReusableFile()
         {
-            return new ReusableXmlCodeCommentFile(this._xmlCommentFileName, this.Exists);
+            return new ReusableXmlCodeCommentFile(_xmlCommentFileName, Exists);
         }
 
         /// <summary>
@@ -147,8 +146,8 @@ namespace TheBoxSoftware.Reflection.Comments
         /// </summary>
         public bool Exists
         {
-            get { return this._exists; }
-            set { this._exists = value; }
+            get { return _exists; }
+            set { _exists = value; }
         }
         
         /// <summary>
@@ -169,8 +168,8 @@ namespace TheBoxSoftware.Reflection.Comments
             /// <param name="exists">Indicates if the file exists.</param>
             internal ReusableXmlCodeCommentFile(string file, bool exists)
             {
-                this._xmlCommentFileName = file;
-                this.Exists = exists;
+                _xmlCommentFileName = file;
+                Exists = exists;
                 if(exists)
                 {
                     commentsDocument = new XPathDocument(file);
