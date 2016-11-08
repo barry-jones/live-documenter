@@ -102,6 +102,7 @@
     <Compile Include="Unit\Core\COFF\TypeSpecMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\PE\DataDirectoryTests.cs" />
     <Compile Include="Unit\Core\PE\FileHeaderTests.cs" />
+    <Compile Include="Unit\Core\PE\PEHeaderTests.cs" />
     <Compile Include="Unit\Core\PE\SectionHeaderTests.cs" />
     <Compile Include="Unit\Core\PeCoffFileTests.cs" />
     <Compile Include="Integration\AssemblyDefTests.cs" />

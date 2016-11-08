@@ -44,6 +44,8 @@ namespace TheBoxSoftware.Reflection.Core.PE
 
         public PEHeader(byte[] fileContents, Offset offset)
         {
+            int startOffset = offset;
+
             // standard fields
             _magic = (FileMagicNumbers)BitConverter.ToUInt16(fileContents, offset.Shift(2));
             _majorLinkerVersion = fileContents[offset.Shift(1)];
@@ -90,10 +92,12 @@ namespace TheBoxSoftware.Reflection.Core.PE
             _loaderFlags = BitConverter.ToUInt32(fileContents, offset.Shift(4));
             _numberOfRvaAndSizes = BitConverter.ToUInt32(fileContents, offset.Shift(4));
 
+            _size = offset - startOffset; // store the size of hte peheader without directories
+
             _dataDirectories = new Dictionary<DataDirectories, DataDirectory>();
 
             // read the data directories
-            for(int i = 0; i < 16; i++)
+            for(int i = 0; i < _numberOfRvaAndSizes; i++)
             {
                 int startIndex = offset.Shift(DataDirectory.SizeInBytes);
                 byte[] directoryContents = new byte[DataDirectory.SizeInBytes];
@@ -104,8 +108,6 @@ namespace TheBoxSoftware.Reflection.Core.PE
 
                 _dataDirectories.Add((DataDirectories)i, new DataDirectory(directoryContents, (DataDirectories)i));
             }
-
-            _size = offset;
         }
 
         public bool Is32
@@ -113,6 +115,9 @@ namespace TheBoxSoftware.Reflection.Core.PE
             get { return this.Magic == FileMagicNumbers.Bit32; }
         }
 
+        /// <summary>
+        /// The size in bytes of the PEHeader without data directories
+        /// </summary>
         public int Size
         {
             get { return _size; }
