@@ -37,14 +37,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
         [Test]
         public void FileHeader_WhenCreated_OffsetIsMovedOn()
         {
-            byte[] real = new byte[] {
-                0x64, 0x86,
-                0x02, 0x00,
-                0x87, 0xFA, 0x5C, 0x57,
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00,
-                0xF0, 0x00, 0x22, 0x20
-            };
+            byte[] real = new byte[20];
             Offset offset = 0;
 
             FileHeader header = new FileHeader(real, offset);

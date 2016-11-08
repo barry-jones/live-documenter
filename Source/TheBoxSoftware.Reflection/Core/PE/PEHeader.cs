@@ -9,52 +9,88 @@ namespace TheBoxSoftware.Reflection.Core.PE
         public const int Size32Bit = 96;
         public const int Size64Bit = 112;
 
+        private Dictionary<DataDirectories, DataDirectory> _dataDirectories;
+        private uint _numberOfRvaAndSizes;
+        private uint _loaderFlags;
+        private ulong _sizeOfHeapCommit;
+        private ulong _sizeOfHeapReserve;
+        private ulong _sizeOfStackCommit;
+        private ulong _sizeOfStackReserve;
+        private ushort _dllCharacteristics;
+        private ushort _subsystem;
+        private uint _checksum;
+        private uint _sizeOfHeaders;
+        private uint _sizeOfImage;
+        private uint _win32VersionValue;
+        private ushort _minorSubSystemVersion;
+        private ushort _majorSubSystemVersion;
+        private ushort _minorImageVersion;
+        private ushort _majorImageVersion;
+        private ushort _minorOperatingSystemVersion;
+        private ushort _majorOperatingSystemVersion;
+        private uint _fileAlignment;
+        private uint _sectionAlignment;
+        private ulong _imageBase;
+        private uint _baseOfData;
+        private uint _baseOfCode;
+        private uint _addressOfEntryPoint;
+        private uint _sizeOfUnitializedData;
+        private uint _sizeOfInitializedData;
+        private uint _sizeOfCode;
+        private byte _minorLinkerVersion;
+        private byte _majorLinkerVersion;
+        private FileMagicNumbers _magic;
+        private int _size;
+
         public PEHeader(byte[] fileContents, Offset offset)
         {
-            // read the magic number to determine if this is a 32 bit file
-            this.Magic = (FileMagicNumbers)BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.MajorLinkerVersion = fileContents[offset.Shift(1)];
-            this.MinorLinkerVersion = fileContents[offset.Shift(1)];
-            this.SizeOfCode = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.SizeOfInitializedData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.SizeOfUnitializedData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.AddressOfEntryPoint = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.BaseOfCode = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.BaseOfData = this.Is32
+            // standard fields
+            _magic = (FileMagicNumbers)BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _majorLinkerVersion = fileContents[offset.Shift(1)];
+            _minorLinkerVersion = fileContents[offset.Shift(1)];
+            _sizeOfCode = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _sizeOfInitializedData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _sizeOfUnitializedData = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _addressOfEntryPoint = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _baseOfCode = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _baseOfData = this.Is32
                 ? BitConverter.ToUInt32(fileContents, offset.Shift(4))
                 : 0;  // does not exist in 64 bit files
-            this.ImageBase = this.Is32
+
+            // windows nt specific fields
+            _imageBase = this.Is32
                 ? BitConverter.ToUInt32(fileContents, offset.Shift(4))
                 : BitConverter.ToUInt64(fileContents, offset.Shift(8));
-            this.SectionAlignment = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.FileAlignment = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.MajorOperatingSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.MinorOperatingSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.MajorImageVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.MinorImageVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.MajorSubSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.MinorSubSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.Win32VersionValue = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.SizeOfImage = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.SizeOfHeaders = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.Checksum = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.Subsystem = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.DllCharacteristics = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.SizeOfStackReserve = this.Is32
+            _sectionAlignment = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _fileAlignment = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _majorOperatingSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _minorOperatingSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _majorImageVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _minorImageVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _majorSubSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _minorSubSystemVersion = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _win32VersionValue = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _sizeOfImage = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _sizeOfHeaders = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _checksum = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _subsystem = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _dllCharacteristics = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _sizeOfStackReserve = this.Is32
                 ? BitConverter.ToUInt32(fileContents, offset.Shift(4))
                 : BitConverter.ToUInt64(fileContents, offset.Shift(8));
-            this.SizeOfStackCommit = this.Is32
+            _sizeOfStackCommit = this.Is32
                 ? BitConverter.ToUInt32(fileContents, offset.Shift(4))
                 : BitConverter.ToUInt64(fileContents, offset.Shift(8));
-            this.SizeOfHeapReserve = this.Is32
+            _sizeOfHeapReserve = this.Is32
                 ? BitConverter.ToUInt32(fileContents, offset.Shift(4))
                 : BitConverter.ToUInt64(fileContents, offset.Shift(8));
-            this.SizeOfHeapCommit = this.Is32
+            _sizeOfHeapCommit = this.Is32
                 ? BitConverter.ToUInt32(fileContents, offset.Shift(4))
                 : BitConverter.ToUInt64(fileContents, offset.Shift(8));
-            this.LoaderFlags = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.NumberOfRVAAndSizes = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            DataDirectories = new Dictionary<DataDirectories, DataDirectory>();
+            _loaderFlags = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _numberOfRvaAndSizes = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+
+            _dataDirectories = new Dictionary<DataDirectories, DataDirectory>();
 
             // read the data directories
             for(int i = 0; i < 16; i++)
@@ -66,10 +102,10 @@ namespace TheBoxSoftware.Reflection.Core.PE
                     directoryContents[j] = fileContents[startIndex + j];
                 }
 
-                this.DataDirectories.Add((DataDirectories)i, new DataDirectory(directoryContents, (DataDirectories)i));
+                _dataDirectories.Add((DataDirectories)i, new DataDirectory(directoryContents, (DataDirectories)i));
             }
 
-            this.Size = offset;
+            _size = offset;
         }
 
         public bool Is32
@@ -77,68 +113,196 @@ namespace TheBoxSoftware.Reflection.Core.PE
             get { return this.Magic == FileMagicNumbers.Bit32; }
         }
 
-        public int Size { get; set; }
+        public int Size
+        {
+            get { return _size; }
+            set { _size = value; }
+        }
 
-        public FileMagicNumbers Magic { get; set; }
+        public FileMagicNumbers Magic
+        {
+            get { return _magic; }
+            set { _magic = value; }
+        }
 
-        public byte MajorLinkerVersion { get; set; }
+        public byte MajorLinkerVersion
+        {
+            get { return _majorLinkerVersion; }
+            set { _majorLinkerVersion = value; }
+        }
 
-        public byte MinorLinkerVersion { get; set; }
+        public byte MinorLinkerVersion
+        {
+            get { return _minorLinkerVersion; }
+            set { _minorLinkerVersion = value; }
+        }
 
-        public UInt32 SizeOfCode { get; set; }
+        public uint SizeOfCode
+        {
+            get { return _sizeOfCode; }
+            set { _sizeOfCode = value; }
+        }
 
-        public UInt32 SizeOfInitializedData { get; set; }
+        public uint SizeOfInitializedData
+        {
+            get { return _sizeOfInitializedData; }
+            set { _sizeOfUnitializedData = value; }
+        }
 
-        public UInt32 SizeOfUnitializedData { get; set; }
+        public uint SizeOfUnitializedData
+        {
+            get { return _sizeOfUnitializedData; }
+            set { _sizeOfUnitializedData = value; }
+        }
 
-        public UInt32 AddressOfEntryPoint { get; set; }
+        public uint AddressOfEntryPoint
+        {
+            get { return _addressOfEntryPoint; }
+            set { _addressOfEntryPoint = value; }
+        }
 
-        public UInt32 BaseOfCode { get; set; }
+        public uint BaseOfCode
+        {
+            get { return _baseOfCode; }
+            set { _baseOfCode = value; }
+        }
 
-        public UInt32 BaseOfData { get; set; }
+        public uint BaseOfData
+        {
+            get { return _baseOfData; }
+            set { _baseOfData = value; }
+        }
 
-        public UInt64 ImageBase { get; set; }
+        public ulong ImageBase
+        {
+            get { return _imageBase; }
+            set { _imageBase = value; }
+        }
 
-        public UInt32 SectionAlignment { get; set; }
+        public uint SectionAlignment
+        {
+            get { return _sectionAlignment; }
+            set { _sectionAlignment = value; }
+        }
 
-        public UInt32 FileAlignment { get; set; }
+        public uint FileAlignment
+        {
+            get { return _fileAlignment; }
+            set { _fileAlignment = value; }
+        }
 
-        public UInt16 MajorOperatingSystemVersion { get; set; }
+        public ushort MajorOperatingSystemVersion
+        {
+            get { return _majorOperatingSystemVersion; }
+            set { _majorOperatingSystemVersion = value; }
+        }
 
-        public UInt16 MinorOperatingSystemVersion { get; set; }
+        public ushort MinorOperatingSystemVersion
+        {
+            get { return _minorOperatingSystemVersion; }
+            set { _minorOperatingSystemVersion = value; }
+        }
 
-        public UInt16 MajorImageVersion { get; set; }
+        public ushort MajorImageVersion
+        {
+            get { return _majorImageVersion; }
+            set { _majorImageVersion = value; }
+        }
 
-        public UInt16 MinorImageVersion { get; set; }
+        public ushort MinorImageVersion
+        {
+            get { return _minorImageVersion; }
+            set { _minorImageVersion = value; }
+        }
 
-        public UInt16 MajorSubSystemVersion { get; set; }
+        public ushort MajorSubSystemVersion
+        {
+            get { return _majorSubSystemVersion; }
+            set { _majorSubSystemVersion = value; }
+        }
 
-        public UInt16 MinorSubSystemVersion { get; set; }
+        public ushort MinorSubSystemVersion
+        {
+            get { return _minorSubSystemVersion; }
+            set { _minorSubSystemVersion = value; }
+        }
 
-        public UInt32 Win32VersionValue { get; set; }
+        public uint Win32VersionValue
+        {
+            get { return _win32VersionValue; }
+            set { _win32VersionValue = value; }
+        }
 
-        public UInt32 SizeOfImage { get; set; }
+        public uint SizeOfImage
+        {
+            get { return _sizeOfImage; }
+            set { _sizeOfImage = value; }
+        }
 
-        public UInt32 SizeOfHeaders { get; set; }
+        public uint SizeOfHeaders
+        {
+            get { return _sizeOfHeaders; }
+            set { _sizeOfHeaders = value; }
+        }
 
-        public UInt32 Checksum { get; set; }
+        public uint Checksum
+        {
+            get { return _checksum; }
+            set { _checksum = value; }
+        }
 
-        public UInt16 Subsystem { get; set; }
+        public ushort Subsystem
+        {
+            get { return _subsystem; }
+            set { _subsystem = value; }
+        }
 
-        public UInt16 DllCharacteristics { get; set; }
+        public ushort DllCharacteristics
+        {
+            get { return _dllCharacteristics; }
+            set { _dllCharacteristics = value; }
+        }
 
-        public UInt64 SizeOfStackReserve { get; set; }
+        public ulong SizeOfStackReserve
+        {
+            get { return _sizeOfStackReserve; }
+            set { _sizeOfStackReserve = value; }
+        }
 
-        public UInt64 SizeOfStackCommit { get; set; }
+        public ulong SizeOfStackCommit
+        {
+            get { return _sizeOfStackCommit; }
+            set { _sizeOfStackCommit = value; }
+        }
 
-        public UInt64 SizeOfHeapReserve { get; set; }
+        public ulong SizeOfHeapReserve
+        {
+            get { return _sizeOfHeapReserve; }
+            set { _sizeOfHeapReserve = value; }
+        }
 
-        public UInt64 SizeOfHeapCommit { get; set; }
+        public ulong SizeOfHeapCommit
+        {
+            get { return _sizeOfHeapCommit; }
+            set { _sizeOfHeapCommit = value; }
+        }
 
-        public UInt32 LoaderFlags { get; set; }
+        public uint LoaderFlags
+        {
+            get { return _loaderFlags; }
+            set { _loaderFlags = value; }
+        }
 
-        public uint NumberOfRVAAndSizes { get; set; }
+        public uint NumberOfRVAAndSizes
+        {
+            get { return _numberOfRvaAndSizes; }
+            set { _numberOfRvaAndSizes = value; }
+        }
 
-        public Dictionary<DataDirectories, DataDirectory> DataDirectories { get; set; }
+        public Dictionary<DataDirectories, DataDirectory> DataDirectories
+        {
+            get { return _dataDirectories; }
+            set { _dataDirectories = value; }
+        }
     }
 }
