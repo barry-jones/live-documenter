@@ -21,6 +21,7 @@ namespace TheBoxSoftware.Reflection.Core.PE
         MIPSFPU     = 0x0366,
         MIPSFPU16   = 0x0466,
         Alpha64     = 0x0284,
-        AXP64       = 0x284
+        AXP64       = 0x284,
+        AMD64       = 0x8664
     }
 }

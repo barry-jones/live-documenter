@@ -33,13 +33,13 @@ namespace TheBoxSoftware.Reflection.Core.PE
         /// <param name="offset">The offset for the image file header</param>
         public FileHeader(byte[] fileContents, Offset offset)
         {
-            this.Machine = (MachineTypes)BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.NumberOfSections = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.TimeDateStamp = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.PointerToSymbolTable = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.NumberOfSymbols = BitConverter.ToUInt32(fileContents, offset.Shift(4));
-            this.SizeOfOptionalHeader = BitConverter.ToUInt16(fileContents, offset.Shift(2));
-            this.Characteristics = (FileCharacteristics)BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _machine = (MachineTypes)BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _numberOfSections = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _timeDateStamp = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _pointerToSymbolTable = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _numberOfSymbols = BitConverter.ToUInt32(fileContents, offset.Shift(4));
+            _sizeOfOptionalHeader = BitConverter.ToUInt16(fileContents, offset.Shift(2));
+            _characteristics = (FileCharacteristics)BitConverter.ToUInt16(fileContents, offset.Shift(2));
         }
 
         public MachineTypes Machine
