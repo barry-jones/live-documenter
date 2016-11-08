@@ -61,8 +61,8 @@ namespace TheBoxSoftware.Reflection.Core
         /// </summary>
         public int Current
         {
-            get { return this._current; }
-            set { this._current = value; }
+            get { return _current; }
+            set { _current = value; }
         }
     }
 }
