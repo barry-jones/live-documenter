@@ -145,9 +145,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         private static SectionHeader CreateSectionHeader(uint virtualAddress, uint size, uint startOfData)
         {
             SectionHeader header = new SectionHeader();
-            header.VirtualAddress = 0x0000c000;
-            header.SizeOfRawData = 0x0000d000;
-            header.PointerToRawData = 0x00000200;
+            header.VirtualAddress = virtualAddress;
+            header.SizeOfRawData = size;
+            header.PointerToRawData = startOfData;
             return header;
         }
     }
