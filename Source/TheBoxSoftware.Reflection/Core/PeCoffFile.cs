@@ -55,30 +55,6 @@ namespace TheBoxSoftware.Reflection.Core
         }
 
         /// <summary>
-        /// Resolves a coded index to it's instantiated reference.
-        /// </summary>
-        /// <param name="index">The coded index to resolve</param>
-        /// <returns>The object referenced by the coded index or null if not found.</returns>
-        public object ResolveCodedIndex(COFF.CodedIndex index)
-        {
-            object resolvedReference = null;
-
-            COFF.MetadataDirectory metadata = GetMetadataDirectory();
-            COFF.MetadataStream metadataStream = metadata.GetMetadataStream();
-
-            if(metadataStream.Tables.ContainsKey(index.Table))
-            {
-                if(metadataStream.Tables[index.Table].Length + 1 > index.Index)
-                {
-                    COFF.MetadataRow metadataRow = metadataStream.GetEntryFor(index);
-                    resolvedReference = Map.GetDefinition(index.Table, metadataRow);
-                }
-            }
-
-            return resolvedReference;
-        }
-
-        /// <summary>
         /// Converts a Relative Virtual Address to a file offset
         /// </summary>
         /// <param name="rva">The RVA to convert</param>
