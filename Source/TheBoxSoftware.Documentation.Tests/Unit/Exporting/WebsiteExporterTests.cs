@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Documentation.Tests.Unit.Exporting
     public class WebsiteExporterTests
     {
         [Test]
-        public void DoNothing()
+        public void WebsiteExporter_Create()
         {
             WebsiteExporter exporter = new WebsiteExporter(null, null, null);
         }

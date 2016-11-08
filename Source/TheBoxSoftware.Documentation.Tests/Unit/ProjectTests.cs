@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-
+﻿
 namespace TheBoxSoftware.Documentation.Tests.Unit
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class ProjectTests
     {
         [Test]
-        public void Nothing()
+        public void Project_Create()
         {
             Project project = new Project();
         }

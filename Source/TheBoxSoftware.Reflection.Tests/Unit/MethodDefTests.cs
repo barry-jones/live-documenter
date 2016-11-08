@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
     public class MethodDefTests
     {
         [Test]
-        public void Create()
+        public void MethodDef_Create()
         {
             MethodDef method = new MethodDef();
         }
