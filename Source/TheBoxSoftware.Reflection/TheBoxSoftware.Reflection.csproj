@@ -130,6 +130,7 @@
     <Compile Include="Comments\XmlCodeElementCollection.cs" />
     <Compile Include="Comments\XmlCodeElements.cs" />
     <Compile Include="Comments\XmlCommentException.cs" />
+    <Compile Include="Comments\XmlCommentFile.cs" />
     <Compile Include="Comments\XmlContainerCodeElement.cs" />
     <Compile Include="ConstantInfo.cs" />
     <Compile Include="Core\ClrDirectoryNotFoundException.cs" />
