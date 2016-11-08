@@ -170,29 +170,28 @@ namespace TheBoxSoftware.Reflection.Core
         /// <param name="dataDirectories">The data directories to initialise in hte PE header.</param>
         private void ReadDirectories(Dictionary<DataDirectories, DataDirectory> dataDirectories)
         {
-            this.Directories = new Dictionary<DataDirectories, Directory>();
+            _directories = new Dictionary<DataDirectories, Directory>();
 
             foreach(KeyValuePair<DataDirectories, DataDirectory> current in dataDirectories)
             {
                 DataDirectory directory = current.Value;
 
-                if(directory.IsUsed)
-                {
-                    if(!CanGetAddressFromRva(directory.VirtualAddress))
-                    {
-                        if(directory.Directory == DataDirectories.CommonLanguageRuntimeHeader)
-                        {
-                            throw new Exception();
-                        }
-                    }
-                    else
-                    {
-                        uint address = GetAddressFromRVA(directory.VirtualAddress);
+                if(!directory.IsUsed) continue;
 
-                        Directory created = Directory.Create(directory.Directory, _fileContents, address);
-                        created.ReadDirectories(this);
-                        this.Directories.Add(current.Key, created);
+                if(!CanGetAddressFromRva(directory.VirtualAddress))
+                {
+                    if(directory.Directory == DataDirectories.CommonLanguageRuntimeHeader)
+                    {
+                        throw new ClrDirectoryNotFoundException(_fileName);
                     }
+                }
+                else
+                {
+                    uint address = GetAddressFromRVA(directory.VirtualAddress);
+
+                    Directory created = Directory.Create(directory.Directory, _fileContents, address);
+                    created.ReadDirectories(this);
+                    _directories.Add(current.Key, created);
                 }
             }
         }
