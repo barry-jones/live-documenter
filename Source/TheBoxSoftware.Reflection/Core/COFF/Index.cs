@@ -31,30 +31,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             Value = FieldReader.ToUInt32(contents, offset.Shift(sizeOfIndexes), sizeOfIndexes);
         }
 
-        /// <summary>
-        /// Initialises a new instance of the Index.
-        /// </summary>
-        /// <param name="stream">The stream containing the metadata</param>
-        /// <param name="contents">The contents of the file</param>
-        /// <param name="offset">The offset of the current index to be read</param>
-        /// <param name="table">The table this index points to</param>
-        public Index(MetadataStream stream, byte[] contents, Offset offset, MetadataTables table)
-        {
-            int bytesToRead = SizeOfIndex(table, stream);
-            Value = FieldReader.ToUInt32(contents, offset.Shift(bytesToRead), bytesToRead);
-        }
-
-        /// <summary>
-        /// Calculates the required size in bytes to store an index for that table.
-        /// </summary>
-        /// <param name="table">The table to get the index size for.</param>
-        /// <param name="stream">The stream containing the table information.</param>
-        /// <returns>A byte that indicates the size of the indexes for that table in bytes.</returns>
-        public static int SizeOfIndex(MetadataTables table, MetadataStream stream)
-        {
-            return stream.Tables.ContainsKey(table) && stream.Tables[table].Length > ushort.MaxValue ? 4 : 2;
-        }
-
         public override string ToString()
         {
             return Value.ToString();
@@ -115,19 +91,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 offset.Shift(sizeOfStringIndexes),
                 sizeOfStringIndexes
                 );
-        }
-
-        /// <summary>
-        /// Initialises a new instance of the StringStream.
-        /// </summary>
-        /// <param name="stream">The stream this index is for.</param>
-        /// <param name="offset">The offset for the index in the file.</param>
-        public StringIndex(MetadataStream stream, Offset offset)
-        {
-            Value = FieldReader.ToUInt32(
-                stream.OwningFile.FileContents,
-                offset.Shift(stream.SizeOfStringIndexes),
-                stream.SizeOfStringIndexes);
         }
     }
 
