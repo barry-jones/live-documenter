@@ -1,8 +1,8 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Core
 {
+    using System;
     using System.Collections.Generic;
-    using System.IO;
     using PE;
 
     /// <summary>
@@ -13,6 +13,8 @@ namespace TheBoxSoftware.Reflection.Core
     public sealed class PeCoffFile
     {
         private const int PeSignitureOffsetLocation = 0x3c;
+
+        private readonly IFileSystem _fileSystem;
 
         private byte[] _fileContents;
         private COFF.MetadataDirectory _metadataDirectory;
@@ -26,9 +28,14 @@ namespace TheBoxSoftware.Reflection.Core
         /// Initialises a new instance of the PeCoffFile
         /// </summary>
         /// <param name="filePath">The physical location of the file</param>
-        public PeCoffFile(string filePath)
+        /// <param name="fileSystem">Object which can be used to access data from the file system</param>
+        public PeCoffFile(string filePath, IFileSystem fileSystem)
         {
-            FileName = filePath;
+            if(string.IsNullOrEmpty(filePath))
+                throw new ArgumentException(nameof(filePath));
+
+            _fileName = filePath;
+            _fileSystem = fileSystem;
         }
 
         public void Initialise()
@@ -95,7 +102,7 @@ namespace TheBoxSoftware.Reflection.Core
         /// </exception>
         private void ReadFileContents()
         {
-            _fileContents = File.ReadAllBytes(FileName);
+            _fileContents = _fileSystem.ReadAllBytes(_fileName);
 
             Offset offset = _fileContents[PeCoffFile.PeSignitureOffsetLocation];
             offset += 4; // skip past the PE signature bytes

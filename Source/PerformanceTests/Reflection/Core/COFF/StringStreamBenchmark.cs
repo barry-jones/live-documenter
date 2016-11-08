@@ -13,7 +13,7 @@ namespace PerformanceTests.Reflection.Core.COFF
 
         public StringStreamBenchmark()
         {
-            PeCoffFile file = new PeCoffFile(TestFile);
+            PeCoffFile file = new PeCoffFile(TestFile, new TheBoxSoftware.FileSystem());
             file.Initialise();
             MetadataDirectory directory = file.GetMetadataDirectory();
             _stream = directory.Streams[Streams.StringStream] as StringStream;

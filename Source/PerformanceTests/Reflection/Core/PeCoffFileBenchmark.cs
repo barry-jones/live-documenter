@@ -15,7 +15,7 @@ namespace PerformanceTests.Reflection.Core
         [Benchmark]
         public PeCoffFile Load()
         {
-            PeCoffFile file = new PeCoffFile(TestFile);
+            PeCoffFile file = new PeCoffFile(TestFile, new TheBoxSoftware.FileSystem());
             file.Initialise();
             return file;
         }

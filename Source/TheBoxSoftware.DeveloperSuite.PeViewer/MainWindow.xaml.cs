@@ -36,7 +36,7 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
             if(ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                PeCoffFile coffFile = new PeCoffFile(ofd.FileName);
+                PeCoffFile coffFile = new PeCoffFile(ofd.FileName, new FileSystem());
                 coffFile.Initialise();
 
                 _peFile = new Model.PEFile(coffFile);

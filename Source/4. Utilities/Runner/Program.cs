@@ -49,7 +49,7 @@ namespace Runner
 
         private void LoadPeCoffFileOnly()
         {
-            PeCoffFile file = new PeCoffFile(TestFile);
+            PeCoffFile file = new PeCoffFile(TestFile, new TheBoxSoftware.FileSystem());
             file.Initialise();
         }
 

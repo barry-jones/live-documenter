@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection
             if(string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(fileName);
 
-            PeCoffFile peFile = new PeCoffFile(fileName);
+            PeCoffFile peFile = new PeCoffFile(fileName, new FileSystem());
             peFile.Initialise();
 
             if(!peFile.Directories.ContainsKey(DataDirectories.CommonLanguageRuntimeHeader))
