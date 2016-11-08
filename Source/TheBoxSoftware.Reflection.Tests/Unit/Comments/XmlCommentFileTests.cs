@@ -176,5 +176,46 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
 
             Assert.AreSame(XmlCodeComment.Empty, result);
         }
+
+        [Test]
+        public void XmlCommentFile_GetSummary_WhenCRefNull_ReturnsEmpty()
+        {
+            XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
+            _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(true);
+
+            commentFile.Load();
+
+            XmlCodeComment result = commentFile.GetSummary(null);
+
+            Assert.AreSame(XmlCodeComment.Empty, result);
+        }
+
+        [Test]
+        public void XmlCommentFile_GetSummary_WhenCRefPointsToInvalidElement_ReturnsEmpty()
+        {
+            XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
+            _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(true);
+            CRefPath crefPath = CRefPath.Parse("T:Nothing");
+
+            commentFile.Load();
+
+            XmlCodeComment result = commentFile.GetSummary(crefPath);
+
+            Assert.AreSame(XmlCodeComment.Empty, result);
+        }
+
+        [Test]
+        public void XmlCommentFile_GetSummary_WhenCRefPointToValidElement_ReturnsEmpty()
+        {
+            XmlCommentFile commentFile = CreateXmlCommentFile("Myfile.xml");
+            CRefPath crefPath = CRefPath.Parse("T:Namespace.MyType");
+            _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(true);
+
+            commentFile.Load();
+
+            XmlCodeComment result = commentFile.GetSummary(crefPath);
+
+            Assert.AreEqual(XmlCodeElements.Summary, result.Element);
+        }
     }
 }

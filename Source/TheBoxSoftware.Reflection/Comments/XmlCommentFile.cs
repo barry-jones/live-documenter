@@ -47,10 +47,27 @@ namespace TheBoxSoftware.Reflection.Comments
         {
             if(forMember == null || !_isLoaded || forMember.PathType == CRefTypes.Error)
                 return XmlCodeComment.Empty;
+            string xpath = $"/doc/members/member[@name='{forMember.ToString()}']";
 
+            XmlCodeComment comment = FindCommentWithXPath(xpath);
+
+            return comment;
+        }
+
+        public XmlCodeComment GetSummary(CRefPath forMember)
+        { 
+            if(forMember == null || !_isLoaded || forMember.PathType == CRefTypes.Error)
+                return XmlCodeComment.Empty;
+            string xpath = $"/doc/members/member[@name='{forMember.ToString()}']/summary";
+
+            XmlCodeComment comment = FindCommentWithXPath(xpath);
+
+            return comment;
+        }
+
+        private XmlCodeComment FindCommentWithXPath(string xpath)
+        {
             XmlCodeComment comment = XmlCodeComment.Empty;
-            string xpath = $"/doc/members/member[@name=\"{forMember.ToString()}\"]";
-
             XmlNode commentXml = FindXmlElement(xpath);
 
             if(commentXml != null)
