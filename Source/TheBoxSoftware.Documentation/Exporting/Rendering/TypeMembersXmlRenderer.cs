@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
     internal sealed class TypeMembersXmlRenderer : XmlRenderer
     {
         private TypeDef _containingType = null;
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeMembersXmlRenderer"/> class.

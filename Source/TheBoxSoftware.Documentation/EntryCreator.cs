@@ -27,7 +27,7 @@ namespace TheBoxSoftware.Documentation
         /// <param name="displayName">The display name for the entry</param>
         /// <param name="comments">The XmlCodeComments associated with the entry.</param>
         /// <returns>A new Entry describing the <paramref name="item"/></returns>
-        public Entry Create(object item, string displayName, XmlCodeCommentFile comments)
+        public Entry Create(object item, string displayName, ICommentSource comments)
         {
             Created++;
             return InitialiseEntry(item, displayName, comments, null);
@@ -41,7 +41,7 @@ namespace TheBoxSoftware.Documentation
         /// <param name="comments">The XmlCodeComments associated with the entry.</param>
         /// <param name="parent">The parent entry for the new Entry.</param>
         /// <returns>A new Entry describing the <paramref name="item"/></returns>
-        public Entry Create(object item, string displayName, XmlCodeCommentFile comments, Entry parent)
+        public Entry Create(object item, string displayName, ICommentSource comments, Entry parent)
         {
             Created++;
             return InitialiseEntry(item, displayName, comments, parent);
@@ -55,7 +55,7 @@ namespace TheBoxSoftware.Documentation
         /// <param name="comments">The XmlCodeComments associated with the entry.</param>
         /// <param name="parent">The parent entry for the new Entry.</param>
         /// <returns>A new Entry describing the <paramref name="item"/></returns>
-        protected virtual Entry InitialiseEntry(object item, string displayName, XmlCodeCommentFile comments, Entry parent)
+        protected virtual Entry InitialiseEntry(object item, string displayName, ICommentSource comments, Entry parent)
         {
             return new Entry(item, displayName, comments, parent);
         }

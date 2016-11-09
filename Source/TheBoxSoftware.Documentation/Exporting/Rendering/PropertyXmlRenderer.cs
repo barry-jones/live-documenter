@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
     class PropertyXmlRenderer : XmlRenderer
     {
         private PropertyDef _member;
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyXmlRenderer"/> class.

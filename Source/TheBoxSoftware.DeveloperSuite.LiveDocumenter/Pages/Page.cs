@@ -290,7 +290,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
         /// <param name="commentsXml">The comments file where the code comments can be obtained</param>
         /// <param name="mapReference">The DocumentMap to use and to add to</param>
         /// <returns>A new Page instance that can be displayed in the LiveDocumentor</returns>
-        public static Page Create(Entry entry, XmlCodeCommentFile commentsXml)
+        public static Page Create(Entry entry, ICommentSource commentsXml)
         {
             TraceHelper.WriteLine("create page");
             TraceHelper.Indent();
@@ -389,7 +389,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
             return created;
         }
 
-        public static Page Create(Entry entry, string type, XmlCodeCommentFile xmlComments)
+        public static Page Create(Entry entry, string type, ICommentSource xmlComments)
         {
             object forItem = entry.Item;
             Page created = null;

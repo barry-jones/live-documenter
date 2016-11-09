@@ -163,7 +163,7 @@ namespace TheBoxSoftware.Documentation
         protected override Entry GenerateDocumentForAssembly(DocumentMap map, DocumentedAssembly current, ref int fileCounter)
         {
             AssemblyDef assembly = GetAssemblyDef(current);
-            XmlCodeCommentFile xmlComments = GetXmlCommentFile(current);
+            ICommentSource xmlComments = GetXmlCommentFile(current);
 
             Entry assemblyEntry = EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
             current.UniqueId = assembly.UniqueId = fileCounter++;
@@ -250,18 +250,11 @@ namespace TheBoxSoftware.Documentation
             return this.EntryCreator.Create(null, string.Empty, null);
         }
 
-        private XmlCodeCommentFile GetXmlCommentFile(DocumentedAssembly current)
+        private ICommentSource GetXmlCommentFile(DocumentedAssembly current)
         {
-            XmlCodeCommentFile xmlComments;
-            if(_fileSystem.FileExists(current.XmlFileName))
-            {
-                xmlComments = new XmlCodeCommentFile(current.XmlFileName).GetReusableFile();
-            }
-            else
-            {
-                xmlComments = new XmlCodeCommentFile();
-            }
-            return xmlComments;
+            XmlCommentFile commentFile = new XmlCommentFile(current.XmlFileName, new FileSystem());
+            commentFile.Load();
+            return commentFile;
         }
 
         private AssemblyDef GetAssemblyDef(DocumentedAssembly current)

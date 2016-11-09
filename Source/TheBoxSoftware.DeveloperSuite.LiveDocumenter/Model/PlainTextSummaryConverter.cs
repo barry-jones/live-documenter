@@ -19,7 +19,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model
         /// <param name="file">The xml comment file to read the member comments.</param>
         /// <param name="crefPathToMember">The CRef path to the Member.</param>
         /// <returns>A string containing the documentation.</returns>
-		public static string Convert(AssemblyDef assembly, XmlCodeCommentFile file, CRefPath crefPathToMember)
+		public static string Convert(AssemblyDef assembly, ICommentSource file, CRefPath crefPathToMember)
         {
             StringBuilder text = new StringBuilder();
             XmlCodeComment comment = file.GetComment(crefPathToMember);

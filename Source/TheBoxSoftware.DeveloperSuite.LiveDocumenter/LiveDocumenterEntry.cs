@@ -18,7 +18,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
         /// <param name="item">The item that represents this entry</param>
         /// <param name="displayName">The display name for this Entry.</param>
         /// <param name="xmlComments">The XmlComments file</param>
-        public LiveDocumenterEntry(object item, string displayName, XmlCodeCommentFile xmlComments)
+        public LiveDocumenterEntry(object item, string displayName, ICommentSource xmlComments)
             : base(item, displayName, xmlComments)
         {
         }
@@ -30,7 +30,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
         /// <param name="displayName">The display name of the entry.</param>
         /// <param name="xmlComments">The xml comments file for the assembly.</param>
         /// <param name="parent">The parent node.</param>
-        public LiveDocumenterEntry(object item, string displayName, XmlCodeCommentFile xmlComments, Entry parent)
+        public LiveDocumenterEntry(object item, string displayName, ICommentSource xmlComments, Entry parent)
             : this(item, displayName, xmlComments)
         {
             this.Parent = parent;

@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
     class FieldXmlRenderer : XmlRenderer
     {
         private FieldDef _member;
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldXmlRenderer"/> class.

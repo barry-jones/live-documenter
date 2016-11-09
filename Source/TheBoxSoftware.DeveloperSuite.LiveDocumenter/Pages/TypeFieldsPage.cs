@@ -13,18 +13,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     /// </summary>
     public sealed class TypeFieldsPage : Page
     {
-        private List<FieldDef> fields;
-        private XmlCodeCommentFile xmlComments;
+        private List<FieldDef> _fields;
+        private ICommentSource _xmlComments;
 
         /// <summary>
         /// Initialises a new instance of the TypeFieldsPage class
         /// </summary>
         /// <param name="fields">The fields to manage</param>
         /// <param name="xmlComments">The xml comments</param>
-        public TypeFieldsPage(List<FieldDef> fields, XmlCodeCommentFile xmlComments)
+        public TypeFieldsPage(List<FieldDef> fields, ICommentSource xmlComments)
         {
-            this.fields = fields;
-            this.xmlComments = xmlComments;
+            _fields = fields;
+            _xmlComments = xmlComments;
         }
 
         /// <summary>
@@ -35,24 +35,22 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
             if(!this.IsGenerated)
             {
                 TypeRef definingType = null;
-                if(fields.Count > 0)
+                if(_fields.Count > 0)
                 {
-                    definingType = fields[0].Type;
+                    definingType = _fields[0].Type;
                 }
-                XmlCodeCommentFile comments = this.xmlComments.GetReusableFile();
-
-                if(!this.xmlComments.Exists())
+                if(!_xmlComments.Exists())
                 {
                     this.Blocks.Add(new NoXmlComments(definingType));
                 }
 
                 this.Blocks.Add(new Header1(definingType.GetDisplayName(false) + " Fields"));
 
-                if(this.fields != null && this.fields.Count > 0)
+                if(this._fields != null && this._fields.Count > 0)
                 {
                     SummaryTable displayedFields = new SummaryTable();
 
-                    var sortedFields = from field in this.fields
+                    var sortedFields = from field in this._fields
                                        orderby field.Name
                                        where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(field)
                                        select field;
@@ -67,8 +65,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                         // First we check if there is a summary for the field, then if not we check for a
                         // definition of value and use that if it is defined.
                         Block summary = null;
-                        XmlCodeComment comment = comments.ReadComment(
-                            "/doc/members/member[@name='" + crefPath.ToString() + "']/summary"
+                        XmlCodeComment comment = _xmlComments.GetSummary(
+                            crefPath
                             );
                         List<Block> parsedBlocks = Elements.Parser.Parse(currentField.Assembly, comment);
                         if(parsedBlocks != null && parsedBlocks.Count > 0)
@@ -77,8 +75,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                         }
                         else
                         {
-                            XmlCodeComment value = comments.ReadComment(
-                                "/doc/members/member[@name='" + crefPath.ToString() + "']/value"
+                            XmlCodeComment value = _xmlComments.GetValue(
+                                crefPath
                                 );
                             parsedBlocks = Elements.Parser.Parse(currentField.Assembly, value);
                             if(parsedBlocks != null && parsedBlocks.Count > 0)

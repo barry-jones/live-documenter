@@ -11,12 +11,12 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     public class PropertyPage : Page
     {
         private PropertyDef property;
-        private XmlCodeCommentFile xmlComments;
+        private ICommentSource _xmlComments;
 
-        public PropertyPage(PropertyDef property, XmlCodeCommentFile xmlComments)
+        public PropertyPage(PropertyDef property, ICommentSource xmlComments)
         {
             this.property = property;
-            this.xmlComments = xmlComments;
+            this._xmlComments = xmlComments;
         }
 
         public override void Generate()
@@ -24,9 +24,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
             if(!this.IsGenerated)
             {
                 CRefPath crefPath = new CRefPath(property);
-                List<Block> parsedBlocks = Elements.Parser.Parse(this.property.OwningType.Assembly, xmlComments, crefPath);
+                List<Block> parsedBlocks = Elements.Parser.Parse(this.property.OwningType.Assembly, _xmlComments, crefPath);
 
-                if(!this.xmlComments.Exists())
+                if(!this._xmlComments.Exists())
                 {
                     this.Blocks.Add(new NoXmlComments(property));
                 }

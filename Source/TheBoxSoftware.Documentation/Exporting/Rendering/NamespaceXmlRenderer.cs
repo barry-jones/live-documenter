@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
     internal class NamespaceXmlRenderer : XmlRenderer
     {
         private KeyValuePair<string, List<TypeDef>> _member;
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NamespaceXmlRenderer"/> class.

@@ -13,18 +13,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     /// </summary>
     public class NamespacePage : Page
     {
-        private KeyValuePair<string, List<TypeDef>> item;
-        private XmlCodeCommentFile commentsXml;
+        private KeyValuePair<string, List<TypeDef>> _item;
+        private ICommentSource _commentsXml;
 
         /// <summary>
         /// Initialises a new instance of the NamespacePage class
         /// </summary>
         /// <param name="item">The namespace details as a list of methods</param>
         /// <param name="commentsXml">The code comments file to get comments from</param>
-        public NamespacePage(KeyValuePair<string, List<TypeDef>> item, XmlCodeCommentFile commentsXml)
+        public NamespacePage(KeyValuePair<string, List<TypeDef>> item, ICommentSource commentsXml)
         {
-            this.item = item;
-            this.commentsXml = commentsXml;
+            _item = item;
+            _commentsXml = commentsXml;
         }
 
         /// <summary>
@@ -34,49 +34,47 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
         {
             if(!this.IsGenerated)
             {
-                ICommentSource xmlFile = commentsXml.GetReusableFile();
-
-                this.Blocks.Add(new Header1(item.Key + " Namespace"));
+                this.Blocks.Add(new Header1(_item.Key + " Namespace"));
 
                 // classes
-                IOrderedEnumerable<TypeDef> allClasses = from type in item.Value
+                IOrderedEnumerable<TypeDef> allClasses = from type in _item.Value
                                                          where !type.IsDelegate && !type.IsEnumeration && !type.IsInterface && !type.IsStructure &&
                                                             !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
                                                          orderby type.Name
                                                          select type;
-                this.OutputTypes("Classes", allClasses, xmlFile);
+                this.OutputTypes("Classes", allClasses, _commentsXml);
 
                 // structures
-                IOrderedEnumerable<TypeDef> allStructures = from type in item.Value
+                IOrderedEnumerable<TypeDef> allStructures = from type in _item.Value
                                                             where type.IsStructure &&
                                                                !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
                                                             orderby type.Name
                                                             select type;
-                this.OutputTypes("Structures", allStructures, xmlFile);
+                this.OutputTypes("Structures", allStructures, _commentsXml);
 
                 // delegates
-                IOrderedEnumerable<TypeDef> allDelegates = from type in item.Value
+                IOrderedEnumerable<TypeDef> allDelegates = from type in _item.Value
                                                            where type.IsDelegate &&
                                                               !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
                                                            orderby type.Name
                                                            select type;
-                this.OutputTypes("Delegates", allDelegates, xmlFile);
+                this.OutputTypes("Delegates", allDelegates, _commentsXml);
 
                 // enumerations
-                IOrderedEnumerable<TypeDef> allEnumerations = from type in item.Value
+                IOrderedEnumerable<TypeDef> allEnumerations = from type in _item.Value
                                                               where type.IsEnumeration &&
                                                                  !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
                                                               orderby type.Name
                                                               select type;
-                this.OutputTypes("Enumerations", allEnumerations, xmlFile);
+                this.OutputTypes("Enumerations", allEnumerations, _commentsXml);
 
                 // interfaces
-                IOrderedEnumerable<TypeDef> allInterfaces = from type in item.Value
+                IOrderedEnumerable<TypeDef> allInterfaces = from type in _item.Value
                                                             where type.IsInterface &&
                                                                !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(type)
                                                             orderby type.Name
                                                             select type;
-                this.OutputTypes("Interfaces", allInterfaces, xmlFile);
+                this.OutputTypes("Interfaces", allInterfaces, _commentsXml);
 
                 this.IsGenerated = true;
             }

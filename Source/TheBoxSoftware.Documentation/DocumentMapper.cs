@@ -128,16 +128,9 @@ namespace TheBoxSoftware.Documentation
             AssemblyDef assembly = AssemblyDef.Create(current.FileName);
             current.LoadedAssembly = assembly;
 
-            XmlCodeCommentFile xmlComments = null;
-            bool fileExists = System.IO.File.Exists(current.XmlFileName);
-            if (fileExists)
-            {
-                xmlComments = new XmlCodeCommentFile(current.XmlFileName).GetReusableFile();
-            }
-            else
-            {
-                xmlComments = new XmlCodeCommentFile();
-            }
+            XmlCommentFile commentFile = new XmlCommentFile(current.XmlFileName, new FileSystem());
+            commentFile.Load();
+            ICommentSource xmlComments = commentFile;
 
             Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
             current.UniqueId = assembly.UniqueId = fileCounter++;
@@ -253,7 +246,7 @@ namespace TheBoxSoftware.Documentation
         /// <param name="typeDef">The type to generate the map for.</param>
         /// <param name="typeEntry">The entry to add the child elements to.</param>
         /// <param name="commentsXml">The assembly comment file.</param>
-        protected virtual void GenerateTypeMap(TypeDef typeDef, Entry typeEntry, XmlCodeCommentFile commentsXml)
+        protected virtual void GenerateTypeMap(TypeDef typeDef, Entry typeEntry, ICommentSource commentsXml)
         {
             const string CONSTRUCTOR = "Constructors";
             const string METHOD = "Methods";
@@ -286,7 +279,7 @@ namespace TheBoxSoftware.Documentation
             return found;
         }
 
-        private void BuildEntries<T>(string collectionName, List<T> entries, Entry typeEntry, XmlCodeCommentFile commentsXml) where T: ReflectedMember
+        private void BuildEntries<T>(string collectionName, List<T> entries, Entry typeEntry, ICommentSource commentsXml) where T: ReflectedMember
         {
             if(entries.Count == 0) return;
 
@@ -317,7 +310,7 @@ namespace TheBoxSoftware.Documentation
             }
         }
 
-        private void BuildMethodEntries(string collectionName, List<MethodDef> entries, Entry typeEntry, XmlCodeCommentFile commentsXml)
+        private void BuildMethodEntries(string collectionName, List<MethodDef> entries, Entry typeEntry, ICommentSource commentsXml)
         {
             if(entries.Count == 0) return;
 

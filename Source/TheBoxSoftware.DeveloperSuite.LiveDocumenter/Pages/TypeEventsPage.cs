@@ -14,14 +14,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     public class TypeEventsPage : Page
     {
         private List<EventDef> typesEvents;
-        private XmlCodeCommentFile xmlComments;
+        private ICommentSource xmlComments;
 
         /// <summary>
         /// Initialises a new instance of the TypeEventsPage class.
         /// </summary>
         /// <param name="typesEvents">The events defined in the type.</param>
         /// <param name="xmlComments">The associated defining libraries xml code comments file.</param>
-        public TypeEventsPage(List<EventDef> typesEvents, XmlCodeCommentFile xmlComments)
+        public TypeEventsPage(List<EventDef> typesEvents, ICommentSource xmlComments)
         {
             this.typesEvents = typesEvents;
             this.xmlComments = xmlComments;
@@ -36,8 +36,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 {
                     definingType = (TypeDef)this.typesEvents[0].Type;
                 }
-                ICommentSource comments = this.xmlComments.GetReusableFile();
-
                 if(!this.xmlComments.Exists())
                 {
                     this.Blocks.Add(new NoXmlComments(definingType));
@@ -63,7 +61,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                         CRefPath path = new CRefPath(currentMethod);
 
                         System.Windows.Documents.Block description = this.GetSummaryFor(
-                            comments,
+                            xmlComments,
                             currentMethod.Type.Assembly,
                             path
                             );

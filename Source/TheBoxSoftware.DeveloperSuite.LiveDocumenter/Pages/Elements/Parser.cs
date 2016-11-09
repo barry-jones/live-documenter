@@ -94,7 +94,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements
         /// <param name="file">The file containing the xml code comments</param>
         /// <param name="crefPathToMember">The conical name path to the member to get documentation for.</param>
         /// <returns>A List of blocks for the members commentary.</returns>
-        public static List<Block> Parse(AssemblyDef assembly, XmlCodeCommentFile file, CRefPath crefPathToMember)
+        public static List<Block> Parse(AssemblyDef assembly, ICommentSource file, CRefPath crefPathToMember)
         {
             XmlCodeComment comment = file.GetComment(crefPathToMember);
             return Parser.Parse(assembly, comment);

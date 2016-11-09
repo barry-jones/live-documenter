@@ -1,104 +1,120 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Documents;
+﻿
+namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
+{
+    using System.Collections.Generic;
+    using System.Windows.Documents;
+    using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
+    using TheBoxSoftware.Reflection;
+    using TheBoxSoftware.Reflection.Comments;
 
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
-	using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
-	using TheBoxSoftware.Reflection;
-	using TheBoxSoftware.Reflection.Comments;
+    /// <summary>
+    /// Renders Delegates in the documentation in a FlowDocument.
+    /// </summary>
+    public sealed class DelegatePage : Page
+    {
+        private TypeDef _representedType;
+        private ICommentSource _commentsXml;
 
-	/// <summary>
-	/// Renders Delegates in the documentation in a FlowDocument.
-	/// </summary>
-	public sealed class DelegatePage : Page {
-		private TypeDef representedType;
-		private XmlCodeCommentFile commentsXml;
+        /// <summary>
+        /// Initialises a new instance of the Delegate page.
+        /// </summary>
+        /// <param name="type">The TypeDef representing the delegate.</param>
+        /// <param name="xmlComments">The XmlComments file.</param>
+        public DelegatePage(TypeDef type, ICommentSource xmlComments)
+        {
+            _representedType = type;
+            _commentsXml = xmlComments;
+        }
 
-		/// <summary>
-		/// Initialises a new instance of the Delegate page.
-		/// </summary>
-		/// <param name="type">The TypeDef representing the delegate.</param>
-		/// <param name="xmlComments">The XmlComments file.</param>
-		public DelegatePage(TypeDef type, XmlCodeCommentFile xmlComments) {
-			this.representedType = type;
-			this.commentsXml = xmlComments;
-		}
+        public override void Generate()
+        {
+            if(!this.IsGenerated)
+            {
+                CRefPath crefPath = new CRefPath(_representedType);
+                List<Block> parsedBlocks = Elements.Parser.Parse(_representedType.Assembly, _commentsXml, crefPath);
 
-		public override void Generate() {
-			if (!this.IsGenerated) {
-				CRefPath crefPath = new CRefPath(this.representedType);
-				List<Block> parsedBlocks = Elements.Parser.Parse(this.representedType.Assembly, commentsXml, crefPath);
+                if(!this._commentsXml.Exists())
+                {
+                    this.Blocks.Add(new NoXmlComments(_representedType));
+                }
 
-				if (!this.commentsXml.Exists()) {
-					this.Blocks.Add(new NoXmlComments(this.representedType));
-				}
-
-				this.Blocks.Add(new Header1(this.representedType.GetDisplayName(false) + " Delegate"));
+                this.Blocks.Add(new Header1(_representedType.GetDisplayName(false) + " Delegate"));
 
                 // Add the summary if it exists
-                if (parsedBlocks != null) {
+                if(parsedBlocks != null)
+                {
                     Block summary = parsedBlocks.Find(currentBlock => currentBlock is Summary);
-                    if (summary != null) {
+                    if(summary != null)
+                    {
                         this.Blocks.Add(summary);
                     }
                 }
 
-				this.AddSyntaxBlock(this.representedType);
+                this.AddSyntaxBlock(this._representedType);
 
-				// Add the type parameters if they exist
-				if (parsedBlocks != null) {
-					List<Block> typeParams = parsedBlocks.FindAll(currentBlock => currentBlock is TypeParamEntry);
-					if (typeParams.Count > 0) {
-						TypeParamSection typeParamSection = new TypeParamSection();
-						foreach (GenericTypeRef genericType in this.representedType.GenericTypes) {
-							string name = genericType.Name;
-							string description = string.Empty;
-							foreach (TypeParamEntry current in typeParams) {
-								if (current.Param == genericType.Name) {
-									description = current.Description;
-								}
-							}
-							typeParamSection.AddEntry(new TypeParamEntry(name, description));
-						}
-						this.Blocks.Add(typeParamSection);
-					}
-				}
-				
-				// Show the delegate parameters, this comes from the invoke method
-				// Add the parameter information if available
-				MethodDef invokeMethod = this.representedType.GetMethods().Find(m => m.Name == "Invoke");
-				this.AddParametersForMethod(invokeMethod, parsedBlocks);
+                // Add the type parameters if they exist
+                if(parsedBlocks != null)
+                {
+                    List<Block> typeParams = parsedBlocks.FindAll(currentBlock => currentBlock is TypeParamEntry);
+                    if(typeParams.Count > 0)
+                    {
+                        TypeParamSection typeParamSection = new TypeParamSection();
+                        foreach(GenericTypeRef genericType in this._representedType.GenericTypes)
+                        {
+                            string name = genericType.Name;
+                            string description = string.Empty;
+                            foreach(TypeParamEntry current in typeParams)
+                            {
+                                if(current.Param == genericType.Name)
+                                {
+                                    description = current.Description;
+                                }
+                            }
+                            typeParamSection.AddEntry(new TypeParamEntry(name, description));
+                        }
+                        this.Blocks.Add(typeParamSection);
+                    }
+                }
 
-				if(parsedBlocks != null) {
-					Block permissions = parsedBlocks.Find(current => current is PermissionList);
-					if(permissions != null) {
-						this.Blocks.Add(permissions);
-					}
-				}
+                // Show the delegate parameters, this comes from the invoke method
+                // Add the parameter information if available
+                MethodDef invokeMethod = this._representedType.GetMethods().Find(m => m.Name == "Invoke");
+                this.AddParametersForMethod(invokeMethod, parsedBlocks);
 
-				// Add the remarks if it exists
-				if (parsedBlocks != null) {
-					Block remarks = parsedBlocks.Find(currentBlock => currentBlock is Remarks);
-					if (remarks != null) {
-						this.Blocks.Add(remarks);
-					}
-				}
+                if(parsedBlocks != null)
+                {
+                    Block permissions = parsedBlocks.Find(current => current is PermissionList);
+                    if(permissions != null)
+                    {
+                        this.Blocks.Add(permissions);
+                    }
+                }
 
-				// Add the example if it exists
-				if (parsedBlocks != null) {
-					Block summary = parsedBlocks.Find(currentBlock => currentBlock is Example);
-					if (summary != null) {
-						this.Blocks.Add(new Header2("Examples"));
-						this.Blocks.Add(summary);
-					}
-				}
+                // Add the remarks if it exists
+                if(parsedBlocks != null)
+                {
+                    Block remarks = parsedBlocks.Find(currentBlock => currentBlock is Remarks);
+                    if(remarks != null)
+                    {
+                        this.Blocks.Add(remarks);
+                    }
+                }
 
-				this.AddSeeAlso(parsedBlocks);
+                // Add the example if it exists
+                if(parsedBlocks != null)
+                {
+                    Block summary = parsedBlocks.Find(currentBlock => currentBlock is Example);
+                    if(summary != null)
+                    {
+                        this.Blocks.Add(new Header2("Examples"));
+                        this.Blocks.Add(summary);
+                    }
+                }
 
-				this.IsGenerated = true;
-			}
-		}
-	}
+                this.AddSeeAlso(parsedBlocks);
+
+                this.IsGenerated = true;
+            }
+        }
+    }
 }

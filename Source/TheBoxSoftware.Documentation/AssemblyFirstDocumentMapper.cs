@@ -19,16 +19,10 @@ namespace TheBoxSoftware.Documentation
 			AssemblyDef assembly = AssemblyDef.Create(current.FileName);
 			current.LoadedAssembly = assembly;
 
-			XmlCodeCommentFile xmlComments = null;
-			bool fileExists = System.IO.File.Exists(current.XmlFileName);
-			if (fileExists)
-            {
-				xmlComments = new XmlCodeCommentFile(current.XmlFileName);
-			}
-			else
-            {
-				xmlComments = new XmlCodeCommentFile();
-			}
+			XmlCommentFile commentFile = new XmlCommentFile(current.XmlFileName, new FileSystem());
+            commentFile.Load();
+            ICommentSource xmlComments = commentFile; // not nice having to call load then cast we wil have to fix this
+
 
 			Entry assemblyEntry = this.EntryCreator.Create(assembly, System.IO.Path.GetFileName(current.FileName), xmlComments);
 			current.UniqueId = assembly.UniqueId = fileCounter++;

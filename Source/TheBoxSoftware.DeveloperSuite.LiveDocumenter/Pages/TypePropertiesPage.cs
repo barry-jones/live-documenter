@@ -15,14 +15,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     public class TypePropertiesPage : Page
     {
         private List<PropertyDef> _properties;
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
 
         /// <summary>
         /// Initialises a new instance of the TypePropertiesPage class.
         /// </summary>
         /// <param name="properties">The properties to display.</param>
         /// <param name="xmlComments">The assemblies xml comments file</param>
-        public TypePropertiesPage(List<PropertyDef> properties, XmlCodeCommentFile xmlComments)
+        public TypePropertiesPage(List<PropertyDef> properties, ICommentSource xmlComments)
         {
             _properties = properties;
             _xmlComments = xmlComments;
@@ -40,11 +40,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 {
                     definingType = (TypeDef)_properties[0].OwningType;
                 }
-                XmlCodeCommentFile comments = _xmlComments.GetReusableFile();
-
                 if(!_xmlComments.Exists())
                 {
-                    this.Blocks.Add(new NoXmlComments(definingType));
+                    Blocks.Add(new NoXmlComments(definingType));
                 }
 
                 Blocks.Add(new Header1(definingType.GetDisplayName(false) + " Properties"));
@@ -65,7 +63,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                         link.Tag = new EntryKey(currentProperty.GetGloballyUniqueId());
                         link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                        Block description = GetSummaryFor(comments,
+                        Block description = GetSummaryFor(_xmlComments,
                             currentProperty.OwningType.Assembly,
                             path);
 

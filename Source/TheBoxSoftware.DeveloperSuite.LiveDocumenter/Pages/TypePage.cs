@@ -15,14 +15,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     public sealed class TypePage : Page
     {
         private TypeDef _representedType;
-        private XmlCodeCommentFile _commentsXml;
+        private ICommentSource _commentsXml;
 
         /// <summary>
         /// Initialises a new TypePage instance
         /// </summary>
         /// <param name="type">The type this page is to document</param>
         /// <param name="commentsXml">The code comments file to read the comments from</param>
-        public TypePage(TypeDef type, XmlCodeCommentFile commentsXml)
+        public TypePage(TypeDef type, ICommentSource commentsXml)
         {
             _representedType = type;
             _commentsXml = commentsXml;
@@ -132,7 +132,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
         {
             SummaryTable members;
             CRefPath crefPath;
-            XmlCodeCommentFile xmlFile = this._commentsXml.GetReusableFile();
             List<Block> tempContainer = new List<Block>();
 
             var constructors = from method in this._representedType.GetConstructors()
@@ -151,7 +150,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile,
+                    Block description = this.GetSummaryFor(_commentsXml,
                         currentMethod.Assembly,
                         crefPath);
 
@@ -176,10 +175,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentField.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile,
+                    Block description = this.GetSummaryFor(_commentsXml,
                         currentField.Assembly,
                         crefPath);
-                    Block value = this.GetSummaryFor(xmlFile,
+                    Block value = this.GetSummaryFor(_commentsXml,
                         currentField.Assembly,
                         crefPath);
                     if(description != null)
@@ -211,7 +210,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentProperty.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentProperty.OwningType.Assembly, 
+                    Block description = this.GetSummaryFor(_commentsXml, currentProperty.OwningType.Assembly, 
                         crefPath);
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentProperty));
                 }
@@ -234,7 +233,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentEvent.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentEvent.Type.Assembly, 
+                    Block description = this.GetSummaryFor(_commentsXml, currentEvent.Type.Assembly, 
                         crefPath);
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentEvent));
                 }
@@ -257,7 +256,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, 
+                    Block description = this.GetSummaryFor(_commentsXml, currentMethod.Assembly, 
                         crefPath);
 
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
@@ -281,7 +280,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, 
+                    Block description = this.GetSummaryFor(_commentsXml, currentMethod.Assembly, 
                         crefPath);
 
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
@@ -308,7 +307,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                     CRefPath path = new CRefPath(currentMethod);
 
-                    Block description = this.GetSummaryFor(xmlFile,
+                    Block description = this.GetSummaryFor(_commentsXml,
                         currentMethod.Assembly,
                         path
                         );

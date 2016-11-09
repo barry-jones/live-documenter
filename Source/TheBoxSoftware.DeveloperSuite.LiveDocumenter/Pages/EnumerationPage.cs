@@ -14,18 +14,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     /// </summary>
     public class EnumerationPage : Page
     {
-        private TypeDef representedType;
-        private XmlCodeCommentFile commentsXml;
+        private TypeDef _representedType;
+        private ICommentSource _commentsXml;
 
         /// <summary>
         /// Initialises a new instance of the EnumerationPage class.
         /// </summary>
         /// <param name="type">The type to display in the page</param>
         /// <param name="xmlComments">The xml comments document for the assembly</param>
-        public EnumerationPage(TypeDef type, XmlCodeCommentFile xmlComments)
+        public EnumerationPage(TypeDef type, ICommentSource xmlComments)
         {
-            this.representedType = type;
-            this.commentsXml = xmlComments;
+            _representedType = type;
+            _commentsXml = xmlComments;
         }
 
         /// <summary>
@@ -36,16 +36,15 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
         {
             if(!this.IsGenerated)
             {
-                CRefPath crefPath = new CRefPath(this.representedType);
-                XmlCodeCommentFile xmlComments = this.commentsXml.GetReusableFile();
-                List<Block> parsedBlocks = Elements.Parser.Parse(this.representedType.Assembly, xmlComments, crefPath);
+                CRefPath crefPath = new CRefPath(this._representedType);
+                List<Block> parsedBlocks = Elements.Parser.Parse(this._representedType.Assembly, _commentsXml, crefPath);
 
-                if(!xmlComments.Exists())
+                if(!_commentsXml.Exists())
                 {
-                    this.Blocks.Add(new NoXmlComments(this.representedType));
+                    this.Blocks.Add(new NoXmlComments(this._representedType));
                 }
 
-                this.Blocks.Add(new Header1(this.representedType.Name + " Enumeration"));
+                this.Blocks.Add(new Header1(this._representedType.Name + " Enumeration"));
 
                 // Add the summary if it exists
                 if(parsedBlocks != null)
@@ -57,10 +56,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     }
                 }
 
-                this.AddSyntaxBlock(this.representedType);
+                this.AddSyntaxBlock(this._representedType);
 
                 // Add the table of classes to the page
-                List<FieldDef> fields = this.representedType.GetFields();
+                List<FieldDef> fields = this._representedType.GetFields();
                 SummaryTable classTable = new SummaryTable("Member Name", "Description", false);
                 var sortedFields = from field in fields
                                    orderby field.Name
@@ -72,7 +71,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                         continue;
                     }
                     Block description = this.GetSummaryFor(
-                        xmlComments, 
+                        _commentsXml, 
                         currentField.Assembly, 
                         new CRefPath(currentField)
                         );

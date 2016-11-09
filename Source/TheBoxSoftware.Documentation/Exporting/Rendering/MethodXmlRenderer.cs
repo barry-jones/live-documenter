@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
     internal class MethodXmlRenderer : XmlRenderer
     {
         private MethodDef _member;
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MethodXmlRenderer"/> class.

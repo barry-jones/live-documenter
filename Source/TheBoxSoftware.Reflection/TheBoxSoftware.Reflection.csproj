@@ -126,7 +126,6 @@
     <Compile Include="Comments\TypeParamXmlCodeElement.cs" />
     <Compile Include="Comments\ValueXmlCodeElement.cs" />
     <Compile Include="Comments\XmlCodeComment.cs" />
-    <Compile Include="Comments\XmlCodeCommentFile.cs" />
     <Compile Include="Comments\XmlCodeElement.cs" />
     <Compile Include="Comments\XmlCodeElementCollection.cs" />
     <Compile Include="Comments\XmlCodeElements.cs" />

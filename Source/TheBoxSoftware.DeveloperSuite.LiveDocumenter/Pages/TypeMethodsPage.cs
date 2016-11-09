@@ -11,9 +11,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     public class TypeMethodsPage : Page
     {
         private List<MethodDef> _typesMethods;
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
 
-        public TypeMethodsPage(List<MethodDef> typesMethods, XmlCodeCommentFile xmlComments)
+        public TypeMethodsPage(List<MethodDef> typesMethods, ICommentSource xmlComments)
         {
             _typesMethods = typesMethods;
             _xmlComments = xmlComments;
@@ -28,7 +28,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 {
                     definingType = _typesMethods[0].Type as TypeDef;
                 }
-                XmlCodeCommentFile comments = _xmlComments.GetReusableFile();
 
                 if(!_xmlComments.Exists())
                 {
@@ -56,7 +55,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                         CRefPath path = new CRefPath(currentMethod);
 
-                        System.Windows.Documents.Block description = this.GetSummaryFor(comments,
+                        System.Windows.Documents.Block description = this.GetSummaryFor(_xmlComments,
                             currentMethod.Assembly,
                             path
                             );
@@ -86,7 +85,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                         CRefPath path = new CRefPath(currentMethod);
 
-                        System.Windows.Documents.Block description = this.GetSummaryFor(comments,
+                        System.Windows.Documents.Block description = this.GetSummaryFor(_xmlComments,
                             currentMethod.Assembly,
                             path
                             );

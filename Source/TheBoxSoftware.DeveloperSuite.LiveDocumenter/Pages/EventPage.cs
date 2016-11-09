@@ -14,14 +14,14 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 	/// </summary>
 	public class EventPage : Page {
 		private EventDef eventDef;
-		private XmlCodeCommentFile xmlComments;
+		private ICommentSource xmlComments;
 
 		/// <summary>
 		/// Initialises a new instance of the EventPage class.
 		/// </summary>
 		/// <param name="eventDef">The event to be documented.</param>
 		/// <param name="xmlComments">The xml comments associated with the defining library.</param>
-		public EventPage(EventDef eventDef, XmlCodeCommentFile xmlComments) {
+		public EventPage(EventDef eventDef, ICommentSource xmlComments) {
 			this.eventDef = eventDef;
 			this.xmlComments = xmlComments;
 		}

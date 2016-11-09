@@ -28,7 +28,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 		/// </summary>
 		/// <param name="assembly">The assembly to document.</param>
 		/// <param name="xmlComments">The xml code comments file associated with the assembly.</param>
-		public AssemblyPage(AssemblyDef assembly, XmlCodeCommentFile xmlComments) : base() {
+		public AssemblyPage(AssemblyDef assembly, ICommentSource xmlComments) : base() {
 			this.InitializeComponent();
 			this.assembly = assembly;
 		}

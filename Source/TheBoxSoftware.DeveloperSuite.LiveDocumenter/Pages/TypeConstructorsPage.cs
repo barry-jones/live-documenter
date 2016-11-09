@@ -11,9 +11,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     public class TypeConstructorsPage : Page
     {
         private List<MethodDef> typesMethods;
-        private XmlCodeCommentFile xmlComments;
+        private ICommentSource xmlComments;
 
-        public TypeConstructorsPage(List<MethodDef> typesMethods, XmlCodeCommentFile xmlComments)
+        public TypeConstructorsPage(List<MethodDef> typesMethods, ICommentSource xmlComments)
         {
             this.typesMethods = typesMethods;
             this.xmlComments = xmlComments;
@@ -28,8 +28,6 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 {
                     definingType = (TypeDef)this.typesMethods[0].Type;
                 }
-                XmlCodeCommentFile comments = this.xmlComments.GetReusableFile();
-
                 if(!this.xmlComments.Exists())
                 {
                     this.Blocks.Add(new NoXmlComments(definingType));
@@ -55,7 +53,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                         link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
                         Block constructorSummary = this.GetSummaryFor(
-                            comments, 
+                            xmlComments, 
                             currentMethod.Assembly,
                             crefPath
                             );

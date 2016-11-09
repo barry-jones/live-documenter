@@ -31,6 +31,8 @@ namespace TheBoxSoftware.Reflection.Comments
         /// </remarks>
         XmlCodeComment GetSummary(CRefPath crefPath);
 
+        XmlCodeComment GetValue(CRefPath crefPath);
+
         string GetXml(CRefPath crefPath);
     }
 }

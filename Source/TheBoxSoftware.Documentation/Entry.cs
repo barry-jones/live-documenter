@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Documentation
 	[System.Diagnostics.DebuggerDisplay("Key: {Key} SubKey: {SubKey}")]
     public class Entry : INotifyPropertyChanged, IComparable<Entry>
     {
-        private XmlCodeCommentFile _xmlComments;
+        private ICommentSource _xmlComments;
         private object _item;
         private bool _isExpanded;
         private bool _isSelected;
@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Documentation
         private List<Entry> _children;
 
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[@name="ctor1"]/*' />
-		public Entry(object item, string displayName, XmlCodeCommentFile xmlComments)
+		public Entry(object item, string displayName, ICommentSource xmlComments)
         {
             _item = item;
             _xmlComments = xmlComments;
@@ -32,7 +32,7 @@ namespace TheBoxSoftware.Documentation
         }
 
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[@name="ctor2"]/*' />
-		public Entry(object item, string displayName, XmlCodeCommentFile xmlComments, Entry parent)
+		public Entry(object item, string displayName, ICommentSource xmlComments, Entry parent)
             : this(item, displayName, xmlComments)
         {
             _parent = parent;
@@ -167,7 +167,7 @@ namespace TheBoxSoftware.Documentation
         /// Not sure about the Entry class retaining a reference
         /// to the comment file.
         /// </remarks>
-        public XmlCodeCommentFile XmlCommentFile
+        public ICommentSource XmlCommentFile
         {
             get { return _xmlComments; }
         }
