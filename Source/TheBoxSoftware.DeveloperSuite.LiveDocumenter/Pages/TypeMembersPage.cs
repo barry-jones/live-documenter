@@ -28,7 +28,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 CRefPath crefPath = null;
                 SummaryTable members;
 
-                if(!this.xmlComments.Exists)
+                if(!this.xmlComments.Exists())
                 {
                     this.Blocks.Add(new NoXmlComments(this.representedType));
                 }

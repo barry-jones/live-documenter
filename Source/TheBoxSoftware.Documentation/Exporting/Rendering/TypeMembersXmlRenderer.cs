@@ -82,7 +82,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type)
         {
             CRefPath currentPath = CRefPath.Create(entryMember);
-            XmlCodeComment currentComment = _xmlComments.ReadComment(currentPath);
+            XmlCodeComment currentComment = _xmlComments.GetComment(currentPath);
 
             writer.WriteStartElement("entry");
             writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());

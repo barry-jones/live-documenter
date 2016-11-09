@@ -24,7 +24,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         public override void Render(System.Xml.XmlWriter writer)
         {
             CRefPath crefPath = new CRefPath(_member);
-            XmlCodeComment comment = _xmlComments.ReadComment(crefPath);
+            XmlCodeComment comment = _xmlComments.GetComment(crefPath);
             string displayName = new DisplayNameSignitureConvertor(_member, false, true).Convert();
 
             writer.WriteStartElement("member");

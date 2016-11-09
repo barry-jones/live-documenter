@@ -42,7 +42,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 }
                 XmlCodeCommentFile comments = _xmlComments.GetReusableFile();
 
-                if(!_xmlComments.Exists)
+                if(!_xmlComments.Exists())
                 {
                     this.Blocks.Add(new NoXmlComments(definingType));
                 }

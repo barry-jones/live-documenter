@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 WriteCref(current, writer);
 
                 // write the summary text for the current member
-                XmlCodeComment comment = _xmlComments.ReadComment(new CRefPath((TypeDef)current.Item));
+                XmlCodeComment comment = _xmlComments.GetComment(new CRefPath((TypeDef)current.Item));
                 if (comment != null && comment.Elements != null)
                 {
                     SummaryXmlCodeElement summary = comment.Elements.Find(

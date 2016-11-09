@@ -26,7 +26,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                 CRefPath crefPath = new CRefPath(property);
                 List<Block> parsedBlocks = Elements.Parser.Parse(this.property.OwningType.Assembly, xmlComments, crefPath);
 
-                if(!this.xmlComments.Exists)
+                if(!this.xmlComments.Exists())
                 {
                     this.Blocks.Add(new NoXmlComments(property));
                 }

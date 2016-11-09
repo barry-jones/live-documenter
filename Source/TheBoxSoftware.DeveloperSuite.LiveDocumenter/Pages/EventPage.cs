@@ -34,7 +34,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
 				CRefPath crefPath = new CRefPath(eventDef);
 				List<Block> parsedBlocks = Elements.Parser.Parse(this.eventDef.Type.Assembly, xmlComments, crefPath);
 
-				if (!this.xmlComments.Exists) {
+				if (!this.xmlComments.Exists()) {
 					this.Blocks.Add(new NoXmlComments(eventDef));
 				}
 

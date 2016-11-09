@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         public override void Render(System.Xml.XmlWriter writer)
         {
             CRefPath crefPath = new CRefPath(_member);
-            XmlCodeComment comment = _xmlComments.ReadComment(crefPath);
+            XmlCodeComment comment = _xmlComments.GetComment(crefPath);
 
             writer.WriteStartElement("member");
             writer.WriteAttributeString("id", this.AssociatedEntry.Key.ToString());
@@ -102,7 +102,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                     if (fields[i].IsSystemGenerated)
                         continue;
                     CRefPath currentPath = CRefPath.Create(fields[i]);
-                    XmlCodeComment currentComment = _xmlComments.ReadComment(currentPath);
+                    XmlCodeComment currentComment = _xmlComments.GetComment(currentPath);
 
                     writer.WriteStartElement("value");
                     writer.WriteStartElement("name");
@@ -225,7 +225,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
         private void WriteEntry(System.Xml.XmlWriter writer, ReflectedMember entryMember, string displayName, string type)
         {
             CRefPath currentPath = CRefPath.Create(entryMember);
-            XmlCodeComment currentComment = this._xmlComments.ReadComment(currentPath);
+            XmlCodeComment currentComment = this._xmlComments.GetComment(currentPath);
 
             writer.WriteStartElement("entry");
             writer.WriteAttributeString("id", entryMember.GetGloballyUniqueId().ToString());

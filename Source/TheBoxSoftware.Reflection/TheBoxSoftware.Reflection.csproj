@@ -105,6 +105,7 @@
     <Compile Include="Comments\ErrorXmlCodeElement.cs" />
     <Compile Include="Comments\ExampleXmlCodeElement.cs" />
     <Compile Include="Comments\ExceptionXmlCodeElement.cs" />
+    <Compile Include="Comments\ICommentSource.cs" />
     <Compile Include="Comments\ItalicXmlCodeElement.cs" />
     <Compile Include="Comments\ListHeaderXmlCodeElement.cs" />
     <Compile Include="Comments\ListItemXmlCodeElement.cs" />

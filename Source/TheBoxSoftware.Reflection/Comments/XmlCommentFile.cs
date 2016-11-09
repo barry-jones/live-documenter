@@ -6,7 +6,10 @@ namespace TheBoxSoftware.Reflection.Comments
     using System.Xml;
     using System.Xml.XPath;
 
-    public class XmlCommentFile
+    /// <summary>
+    /// Implementation of ICommentSource that uses an underlying XML Comment File.
+    /// </summary>
+    public class XmlCommentFile : ICommentSource
     {
         private readonly string _filename;
         private readonly IFileSystem _fileSystem;

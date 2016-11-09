@@ -215,7 +215,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
 
             XmlCodeComment result = commentFile.GetSummary(crefPath);
 
-            Assert.AreEqual(XmlCodeElements.Summary, result.Element);
+            Assert.AreEqual("Summary text", result.Elements[0].Text);
         }
     }
 }

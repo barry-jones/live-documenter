@@ -9,10 +9,10 @@ namespace TheBoxSoftware.Reflection.Comments
     /// A container and manager class for the xml code comments files associated
     /// with libraries.
     /// </summary>
-    public class XmlCodeCommentFile
+    public class XmlCodeCommentFile : ICommentSource
     {
         private string _xmlCommentFileName;
-        private bool _exists;
+        protected bool _exists;
 
         /// <summary>
         /// Initialises a new instance of the XmlCodeCommentFile
@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Comments
         public XmlCodeCommentFile(string xmlCommentFile)
         {
             _xmlCommentFileName = xmlCommentFile;
-            this.Exists = System.IO.File.Exists(xmlCommentFile);
+            _exists = System.IO.File.Exists(xmlCommentFile);
         }
 
         /// <summary>
@@ -29,14 +29,25 @@ namespace TheBoxSoftware.Reflection.Comments
         /// </summary>
         public XmlCodeCommentFile() { }
 
+        public bool Exists()
+        {
+            return _exists;
+        }
+
         /// <summary>
         /// Reads the XML code comments for the member specified <paramref name="forMember"/>.
         /// </summary>
         /// <param name="forMember">The CRefPath to read the xml code comments for.</param>
         /// <returns>The <see cref="XmlCodeComment"/>.</returns>
-        public XmlCodeComment ReadComment(CRefPath forMember)
+        public XmlCodeComment GetComment(CRefPath forMember)
         {
             string xpath = $"/doc/members/member[@name=\"{forMember.ToString()}\"]";
+            return GetComment(xpath);
+        }
+
+        public XmlCodeComment GetSummary(CRefPath forMember)
+        {
+            string xpath = $"/doc/members/member[@name=\"{forMember.ToString()}\"]/summary";
             return GetComment(xpath);
         }
 
@@ -63,7 +74,7 @@ namespace TheBoxSoftware.Reflection.Comments
         {
             XmlCodeComment parsedComment = XmlCodeComment.Empty;
 
-            if(Exists)
+            if(Exists())
             {
                 XPathDocument commentsDocument = new XPathDocument(_xmlCommentFileName);
                 XPathNavigator n = commentsDocument.CreateNavigator();
@@ -107,7 +118,7 @@ namespace TheBoxSoftware.Reflection.Comments
             string xpath = $"/doc/members/member[@name=\"{cref.ToString()}\"]";
             string xml = string.Empty;
 
-            if(Exists)
+            if(Exists())
             {
                 XPathDocument commentsDocument = new XPathDocument(_xmlCommentFileName);
                 XPathNavigator n = commentsDocument.CreateNavigator();
@@ -138,16 +149,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <returns>The instance.</returns>
         public ReusableXmlCodeCommentFile GetReusableFile()
         {
-            return new ReusableXmlCodeCommentFile(_xmlCommentFileName, Exists);
-        }
-
-        /// <summary>
-        /// Indicates if the xml code comment file exists.
-        /// </summary>
-        public bool Exists
-        {
-            get { return _exists; }
-            set { _exists = value; }
+            return new ReusableXmlCodeCommentFile(_xmlCommentFileName, Exists());
         }
         
         /// <summary>
@@ -169,7 +171,7 @@ namespace TheBoxSoftware.Reflection.Comments
             internal ReusableXmlCodeCommentFile(string file, bool exists)
             {
                 _xmlCommentFileName = file;
-                Exists = exists;
+                _exists = exists;
                 if(exists)
                 {
                     commentsDocument = new XPathDocument(file);
@@ -194,7 +196,7 @@ namespace TheBoxSoftware.Reflection.Comments
             {
                 XmlCodeComment parsedComment = XmlCodeComment.Empty;
 
-                if(this.Exists)
+                if(this.Exists())
                 {
                     XPathNodeIterator ni = navigator.Select(xpath);
                     XmlNode memberComment = null;
@@ -237,7 +239,7 @@ namespace TheBoxSoftware.Reflection.Comments
 
                 string xml = string.Empty;
 
-                if(this.Exists)
+                if(this.Exists())
                 {
                     XPathNodeIterator ni = navigator.Select(xpath);
                     XmlNode memberComment = null;
