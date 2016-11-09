@@ -116,6 +116,89 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
             WhenSearchingShouldMatch("FILE");
         }
 
+        public void WhenNotSelected_IsSelected_IsFalse()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            entry.IsSelected = false;
+
+            Assert.AreEqual(false, entry.IsSelected);
+        }
+
+        [Test]
+        public void WhenCreated_IsSelected_IsFalse()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            Assert.AreEqual(false, entry.IsSelected);
+        }
+
+        [Test]
+        public void WhenSelected_IsSelected_IsTrue()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            entry.IsSelected = true;
+
+            Assert.AreEqual(true, entry.IsSelected);
+        }
+
+        [Test]
+        public void WhenCreated_IsSearchable_IsFalse()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            Assert.AreEqual(false, entry.IsSearchable);
+        }
+
+        [Test]
+        public void WhenIsSearchable_IsSearchable_IsTrue()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            entry.IsSearchable = true;
+
+            Assert.AreEqual(true, entry.IsSearchable);
+        }
+
+        [Test]
+        public void WhenNotSearchable_IsSearchable_IsFalse()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            entry.IsSearchable = false;
+
+            Assert.AreEqual(false, entry.IsSearchable);
+        }
+
+        [Test]
+        public void WhenCreated_IsExpanded_IsFalse()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            Assert.AreEqual(false, entry.IsExpanded);
+        }
+
+        [Test]
+        public void WhenExpanded_IsExpanded_IsTrue()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            entry.IsExpanded = true;
+
+            Assert.AreEqual(true, entry.IsExpanded);
+        }
+
+        [Test]
+        public void WhenNotExpanded_IsExpanded_IsFalse()
+        {
+            Entry entry = new Entry(null, string.Empty, null);
+
+            entry.IsExpanded = false;
+
+            Assert.AreEqual(false, entry.IsExpanded);
+        }
+
         private void WhenSearchingShouldMatch(string searchFor)
         {
             Entry parent = CreateEntry(1, string.Empty);

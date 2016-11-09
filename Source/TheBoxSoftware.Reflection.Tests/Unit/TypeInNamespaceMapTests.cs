@@ -8,7 +8,15 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
     public class TypeInNamespaceMapTests
     {
         [Test]
-        public void TypeInNamespaceMap_Add_WhenAddingDef_ShouldBeAddedToMap()
+        public void WhenCreated_ShouldHaveNoEntries()
+        {
+            TypeInNamespaceMap map = new TypeInNamespaceMap();
+
+            Assert.AreEqual(0, map.GetAllNamespaces().Count);
+        }
+
+        [Test]
+        public void WhenAdding_ItemShouldBeAdded()
         {
             const int ExpectedCount = 1;
 
@@ -22,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void TypeInNamespaceMap_GetAllNamespaces_WhenTwoTypesOneNamespace_ShouldReturnOne()
+        public void WhenTypeTypesAddedWithSameNamespace_GetAllNamespaces_Returns1()
         {
             TypeInNamespaceMap map = new TypeInNamespaceMap();
             TypeDef def = new TypeDef();
@@ -38,7 +46,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void TypeInNamespaceMap_GetAllNamespaces_WhenTwoTypesTwoNamespace_ShouldReturnTwo()
+        public void WhenTwoTypesWithDifferentNamespacesAdded_GetAllNamespaces_Returns2()
         {
             TypeInNamespaceMap map = new TypeInNamespaceMap();
             TypeDef def1 = new TypeDef() { Namespace = "System" };
@@ -55,7 +63,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void TypeInNamespaceMap_GetAllTypesInNamespaces_WhenHasTypes_ShouldReturnDataCorrectly()
+        public void WhenMapHasEntries_GetAllTypesInNamespaces_IsCorrect()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -67,7 +75,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void TypeInNamespaceMap_GetAllTypesInNamespaces_WhenHasTypes_ShouldReturnAShallowCopy()
+        public void WhenMapHasEntries_GetAllTypesInNamespaces_ReturnsAShallowCopy()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -79,7 +87,18 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void TypeInNamespaceMap_FindTypeInNamespace_WhenTypeNotThere_ShouldReturnNull()
+        public void WhenNoNamespace_FindTypeInNamespace_FindsEntry()
+        {
+            TypeInNamespaceMap map = BuildTestMap();
+
+            TypeDef found = map.FindTypeInNamespace(string.Empty, "NonNamespaceType");
+
+            Assert.IsNotNull(found);
+            Assert.AreEqual("NonNamespaceType", found.Name);
+        }
+
+        [Test]
+        public void WhenSearchFails_FindTypeInNamespace_ReturnsNull()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -91,18 +110,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void TypeInNamespaceMap_FindTypeInNamespace_WhenTypeWithoutNamespace_ShouldReturnCorrect()
-        {
-            TypeInNamespaceMap map = BuildTestMap();
-
-            TypeDef found = map.FindTypeInNamespace(string.Empty, "NonNamespaceType");
-
-            Assert.IsNotNull(found);
-            Assert.AreEqual("NonNamespaceType", found.Name);
-        }
-
-        [Test]
-        public void TypeInNamespaceMap_FindTypeInNamespace_WhenTypeExists_ShouldReturnCorrect()
+        public void WhenSearchSucceeds_FindTypeInNamesapce_FindsEntry()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -110,6 +118,58 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
 
             Assert.IsNotNull(found);
             Assert.AreEqual("Test7", found.Name);
+        }
+
+        [Test]
+        public void WhenRemovingInvalidItem_Remove_DoesNothing()
+        {
+            TypeInNamespaceMap map = BuildTestMap();
+
+            TypeDef item = new TypeDef();
+            item.Name = "Nope";
+            item.Namespace = "Test1";
+
+            int expected = map.GetAllTypesInNamespaces().Count;
+
+            map.Remove(item);
+
+            int result = map.GetAllTypesInNamespaces().Count;
+
+            Assert.AreEqual(result, expected);
+        }
+
+        [Test]
+        public void WhenRemovingValidItem_Remove_RemovesItem()
+        {
+            TypeInNamespaceMap map = BuildTestMap();
+
+            TypeDef itemToRemove = new TypeDef();
+            itemToRemove.Name = "Test";
+            itemToRemove.Namespace = "First";
+            
+            map.Add(itemToRemove);
+            int expected = map.GetAllTypesInNamespaces()["First"].Count - 1;
+
+            map.Remove(itemToRemove);
+            int result = map.GetAllTypesInNamespaces()["First"].Count;
+
+            Assert.AreEqual(result, expected);
+        }
+
+        [Test]
+        public void WhenLastItemInNamespaceRemoved_Remove_NamespaceNotInDictionary()
+        {
+            TypeInNamespaceMap map = new TypeInNamespaceMap();
+
+            TypeDef testType = new TypeDef();
+            testType.Namespace = "Namespace";
+            testType.Name = "MyType";
+
+            map.Add(testType);
+
+            map.Remove(testType);
+
+            Assert.AreEqual(0, map.GetAllNamespaces().Count);
         }
 
         private TypeInNamespaceMap BuildTestMap()

@@ -32,6 +32,11 @@ namespace TheBoxSoftware.Reflection
             if(_typeInNamespace.ContainsKey(inNamespace))
             {
                 _typeInNamespace[inNamespace].Remove(type);
+
+                if(_typeInNamespace[inNamespace].Count == 0)
+                {
+                    _typeInNamespace.Remove(inNamespace);
+                }
             }
         }
         

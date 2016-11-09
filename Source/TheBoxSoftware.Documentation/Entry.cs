@@ -11,11 +11,9 @@ namespace TheBoxSoftware.Documentation
 	[System.Diagnostics.DebuggerDisplay("Key: {Key} SubKey: {SubKey}")]
     public class Entry : INotifyPropertyChanged, IComparable<Entry>
     {
+        private EntryFlags _flags = EntryFlags.None;
         private ICommentSource _xmlComments;
         private object _item;
-        private bool _isExpanded;
-        private bool _isSelected;
-        private bool _isSearchable;
         private string _name;
         private long _key;
         private string _subKey;
@@ -49,17 +47,17 @@ namespace TheBoxSoftware.Documentation
         {
             Entry found = null;
 
-            if (IsThisEntry(key, subKey))
+            if(IsThisEntry(key, subKey))
             {
                 found = this;
             }
-            else if (Children != null && checkChildren)
+            else if(CheckChildren(checkChildren))
             {
                 int count = Children.Count;
-                for (int i = 0; i < count; i++)
+                for(int i = 0; i < count; i++)
                 {
                     found = Children[i].FindByKey(key, subKey);
-                    if (found != null)
+                    if(found != null)
                     {
                         break;
                     }
@@ -103,11 +101,37 @@ namespace TheBoxSoftware.Documentation
             return parent;
         }
 
+        /// <summary>
+        /// Default comparison method for entries. Compares the entries by there
+        /// names.
+        /// </summary>
+        /// <param name="other">The other Entry to compare this one to.</param>
+        /// <returns>An integer representing the results of the comparison.</returns>
+        public int CompareTo(Entry other)
+        {
+            return _name.CompareTo(other._name);
+        }
+
         private bool IsThisEntry(long key, string subKey)
         {
             return _key == key && ((string.IsNullOrEmpty(_subKey) == string.IsNullOrEmpty(subKey)) || (_subKey == subKey));
         }
 
+        private bool CheckChildren(bool checkChildren)
+        {
+            return Children != null && checkChildren;
+        }
+
+        private bool HasFlag(EntryFlags flag)
+        {
+            return (_flags & flag) == flag;
+        }
+
+        private void ToggleFlag(EntryFlags flag)
+        {
+            _flags ^= flag;
+        }
+        
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="name"]/*' />
         public string Name
         {
@@ -133,15 +157,6 @@ namespace TheBoxSoftware.Documentation
         {
             get { return _subKey; }
             set { _subKey = value; }
-        }
-
-        /// <summary>
-        /// Indicates if the entry is searchable.
-        /// </summary>
-        public bool IsSearchable
-        {
-            get { return _isSearchable; }
-            set { _isSearchable = value; }
         }
 
         /// <include file='code-documentation\entry.xml' path='docs/entry/member[name="parent"]/*' />
@@ -177,12 +192,12 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get { return HasFlag(EntryFlags.IsSelected); }
             set
             {
-                if (value != this._isSelected)
+                if (value != HasFlag(EntryFlags.IsSelected))
                 {
-                    _isSelected = value;
+                    ToggleFlag(EntryFlags.IsSelected);
                     OnPropertyChanged("IsSelected");
                 }
             }
@@ -193,18 +208,30 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public bool IsExpanded
         {
-            get { return _isExpanded; }
+            get { return HasFlag(EntryFlags.IsExpanded); }
             set
             {
-                if (value != _isExpanded)
+                if (value != HasFlag(EntryFlags.IsExpanded))
                 {
-                    _isExpanded = value;
+                    ToggleFlag(EntryFlags.IsExpanded);
                     OnPropertyChanged("IsExpanded");
                 }
 
                 // Expand all the way up to the root.
-                if (_isExpanded && this.Parent != null)
+                if (HasFlag(EntryFlags.IsExpanded) && this.Parent != null)
                     Parent.IsExpanded = true;
+            }
+        }
+
+        /// <summary>
+        /// Indicates if the entry is searchable.
+        /// </summary>
+        public bool IsSearchable
+        {
+            get { return HasFlag(EntryFlags.IsSearchable); }
+            set {
+                if(value != HasFlag(EntryFlags.IsSearchable))
+                    ToggleFlag(EntryFlags.IsSearchable);
             }
         }
 
@@ -230,19 +257,16 @@ namespace TheBoxSoftware.Documentation
         /// <param name="propertyName">The name of the property that has changed.</param>
         private void OnPropertyChanged(string propertyName)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        /// <summary>
-        /// Default comparison method for entries. Compares the entries by there
-        /// names.
-        /// </summary>
-        /// <param name="other">The other Entry to compare this one to.</param>
-        /// <returns>An integer representing the results of the comparison.</returns>
-        public int CompareTo(Entry other)
+        [Flags]
+        private enum EntryFlags : byte
         {
-            return _name.CompareTo(other._name);
+            None            = 0x00,
+            IsSelected      = 0x01,
+            IsSearchable    = 0x02,
+            IsExpanded      = 0x04
         }
     }
 }

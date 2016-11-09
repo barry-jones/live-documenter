@@ -1,8 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Documentation
 {
-    using System;
-    using TheBoxSoftware.Reflection.Comments;
+    using Reflection.Comments;
 
     /// <summary>
     /// A class that controls the creation of <see cref="Entry"/> instances and subtypes for
