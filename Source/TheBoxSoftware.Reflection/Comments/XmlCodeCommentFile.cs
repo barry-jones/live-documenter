@@ -113,7 +113,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// </summary>
         /// <param name="cref">The member to get the original XML for</param>
         /// <returns>The original XML for the specified member</returns>
-        public virtual string GetXmlFor(CRefPath cref)
+        public virtual string GetXml(CRefPath cref)
         {
             string xpath = $"/doc/members/member[@name=\"{cref.ToString()}\"]";
             string xml = string.Empty;
@@ -233,7 +233,7 @@ namespace TheBoxSoftware.Reflection.Comments
             /// </summary>
             /// <param name="cref">The member to get the original XML for</param>
             /// <returns>The original XML for the specified member</returns>
-            public override string GetXmlFor(CRefPath cref)
+            public override string GetXml(CRefPath cref)
             {
                 string xpath = $"/doc/members/member[@name=\"{cref.ToString()}\"]";
 

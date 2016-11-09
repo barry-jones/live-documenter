@@ -68,6 +68,22 @@ namespace TheBoxSoftware.Reflection.Comments
             return comment;
         }
 
+        public string GetXml(CRefPath forMember)
+        {
+            if(forMember == null || !_isLoaded || forMember.PathType == CRefTypes.Error)
+                return string.Empty;
+
+            string xpath = $"/doc/members/member[@name='{forMember.ToString()}']";
+
+            string xml = string.Empty;
+            XmlNode commentXml = FindXmlElement(xpath);
+
+            if(commentXml != null)
+                xml = commentXml.InnerXml;
+
+            return xml;
+        }
+
         private XmlCodeComment FindCommentWithXPath(string xpath)
         {
             XmlCodeComment comment = XmlCodeComment.Empty;

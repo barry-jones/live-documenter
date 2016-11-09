@@ -30,5 +30,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// to resolve the path a comment in the source.
         /// </remarks>
         XmlCodeComment GetSummary(CRefPath crefPath);
+
+        string GetXml(CRefPath crefPath);
     }
 }
