@@ -57,15 +57,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
             }
         }
 
-        protected Block GetSummaryFor(XmlCodeCommentFile xmlComments, AssemblyDef assembly, string xpath)
+        protected Block GetSummaryFor(ICommentSource comments, AssemblyDef assembly, CRefPath element)
         {
             Block constructorSummary = null;
-            XmlCodeComment comment = xmlComments.ReadComment(xpath);
+            XmlCodeComment comment = comments.GetSummary(element);
             List<Block> constructorComments = Elements.Parser.Parse(assembly, comment);
+
             if(constructorComments != null && constructorComments.Count > 0)
             {
                 constructorSummary = constructorComments.First();
             }
+
             return constructorSummary;
         }
 

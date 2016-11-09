@@ -34,7 +34,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
         {
             if(!this.IsGenerated)
             {
-                XmlCodeCommentFile xmlFile = commentsXml.GetReusableFile();
+                ICommentSource xmlFile = commentsXml.GetReusableFile();
 
                 this.Blocks.Add(new Header1(item.Key + " Namespace"));
 
@@ -88,7 +88,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
         /// <param name="name">The header text.</param>
         /// <param name="types">The types to add to the table.</param>
         /// <param name="xmlFile">The XML file to read comments from.</param>
-        private void OutputTypes(string name, IOrderedEnumerable<TypeDef> types, XmlCodeCommentFile xmlFile)
+        private void OutputTypes(string name, IOrderedEnumerable<TypeDef> types, ICommentSource xmlFile)
         {
             if(types.Count() != 0)
             {
@@ -98,7 +98,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     CRefPath crefPath = new CRefPath(currentType);
 
                     // Find the description for the type
-                    Block description = this.GetSummaryFor(xmlFile, currentType.Assembly, "/doc/members/member[@name='" + crefPath + "']/summary");
+                    Block description = this.GetSummaryFor(
+                        xmlFile, 
+                        currentType.Assembly, 
+                        crefPath
+                        );
                     Hyperlink nameLink = new Hyperlink(new Run(currentType.GetDisplayName(false)));
                     nameLink.Tag = new EntryKey(currentType.GetGloballyUniqueId());
                     nameLink.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);

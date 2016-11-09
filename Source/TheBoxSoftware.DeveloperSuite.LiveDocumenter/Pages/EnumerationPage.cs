@@ -71,7 +71,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     {
                         continue;
                     }
-                    Block description = this.GetSummaryFor(xmlComments, currentField.Assembly, "/doc/members/member[@name='" + new CRefPath(currentField).ToString() + "']/summary");
+                    Block description = this.GetSummaryFor(
+                        xmlComments, 
+                        currentField.Assembly, 
+                        new CRefPath(currentField)
+                        );
                     classTable.AddItem(currentField.Name, description);
                 }
                 this.Blocks.Add(new Header2("Members"));

@@ -67,7 +67,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                         Block description = GetSummaryFor(comments,
                             currentProperty.OwningType.Assembly,
-                            "/doc/members/member[@name='" + path.ToString() + "']/summary");
+                            path);
 
                         methods.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentProperty));
                     }

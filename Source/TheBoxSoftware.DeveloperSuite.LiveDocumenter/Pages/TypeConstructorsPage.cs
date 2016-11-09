@@ -54,8 +54,11 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                         link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
                         link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                        Block constructorSummary = this.GetSummaryFor(comments, currentMethod.Assembly,
-                            "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+                        Block constructorSummary = this.GetSummaryFor(
+                            comments, 
+                            currentMethod.Assembly,
+                            crefPath
+                            );
 
                         methods.AddItem(link, constructorSummary, Model.ElementIconConstants.GetIconPathFor(currentMethod));
                     }

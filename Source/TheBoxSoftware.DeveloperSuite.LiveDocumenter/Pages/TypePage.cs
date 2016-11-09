@@ -153,7 +153,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                     Block description = this.GetSummaryFor(xmlFile,
                         currentMethod.Assembly,
-                        "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+                        crefPath);
 
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
                 }
@@ -178,10 +178,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                     Block description = this.GetSummaryFor(xmlFile,
                         currentField.Assembly,
-                        "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+                        crefPath);
                     Block value = this.GetSummaryFor(xmlFile,
                         currentField.Assembly,
-                        "/doc/members/member[@name='" + crefPath.ToString() + "']/value");
+                        crefPath);
                     if(description != null)
                     {
                         members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentField));
@@ -211,7 +211,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentProperty.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentProperty.OwningType.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+                    Block description = this.GetSummaryFor(xmlFile, currentProperty.OwningType.Assembly, 
+                        crefPath);
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentProperty));
                 }
                 tempContainer.Add(members);
@@ -233,7 +234,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentEvent.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentEvent.Type.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+                    Block description = this.GetSummaryFor(xmlFile, currentEvent.Type.Assembly, 
+                        crefPath);
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentEvent));
                 }
                 tempContainer.Add(members);
@@ -255,7 +257,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+                    Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, 
+                        crefPath);
 
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
                 }
@@ -278,7 +281,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     link.Tag = new EntryKey(currentMethod.GetGloballyUniqueId());
                     link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                    Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, "/doc/members/member[@name='" + crefPath.ToString() + "']/summary");
+                    Block description = this.GetSummaryFor(xmlFile, currentMethod.Assembly, 
+                        crefPath);
 
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
                 }
@@ -306,7 +310,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                     Block description = this.GetSummaryFor(xmlFile,
                         currentMethod.Assembly,
-                        "/doc/members/member[@name='" + path.ToString() + "']/summary"
+                        path
                         );
 
                     members.AddItem(link, description, Model.ElementIconConstants.GetIconPathFor(currentMethod));
