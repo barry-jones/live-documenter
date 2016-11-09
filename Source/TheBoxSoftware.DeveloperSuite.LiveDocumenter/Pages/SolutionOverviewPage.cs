@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
+{
+    using System.Collections.Generic;
+    using TheBoxSoftware.Documentation;
 
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages {
-	using TheBoxSoftware.Documentation;
-
-	public sealed class SolutionOverviewPage : Page {
-		public SolutionOverviewPage(List<DocumentedAssembly> documentedAssemblies) {
-		}
-	}
+    public sealed class SolutionOverviewPage : Page
+    {
+        public SolutionOverviewPage(List<DocumentedAssembly> documentedAssemblies)
+        {
+        }
+    }
 }

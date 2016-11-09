@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using TheBoxSoftware.Reflection;
     using TheBoxSoftware.Reflection.Comments;
     using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;

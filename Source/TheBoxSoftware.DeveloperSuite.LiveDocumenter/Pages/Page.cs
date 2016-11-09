@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Documents;
-
+﻿
 namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Documents;
     using TheBoxSoftware.Diagnostics;
     using TheBoxSoftware.Reflection;
     using TheBoxSoftware.Reflection.Comments;
@@ -124,8 +123,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
             };
 
             // Add the inheritance tree
-            List inheritanceList = new List();
-            List lastList = inheritanceList;
+            Elements.List inheritanceList = new Elements.List();
+            Elements.List lastList = inheritanceList;
             if(type.InheritsFrom != null)
             {
                 // build a list of parents for the current type
@@ -152,17 +151,17 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     lastList.AddListItem(links[i]);
                     if(i > 0)
                     {
-                        lastList = lastList.AddChildList(new List());
+                        lastList = lastList.AddChildList(new Elements.List());
                     }
                 }
             }
 
             // add the current type
-            lastList = lastList.AddChildList(new List());
+            lastList = lastList.AddChildList(new Elements.List());
             lastList.AddListItem(type.GetDisplayName(true));
 
             // add all the derived types
-            lastList = lastList.AddChildList(new List());
+            lastList = lastList.AddChildList(new Elements.List());
             List<TypeRef> derivedTypes = type.GetExtendingTypes();
             derivedTypes.Sort((a, b) => a.GetFullyQualifiedName().CompareTo(b.GetFullyQualifiedName()));
             for(int i = 0; i < derivedTypes.Count; i++)
