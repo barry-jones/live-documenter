@@ -29,8 +29,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
 
-        [Test]
-        public void XmlCommentFile_FileExists_WhenFileIsEmptyString_ReturnsFalse()
+        [Test(Description = "when file is an empty string return false")]
+        public void WhenFilenameIsEmptyString_Exists_IsFalse()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile(string.Empty);
 
@@ -40,7 +40,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_Exists_WhenFileNameIsNotEmptyButDoesntExist_ReturnsFalse()
+        public void WhenFileDoesntExist_Exists_IsFalse()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("doesnt_exist.dll");
             _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(false);
@@ -51,7 +51,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_Exists_WhenFileNameIsNotEmptyAndExists_ReturnsTrue()
+        public void WhenFileExists_Exists_IsTrue()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("exists.dll");
             _fileSystem.Setup(p => p.FileExists("exists.dll")).Returns(true);
@@ -62,19 +62,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_Load_WhenFilenameIsEmpty_DoesntTryToLoadFile()
+        public void WhenExistsIsFalse_Load_IsNotCalled()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile(string.Empty);
-
-            commentFile.Load();
-
-            _fileSystem.Verify(p => p.ReadAllBytes(It.IsAny<string>()), Times.Never());
-        }
-
-        [Test]
-        public void XmlCommentFile_Load_WhenFileDoesntExist_DoesntTryToLoadFile()
-        {
-            XmlCommentFile commentFile = CreateXmlCommentFile("doesnt_exist.dll");
             _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(false);
 
             commentFile.Load();
@@ -83,7 +73,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_Load_WhenFileExists_Loads()
+        public void WhenFileExists_Load_IsCalled()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("exists.xml");
             _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(true);
@@ -94,7 +84,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_IsLoaded_WhenNotLoaded_ReturnsFalse()
+        public void WhenNotLoaded_IsLoaded_IsFalse()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("test.xml");
 
@@ -104,7 +94,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_IsLoaded_WhenLoaded_ReturnsTrue()
+        public void WhenLoaded_IsLoaded_IsTrue()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("test.xml");
             _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(true);
@@ -116,7 +106,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_GetComment_WhenCrefPathIsNull_ReturnsEmptyComment()
+        public void WhenPassedNull_GetComment_ReturnsEmpty()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
             SetFileExistsAndLoadXml(commentFile);
@@ -127,7 +117,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_GetComment_WhenCRefPathIsError_ReturnsEmptyComment()
+        public void WhenCRefIsErrorPath_GetComment_ReturnsEmpty()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
             SetFileExistsAndLoadXml(commentFile);
@@ -140,7 +130,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_GetComment_WhenCalledAndNotLoaded_ReturnsEmptyComment()
+        public void WhenNotLoaded_GetComment_ReturnsEmpty()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
             _fileSystem.Setup(p => p.FileExists(It.IsAny<string>())).Returns(true);
@@ -152,7 +142,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_GetComment_WhenCRefPathValid_ReturnsComment()
+        public void WhenCRefIsValid_GetComment_GetsCorrectComment()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
             SetFileExistsAndLoadXml(commentFile);
@@ -165,7 +155,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_GetComment_WhenCrefPathValidButNoRecord_ReturnsEmpty()
+        public void WhenCRefValidButNoData_GetComment_ReturnsEmpty()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
             SetFileExistsAndLoadXml(commentFile);
@@ -177,18 +167,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_GetSummary_WhenCRefNull_ReturnsEmpty()
-        {
-            XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
-            SetFileExistsAndLoadXml(commentFile);
-
-            XmlCodeComment result = commentFile.GetSummary(null);
-
-            Assert.AreSame(XmlCodeComment.Empty, result);
-        }
-
-        [Test]
-        public void XmlCommentFile_GetSummary_WhenCRefPointsToInvalidElement_ReturnsEmpty()
+        public void WhenCRefInvalid_GetSummary_ReturnsEmpty()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("myfile.xml");
             SetFileExistsAndLoadXml(commentFile);
@@ -200,7 +179,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void XmlCommentFile_GetSummary_WhenCRefPointToValidElement_ReturnsEmpty()
+        public void WhenCRefValid_GetSummary_ReturnsSummary()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile("Myfile.xml");
             CRefPath crefPath = CRefPath.Parse("T:Namespace.MyType");
