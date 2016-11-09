@@ -3,43 +3,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DocumentationTest {
-	/// <summary>
-	/// <para>This is some summary information, inside a paragraph.</para>
-	/// This is not inside a para element and contains a <see cref="AllOutputTypesClass"/>
-	/// link.
-	/// <para>This is a <see cref="AllOutputTypesClass"/> inside a para; this is <c>some code.</c>
-	/// <code>
-	/// Somewhat incorrectly added code block element.
-	/// </code>
-	/// </para>
-	/// <example>
-	/// This is an example with a paragraph outside the para element.
-	/// <para>This is inside the para element.</para>
-	/// <code>
-	/// This code block is inside the example block.
-	/// </code>
-	/// </example>
-	/// This method <see cref="ATestMethod(int)" />, is simply a test. <see cref="ATestMethod(string)"/>. <see cref="Gah{T}()"/>. <see cref="Gah{T}(string)"/>
-	/// </summary>
-	/// <remarks>
-	/// <para>Here are some remarks inside a para element.</para>
-	/// <example>Apparaently examples are not allowed in remarks!
-	/// <code>
-	/// int i = 3;
-	/// i++;
-	/// </code>
-	/// </example>
-	/// <list>
-	///		<listheader>This is the header for the list!</listheader>
-	///		<item>A plain item with text</item>
-	///		<item><code>string x = "testing code";</code></item>
-	///		<item><para>A couple of paragraphs of information in a list.</para><para>This will look shit. Does para = paragraph or parameter??</para></item>
-	/// </list>
-	/// </remarks>
-	/// <typeparam name="T">This is detail for the type parameter information</typeparam>
-	/// <seealso cref="Object"/>
-	public class Gah<T> {
+namespace DocumentationTest
+{
+    /// <summary>
+    /// <para>This is some summary information, inside a paragraph.</para>
+    /// This is not inside a para element and contains a <see cref="AllOutputTypesClass"/>
+    /// link.
+    /// <para>This is a <see cref="AllOutputTypesClass"/> inside a para; this is <c>some code.</c>
+    /// <code>
+    /// Somewhat incorrectly added code block element.
+    /// </code>
+    /// </para>
+    /// <example>
+    /// This is an example with a paragraph outside the para element.
+    /// <para>This is inside the para element.</para>
+    /// <code>
+    /// This code block is inside the example block.
+    /// </code>
+    /// </example>
+    /// This method <see cref="ATestMethod(int)" />, is simply a test. <see cref="ATestMethod(string)"/>. <see cref="Gah{T}()"/>. <see cref="Gah{T}(string)"/>
+    /// </summary>
+    /// <remarks>
+    /// <para>Here are some remarks inside a para element.</para>
+    /// <example>Apparaently examples are not allowed in remarks!
+    /// <code>
+    /// int i = 3;
+    /// i++;
+    /// </code>
+    /// </example>
+    /// <list>
+    ///		<listheader>This is the header for the list!</listheader>
+    ///		<item>A plain item with text</item>
+    ///		<item><code>string x = "testing code";</code></item>
+    ///		<item><para>A couple of paragraphs of information in a list.</para><para>This will look shit. Does para = paragraph or parameter??</para></item>
+    /// </list>
+    /// <para>Explicit table typed list.</para>
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>term</term>  
+    ///         <description>description</description>  
+    ///     </listheader>  
+    ///     <item>  
+    ///         <term>term</term>  
+    ///         <description>description</description>  
+    ///     </item> 
+    /// </list>
+    /// <para>Explicit buller list</para>
+    /// <list type="bullet">
+    ///		<listheader>This is the header for the list!</listheader>
+    ///		<item>A plain item with text</item>
+    ///		<item><code>string x = "testing code";</code></item>
+    ///		<item><para>A couple of paragraphs of information in a list.</para><para>This will look shit. Does para = paragraph or parameter??</para></item>
+    /// </list>
+    /// <para>Explicit numbered list</para>
+    /// <list type="number">
+    ///		<listheader>This is the header for the list!</listheader>
+    ///		<item>A plain item with text</item>
+    ///		<item><code>string x = "testing code";</code></item>
+    ///		<item><para>A couple of paragraphs of information in a list.</para><para>This will look shit. Does para = paragraph or parameter??</para></item>
+    /// </list>
+    /// </remarks>
+    /// <typeparam name="T">This is detail for the type parameter information</typeparam>
+    /// <seealso cref="Object"/>
+    public class Gah<T> {
 		public Gah() {
 		}
 

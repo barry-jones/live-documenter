@@ -25,28 +25,21 @@ namespace TheBoxSoftware.Reflection.Comments
         internal ListXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.List)
         {
-            this.Elements = this.Parse(node);
-            this.IsBlock = true;
-            this.ListType = ListTypes.Bullet; // default
+            Elements = Parse(node);
+            IsBlock = true;
+            _listType = ListTypes.Bullet; // default
 
             // the node should have a type attribute, if not default to bullet list
             XmlAttribute typeAttribute = node.Attributes["type"];
-            if(typeAttribute == null)
-            {
-                if(this.IsTable())
-                {
-                    this.ListType = ListTypes.Table;
-                }
-            }
-            else
+            if(typeAttribute != null)
             {
                 switch(typeAttribute.Value.ToLower())
                 {
                     case "table":
-                        this.ListType = ListTypes.Table;
+                        _listType = ListTypes.Table;
                         break;
                     case "number":
-                        this.ListType = ListTypes.Number;
+                        _listType = ListTypes.Number;
                         break;
                 }
             }
@@ -59,7 +52,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <returns>True if the displayer should display a table.</returns>
         public bool IsTable()
         {
-            return this.ListType == ListTypes.Table;
+            return _listType == ListTypes.Table;
         }
 
         /// <summary>
@@ -67,8 +60,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// </summary>
         public ListTypes ListType
         {
-            get { return this._listType; }
-            private set { this._listType = value; }
+            get { return _listType; }
         }
     }
 }

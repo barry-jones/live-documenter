@@ -5,13 +5,15 @@ namespace TheBoxSoftware.Reflection.Comments
 
     public class XmlContainerCodeElement : XmlCodeElement
     {
+        private XmlCodeElementCollection _elements;
+
         /// <summary>
         /// Initialises a new instance of the XmlContainerCodeElement class.
         /// </summary>
         protected XmlContainerCodeElement(XmlCodeElements element)
             : base(element)
         {
-            this.Elements = new XmlCodeElementCollection();
+            _elements = new XmlCodeElementCollection();
         }
 
         /// <summary>
@@ -102,6 +104,10 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <summary>
         /// Collection of all child elements for this XmlContainerCodeElement.
         /// </summary>
-        public XmlCodeElementCollection Elements { get; set; }
+        public XmlCodeElementCollection Elements
+        {
+            get { return _elements; }
+            set { _elements = value; }
+        }
     }
 }
