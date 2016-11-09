@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter", "TheBoxSoftware.DeveloperSuite.LiveDocumenter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.csproj", "{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.API.LiveDocumentor", "TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumentor.csproj", "{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.API.LiveDocumenter", "TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumenter.csproj", "{DB46E5F7-D6F2-40B7-A8B5-F4E57F5D1621}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{194E1A63-5082-45C6-BD0F-9C15A4A7A22E}"
 	ProjectSection(SolutionItems) = preProject
@@ -45,6 +45,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentationTest", "1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj", "{2AD369A3-7737-4EC5-A4BA-3E846F80C066}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "4. Utilities\Runner\Runner.csproj", "{1A6328A9-90BB-4BF5-8A96-FFF72D260AF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.API.LiveDocumenter.Tests", "TheBoxSoftware.API.LiveDocumenter.Tests\TheBoxSoftware.API.LiveDocumenter.Tests.csproj", "{761E81D8-B8A2-41CA-8355-089E006C0CD7}"
 EndProject
 Global
 	GlobalSection(Performance) = preSolution
@@ -287,6 +289,24 @@ Global
 		{1A6328A9-90BB-4BF5-8A96-FFF72D260AF6}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{1A6328A9-90BB-4BF5-8A96-FFF72D260AF6}.Test|x86.ActiveCfg = Release|Any CPU
 		{1A6328A9-90BB-4BF5-8A96-FFF72D260AF6}.Test|x86.Build.0 = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Debug|x86.Build.0 = Debug|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Release|x86.ActiveCfg = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Release|x86.Build.0 = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|Any CPU.Build.0 = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|x86.ActiveCfg = Release|Any CPU
+		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
