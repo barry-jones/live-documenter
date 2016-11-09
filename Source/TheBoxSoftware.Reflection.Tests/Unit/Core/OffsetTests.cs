@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
     public class OffsetTests
     {
         [Test]
-        public void PeOffset_WhenInitialisedWithAnInt_CurrentIsSetCorrectly()
+        public void WhenInitialisedWithAnInt_CurrentIsSetCorrectly()
         {
             Offset offset = 0;
 
@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void PeOffset_WhenOffetIsShifted_ItReturnsTheOffsetBeforeTheShift()
+        public void WhenOffetIsShifted_ItReturnsTheOffsetBeforeTheShift()
         {
             Offset offset = 10;
 
@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void PeOffset_WhenOffsetIsShifted_CurrentIsMovedOn()
+        public void WhenOffsetIsShifted_CurrentIsMovedOn()
         {
             Offset offset = 10;
 
@@ -36,7 +36,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void PeOffSet_WhenConvertedToInt_ConversionIsBasedOnCurrent()
+        public void WhenConvertedToInt_ConversionIsBasedOnCurrent()
         {
             Offset offset = 5;
             int result = offset;

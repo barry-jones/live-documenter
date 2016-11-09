@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_Create_WhenLeastAmountOfInfoProvided_DoesntCrash()
+        public void WhenLeastAmountOfInfoProvided_Create_DoesntCrash()
         {
             byte[] content = new byte[]
                 {
@@ -30,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_Create_WhenOneDimensional_ReturnsCorrectly()
+        public void WhenOneDimensional_Created()
         {
             byte[] content = new byte[]
                 {
@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_Create_WhenOneDimensionalWithLoBounds_ReturnsCorrectly()
+        public void WhenOneDimensionalWithLoBounds_Created()
         {
             byte[] content = new byte[]
                 {
@@ -67,7 +67,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_Create_WhenMultiDimensionalNoLoBounds_ReturnsCorrectly()
+        public void WhenMultiDimensionalNoLoBounds_Created()
         {
             byte[] content = new byte[]
                 {
@@ -88,7 +88,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_Create_WhenMultiDimensionalWithLoBounds_ReturnsCorrectly()
+        public void WhenMultiDimensionalWithLoBounds_Created()
         {
             byte[] content = new byte[]
                 {
@@ -112,7 +112,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_ToString_WhenLeastAmountOfInfoProvided_OutputsCorrectly()
+        public void WhenLeastAmountOfInfoProvided_ToString_OutputsCorrectly()
         {
             byte[] content = new byte[]
                 {
@@ -127,7 +127,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_ToString_WhenOneDimensional_ReturnsCorrectly()
+        public void WhenOneDimensional_ToString_ContainsOneDimension()
         {
             byte[] content = new byte[]
                 {
@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_ToString_WhenOneDimensionalWithLoBounds_ReturnsCorrectly()
+        public void WhenOneDimensionalWithLoBounds_ToString_HasLoBound()
         {
             byte[] content = new byte[]
                 {
@@ -160,7 +160,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_ToString_WhenMultiDimensionalNoLoBounds_ReturnsCorrectly()
+        public void WhenMultiDimensionalNoLoBounds_ToString_HasRanks()
         {
             byte[] content = new byte[]
                 {
@@ -178,7 +178,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void ArrayShapeToken_ToString_WhenMultiDimensionalWithLoBounds_ReturnsCorrectly()
+        public void WhenMultiDimensionalWithLoBounds_ToString_HasBoundsAndDimensions()
         {
             byte[] content = new byte[]
                 {

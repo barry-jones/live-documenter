@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
     public class CRefPathTests
     {
         [Test]
-        public void CRefPath_WhenEmptyCreated_ShouldReturnNPath()
+        public void DefaultCRefPath_ToString_ReturnsEmptyNamespace()
         {
             // it doesnt make sense to return an empty namespace string in these instances
             // I think it should return an empty string instead, but that is not a valid
@@ -22,7 +22,15 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_WhenPathIsEmpty_ShouldThrowException()
+        public void WhenCRefIsErrorType_ToString_ShouldReturnEmptyString()
+        {
+            CRefPath path = CRefPath.Parse("invalid string");
+
+            Assert.AreEqual(string.Empty, path.ToString());
+        }
+
+        [Test]
+        public void WhenPassedEmptyString_Parse_ThrowsException()
         {
             Assert.Throws<ArgumentNullException>(delegate () {
                 CRefPath.Parse(string.Empty);
@@ -30,7 +38,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_WhenPathIsInvalid_ShouldReturnEmptyString()
+        public void WhenPassedAnInvalidPath_Parse_TypeIsError()
         {
             CRefPath path = CRefPath.Parse("invalid string");
 
@@ -39,7 +47,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_MethodPath_ShouldReturnMethodType()
+        public void WhenMethodPath_Parse_TypeIsMethod()
         {
             // I think there is a slight problem here, in that there is an expection
             // that all method defenitions will all have atleast 3 parts, namespace,
@@ -55,7 +63,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_MethodPathWithOnlyTwoPartNames_ShouldReturnMethodType()
+        public void WhenMethodPathWithOnlyTwoPartNames_Parse_TypeIsError()
         {
             // this fails because there is not enough elements defined, currently we expect
             // that there are more than 2 elements, which will probably cause errors when
@@ -69,7 +77,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_MethodTypeWithNamespaceSection_ShouldPopulateNamespace()
+        public void WhenMethodTypeWithNamespaceSection_Parse_SetsNamespace()
         {
             CRefPath path = CRefPath.Parse("M:System.Namespace.TypeName.MethodName()");
 
@@ -80,7 +88,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_MethodTypeWithParameters_ShouldPopulateParameters()
+        public void WhenMethodTypeWithParameters_Parse_SetsParameters()
         {
             CRefPath path = CRefPath.Parse("M:System.String.Format(string)");
 
@@ -92,25 +100,23 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_NamespaceType_ShouldReturnNamespace()
+        public void WhenEmptyNamespace_Parse_NamespaceIsEmptyString()
         {
             CRefPath path = CRefPath.Parse("N:");
 
-            Assert.AreEqual(CRefTypes.Namespace, path.PathType);
             Assert.AreEqual(string.Empty, path.Namespace);
         }
 
         [Test]
-        public void CRefPath_Parse_NamespaceTypeWithName_ShouldSetNamespaceName()
+        public void WhenNamespaceTypeWithName_Parse_SetsNamespace()
         {
             CRefPath path = CRefPath.Parse("N:System");
 
-            Assert.AreEqual(CRefTypes.Namespace, path.PathType);
             Assert.AreEqual("System", path.Namespace);
         }
 
         [Test]
-        public void CRefPath_Parse_NamespaceTypeWithMultipleSections_ShouldSetNamesapceName()
+        public void WhenNamespaceTypeWithMultipleSections_Parse_SetsNamespace()
         {
             CRefPath path = CRefPath.Parse("N:System.Net.Http");
 
@@ -119,16 +125,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
         [Test]
-        public void CRefPath_Parse_TypePath_ShouldPopulate_TypeName()
-        {
-            CRefPath path = CRefPath.Parse("T:System.String");
-
-            Assert.AreEqual(CRefTypes.Type, path.PathType);
-            Assert.AreEqual("String", path.TypeName);
-        }
-
-        [Test]
-        public void CRefPath_Parse_TestPathTypesAreConvertedCorrectly()
+        public void WhenPassedDifferentPaths_Parse_SetsPathType()
         {
             PathTypesShouldBeSetCorrectly("F:System.Test.myfield", CRefTypes.Field);
             PathTypesShouldBeSetCorrectly("P:System.Test.Property", CRefTypes.Property);
@@ -137,6 +134,43 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
             PathTypesShouldBeSetCorrectly("N:System", CRefTypes.Namespace);
             PathTypesShouldBeSetCorrectly("E:System.Test.Changed", CRefTypes.Event);
             PathTypesShouldBeSetCorrectly("!:Error", CRefTypes.Error);
+        }
+
+        [Test]
+        public void WhenFieldProvided_Creates_FieldPath()
+        {
+            TypeDef container = new TypeDef();
+            container.Name = "Container";
+            container.Namespace = "Namespace";
+            FieldDef field = new FieldDef();
+            field.Type = container;
+            field.Name = "afield";
+
+            CRefPath result = new CRefPath(field);
+
+            Assert.AreEqual(CRefTypes.Field, result.PathType);
+            Assert.AreEqual("afield", result.ElementName);
+            Assert.AreEqual("Namespace", result.Namespace);
+            Assert.AreEqual("Container", result.TypeName);
+
+            Assert.AreEqual("F:Namespace.Container.afield", result.ToString());
+        }
+
+        [Test]
+        public void WhenTypeProvided_Creates_TypePath()
+        {
+            TypeDef type = new TypeDef();
+            type.Name = "MyName";
+            type.Namespace = "Namespace";
+
+            CRefPath result = new CRefPath(type);
+
+            Assert.AreEqual(CRefTypes.Type, result.PathType);
+            Assert.AreEqual(string.Empty, result.ElementName);
+            Assert.AreEqual("MyName", result.TypeName);
+            Assert.AreEqual("Namespace", result.Namespace);
+
+            Assert.AreEqual("T:Namespace.MyName", result.ToString());
         }
 
         public void PathTypesShouldBeSetCorrectly(string path, CRefTypes expectedType)

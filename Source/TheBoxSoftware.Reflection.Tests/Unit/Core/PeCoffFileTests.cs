@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         private const string TEST_LIBRARY = @"source\testoutput\documentationtest.dll";
 
         [Test]
-        public void PeCoffFile_WhenInitialisedWithEmptyString_ThrowsArgumentException()
+        public void WhenInitialisedWithEmptyString_ThrowsArgumentException()
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             Assert.Throws<ArgumentException>(delegate ()
@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void PeCoffFile_WhenInitialisedWithValidFile_MetadataIsLoaded()
+        public void WhenInitialisedWithValidFile_MetadataIsLoaded()
         {
             PeCoffFile coffFile = new PeCoffFile(TEST_LIBRARY, new FileSystem());
             coffFile.Initialise();
@@ -34,9 +34,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
             Assert.AreEqual(TEST_LIBRARY, coffFile.FileName);
             Assert.IsTrue(coffFile.IsMetadataLoaded);
         }
-
+        
         [Test]
-        public void PeCoffFile_GetMetadataDirectory_WhenLoaded_ReturnsMetadata()
+        public void WhenLoaded_GetMetadataDirectory_ReturnsMetadata()
         {
             PeCoffFile coffFile = new PeCoffFile(TEST_LIBRARY, new FileSystem());
             coffFile.Initialise();
@@ -47,7 +47,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void PeCoffFile_GetRva_WhenNoSectionsRvaCantBeComputed_ShouldThrowException()
+        public void WhenNoSectionsRvaCantBeComputed_GetRva_ThrowsException()
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             PeCoffFile coffFile = new PeCoffFile("doesnt-matter.dll", fileSystem.Object);
@@ -62,7 +62,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
         
         [Test]
-        public void PeCoffFile_GetRva_WhenHasHeadersButRvaIsOutsideRange_ShouldThrowException()
+        public void WhenHasHeadersButRvaIsOutsideRange_GetRva_ThrowsException()
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             PeCoffFile coffFile = new PeCoffFile("doesnt-matter.dll", fileSystem.Object);
@@ -78,7 +78,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void PeCoffFile_GetRva_WhenHeaderStartIsInRangeButRvaIsOutside_ShouldThrowException()
+        public void WhenHeaderStartIsInRangeButRvaIsOutside_GetRva_ThrowsException()
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             PeCoffFile coffFile = new PeCoffFile("doesnt-matter.dll", fileSystem.Object);
@@ -96,7 +96,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         [TestCase(0x0000c002, 0x00000202)] // inside range
         [TestCase(0x0000c000, 0x00000200)] // bottom of range
         [TestCase(0x0000d000, 0x00001200)] // top of range
-        public void PeCoffFile_GetRva_WhenHeaderIsInRange_ShouldCalculateRva(int rva, int expected)
+        public void WhenHeaderIsInRange_GetRva_AddressIsCalculated(int rva, int expected)
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             PeCoffFile coffFile = new PeCoffFile("doesnt-matter.dll", fileSystem.Object);
@@ -113,7 +113,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         [TestCase(0x0000c002)] // inside range
         [TestCase(0x0000c000)] // bottom of range
         [TestCase(0x0000d000)] // top of range
-        public void PeCoffFile_CanGetRva_WhenHeaderIsInRange_ShouldReturnTrue(int rva)
+        public void WhenHeaderIsInRange_CanGetRva_IsTrue(int rva)
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             PeCoffFile coffFile = new PeCoffFile("doesnt-matter.dll", fileSystem.Object);
@@ -128,7 +128,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void PeCoffFile_CanGetRva_WhenHeaderOutOfRange_ShouldReturnFalse()
+        public void WhenHeaderOutOfRange_CanGetRva_IsFalse()
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             PeCoffFile coffFile = new PeCoffFile("doesnt-matter.dll", fileSystem.Object);

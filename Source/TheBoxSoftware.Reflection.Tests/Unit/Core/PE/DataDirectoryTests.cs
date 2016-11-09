@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
     public class DataDirectoryTests
     {
         [Test]
-        public void DataDirectory_CreatedWithNullData_ThrowsException()
+        public void WhenNull_Create_ThrowsException()
         {
             byte[] data = null;
             DataDirectories directoryToInstantiate = DataDirectories.CertificateTable;
@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
         }
 
         [Test]
-        public void DataDirectory_CreatedWithIncorrectDataSize_ThrowsException()
+        public void WhenIncorrectDataSize_Create_ThrowsException()
         {
             byte[] data = new byte[3];
             DataDirectories directoryToInstantiate = DataDirectories.CertificateTable;
@@ -33,7 +33,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
         }
 
         [Test]
-        public void DataDirectory_CreatedWithValidData_CorrectlyPopulated()
+        public void WhenValid_Created_Correctly()
         {
             byte[] data = {
                 1, 0, 0, 0,
@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
         }
 
         [Test]
-        public void DataDirectory_WhenVirtualAddressAndSizeAreZero_DirectoryIsNotUsed()
+        public void WhenVirtualAddressAndSizeAreZero_IsUsed_IsFalse()
         {
             byte[] data = {
                 0, 0, 0, 0,
@@ -62,7 +62,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
         }
 
         [Test]
-        public void DataDirectory_WhenVirtualAddressAndSizeAreNonZero_DirectoryIsUsed()
+        public void WhenVirtualAddressAndSizeAreNonZero_IsUsed_IsTrue()
         {
             byte[] data = {
                 1, 0, 0, 0,

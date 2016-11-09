@@ -18,6 +18,7 @@ namespace TheBoxSoftware.Reflection.Comments
         private string _crefPath;
         private string _returnType;
         private bool _isOperator = false;
+        private CRefTypes _pathType;
 
         /// <summary>
         /// Initialises a new instance of the CRefPath class.
@@ -392,6 +393,10 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <summary>
         /// Indicates the type of element that is referenced by the CRef path.
         /// </summary>
-        public CRefTypes PathType { get; set; }
+        public CRefTypes PathType
+        {
+            get { return _pathType; }
+            set { _pathType = value; }
+        }
     }
 }

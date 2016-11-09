@@ -29,7 +29,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
         }
 
 
-        [Test(Description = "when file is an empty string return false")]
+        [Test]
         public void WhenFilenameIsEmptyString_Exists_IsFalse()
         {
             XmlCommentFile commentFile = CreateXmlCommentFile(string.Empty);

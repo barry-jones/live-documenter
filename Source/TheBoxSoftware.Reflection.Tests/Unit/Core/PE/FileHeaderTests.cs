@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
     public class FileHeaderTests
     {
         [Test]
-        public void FileHeader_WhenCreated_ReadsAllFields()
+        public void WhenCreated_ReadsAllFields()
         {
             byte[] real = new byte[] {
                 0x64, 0x86,
@@ -35,7 +35,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.PE
         }
 
         [Test]
-        public void FileHeader_WhenCreated_OffsetIsMovedOn()
+        public void WhenCreated_OffsetIsMovedOn()
         {
             byte[] real = new byte[20];
             Offset offset = 0;

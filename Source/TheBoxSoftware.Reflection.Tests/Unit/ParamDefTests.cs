@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
     public class ParamDefTests
     {
         [Test]
-        public void IsIn_WhenAttributesStateInParameter_ShouldReturnTrue()
+        public void WhenAttributesStateInParameter_IsIn_IsTrue()
         {
             ParamDef parameter = CreateWithSpecifiedAttributes(ParamAttributeFlags.In);
 
@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsIn_WhenAttributesStateNotInParameter_ShouldReturnFalse()
+        public void WhenAttributesStateNotInParameter_IsIn_IsFalse()
         {
             ParamDef parameter = CreateWithSpecifiedAttributes(ParamAttributeFlags.None);
 
@@ -29,7 +29,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsOut_WhenAttributesStateOutParameter_ShouldReturnTrue()
+        public void WhenAttributesStateOutParameter_IsOut_IsTrue()
         {
             ParamDef parameter = CreateWithSpecifiedAttributes(ParamAttributeFlags.Out);
 
@@ -39,7 +39,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsOut_WhenAttributesStateNotAnOutParameter_ShouldReturnTrue()
+        public void WhenAttributesStateNotAnOutParameter_IsOut_IsTrue()
         {
             ParamDef parameter = CreateWithSpecifiedAttributes(ParamAttributeFlags.None);
 
@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsOptional_WhenAttributesStateOptionalParameter_ShouldReturnTrue()
+        public void WhenAttributesStateOptionalParameter_IsOptional_IsTrue()
         {
             ParamDef parameter = CreateWithSpecifiedAttributes(ParamAttributeFlags.Optional);
 
@@ -59,7 +59,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsOptional_WhenAttributesStateNotAnOptionalParameter_ShouldReturnTrue()
+        public void WhenAttributesStateNotAnOptionalParameter_IsOptional_IsTrue()
         {
             ParamDef parameter = CreateWithSpecifiedAttributes(ParamAttributeFlags.None);
 

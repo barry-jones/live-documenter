@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
     public class FieldDefTests
     {
         [Test]
-        public void IsSystemGenerated_WhenNameStartsWithValue_ReturnsTrue()
+        public void WhenNameStartsWithValue_IsSystemGenerated_IsTrue()
         {
             FieldDef field = new FieldDef();
             field.Name = "value__";
@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsSystemGenerated_WhenHasCompilerGeneratedAttribute_ReturnsTrue()
+        public void WhenHasCompilerGeneratedAttribute_IsSystemGenerated_IsTrue()
         {
             MemberRef compilerGenerated = new MemberRef();
             compilerGenerated.Name = ".ctor";
@@ -32,7 +32,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsSystemGenerated_WhenNoValueOrCompilerAttribute_ReturnsFalse()
+        public void WhenNoValueOrCompilerAttribute_IsSystemGenerated_IsFalse()
         {
             FieldDef field = new FieldDef();
 

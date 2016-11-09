@@ -20,9 +20,9 @@ namespace TheBoxSoftware.Reflection.Core.PE
             
             Offset offset = 0;
 
-            this.Directory = directory;
-            this.VirtualAddress = BitConverter.ToUInt32(data, offset.Shift(4));
-            this.Size = BitConverter.ToUInt32(data, offset.Shift(4));
+            _directory = directory;
+            _virtualAddress = BitConverter.ToUInt32(data, offset.Shift(4));
+            _size = BitConverter.ToUInt32(data, offset.Shift(4));
         }
 
         /// <include file='..\..\code-documentation\core.pe.xml' path='docs/datadirectory/member[@name="ctor2"]/*' />
@@ -33,8 +33,8 @@ namespace TheBoxSoftware.Reflection.Core.PE
 
             Offset offset = 0;
 
-            this.VirtualAddress = BitConverter.ToUInt32(data, offset.Shift(4));
-            this.Size = BitConverter.ToUInt32(data, offset.Shift(4));
+            _virtualAddress = BitConverter.ToUInt32(data, offset.Shift(4));
+            _size = BitConverter.ToUInt32(data, offset.Shift(4));
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace TheBoxSoftware.Reflection.Core.PE
         {
             get
             {
-                return this.VirtualAddress != 0x0 && this.Size != 0x0;
+                return _virtualAddress != 0x0 && _size != 0x0;
             }
         }
     }
