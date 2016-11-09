@@ -9,6 +9,7 @@ namespace TheBoxSoftware.Reflection.Comments
     /// </summary>
     public abstract class XmlCodeElement
     {
+        private static Regex _removeNewLines = new Regex(@"\n");
         /// <summary>
         /// Dictionary of all available XmlCodeElements and thier associated string
         /// representations.
@@ -46,6 +47,11 @@ namespace TheBoxSoftware.Reflection.Comments
             {"#text", XmlCodeElements.Text}
             };
 
+        private XmlCodeElements _element;
+        private bool _isBlock;
+        private bool _isInline;
+        private string _text;
+
         /// <summary>
         /// Initialises a new instance of the base class, to be called from all derived
         /// classes so the element type is populated.
@@ -53,7 +59,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <param name="element">The type of element this instance represents.</param>
         protected XmlCodeElement(XmlCodeElements element)
         {
-            this.Element = element;
+            _element = element;
         }
 
         /// <summary>
@@ -63,8 +69,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// <returns>The new string without new lines.</returns>
         protected string RemoveNewLines(string content)
         {
-            Regex expression = new Regex(@"\n");
-            return expression.Replace(content, " ");
+            return _removeNewLines.Replace(content, " ");
         }
 
         /// <summary>
@@ -82,21 +87,36 @@ namespace TheBoxSoftware.Reflection.Comments
         /// Obtains a string value that contains the textual portion of the
         /// XmlCodeElement.
         /// </summary>
-        public string Text { get; set; }
+        public string Text
+        {
+            get { return _text; }
+            set { _text = value; }
+        }
 
         /// <summary>
         /// Indicates if this is an inline level element.
         /// </summary>
-        public bool IsInline { get; set; }
+        public bool IsInline
+        {
+            get { return _isInline; }
+            set { _isInline = value; }
+        }
 
         /// <summary>
         /// Indicates if this is a block level element.
         /// </summary>
-        public bool IsBlock { get; set; }
+        public bool IsBlock
+        {
+            get { return _isBlock; }
+            set { _isBlock = value; }
+        }
 
         /// <summary>
         /// Gets the type of element this instance refers to.
         /// </summary>
-        public XmlCodeElements Element { get; private set; }
+        public XmlCodeElements Element
+        {
+            get { return _element; }
+        }
     }
 }
