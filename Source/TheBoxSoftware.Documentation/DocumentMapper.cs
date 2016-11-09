@@ -80,7 +80,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public virtual DocumentMap GenerateMap()
         {
-            this.EntryCreator.Created = 0;
+            EntryCreator.Reset();
             DocumentMap map = this.UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
             int fileCounter = 1;
 

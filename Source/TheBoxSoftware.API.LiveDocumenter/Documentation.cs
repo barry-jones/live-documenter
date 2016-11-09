@@ -11,7 +11,6 @@ namespace TheBoxSoftware.API.LiveDocumenter
     using TheBoxSoftware.Documentation.Exporting;
     using TheBoxSoftware.Documentation.Exporting.Rendering;
     using Reflection;
-    using System.Reflection;
 
     // Things people are going to need to be able to do with an API
     //  * read the contents of a single entry (class/method/parameter) which constitues a page

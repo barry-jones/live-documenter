@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Exporter
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Class for logging output to the System.Console.
     /// </summary>
@@ -59,7 +58,7 @@ namespace TheBoxSoftware.Exporter
         /// <param name="type">The type of message to log.</param>
         public static void Log(string message, LogType type)
         {
-            if (type != LogType.Information)
+            if(type != LogType.Information)
             {
                 Console.ForegroundColor = Logger.outputColours[type];
             }
@@ -84,7 +83,7 @@ namespace TheBoxSoftware.Exporter
         /// <param name="type">The type of message to log.</param>
         public static void Verbose(string message, LogType type)
         {
-            if (Logger.verbose)
+            if(Logger.verbose)
             {
                 Log(message, type);
             }

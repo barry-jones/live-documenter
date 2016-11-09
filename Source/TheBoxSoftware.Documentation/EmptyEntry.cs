@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace TheBoxSoftware.Documentation
 {
     /// <summary>

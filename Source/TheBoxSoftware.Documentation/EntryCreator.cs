@@ -28,7 +28,7 @@ namespace TheBoxSoftware.Documentation
         /// <returns>A new Entry describing the <paramref name="item"/></returns>
         public Entry Create(object item, string displayName, ICommentSource comments)
         {
-            Created++;
+            _created++;
             return InitialiseEntry(item, displayName, comments, null);
         }
 
@@ -42,8 +42,14 @@ namespace TheBoxSoftware.Documentation
         /// <returns>A new Entry describing the <paramref name="item"/></returns>
         public Entry Create(object item, string displayName, ICommentSource comments, Entry parent)
         {
-            Created++;
+            _created++;
             return InitialiseEntry(item, displayName, comments, parent);
+        }
+
+        /// <summary>Resets the counter of created items</summary>
+        public void Reset()
+        {
+            _created = 0;
         }
 
         /// <summary>
@@ -65,7 +71,6 @@ namespace TheBoxSoftware.Documentation
         public int Created
         {
             get { return _created; }
-            set { _created = value; }
         }
     }
 }

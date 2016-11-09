@@ -44,6 +44,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
             get
             {
                 Page toLoad = null;
+
                 if(Name == "Members" || Name == "Constructors" || Name == "Component Diagram" || Name == "Operators")
                 {
                     toLoad = Page.Create(this, Name, XmlCommentFile);
@@ -62,6 +63,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
                 {
                     generateException = ex;
                 }
+
                 if(generateException != null)
                 {
                     toLoad = new ErrorPage();
@@ -69,6 +71,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
                     reporting.SetException(generateException);
                     reporting.Show();
                 }
+
                 return toLoad;
             }
         }

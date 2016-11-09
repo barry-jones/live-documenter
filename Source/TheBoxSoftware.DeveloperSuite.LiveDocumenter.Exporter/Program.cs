@@ -1,55 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Reflection;
-using System.Diagnostics;
-
-namespace TheBoxSoftware.Exporter 
+﻿
+namespace TheBoxSoftware.Exporter
 {
-	internal class Program
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Diagnostics;
+
+    internal class Program
     {
         /// <summary>
         /// Application entry point.
         /// </summary>
         /// <param name="args">Command line arguments.</param>
-		static void Main(string[] args) {
+		static void Main(string[] args)
+        {
             Program p = new Program();
 
-			bool printHelp = false;
-			Configuration configuration = null;
+            bool printHelp = false;
+            Configuration configuration = null;
             bool verbose = false;
 
             Console.WriteLine(string.Empty); // always start hte output with a new line clearing from the command data
 
-			// read all the arguments
-			if (args == null || args.Length == 0) {
-				printHelp = true;
-			}
-			else {
+            // read all the arguments
+            if(args == null || args.Length == 0)
+            {
+                printHelp = true;
+            }
+            else
+            {
                 string configFile;
 
                 p.ReadArguments(args, out configFile, out verbose, out printHelp);
 
-				if (!printHelp) {
-                    if (string.IsNullOrEmpty(configFile))
+                if(!printHelp)
+                {
+                    if(string.IsNullOrEmpty(configFile))
                     {
                         Logger.Log("No configuration file was provided.\n", LogType.Error);
                     }
-                    else if (File.Exists(configFile))
+                    else if(File.Exists(configFile))
                     {
                         try
                         {
                             configuration = Configuration.Deserialize(configFile);
 
                             // if no filters are defined, default to Public/Protected
-                            if (configuration.Filters == null || configuration.Filters.Count == 0)
+                            if(configuration.Filters == null || configuration.Filters.Count == 0)
                             {
                                 configuration.Filters.Add(Reflection.Visibility.Public);
                                 configuration.Filters.Add(Reflection.Visibility.Protected);
                             }
                         }
-                        catch (InvalidOperationException e)
+                        catch(InvalidOperationException e)
                         {
                             Logger.Log(string.Format("There was an error reading the configuration file\n  {0}", e.Message), LogType.Error);
                             return; // bail we have no configuration or some of it is missing
@@ -59,24 +63,27 @@ namespace TheBoxSoftware.Exporter
                     {
                         Logger.Log(string.Format("The config file '{0}' does not exist", configFile), LogType.Error);
                     }
-				}
-			}
+                }
+            }
 
-			if (printHelp) {
-				p.PrintHelp();
-			}
-			else if(configuration != null) {
-				if (configuration.IsValid()) {
+            if(printHelp)
+            {
+                p.PrintHelp();
+            }
+            else if(configuration != null)
+            {
+                if(configuration.IsValid())
+                {
                     Logger.Init(verbose);
                     p.PrintVersionInformation();
 
-					Exporter exporter = new Exporter(configuration, verbose);
-					exporter.Export();
-				}
-			}
+                    Exporter exporter = new Exporter(configuration, verbose);
+                    exporter.Export();
+                }
+            }
 
             Console.WriteLine(); // space at end of outpuut for readability
-		}
+        }
 
         /// <summary>
         /// Reads the arguments from the command line.
@@ -101,9 +108,9 @@ namespace TheBoxSoftware.Exporter
             verbose = false;
             showHelp = false;
 
-            foreach (string modifier in arguments)
+            foreach(string modifier in arguments)
             {
-                switch (modifier)
+                switch(modifier)
                 {
                     case "-h":
                     case "help":
@@ -120,17 +127,18 @@ namespace TheBoxSoftware.Exporter
             if(arguments.Count > 0)
             {
                 string lastItem = arguments[arguments.Count - 1];
-                if (!lastItem.StartsWith("-"))
+                if(!lastItem.StartsWith("-"))
                 {
                     configuration = lastItem;
                 }
             }
         }
 
-		/// <summary>
-		/// Outputs the help information
-		/// </summary>
-		private void PrintHelp() {
+        /// <summary>
+        /// Outputs the help information
+        /// </summary>
+        private void PrintHelp()
+        {
             this.PrintVersionInformation();
 
             string help =
@@ -141,7 +149,7 @@ namespace TheBoxSoftware.Exporter
                 "     -v        show verbose export details\n\n" +
                 "   <filename>  The path to the configuration xml file.\n";
             Logger.Log(help);
-		}
+        }
 
         /// <summary>
         /// Prints the exporters current version and details to the console.
@@ -154,5 +162,5 @@ namespace TheBoxSoftware.Exporter
 
             Logger.Verbose(string.Format("Live Documenter Exporter Version: {0}\n\n", fvi.ProductVersion));
         }
-	}
+    }
 }

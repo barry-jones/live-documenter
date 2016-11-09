@@ -54,7 +54,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
 		public override DocumentMap GenerateMap()
         {
-            EntryCreator.Created = 0;
+            EntryCreator.Reset();
             DocumentMap map = UseObservableCollection ? new ObservableDocumentMap() : new DocumentMap();
             int fileCounter = 1;
 
