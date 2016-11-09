@@ -46,44 +46,23 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                 this.Blocks.Add(new Header1(definingType.GetDisplayName(false) + " Fields"));
 
-                if(this._fields != null && this._fields.Count > 0)
+                if(_fields != null && _fields.Count > 0)
                 {
                     SummaryTable displayedFields = new SummaryTable();
 
-                    var sortedFields = from field in this._fields
+                    var sortedFields = from field in _fields
                                        orderby field.Name
                                        where !LiveDocumentorFile.Singleton.LiveDocument.IsMemberFiltered(field)
                                        select field;
                     foreach(FieldDef currentField in sortedFields)
                     {
                         CRefPath crefPath = new CRefPath(currentField);
-                        System.Windows.Documents.Hyperlink link = new System.Windows.Documents.Hyperlink();
-                        link.Inlines.Add(new System.Windows.Documents.Run(currentField.Name));
+                        Hyperlink link = new Hyperlink();
+                        link.Inlines.Add(new Run(currentField.Name));
                         link.Tag = new EntryKey(currentField.GetGloballyUniqueId());
                         link.Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
 
-                        // First we check if there is a summary for the field, then if not we check for a
-                        // definition of value and use that if it is defined.
-                        Block summary = null;
-                        XmlCodeComment comment = _xmlComments.GetSummary(
-                            crefPath
-                            );
-                        List<Block> parsedBlocks = Elements.Parser.Parse(currentField.Assembly, comment);
-                        if(parsedBlocks != null && parsedBlocks.Count > 0)
-                        {
-                            summary = parsedBlocks[0];
-                        }
-                        else
-                        {
-                            XmlCodeComment value = _xmlComments.GetValue(
-                                crefPath
-                                );
-                            parsedBlocks = Elements.Parser.Parse(currentField.Assembly, value);
-                            if(parsedBlocks != null && parsedBlocks.Count > 0)
-                            {
-                                summary = parsedBlocks[0];
-                            }
-                        }
+                        Block summary = GetXmlComments(currentField, crefPath);
 
                         displayedFields.AddItem(link, summary, Model.ElementIconConstants.GetIconPathFor(currentField));
                     }
@@ -92,6 +71,29 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
                 this.IsGenerated = true;
             }
+        }
+
+        /// <summary>
+        /// Attempts to get the summary comment for the element and if that is not defined it will
+        /// search for the value element instead.
+        /// </summary>
+        private Block GetXmlComments(FieldDef currentField, CRefPath crefPath)
+        {
+            Block summary = null;
+            XmlCodeComment comment = _xmlComments.GetSummary(crefPath);
+
+            if(comment == XmlCodeComment.Empty)
+            {
+                comment = _xmlComments.GetValue(crefPath);
+            }
+
+            List<Block> parsedBlocks = Parser.Parse(currentField.Assembly, comment);
+            if(parsedBlocks != null && parsedBlocks.Count > 0)
+            {
+                summary = parsedBlocks[0];
+            }
+
+            return summary;
         }
     }
 }
