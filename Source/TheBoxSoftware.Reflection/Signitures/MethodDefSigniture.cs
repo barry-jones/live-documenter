@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Text;
     using Core;
 
     /// <summary>
@@ -41,6 +42,22 @@ namespace TheBoxSoftware.Reflection.Signitures
         public static CallingConventions GetCallingConvention(byte[] signiture)
         {
             return new CallingConventionSignitureToken(signiture, 0).Convention;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("[MethodDef: ");
+
+            foreach(SignitureToken t in Tokens)
+            {
+                sb.Append(t.ToString());
+            }
+
+            sb.Append("] ");
+
+            return sb.ToString();
         }
     }
 }

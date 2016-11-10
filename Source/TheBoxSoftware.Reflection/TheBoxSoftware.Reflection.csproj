@@ -265,6 +265,7 @@
     <Compile Include="Signitures\ElementTypes.cs" />
     <Compile Include="Signitures\ElementTypeSignitureToken.cs" />
     <Compile Include="Signitures\FieldSigniture.cs" />
+    <Compile Include="Signitures\FlagAttribute.cs" />
     <Compile Include="Signitures\GenericArgumentCountSignitureToken.cs" />
     <Compile Include="Signitures\GenericParamaterCountSignitureToken.cs" />
     <Compile Include="Signitures\LocalVariableSigniture.cs" />
@@ -278,6 +279,7 @@
     <Compile Include="Signitures\SentinalSignitureToken.cs" />
     <Compile Include="Signitures\Signiture.cs" />
     <Compile Include="Signitures\SignitureConvertor.cs" />
+    <Compile Include="Signitures\SignitureBuilder.cs" />
     <Compile Include="Signitures\Signitures.cs" />
     <Compile Include="Signitures\SignitureToken.cs" />
     <Compile Include="Signitures\SignitureTokenContainer.cs" />

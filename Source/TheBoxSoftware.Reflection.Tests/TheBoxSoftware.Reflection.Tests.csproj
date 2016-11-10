@@ -35,6 +35,7 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=4.5.22.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.22\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -61,6 +62,7 @@
     <Compile Include="Unit\AssemblyRefTests.cs" />
     <Compile Include="Unit\Comments\CRefPathTests.cs" />
     <Compile Include="Unit\Comments\XmlCommentFileTests.cs" />
+    <Compile Include="Unit\Core\BlobStreamTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyOSMetadataTableRowTests.cs" />
     <Compile Include="Unit\Core\COFF\AssemblyProcessorMetadataTableRowTests.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Unit\Signitures\CustomAttributeSignitureTests.cs" />
     <Compile Include="Unit\Signitures\CustomModifierTokenTests.cs" />
     <Compile Include="Unit\Signitures\ElementTypeSignitureTokenTests.cs" />
+    <Compile Include="Unit\Signitures\SignitureBuilderTests.cs" />
     <Compile Include="Unit\Signitures\SignitureTokenTests.cs" />
     <Compile Include="Unit\Signitures\TypeSignitureTokenTests.cs" />
     <Compile Include="Unit\Syntax\ClassSyntaxTests.cs" />

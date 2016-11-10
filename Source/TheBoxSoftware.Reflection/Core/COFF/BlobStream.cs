@@ -10,6 +10,8 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     {
         private byte[] _streamContents;
 
+        
+
         /// <summary>
         /// Initialises a new instance of the BlobStream class
         /// </summary>
@@ -18,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </param>
         /// <param name="address">The start address of the blob stream</param>
         /// <param name="size">The size of the stream</param>
-        internal BlobStream(byte[] copyFromContents, uint address, int size)
+        public BlobStream(byte[] copyFromContents, uint address, int size)
         {
             if((address + size) > copyFromContents.Length)
                 throw new InvalidOperationException($"Not enough bytes to read from '{nameof(copyFromContents)}' to complete the operation.");
@@ -55,13 +57,24 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The contents of the signiture as a byte array.</returns>
         public byte[] GetSignitureContents(int startOffset)
         {
-            byte length = _streamContents[startOffset++];
+            uint length = Signitures.SignitureToken.GetCompressedValue(_streamContents, startOffset++);    // The first byte is always the length
+            //byte length = _streamContents[startOffset++];
             byte[] signitureContents = new byte[length];
             for(int i = startOffset; i < startOffset + length; i++)
             {
                 signitureContents[i - startOffset] = _streamContents[i];
             }
             return signitureContents;
+        }
+
+        public uint GetLength(int offset)
+        {
+            return Signitures.SignitureToken.GetCompressedValue(_streamContents, offset);    // The first byte is always the length
+        }
+
+        internal int GetLength()
+        {
+            return _streamContents.Length;
         }
     }
 }

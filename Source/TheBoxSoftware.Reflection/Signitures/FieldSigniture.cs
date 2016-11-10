@@ -20,7 +20,8 @@ namespace TheBoxSoftware.Reflection.Signitures
             Offset offset = 0;
 
             if(signiture[offset] != 0x06)
-            { // ?? whats this for
+            {
+                // 0x06 defines the Calling convention FIELD
             }
             offset.Shift(1);
 

@@ -71,6 +71,21 @@ namespace TheBoxSoftware.Reflection.Signitures
             TraceHelper.WriteLine(sb.ToString());
         }
 #endif
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("[TypeSpec: ");
+
+            foreach(SignitureToken t in Tokens)
+            {
+                sb.Append(t.ToString());
+            }
+
+            sb.Append("] ");
+
+            return sb.ToString();
+        }
 
         public TypeSignitureToken TypeToken { get; set; }
     }

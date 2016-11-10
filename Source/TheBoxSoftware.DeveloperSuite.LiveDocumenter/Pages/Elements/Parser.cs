@@ -4,8 +4,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements
     using System;
     using System.Collections.Generic;
     using System.Windows.Documents;
+    using Reflection;
     using TheBoxSoftware.Diagnostics;
-    using TheBoxSoftware.Reflection;
     using TheBoxSoftware.Reflection.Comments;
     using TheBoxSoftware.Reflection.Syntax;
 

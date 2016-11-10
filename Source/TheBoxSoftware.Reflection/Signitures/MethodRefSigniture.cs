@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
+    using System.Text;
     using Core;
 
     internal sealed class MethodRefSigniture : Signiture
@@ -36,6 +37,22 @@ namespace TheBoxSoftware.Reflection.Signitures
                     Tokens.Add(param);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("[MethodRef: ");
+
+            foreach(SignitureToken t in Tokens)
+            {
+                sb.Append(t.ToString());
+            }
+
+            sb.Append("] ");
+
+            return sb.ToString();
         }
     }
 }
