@@ -28,6 +28,11 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             Assert.AreSame(null, larger);
         }
 
+        public void Testing()
+        {
+
+        }
+
         // full blob stream pulled from documentationtest.dll
         private byte[] _blobStream = new byte[] {
             0x00, // first entry is always the empty blob
