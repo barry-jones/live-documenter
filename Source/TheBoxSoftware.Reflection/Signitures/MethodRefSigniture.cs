@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             Offset offset = 0;
 
-            var calling = new CallingConventionSignitureToken(signiture, offset);
+            var calling = new CallingConventionSignatureToken(signiture, offset);
             Tokens.Add(calling);
             if((calling.Convention & CallingConventions.Generic) != 0)
             {

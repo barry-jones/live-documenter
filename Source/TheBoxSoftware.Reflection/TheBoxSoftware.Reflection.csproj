@@ -257,7 +257,7 @@
     </Compile>
     <Compile Include="Signitures\ArrayShapeSignatureToken.cs" />
     <Compile Include="Signitures\CallingConventions.cs" />
-    <Compile Include="Signitures\CallingConventionSignitureToken.cs" />
+    <Compile Include="Signitures\CallingConventionSignatureToken.cs" />
     <Compile Include="Signitures\ConstraintSignitureToken.cs" />
     <Compile Include="Signitures\CountSignitureToken.cs" />
     <Compile Include="Signitures\CustomAttributeSigniture.cs" />

@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
 
             Assert.AreEqual(
                 CallingConventions.Generic | CallingConventions.HasThis,
-                ((CallingConventionSignitureToken)result.Tokens[0]).Convention);
+                ((CallingConventionSignatureToken)result.Tokens[0]).Convention);
             Assert.AreEqual("[GenParamCount: 1]", result.Tokens[1].ToString());
             Assert.AreEqual("[ParamCount: 0]", result.Tokens[2].ToString());
             Assert.AreEqual("[ElementType: System.Void] ", result.Tokens[3].ToString());

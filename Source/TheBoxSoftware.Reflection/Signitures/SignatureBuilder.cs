@@ -47,7 +47,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
                 Offset index = 0;
 
-                var convention = new CallingConventionSignitureToken(signitureBytes, index);
+                var convention = new CallingConventionSignatureToken(signitureBytes, index);
                 created.Tokens.Add(convention);
                 if((convention.Convention & CallingConventions.Generic) != 0)
                 {

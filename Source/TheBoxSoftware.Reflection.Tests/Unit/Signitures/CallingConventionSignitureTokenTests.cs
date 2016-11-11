@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             byte[] content = new byte[] { (byte)CallingConventions.Default };
 
-            CallingConventionSignitureToken token = new CallingConventionSignitureToken(content, 0);
+            CallingConventionSignatureToken token = new CallingConventionSignatureToken(content, 0);
 
             Assert.AreEqual(CallingConventions.Default, token.Convention);
         }
@@ -22,7 +22,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             byte[] content = new byte[] { (byte)CallingConventions.Default };
 
-            CallingConventionSignitureToken token = new CallingConventionSignitureToken(content, 0);
+            CallingConventionSignatureToken token = new CallingConventionSignatureToken(content, 0);
 
             string result = token.ToString();
 
