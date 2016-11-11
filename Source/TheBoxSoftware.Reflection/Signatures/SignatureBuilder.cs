@@ -25,39 +25,19 @@ namespace TheBoxSoftware.Reflection.Signatures
 
             byte[] signitureBytes = GetSignitureBytes(offset);
             Signature created = new Signature();
-            Signatures type = 0x00;
-            byte first = signitureBytes[0];
 
-            int check = first & 0x0F;
-
+            int check = signitureBytes[0] & 0x0F;
             if(check == 0x08)
             {
-                // property apparently
-                created.Type = Signatures.Property;
+                ReadPropertySignature(created);
             }
             else if (check == 0x06)
             {
-                // field apparently
-                created.Type = Signatures.Field;
+                ReadFieldSignature(created);
             }
             else
             {
-                // method... perhaps
-                created.Type = Signatures.MethodDef;
-
-                Offset index = 0;
-
-                var convention = new CallingConventionSignatureToken(signitureBytes, index);
-                created.Tokens.Add(convention);
-                if((convention.Convention & CallingConventions.Generic) != 0)
-                {
-                    var genericParam = new GenericParamaterCountSignatureToken(signitureBytes, index);
-                    created.Tokens.Add(genericParam);
-                }
-                var paramCount = new ParameterCountSignatureToken(signitureBytes, index);
-                created.Tokens.Add(paramCount);
-                var returnType = new ReturnTypeSignatureToken(signitureBytes, index);
-                created.Tokens.Add(returnType);
+                ReadMethodSignature(signitureBytes, created);
             }
 
             return created;
@@ -78,6 +58,35 @@ namespace TheBoxSoftware.Reflection.Signatures
             if(offset < 0 || offset >= _stream.GetLength())
                 throw new IndexOutOfRangeException($"The requested signiture {offset} is outside the range of the blob stream.");
             return DecompressUInt(offset);
+        }
+
+        private void ReadMethodSignature(byte[] signitureBytes, Signature created)
+        {
+            created.Type = Signatures.MethodDef;
+
+            Offset index = 0;
+
+            var convention = new CallingConventionSignatureToken(signitureBytes, index);
+            created.Tokens.Add(convention);
+            if((convention.Convention & CallingConventions.Generic) != 0)
+            {
+                var genericParam = new GenericParamaterCountSignatureToken(signitureBytes, index);
+                created.Tokens.Add(genericParam);
+            }
+            var paramCount = new ParameterCountSignatureToken(signitureBytes, index);
+            created.Tokens.Add(paramCount);
+            var returnType = new ReturnTypeSignatureToken(signitureBytes, index);
+            created.Tokens.Add(returnType);
+        }
+
+        private void ReadPropertySignature(Signature created)
+        {
+            created.Type = Signatures.Property;
+        }
+
+        private void ReadFieldSignature(Signature created)
+        {
+            created.Type = Signatures.Field;
         }
 
         private uint DecompressUInt(int offset)
