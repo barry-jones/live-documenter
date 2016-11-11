@@ -4,9 +4,9 @@ namespace TheBoxSoftware.Reflection.Signitures
     using System.Text;
     using Core;
 
-    internal sealed class MethodRefSigniture : Signiture
+    internal sealed class MethodRefSignature : Signature
     {
-        public MethodRefSigniture(byte[] signiture) : base(Signitures.MethodRef)
+        public MethodRefSignature(byte[] signiture) : base(Signatures.MethodRef)
         {
             Offset offset = 0;
 
@@ -14,26 +14,26 @@ namespace TheBoxSoftware.Reflection.Signitures
             Tokens.Add(calling);
             if((calling.Convention & CallingConventions.Generic) != 0)
             {
-                var genParamCount = new GenericParamaterCountSignitureToken(signiture, offset);
+                var genParamCount = new GenericParamaterCountSignatureToken(signiture, offset);
                 Tokens.Add(genParamCount);
             }
 
-            var paramCount = new ParameterCountSignitureToken(signiture, offset);
+            var paramCount = new ParameterCountSignatureToken(signiture, offset);
             Tokens.Add(paramCount);
 
-            var returnType = new ReturnTypeSignitureToken(signiture, offset);
+            var returnType = new ReturnTypeSignatureToken(signiture, offset);
             Tokens.Add(returnType);
 
             for(int i = 0; i < paramCount.Count; i++)
             {
-                if(SentinalSignitureToken.IsToken(signiture, offset))
+                if(SentinalSignatureToken.IsToken(signiture, offset))
                 {
                     i--;    // This is not a parameter
-                    Tokens.Add(new SentinalSignitureToken(signiture, offset));
+                    Tokens.Add(new SentinalSignatureToken(signiture, offset));
                 }
                 else
                 {
-                    var param = new ParamSignitureToken(signiture, offset);
+                    var param = new ParamSignatureToken(signiture, offset);
                     Tokens.Add(param);
                 }
             }
@@ -45,7 +45,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[MethodRef: ");
 
-            foreach(SignitureToken t in Tokens)
+            foreach(SignatureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

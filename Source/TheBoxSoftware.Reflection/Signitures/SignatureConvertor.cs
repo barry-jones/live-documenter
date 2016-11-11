@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// </summary>
     /// <seealso cref="Comments.CRefPath"/>
     /// <seealso cref="Reflection.DisplayNameSignitureConvertor"/>
-    public abstract class SignitureConvertor
+    public abstract class SignatureConvertor
     {
         protected string GenericStart = "{";
         protected string GenericEnd = "}";
@@ -29,10 +29,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>The converted string.</returns>
         protected string Convert(MethodDef method)
         {
-            Signiture loadedSigniture = method.Signiture;
+            Signature loadedSigniture = method.Signiture;
             StringBuilder convertedSigniture = new StringBuilder();
 
-            List<ParamSignitureToken> parametersToConvert = loadedSigniture.GetParameterTokens();
+            List<ParamSignatureToken> parametersToConvert = loadedSigniture.GetParameterTokens();
             if(parametersToConvert != null && parametersToConvert.Count > 0)
             {
                 bool hadReturnParameter = false;
@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     }
                     if(!IncludeFirstParameter && (i == 0 || hadReturnParameter && i == 1)) continue;
 
-                    ParamSignitureToken currentToken = parametersToConvert[hadReturnParameter ? i - 1 : i];
+                    ParamSignatureToken currentToken = parametersToConvert[hadReturnParameter ? i - 1 : i];
                     TypeRef typeRef = currentToken.ResolveParameter(method.Assembly, currentParameter);
 
                     if(isFirstParameter)
@@ -100,19 +100,19 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="currentToken">The current token to converty</param>
         /// <param name="elementType">The type of element the token represents</param>
         /// <param name="resolvedType">The resolved type for this token.</param>
-        private void Convert(StringBuilder sb, AssemblyDef assembly, ParamDef param, SignitureToken currentToken, ElementTypes elementType, TypeRef resolvedType)
+        private void Convert(StringBuilder sb, AssemblyDef assembly, ParamDef param, SignatureToken currentToken, ElementTypes elementType, TypeRef resolvedType)
         {
             StringBuilder convertedSigniture = sb;
 
-            if(currentToken.TokenType == SignitureTokens.Param)
+            if(currentToken.TokenType == SignatureTokens.Param)
             {
-                ParamSignitureToken paramToken = currentToken as ParamSignitureToken;
-                SignitureToken childToken = paramToken.Tokens[paramToken.Tokens.Count - 1];
+                ParamSignatureToken paramToken = currentToken as ParamSignatureToken;
+                SignatureToken childToken = paramToken.Tokens[paramToken.Tokens.Count - 1];
 
-                if(childToken.TokenType == SignitureTokens.Type)
+                if(childToken.TokenType == SignatureTokens.Type)
                 {
                     currentToken = childToken;
-                    elementType = ((TypeSignitureToken)childToken).ElementType.ElementType;
+                    elementType = ((TypeSignatureToken)childToken).ElementType.ElementType;
                 }
                 else
                 {
@@ -121,7 +121,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
             }
 
-            TypeSignitureToken typeToken = currentToken as TypeSignitureToken;
+            TypeSignatureToken typeToken = currentToken as TypeSignatureToken;
             ElementTypeSignatureToken elementToken = currentToken as ElementTypeSignatureToken;
             switch(elementType)
             {
@@ -137,9 +137,9 @@ namespace TheBoxSoftware.Reflection.Signitures
                     }
 
                     ElementTypes szArrayElementType;
-                    if(typeToken.Tokens[1].TokenType == SignitureTokens.Type)
+                    if(typeToken.Tokens[1].TokenType == SignatureTokens.Type)
                     {
-                        szArrayElementType = ((TypeSignitureToken)typeToken.Tokens[1]).ElementType.ElementType;
+                        szArrayElementType = ((TypeSignatureToken)typeToken.Tokens[1]).ElementType.ElementType;
                     }
                     else
                     {
@@ -164,7 +164,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     TypeRef genericType = ((ElementTypeSignatureToken)typeToken.Tokens[1]).ResolveToken(assembly);
                     GetTypeName(convertedSigniture, genericType);
 
-                    GenericArgumentCountSignitureToken argsCount = typeToken.GetGenericArgumentCount();
+                    GenericArgumentCountSignatureToken argsCount = typeToken.GetGenericArgumentCount();
                     bool isFirstArgument = true;
                     if(argsCount.Count > 0)
                     {
@@ -182,7 +182,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
                             TypeRef argResolvedType;
                             ElementTypes elType;
-                            if(typeToken.Tokens[j + 3].TokenType == SignitureTokens.ElementType)
+                            if(typeToken.Tokens[j + 3].TokenType == SignatureTokens.ElementType)
                             {
                                 ElementTypeSignatureToken gESig = (ElementTypeSignatureToken)typeToken.Tokens[j + 3];
                                 argResolvedType = gESig.ResolveToken(assembly);
@@ -190,7 +190,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                             }
                             else
                             {
-                                TypeSignitureToken gTSig = (TypeSignitureToken)typeToken.Tokens[j + 3];
+                                TypeSignatureToken gTSig = (TypeSignatureToken)typeToken.Tokens[j + 3];
                                 argResolvedType = gTSig.ResolveType(assembly, param);
                                 elType = gTSig.ElementType.ElementType;
                             }

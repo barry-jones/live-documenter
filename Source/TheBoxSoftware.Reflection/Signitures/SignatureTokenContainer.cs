@@ -8,19 +8,19 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// a constuct that allows groups of tokens that are always parsed together to
     /// be represented and contained via a single class.
     /// </summary>
-    internal abstract class SignitureTokenContainer : SignitureToken
+    internal abstract class SignatureTokenContainer : SignatureToken
     {
-        private List<SignitureToken> _childTokens = new List<SignitureToken>();
+        private List<SignatureToken> _childTokens = new List<SignatureToken>();
 
         /// <summary>
         /// Initialises a new instance of the SignitureTokenContainer class.
         /// </summary>
         /// <param name="tokenType">The type of signiture token represented.</param>
-        protected SignitureTokenContainer(SignitureTokens tokenType) : base(tokenType)
+        protected SignatureTokenContainer(SignatureTokens tokenType) : base(tokenType)
         {
         }
 
-        public List<SignitureToken> Tokens
+        public List<SignatureToken> Tokens
         {
             get { return _childTokens; }
             set { _childTokens = value; }

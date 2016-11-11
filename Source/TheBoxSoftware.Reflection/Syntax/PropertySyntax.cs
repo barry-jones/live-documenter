@@ -79,14 +79,14 @@ namespace TheBoxSoftware.Reflection.Syntax
             TypeDetails details = null;
             if(_get != null)
             {
-                ReturnTypeSignitureToken returnType = (ReturnTypeSignitureToken)_get.Signiture.Tokens.Find(
-                    t => t.TokenType == SignitureTokens.ReturnType
+                ReturnTypeSignatureToken returnType = (ReturnTypeSignatureToken)_get.Signiture.Tokens.Find(
+                    t => t.TokenType == SignatureTokens.ReturnType
                     );
                 details = returnType.GetTypeDetails(_get);
             }
             else
             {
-                ParamSignitureToken delegateType = _set.Signiture.GetParameterTokens()[0];
+                ParamSignatureToken delegateType = _set.Signiture.GetParameterTokens()[0];
                 details = delegateType.GetTypeDetails(_set);
             }
             return details;

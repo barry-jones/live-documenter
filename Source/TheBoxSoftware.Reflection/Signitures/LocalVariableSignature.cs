@@ -8,14 +8,14 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// Represents a local variable signiture in the signiture blob. Details of the signiture are
     /// available in the ECMA at 23.2.6.
     /// </summary>
-	internal sealed class LocalVariableSigniture : Signiture
+	internal sealed class LocalVariableSignature : Signature
     {
         /// <summary>
         /// Initialise a new instance of a local variable signiture from the <paramref name="signiture"/>
         /// provided.
         /// </summary>
         /// <param name="signiture">The signiture blob.</param>
-		internal LocalVariableSigniture(byte[] signiture) : base(Signitures.LocalVariable)
+		internal LocalVariableSignature(byte[] signiture) : base(Signatures.LocalVariable)
         {
             Offset offset = 0;
 
@@ -66,7 +66,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[LocalVar: ");
 
-            foreach(SignitureToken t in Tokens)
+            foreach(SignatureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

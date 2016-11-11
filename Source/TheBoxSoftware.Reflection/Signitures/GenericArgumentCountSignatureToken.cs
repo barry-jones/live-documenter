@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// An Int32 numeric value that indicates the number of generics arguments in a signiture.
     /// </summary>
 	[DebuggerDisplay("Generic Argument Count: {Count}")]
-    internal sealed class GenericArgumentCountSignitureToken : SignitureToken
+    internal sealed class GenericArgumentCountSignatureToken : SignatureToken
     {
         private uint _count;
 
@@ -18,8 +18,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset  in the signiture blob.</param>
-		public GenericArgumentCountSignitureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.GenericArgumentCount)
+		public GenericArgumentCountSignatureToken(byte[] signiture, Offset offset)
+            : base(SignatureTokens.GenericArgumentCount)
         {
             _count = GetCompressedValue(signiture, offset);
         }

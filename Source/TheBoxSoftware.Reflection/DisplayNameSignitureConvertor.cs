@@ -5,10 +5,10 @@ namespace TheBoxSoftware.Reflection.Signitures
     using System.Text;
 
     /// <summary>
-    /// A <see cref="SignitureConvertor"/> implementation that creates user
+    /// A <see cref="SignatureConvertor"/> implementation that creates user
     /// displayable names for types, methods and properties.
     /// </summary>
-    public sealed class DisplayNameSignitureConvertor : SignitureConvertor
+    public sealed class DisplayNameSignitureConvertor : SignatureConvertor
     {
         private TypeDef _type;
         private MethodDef _method;
@@ -248,7 +248,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 {
                     if(_method.IsConversionOperator)
                     {
-                        Signiture sig = _method.Signiture;
+                        Signature sig = _method.Signiture;
                         TypeRef convertToRef = sig.GetReturnTypeToken().ResolveType(_method.Assembly, _method);
                         TypeRef convertFromRef = sig.GetParameterTokens()[0].ResolveParameter(_method.Assembly, _method.Parameters[0]);
 

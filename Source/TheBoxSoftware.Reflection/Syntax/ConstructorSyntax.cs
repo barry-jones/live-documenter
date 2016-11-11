@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Syntax
     internal class ConstructorSyntax : Syntax
     {
         private MethodDef _method;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public ConstructorSyntax(MethodDef method)
         {
@@ -49,9 +49,9 @@ namespace TheBoxSoftware.Reflection.Syntax
         public List<ParameterDetails> GetParameters()
         {
             List<ParameterDetails> details = new List<ParameterDetails>();
-            List<ParamSignitureToken> definedParameters = new List<ParamSignitureToken>(_signiture.Tokens.FindAll(
-                t => t.TokenType == SignitureTokens.Param
-                ).ConvertAll(p => (ParamSignitureToken)p).ToArray());
+            List<ParamSignatureToken> definedParameters = new List<ParamSignatureToken>(_signiture.Tokens.FindAll(
+                t => t.TokenType == SignatureTokens.Param
+                ).ConvertAll(p => (ParamSignatureToken)p).ToArray());
             List<ParamDef> parameters = _method.Parameters;
 
             for(int i = 0; i < parameters.Count; i++)

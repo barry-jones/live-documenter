@@ -48,7 +48,7 @@ namespace SignitureReader
                             Console.WriteLine(sig.ToString());
                             */
                             SignatureBuilder builder1 = new SignatureBuilder(blobStream);
-                            Signiture sig1 = builder1.Read(offset);
+                            Signature sig1 = builder1.Read(offset);
 
                             Console.WriteLine(sig1.ToString());
                         }

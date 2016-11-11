@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 CodedIndexes.HasConstant, 
                 FieldReader.ToUInt32(contents, offset.Shift(hasConstantIndexSize), hasConstantIndexSize)
                 );
-            _valueIndex = new BlobIndex(sizeOfBlobIndex, contents, Signitures.Signitures.MethodDef, offset);
+            _valueIndex = new BlobIndex(sizeOfBlobIndex, contents, Signitures.Signatures.MethodDef, offset);
         }
 
         /// <summary>

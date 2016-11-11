@@ -8,14 +8,14 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// <summary>
     /// Describes a field signiture, which is specified in the ECMA 23.2.4.
     /// </summary>
-	internal sealed class FieldSigniture : Signiture
+	internal sealed class FieldSignature : Signature
     {
         /// <summary>
         /// Initialises a field signiture from the specified <paramref name="signiture"/> blob.
         /// </summary>
         /// <param name="signiture">The signiture blob.</param>
-		public FieldSigniture(byte[] signiture)
-            : base(Signitures.Field)
+		public FieldSignature(byte[] signiture)
+            : base(Signatures.Field)
         {
             Offset offset = 0;
 
@@ -33,7 +33,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     Tokens.Add(modifier);
                 }
 
-                TypeSignitureToken type = new TypeSignitureToken(signiture, offset);
+                TypeSignatureToken type = new TypeSignatureToken(signiture, offset);
                 Tokens.Add(type);
             }
         }
@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[Field: ");
 
-            foreach(SignitureToken t in Tokens)
+            foreach(SignatureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

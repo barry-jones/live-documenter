@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Syntax
     internal class MethodSyntax : Syntax
     {
         private MethodDef _method;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public MethodSyntax(MethodDef method)
         {
@@ -50,8 +50,8 @@ namespace TheBoxSoftware.Reflection.Syntax
 
         public TypeDetails GetReturnType()
         {
-            ReturnTypeSignitureToken returnType = (ReturnTypeSignitureToken)_signiture.Tokens.Find(
-                t => t.TokenType == SignitureTokens.ReturnType
+            ReturnTypeSignatureToken returnType = (ReturnTypeSignatureToken)_signiture.Tokens.Find(
+                t => t.TokenType == SignatureTokens.ReturnType
                 );
             TypeDetails details = returnType.GetTypeDetails(_method);
 
@@ -65,9 +65,9 @@ namespace TheBoxSoftware.Reflection.Syntax
         public List<ParameterDetails> GetParameters()
         {
             List<ParameterDetails> details = new List<ParameterDetails>();
-            List<ParamSignitureToken> definedParameters = new List<ParamSignitureToken>(
-                _signiture.Tokens.FindAll(t => t.TokenType == SignitureTokens.Param)
-                    .ConvertAll<ParamSignitureToken>(p => (ParamSignitureToken)p)
+            List<ParamSignatureToken> definedParameters = new List<ParamSignatureToken>(
+                _signiture.Tokens.FindAll(t => t.TokenType == SignatureTokens.Param)
+                    .ConvertAll<ParamSignatureToken>(p => (ParamSignatureToken)p)
                     .ToArray()
                 );
             List<ParamDef> parameters = _method.Parameters;

@@ -13,8 +13,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             SignatureBuilder builder = CreateBuilder(new byte[5]);
 
-            Signiture lower = builder.Read(-1);
-            Signiture larger = builder.Read(5);
+            Signature lower = builder.Read(-1);
+            Signature larger = builder.Read(5);
 
             Assert.AreSame(null, lower);
             Assert.AreSame(null, larger);
@@ -75,9 +75,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             SignatureBuilder builder = CreateTestBuilder();
 
-            Signiture result = builder.Read(1);
+            Signature result = builder.Read(1);
 
-            Assert.AreEqual(Signitures.MethodDef, result.Type);
+            Assert.AreEqual(Signatures.MethodDef, result.Type);
         }
 
         [Test]
@@ -86,9 +86,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] contents = new byte[] { 0x03, 0x28, 0x00, 0x08 };
             SignatureBuilder builder = CreateBuilder(contents);
 
-            Signiture result = builder.Read(0);
+            Signature result = builder.Read(0);
 
-            Assert.AreNotEqual(Signitures.MethodDef, result.Type);
+            Assert.AreNotEqual(Signatures.MethodDef, result.Type);
         }
 
         private SignatureBuilder CreateTestBuilder() => CreateBuilder(_blobStream);

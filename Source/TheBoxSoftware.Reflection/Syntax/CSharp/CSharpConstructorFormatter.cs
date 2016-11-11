@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
     internal sealed class CSharpConstructorFormatter : CSharpFormatter, IConstructorFormatter
     {
         private ConstructorSyntax _syntax;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public CSharpConstructorFormatter(ConstructorSyntax syntax)
         {

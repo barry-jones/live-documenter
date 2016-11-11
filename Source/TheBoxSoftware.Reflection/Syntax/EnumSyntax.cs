@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Reflection.Syntax
 
             if(_type.Fields.Count > 0)
             { // there should always be two field on an enumeration
-                underlyingType = ((TypeSignitureToken)_type.Fields[0].Signiture.Tokens[0]).ElementType.ResolveToken(_type.Assembly);
+                underlyingType = ((TypeSignatureToken)_type.Fields[0].Signiture.Tokens[0]).ElementType.ResolveToken(_type.Assembly);
             }
 
             return underlyingType;

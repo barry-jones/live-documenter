@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
     internal sealed class VBConstructorFormatter : VBFormatter, IConstructorFormatter
     {
         private ConstructorSyntax _syntax;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public VBConstructorFormatter(ConstructorSyntax syntax)
         {

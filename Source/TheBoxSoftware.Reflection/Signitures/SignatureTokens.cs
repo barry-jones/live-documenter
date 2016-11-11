@@ -1,7 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Signitures
 {
-    internal enum SignitureTokens
+    internal enum SignatureTokens
     {
         CallingConvention,
         GenericParameterCount,

@@ -54,7 +54,7 @@ namespace TheBoxSoftware.Reflection
             // zero indicates the return parameter for a method, this is handled differently
             if(sequence != 0)
             {
-                ParamSignitureToken token = Signiture.GetParameterTokens()[sequence - 1];
+                ParamSignatureToken token = Signiture.GetParameterTokens()[sequence - 1];
                 return token.ResolveParameter(Assembly, Parameters[sequence - 1]);
             }
 
@@ -468,7 +468,7 @@ namespace TheBoxSoftware.Reflection
 
             private void LoadGenericParameters()
             {
-                CallingConventions callingConvention = MethodDefSigniture.GetCallingConvention(
+                CallingConventions callingConvention = MethodDefSignature.GetCallingConvention(
                     _blobStream.GetSignitureContents((int)_methodToBuild.SignitureBlob.Value)
                     );
                 bool isGenericMethod = (callingConvention & CallingConventions.Generic) != 0;

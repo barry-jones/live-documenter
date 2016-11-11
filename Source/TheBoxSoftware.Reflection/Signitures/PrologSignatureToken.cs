@@ -6,7 +6,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// <summary>
     /// A class which represents a prolog for a <see cref="CustomAttributeSignature"/>.
     /// </summary>
-    internal sealed class PrologSignitureToken : SignitureToken
+    internal sealed class PrologSignatureToken : SignatureToken
     {
         private ushort _value;
 
@@ -15,8 +15,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The byte contents of the signiture.</param>
         /// <param name="offset">The start offset of the this token.</param>
-        public PrologSignitureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.Prolog)
+        public PrologSignatureToken(byte[] signiture, Offset offset)
+            : base(SignatureTokens.Prolog)
         {
             _value = FieldReader.ToUInt16(signiture, offset.Shift(2));
         }

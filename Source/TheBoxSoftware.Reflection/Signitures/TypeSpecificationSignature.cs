@@ -9,17 +9,17 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// Represents a signiture for a type specification as detailed in
     /// section 23.2.14 in ECMA 335.
     /// </summary>
-    internal sealed class TypeSpecificationSigniture : Signiture
+    internal sealed class TypeSpecificationSignature : Signature
     {
         /// <summary>
         /// Instantiates a new instance of the TypeSpecificationSigniture class.
         /// </summary>
         /// <param name="signiture">The actual signiture contents.</param>
-        public TypeSpecificationSigniture(byte[] signiture)
-            : base(Signitures.TypeSpecification)
+        public TypeSpecificationSignature(byte[] signiture)
+            : base(Signatures.TypeSpecification)
         {
 
-            TypeToken = new TypeSignitureToken(signiture, 0);
+            TypeToken = new TypeSignatureToken(signiture, 0);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[TypeSpec: ");
 
-            foreach(SignitureToken t in Tokens)
+            foreach(SignatureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }
@@ -87,6 +87,6 @@ namespace TheBoxSoftware.Reflection.Signitures
             return sb.ToString();
         }
 
-        public TypeSignitureToken TypeToken { get; set; }
+        public TypeSignatureToken TypeToken { get; set; }
     }
 }

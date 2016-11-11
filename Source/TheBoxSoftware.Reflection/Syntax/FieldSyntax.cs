@@ -23,16 +23,16 @@ namespace TheBoxSoftware.Reflection.Syntax
         {
             TypeRef returnType = null;
 
-            Signitures.Signiture signiture = _field.Signiture;
-            Signitures.SignitureToken token = signiture.Tokens.Find(
-                t => t.TokenType == Signitures.SignitureTokens.ElementType ||
-                    t.TokenType == Signitures.SignitureTokens.Type
+            Signitures.Signature signiture = _field.Signiture;
+            Signitures.SignatureToken token = signiture.Tokens.Find(
+                t => t.TokenType == Signitures.SignatureTokens.ElementType ||
+                    t.TokenType == Signitures.SignatureTokens.Type
                 );
             if(token != null)
             {
                 TypeRef type = (token is Signitures.ElementTypeSignatureToken)
                     ? ((Signitures.ElementTypeSignatureToken)token).ResolveToken(_field.Assembly)
-                    : ((Signitures.TypeSignitureToken)token).ResolveType(_field.Assembly, _field);
+                    : ((Signitures.TypeSignatureToken)token).ResolveType(_field.Assembly, _field);
                 if(type != null)
                 {
                     returnType = type;

@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// <see cref="ElementTypes.Pinned"/>.
     /// </summary>
 	[DebuggerDisplay("Constraint: {Constraint}")]
-    internal sealed class ConstraintSignatureToken : SignitureToken
+    internal sealed class ConstraintSignatureToken : SignatureToken
     {
         private ElementTypes _constraint;
 
@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture to load from.</param>
         /// <param name="offset">The offset in the signiture.</param>
 		public ConstraintSignatureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.Constraint)
+            : base(SignatureTokens.Constraint)
         {
             _constraint = (ElementTypes)GetCompressedValue(signiture, offset);
         }

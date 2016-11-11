@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
         // public override long GetAssemblyId() => UniqueId;
 
-        internal Signitures.Signiture GetSigniture(BlobIndex fromIndex)
+        internal Signitures.Signature GetSigniture(BlobIndex fromIndex)
         {
             return _blobStream.GetSigniture(fromIndex.Value, fromIndex.SignitureType);
         }
@@ -169,10 +169,10 @@ namespace TheBoxSoftware.Reflection
                         // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
                         // for example. Each one of these will be a different type spec.
                         TypeSpec spec = _metadataMap.GetDefinition(MetadataTables.TypeSpec, row) as TypeSpec;
-                        SignitureToken token = spec.Signiture.TypeToken.Tokens[0];
+                        SignatureToken token = spec.Signiture.TypeToken.Tokens[0];
 
                         // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
-                        if(token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignatureToken)token).ElementType == ElementTypes.GenericInstance)
+                        if(token.TokenType == SignatureTokens.ElementType && ((ElementTypeSignatureToken)token).ElementType == ElementTypes.GenericInstance)
                         {
                             ElementTypeSignatureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignatureToken;
 

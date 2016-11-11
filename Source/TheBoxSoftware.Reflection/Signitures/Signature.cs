@@ -6,24 +6,24 @@ namespace TheBoxSoftware.Reflection.Signitures
     using System.Text;
     using Core;
 
-    internal class Signiture
+    internal class Signature
     {
-        private Signitures _type;
-        private List<SignitureToken> _tokens;
+        private Signatures _type;
+        private List<SignatureToken> _tokens;
 
-        public Signiture()
+        public Signature()
         {
-            _tokens = new List<SignitureToken>();
+            _tokens = new List<SignatureToken>();
         }
 
         /// <summary>
         /// Initialises a new instance of the Signiture class.
         /// </summary>
         /// <param name="tokenType">The type of signiture being represented.</param>
-        protected Signiture(Signitures tokenType)
+        protected Signature(Signatures tokenType)
         {
             _type = tokenType;
-            _tokens = new List<SignitureToken>();
+            _tokens = new List<SignatureToken>();
         }
 
         /// <summary>
@@ -33,10 +33,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="offset">The offset to the start of the signiture</param>
         /// <param name="tokenType">The type of signiture being read.</param>
         /// <returns></returns>
-        public static Signiture Create(byte[] source, Offset offset, Signitures tokenType)
+        public static Signature Create(byte[] source, Offset offset, Signatures tokenType)
         {
             int startingOffset = offset;
-            uint lengthOfSigniture = SignitureToken.GetCompressedValue(source, offset);    // The first byte is always the length
+            uint lengthOfSigniture = SignatureToken.GetCompressedValue(source, offset);    // The first byte is always the length
 
             // Read the full signiture
             byte[] signiture = new byte[lengthOfSigniture];
@@ -46,18 +46,18 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
 
             // Instatiate the correct signiture reader and pass control
-            Signiture instantiatedSigniture = null;
+            Signature instantiatedSigniture = null;
             switch(tokenType)
             {
-                case Signitures.CustomAttribute: // instantiatedSigniture = new CustomAttributeSigniture(signiture); break;
-                case Signitures.MethodSpecification:  // to do: implement
+                case Signatures.CustomAttribute: // instantiatedSigniture = new CustomAttributeSigniture(signiture); break;
+                case Signatures.MethodSpecification:  // to do: implement
                     break;
-                case Signitures.LocalVariable: instantiatedSigniture = new LocalVariableSigniture(signiture); break;
-                case Signitures.MethodDef: instantiatedSigniture = new MethodDefSigniture(signiture); break;
-                case Signitures.MethodRef: instantiatedSigniture = new MethodRefSigniture(signiture); break;
-                case Signitures.Field: instantiatedSigniture = new FieldSigniture(signiture); break;
-                case Signitures.Property: instantiatedSigniture = new PropertySigniture(signiture); break;
-                case Signitures.TypeSpecification: instantiatedSigniture = new TypeSpecificationSigniture(signiture); break;
+                case Signatures.LocalVariable: instantiatedSigniture = new LocalVariableSignature(signiture); break;
+                case Signatures.MethodDef: instantiatedSigniture = new MethodDefSignature(signiture); break;
+                case Signatures.MethodRef: instantiatedSigniture = new MethodRefSignature(signiture); break;
+                case Signatures.Field: instantiatedSigniture = new FieldSignature(signiture); break;
+                case Signatures.Property: instantiatedSigniture = new PropertySignature(signiture); break;
+                case Signatures.TypeSpecification: instantiatedSigniture = new TypeSpecificationSignature(signiture); break;
             }
             return instantiatedSigniture;
         }
@@ -67,25 +67,25 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// signiture.
         /// </summary>
         /// <returns>A collection of parameter tokens.</returns>
-        public List<ParamSignitureToken> GetParameterTokens()
+        public List<ParamSignatureToken> GetParameterTokens()
         {
             return (from token in Tokens
-                    where token is ParamSignitureToken
-                    select (ParamSignitureToken)token).ToList();
+                    where token is ParamSignatureToken
+                    select (ParamSignatureToken)token).ToList();
         }
 
         /// <summary>
         /// Returns the token that describes the return type defined in the signiture.
         /// </summary>
         /// <returns>The Token or null if no return type defined.</returns>
-        public ReturnTypeSignitureToken GetReturnTypeToken()
+        public ReturnTypeSignatureToken GetReturnTypeToken()
         {
-            ReturnTypeSignitureToken token = null;
+            ReturnTypeSignatureToken token = null;
             for(int i = 0; i < _tokens.Count; i++)
             {
-                if(_tokens[i] is ReturnTypeSignitureToken)
+                if(_tokens[i] is ReturnTypeSignatureToken)
                 {
-                    token = _tokens[i] as ReturnTypeSignitureToken;
+                    token = _tokens[i] as ReturnTypeSignatureToken;
                     break;
                 }
             }
@@ -95,7 +95,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            foreach(SignitureToken current in Tokens)
+            foreach(SignatureToken current in Tokens)
             {
                 builder.Append(current.ToString());
             }
@@ -105,13 +105,13 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Describes the type of signiture.
         /// </summary>
-        public Signitures Type
+        public Signatures Type
         {
             get { return _type; }
             set { _type = value; }
         }
 
-        public List<SignitureToken> Tokens
+        public List<SignatureToken> Tokens
         {
             get { return _tokens; }
             protected set { _tokens = value; }

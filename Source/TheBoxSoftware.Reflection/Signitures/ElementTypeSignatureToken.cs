@@ -13,12 +13,12 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// </para>
     /// <para>
     /// Where a type is described by more than a single element; that element will have
-    /// its superflous detail described in the <see cref="TypeSignitureToken"/> class.
+    /// its superflous detail described in the <see cref="TypeSignatureToken"/> class.
     /// </para>
     /// </summary>
-    /// <seealso cref="TypeSignitureToken"/>
+    /// <seealso cref="TypeSignatureToken"/>
     [DebuggerDisplay("ElementType: {ElementType}, {Token}")]
-    internal sealed class ElementTypeSignatureToken : SignitureToken
+    internal sealed class ElementTypeSignatureToken : SignatureToken
     {
         private uint _token;
         private object _definition;
@@ -38,7 +38,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </para>
         /// </remarks>
         public ElementTypeSignatureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.ElementType)
+            : base(SignatureTokens.ElementType)
         {
 
             ElementType = (ElementTypes)GetCompressedValue(signiture, offset);
@@ -82,7 +82,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
                 case ElementTypes.MVar:
                 case ElementTypes.Var:
-                    Token = SignitureToken.GetCompressedValue(signiture, offset);
+                    Token = SignatureToken.GetCompressedValue(signiture, offset);
                     break;
 
                 // Well known types

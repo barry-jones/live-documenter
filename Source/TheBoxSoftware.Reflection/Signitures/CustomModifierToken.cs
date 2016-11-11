@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// entry in the metadata tables.
     /// </summary>
 	[DebuggerDisplay("Modifier: {Modifier} for [{CodedIndex.ToString()}]")]
-    internal sealed class CustomModifierToken : SignitureToken
+    internal sealed class CustomModifierToken : SignatureToken
     {
         private ElementTypes _modifier;
         private CodedIndex _index;
@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
 		public CustomModifierToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.CustomModifier)
+            : base(SignatureTokens.CustomModifier)
         {
             _modifier = (ElementTypes)GetCompressedValue(signiture, offset);
             _index = ReadEncodedDefOrRefToken(signiture, offset);

@@ -6,9 +6,9 @@ namespace TheBoxSoftware.Reflection.Syntax
     internal class ParameterSyntax
     {
         private ParamDef _param;
-        private ParamSignitureToken _signitureToken;
+        private ParamSignatureToken _signitureToken;
 
-        public ParameterSyntax(ParamDef param, ParamSignitureToken signitureToken)
+        public ParameterSyntax(ParamDef param, ParamSignatureToken signitureToken)
         {
             _param = param;
             _signitureToken = signitureToken;

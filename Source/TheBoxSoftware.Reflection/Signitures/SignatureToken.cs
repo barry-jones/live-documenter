@@ -4,7 +4,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     using System;
     using Core;
 
-    internal class SignitureToken
+    internal class SignatureToken
     {
         private const uint CompressedByteMask    = 0x0000007f;
         private const uint CompressedShortMask   = 0x00003fff;
@@ -14,12 +14,12 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// Initialises a new instance of the SignitureToken class.
         /// </summary>
         /// <param name="tokenType">The type of token.</param>
-        internal SignitureToken(SignitureTokens tokenType)
+        internal SignatureToken(SignatureTokens tokenType)
         {
             this.TokenType = tokenType;
         }
 
-        private SignitureToken() { }
+        private SignatureToken() { }
 
         /// <summary>
         /// Returns the uncompressed value from a compressed field.
@@ -74,6 +74,6 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// Indicates the type of SignitureToken
         /// </summary>
-        public SignitureTokens TokenType { get; set; }
+        public SignatureTokens TokenType { get; set; }
     }
 }

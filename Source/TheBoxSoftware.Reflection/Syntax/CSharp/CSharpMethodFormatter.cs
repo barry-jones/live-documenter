@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
     internal sealed class CSharpMethodFormatter : CSharpFormatter, IMethodFormatter
     {
         private MethodSyntax _syntax;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public CSharpMethodFormatter(MethodSyntax syntax)
         {

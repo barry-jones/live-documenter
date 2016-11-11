@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// <summary>
     /// A signiture that describes the shape of an array as defined.
     /// </summary>
-	internal class ArrayShapeSignatureToken : SignitureToken
+	internal class ArrayShapeSignatureToken : SignatureToken
     {
         private uint _rank;         // specifies the number of dimensions (1 or more)
         private uint[] _sizes;      // size of each dimension
@@ -25,7 +25,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture blob to read this token from.</param>
         /// <param name="offset">The offset where this roken begins.</param>
-		public ArrayShapeSignatureToken(byte[] signiture, Offset offset) : base(SignitureTokens.ArrayShape)
+		public ArrayShapeSignatureToken(byte[] signiture, Offset offset) : base(SignatureTokens.ArrayShape)
         {
             uint numSizes = 0;
             uint numLoBounds = 0;

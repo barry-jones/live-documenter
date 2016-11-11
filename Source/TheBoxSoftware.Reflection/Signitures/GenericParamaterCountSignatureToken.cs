@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// A token that represents the number of generic parameters.
     /// </summary>
 	[DebuggerDisplay("Generic Parameter Count: {Count}")]
-    internal sealed class GenericParamaterCountSignitureToken : SignitureToken
+    internal sealed class GenericParamaterCountSignatureToken : SignatureToken
     {
         private uint _count;
 
@@ -18,8 +18,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
-		public GenericParamaterCountSignitureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.GenericParameterCount)
+		public GenericParamaterCountSignatureToken(byte[] signiture, Offset offset)
+            : base(SignatureTokens.GenericParameterCount)
         {
             _count = GetCompressedValue(signiture, offset);
         }

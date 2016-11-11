@@ -34,7 +34,7 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         private void LoadDetails()
         {
-            TypeSpecificationSigniture signiture = this.Signiture;
+            TypeSpecificationSignature signiture = this.Signiture;
 
             _details = signiture.GetTypeDetails(this);
         }
@@ -90,11 +90,11 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// The signiture defined for this member.
         /// </summary>
-        internal TypeSpecificationSigniture Signiture
+        internal TypeSpecificationSignature Signiture
         {
             get
             {
-                return Assembly.GetSigniture(_signitureIndexInBlob) as TypeSpecificationSigniture;
+                return Assembly.GetSigniture(_signitureIndexInBlob) as TypeSpecificationSignature;
             }
         }
 

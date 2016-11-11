@@ -107,7 +107,7 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Gets the signiture defined for this member.
         /// </summary>
-        internal Signitures.Signiture Signiture
+        internal Signitures.Signature Signiture
         {
             get
             {

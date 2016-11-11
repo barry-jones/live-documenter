@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// A representation of a ParameterCount token in a signiture.
     /// </summary>
 	[DebuggerDisplay("Parameter Count: {Count}")]
-    internal sealed class ParameterCountSignitureToken : SignitureToken
+    internal sealed class ParameterCountSignatureToken : SignatureToken
     {
         private uint _count;
 
@@ -18,8 +18,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
-		public ParameterCountSignitureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.ParameterCount)
+		public ParameterCountSignatureToken(byte[] signiture, Offset offset)
+            : base(SignatureTokens.ParameterCount)
         {
             _count = GetCompressedValue(signiture, offset);
         }

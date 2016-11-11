@@ -5,7 +5,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     using Core;
 
     [DebuggerDisplay("Count: {Count}")]
-    internal sealed class CountSignatureToken : SignitureToken
+    internal sealed class CountSignatureToken : SignatureToken
     {
         private ushort _count;
 
@@ -16,7 +16,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob.</param>
         /// <param name="offset">The offset in the signiture.</param>
 		public CountSignatureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.Count)
+            : base(SignatureTokens.Count)
         {
             _count = FieldReader.ToUInt16(signiture, offset.Shift(2));
         }

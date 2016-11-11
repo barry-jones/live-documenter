@@ -26,7 +26,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
             Assert.AreEqual(FieldAttributes.Public, row.Flags);
             Assert.AreEqual(1, row.Name.Value);
             Assert.AreEqual(1, row.Signiture.Value);
-            Assert.AreEqual(Signitures.Field, row.Signiture.SignitureType);
+            Assert.AreEqual(Signatures.Field, row.Signiture.SignitureType);
         }
 
         [Test]

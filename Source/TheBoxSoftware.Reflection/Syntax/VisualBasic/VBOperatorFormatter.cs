@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
     internal sealed class VBOperatorFormatter : VBFormatter, IOperatorFormatter
     {
         private OperatorSyntax _syntax;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public VBOperatorFormatter(OperatorSyntax syntax)
         {

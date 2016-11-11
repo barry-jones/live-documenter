@@ -5,7 +5,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// Enumeration of available major signiture types that can be defined
     /// in a .net assembly.
     /// </summary>
-    public enum Signitures : byte
+    public enum Signatures : byte
     {
         /// <summary>
         /// Signiture which describes the signiture or of a method or

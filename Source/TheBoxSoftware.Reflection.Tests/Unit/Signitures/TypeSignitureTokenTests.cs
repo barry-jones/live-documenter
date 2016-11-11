@@ -18,7 +18,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                 (byte)ElementTypes.Boolean
             };
 
-            TypeSignitureToken token = new TypeSignitureToken(content, 0);
+            TypeSignatureToken token = new TypeSignatureToken(content, 0);
 
             Assert.AreSame(WellKnownTypeDef.Boolean, token.ElementType.Definition);
         }
@@ -34,11 +34,11 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                 (byte)ElementTypes.Char
             };
 
-            TypeSignitureToken token = new TypeSignitureToken(content, 0);
+            TypeSignatureToken token = new TypeSignatureToken(content, 0);
 
             Assert.AreEqual(3, token.Tokens.Count);
             Assert.AreSame(WellKnownTypeDef.Char,
-                ((ElementTypeSignatureToken)((TypeSignitureToken)token.Tokens[2]).Tokens[0]).Definition
+                ((ElementTypeSignatureToken)((TypeSignatureToken)token.Tokens[2]).Tokens[0]).Definition
                 );
         }
     }

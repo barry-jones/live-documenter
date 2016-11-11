@@ -101,9 +101,9 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     public struct BlobIndex
     {
         public uint Value;
-        public Signitures.Signitures SignitureType;
+        public Signitures.Signatures SignitureType;
 
-        public BlobIndex(byte sizeOfBlobIndexes, byte[] fileContents, Signitures.Signitures signitureType, Offset offset)
+        public BlobIndex(byte sizeOfBlobIndexes, byte[] fileContents, Signitures.Signatures signitureType, Offset offset)
         {
             SignitureType = signitureType;
             Value = FieldReader.ToUInt32(

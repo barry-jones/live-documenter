@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
     internal sealed class VBMethodFormatter : VBFormatter, IMethodFormatter
     {
         private MethodSyntax _syntax;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public VBMethodFormatter(MethodSyntax syntax)
         {

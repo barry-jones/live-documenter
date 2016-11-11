@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
     internal sealed class CSharpOperatorFormatter : CSharpFormatter, IOperatorFormatter
     {
         private OperatorSyntax _syntax;
-        private Signiture _signiture;
+        private Signature _signiture;
 
         public CSharpOperatorFormatter(OperatorSyntax syntax)
         {

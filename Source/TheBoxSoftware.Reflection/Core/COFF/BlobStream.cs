@@ -43,15 +43,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         }
 
         /// <summary>
-        /// Retrives a parsed <see cref="Signitures.Signiture"/> for the specified
+        /// Retrives a parsed <see cref="Signitures.Signature"/> for the specified
         /// <paramref name="startOffset"/> and <paramref name="signiture"/> type.
         /// </summary>
         /// <param name="startOffset">The start of the signiture in the stream.</param>
         /// <param name="signiture">The type of signiture to parse.</param>
         /// <returns>The parsed signiture.</returns>
-        public Signitures.Signiture GetSigniture(uint startOffset, Signitures.Signitures signiture)
+        public Signitures.Signature GetSigniture(uint startOffset, Signitures.Signatures signiture)
         {
-            return Signitures.Signiture.Create(
+            return Signitures.Signature.Create(
                 _streamContents,
                 (int)startOffset,
                 signiture
@@ -65,7 +65,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The contents of the signiture as a byte array.</returns>
         public byte[] GetSignitureContents(int startOffset)
         {
-            uint length = Signitures.SignitureToken.GetCompressedValue(_streamContents, startOffset++);    // The first byte is always the length
+            uint length = Signitures.SignatureToken.GetCompressedValue(_streamContents, startOffset++);    // The first byte is always the length
             //byte length = _streamContents[startOffset++];
             byte[] signitureContents = new byte[length];
             for(int i = startOffset; i < startOffset + length; i++)
@@ -77,7 +77,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
         public uint GetLength(int offset)
         {
-            return Signitures.SignitureToken.GetCompressedValue(_streamContents, offset);    // The first byte is always the length
+            return Signitures.SignatureToken.GetCompressedValue(_streamContents, offset);    // The first byte is always the length
         }
 
         internal int GetLength()

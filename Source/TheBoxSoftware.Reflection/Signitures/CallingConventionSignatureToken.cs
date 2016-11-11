@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// Represents a calling convention in a signiture.
     /// </summary>
 	[DebuggerDisplay("Calling Convention: {Convention}")]
-    internal sealed class CallingConventionSignatureToken : SignitureToken
+    internal sealed class CallingConventionSignatureToken : SignatureToken
     {
         private CallingConventions _convention;
 
@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="signiture">The signiture blob to read from.</param>
         /// <param name="offset">The offset in the blob to read from.</param>
 		public CallingConventionSignatureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.CallingConvention)
+            : base(SignatureTokens.CallingConvention)
         {
             _convention = (CallingConventions)signiture[offset.Shift(1)];
         }

@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Comments
     /// link to a type, property, method etc in an assembly.
     /// </summary>
     [System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
-    public sealed class CRefPath : Signitures.SignitureConvertor
+    public sealed class CRefPath : Signitures.SignatureConvertor
     {
         private const int SEPERATOR_INDEX = 1;
 

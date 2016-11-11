@@ -9,7 +9,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// This class is able to parse and store details about Param entries in signitures. The
     /// Param signiture type is detailed in ECMA 335 at section 23.2.10.
     /// </summary>
-    internal sealed class ParamSignitureToken : SignitureTokenContainer
+    internal sealed class ParamSignatureToken : SignatureTokenContainer
     {
         private ElementTypeSignatureToken _elementType;
         private bool _isTypeSigniture = false;
@@ -22,8 +22,8 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The contents of the signiture.</param>
         /// <param name="offset">The offset of the current token.</param>
-        public ParamSignitureToken(byte[] signiture, Offset offset)
-            : base(SignitureTokens.Param)
+        public ParamSignatureToken(byte[] signiture, Offset offset)
+            : base(SignatureTokens.Param)
         {
 
             while(CustomModifierToken.IsToken(signiture, offset))
@@ -36,7 +36,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             if(ElementTypeSignatureToken.IsToken(signiture, offset, ElementTypes.ByRef))
             {
                 Tokens.Add(new ElementTypeSignatureToken(signiture, offset));    // ByRef
-                TypeSignitureToken typeSig = new TypeSignitureToken(signiture, offset);
+                TypeSignatureToken typeSig = new TypeSignatureToken(signiture, offset);
                 Tokens.Add(typeSig);   // Type
                 _elementType = typeSig.ElementType;
                 _isTypeSigniture = true;
@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else
             {
-                TypeSignitureToken typeSig = new TypeSignitureToken(signiture, offset);
+                TypeSignatureToken typeSig = new TypeSignatureToken(signiture, offset);
                 Tokens.Add(typeSig);
                 _elementType = typeSig.ElementType;
                 _isTypeSigniture = true;
@@ -60,11 +60,11 @@ namespace TheBoxSoftware.Reflection.Signitures
         public TypeDetails GetTypeDetails(ReflectedMember member)
         {
             TypeDetails details = new TypeDetails();
-            SignitureToken token = Tokens.Last();
+            SignatureToken token = Tokens.Last();
 
-            if(token is TypeSignitureToken)
+            if(token is TypeSignatureToken)
             {
-                details = ((TypeSignitureToken)token).GetTypeDetails(member);
+                details = ((TypeSignatureToken)token).GetTypeDetails(member);
             }
             else
             {
@@ -82,7 +82,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             if(_isTypeSigniture)
             {
-                TypeSignitureToken typeToken = Tokens.Last() as TypeSignitureToken;
+                TypeSignatureToken typeToken = Tokens.Last() as TypeSignatureToken;
                 typeRef = typeToken.ResolveType(assembly, declaringParameter);
             }
             else
@@ -106,7 +106,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             if(_isByRef)
                 sb.Append("ByRef ");
 
-            foreach(SignitureToken t in Tokens)
+            foreach(SignatureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

@@ -8,13 +8,13 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// A signiture for a method definition as described in section 23.2.1 in
     /// ECMA 335.
     /// </summary>
-    internal sealed class MethodDefSigniture : Signiture
+    internal sealed class MethodDefSignature : Signature
     {
         /// <summary>
         /// Initialises a new instance of the MethoDefSigniture class.
         /// </summary>
         /// <param name="signiture">The byte contents of the signiture.</param>
-        public MethodDefSigniture(byte[] signiture) : base(Signitures.MethodDef)
+        public MethodDefSignature(byte[] signiture) : base(Signatures.MethodDef)
         {
             Offset offset = 0;
 
@@ -23,18 +23,18 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             if((calling.Convention & CallingConventions.Generic) != 0)
             {
-                var genParamCount = new GenericParamaterCountSignitureToken(signiture, offset);
+                var genParamCount = new GenericParamaterCountSignatureToken(signiture, offset);
                 Tokens.Add(genParamCount);
             }
 
-            var paramCount = new ParameterCountSignitureToken(signiture, offset);
+            var paramCount = new ParameterCountSignatureToken(signiture, offset);
             Tokens.Add(paramCount);
 
-            var returnType = new ReturnTypeSignitureToken(signiture, offset);
+            var returnType = new ReturnTypeSignatureToken(signiture, offset);
             Tokens.Add(returnType);
             for(int i = 0; i < paramCount.Count; i++)
             {
-                var param = new ParamSignitureToken(signiture, offset);
+                var param = new ParamSignatureToken(signiture, offset);
                 Tokens.Add(param);
             }
         }
@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[MethodDef: ");
 
-            foreach(SignitureToken t in Tokens)
+            foreach(SignatureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

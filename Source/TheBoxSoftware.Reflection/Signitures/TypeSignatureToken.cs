@@ -15,12 +15,12 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// </para>
     /// <para>
     /// A type can be represented by one or more tokens, hence this token derives from
-    /// <see cref="SignitureTokenContainer"/>. However it will always have an <see cref="ElementTypeSignatureToken"/>
+    /// <see cref="SignatureTokenContainer"/>. However it will always have an <see cref="ElementTypeSignatureToken"/>
     /// which should allow any resolving to be perfomed more easily.
     /// </para>
     /// </summary>
     [DebuggerDisplay("Type: {ElementType}, ")]
-    internal sealed class TypeSignitureToken : SignitureTokenContainer
+    internal sealed class TypeSignatureToken : SignatureTokenContainer
     {
         /// <summary>
         /// Initialises a new TypeSigniture from the <paramref name="signiture"/> starting at the
@@ -28,10 +28,10 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// </summary>
         /// <param name="signiture">The signiture to parse the type from.</param>
         /// <param name="offset">The offset to start reading from.</param>
-        public TypeSignitureToken(byte[] signiture, Offset offset) : base(SignitureTokens.Type)
+        public TypeSignatureToken(byte[] signiture, Offset offset) : base(SignatureTokens.Type)
         {
             ElementTypeSignatureToken type = new ElementTypeSignatureToken(signiture, offset);
-            TypeSignitureToken childType;
+            TypeSignatureToken childType;
             Tokens.Add(type);
             ElementType = type;
 
@@ -43,7 +43,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                         CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
                         Tokens.Add(modifier);
                     }
-                    childType = new TypeSignitureToken(signiture, offset);
+                    childType = new TypeSignatureToken(signiture, offset);
                     Tokens.Add(childType);
                     break;
                 case ElementTypes.Ptr:
@@ -52,22 +52,22 @@ namespace TheBoxSoftware.Reflection.Signitures
                         CustomModifierToken modifier = new CustomModifierToken(signiture, offset);
                         Tokens.Add(modifier);
                     }
-                    childType = new TypeSignitureToken(signiture, offset);
+                    childType = new TypeSignatureToken(signiture, offset);
                     Tokens.Add(childType);
                     break;
                 case ElementTypes.GenericInstance:
                     ElementTypeSignatureToken genericType = new ElementTypeSignatureToken(signiture, offset);
                     Tokens.Add(genericType);
-                    GenericArgumentCountSignitureToken argCount = new GenericArgumentCountSignitureToken(signiture, offset);
+                    GenericArgumentCountSignatureToken argCount = new GenericArgumentCountSignatureToken(signiture, offset);
                     Tokens.Add(argCount);
                     for(int i = 0; i < argCount.Count; i++)
                     {
-                        TypeSignitureToken genArgType = new TypeSignitureToken(signiture, offset);
+                        TypeSignatureToken genArgType = new TypeSignatureToken(signiture, offset);
                         Tokens.Add(genArgType);
                     }
                     break;
                 case ElementTypes.Array:
-                    childType = new TypeSignitureToken(signiture, offset);
+                    childType = new TypeSignatureToken(signiture, offset);
                     Tokens.Add(childType);
                     Tokens.Add(new ArrayShapeSignatureToken(signiture, offset));
                     break;
@@ -80,7 +80,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             if(ElementType.ElementType == ElementTypes.SZArray)
             {
-                TypeSignitureToken childType = Tokens.Last() as TypeSignitureToken;
+                TypeSignatureToken childType = Tokens.Last() as TypeSignatureToken;
                 details.ArrayOf = childType.GetTypeDetails(member);
                 details.IsArray = true;
             }
@@ -99,10 +99,10 @@ namespace TheBoxSoftware.Reflection.Signitures
                 details.GenericParameters = new List<TypeDetails>();
                 for(int i = 3; i < GetGenericArgumentCount().Count + 3; i++)
                 {
-                    if(Tokens[i].TokenType == SignitureTokens.Type)
+                    if(Tokens[i].TokenType == SignatureTokens.Type)
                     {
                         details.GenericParameters.Add(
-                            ((TypeSignitureToken)Tokens[i]).GetTypeDetails(member)
+                            ((TypeSignatureToken)Tokens[i]).GetTypeDetails(member)
                             );
                     }
                     else
@@ -115,9 +115,9 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.Ptr)
             {
-                if(Tokens[1].TokenType == SignitureTokens.Type)
+                if(Tokens[1].TokenType == SignatureTokens.Type)
                 {
-                    TypeSignitureToken childType = Tokens[1] as TypeSignitureToken;
+                    TypeSignatureToken childType = Tokens[1] as TypeSignatureToken;
                     details = childType.GetTypeDetails(member);
                 }
                 else
@@ -129,9 +129,9 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.Array)
             {
-                if(Tokens[1].TokenType == SignitureTokens.Type)
+                if(Tokens[1].TokenType == SignatureTokens.Type)
                 {
-                    TypeSignitureToken childType = Tokens[1] as TypeSignitureToken;
+                    TypeSignatureToken childType = Tokens[1] as TypeSignatureToken;
                     details.ArrayOf = childType.GetTypeDetails(member);
                 }
                 else
@@ -141,7 +141,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     details.ArrayOf.Type = childType.ResolveToken(member.Assembly);
                 }
                 details.IsMultidemensionalArray = true;
-                details.ArrayShape = (ArrayShapeSignatureToken)Tokens.Find(t => t.TokenType == SignitureTokens.ArrayShape);
+                details.ArrayShape = (ArrayShapeSignatureToken)Tokens.Find(t => t.TokenType == SignatureTokens.ArrayShape);
             }
             else if(ElementType.ElementType == ElementTypes.MVar)
             {
@@ -159,13 +159,13 @@ namespace TheBoxSoftware.Reflection.Signitures
             return details;
         }
 
-        public GenericArgumentCountSignitureToken GetGenericArgumentCount()
+        public GenericArgumentCountSignatureToken GetGenericArgumentCount()
         {
-            foreach(SignitureToken current in Tokens)
+            foreach(SignatureToken current in Tokens)
             {
-                if(current.TokenType == SignitureTokens.GenericArgumentCount)
+                if(current.TokenType == SignatureTokens.GenericArgumentCount)
                 {
-                    return current as GenericArgumentCountSignitureToken;
+                    return current as GenericArgumentCountSignatureToken;
                 }
             }
             return null;
@@ -182,7 +182,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             TypeRef type = null;
             if(ElementType.ElementType == ElementTypes.SZArray)
             {
-                TypeSignitureToken childType = (TypeSignitureToken)Tokens.Last();
+                TypeSignatureToken childType = (TypeSignatureToken)Tokens.Last();
                 type = childType.ResolveType(assembly, member);
             }
             else if(
@@ -199,9 +199,9 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.Ptr)
             {
-                if(Tokens[1].TokenType == SignitureTokens.Type)
+                if(Tokens[1].TokenType == SignatureTokens.Type)
                 {
-                    TypeSignitureToken childType = (TypeSignitureToken)Tokens[1];
+                    TypeSignatureToken childType = (TypeSignatureToken)Tokens[1];
                     type = childType.ResolveType(assembly, member);
                 }
                 else
@@ -212,9 +212,9 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.Array)
             {
-                if(Tokens[1].TokenType == SignitureTokens.Type)
+                if(Tokens[1].TokenType == SignatureTokens.Type)
                 {
-                    TypeSignitureToken childType = (TypeSignitureToken)Tokens[1];
+                    TypeSignatureToken childType = (TypeSignatureToken)Tokens[1];
                     type = childType.ResolveType(assembly, member);
                 }
                 else
@@ -298,7 +298,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             TypeRef type = null;
             if(ElementType.ElementType == ElementTypes.SZArray)
             {
-                TypeSignitureToken childType = Tokens.Last() as TypeSignitureToken;
+                TypeSignatureToken childType = Tokens.Last() as TypeSignatureToken;
                 type = childType.ResolveType(assembly, parameter);
             }
             else if(
@@ -315,9 +315,9 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.Ptr)
             {
-                if(Tokens[1].TokenType == SignitureTokens.Type)
+                if(Tokens[1].TokenType == SignatureTokens.Type)
                 {
-                    TypeSignitureToken childType = Tokens[1] as TypeSignitureToken;
+                    TypeSignatureToken childType = Tokens[1] as TypeSignatureToken;
                     type = childType.ResolveType(assembly, parameter);
                 }
                 else
@@ -328,9 +328,9 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.Array)
             {
-                if(Tokens[1].TokenType == SignitureTokens.Type)
+                if(Tokens[1].TokenType == SignatureTokens.Type)
                 {
-                    TypeSignitureToken childType = Tokens[1] as TypeSignitureToken;
+                    TypeSignatureToken childType = Tokens[1] as TypeSignatureToken;
                     type = childType.ResolveType(assembly, parameter);
                 }
                 else
@@ -368,7 +368,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             StringBuilder sb = new StringBuilder();
 
             sb.Append("[Type: ");
-            foreach(SignitureToken current in Tokens)
+            foreach(SignatureToken current in Tokens)
                 sb.Append(current.ToString());
             sb.Append("] ");
 

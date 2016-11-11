@@ -22,9 +22,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             BlobStream stream = new BlobStream(contents, 0, contents.Length);
             SignatureBuilder builder = new SignatureBuilder(stream);
 
-            Signiture result = builder.Read(0);
+            Signature result = builder.Read(0);
 
-            Assert.AreEqual(Signitures.MethodDef, result.Type);
+            Assert.AreEqual(Signatures.MethodDef, result.Type);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] contents = new byte[] { 0x04, 0x30, 0x01, 0x00, 0x01 };
             SignatureBuilder builder = CreateBuilder(contents);
 
-            Signiture result = builder.Read(0);
+            Signature result = builder.Read(0);
 
             Assert.AreEqual(
                 CallingConventions.Generic | CallingConventions.HasThis,
@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] contents = new byte[] { 0x05, 0x20, 0x00, 0x1d, 0x1d, 0x08 };
             SignatureBuilder builder = CreateBuilder(contents);
 
-            Signiture result = builder.Read(0);
+            Signature result = builder.Read(0);
 
             Assert.AreEqual("[CallingConvention: HasThis]", result.Tokens[0].ToString());
             Assert.AreEqual("[ParamCount: 0]", result.Tokens[1].ToString());

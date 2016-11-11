@@ -7,21 +7,21 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// <summary>
     /// A rerepresentation of the property signiture as described in ECMA 23.2.5.
     /// </summary>
-	internal sealed class PropertySigniture : Signiture
+	internal sealed class PropertySignature : Signature
     {
         /// <summary>
         /// Initialises a new instance of the property signiture from the provided <paramref name="signiture"/>.
         /// </summary>
         /// <param name="signiture">The signiture blob.</param>
-		public PropertySigniture(byte[] signiture)
-            : base(Signitures.Property)
+		public PropertySignature(byte[] signiture)
+            : base(Signatures.Property)
         {
             Offset offset = 0;
 
             ElementTypeSignatureToken property = new ElementTypeSignatureToken(signiture, offset);
             Tokens.Add(property);
 
-            ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
+            ParameterCountSignatureToken paramCount = new ParameterCountSignatureToken(signiture, offset);
             Tokens.Add(paramCount);
 
             while(CustomModifierToken.IsToken(signiture, offset))
@@ -35,7 +35,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             for(int i = 0; i < paramCount.Count; i++)
             {
-                ParamSignitureToken param = new ParamSignitureToken(signiture, offset);
+                ParamSignatureToken param = new ParamSignatureToken(signiture, offset);
                 Tokens.Add(param);
             }
         }
@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             sb.Append("[Property: ");
 
-            foreach(SignitureToken t in Tokens)
+            foreach(SignatureToken t in Tokens)
             {
                 sb.Append(t.ToString());
             }

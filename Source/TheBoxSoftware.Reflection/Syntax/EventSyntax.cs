@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         public new TypeDetails GetType()
         {
             MethodDef method = _remove ?? _add;
-            ParamSignitureToken delegateType = method.Signiture.GetParameterTokens()[0];
+            ParamSignatureToken delegateType = method.Signiture.GetParameterTokens()[0];
             TypeDetails details = delegateType.GetTypeDetails(method);
             return details;
         }

@@ -18,14 +18,14 @@ namespace TheBoxSoftware.Reflection.Signitures
             _stream = underlyingStream;
         }
 
-        public Signiture Read(int offset)
+        public Signature Read(int offset)
         {
             if(offset < 0 || offset >= _stream.GetLength())
                 return null;
 
             byte[] signitureBytes = GetSignitureBytes(offset);
-            Signiture created = new Signiture();
-            Signitures type = 0x00;
+            Signature created = new Signature();
+            Signatures type = 0x00;
             byte first = signitureBytes[0];
 
             int check = first & 0x0F;
@@ -33,17 +33,17 @@ namespace TheBoxSoftware.Reflection.Signitures
             if(check == 0x08)
             {
                 // property apparently
-                created.Type = Signitures.Property;
+                created.Type = Signatures.Property;
             }
             else if (check == 0x06)
             {
                 // field apparently
-                created.Type = Signitures.Field;
+                created.Type = Signatures.Field;
             }
             else
             {
                 // method... perhaps
-                created.Type = Signitures.MethodDef;
+                created.Type = Signatures.MethodDef;
 
                 Offset index = 0;
 
@@ -51,12 +51,12 @@ namespace TheBoxSoftware.Reflection.Signitures
                 created.Tokens.Add(convention);
                 if((convention.Convention & CallingConventions.Generic) != 0)
                 {
-                    var genericParam = new GenericParamaterCountSignitureToken(signitureBytes, index);
+                    var genericParam = new GenericParamaterCountSignatureToken(signitureBytes, index);
                     created.Tokens.Add(genericParam);
                 }
-                var paramCount = new ParameterCountSignitureToken(signitureBytes, index);
+                var paramCount = new ParameterCountSignatureToken(signitureBytes, index);
                 created.Tokens.Add(paramCount);
-                var returnType = new ReturnTypeSignitureToken(signitureBytes, index);
+                var returnType = new ReturnTypeSignatureToken(signitureBytes, index);
                 created.Tokens.Add(returnType);
             }
 
