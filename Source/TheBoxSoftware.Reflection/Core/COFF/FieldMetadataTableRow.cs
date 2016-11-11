@@ -22,7 +22,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
             _flags = (FieldAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
             _nameIndex = new StringIndex(contents, sizeOfStringIndex, offset);
-            _signitureIndex = new BlobIndex(sizeOfBlobIndex, contents, Reflection.Signitures.Signatures.Field, offset);
+            _signitureIndex = new BlobIndex(sizeOfBlobIndex, contents, Reflection.Signatures.Signatures.Field, offset);
         }
 
         /// <summary>A 2-byte mask of FieldAttributes</summary>

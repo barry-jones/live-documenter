@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection
 {
     using Reflection.Core.COFF;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     /// <summary>
     /// Details the specification of a type. This is generally used by the metadata

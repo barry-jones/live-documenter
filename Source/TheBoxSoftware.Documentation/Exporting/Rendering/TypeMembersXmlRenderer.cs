@@ -4,7 +4,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
     using System.Linq;
     using Reflection;
     using Reflection.Comments;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     internal sealed class TypeMembersXmlRenderer : XmlRenderer
     {

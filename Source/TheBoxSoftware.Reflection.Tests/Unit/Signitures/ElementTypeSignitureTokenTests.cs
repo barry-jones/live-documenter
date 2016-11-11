@@ -1,9 +1,9 @@
 ﻿
-namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
+namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
 {
     using NUnit.Framework;
     using Reflection.Core;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     [TestFixture]
     public class ElementTypeSignitureTokenTests

@@ -3,7 +3,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 {
     using System.Collections.Generic;
     using System.Windows.Documents;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
     using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
     using TheBoxSoftware.Reflection;
     using TheBoxSoftware.Reflection.Comments;

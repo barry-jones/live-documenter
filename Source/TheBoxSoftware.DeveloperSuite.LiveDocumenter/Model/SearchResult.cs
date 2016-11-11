@@ -6,7 +6,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model
     using TheBoxSoftware.Reflection;
     using TheBoxSoftware.Reflection.Comments;
     using TheBoxSoftware.Documentation;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     /// <summary>
     /// Represents an individual result from a search across the <see cref="LiveDocument.Map" />.

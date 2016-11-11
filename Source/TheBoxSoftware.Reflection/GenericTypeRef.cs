@@ -40,7 +40,7 @@ namespace TheBoxSoftware.Reflection
         /// <remarks>
         /// When multiple generic types are defined against a method or type, the
         /// number is used by the metadata to distinguish which type is being called
-        /// or passed in signitures.
+        /// or passed in Signatures.
         /// </remarks>
         public short Sequence
         {

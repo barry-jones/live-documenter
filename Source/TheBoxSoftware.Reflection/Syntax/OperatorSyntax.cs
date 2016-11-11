@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Syntax
 {
     using System.Collections.Generic;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     internal class OperatorSyntax : Syntax
     {

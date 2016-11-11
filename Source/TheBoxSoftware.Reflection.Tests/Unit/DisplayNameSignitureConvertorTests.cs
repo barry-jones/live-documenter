@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Tests.Unit
 {
     using NUnit.Framework;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     [TestFixture]
     public class DisplayNameSignitureConvertorTests
@@ -92,8 +92,8 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
             Assert.AreEqual("MyMethod()", result);
         }
 
-        // [Test] - cant do this yet as we need signitures to be loaded, we first need to somehow
-        //  mock out the signitures so we can control the return information.
+        // [Test] - cant do this yet as we need Signatures to be loaded, we first need to somehow
+        //  mock out the Signatures so we can control the return information.
         public void Convert_MethodDef_WhenParametersAndParametersIncluded_ShouldShowParameters()
         {
             MethodDef method = CreateMethod();

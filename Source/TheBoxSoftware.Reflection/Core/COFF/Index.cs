@@ -96,14 +96,14 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
     /// <summary>
     /// Represents an index in to the BlobHeap. This heap contains details such as
-    /// signitures and other userful metadata information.
+    /// Signatures and other userful metadata information.
     /// </summary>
     public struct BlobIndex
     {
         public uint Value;
-        public Signitures.Signatures SignitureType;
+        public Signatures.Signatures SignitureType;
 
-        public BlobIndex(byte sizeOfBlobIndexes, byte[] fileContents, Signitures.Signatures signitureType, Offset offset)
+        public BlobIndex(byte sizeOfBlobIndexes, byte[] fileContents, Signatures.Signatures signitureType, Offset offset)
         {
             SignitureType = signitureType;
             Value = FieldReader.ToUInt32(

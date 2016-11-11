@@ -17,7 +17,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     {
         private BlobIndex _valueIndex;
         private CodedIndex _parentIndex;
-        private Signitures.ElementTypes _type;
+        private Signatures.ElementTypes _type;
 
         /// <summary>
         /// Initialises a new instance of the ConstantMetadataTableRow
@@ -31,13 +31,13 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             int hasConstantIndexSize = resolver.GetSizeOfIndex(CodedIndexes.HasConstant);
             byte sizeOfBlobIndex = indexDetails.GetSizeOfBlobIndex();
 
-            _type = (Signitures.ElementTypes)contents[offset.Shift(1)];
+            _type = (Signatures.ElementTypes)contents[offset.Shift(1)];
             offset.Shift(1);
             _parentIndex = resolver.Resolve(
                 CodedIndexes.HasConstant, 
                 FieldReader.ToUInt32(contents, offset.Shift(hasConstantIndexSize), hasConstantIndexSize)
                 );
-            _valueIndex = new BlobIndex(sizeOfBlobIndex, contents, Signitures.Signatures.MethodDef, offset);
+            _valueIndex = new BlobIndex(sizeOfBlobIndex, contents, Signatures.Signatures.MethodDef, offset);
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <remarks>
         /// For a <b>nullref</b> value for <i>FieldInit</i> in <i>ilasm</i> is <c>ELEMENT_TYPE_CLASS</c>
-        /// with a 4-byte zero. Unlike uses of <c>ELEMENT_TYPE_CLASS</c> in signitures, this one is
+        /// with a 4-byte zero. Unlike uses of <c>ELEMENT_TYPE_CLASS</c> in Signatures, this one is
         /// <i>not</i> followed by a type token.
         /// </remarks>
-        public Signitures.ElementTypes Type
+        public Signatures.ElementTypes Type
         {
             get { return _type; }
             set { _type = value; }

@@ -3,7 +3,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
 {
     using System;
     using System.Collections.Generic;
-    using Signitures;
+    using Signatures;
 
     internal sealed class VBOperatorFormatter : VBFormatter, IOperatorFormatter
     {

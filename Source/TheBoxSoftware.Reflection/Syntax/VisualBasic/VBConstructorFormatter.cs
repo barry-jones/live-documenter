@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
 {
     using System.Collections.Generic;
-    using Signitures;
+    using Signatures;
 
     internal sealed class VBConstructorFormatter : VBFormatter, IConstructorFormatter
     {

@@ -7,7 +7,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
     using TheBoxSoftware.Reflection;
     using TheBoxSoftware.Reflection.Comments;
-    using TheBoxSoftware.Reflection.Signitures;
+    using TheBoxSoftware.Reflection.Signatures;
 
     /// <summary>
     /// A Page that describes an individual Type in the LiveDocumentor

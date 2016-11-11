@@ -6,7 +6,7 @@ namespace TheBoxSoftware.Reflection
     using Core.COFF;
     using Core.PE;
     using Core;
-    using Signitures;
+    using Signatures;
 
     /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="class"]/*'/> 
     public class AssemblyDef : ReflectedMember
@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Reflection
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
         // public override long GetAssemblyId() => UniqueId;
 
-        internal Signitures.Signature GetSigniture(BlobIndex fromIndex)
+        internal Signatures.Signature GetSigniture(BlobIndex fromIndex)
         {
             return _blobStream.GetSigniture(fromIndex.Value, fromIndex.SignitureType);
         }
@@ -151,7 +151,7 @@ namespace TheBoxSoftware.Reflection
         internal List<TypeRef> GetExtendindTypes(TypeDef type, CodedIndex ciForThisType)
         {
             List<TypeRef> inheritingTypes = new List<TypeRef>();
-            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata signitures
+            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata Signatures
 
             ourIndexes.Add(ciForThisType);
 
@@ -241,9 +241,9 @@ namespace TheBoxSoftware.Reflection
 
 #if TEST
         /// <summary>
-        /// Prints all the type spec signitures to the Trace stream
+        /// Prints all the type spec Signatures to the Trace stream
         /// </summary>
-        public void PrintTypeSpecSignitures()
+        public void PrintTypeSpecSignatures()
         {
             // Read the metadata from the file and populate the entries
             MetadataDirectory metadata = this.File.GetMetadataDirectory();

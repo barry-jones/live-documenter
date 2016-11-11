@@ -1,7 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Syntax
 {
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     internal class EnumSyntax : Syntax
     {

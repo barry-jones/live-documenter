@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             _signiture = new BlobIndex(
                 sizeOfBlobIndex,
                 contents,
-                TheBoxSoftware.Reflection.Signitures.Signatures.MethodDef,
+                TheBoxSoftware.Reflection.Signatures.Signatures.MethodDef,
                 offset);
         }
 

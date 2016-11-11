@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TheBoxSoftware.Reflection.Comments;
-using TheBoxSoftware.Reflection.Signitures;
+using TheBoxSoftware.Reflection.Signatures;
 
 namespace TheBoxSoftware.Reflection.Tests.Integration
 {

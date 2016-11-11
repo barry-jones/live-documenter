@@ -36,10 +36,10 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// Obtains the names of all the interfaces this class implements.
         /// </summary>
         /// <returns>An array of strings identifying the interfaces.</returns>
-        public Signitures.TypeDetails[] GetInterfaces()
+        public Signatures.TypeDetails[] GetInterfaces()
         {
             int implentationCount = _type.Implements.Count;
-            Signitures.TypeDetails[] interfaces = new Signitures.TypeDetails[implentationCount];
+            Signatures.TypeDetails[] interfaces = new Signatures.TypeDetails[implentationCount];
 
             for(int i = 0; i < implentationCount; i++)
             {
@@ -49,7 +49,7 @@ namespace TheBoxSoftware.Reflection.Syntax
                 }
                 else
                 {
-                    Signitures.TypeDetails details = new Signitures.TypeDetails();
+                    Signatures.TypeDetails details = new Signatures.TypeDetails();
                     details.Type = _type.Implements[i];
                     interfaces[i] = details;
                 }
@@ -75,7 +75,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// Obtains the name of the base type this class implements.
         /// </summary>
         /// <returns>The base class for the type.</returns>
-        public Signitures.TypeDetails GetBaseClass()
+        public Signatures.TypeDetails GetBaseClass()
         {
 #if DEBUG
             if(_type.InheritsFrom == null)
@@ -90,7 +90,7 @@ namespace TheBoxSoftware.Reflection.Syntax
             }
             else
             {
-                Signitures.TypeDetails details = new Signitures.TypeDetails();
+                Signatures.TypeDetails details = new Signatures.TypeDetails();
                 details.Type = _type.InheritsFrom;
                 return details;
             }

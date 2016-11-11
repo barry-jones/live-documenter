@@ -3,7 +3,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
 {
     using System.Linq;
     using NUnit.Framework;
-    using Signitures;
+    using Signatures;
 
     [TestFixture]
     public class SignatureTests

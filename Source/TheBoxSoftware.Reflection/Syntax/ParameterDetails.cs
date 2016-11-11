@@ -5,7 +5,7 @@ namespace TheBoxSoftware.Reflection.Syntax
     /// Details class which provides access to information necessary
     /// to understand the construction of a parameter.
     /// </summary>
-    /// <see cref="Signitures.TypeDetails"/>
+    /// <see cref="Signatures.TypeDetails"/>
     internal class ParameterDetails
     {
         private ParamDef _parameter;
@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// </summary>
         /// <param name="parameter">The details of the parameter.</param>
         /// <param name="details">The details of the type for the parameter.</param>
-        public ParameterDetails(ParamDef parameter, Signitures.TypeDetails details)
+        public ParameterDetails(ParamDef parameter, Signatures.TypeDetails details)
         {
             TypeDetails = details;
             _parameter = parameter;
@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// <summary>
         /// The full details of the type.
         /// </summary>
-        public Signitures.TypeDetails TypeDetails { get; set; }
+        public Signatures.TypeDetails TypeDetails { get; set; }
 
         /// <summary>
         /// The name of the parameter.

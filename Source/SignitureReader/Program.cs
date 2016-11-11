@@ -6,7 +6,7 @@ namespace SignitureReader
     using TheBoxSoftware;
     using TheBoxSoftware.Reflection.Core;
     using TheBoxSoftware.Reflection.Core.COFF;
-    using TheBoxSoftware.Reflection.Signitures;
+    using TheBoxSoftware.Reflection.Signatures;
 
     class Program
     {
@@ -43,7 +43,7 @@ namespace SignitureReader
                         try
                         {
                             /*
-                            Signitures type = (Signitures)Enum.Parse(typeof(Signitures), command[2]);
+                            Signatures type = (Signatures)Enum.Parse(typeof(Signatures), command[2]);
                             Signiture sig = blobStream.GetSigniture(1, type);
                             Console.WriteLine(sig.ToString());
                             */

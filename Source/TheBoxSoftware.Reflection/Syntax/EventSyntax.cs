@@ -1,7 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Syntax
 {
-    using TheBoxSoftware.Reflection.Signitures;
+    using TheBoxSoftware.Reflection.Signatures;
 
     /// <summary>
     /// Allows the caller to obtain details of an event in a structured way.

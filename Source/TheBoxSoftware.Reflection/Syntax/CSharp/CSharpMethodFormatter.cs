@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Syntax.CSharp
 {
     using System.Collections.Generic;
-    using Signitures;
+    using Signatures;
 
     internal sealed class CSharpMethodFormatter : CSharpFormatter, IMethodFormatter
     {

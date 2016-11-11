@@ -24,7 +24,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
                 FieldReader.ToUInt32(contents, offset.Shift(sizeOfMemberRefParentIndex), sizeOfMemberRefParentIndex)
                 );
             _name = new StringIndex(contents, sizeOfStringIndex, offset);
-            _signiture = new BlobIndex(sizeOfBlobIndex, contents, Reflection.Signitures.Signatures.MethodDef, offset);
+            _signiture = new BlobIndex(sizeOfBlobIndex, contents, Reflection.Signatures.Signatures.MethodDef, offset);
         }
 
         /// <summary>

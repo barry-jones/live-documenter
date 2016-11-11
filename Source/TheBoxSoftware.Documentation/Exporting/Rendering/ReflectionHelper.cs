@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
     using Reflection;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     public static class ReflectionHelper
     {

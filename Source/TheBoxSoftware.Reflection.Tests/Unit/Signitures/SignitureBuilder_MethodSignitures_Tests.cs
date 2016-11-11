@@ -1,16 +1,16 @@
 ﻿
-namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
+namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
 {
     using NUnit.Framework;
     using Reflection.Core.COFF;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     // tests to verify that the signiture builder can handle method based
-    // signitures:
+    // Signatures:
     //  those which start with C, DEFAULT, FASTCALL, STDCALL, THISCALL or VARARG
 
     [TestFixture]
-    public class SignitureBuilder_MethodSignitures_Tests
+    public class SignitureBuilder_MethodSignatures_Tests
     {
         [Test]
         public void SignitureIsMethodType_Read_ReturnsMethodBasedSigniture()
@@ -40,7 +40,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                 ((CallingConventionSignatureToken)result.Tokens[0]).Convention);
             Assert.AreEqual("[GenParamCount: 1]", result.Tokens[1].ToString());
             Assert.AreEqual("[ParamCount: 0]", result.Tokens[2].ToString());
-            Assert.AreEqual("[ElementType: System.Void] ", result.Tokens[3].ToString());
+            Assert.AreEqual("[ReturnType: [Type: [ElementType: System.Void] ] ]", result.Tokens[3].ToString());
         }
 
         [Test]
@@ -54,9 +54,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
 
             Assert.AreEqual("[CallingConvention: HasThis]", result.Tokens[0].ToString());
             Assert.AreEqual("[ParamCount: 0]", result.Tokens[1].ToString());
-            Assert.AreEqual("[ElementType: SZArray]", result.Tokens[2].ToString());
-            Assert.AreEqual("[ElementType: SZArray]", result.Tokens[3].ToString());
-            Assert.AreEqual("[ElementType: I4]", result.Tokens[4].ToString());
+            Assert.IsInstanceOf<ReturnTypeSignatureToken>(result.Tokens[2]);
+
+            // TODO: should better test SZArray, SZArray, I4 element types are found.
         }
 
         private SignatureBuilder CreateBuilder(byte[] contents)

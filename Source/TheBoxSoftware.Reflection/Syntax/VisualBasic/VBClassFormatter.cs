@@ -40,7 +40,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
                 tokens.AddRange(FormatTypeDetails(syntax.GetBaseClass()));
             }
 
-            Signitures.TypeDetails[] interfaces = syntax.GetInterfaces();
+            Signatures.TypeDetails[] interfaces = syntax.GetInterfaces();
             for(int i = 0; i < interfaces.Length; i++)
             {
                 if(i == 0)

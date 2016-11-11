@@ -5,7 +5,7 @@ namespace TheBoxSoftware.Reflection
     using System.Collections.Generic;
     using System.Diagnostics;
     using TheBoxSoftware.Reflection.Core.COFF;
-    using TheBoxSoftware.Reflection.Signitures;
+    using TheBoxSoftware.Reflection.Signatures;
 
     /// <summary>
     /// Details a reference to a Type that resides in another assembly.

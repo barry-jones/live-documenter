@@ -4,7 +4,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
     using NUnit.Framework;
     using Reflection.Core;
     using Reflection.Core.COFF;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
     using Helpers;
 
     [TestFixture]

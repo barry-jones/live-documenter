@@ -6,7 +6,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     using TheBoxSoftware.Reflection;
     using TheBoxSoftware.Reflection.Comments;
     using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;
-    using TheBoxSoftware.Reflection.Signitures;
+    using TheBoxSoftware.Reflection.Signatures;
 
     public class TypeMethodsPage : Page
     {

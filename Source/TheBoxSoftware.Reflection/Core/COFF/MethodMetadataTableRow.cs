@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             _implFlags = (MethodImplFlags)FieldReader.ToUInt16(contents, offset.Shift(2));
             _flags = (MethodAttributes)FieldReader.ToUInt16(contents, offset.Shift(2));
             _name = new StringIndex(contents, sizeOfStringIndex, offset);
-            _signiture = new BlobIndex(sizeOfBlobIndex, contents, Signitures.Signatures.MethodDef, offset);
+            _signiture = new BlobIndex(sizeOfBlobIndex, contents, Signatures.Signatures.MethodDef, offset);
             _paramList = new Index(contents, offset, sizeOfParamIndex);
         }
 

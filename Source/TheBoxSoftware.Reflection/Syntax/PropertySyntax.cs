@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Syntax
 {
     using System;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     /// <summary>
     /// Provides access to the important information for creating formatted

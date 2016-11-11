@@ -4,7 +4,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     using System;
 
     /// <summary>
-    /// The blob stream controls access to signitures contained in the pe/coff file.
+    /// The blob stream controls access to Signatures contained in the pe/coff file.
     /// </summary>
     internal sealed class BlobStream : Stream
     {
@@ -43,15 +43,15 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         }
 
         /// <summary>
-        /// Retrives a parsed <see cref="Signitures.Signature"/> for the specified
+        /// Retrives a parsed <see cref="Signatures.Signature"/> for the specified
         /// <paramref name="startOffset"/> and <paramref name="signiture"/> type.
         /// </summary>
         /// <param name="startOffset">The start of the signiture in the stream.</param>
         /// <param name="signiture">The type of signiture to parse.</param>
         /// <returns>The parsed signiture.</returns>
-        public Signitures.Signature GetSigniture(uint startOffset, Signitures.Signatures signiture)
+        public Signatures.Signature GetSigniture(uint startOffset, Signatures.Signatures signiture)
         {
-            return Signitures.Signature.Create(
+            return Signatures.Signature.Create(
                 _streamContents,
                 (int)startOffset,
                 signiture
@@ -65,7 +65,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// <returns>The contents of the signiture as a byte array.</returns>
         public byte[] GetSignitureContents(int startOffset)
         {
-            uint length = Signitures.SignatureToken.GetCompressedValue(_streamContents, startOffset++);    // The first byte is always the length
+            uint length = Signatures.SignatureToken.GetCompressedValue(_streamContents, startOffset++);    // The first byte is always the length
             //byte length = _streamContents[startOffset++];
             byte[] signitureContents = new byte[length];
             for(int i = startOffset; i < startOffset + length; i++)
@@ -77,7 +77,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
 
         public uint GetLength(int offset)
         {
-            return Signitures.SignatureToken.GetCompressedValue(_streamContents, offset);    // The first byte is always the length
+            return Signatures.SignatureToken.GetCompressedValue(_streamContents, offset);    // The first byte is always the length
         }
 
         internal int GetLength()

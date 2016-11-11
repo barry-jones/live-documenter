@@ -6,7 +6,7 @@ namespace TheBoxSoftware.Reflection
     using System.Diagnostics;
     using System.Linq;
     using Core.COFF;
-    using Signitures;
+    using Signatures;
 
     /// <summary>
     /// Represents a method definition as a reflected element.

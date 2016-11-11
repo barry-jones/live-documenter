@@ -3,7 +3,7 @@ namespace TheBoxSoftware.Reflection.Syntax
 {
     using System;
     using System.Collections.Generic;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     internal class DelegateSyntax : Syntax
     {

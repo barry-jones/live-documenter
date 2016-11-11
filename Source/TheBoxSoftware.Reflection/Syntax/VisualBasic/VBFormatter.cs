@@ -3,7 +3,7 @@ namespace TheBoxSoftware.Reflection.Syntax.VisualBasic
 {
     using System;
     using System.Collections.Generic;
-    using Signitures;
+    using Signatures;
 
     /// <summary>
     /// Base class with methods that are useful for all VB formatting

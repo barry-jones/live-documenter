@@ -92,7 +92,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                 tokens.AddRange(FormatTypeDetails(syntax.GetBaseClass()));
                 hasBaseType = true;
             }
-            Signitures.TypeDetails[] details = syntax.GetInterfaces();
+            Signatures.TypeDetails[] details = syntax.GetInterfaces();
             for(int i = 0; i < details.Length; i++)
             {
                 if(!hasBaseType && i == 0)

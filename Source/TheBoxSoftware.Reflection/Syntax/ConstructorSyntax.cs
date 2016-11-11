@@ -2,7 +2,7 @@
 namespace TheBoxSoftware.Reflection.Syntax
 {
     using System.Collections.Generic;
-    using Signitures;
+    using Signatures;
 
     internal class ConstructorSyntax : Syntax
     {

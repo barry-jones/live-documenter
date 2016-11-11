@@ -1,5 +1,5 @@
 ﻿
-namespace TheBoxSoftware.Reflection.Signitures
+namespace TheBoxSoftware.Reflection.Signatures
 {
     using System;
     using System.Text;

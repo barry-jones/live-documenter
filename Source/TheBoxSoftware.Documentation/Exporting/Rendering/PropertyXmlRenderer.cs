@@ -3,7 +3,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 {
     using Reflection;
     using Reflection.Comments;
-    using Reflection.Signitures;
+    using Reflection.Signatures;
 
     class PropertyXmlRenderer : XmlRenderer
     {

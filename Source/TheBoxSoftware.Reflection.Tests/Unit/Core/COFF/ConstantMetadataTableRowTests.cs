@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core.COFF
 
             ConstantMetadataTableRow row = new ConstantMetadataTableRow(content, 0, resolver, indexDetails);
 
-            Assert.AreEqual(Reflection.Signitures.ElementTypes.Void, row.Type);
+            Assert.AreEqual(Reflection.Signatures.ElementTypes.Void, row.Type);
             Assert.IsNotNull(row.Parent);
             Assert.AreEqual(0, row.Value.Value);
         }
