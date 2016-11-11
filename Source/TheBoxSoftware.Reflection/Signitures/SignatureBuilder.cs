@@ -56,7 +56,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 var paramCount = new ParameterCountSignitureToken(signitureBytes, index);
                 created.Tokens.Add(paramCount);
-                var returnType = new ElementTypeSignitureToken(signitureBytes, index);
+                var returnType = new ReturnTypeSignitureToken(signitureBytes, index);
                 created.Tokens.Add(returnType);
             }
 
