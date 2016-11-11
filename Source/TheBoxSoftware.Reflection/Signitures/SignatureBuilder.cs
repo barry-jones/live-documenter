@@ -5,7 +5,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     using Core;
     using Core.COFF;
 
-    internal class SignitureBuilder
+    internal class SignatureBuilder
     {
         private const uint CompressedByteMask   = 0x0000007f;
         private const uint CompressedShortMask  = 0x00003fff;
@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 
         private readonly BlobStream _stream;
 
-        public SignitureBuilder(BlobStream underlyingStream)
+        public SignatureBuilder(BlobStream underlyingStream)
         {
             _stream = underlyingStream;
         }
@@ -25,20 +25,24 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             byte[] signitureBytes = GetSignitureBytes(offset);
             Signitures type = 0x00;
+            byte first = signitureBytes[0];
 
-            switch((CallingConventions)(signitureBytes[0] & 0x0F))
+            int check = first & 0x0F;
+
+            if(check == 0x08)
             {
-                case CallingConventions.Default:
-                case CallingConventions.C:
-                case CallingConventions.FastCall:
-                case CallingConventions.StdCall:
-                case CallingConventions.ThisCall:
-                case CallingConventions.VarArg:
-                    type = Signitures.MethodDef;
-                    break;
-                default:
-                    type = Signitures.MethodRef;
-                    break;
+                // property apparently
+                type = Signitures.Property;
+            }
+            else if (check == 0x06)
+            {
+                // field apparently
+                type = Signitures.Field;
+            }
+            else
+            {
+                // method... perhaps
+                type = Signitures.MethodDef;
             }
 
             Signiture created = new Signiture();

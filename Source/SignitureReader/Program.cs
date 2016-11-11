@@ -2,6 +2,7 @@
 namespace SignitureReader
 {
     using System;
+    using System.Text;
     using TheBoxSoftware;
     using TheBoxSoftware.Reflection.Core;
     using TheBoxSoftware.Reflection.Core.COFF;
@@ -64,6 +65,28 @@ namespace SignitureReader
                         Console.WriteLine(conventions);
                         break;
 
+                    case "all":
+                        StringBuilder output = new StringBuilder();
+                        blobStream.GetRange(0, (uint)blobStream.GetLength());
+
+                        for(int i = 0; i < blobStream.GetLength(); i++)
+                        {
+                            if(i == 0)
+                            {
+                                output.Append($"{i.ToString()}: ");
+                            }
+                            if(i != 0 && i % 16 == 0)
+                            {
+                                Console.WriteLine(output.ToString());
+                                output.Clear();
+                                output.Append($"{i.ToString()}: ");
+                            }
+
+                            output.Append($"{blobStream.GetByte(i).ToString("X2")} ");
+                        }
+
+                        break;
+
                     case "report":
                         offset = int.Parse(command[1]);
 
@@ -71,7 +94,9 @@ namespace SignitureReader
                         contents = blobStream.GetSignitureContents(offset);
                         Console.WriteLine(FieldReader.ToHexString(contents, 0, contents.Length));
 
-                        SignitureBuilder builder = new SignitureBuilder(blobStream);
+                        Console.WriteLine($"  byte at {offset}: 0x{blobStream.GetByte(offset).ToString("X2")}");
+
+                        SignatureBuilder builder = new SignatureBuilder(blobStream);
                         Console.WriteLine($"  length: {builder.GetLength(offset)}");
 
                         contents = builder.GetSignitureBytes(offset);

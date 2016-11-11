@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [Test]
         public void OffsetOutOfBounds_Read_ReturnsNull()
         {
-            SignitureBuilder builder = CreateBuilder(new byte[5]);
+            SignatureBuilder builder = CreateBuilder(new byte[5]);
 
             Signiture lower = builder.Read(-1);
             Signiture larger = builder.Read(5);
@@ -23,7 +23,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [Test]
         public void OffsetIsOutOfBounds_ReadLength_ThrowsException()
         {
-            SignitureBuilder builder = CreateBuilder(new byte[5]);
+            SignatureBuilder builder = CreateBuilder(new byte[5]);
 
             Assert.Throws<System.IndexOutOfRangeException>(delegate ()
             {
@@ -41,7 +41,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         public void OffsetIsCorrect_ReadLength_GetsLength(byte[] signiture, int expected)
         {
             BlobStream stream = new BlobStream(signiture, 0, signiture.Length);
-            SignitureBuilder builder = new SignitureBuilder(stream);
+            SignatureBuilder builder = new SignatureBuilder(stream);
             int offset = 0;
 
             uint result = builder.GetLength(offset);
@@ -52,7 +52,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [Test]
         public void OffsetIsOutOfBounds_GetSignitureBytes_ThrowsException()
         {
-            SignitureBuilder builder = CreateEmptyBuilder();
+            SignatureBuilder builder = CreateEmptyBuilder();
             Assert.Throws<System.IndexOutOfRangeException>(delegate ()
             {
                 builder.GetSignitureBytes(-1);
@@ -63,7 +63,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [TestCase(685, 97)]
         public void SignitureIsValid_GetSignitureBytes_IsCorrect(int offset, int expectedLength)
         {
-            SignitureBuilder builder = CreateTestBuilder();
+            SignatureBuilder builder = CreateTestBuilder();
 
             byte[] result = builder.GetSignitureBytes(offset);
 
@@ -73,7 +73,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [Test]
         public void SignitureIsMethod_Read_ReturnsMethodSigniture()
         {
-            SignitureBuilder builder = CreateTestBuilder();
+            SignatureBuilder builder = CreateTestBuilder();
 
             Signiture result = builder.Read(1);
 
@@ -83,21 +83,21 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [Test]
         public void SignitureIsProperty_Read_DoesntReturnMethodSigniture()
         {
-            SignitureBuilder builder = CreateTestBuilder();
+            SignatureBuilder builder = CreateTestBuilder();
 
             Signiture result = builder.Read(86);
 
             Assert.AreNotEqual(Signitures.MethodDef, result.Type);
         }
 
-        private SignitureBuilder CreateTestBuilder() => CreateBuilder(_blobStream);
+        private SignatureBuilder CreateTestBuilder() => CreateBuilder(_blobStream);
 
-        private SignitureBuilder CreateEmptyBuilder() => CreateBuilder(new byte[0]);
+        private SignatureBuilder CreateEmptyBuilder() => CreateBuilder(new byte[0]);
 
-        private SignitureBuilder CreateBuilder(byte[] contents)
+        private SignatureBuilder CreateBuilder(byte[] contents)
         {
             BlobStream underlyingStream = new BlobStream(contents, 0, contents.Length);
-            return new SignitureBuilder(underlyingStream);
+            return new SignatureBuilder(underlyingStream);
         }
 
         // full blob stream pulled from documentationtest.dll

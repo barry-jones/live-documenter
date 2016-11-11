@@ -127,6 +127,7 @@
     <Compile Include="Unit\Signitures\CustomModifierTokenTests.cs" />
     <Compile Include="Unit\Signitures\ElementTypeSignitureTokenTests.cs" />
     <Compile Include="Unit\Signitures\SignitureBuilderTests.cs" />
+    <Compile Include="Unit\Signitures\SignitureBuilder_MethodSignitures_Tests.cs" />
     <Compile Include="Unit\Signitures\SignitureTokenTests.cs" />
     <Compile Include="Unit\Signitures\TypeSignitureTokenTests.cs" />
     <Compile Include="Unit\Syntax\ClassSyntaxTests.cs" />
