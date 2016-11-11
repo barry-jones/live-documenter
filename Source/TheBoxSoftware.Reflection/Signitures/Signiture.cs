@@ -3,6 +3,7 @@ namespace TheBoxSoftware.Reflection.Signitures
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using Core;
 
     internal class Signiture
@@ -89,6 +90,16 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
             }
             return token;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach(SignitureToken current in Tokens)
+            {
+                builder.Append(current.ToString());
+            }
+            return builder.ToString();
         }
 
         /// <summary>

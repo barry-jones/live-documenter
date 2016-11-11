@@ -278,7 +278,7 @@
     <Compile Include="Signitures\SentinalSignitureToken.cs" />
     <Compile Include="Signitures\Signiture.cs" />
     <Compile Include="Signitures\SignitureConvertor.cs" />
-    <Compile Include="Signitures\SignitureBuilder.cs" />
+    <Compile Include="Signitures\SignatureBuilder.cs" />
     <Compile Include="Signitures\Signitures.cs" />
     <Compile Include="Signitures\SignitureToken.cs" />
     <Compile Include="Signitures\SignitureTokenContainer.cs" />

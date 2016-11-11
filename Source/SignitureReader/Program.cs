@@ -42,9 +42,15 @@ namespace SignitureReader
 
                         try
                         {
+                            /*
                             Signitures type = (Signitures)Enum.Parse(typeof(Signitures), command[2]);
                             Signiture sig = blobStream.GetSigniture(1, type);
                             Console.WriteLine(sig.ToString());
+                            */
+                            SignatureBuilder builder1 = new SignatureBuilder(blobStream);
+                            Signiture sig1 = builder1.Read(offset);
+
+                            Console.WriteLine(sig1.ToString());
                         }
                         catch(Exception)
                         {

@@ -24,6 +24,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 return null;
 
             byte[] signitureBytes = GetSignitureBytes(offset);
+            Signiture created = new Signiture();
             Signitures type = 0x00;
             byte first = signitureBytes[0];
 
@@ -32,21 +33,32 @@ namespace TheBoxSoftware.Reflection.Signitures
             if(check == 0x08)
             {
                 // property apparently
-                type = Signitures.Property;
+                created.Type = Signitures.Property;
             }
             else if (check == 0x06)
             {
                 // field apparently
-                type = Signitures.Field;
+                created.Type = Signitures.Field;
             }
             else
             {
                 // method... perhaps
-                type = Signitures.MethodDef;
-            }
+                created.Type = Signitures.MethodDef;
 
-            Signiture created = new Signiture();
-            created.Type = type;
+                Offset index = 0;
+
+                var convention = new CallingConventionSignitureToken(signitureBytes, index);
+                created.Tokens.Add(convention);
+                if((convention.Convention & CallingConventions.Generic) != 0)
+                {
+                    var genericParam = new GenericParamaterCountSignitureToken(signitureBytes, index);
+                    created.Tokens.Add(genericParam);
+                }
+                var paramCount = new ParameterCountSignitureToken(signitureBytes, index);
+                created.Tokens.Add(paramCount);
+                var returnType = new ElementTypeSignitureToken(signitureBytes, index);
+                created.Tokens.Add(returnType);
+            }
 
             return created;
         }

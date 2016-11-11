@@ -83,9 +83,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [Test]
         public void SignitureIsProperty_Read_DoesntReturnMethodSigniture()
         {
-            SignatureBuilder builder = CreateTestBuilder();
+            byte[] contents = new byte[] { 0x03, 0x28, 0x00, 0x08 };
+            SignatureBuilder builder = CreateBuilder(contents);
 
-            Signiture result = builder.Read(86);
+            Signiture result = builder.Read(0);
 
             Assert.AreNotEqual(Signitures.MethodDef, result.Type);
         }

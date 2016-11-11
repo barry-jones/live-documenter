@@ -144,7 +144,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <returns>A string</returns>
         public override string ToString()
         {
-            return $"[ElementType: {_token}] ";
+            return $"[ElementType: {Definition}] ";
         }
 
         /// <summary>
