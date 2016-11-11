@@ -117,12 +117,12 @@ namespace TheBoxSoftware.Reflection.Signitures
                 else
                 {
                     currentToken = childToken;
-                    elementType = ((ElementTypeSignitureToken)childToken).ElementType;
+                    elementType = ((ElementTypeSignatureToken)childToken).ElementType;
                 }
             }
 
             TypeSignitureToken typeToken = currentToken as TypeSignitureToken;
-            ElementTypeSignitureToken elementToken = currentToken as ElementTypeSignitureToken;
+            ElementTypeSignatureToken elementToken = currentToken as ElementTypeSignatureToken;
             switch(elementType)
             {
                 case ElementTypes.Var: ConvertVar(convertedSigniture, typeToken.ElementType.Token, param); break;
@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     }
                     else
                     {
-                        szArrayElementType = ((ElementTypeSignitureToken)typeToken.Tokens[1]).ElementType;
+                        szArrayElementType = ((ElementTypeSignatureToken)typeToken.Tokens[1]).ElementType;
                     }
 
                     Convert(
@@ -161,7 +161,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     ConvertArray(convertedSigniture, resolvedType, shape);
                     break;
                 case ElementTypes.GenericInstance:
-                    TypeRef genericType = ((ElementTypeSignitureToken)typeToken.Tokens[1]).ResolveToken(assembly);
+                    TypeRef genericType = ((ElementTypeSignatureToken)typeToken.Tokens[1]).ResolveToken(assembly);
                     GetTypeName(convertedSigniture, genericType);
 
                     GenericArgumentCountSignitureToken argsCount = typeToken.GetGenericArgumentCount();
@@ -184,7 +184,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                             ElementTypes elType;
                             if(typeToken.Tokens[j + 3].TokenType == SignitureTokens.ElementType)
                             {
-                                ElementTypeSignitureToken gESig = (ElementTypeSignitureToken)typeToken.Tokens[j + 3];
+                                ElementTypeSignatureToken gESig = (ElementTypeSignatureToken)typeToken.Tokens[j + 3];
                                 argResolvedType = gESig.ResolveToken(assembly);
                                 elType = gESig.ElementType;
                             }

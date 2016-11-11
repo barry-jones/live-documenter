@@ -30,8 +30,8 @@ namespace TheBoxSoftware.Reflection.Syntax
                 );
             if(token != null)
             {
-                TypeRef type = (token is Signitures.ElementTypeSignitureToken)
-                    ? ((Signitures.ElementTypeSignitureToken)token).ResolveToken(_field.Assembly)
+                TypeRef type = (token is Signitures.ElementTypeSignatureToken)
+                    ? ((Signitures.ElementTypeSignatureToken)token).ResolveToken(_field.Assembly)
                     : ((Signitures.TypeSignitureToken)token).ResolveType(_field.Assembly, _field);
                 if(type != null)
                 {

@@ -8,9 +8,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
     [TestFixture]
     public class ElementTypeSignitureTokenTests
     {
-        private ElementTypeSignitureToken CreateToken(byte[] content)
+        private ElementTypeSignatureToken CreateToken(byte[] content)
         {
-            return new ElementTypeSignitureToken(content, 0);
+            return new ElementTypeSignatureToken(content, 0);
         }
 
         [Test]
@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             // 0, 1 or 2 for second value
             byte[] content = new byte[] { (byte)ElementTypes.Class, 0 };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(ElementTypes.Class, token.ElementType);
             Assert.AreEqual(ILMetadataToken.TypeDef, (ILMetadataToken)token.Token);
@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             // 0, 1 or 2 for second value
             byte[] content = new byte[] { (byte)ElementTypes.Class, 1 };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(ElementTypes.Class, token.ElementType);
             Assert.AreEqual(ILMetadataToken.TypeRef, (ILMetadataToken)token.Token);
@@ -43,7 +43,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             // 0, 1 or 2 for second value
             byte[] content = new byte[] { (byte)ElementTypes.Class, 2 };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(ElementTypes.Class, token.ElementType);
             Assert.AreEqual(ILMetadataToken.TypeSpec, (ILMetadataToken)token.Token);
@@ -55,7 +55,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             // 0, 1 or 2 for second value
             byte[] content = new byte[] { (byte)ElementTypes.ValueType, 0 };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(ElementTypes.ValueType, token.ElementType);
             Assert.AreEqual(ILMetadataToken.TypeDef, (ILMetadataToken)token.Token);
@@ -67,7 +67,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             // 0, 1 or 2 for second value
             byte[] content = new byte[] { (byte)ElementTypes.ValueType, 1 };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(ElementTypes.ValueType, token.ElementType);
             Assert.AreEqual(ILMetadataToken.TypeRef, (ILMetadataToken)token.Token);
@@ -79,7 +79,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             // 0, 1 or 2 for second value
             byte[] content = new byte[] { (byte)ElementTypes.MVar, 1 };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(ElementTypes.MVar, token.ElementType);
             Assert.AreEqual(1, token.Token);
@@ -91,7 +91,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             // 0, 1 or 2 for second value
             byte[] content = new byte[] { (byte)ElementTypes.Var, 1 };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(ElementTypes.Var, token.ElementType);
             Assert.AreEqual(1, token.Token);
@@ -121,7 +121,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             byte[] content = new byte[] { type };
 
-            ElementTypeSignitureToken token = CreateToken(content);
+            ElementTypeSignatureToken token = CreateToken(content);
 
             Assert.AreEqual(expected, (byte)token.ElementType);
         }
@@ -132,7 +132,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] content = new byte[] { (byte)ElementTypes.Array };
             ElementTypes allowed = ElementTypes.Array;
 
-            bool result = ElementTypeSignitureToken.IsToken(content, 0, allowed);
+            bool result = ElementTypeSignatureToken.IsToken(content, 0, allowed);
 
             Assert.IsTrue(result);
         }
@@ -143,7 +143,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             byte[] content = new byte[] { (byte)ElementTypes.Array };
             ElementTypes allowed = ElementTypes.TypedByRef;
 
-            bool result = ElementTypeSignitureToken.IsToken(content, 0, allowed);
+            bool result = ElementTypeSignatureToken.IsToken(content, 0, allowed);
 
             Assert.IsFalse(result);
         }

@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Reflection.Syntax
             {
                 TypeRef type = (token is Signitures.TypeSignitureToken)
                     ? ((Signitures.TypeSignitureToken)token).ResolveType(_field.Assembly, null)
-                    : ((Signitures.ElementTypeSignitureToken)token).ResolveToken(_field.Assembly);
+                    : ((Signitures.ElementTypeSignatureToken)token).ResolveToken(_field.Assembly);
 
                 returnType = type;
             }

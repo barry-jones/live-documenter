@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             byte[] content = new byte[] { 1, 0 }; // little-endian
 
-            CountSignitureToken token = new CountSignitureToken(content, 0);
+            CountSignatureToken token = new CountSignatureToken(content, 0);
 
             Assert.AreEqual(1, token.Count);
         }

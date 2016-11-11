@@ -23,14 +23,14 @@ namespace TheBoxSoftware.Reflection.Signitures
                 Tokens.Add(new CustomModifierToken(signiture, offset));
             }
 
-            if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.ByRef))
+            if(ElementTypeSignatureToken.IsToken(signiture, offset, ElementTypes.ByRef))
             {
-                Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // ByRef
+                Tokens.Add(new ElementTypeSignatureToken(signiture, offset));    // ByRef
                 Tokens.Add(new TypeSignitureToken(signiture, offset));   // Type
             }
-            else if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.Void | ElementTypes.TypedByRef))
+            else if(ElementTypeSignatureToken.IsToken(signiture, offset, ElementTypes.Void | ElementTypes.TypedByRef))
             {
-                Tokens.Add(new ElementTypeSignitureToken(signiture, offset));    // Void, TypedByRef
+                Tokens.Add(new ElementTypeSignatureToken(signiture, offset));    // Void, TypedByRef
             }
             else
             {
@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else
             {
-                return ((ElementTypeSignitureToken)token).ResolveToken(assembly);
+                return ((ElementTypeSignatureToken)token).ResolveToken(assembly);
             }
         }
 
@@ -63,7 +63,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else
             {
-                details.Type = ((ElementTypeSignitureToken)token).ResolveToken(member.Assembly);
+                details.Type = ((ElementTypeSignatureToken)token).ResolveToken(member.Assembly);
             }
 
             return details;

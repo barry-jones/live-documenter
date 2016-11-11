@@ -172,9 +172,9 @@ namespace TheBoxSoftware.Reflection
                         SignitureToken token = spec.Signiture.TypeToken.Tokens[0];
 
                         // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
-                        if(token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignitureToken)token).ElementType == ElementTypes.GenericInstance)
+                        if(token.TokenType == SignitureTokens.ElementType && ((ElementTypeSignatureToken)token).ElementType == ElementTypes.GenericInstance)
                         {
-                            ElementTypeSignitureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignitureToken;
+                            ElementTypeSignatureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignatureToken;
 
                             TypeRef typeRef = typeToken.ResolveToken(Assembly);
                             if(typeRef == type)

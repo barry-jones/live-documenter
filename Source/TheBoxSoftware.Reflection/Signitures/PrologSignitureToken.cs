@@ -4,7 +4,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     using Core;
 
     /// <summary>
-    /// A class which represents a prolog for a <see cref="CustomAttributeSigniture"/>.
+    /// A class which represents a prolog for a <see cref="CustomAttributeSignature"/>.
     /// </summary>
     internal sealed class PrologSignitureToken : SignitureToken
     {

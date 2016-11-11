@@ -21,19 +21,19 @@ namespace TheBoxSoftware.Reflection.Signitures
 
             offset.Shift(1);    // jump passed the 0x7 indicator
 
-            CountSignitureToken count = new CountSignitureToken(signiture, offset);
+            CountSignatureToken count = new CountSignatureToken(signiture, offset);
             Tokens.Add(count);
 
             for(int i = 0; i < count.Count; i++)
             {
-                if(ElementTypeSignitureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
+                if(ElementTypeSignatureToken.IsToken(signiture, offset, ElementTypes.TypedByRef))
                 {
-                    ElementTypeSignitureToken typedByRef = new ElementTypeSignitureToken(signiture, offset);
+                    ElementTypeSignatureToken typedByRef = new ElementTypeSignatureToken(signiture, offset);
                     Tokens.Add(typedByRef);
                 }
                 else
                 {
-                    while(CustomModifierToken.IsToken(signiture, offset) || ConstraintSignitureToken.IsToken(signiture, offset))
+                    while(CustomModifierToken.IsToken(signiture, offset) || ConstraintSignatureToken.IsToken(signiture, offset))
                     {
                         if(CustomModifierToken.IsToken(signiture, offset))
                         {
@@ -42,15 +42,15 @@ namespace TheBoxSoftware.Reflection.Signitures
                         }
                         else
                         {
-                            ConstraintSignitureToken constraint = new ConstraintSignitureToken(signiture, offset);
+                            ConstraintSignatureToken constraint = new ConstraintSignatureToken(signiture, offset);
                             Tokens.Add(constraint);
                         }
                     }
 
-                    ElementTypeSignitureToken byRef = new ElementTypeSignitureToken(signiture, offset);
+                    ElementTypeSignatureToken byRef = new ElementTypeSignatureToken(signiture, offset);
                     Tokens.Add(byRef);
 
-                    ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
+                    ElementTypeSignatureToken type = new ElementTypeSignatureToken(signiture, offset);
                     Tokens.Add(type);
                 }
             }

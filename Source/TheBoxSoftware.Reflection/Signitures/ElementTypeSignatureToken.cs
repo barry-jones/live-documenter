@@ -18,7 +18,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// </summary>
     /// <seealso cref="TypeSignitureToken"/>
     [DebuggerDisplay("ElementType: {ElementType}, {Token}")]
-    internal sealed class ElementTypeSignitureToken : SignitureToken
+    internal sealed class ElementTypeSignatureToken : SignitureToken
     {
         private uint _token;
         private object _definition;
@@ -37,7 +37,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// about the type. This class will only ever provide a single item of detail.
         /// </para>
         /// </remarks>
-        public ElementTypeSignitureToken(byte[] signiture, Offset offset)
+        public ElementTypeSignatureToken(byte[] signiture, Offset offset)
             : base(SignitureTokens.ElementType)
         {
 

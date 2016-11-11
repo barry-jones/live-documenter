@@ -18,7 +18,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         {
             Offset offset = 0;
 
-            ElementTypeSignitureToken property = new ElementTypeSignitureToken(signiture, offset);
+            ElementTypeSignatureToken property = new ElementTypeSignatureToken(signiture, offset);
             Tokens.Add(property);
 
             ParameterCountSignitureToken paramCount = new ParameterCountSignitureToken(signiture, offset);
@@ -30,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 Tokens.Add(modifier);
             }
 
-            ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
+            ElementTypeSignatureToken type = new ElementTypeSignatureToken(signiture, offset);
             Tokens.Add(type);
 
             for(int i = 0; i < paramCount.Count; i++)

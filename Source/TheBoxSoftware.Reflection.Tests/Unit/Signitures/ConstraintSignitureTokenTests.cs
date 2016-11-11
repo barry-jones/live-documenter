@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         public void ConstraintToken_Create_WhenPinned_ShouldreturnPinned()
         {
             byte[] content = new byte[] { (byte)ElementTypes.Pinned };
-            ConstraintSignitureToken token = new ConstraintSignitureToken(content, 0);
+            ConstraintSignatureToken token = new ConstraintSignatureToken(content, 0);
 
             Assert.AreEqual(ElementTypes.Pinned, token.Constraint);
         }
@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         public void ConstraintToken_ToString_WhenPinned_ShouldOutputCorrectly()
         {
             byte[] content = new byte[] { (byte)ElementTypes.Pinned };
-            ConstraintSignitureToken token = new ConstraintSignitureToken(content, 0);
+            ConstraintSignatureToken token = new ConstraintSignatureToken(content, 0);
 
             string result = token.ToString();
 
@@ -32,7 +32,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             byte[] content = new byte[] { 0 };
 
-            bool result = ConstraintSignitureToken.IsToken(content, 0);
+            bool result = ConstraintSignatureToken.IsToken(content, 0);
 
             Assert.IsFalse(result);
         }
@@ -42,7 +42,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             byte[] content = new byte[] { (byte)ElementTypes.Pinned };
 
-            bool result = ConstraintSignitureToken.IsToken(content, 0);
+            bool result = ConstraintSignatureToken.IsToken(content, 0);
 
             Assert.IsTrue(result);
         }

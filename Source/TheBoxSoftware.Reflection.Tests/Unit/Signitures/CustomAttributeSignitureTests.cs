@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         {
             byte[] content = new byte[] { 0x01, 0x00 };
 
-            CustomAttributeSigniture token = new CustomAttributeSigniture(content);
+            CustomAttributeSignature token = new CustomAttributeSignature(content);
 
             Assert.AreEqual(1, token.Tokens.Count);
         }

@@ -258,12 +258,12 @@
     <Compile Include="Signitures\ArrayShapeSignatureToken.cs" />
     <Compile Include="Signitures\CallingConventions.cs" />
     <Compile Include="Signitures\CallingConventionSignatureToken.cs" />
-    <Compile Include="Signitures\ConstraintSignitureToken.cs" />
-    <Compile Include="Signitures\CountSignitureToken.cs" />
-    <Compile Include="Signitures\CustomAttributeSigniture.cs" />
+    <Compile Include="Signitures\ConstraintSignatureToken.cs" />
+    <Compile Include="Signitures\CountSignatureToken.cs" />
+    <Compile Include="Signitures\CustomAttributeSignature.cs" />
     <Compile Include="Signitures\CustomModifierToken.cs" />
     <Compile Include="Signitures\ElementTypes.cs" />
-    <Compile Include="Signitures\ElementTypeSignitureToken.cs" />
+    <Compile Include="Signitures\ElementTypeSignatureToken.cs" />
     <Compile Include="Signitures\FieldSigniture.cs" />
     <Compile Include="Signitures\GenericArgumentCountSignitureToken.cs" />
     <Compile Include="Signitures\GenericParamaterCountSignitureToken.cs" />

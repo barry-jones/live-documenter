@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// </para>
     /// <para>
     /// A type can be represented by one or more tokens, hence this token derives from
-    /// <see cref="SignitureTokenContainer"/>. However it will always have an <see cref="ElementTypeSignitureToken"/>
+    /// <see cref="SignitureTokenContainer"/>. However it will always have an <see cref="ElementTypeSignatureToken"/>
     /// which should allow any resolving to be perfomed more easily.
     /// </para>
     /// </summary>
@@ -30,7 +30,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <param name="offset">The offset to start reading from.</param>
         public TypeSignitureToken(byte[] signiture, Offset offset) : base(SignitureTokens.Type)
         {
-            ElementTypeSignitureToken type = new ElementTypeSignitureToken(signiture, offset);
+            ElementTypeSignatureToken type = new ElementTypeSignatureToken(signiture, offset);
             TypeSignitureToken childType;
             Tokens.Add(type);
             ElementType = type;
@@ -56,7 +56,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     Tokens.Add(childType);
                     break;
                 case ElementTypes.GenericInstance:
-                    ElementTypeSignitureToken genericType = new ElementTypeSignitureToken(signiture, offset);
+                    ElementTypeSignatureToken genericType = new ElementTypeSignatureToken(signiture, offset);
                     Tokens.Add(genericType);
                     GenericArgumentCountSignitureToken argCount = new GenericArgumentCountSignitureToken(signiture, offset);
                     Tokens.Add(argCount);
@@ -93,7 +93,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.GenericInstance)
             {
-                ElementTypeSignitureToken childType = Tokens[1] as ElementTypeSignitureToken;
+                ElementTypeSignatureToken childType = Tokens[1] as ElementTypeSignatureToken;
                 details.Type = childType.ResolveToken(member.Assembly);
                 details.IsGenericInstance = true;
                 details.GenericParameters = new List<TypeDetails>();
@@ -108,7 +108,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     else
                     {
                         TypeDetails genericParameter = new TypeDetails();
-                        genericParameter.Type = ((ElementTypeSignitureToken)Tokens[i]).ResolveToken(member.Assembly);
+                        genericParameter.Type = ((ElementTypeSignatureToken)Tokens[i]).ResolveToken(member.Assembly);
                         details.GenericParameters.Add(genericParameter);
                     }
                 }
@@ -122,7 +122,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ElementTypeSignitureToken childType = Tokens[1] as ElementTypeSignitureToken;
+                    ElementTypeSignatureToken childType = Tokens[1] as ElementTypeSignatureToken;
                     details.Type = childType.ResolveToken(member.Assembly);
                 }
                 details.IsPointer = true;
@@ -136,7 +136,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ElementTypeSignitureToken childType = Tokens[1] as ElementTypeSignitureToken;
+                    ElementTypeSignatureToken childType = Tokens[1] as ElementTypeSignatureToken;
                     details.ArrayOf = new TypeDetails();
                     details.ArrayOf.Type = childType.ResolveToken(member.Assembly);
                 }
@@ -194,7 +194,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.GenericInstance)
             {
-                ElementTypeSignitureToken childType = (ElementTypeSignitureToken)Tokens[1];
+                ElementTypeSignatureToken childType = (ElementTypeSignatureToken)Tokens[1];
                 type = childType.ResolveToken(assembly);
             }
             else if(ElementType.ElementType == ElementTypes.Ptr)
@@ -206,7 +206,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ElementTypeSignitureToken childType = (ElementTypeSignitureToken)Tokens[1];
+                    ElementTypeSignatureToken childType = (ElementTypeSignatureToken)Tokens[1];
                     type = childType.ResolveToken(assembly);
                 }
             }
@@ -219,7 +219,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ElementTypeSignitureToken childType = (ElementTypeSignitureToken)Tokens[1];
+                    ElementTypeSignatureToken childType = (ElementTypeSignatureToken)Tokens[1];
                     type = childType.ResolveToken(assembly);
                 }
             }
@@ -310,7 +310,7 @@ namespace TheBoxSoftware.Reflection.Signitures
             }
             else if(ElementType.ElementType == ElementTypes.GenericInstance)
             {
-                ElementTypeSignitureToken childType = Tokens[1] as ElementTypeSignitureToken;
+                ElementTypeSignatureToken childType = Tokens[1] as ElementTypeSignatureToken;
                 type = childType.ResolveToken(assembly);
             }
             else if(ElementType.ElementType == ElementTypes.Ptr)
@@ -322,7 +322,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ElementTypeSignitureToken childType = Tokens[1] as ElementTypeSignitureToken;
+                    ElementTypeSignatureToken childType = Tokens[1] as ElementTypeSignatureToken;
                     type = childType.ResolveToken(assembly);
                 }
             }
@@ -335,7 +335,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 }
                 else
                 {
-                    ElementTypeSignitureToken childType = (ElementTypeSignitureToken)this.Tokens[1];
+                    ElementTypeSignatureToken childType = (ElementTypeSignatureToken)this.Tokens[1];
                     type = childType.ResolveToken(assembly);
                 }
             }
@@ -378,6 +378,6 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// <summary>
         /// The ElementType details for this TypeSignitureToken
         /// </summary>
-        public ElementTypeSignitureToken ElementType { get; set; }
+        public ElementTypeSignatureToken ElementType { get; set; }
     }
 }

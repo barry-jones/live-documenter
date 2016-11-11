@@ -38,7 +38,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
 
             Assert.AreEqual(3, token.Tokens.Count);
             Assert.AreSame(WellKnownTypeDef.Char,
-                ((ElementTypeSignitureToken)((TypeSignitureToken)token.Tokens[2]).Tokens[0]).Definition
+                ((ElementTypeSignatureToken)((TypeSignitureToken)token.Tokens[2]).Tokens[0]).Definition
                 );
         }
     }

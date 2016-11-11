@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Signitures
     /// <summary>
     /// The signiture for a custom attribute as described in section 23.3 of ECMA 335.
     /// </summary>
-    internal sealed class CustomAttributeSigniture : Signiture
+    internal sealed class CustomAttributeSignature : Signiture
     {
         /// <summary>
         /// Initialises a new instance of the CustomAttributeSigniture class.
@@ -18,7 +18,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// the incorrect signiture type is being read or the signiture contents
         /// are invalid.
         /// </exception>
-        public CustomAttributeSigniture(byte[] signiture) : base(Signitures.CustomAttribute)
+        public CustomAttributeSignature(byte[] signiture) : base(Signitures.CustomAttribute)
         {
             Offset offset = 0;
 
