@@ -28,9 +28,34 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
             Assert.AreSame(null, larger);
         }
 
-        public void Testing()
+        [Test]
+        public void WhenOffsetIsOutOfBounds_ReadLength_ThrowsException()
         {
+            BlobStream underlyingStream = new BlobStream(new byte[5], 0, 5);
+            SignitureBuilder builder = new SignitureBuilder(underlyingStream);
 
+            Assert.Throws<System.IndexOutOfRangeException>(delegate ()
+            {
+                builder.GetLength(7);
+            });
+        }
+
+        [TestCase(new byte[] { 0x03 }, 0x00000003)]
+        [TestCase(new byte[] { 0x7F }, 0x0000007F)]
+        [TestCase(new byte[] { 0x80, 0x80 }, 0x00000080)]
+        [TestCase(new byte[] { 0xae, 0x57 }, 0x00002e57)]
+        [TestCase(new byte[] { 0xbf, 0xff }, 0x00003fff)]
+        [TestCase(new byte[] { 0xc0, 0x00, 0x40, 0x00 }, 0x00004000)]
+        [TestCase(new byte[] { 0xdf, 0xff, 0xff, 0xff }, 0x1fffffff)]
+        public void WhenOffsetIsCorrect_ReadLength_GetsLength(byte[] signiture, int expected)
+        {
+            BlobStream stream = new BlobStream(signiture, 0, signiture.Length);
+            SignitureBuilder builder = new SignitureBuilder(stream);
+            int offset = 0;
+
+            int result = builder.GetLength(offset);
+
+            Assert.AreEqual(expected, result);
         }
 
         // full blob stream pulled from documentationtest.dll

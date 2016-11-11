@@ -10,8 +10,6 @@ namespace TheBoxSoftware.Reflection.Core.COFF
     {
         private byte[] _streamContents;
 
-        
-
         /// <summary>
         /// Initialises a new instance of the BlobStream class
         /// </summary>
@@ -75,6 +73,11 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         internal int GetLength()
         {
             return _streamContents.Length;
+        }
+
+        public byte GetByte(int offset)
+        {
+            return _streamContents[offset];
         }
     }
 }
