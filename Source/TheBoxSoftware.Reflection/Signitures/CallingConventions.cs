@@ -11,6 +11,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         /// keyword for this calling convention.
         /// </summary>
         Default     = 0x00,
+        C           = 0x01,
         StdCall     = 0x02,
         ThisCall    = 0x03,
         FastCall    = 0x04,

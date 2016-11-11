@@ -32,6 +32,16 @@ namespace TheBoxSoftware.Reflection.Core.COFF
             }
         }
 
+        public byte[] GetRange(int offset, uint size)
+        {
+            byte[] contents = new byte[size];
+            for(int i= 0; i < size; i++)
+            {
+                contents[i] = _streamContents[i + offset];
+            }
+            return contents;
+        }
+
         /// <summary>
         /// Retrives a parsed <see cref="Signitures.Signiture"/> for the specified
         /// <paramref name="startOffset"/> and <paramref name="signiture"/> type.

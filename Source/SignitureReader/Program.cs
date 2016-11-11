@@ -25,6 +25,8 @@ namespace SignitureReader
             {
                 int offset = 0;
                 string[] command = input.Split(' ');
+                byte[] contents;
+
                 switch(command[0])
                 {
                     case "bytes":
@@ -60,6 +62,22 @@ namespace SignitureReader
                         CallingConventions conventions = (CallingConventions)(a[0] & 0x0F);
 
                         Console.WriteLine(conventions);
+                        break;
+
+                    case "report":
+                        offset = int.Parse(command[1]);
+
+                        Console.WriteLine("Original code signiture retrieval: ");
+                        contents = blobStream.GetSignitureContents(offset);
+                        Console.WriteLine(FieldReader.ToHexString(contents, 0, contents.Length));
+
+                        SignitureBuilder builder = new SignitureBuilder(blobStream);
+                        Console.WriteLine($"  length: {builder.GetLength(offset)}");
+
+                        contents = builder.GetSignitureBytes(offset);
+                        Console.WriteLine("  contents:");
+                        Console.WriteLine(FieldReader.ToHexString(contents, 0, contents.Length));
+
                         break;
                 }
                 Console.WriteLine();

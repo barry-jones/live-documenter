@@ -5,10 +5,15 @@ namespace TheBoxSoftware.Reflection.Signitures
     using System.Linq;
     using Core;
 
-    internal abstract class Signiture
+    internal class Signiture
     {
         private Signitures _type;
         private List<SignitureToken> _tokens;
+
+        public Signiture()
+        {
+            _tokens = new List<SignitureToken>();
+        }
 
         /// <summary>
         /// Initialises a new instance of the Signiture class.
@@ -92,7 +97,7 @@ namespace TheBoxSoftware.Reflection.Signitures
         public Signitures Type
         {
             get { return _type; }
-            protected set { _type = value; }
+            set { _type = value; }
         }
 
         public List<SignitureToken> Tokens

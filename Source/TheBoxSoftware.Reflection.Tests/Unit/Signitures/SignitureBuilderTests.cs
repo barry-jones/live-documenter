@@ -9,17 +9,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
     public class SignitureBuilderTests
     {
         [Test]
-        public void SignitureBuilder_Created()
-        {
-            BlobStream underlyingStream = new BlobStream(new byte[0], 0, 0);
-            SignitureBuilder builder = new SignitureBuilder(underlyingStream);
-        }
-
-        [Test]
         public void OffsetOutOfBounds_Read_ReturnsNull()
         {
-            BlobStream underlyingStream = new BlobStream(new byte[5], 0, 5);
-            SignitureBuilder builder = new SignitureBuilder(underlyingStream);
+            SignitureBuilder builder = CreateBuilder(new byte[5]);
 
             Signiture lower = builder.Read(-1);
             Signiture larger = builder.Read(5);
@@ -29,10 +21,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         }
 
         [Test]
-        public void WhenOffsetIsOutOfBounds_ReadLength_ThrowsException()
+        public void OffsetIsOutOfBounds_ReadLength_ThrowsException()
         {
-            BlobStream underlyingStream = new BlobStream(new byte[5], 0, 5);
-            SignitureBuilder builder = new SignitureBuilder(underlyingStream);
+            SignitureBuilder builder = CreateBuilder(new byte[5]);
 
             Assert.Throws<System.IndexOutOfRangeException>(delegate ()
             {
@@ -47,28 +38,89 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
         [TestCase(new byte[] { 0xbf, 0xff }, 0x00003fff)]
         [TestCase(new byte[] { 0xc0, 0x00, 0x40, 0x00 }, 0x00004000)]
         [TestCase(new byte[] { 0xdf, 0xff, 0xff, 0xff }, 0x1fffffff)]
-        public void WhenOffsetIsCorrect_ReadLength_GetsLength(byte[] signiture, int expected)
+        public void OffsetIsCorrect_ReadLength_GetsLength(byte[] signiture, int expected)
         {
             BlobStream stream = new BlobStream(signiture, 0, signiture.Length);
             SignitureBuilder builder = new SignitureBuilder(stream);
             int offset = 0;
 
-            int result = builder.GetLength(offset);
+            uint result = builder.GetLength(offset);
 
             Assert.AreEqual(expected, result);
         }
 
+        [Test]
+        public void OffsetIsOutOfBounds_GetSignitureBytes_ThrowsException()
+        {
+            SignitureBuilder builder = CreateEmptyBuilder();
+            Assert.Throws<System.IndexOutOfRangeException>(delegate ()
+            {
+                builder.GetSignitureBytes(-1);
+            });
+        }
+
+        [TestCase(1, 3)]
+        [TestCase(685, 97)]
+        public void SignitureIsValid_GetSignitureBytes_IsCorrect(int offset, int expectedLength)
+        {
+            SignitureBuilder builder = CreateTestBuilder();
+
+            byte[] result = builder.GetSignitureBytes(offset);
+
+            Assert.AreEqual(expectedLength, result.Length);
+        }
+
+        [Test]
+        public void SignitureIsMethod_Read_ReturnsMethodSigniture()
+        {
+            SignitureBuilder builder = CreateTestBuilder();
+
+            Signiture result = builder.Read(1);
+
+            Assert.AreEqual(Signitures.MethodDef, result.Type);
+        }
+
+        [Test]
+        public void SignitureIsProperty_Read_DoesntReturnMethodSigniture()
+        {
+            SignitureBuilder builder = CreateTestBuilder();
+
+            Signiture result = builder.Read(86);
+
+            Assert.AreNotEqual(Signitures.MethodDef, result.Type);
+        }
+
+        private SignitureBuilder CreateTestBuilder() => CreateBuilder(_blobStream);
+
+        private SignitureBuilder CreateEmptyBuilder() => CreateBuilder(new byte[0]);
+
+        private SignitureBuilder CreateBuilder(byte[] contents)
+        {
+            BlobStream underlyingStream = new BlobStream(contents, 0, contents.Length);
+            return new SignitureBuilder(underlyingStream);
+        }
+
         // full blob stream pulled from documentationtest.dll
         private byte[] _blobStream = new byte[] {
-            0x00, // first entry is always the empty blob
-            0x03, 0x20, 0x00, 0x01, 0x04, 0x20, 0x01, 0x01, 0x08, 0x05, 0x20, 0x01, 0x01, 0x11, 0x15,
-            0x04, 0x20, 0x01, 0x01, 0x0E, 0x04, 0x20, 0x01, 0x01, 0x02, 0x05, 0x20, 0x01, 0x01, 0x11, 0x45,
-            0x05, 0x20, 0x01, 0x01, 0x11, 0x71, 0x06, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x0E, 0x06, 0x15, 0x12,
-            0x80, 0x9C, 0x01, 0x08, 0x0A, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x15, 0x12, 0x61, 0x01, 0x08, 0x0F,
-            0x15, 0x12, 0x80, 0x9C, 0x01, 0x15, 0x12, 0x61, 0x01, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x0E, 0x06,
-            0x20, 0x01, 0x01, 0x11, 0x80, 0x8D, 0x02, 0x1D, 0x08, 0x06, 0x15, 0x12, 0x61, 0x01, 0x1D, 0x0E,
-            0x03, 0x20, 0x00, 0x08, 0x05, 0x15, 0x12, 0x61, 0x01, 0x08, 0x06, 0x15, 0x12, 0x61, 0x01, 0x1E,
-            0x00, 0x0B, 0x07, 0x03, 0x12, 0x81, 0x8C, 0x12, 0x81, 0x8C, 0x12, 0x81, 0x8C, 0x0B, 0x00, 0x02,
+            /*   0 */ 0x00, // first entry is always the empty blob
+            /*   1 */ 0x03, 0x20, 0x00, 0x01,
+            /*   5 */ 0x04, 0x20, 0x01, 0x01, 0x08,
+            /*  10 */ 0x05, 0x20, 0x01, 0x01, 0x11, 0x15,
+            /*  16 */ 0x04, 0x20, 0x01, 0x01, 0x0E,
+            /*  21 */ 0x04, 0x20, 0x01, 0x01, 0x02,
+            /*  26 */ 0x05, 0x20, 0x01, 0x01, 0x11, 0x45,
+            /*  32 */ 0x05, 0x20, 0x01, 0x01, 0x11, 0x71,
+            /*  38 */ 0x06, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x0E,
+            /*  45 */ 0x06, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x08,
+            /*  52 */ 0x0A, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x15, 0x12, 0x61, 0x01, 0x08,
+            /*  63 */ 0x0F, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x15, 0x12, 0x61, 0x01, 0x15, 0x12, 0x80, 0x9C, 0x01, 0x0E,
+            /*  79 */ 0x06, 0x20, 0x01, 0x01, 0x11, 0x80, 0x8D,
+            /*  86 */ 0x02, 0x1D, 0x08,
+            /*  89 */ 0x06, 0x15, 0x12, 0x61, 0x01, 0x1D, 0x0E,
+            /*  96 */ 0x03, 0x20, 0x00, 0x08,
+            /* 100 */ 0x05, 0x15, 0x12, 0x61, 0x01, 0x08,
+            /* 106 */ 0x06, 0x15, 0x12, 0x61, 0x01, 0x1E, 0x00,
+            0x0B, 0x07, 0x03, 0x12, 0x81, 0x8C, 0x12, 0x81, 0x8C, 0x12, 0x81, 0x8C, 0x0B, 0x00, 0x02,
             0x12, 0x80, 0xB5, 0x12, 0x80, 0xB5, 0x12, 0x80, 0xB5, 0x0C, 0x10, 0x01, 0x03, 0x1E, 0x00, 0x10,
             0x1E, 0x00, 0x1E, 0x00, 0x1E, 0x00, 0x05, 0x0A, 0x01, 0x12, 0x81, 0x8C, 0x02, 0x1E, 0x00, 0x03,
             0x20, 0x00, 0x0E, 0x06, 0x15, 0x12, 0x64, 0x01, 0x13, 0x00, 0x02, 0x06, 0x0E, 0x06, 0x06, 0x15,

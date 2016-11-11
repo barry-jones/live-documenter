@@ -48,7 +48,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "4. Utilities\Runn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.API.LiveDocumenter.Tests", "TheBoxSoftware.API.LiveDocumenter.Tests\TheBoxSoftware.API.LiveDocumenter.Tests.csproj", "{761E81D8-B8A2-41CA-8355-089E006C0CD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignitureReader", "SignitureReader\SignitureReader.csproj", "{FF85B422-161B-474A-9AE0-738693F3013C}"
+EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -304,6 +309,24 @@ Global
 		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|x86.ActiveCfg = Release|Any CPU
 		{761E81D8-B8A2-41CA-8355-089E006C0CD7}.Test|x86.Build.0 = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Debug|x86.Build.0 = Debug|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Release|x86.Build.0 = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Test|Any CPU.Build.0 = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Test|x86.ActiveCfg = Release|Any CPU
+		{FF85B422-161B-474A-9AE0-738693F3013C}.Test|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -311,5 +334,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2AD369A3-7737-4EC5-A4BA-3E846F80C066} = {3528818F-F8CC-44FD-9483-70B64BF588A0}
 		{1A6328A9-90BB-4BF5-8A96-FFF72D260AF6} = {87C0012D-44C8-4F6E-B9BD-56C226A67C93}
+		{FF85B422-161B-474A-9AE0-738693F3013C} = {87C0012D-44C8-4F6E-B9BD-56C226A67C93}
 	EndGlobalSection
 EndGlobal
