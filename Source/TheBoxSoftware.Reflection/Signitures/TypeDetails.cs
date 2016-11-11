@@ -37,6 +37,6 @@ namespace TheBoxSoftware.Reflection.Signitures
 
         public List<TypeDetails> GenericParameters { get; set; }
 
-        public ArrayShapeSignitureToken ArrayShape { get; set; }
+        public ArrayShapeSignatureToken ArrayShape { get; set; }
     }
 }

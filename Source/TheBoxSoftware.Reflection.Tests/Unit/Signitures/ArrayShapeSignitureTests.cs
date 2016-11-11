@@ -7,9 +7,9 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
     [TestFixture]
     public class ArrayShapeSignitureTests
     {
-        private ArrayShapeSignitureToken Create(byte[] content)
+        private ArrayShapeSignatureToken Create(byte[] content)
         {
-            return new ArrayShapeSignitureToken(content, 0);
+            return new ArrayShapeSignatureToken(content, 0);
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     0, // lobounds
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual(0, token.Sizes.Length);
             Assert.AreEqual(0, token.Rank);
@@ -40,7 +40,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     0, // no low bound provided
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual(1, token.Rank);
             Assert.AreEqual(1, token.Sizes.Length);
@@ -59,7 +59,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     50 // the lo-bound
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual(1, token.Rank);
             Assert.AreEqual(100, token.Sizes[0]);
@@ -79,7 +79,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     0 // no low bound provided
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual(3, token.Rank);
             Assert.AreEqual(100, token.Sizes[0]);
@@ -103,7 +103,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                         15
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual(3, token.Rank);
             Assert.AreEqual(100, token.Sizes[0]);
@@ -121,7 +121,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     0, // lobounds
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual("[ArraySize: []]", token.ToString());
         }
@@ -137,7 +137,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     0, // no low bound provided
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual("[ArraySize: [100]]", token.ToString());
         }
@@ -154,7 +154,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     50 // the lo-bound
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual("[ArraySize: [50...100]]", token.ToString());
         }
@@ -172,7 +172,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                     0 // no low bound provided
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual("[ArraySize: [100,75,50]]", token.ToString());
         }
@@ -193,7 +193,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signitures
                         15
                 };
 
-            ArrayShapeSignitureToken token = Create(content);
+            ArrayShapeSignatureToken token = Create(content);
 
             Assert.AreEqual("[ArraySize: [5...100,10...75,15...50]]", token.ToString());
         }

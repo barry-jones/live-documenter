@@ -69,7 +69,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                 case ElementTypes.Array:
                     childType = new TypeSignitureToken(signiture, offset);
                     Tokens.Add(childType);
-                    Tokens.Add(new ArrayShapeSignitureToken(signiture, offset));
+                    Tokens.Add(new ArrayShapeSignatureToken(signiture, offset));
                     break;
             }
         }
@@ -141,7 +141,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     details.ArrayOf.Type = childType.ResolveToken(member.Assembly);
                 }
                 details.IsMultidemensionalArray = true;
-                details.ArrayShape = (ArrayShapeSignitureToken)Tokens.Find(t => t.TokenType == SignitureTokens.ArrayShape);
+                details.ArrayShape = (ArrayShapeSignatureToken)Tokens.Find(t => t.TokenType == SignitureTokens.ArrayShape);
             }
             else if(ElementType.ElementType == ElementTypes.MVar)
             {

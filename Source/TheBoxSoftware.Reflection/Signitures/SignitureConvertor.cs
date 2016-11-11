@@ -157,7 +157,7 @@ namespace TheBoxSoftware.Reflection.Signitures
                     convertedSigniture.Append("[]");
                     break;
                 case ElementTypes.Array:
-                    ArrayShapeSignitureToken shape = typeToken.Tokens.Last() as ArrayShapeSignitureToken;
+                    ArrayShapeSignatureToken shape = typeToken.Tokens.Last() as ArrayShapeSignatureToken;
                     ConvertArray(convertedSigniture, resolvedType, shape);
                     break;
                 case ElementTypes.GenericInstance:
@@ -283,13 +283,13 @@ namespace TheBoxSoftware.Reflection.Signitures
         }
 
         /// <summary>
-        /// Overridden convertor for arrays. Converts the <see cref="ArrayShapeSignitureToken"/>
+        /// Overridden convertor for arrays. Converts the <see cref="ArrayShapeSignatureToken"/>
         /// to its correct cref name equivelant.
         /// </summary>
         /// <param name="sb">The string being constructed containing the cref name.</param>
         /// <param name="resolvedType">The type the parameter has been resolved to</param>
         /// <param name="shape">The signiture token detailing the shape of the array.</param>
-        internal virtual void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignitureToken shape)
+        internal virtual void ConvertArray(StringBuilder sb, TypeRef resolvedType, ArrayShapeSignatureToken shape)
         {
             GetTypeName(sb, resolvedType);
             sb.Append("[");

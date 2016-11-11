@@ -255,7 +255,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Signitures\ArrayShapeSignitureToken.cs" />
+    <Compile Include="Signitures\ArrayShapeSignatureToken.cs" />
     <Compile Include="Signitures\CallingConventions.cs" />
     <Compile Include="Signitures\CallingConventionSignitureToken.cs" />
     <Compile Include="Signitures\ConstraintSignitureToken.cs" />
