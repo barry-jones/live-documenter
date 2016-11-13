@@ -2,6 +2,7 @@
 namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
 {
     using NUnit.Framework;
+    using Reflection.Core;
     using Reflection.Core.COFF;
     using Reflection.Signatures;
 
@@ -40,7 +41,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
                 ((CallingConventionSignatureToken)result.Tokens[0]).Convention);
             Assert.AreEqual("[GenParamCount: 1]", result.Tokens[1].ToString());
             Assert.AreEqual("[ParamCount: 0]", result.Tokens[2].ToString());
-            Assert.AreEqual("[ReturnType: [Type: [ElementType: System.Void] ] ]", result.Tokens[3].ToString());
+            Assert.AreEqual("[Type: [ElementType: System.Void] ] ", result.Tokens[3].ToString());
         }
 
         [Test]
@@ -54,7 +55,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
 
             Assert.AreEqual("[CallingConvention: HasThis]", result.Tokens[0].ToString());
             Assert.AreEqual("[ParamCount: 0]", result.Tokens[1].ToString());
-            Assert.IsInstanceOf<ReturnTypeSignatureToken>(result.Tokens[2]);
+            Assert.IsInstanceOf<TypeSignatureToken>(result.Tokens[2]);
 
             // TODO: should better test SZArray, SZArray, I4 element types are found.
         }
@@ -64,6 +65,26 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
             BlobStream stream = new BlobStream(contents, 0, contents.Length);
             SignatureBuilder builder = new SignatureBuilder(stream);
             return builder;
+        }
+    }
+
+    [TestFixture]
+    public class SignatureBuilder_TypeSpec_Tests
+    {
+        [Test]
+        public void WhenNotCustomMod_CustomMod_IsInvalid()
+        {
+
+        }
+
+        public void PointerFollowedByNoCustomModsThenVoid_IsCorrect()
+        {
+            ElementTypes pointer = ElementTypes.Ptr;
+        }
+
+        public CustomModifierToken CustomMod(byte[] content, Offset offset)
+        {
+
         }
     }
 }

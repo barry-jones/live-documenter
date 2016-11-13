@@ -64,19 +64,20 @@ namespace TheBoxSoftware.Reflection.Signatures
         {
             created.Type = Signatures.MethodDef;
 
-            Offset index = 0;
+            Offset offset = 0;
 
-            var convention = new CallingConventionSignatureToken(signitureBytes, index);
+            var convention = new CallingConventionSignatureToken(signitureBytes, offset);
             created.Tokens.Add(convention);
             if((convention.Convention & CallingConventions.Generic) != 0)
             {
-                var genericParam = new GenericParamaterCountSignatureToken(signitureBytes, index);
+                var genericParam = new GenericParamaterCountSignatureToken(signitureBytes, offset);
                 created.Tokens.Add(genericParam);
             }
-            var paramCount = new ParameterCountSignatureToken(signitureBytes, index);
+
+            var paramCount = new ParameterCountSignatureToken(signitureBytes, offset);
             created.Tokens.Add(paramCount);
-            var returnType = new ReturnTypeSignatureToken(signitureBytes, index);
-            created.Tokens.Add(returnType);
+
+            ReadReturnTypeSignature(created, signitureBytes, offset);
         }
 
         private void ReadPropertySignature(Signature created)
@@ -87,6 +88,34 @@ namespace TheBoxSoftware.Reflection.Signatures
         private void ReadFieldSignature(Signature created)
         {
             created.Type = Signatures.Field;
+        }
+
+        private void ReadReturnTypeSignature(Signature created, byte[] signature, Offset offset)
+        {
+            // p.265 of ecma 335
+
+            // zero or more custom modifiers can be provided
+            while(CustomModifierToken.IsToken(signature, offset))
+            {
+                created.Tokens.Add(new CustomModifierToken(signature, offset));
+            }
+
+            // byref path
+            if(ElementTypeSignatureToken.IsToken(signature, offset, ElementTypes.ByRef))
+            {
+                created.Tokens.Add(new ElementTypeSignatureToken(signature, offset));    // ByRef
+                created.Tokens.Add(new TypeSignatureToken(signature, offset));   // Type
+            }
+            // typed by ref or void path path
+            else if(ElementTypeSignatureToken.IsToken(signature, offset, ElementTypes.Void | ElementTypes.TypedByRef))
+            {
+                created.Tokens.Add(new ElementTypeSignatureToken(signature, offset));    // Void, TypedByRef
+            }
+            // path for byref where byref is not provided
+            else
+            {
+                created.Tokens.Add(new TypeSignatureToken(signature, offset));
+            }
         }
 
         private uint DecompressUInt(int offset)
