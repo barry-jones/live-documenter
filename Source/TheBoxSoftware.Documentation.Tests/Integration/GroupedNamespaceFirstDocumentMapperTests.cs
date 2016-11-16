@@ -8,7 +8,13 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
     [TestFixture]
     public class GroupedNamespaceFirstDocumentMapperTests
     {
-        private const string DocumentationFile = @"source\testoutput\documentationtest.dll";
+        private readonly string DocumentationFile = @"..\..\..\testoutput\documentationtest.dll";
+
+        public GroupedNamespaceFirstDocumentMapperTests()
+        {
+            string dir = System.AppDomain.CurrentDomain.BaseDirectory;
+            DocumentationFile = System.IO.Path.Combine(dir, DocumentationFile);
+        }
 
         [Test]
         public void GenerateMap_WhenAssemblyHasTypesWithoutNamespace_TypesAreContainedInNoneNamespaceContainer()

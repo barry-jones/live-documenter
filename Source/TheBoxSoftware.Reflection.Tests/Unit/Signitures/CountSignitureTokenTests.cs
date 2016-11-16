@@ -15,7 +15,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
         // bytes in to a short!
 
         [Test]
-        public void CountSignitureToken_Create_WhenProvidedAValue_ReturnsThatValue()
+        public void WhenSimpleValueProvided_Create_SetsCountToOne()
         {
             byte[] content = new byte[] { 1, 0 }; // little-endian
 

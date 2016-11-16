@@ -8,14 +8,15 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
     [TestFixture]
     public class SignatureTests
     {
-        private const string TestFile = @"source\testoutput\documentationtest.dll";
+        private const string TestFile = @"..\..\..\testoutput\documentationtest.dll";
 
         private AssemblyDef _assemblyDef;
 
         [OneTimeSetUp]
         public void InitialiseAssemblyDefFileUsedForTests()
         {
-            _assemblyDef = AssemblyDef.Create(TestFile);
+            string dir = System.AppDomain.CurrentDomain.BaseDirectory;
+            _assemblyDef = AssemblyDef.Create(System.IO.Path.Combine(dir, TestFile));
         }
 
         [Test, Category("Integration")]

@@ -26,9 +26,6 @@ namespace TheBoxSoftware.Reflection.Signatures
             return $"[Count: {_count}] ";
         }
 
-        /// <summary>
-        /// ?
-        /// </summary>
 		public ushort Count
         {
             get { return _count; }

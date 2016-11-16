@@ -82,9 +82,10 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Signatures
             ElementTypes pointer = ElementTypes.Ptr;
         }
 
+        /*
         public CustomModifierToken CustomMod(byte[] content, Offset offset)
         {
-
         }
+        */
     }
 }

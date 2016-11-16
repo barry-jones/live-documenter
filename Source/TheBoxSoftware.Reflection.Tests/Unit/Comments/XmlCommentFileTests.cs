@@ -8,15 +8,17 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
     [TestFixture]
     public class XmlCommentFileTests
     {
-        private string _testXmlFilePath = @"source\theboxsoftware.reflection.tests\testfiles\xmlcommentfile.xml";
+        private string _testXmlFilePath = @"..\..\testfiles\xmlcommentfile.xml";
         private Mock<IFileSystem> _fileSystem;
 
         private XmlCommentFile CreateXmlCommentFile(string filename)
         {
             _fileSystem = new Mock<IFileSystem>();
 
+            string dir = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, _testXmlFilePath);
+
             _fileSystem.Setup(p => p.ReadAllBytes(It.IsAny<string>())).Returns(
-                System.IO.File.ReadAllBytes(_testXmlFilePath)
+                System.IO.File.ReadAllBytes(dir)
                 );
 
             return new XmlCommentFile(filename, _fileSystem.Object);

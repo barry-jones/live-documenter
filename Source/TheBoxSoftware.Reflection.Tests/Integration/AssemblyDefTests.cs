@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using TheBoxSoftware.Reflection.Comments;
-using TheBoxSoftware.Reflection.Signatures;
-
+﻿
 namespace TheBoxSoftware.Reflection.Tests.Integration
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     /// <summary>
     /// A set of tests which check various aspects of the loading and storage of various entries in
     /// a pe/coff file.
@@ -16,14 +12,15 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
     [TestFixture]
     public class AssemblyDefTests
     {
-        private const string TestFile = @"source\testoutput\documentationtest.dll";
+        private const string TestFile = @"..\..\..\testoutput\documentationtest.dll";
 
         private AssemblyDef _assemblyDef;
 
         [OneTimeSetUp]
         public void InitialiseAssemblyDefFileUsedForTests()
         {
-            _assemblyDef = AssemblyDef.Create(TestFile);
+            string dir = System.AppDomain.CurrentDomain.BaseDirectory;
+            _assemblyDef = AssemblyDef.Create(System.IO.Path.Combine(dir, TestFile));
         }
 
         [Test, Category("Integration")]

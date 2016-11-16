@@ -12,7 +12,13 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
     [TestFixture]
     public class PeCoffFileTests
     {
-        private const string TEST_LIBRARY = @"source\testoutput\documentationtest.dll";
+        private readonly string TestLibrary = @"..\..\..\testoutput\documentationtest.dll";
+
+        public PeCoffFileTests()
+        {
+            string dir = System.AppDomain.CurrentDomain.BaseDirectory;
+            TestLibrary = System.IO.Path.Combine(dir, TestLibrary);
+        }
 
         [Test]
         public void WhenInitialisedWithEmptyString_ThrowsArgumentException()
@@ -28,17 +34,17 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         [Test]
         public void WhenInitialisedWithValidFile_MetadataIsLoaded()
         {
-            PeCoffFile coffFile = new PeCoffFile(TEST_LIBRARY, new FileSystem());
+            PeCoffFile coffFile = new PeCoffFile(TestLibrary, new FileSystem());
             coffFile.Initialise();
 
-            Assert.AreEqual(TEST_LIBRARY, coffFile.FileName);
+            Assert.AreEqual(TestLibrary, coffFile.FileName);
             Assert.IsTrue(coffFile.IsMetadataLoaded);
         }
         
         [Test]
         public void WhenLoaded_GetMetadataDirectory_ReturnsMetadata()
         {
-            PeCoffFile coffFile = new PeCoffFile(TEST_LIBRARY, new FileSystem());
+            PeCoffFile coffFile = new PeCoffFile(TestLibrary, new FileSystem());
             coffFile.Initialise();
 
             MetadataDirectory directory = coffFile.GetMetadataDirectory();

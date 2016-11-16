@@ -7,13 +7,14 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Syntax
     [TestFixture]
     public class DelegateSyntaxTests
     {
-        private const string TestFile = @"source\testoutput\documentationtest.dll";
+        private const string TestFile = @"..\..\..\testoutput\documentationtest.dll";
 
         private TypeDef GetDelegateFromTestAssembly()
         {
             // having to load a entire library each time for a test is not great, need
             // to try and refactor the code to enabled this to become less painful
-            AssemblyDef assemblyDef = AssemblyDef.Create(TestFile);
+            string dir = System.AppDomain.CurrentDomain.BaseDirectory;
+            AssemblyDef assemblyDef = AssemblyDef.Create(System.IO.Path.Combine(dir, TestFile));
             return assemblyDef.FindType("DocumentationTest.AllOutputTypesClass", "D");
         }
 

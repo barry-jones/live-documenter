@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
     [TestFixture]
     public class VB_MethodSyntaxTests
     {
-        private const string TestFile = @"source\testoutput\documentationtest.dll";
+        private const string TestFile = @"..\..\..\testoutput\documentationtest.dll";
         private const string NamespaceName = "SyntaxTests";
         private const string TypeName = "ForMethod";
 
@@ -22,7 +22,8 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         [OneTimeSetUp]
         public void InitialiseAssemblyDefFileUsedForTests()
         {
-            _assemblyDef = AssemblyDef.Create(TestFile);
+            string dir = System.AppDomain.CurrentDomain.BaseDirectory;
+            _assemblyDef = AssemblyDef.Create(System.IO.Path.Combine(dir, TestFile));
         }
 
         [TestCase("ParameterNormal", "Public Sub ParameterNormal(\n\ttest As Int\n\t)")]
