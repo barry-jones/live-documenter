@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Core
     /// Thrown when the CLR directory can not be resolved due to the RVA of the 
     /// directory not being correct or not resolving to a section in the file.
     /// </summary>
-    public class ClrDirectoryNotFoundException : ApplicationException
+    public class ClrDirectoryNotFoundException : Exception
     {
         private readonly string _filename;
 

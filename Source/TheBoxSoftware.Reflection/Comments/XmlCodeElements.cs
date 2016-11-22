@@ -121,7 +121,7 @@ namespace TheBoxSoftware.Reflection.Comments
         /// </para>
         /// <para>
         /// The text for the &lt;summary&gt; tag is the only source of information about the type in 
-        /// IntelliSense, and is also displayed in the Object Browser.
+        /// IntelliSense, and is also displayed in the Object Browser.</para>
         /// </summary>
         Summary,
         /// <summary>

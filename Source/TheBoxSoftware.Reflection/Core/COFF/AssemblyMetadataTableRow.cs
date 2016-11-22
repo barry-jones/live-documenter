@@ -27,8 +27,7 @@ namespace TheBoxSoftware.Reflection.Core.COFF
         /// </summary>
         /// <param name="contents">The contents of the file</param>
         /// <param name="offset">The offset of the current row</param>
-        /// <param name="sizeOfBlobIndexes">Size in bytes of the indexes to the blob stream</param>
-        /// <param name="sizeOfStringIndexes">Size in bytes of the indexes to the string stream</param>
+        /// <param name="indexDetails">Object which enables the retrieval of index sizes</param>
         public AssemblyMetadataTableRow(byte[] contents, Offset offset, IIndexDetails indexDetails)
         {
             FileOffset = offset;

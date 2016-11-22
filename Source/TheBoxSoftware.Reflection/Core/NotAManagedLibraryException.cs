@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Core
     /// Represents an error in the application where someone has attempted
     /// to load a native or non-managed library.
     /// </summary>
-    public sealed class NotAManagedLibraryException : ApplicationException
+    public sealed class NotAManagedLibraryException : Exception
     {
         /// <summary>
         /// Initialises a new instance of the NotAManagedLibraryException.

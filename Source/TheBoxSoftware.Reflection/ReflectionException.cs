@@ -8,8 +8,10 @@ namespace TheBoxSoftware.Reflection
     /// <summary>
     /// Exception that describes issues working with reflection based code.
     /// </summary>
-    public class ReflectionException : Exception, ISerializable, IExtendedException
+    public class ReflectionException : Exception, IExtendedException
     {
+        private ReflectedMember _member;
+
         /// <summary>
         /// Initialises a new instance of the ReflectionException.
         /// </summary>
@@ -54,23 +56,6 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// The member the exception is related to.
-        /// </summary>
-        public ReflectedMember Member { get; set; }
-
-        /// <summary>
-        /// Serializes the custom details of this exception to the SerializationInfo.
-        /// </summary>
-        /// <param name="info">The info to populate with custom details</param>
-        /// <param name="context">The context</param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if(info == null) throw new ArgumentNullException("info");
-
-            base.GetObjectData(info, context);
-        }
-
-        /// <summary>
         /// Extracts as much information from the internal state of the exception.
         /// </summary>
         /// <returns>The formatted extended information</returns>
@@ -78,26 +63,26 @@ namespace TheBoxSoftware.Reflection
         {
             StringBuilder builder = new StringBuilder();
 
-            if(this.Member != null)
+            if(_member != null)
             {
-                MemberRef memberRef = this.Member as MemberRef;
+                MemberRef memberRef = _member as MemberRef;
 
                 // output the string stream name to help the user provide more details if required
-                builder.AppendLine(string.Format("Name: {0}", this.Member.Name));
+                builder.AppendLine($"Name: {_member.Name}");
 
-                if(this.Member is TypeRef)
+                if(_member is TypeRef)
                 {
                     try
                     {
-                        builder.AppendLine(string.Format("Namespace: {0}", ((TypeRef)this.Member).Namespace));
+                        builder.AppendLine($"Namespace: {((TypeRef)_member).Namespace}");
                     }
                     catch(Exception) { }
                 }
                 else if(memberRef != null)
                 {
-                    try { builder.AppendLine(string.Format("Containing Type: {0}", memberRef.Type.Name)); }
+                    try { builder.AppendLine($"Containing Type: {memberRef.Type.Name}"); }
                     catch(Exception) { }
-                    try { builder.AppendLine(string.Format("Namespace: {0}", memberRef.Type.Namespace)); }
+                    try { builder.AppendLine($"Namespace: {memberRef.Type.Namespace}"); }
                     catch(Exception) { }
                 }
 
@@ -105,9 +90,9 @@ namespace TheBoxSoftware.Reflection
                 try
                 {
                     Reflection.Syntax.IFormatter formatter = Reflection.Syntax.SyntaxFactory.Create(
-                        this.Member, Syntax.Languages.CSharp
+                        _member, Syntax.Languages.CSharp
                         );
-                    builder.AppendLine(string.Format("Syntax: {0}", formatter.Format().ToString()));
+                    builder.AppendLine($"Syntax: {formatter.Format().ToString()}");
                 }
                 catch(Exception) { } // ignore any errors here we know already we are walking on thin ice
             }
@@ -117,6 +102,15 @@ namespace TheBoxSoftware.Reflection
             }
 
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// The member the exception is related to.
+        /// </summary>
+        public ReflectedMember Member
+        {
+            get { return _member; }
+            set { _member = value; }
         }
     }
 }

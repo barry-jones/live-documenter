@@ -8,6 +8,8 @@ namespace TheBoxSoftware.Reflection.Comments
     /// </summary>
     public sealed class ExceptionXmlCodeElement : XmlContainerCodeElement
     {
+        private CRefPath _member;
+
         /// <summary>
         /// Initialises a new instance of the ExceptionXmlCodeElement class.
         /// </summary>
@@ -15,14 +17,22 @@ namespace TheBoxSoftware.Reflection.Comments
         public ExceptionXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.Exception)
         {
-            this.Elements = this.Parse(node);
-            if(node.Attributes["cref"] == null) { throw new AttributeRequiredException("cref", XmlCodeElements.Exception); }
-            this.Member = CRefPath.Parse(node.Attributes["cref"].Value);
+            if(node.Attributes["cref"] == null)
+            {
+                throw new AttributeRequiredException("cref", XmlCodeElements.Exception);
+            }
+
+            Elements = Parse(node);
+            _member = CRefPath.Parse(node.Attributes["cref"].Value);
         }
 
         /// <summary>
         /// The path to the exception this exception element refers to.
         /// </summary>
-        public CRefPath Member { get; set; }
+        public CRefPath Member
+        {
+            get { return _member; }
+            set { _member = value; }
+        }
     }
 }
