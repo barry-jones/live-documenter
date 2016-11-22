@@ -212,12 +212,17 @@ namespace TheBoxSoftware.Documentation
 
         protected string BuildSubkey(KeyValuePair<string, List<TypeDef>> namespaceEntry)
         {
+            // takes the first entry for the namespace and returns the subkey, which is
+            // defined as the namespace of the type if it is not nested and if it is, it
+            // takes the parent class names and eventually the namespace to build the key.
+
             TypeDef def = namespaceEntry.Value[0];
             if (def.IsNested)
             {
                 TypeDef container = def.ContainingClass;
                 string baseNamespace = container.Namespace;
                 List<string> containingClassNames = new List<string>();
+
                 do
                 {
                     containingClassNames.Add(container.Name);
@@ -228,6 +233,7 @@ namespace TheBoxSoftware.Documentation
                     }
                 }
                 while (container != null);
+
                 containingClassNames.Add(baseNamespace);
                 containingClassNames.Reverse();
 
