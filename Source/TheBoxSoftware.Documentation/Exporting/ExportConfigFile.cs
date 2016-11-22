@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using Ionic.Zip;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+    using Ionic.Zip;
+
     /// <summary>
     /// Reads a file that contains all of the information needed to perform an export.
     /// </summary>
@@ -17,6 +18,19 @@ namespace TheBoxSoftware.Documentation.Exporting
     public class ExportConfigFile
     {
         private XmlDocument _xmlDocument;
+        private string _configFile;
+        private string _name;
+        private Exporters _exporters;
+        private string _description;
+        private string _version;
+        private bool _hasScreenshot;
+        private Dictionary<string, string> _properties;
+        private bool _isValid;
+
+        public static ExportConfigFile Create(string filename)
+        {
+            return new ExportConfigFile(filename);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportConfigFile"/> class.
@@ -24,14 +38,15 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="filename">The file.</param>
         private ExportConfigFile(string filename)
         {
-            this.Properties = new Dictionary<string, string>();
-            this.ConfigFile = filename;
-            using (ZipFile file = new ZipFile(filename))
+            _properties = new Dictionary<string, string>();
+            _configFile = filename;
+
+            using(ZipFile file = new ZipFile(filename))
             {
                 // get the config file
                 _xmlDocument = null;
                 Stream ms = new MemoryStream();
-                if (file.ContainsEntry("export.config"))
+                if(file.ContainsEntry("export.config"))
                 {
                     file["export.config"].Extract(ms);
                     ms.Seek(0, SeekOrigin.Begin);
@@ -40,27 +55,31 @@ namespace TheBoxSoftware.Documentation.Exporting
                     ms.Close();
 
                     XmlNode nameNode = _xmlDocument.SelectSingleNode("/export/name");
-                    if (nameNode != null)
-                        this.Name = nameNode.InnerText;
+                    if(nameNode != null)
+                        _name = nameNode.InnerText;
+
                     XmlNode versionNode = _xmlDocument.SelectSingleNode("/export/version");
-                    if (versionNode != null)
-                        this.Version = versionNode.InnerText;
-                    this.Exporter = this.UnpackExporter(_xmlDocument.SelectSingleNode("/export/exporter"));
+                    if(versionNode != null)
+                        _version = versionNode.InnerText;
+
+                    _exporters = this.UnpackExporter(_xmlDocument.SelectSingleNode("/export/exporter"));
+
                     XmlNode descriptionNode = _xmlDocument.SelectSingleNode("/export/description");
-                    if (descriptionNode != null)
+                    if(descriptionNode != null)
                     {
-                        this.Description = descriptionNode.InnerText;
+                        _description = descriptionNode.InnerText;
                     }
+
                     XmlNode screenshotNode = _xmlDocument.SelectSingleNode("/export/screenshot");
-                    if (screenshotNode != null)
+                    if(screenshotNode != null)
                     {
-                        this.HasScreenshot = true;
+                        _hasScreenshot = true;
                     }
 
                     XmlNodeList properties = _xmlDocument.SelectNodes("/export/properties/property");
-                    foreach (XmlNode currentProperty in properties)
+                    foreach(XmlNode currentProperty in properties)
                     {
-                        this.Properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
+                        _properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
                     }
                 }
 
@@ -195,11 +214,6 @@ namespace TheBoxSoftware.Documentation.Exporting
                     return Exporters.Website;
             }
         }
-
-        public static ExportConfigFile Create(string filename)
-        {
-            return new ExportConfigFile(filename);
-        }
         
         /// <summary>
         /// Checks if the file has all of the requisits met and sets the <see cref="IsValid"/> property.
@@ -226,43 +240,75 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// The full filename and path of the config file
         /// </summary>
         /// <value>The conig file.</value>
-        protected string ConfigFile { get; set; }
+        protected string ConfigFile
+        {
+            get { return _configFile; }
+            set { _configFile = value; }
+        }
 
         /// <summary>
         /// Gets the display name of this export configuration.
         /// </summary>
         /// <value>The name.</value>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         /// <summary>
         /// The exporter to be used as part of the export for this export configuration.
         /// </summary>
         /// <value>The exporter.</value>
-        public Exporters Exporter { get; set; }
+        public Exporters Exporter
+        {
+            get { return _exporters; }
+            set { _exporters = value; }
+        }
 
         /// <summary>
         /// A description of the exporter.
         /// </summary>
-        public string Description { get; set; }
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
 
         /// <summary>
         /// The version number of the export config file.
         /// </summary>
-        public string Version { get; set; }
+        public string Version
+        {
+            get { return _version; }
+            set { _version = value; }
+        }
 
         /// <summary>
         /// Indicates if the file contains a screenshot.
         /// </summary>
-        public bool HasScreenshot { get; set; }
+        public bool HasScreenshot
+        {
+            get { return _hasScreenshot; }
+            set { _hasScreenshot = value; }
+        }
 
         /// <summary>
         /// The custom properties defined in the config file.
         /// </summary>
-        public Dictionary<string, string> Properties { get; set; }
+        public Dictionary<string, string> Properties
+        {
+            get { return _properties; }
+            set { _properties = value; }
+        }
 
         /// <summary>
         /// Indicates if this is a valid LDEC file.
         /// </summary>
-        public bool IsValid { get; set; }
+        public bool IsValid
+        {
+            get { return _isValid; }
+            set { _isValid = value; }
+        }
     }
 }

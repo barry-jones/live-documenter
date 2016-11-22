@@ -13,9 +13,10 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
     {
         private Entry CreateEntry(long key, string subkey)
         {
-            Entry entry = new Entry(null, "display name", null);
-            entry.Key = key;
-            entry.SubKey = subkey;
+            Entry entry = new Entry(null, "display name", null) {
+                Key = key,
+                SubKey = subkey
+            };
             return entry;
         }
 
@@ -116,12 +117,30 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
             WhenSearchingShouldMatch("FILE");
         }
 
+        [Test]
+        public void WhenSearching_AndEntryHasChildren_ShouldCheckChildren()
+        {
+            const string searchFor = "ChildEntry";
+            Entry parent = CreateEntry(1, "Namespace");
+            parent.Name = "InputFileReader";
+            parent.IsSearchable = true;
+            Entry child = CreateEntry(2, string.Empty);
+            child.Name = "ChildEntry";
+            child.IsSearchable = true;
+            parent.Children.Add(child);
+
+            List<Entry> found = parent.Search(searchFor);
+
+            Assert.AreEqual(1, found.Count);
+            Assert.AreEqual(found[0], child);
+        }
+
+        [Test]
         public void WhenNotSelected_IsSelected_IsFalse()
         {
-            Entry entry = new Entry(null, string.Empty, null);
-
-            entry.IsSelected = false;
-
+            Entry entry = new Entry(null, string.Empty, null) {
+                IsSelected = false
+            };
             Assert.AreEqual(false, entry.IsSelected);
         }
 
@@ -136,10 +155,9 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
         [Test]
         public void WhenSelected_IsSelected_IsTrue()
         {
-            Entry entry = new Entry(null, string.Empty, null);
-
-            entry.IsSelected = true;
-
+            Entry entry = new Entry(null, string.Empty, null) {
+                IsSelected = true
+            };
             Assert.AreEqual(true, entry.IsSelected);
         }
 
@@ -154,20 +172,18 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
         [Test]
         public void WhenIsSearchable_IsSearchable_IsTrue()
         {
-            Entry entry = new Entry(null, string.Empty, null);
-
-            entry.IsSearchable = true;
-
+            Entry entry = new Entry(null, string.Empty, null) {
+                IsSearchable = true
+            };
             Assert.AreEqual(true, entry.IsSearchable);
         }
 
         [Test]
         public void WhenNotSearchable_IsSearchable_IsFalse()
         {
-            Entry entry = new Entry(null, string.Empty, null);
-
-            entry.IsSearchable = false;
-
+            Entry entry = new Entry(null, string.Empty, null) {
+                IsSearchable = false
+            };
             Assert.AreEqual(false, entry.IsSearchable);
         }
 
@@ -182,20 +198,18 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
         [Test]
         public void WhenExpanded_IsExpanded_IsTrue()
         {
-            Entry entry = new Entry(null, string.Empty, null);
-
-            entry.IsExpanded = true;
-
+            Entry entry = new Entry(null, string.Empty, null) {
+                IsExpanded = true
+            };
             Assert.AreEqual(true, entry.IsExpanded);
         }
 
         [Test]
         public void WhenNotExpanded_IsExpanded_IsFalse()
         {
-            Entry entry = new Entry(null, string.Empty, null);
-
-            entry.IsExpanded = false;
-
+            Entry entry = new Entry(null, string.Empty, null) {
+                IsExpanded = false
+            };
             Assert.AreEqual(false, entry.IsExpanded);
         }
 

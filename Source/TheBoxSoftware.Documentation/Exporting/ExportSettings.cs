@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TheBoxSoftware.Reflection;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
     /// <summary>
@@ -12,6 +7,10 @@ namespace TheBoxSoftware.Documentation.Exporting
     /// </summary>
     public sealed class ExportSettings
     {
+        private DocumentSettings _settings;
+        private string _title;
+        private string _publishDirectory;
+
         /// <summary>
         /// Initialises a new instance of the ExportSettings class.
         /// </summary>
@@ -24,7 +23,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public DocumentSettings Settings
         {
-            get; set;
+            get { return _settings; }
+            set { _settings = value; }
         }
 
         /// <summary>
@@ -32,7 +32,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public string Title
         {
-            get; set;
+            get { return _title; }
+            set { _title = value; }
         }
 
         /// <summary>
@@ -40,7 +41,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public string PublishDirectory
         {
-            get; set;
+            get { return _publishDirectory; }
+            set { _publishDirectory = value; }
         }
     }
 }

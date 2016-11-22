@@ -2,16 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.25914.0
-MinimumVisualStudioVersion = 10.0.40219.
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware", "TheBoxSoftware\TheBoxSoftware.csproj", "{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Reflection", "TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj", "{B8749831-5746-4443-BEE9-9B01792C0D98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Documentation", "TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj", "{0B3F2A4C-8DDF-4DAB-B676-44C927921EFF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Diagramming.WPF", "TheBoxSoftware.Diagramming.WPF\TheBoxSoftware.Diagramming.WPF.csproj", "{40F6DB3D-513C-490F-881A-298962634947}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.Diagramming", "TheBoxSoftware.Diagramming\TheBoxSoftware.Diagramming.csproj", "{E0931A15-6EBB-46EA-969D-37FD924D9233}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.PEViewer", "TheBoxSoftware.DeveloperSuite.PeViewer\TheBoxSoftware.DeveloperSuite.PEViewer.csproj", "{E23C4A5D-127A-48B1-A17E-4972054A078F}"
 EndProject
@@ -108,36 +104,6 @@ Global
 		{0B3F2A4C-8DDF-4DAB-B676-44C927921EFF}.Test|Mixed Platforms.ActiveCfg = Test|Any CPU
 		{0B3F2A4C-8DDF-4DAB-B676-44C927921EFF}.Test|Mixed Platforms.Build.0 = Test|Any CPU
 		{0B3F2A4C-8DDF-4DAB-B676-44C927921EFF}.Test|x86.ActiveCfg = Test|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Release|x86.ActiveCfg = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Test|Any CPU.Build.0 = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Test|Mixed Platforms.Build.0 = Release|Any CPU
-		{40F6DB3D-513C-490F-881A-298962634947}.Test|x86.ActiveCfg = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Release|x86.ActiveCfg = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Test|Any CPU.Build.0 = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Test|Mixed Platforms.Build.0 = Release|Any CPU
-		{E0931A15-6EBB-46EA-969D-37FD924D9233}.Test|x86.ActiveCfg = Release|Any CPU
 		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
