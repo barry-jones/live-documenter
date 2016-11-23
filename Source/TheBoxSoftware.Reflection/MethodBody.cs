@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace TheBoxSoftware.Reflection
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Contains the details and MSIL for a method definition.
     /// </summary>
@@ -17,6 +18,9 @@ namespace TheBoxSoftware.Reflection
     /// <seealso cref="MethodDef"/>
     public sealed class MethodBody
     {
+        private List<ILInstruction> _instructions;
+        private int _maxStack;
+
         /// <summary>
         /// Initialsies a new instance of the MethodBody class.
         /// </summary>
@@ -24,18 +28,25 @@ namespace TheBoxSoftware.Reflection
         /// <param name="maxStack">The maximum size of the stack for this method.</param>
         internal MethodBody(List<ILInstruction> instructions, Int32 maxStack)
         {
-            this.Instructions = instructions;
+            _instructions = instructions;
+            _maxStack = maxStack;
         }
 
         /// <summary>
         /// Obtains the MSIL instructions for this method.
         /// </summary>
-        public List<ILInstruction> Instructions { get; private set; }
+        public List<ILInstruction> Instructions
+        {
+            get { return _instructions; }
+        }
 
         /// <summary>
         /// Indicates the maximum number of items that appear on the stack in this
         /// method.
         /// </summary>
-        public Int32 MaxStack { get; private set; }
+        public Int32 MaxStack
+        {
+            get { return _maxStack; }
+        }
     }
 }

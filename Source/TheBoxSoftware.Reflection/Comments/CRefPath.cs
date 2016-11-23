@@ -322,43 +322,45 @@ namespace TheBoxSoftware.Reflection.Comments
         {
             ParseType();
 
-            if(PathType != CRefTypes.Error)
+            if(_pathType == CRefTypes.Error)
             {
-                string[] items;
-                int startParams = _crefPath.IndexOf('(');
-                if(startParams == -1)
-                {
-                    items = _crefPath.Substring(SEPERATOR_INDEX + 1).Split('.');
-                }
-                else
-                {
-                    items = _crefPath.Substring(SEPERATOR_INDEX + 1, _crefPath.IndexOf('(') - 2).Split('.');
-                    Parameters = _crefPath.Substring(_crefPath.IndexOf('('));
-                }
+                return;
+            }
 
-                switch(PathType)
-                {
-                    case CRefTypes.Namespace:
-                        Namespace = string.Join(".", items);
-                        break;
-                    case CRefTypes.Type:
-                        TypeName = items[items.Length - 1];
-                        Namespace = string.Join(".", items, 0, items.Length - 1);
-                        break;
-                    default:
-                        if(items.Length - 2 <= 0)
-                        {
-                            PathType = CRefTypes.Error;
-                        }
-                        else
-                        {
-                            // -2 because the last element is the element name
-                            TypeName = items[items.Length - 2];
-                            ElementName = items[items.Length - 1];
-                            Namespace = string.Join(".", items, 0, items.Length - 2);
-                        }
-                        break;
-                }
+            string[] items;
+            int startParams = _crefPath.IndexOf('(');
+            if(startParams == -1)
+            {
+                items = _crefPath.Substring(SEPERATOR_INDEX + 1).Split('.');
+            }
+            else
+            {
+                items = _crefPath.Substring(SEPERATOR_INDEX + 1, _crefPath.IndexOf('(') - 2).Split('.');
+                Parameters = _crefPath.Substring(_crefPath.IndexOf('('));
+            }
+
+            switch(_pathType)
+            {
+                case CRefTypes.Namespace:
+                    Namespace = string.Join(".", items);
+                    break;
+                case CRefTypes.Type:
+                    TypeName = items[items.Length - 1];
+                    Namespace = string.Join(".", items, 0, items.Length - 1);
+                    break;
+                default:
+                    if(items.Length - 2 <= 0)
+                    {
+                        PathType = CRefTypes.Error;
+                    }
+                    else
+                    {
+                        // -2 because the last element is the element name
+                        TypeName = items[items.Length - 2];
+                        ElementName = items[items.Length - 1];
+                        Namespace = string.Join(".", items, 0, items.Length - 2);
+                    }
+                    break;
             }
         }
 

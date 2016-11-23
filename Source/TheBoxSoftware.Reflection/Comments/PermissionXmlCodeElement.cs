@@ -8,6 +8,8 @@ namespace TheBoxSoftware.Reflection.Comments
     /// </summary>
     public sealed class PermissionXmlCodeElement : XmlContainerCodeElement
     {
+        private CRefPath _member;
+
         /// <summary>
         /// Initialises a new instance of the PermissionXmlCodeElement class.
         /// </summary>
@@ -16,15 +18,23 @@ namespace TheBoxSoftware.Reflection.Comments
         internal PermissionXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.Permission)
         {
-            if(node.Attributes["cref"] == null) { throw new AttributeRequiredException("cref", XmlCodeElements.Permission); }
-            this.Member = CRefPath.Parse(node.Attributes["cref"].Value);
-            this.Elements = this.Parse(node);
-            this.IsBlock = true;
+            if(node.Attributes["cref"] == null)
+            {
+                throw new AttributeRequiredException("cref", XmlCodeElements.Permission);
+            }
+
+            _member = CRefPath.Parse(node.Attributes["cref"].Value);
+            Elements = Parse(node);
+            IsBlock = true;
         }
 
         /// <summary>
         /// The member (i.e. permission set) this permission points to.
         /// </summary>
-        public CRefPath Member { get; set; }
+        public CRefPath Member
+        {
+            get { return _member; }
+            set { _member = value; }
+        }
     }
 }

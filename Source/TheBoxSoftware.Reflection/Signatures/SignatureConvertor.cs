@@ -21,6 +21,11 @@ namespace TheBoxSoftware.Reflection.Signatures
         protected bool ByRefAtFront = false;
         protected bool IncludeFirstParameter = true;
 
+        private string _parameters;
+        private string _elementName;
+        private string _typeName;
+        private string _namespace;
+
         /// <summary>
         /// Converts the method parameters to a cref path implementation, this in itself
         /// is not enough. This is used by the cref parse methods.
@@ -321,22 +326,38 @@ namespace TheBoxSoftware.Reflection.Signatures
         /// Gets or sets a string that indicates the namespace the type parsed from the cref
         /// path resides in.
         /// </summary>
-        public string Namespace { get; set; }
+        public string Namespace
+        {
+            get { return _namespace; }
+            set { _namespace = value; }
+        }
 
         /// <summary>
         /// Gets or sets a string that indicates the name of the type from the CRef path.
         /// </summary>
-        public string TypeName { get; set; }
+        public string TypeName
+        {
+            get { return _typeName; }
+            set { _typeName = value; }
+        }
 
         /// <summary>
         /// Gets or sets a string that is the value of the element name from the cref
         /// path.
         /// </summary>
-        public string ElementName { get; set; }
+        public string ElementName
+        {
+            get { return _elementName; }
+            set { _elementName = value; }
+        }
 
         /// <summary>
         /// A string representing the parameter section of the CRefPath.
         /// </summary>
-        public string Parameters { get; set; }
+        public string Parameters
+        {
+            get { return _parameters; }
+            set { _parameters = value; }
+        }
     }
 }
