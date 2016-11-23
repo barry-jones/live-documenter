@@ -21,7 +21,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void WhenInitialisedWithEmptyString_ThrowsArgumentException()
+        public void WhenFilenameIsEmptyString_Initialise_ThrowsArgumentException()
         {
             Mock<IFileSystem> fileSystem = new Mock<IFileSystem>();
             Assert.Throws<ArgumentException>(delegate ()
@@ -32,7 +32,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
         }
 
         [Test]
-        public void WhenInitialisedWithValidFile_MetadataIsLoaded()
+        public void WhenFileIsValid_Initialise_LoadsMetadata()
         {
             PeCoffFile coffFile = new PeCoffFile(TestLibrary, new FileSystem());
             coffFile.Initialise();

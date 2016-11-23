@@ -40,11 +40,11 @@ namespace TheBoxSoftware.Reflection.Core
 
         public void Initialise()
         {
-            Map = new MetadataToDefinitionMap();
-            IsMetadataLoaded = false;
+            _map = new MetadataToDefinitionMap();
+            _isMetadataLoaded = false;
             ReadFileContents();
             _fileContents = null;
-            IsMetadataLoaded = true;
+            _isMetadataLoaded = true;
         }
 
         /// <summary>
@@ -127,8 +127,8 @@ namespace TheBoxSoftware.Reflection.Core
             FileHeader fileHeader = new FileHeader(_fileContents, offset);
             PEHeader peHeader = new PEHeader(_fileContents, offset);
 
-            this.ReadSectionHeaders(fileHeader.NumberOfSections, offset);
-            this.ReadDirectories(peHeader.DataDirectories);
+            ReadSectionHeaders(fileHeader.NumberOfSections, offset);
+            ReadDirectories(peHeader.DataDirectories);
         }
 
         /// <summary>
@@ -138,11 +138,11 @@ namespace TheBoxSoftware.Reflection.Core
         /// <param name="offset">The offset to the section headers</param>
         private void ReadSectionHeaders(ushort numberOfSections, Offset offset)
         {
-            this.SectionHeaders = new List<SectionHeader>();
+            _sectionHeaders = new List<SectionHeader>();
 
             for(int i = 0; i < numberOfSections; i++)
             {
-                this.SectionHeaders.Add(new SectionHeader(_fileContents, offset));
+                _sectionHeaders.Add(new SectionHeader(_fileContents, offset));
             }
         }
 
