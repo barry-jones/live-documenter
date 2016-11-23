@@ -33,7 +33,7 @@ namespace TheBoxSoftware.Reflection.Comments
             Text = string.Join("\n", strippedStrings);
         }
 
-        private static void TrimLeadingWhiteSpaceFromLines(string[] strippedStrings, int charsToTrim)
+        private void TrimLeadingWhiteSpaceFromLines(string[] strippedStrings, int charsToTrim)
         {
             for(int i = 0; i < strippedStrings.Length; i++)
             {
@@ -41,7 +41,7 @@ namespace TheBoxSoftware.Reflection.Comments
             }
         }
 
-        private static int CalculateLeadingSpaceToTrim(string[] strippedStrings)
+        private int CalculateLeadingSpaceToTrim(string[] strippedStrings)
         {
             Regex leadRegex = new Regex(@"(^\s*)");
             int charsToTrim = int.MaxValue;
