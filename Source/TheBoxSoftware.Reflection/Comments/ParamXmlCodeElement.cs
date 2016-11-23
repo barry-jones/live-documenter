@@ -5,18 +5,26 @@ namespace TheBoxSoftware.Reflection.Comments
 
     public sealed class ParamXmlCodeElement : XmlContainerCodeElement
     {
+        private string _name;
+
         internal ParamXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.Param)
         {
-            if(node.Attributes["name"] == null) { throw new AttributeRequiredException("name", XmlCodeElements.Param); }
-            this.IsBlock = true;
-            this.Elements = this.Parse(node);
-            this.Name = node.Attributes["name"].Value;
+            if(node.Attributes["name"] == null)
+                throw new AttributeRequiredException("name", XmlCodeElements.Param);
+
+            IsBlock = true;
+            Elements = Parse(node);
+            _name = node.Attributes["name"].Value;
         }
 
         /// <summary>
         /// The name of the parameter this code comment refers to.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
     }
 }

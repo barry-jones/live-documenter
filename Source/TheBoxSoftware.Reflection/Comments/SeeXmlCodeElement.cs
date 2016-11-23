@@ -5,30 +5,37 @@ namespace TheBoxSoftware.Reflection.Comments
 
     public sealed class SeeXmlCodeElement : XmlCodeElement
     {
+        private CRefPath _member;
+
         internal SeeXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.See)
         {
-            if(node.Attributes["cref"] == null) { throw new AttributeRequiredException("cref", XmlCodeElements.See); }
+            if(node.Attributes["cref"] == null)
+                throw new AttributeRequiredException("cref", XmlCodeElements.See);
 
-            this.Member = CRefPath.Parse(node.Attributes["cref"].Value);
-            switch(this.Member.PathType)
+            _member = CRefPath.Parse(node.Attributes["cref"].Value);
+            switch(Member.PathType)
             {
                 case CRefTypes.Type:
-                    this.Text = this.Member.TypeName;
+                    Text = _member.TypeName;
                     break;
                 case CRefTypes.Namespace:
-                    this.Text = this.Member.Namespace;
+                    Text = _member.Namespace;
                     break;
                 default:
-                    this.Text = this.Member.ElementName;
+                    Text = _member.ElementName;
                     break;
             }
-            this.IsInline = true;
+            IsInline = true;
         }
 
         /// <summary>
         /// The member this elements points to.
         /// </summary>
-        public CRefPath Member { get; set; }
+        public CRefPath Member
+        {
+            get { return _member; }
+            set { _member = value; }
+        }
     }
 }

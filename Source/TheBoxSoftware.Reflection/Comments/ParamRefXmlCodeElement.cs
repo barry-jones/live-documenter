@@ -8,9 +8,11 @@ namespace TheBoxSoftware.Reflection.Comments
         internal ParamRefXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.ParamRef)
         {
-            if(node.Attributes["name"] == null) { throw new AttributeRequiredException("name", XmlCodeElements.ParamRef); }
-            this.IsInline = true;
-            this.Text = node.Attributes["name"].Value;
+            if(node.Attributes["name"] == null)
+                throw new AttributeRequiredException("name", XmlCodeElements.ParamRef);
+
+            IsInline = true;
+            Text = node.Attributes["name"].Value;
         }
     }
 }

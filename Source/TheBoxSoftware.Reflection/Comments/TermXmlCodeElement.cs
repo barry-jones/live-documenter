@@ -8,8 +8,8 @@ namespace TheBoxSoftware.Reflection.Comments
         internal TermXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.Term)
         {
-            this.Elements = this.Parse(node);
-            this.IsBlock = true;
+            Elements = Parse(node);
+            IsBlock = true;
         }
     }
 }

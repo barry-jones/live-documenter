@@ -9,40 +9,48 @@ namespace TheBoxSoftware.Reflection.Comments
     /// </summary>
 	public sealed class SeeAlsoXmlCodeElement : XmlCodeElement
     {
+        private CRefPath _member;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="node">The node describing the seealso xml element.</param>
-		internal SeeAlsoXmlCodeElement(XmlNode node)
+        internal SeeAlsoXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.SeeAlso)
         {
-            if(node.Attributes["cref"] == null) { throw new AttributeRequiredException("cref", XmlCodeElements.SeeAlso); }
-            this.Member = CRefPath.Parse(node.Attributes["cref"].Value);
-            switch(this.Member.PathType)
+            if(node.Attributes["cref"] == null)
+                throw new AttributeRequiredException("cref", XmlCodeElements.SeeAlso);
+
+            _member = CRefPath.Parse(node.Attributes["cref"].Value);
+            switch(_member.PathType)
             {
                 case CRefTypes.Type:
-                    this.Text = this.Member.TypeName;
+                    Text = _member.TypeName;
                     break;
                 case CRefTypes.Namespace:
-                    this.Text = this.Member.Namespace;
+                    Text = _member.Namespace;
                     break;
                 default:
-                    if(!string.IsNullOrEmpty(this.Member.ElementName))
+                    if(!string.IsNullOrEmpty(Member.ElementName))
                     {
-                        this.Text = this.Member.ElementName;
+                        Text = _member.ElementName;
                     }
                     else if(!string.IsNullOrEmpty(node.Attributes["cref"].Value))
                     {
-                        this.Text = node.Attributes["cref"].Value.Substring(2);
+                        Text = node.Attributes["cref"].Value.Substring(2);
                     }
                     break;
             }
-            this.IsInline = true;
+            IsInline = true;
         }
 
         /// <summary>
         /// Obtains the member this see also element refers to.
         /// </summary>
-        public CRefPath Member { get; set; }
+        public CRefPath Member
+        {
+            get { return _member; }
+            set { _member = value; }
+        }
     }
 }

@@ -5,18 +5,26 @@ namespace TheBoxSoftware.Reflection.Comments
 
     public sealed class TypeParamRefXmlCodeElement : XmlCodeElement
     {
+        private string _name;
+
         internal TypeParamRefXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.TypeParamRef)
         {
-            if(node.Attributes["name"] == null) { throw new AttributeRequiredException("name", XmlCodeElements.TypeParamRef); }
-            this.Name = node.Attributes["name"].Value;
-            this.Text = this.Name;
-            this.IsInline = true;
+            if(node.Attributes["name"] == null)
+                throw new AttributeRequiredException("name", XmlCodeElements.TypeParamRef);
+
+            _name = node.Attributes["name"].Value;
+            Text = Name;
+            IsInline = true;
         }
 
         /// <summary>
         /// The name this parameter reference refers to.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
     }
 }

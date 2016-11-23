@@ -38,7 +38,7 @@ namespace TheBoxSoftware.Reflection.Comments
         {
             if(node == null)
                 throw new ArgumentNullException("node");
-            this.Elements = XmlContainerCodeElement.ParseChildren(node);
+            Elements = XmlContainerCodeElement.ParseChildren(node);
         }
 
         /// <summary>

@@ -15,8 +15,8 @@ namespace TheBoxSoftware.Reflection.Comments
         internal ExampleXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.Example)
         {
-            this.Elements = this.Parse(node);
-            this.IsBlock = true;
+            Elements = Parse(node);
+            IsBlock = true;
         }
     }
 }

@@ -8,8 +8,8 @@ namespace TheBoxSoftware.Reflection.Comments
 		internal ItalicXmlCodeElement(XmlNode node)
 			: base(XmlCodeElements.I) 
         {
-			this.Text = this.RemoveNewLines(node.InnerText);
-			this.IsInline = true;
+            Text = RemoveNewLines(node.InnerText);
+            IsInline = true;
 		}
 	}
 }

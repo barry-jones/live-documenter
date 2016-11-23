@@ -11,9 +11,8 @@ namespace TheBoxSoftware.Reflection.Comments
 		internal CXmlCodeElement(XmlNode node)
 			: base(XmlCodeElements.C) 
         {
-			// 
-			this.Text = this.RemoveNewLines(node.InnerText);
-			this.IsInline = true;
+            Text = RemoveNewLines(node.InnerText);
+            IsInline = true;
 		}
 	}
 }

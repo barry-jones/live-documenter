@@ -17,6 +17,7 @@ namespace TheBoxSoftware.Reflection.Comments
     {
         private static Regex innerTextReplacement = new Regex(@"( {2,}|^ |^[\n\t\r\v\f]+)", RegexOptions.Multiline);
         private static Regex titleTextReplacement = new Regex(@"([\n\t\r\v\f]+)", RegexOptions.Multiline);
+
         /// <summary>
         /// Initialises a new instance of the TextXmlCodeElement class.
         /// </summary>
@@ -24,8 +25,8 @@ namespace TheBoxSoftware.Reflection.Comments
         internal TextXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.Text)
         {
-            this.Text = innerTextReplacement.Replace(node.InnerText, string.Empty);
-            this.Text = titleTextReplacement.Replace(this.Text, " ");
+            Text = innerTextReplacement.Replace(node.InnerText, string.Empty);
+            Text = titleTextReplacement.Replace(Text, " ");
 
             // Make sure we have not removed too much whitespace. Check if the previous elements
             // a non text element and add a space if the current element defines space at the beginning.
@@ -34,10 +35,10 @@ namespace TheBoxSoftware.Reflection.Comments
                 && XmlCodeElement.DefinedElements[node.PreviousSibling.Name] != XmlCodeElements.Text
                 && node.InnerText.StartsWith(" "))
             {
-                this.Text = " " + this.Text;
+                Text = " " + Text;
             }
 
-            this.IsInline = true;
+            IsInline = true;
         }
     }
 }

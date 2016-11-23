@@ -13,7 +13,7 @@ namespace TheBoxSoftware.Reflection.Comments
     [System.Diagnostics.DebuggerDisplay("cref={ToString()}")]
     public sealed class CRefPath : Signatures.SignatureConvertor
     {
-        private const int SEPERATOR_INDEX = 1;
+        private const int SeperatorIndex = 1;
 
         private string _crefPath;
         private string _returnType;
@@ -331,11 +331,11 @@ namespace TheBoxSoftware.Reflection.Comments
             int startParams = _crefPath.IndexOf('(');
             if(startParams == -1)
             {
-                items = _crefPath.Substring(SEPERATOR_INDEX + 1).Split('.');
+                items = _crefPath.Substring(SeperatorIndex + 1).Split('.');
             }
             else
             {
-                items = _crefPath.Substring(SEPERATOR_INDEX + 1, _crefPath.IndexOf('(') - 2).Split('.');
+                items = _crefPath.Substring(SeperatorIndex + 1, _crefPath.IndexOf('(') - 2).Split('.');
                 Parameters = _crefPath.Substring(_crefPath.IndexOf('('));
             }
 
@@ -371,7 +371,7 @@ namespace TheBoxSoftware.Reflection.Comments
         {
             PathType = CRefTypes.Error;
 
-            if(string.IsNullOrEmpty(_crefPath) || _crefPath[SEPERATOR_INDEX] != ':')
+            if(string.IsNullOrEmpty(_crefPath) || _crefPath[SeperatorIndex] != ':')
             {
                 return;
             }

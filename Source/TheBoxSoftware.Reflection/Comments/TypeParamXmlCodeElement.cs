@@ -5,17 +5,25 @@ namespace TheBoxSoftware.Reflection.Comments
 
     public sealed class TypeParamXmlCodeElement : XmlCodeElement
     {
+        private string _name;
+
         internal TypeParamXmlCodeElement(XmlNode node)
             : base(XmlCodeElements.TypeParam)
         {
-            if(node.Attributes["name"] == null) { throw new AttributeRequiredException("name", XmlCodeElements.TypeParam); }
-            this.Name = node.Attributes["name"].Value;
-            this.Text = this.RemoveNewLines(node.InnerText);
+            if(node.Attributes["name"] == null)
+                throw new AttributeRequiredException("name", XmlCodeElements.TypeParam);
+
+            _name = node.Attributes["name"].Value;
+            Text = RemoveNewLines(node.InnerText);
         }
 
         /// <summary>
         /// The name this xml code element refers to.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
     }
 }
