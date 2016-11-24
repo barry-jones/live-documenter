@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <document>D:\Development\Personal\tbs-developersuite\Source\1. Tests\99. Old\DocumentationTest\bin\Debug\documentationtest.dll</document>
+  <document>theboxsoftware.reflection.dll</document>
 	
 	<!-- can be Public|Internal|Protected|ProtectedInternal|Private only those detailed will be output,
 		not specifiying a filter section will result in only the Public members being exported.
@@ -21,9 +21,9 @@
   <outputs>
 	<!-- the locations being output to will have new folders created inside them -->
     <ldec location="c:\temp\web\">web-msdn.ldec</ldec>
-    <!--<ldec location="c:\temp\htmlhelp-1\">htmlhelp1-msdn.ldec</ldec>
+    <ldec location="c:\temp\htmlhelp-1\">htmlhelp1-msdn.ldec</ldec>
     <ldec location="c:\temp\htmlhelp-2\">htmlhelp2-msdn.ldec</ldec>
     <ldec location="c:\temp\helpviewer-1\">helpviewer1-msdn.ldec</ldec>
-    <ldec location="c:\temp\xml\">xml.ldec</ldec>-->
+    <ldec location="c:\temp\xml\">xml.ldec</ldec>
   </outputs>
 </configuration>

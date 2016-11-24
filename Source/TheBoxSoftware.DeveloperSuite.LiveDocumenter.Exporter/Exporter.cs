@@ -18,9 +18,9 @@ namespace TheBoxSoftware.Exporter
     /// </remarks>
 	internal sealed class Exporter
     {
-        private Configuration configuration;
-        private string lastStep = string.Empty; // stores the last export step so we can work out where we are
-        private bool verbose = false;           // indicates if the output information should be verbose or not
+        private Configuration _configuration;
+        private string _lastStep = string.Empty; // stores the last export step so we can work out where we are
+        private bool _verbose = false;           // indicates if the output information should be verbose or not
 
         /// <summary>
         /// Initialises a new instance of the Exporter
@@ -29,8 +29,8 @@ namespace TheBoxSoftware.Exporter
         /// <param name="verbose">Indicates if the output should be complete or limited.</param>
         public Exporter(Configuration configuration, bool verbose)
         {
-            this.configuration = configuration;
-            this.verbose = verbose;
+            _configuration = configuration;
+            _verbose = verbose;
         }
 
         /// <summary>
@@ -43,19 +43,19 @@ namespace TheBoxSoftware.Exporter
             Project project = null;
             export.ExportSettings settings = new export.ExportSettings();
             settings.Settings = new DocumentSettings();
-            settings.Settings.VisibilityFilters = this.configuration.Filters;
+            settings.Settings.VisibilityFilters = _configuration.Filters;
 
             // initialise the assemblies to be documented
-            if(Path.GetExtension(this.configuration.Document) == ".ldproj")
+            if(Path.GetExtension(_configuration.Document) == ".ldproj")
             {
                 try
                 {
-                    project = Project.Deserialize(this.configuration.Document);
+                    project = Project.Deserialize(_configuration.Document);
                 }
                 catch(InvalidOperationException e)
                 {
                     Logger.Log(
-                        string.Format("Invalid document '{0}' please fix the error and try again.\n  {1}", this.configuration.Document, e.Message),
+                        $"Invalid document '{_configuration.Document}' please fix the error and try again.\n  {e.Message}",
                         LogType.Error
                         );
                     return; // bail we have an invalid ldproj file
@@ -69,15 +69,15 @@ namespace TheBoxSoftware.Exporter
                     settings.Settings.VisibilityFilters = project.VisibilityFilters;
                 }
             }
-            else if(Path.GetExtension(this.configuration.Document) == ".dll")
+            else if(Path.GetExtension(_configuration.Document) == ".dll")
             {
-                files.Add(new DocumentedAssembly(this.configuration.Document));
+                files.Add(new DocumentedAssembly(_configuration.Document));
             }
             else
             {
                 files.AddRange(
                     InputFileReader.Read(
-                    this.configuration.Document,
+                    _configuration.Document,
                     "Release"
                     ));
             }
@@ -106,10 +106,10 @@ namespace TheBoxSoftware.Exporter
             d.Settings = settings.Settings;
             d.UpdateDocumentMap();
 
-            Logger.Verbose(string.Format("  {0} contains {1} members and types.\n", Path.GetFileName(configuration.Document), entryCreator.Created));
+            Logger.Verbose($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
 
             // export the document in all the required formats
-            foreach(Configuration.Output output in this.configuration.Outputs)
+            foreach(Configuration.Output output in _configuration.Outputs)
             {
                 DateTime start = DateTime.Now;
                 DateTime end;
@@ -119,7 +119,7 @@ namespace TheBoxSoftware.Exporter
                     + output.File
                     );
 
-                Logger.Log(string.Format("\nExporting with {0} to location {1}.\n", output.File, output.Location), LogType.Progress);
+                Logger.Log($"\nExporting with {output.File} to location {output.Location}.\n", LogType.Progress);
 
                 if(!config.IsValid)
                 {
@@ -130,9 +130,9 @@ namespace TheBoxSoftware.Exporter
                     settings.PublishDirectory = output.Location;
 
                     export.Exporter exporter = export.Exporter.Create(d, settings, config);
-                    if(this.verbose) exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
+                    if(_verbose) exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
                     exporter.ExportException += new export.ExportExceptionHandler(exporter_ExportException);
-                    if(this.verbose) exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
+                    if(_verbose) exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
                     exporter.ExportFailed += new export.ExportFailedEventHandler(exporter_ExportFailed);
 
                     List<export.Issue> issues = exporter.GetIssues();
@@ -140,12 +140,12 @@ namespace TheBoxSoftware.Exporter
                     {
                         foreach(export.Issue issue in issues)
                         {
-                            Logger.Log(string.Format("{0}\n", issue.Description), LogType.Error);
+                            Logger.Log($"{issue.Description}\n", LogType.Error);
                         }
                     }
                     else
                     {
-                        Logger.Verbose(string.Format("The export began at {0}.\n", start));
+                        Logger.Verbose($"The export began at {start}.\n");
                         exporter.Export();
                         end = DateTime.Now;
 
@@ -154,11 +154,11 @@ namespace TheBoxSoftware.Exporter
                             Logger.Log("The export completed with the following issues:\n", LogType.Warning);
                             foreach(Exception current in exporter.ExportExceptions)
                             {
-                                Logger.Log(this.FormatExceptionData(current), LogType.Warning);
+                                Logger.Log(FormatExceptionData(current), LogType.Warning);
                             }
                         }
 
-                        Logger.Verbose(string.Format("The export completed at {0}, taking {1}.\n", end, end.Subtract(start).ToString()));
+                        Logger.Verbose($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
                     }
                 }
             }
@@ -166,18 +166,18 @@ namespace TheBoxSoftware.Exporter
 
         private void exporter_ExportStep(object sender, export.ExportStepEventArgs e)
         {
-            if(this.lastStep == e.Description)
+            if(_lastStep == e.Description)
                 return;
             else
             {
-                this.lastStep = e.Description;
-                Logger.Verbose(string.Format("  {0}\n", e.Description));
+                _lastStep = e.Description;
+                Logger.Verbose($"  {e.Description}\n");
             }
         }
 
         private void exporter_ExportException(object sender, export.ExportExceptionEventArgs e)
         {
-            Logger.Log(string.Format("{0}\n", e.Exception.Message), LogType.Error);
+            Logger.Log($"{e.Exception.Message}\n", LogType.Error);
         }
 
         private void exporter_ExportCalculated(object sender, export.ExportCalculatedEventArgs e)
@@ -187,7 +187,7 @@ namespace TheBoxSoftware.Exporter
 
         private void exporter_ExportFailed(export.ExportFailedEventArgs e)
         {
-            Logger.Log(string.Format("{0}\n", e.Message), LogType.Error);
+            Logger.Log($"{e.Message}\n", LogType.Error);
         }
 
         private string FormatExceptionData(Exception forException)
@@ -195,7 +195,7 @@ namespace TheBoxSoftware.Exporter
             StringBuilder sb = new StringBuilder();
             if(forException != null)
             {
-                sb.AppendLine(string.Format("Message: {0}", forException.Message));
+                sb.AppendLine($"Message: {forException.Message}");
                 if(forException is IExtendedException)
                 {
                     sb.Append(((IExtendedException)forException).GetExtendedInformation());
