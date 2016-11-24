@@ -100,68 +100,79 @@ namespace TheBoxSoftware.Exporter
                     );
             }
 
-            // initialise the document
-            EntryCreator entryCreator = new EntryCreator();
-            Documentation.Document d = new Documentation.Document(files, Mappers.GroupedNamespaceFirst, false, entryCreator);
-            d.Settings = settings.Settings;
-            d.UpdateDocumentMap();
+            Document document = InitialiseDocumentForExport(files, settings);
 
-            Logger.Verbose($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
-
-            // export the document in all the required formats
             foreach(Configuration.Output output in _configuration.Outputs)
             {
-                DateTime start = DateTime.Now;
-                DateTime end;
-                export.ExportConfigFile config = export.ExportConfigFile.Create(
-                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
-                    + "\\ApplicationData\\"
-                    + output.File
-                    );
+                ExportToOutputMethod(settings, document, output);
+            }
+        }
 
-                Logger.Log($"\nExporting with {output.File} to location {output.Location}.\n", LogType.Progress);
+        private void ExportToOutputMethod(export.ExportSettings settings, Document document, Configuration.Output output)
+        {
+            DateTime start = DateTime.Now;
+            DateTime end;
+            export.ExportConfigFile config = export.ExportConfigFile.Create(
+                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
+                + "\\ApplicationData\\"
+                + output.File
+                );
 
-                if(!config.IsValid)
+            Logger.Log($"\nExporting with {output.File} to location {output.Location}.\n", LogType.Progress);
+
+            if(!config.IsValid)
+            {
+                Logger.Log(string.Format("There are issues with the LDEC file: {0}\n", output.File), LogType.Error);
+            }
+            else
+            {
+                settings.PublishDirectory = output.Location;
+
+                export.Exporter exporter = export.Exporter.Create(document, settings, config);
+                if(_verbose) exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
+                exporter.ExportException += new export.ExportExceptionHandler(exporter_ExportException);
+                if(_verbose) exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
+                exporter.ExportFailed += new export.ExportFailedEventHandler(exporter_ExportFailed);
+
+                List<export.Issue> issues = exporter.GetIssues();
+                if(issues.Count > 0)
                 {
-                    Logger.Log(string.Format("There are issues with the LDEC file: {0}\n", output.File), LogType.Error);
+                    foreach(export.Issue issue in issues)
+                    {
+                        Logger.Log($"{issue.Description}\n", LogType.Error);
+                    }
                 }
                 else
                 {
-                    settings.PublishDirectory = output.Location;
+                    Logger.Verbose($"The export began at {start}.\n");
+                    exporter.Export();
+                    end = DateTime.Now;
 
-                    export.Exporter exporter = export.Exporter.Create(d, settings, config);
-                    if(_verbose) exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
-                    exporter.ExportException += new export.ExportExceptionHandler(exporter_ExportException);
-                    if(_verbose) exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
-                    exporter.ExportFailed += new export.ExportFailedEventHandler(exporter_ExportFailed);
-
-                    List<export.Issue> issues = exporter.GetIssues();
-                    if(issues.Count > 0)
+                    if(exporter.ExportExceptions != null && exporter.ExportExceptions.Count > 0)
                     {
-                        foreach(export.Issue issue in issues)
+                        Logger.Log("The export completed with the following issues:\n", LogType.Warning);
+                        foreach(Exception current in exporter.ExportExceptions)
                         {
-                            Logger.Log($"{issue.Description}\n", LogType.Error);
+                            Logger.Log(FormatExceptionData(current), LogType.Warning);
                         }
                     }
-                    else
-                    {
-                        Logger.Verbose($"The export began at {start}.\n");
-                        exporter.Export();
-                        end = DateTime.Now;
 
-                        if(exporter.ExportExceptions != null && exporter.ExportExceptions.Count > 0)
-                        {
-                            Logger.Log("The export completed with the following issues:\n", LogType.Warning);
-                            foreach(Exception current in exporter.ExportExceptions)
-                            {
-                                Logger.Log(FormatExceptionData(current), LogType.Warning);
-                            }
-                        }
-
-                        Logger.Verbose($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
-                    }
+                    Logger.Verbose($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
                 }
             }
+        }
+
+        private Document InitialiseDocumentForExport(List<DocumentedAssembly> files, export.ExportSettings settings)
+        {
+            EntryCreator entryCreator = new EntryCreator();
+            Document document = new Document(files, Mappers.GroupedNamespaceFirst, false, entryCreator);
+
+            document.Settings = settings.Settings;
+            document.UpdateDocumentMap();
+
+            Logger.Verbose($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
+
+            return document;
         }
 
         private void exporter_ExportStep(object sender, export.ExportStepEventArgs e)
