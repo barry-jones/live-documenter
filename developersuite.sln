@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBoxSoftware.API.LiveDocu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBoxSoftware.API.LiveDocumenter.Tests", "Source\TheBoxSoftware.API.LiveDocumenter.Tests\TheBoxSoftware.API.LiveDocumenter.Tests.csproj", "{74369504-09BB-45EC-9513-3DB20B6D7C30}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter", "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj", "{0573DD99-975E-4EA1-99BE-5DD6F759C075}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{74369504-09BB-45EC-9513-3DB20B6D7C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74369504-09BB-45EC-9513-3DB20B6D7C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74369504-09BB-45EC-9513-3DB20B6D7C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0573DD99-975E-4EA1-99BE-5DD6F759C075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0573DD99-975E-4EA1-99BE-5DD6F759C075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0573DD99-975E-4EA1-99BE-5DD6F759C075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0573DD99-975E-4EA1-99BE-5DD6F759C075}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{30F46BCB-C8FA-4BBD-A374-2F9B795A45D7} = {AE045A3E-5EC9-4489-A462-BB8724E01A8A}
 		{44CED3A9-8AF2-424A-8A7D-112EB096818E} = {7192C60D-8AE6-45BF-9203-FAEB23996D34}
 		{74369504-09BB-45EC-9513-3DB20B6D7C30} = {AE045A3E-5EC9-4489-A462-BB8724E01A8A}
+		{0573DD99-975E-4EA1-99BE-5DD6F759C075} = {7192C60D-8AE6-45BF-9203-FAEB23996D34}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AFDAF445-C383-45F4-8186-5BC8991D9CF2}
