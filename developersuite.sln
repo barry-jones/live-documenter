@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBoxSoftware.DeveloperSui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter", "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.csproj", "{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.PEViewer", "Source\TheBoxSoftware.DeveloperSuite.PeViewer\TheBoxSoftware.DeveloperSuite.PEViewer.csproj", "{E23C4A5D-127A-48B1-A17E-4972054A078F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,12 @@ Global
 		{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}.Test|Any CPU.Build.0 = Test|Any CPU
+		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{E23C4A5D-127A-48B1-A17E-4972054A078F}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +117,7 @@ Global
 		{74369504-09BB-45EC-9513-3DB20B6D7C30} = {AE045A3E-5EC9-4489-A462-BB8724E01A8A}
 		{0573DD99-975E-4EA1-99BE-5DD6F759C075} = {7192C60D-8AE6-45BF-9203-FAEB23996D34}
 		{A1DC656F-CF25-43A1-93E6-7AB3AA57B194} = {7192C60D-8AE6-45BF-9203-FAEB23996D34}
+		{E23C4A5D-127A-48B1-A17E-4972054A078F} = {7192C60D-8AE6-45BF-9203-FAEB23996D34}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AFDAF445-C383-45F4-8186-5BC8991D9CF2}
