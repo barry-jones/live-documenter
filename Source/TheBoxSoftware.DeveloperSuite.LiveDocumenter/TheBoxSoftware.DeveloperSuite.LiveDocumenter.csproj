@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TheBoxSoftware.DeveloperSuite.LiveDocumenter</RootNamespace>
     <AssemblyName>Live Documenter</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -40,6 +40,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,6 +74,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>TheBoxSoftware.DeveloperSuite.LiveDocumenter.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Solution Items\LiveDocumenterVersionInfo.cs">
@@ -501,20 +505,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj">
-      <Project>{0B3F2A4C-8DDF-4DAB-B676-44C927921EFF}</Project>
-      <Name>TheBoxSoftware.Documentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
-      <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
-      <Name>TheBoxSoftware.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
-      <Project>{20B33F17-25DF-4DB1-AC52-A8128AF0CDD1}</Project>
-      <Name>TheBoxSoftware</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="ApplicationData\web-msdn.ldec">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -633,6 +623,20 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj">
+      <Project>{0b8aa021-532c-4fe9-b1f6-919cc5b4f6e9}</Project>
+      <Name>TheBoxSoftware.Documentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
+      <Project>{2cf8c06e-9a62-4887-9b0f-8d9f12756611}</Project>
+      <Name>TheBoxSoftware.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
+      <Project>{7f444a72-f280-4722-9816-926ec84875e4}</Project>
+      <Name>TheBoxSoftware</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

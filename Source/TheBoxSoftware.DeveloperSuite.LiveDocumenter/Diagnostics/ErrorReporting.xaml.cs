@@ -55,57 +55,64 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Diagnostics {
 			this.txtExceptionDetails.Text = sb.ToString();
 		}
 
-		/// <summary>
-		/// Sends the error report
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void sendErrorReport_Click(object sender, RoutedEventArgs e) {
-			try {
-				this.Cursor = Cursors.AppStarting;
+        /// <summary>
+        /// Sends the error report
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void sendErrorReport_Click(object sender, RoutedEventArgs e)
+        {
+            /*
+            try
+            {
+                this.Cursor = Cursors.AppStarting;
 
-				BoxSoftwareServices.ErrorReport errorReport = new BoxSoftwareServices.ErrorReport();
-				errorReport.ProductName = About.ProductName;
-				errorReport.ProductVersion = About.ProductVersion;
-				errorReport.DateOccurred = DateTime.Now.ToUniversalTime();
-				errorReport.UserActivity = this.txtUserDescription.Text;
+                BoxSoftwareServices.ErrorReport errorReport = new BoxSoftwareServices.ErrorReport();
+                errorReport.ProductName = About.ProductName;
+                errorReport.ProductVersion = About.ProductVersion;
+                errorReport.DateOccurred = DateTime.Now.ToUniversalTime();
+                errorReport.UserActivity = this.txtUserDescription.Text;
 
-				string osVersion = Environment.OSVersion.ToString();
-				string framework = Environment.Version.ToString();
-				string emial = this.email.Text;
-				errorReport.Environment = new TheBoxSoftware.DeveloperSuite.LiveDocumenter.BoxSoftwareServices.EnvironmentInformation();
-				errorReport.Environment.OperatingSystem = osVersion;
-				errorReport.Environment.FrameworkVersion = framework;
-				errorReport.Email = emial;
+                string osVersion = Environment.OSVersion.ToString();
+                string framework = Environment.Version.ToString();
+                string emial = this.email.Text;
+                errorReport.Environment = new TheBoxSoftware.DeveloperSuite.LiveDocumenter.BoxSoftwareServices.EnvironmentInformation();
+                errorReport.Environment.OperatingSystem = osVersion;
+                errorReport.Environment.FrameworkVersion = framework;
+                errorReport.Email = emial;
 
-				// write out all of the exceptions
-				Exception current = null;
-				List<BoxSoftwareServices.ExceptionReport> exceptions = new List<BoxSoftwareServices.ExceptionReport>();
-				foreach (Exception exception in this.currentExceptions) {
-					current = exception;
-					do {
-						BoxSoftwareServices.ExceptionReport exceptionReport = new BoxSoftwareServices.ExceptionReport();
-						exceptionReport.ExceptionType = current.GetType().ToString();
-						exceptionReport.Message = current.Message;
-						exceptionReport.StackTrace = this.FormatExceptionData(current);
-						exceptionReport.Data = this.WriteDictionary(current.Data);
-						exceptions.Add(exceptionReport);
-						current = current.InnerException;
+                // write out all of the exceptions
+                Exception current = null;
+                List<BoxSoftwareServices.ExceptionReport> exceptions = new List<BoxSoftwareServices.ExceptionReport>();
+                foreach (Exception exception in this.currentExceptions)
+                {
+                    current = exception;
+                    do
+                    {
+                        BoxSoftwareServices.ExceptionReport exceptionReport = new BoxSoftwareServices.ExceptionReport();
+                        exceptionReport.ExceptionType = current.GetType().ToString();
+                        exceptionReport.Message = current.Message;
+                        exceptionReport.StackTrace = this.FormatExceptionData(current);
+                        exceptionReport.Data = this.WriteDictionary(current.Data);
+                        exceptions.Add(exceptionReport);
+                        current = current.InnerException;
 
-					} while (current != null);
-				}
-				errorReport.Exceptions = exceptions.ToArray();
+                    } while (current != null);
+                }
+                errorReport.Exceptions = exceptions.ToArray();
 
-				// get the referenced assemblies and the details
+                // get the referenced assemblies and the details
 
-				BoxSoftwareServices.ErrorReportingSoapClient client = new BoxSoftwareServices.ErrorReportingSoapClient();
-				client.ReportAnError(errorReport);
-			}
-			finally {
-				this.Cursor = null;
-			}
-			this.Close();
-		}
+                BoxSoftwareServices.ErrorReportingSoapClient client = new BoxSoftwareServices.ErrorReportingSoapClient();
+                client.ReportAnError(errorReport);
+            }
+            finally
+            {
+                this.Cursor = null;
+            }
+            this.Close();
+            */
+        }
 
 		/// <summary>
 		/// Reads the "embedded resource" from the diagnostics folder with the
