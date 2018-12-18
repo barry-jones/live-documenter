@@ -5,8 +5,4 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj" />
-  </ItemGroup>
-
 </Project>

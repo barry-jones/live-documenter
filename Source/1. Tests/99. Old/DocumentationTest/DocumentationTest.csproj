@@ -1,191 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2AD369A3-7737-4EC5-A4BA-3E846F80C066}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DocumentationTest</RootNamespace>
-    <AssemblyName>DocumentationTest</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>http://localhost/DocumentationTest/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\..\testoutput\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\DocumentationTest.XML</DocumentationFile>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\..\testoutput\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\DocumentationTest.XML</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\DocumentationTest.XML</DocumentationFile>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\..\..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
+    <ProjectReference Include="..\..\..\TheBoxSoftware\TheBoxSoftware.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AllOutputTypesClass.cs" />
-    <Compile Include="AllXmlCommentsClass.cs" />
-    <Compile Include="AttributeTargetsTest.cs" />
-    <Compile Include="ClassAsNamespaceBug.cs" />
-    <Compile Include="CodeTests\IndexerTest.cs" />
-    <Compile Include="CodeTests\PropertyTests.cs" />
-    <Compile Include="CommentTests\CElement.cs" />
-    <Compile Include="CommentTests\CodeElement.cs" />
-    <Compile Include="CommentTests\ExampleElement.cs" />
-    <Compile Include="CommentTests\ExceptionElement.cs" />
-    <Compile Include="CommentTests\IncludeElement.cs" />
-    <Compile Include="CommentTests\InvalidElements.cs" />
-    <Compile Include="CommentTests\InvalidTopLevelElements.cs" />
-    <Compile Include="CommentTests\ListElement.cs" />
-    <Compile Include="CommentTests\ParaElement.cs" />
-    <Compile Include="CommentTests\ParamElement.cs" />
-    <Compile Include="CommentTests\PermissionElement.cs" />
-    <Compile Include="CommentTests\Remarks.cs" />
-    <Compile Include="CommentTests\SeeAlsoElement.cs" />
-    <Compile Include="CommentTests\SeeElement.cs" />
-    <Compile Include="CommentTests\SummaryElement.cs" />
-    <Compile Include="CommentTests\ValueElement.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="DocumentedClass.cs" />
-    <Compile Include="DocumentedDelegate.cs" />
-    <Compile Include="DocumentedInterface.cs" />
-    <Compile Include="EnumerationTest.cs" />
-    <Compile Include="ExtensionMethodTest.cs" />
-    <Compile Include="ExternalInheritanceTest.cs" />
-    <Compile Include="GeneratedConstructorTest.cs" />
-    <Compile Include="GenericArrayTest.cs" />
-    <Compile Include="GenericClass.cs" />
-    <Compile Include="InheritanceTest.cs" />
-    <Compile Include="InterfaceTest.cs" />
-    <Compile Include="InternalDocumentedClass.cs" />
-    <Compile Include="Issues\Bug6.cs" />
-    <Compile Include="Issues\Issue103.cs" />
-    <Compile Include="Issues\Issue45_TypeWithNoNamespace.cs" />
-    <Compile Include="Issues\Issue120.cs" />
-    <Compile Include="Issues\Issue130.cs" />
-    <Compile Include="Issues\Issue135.cs" />
-    <Compile Include="Issues\Issue148.cs" />
-    <Compile Include="Issues\Issue149.cs" />
-    <Compile Include="Issues\Issue160.cs" />
-    <Compile Include="Issues\Issue174.cs" />
-    <Compile Include="Issues\Issue188.cs" />
-    <Compile Include="Issues\Issue189.cs" />
-    <Compile Include="Issues\Issue2.cs" />
-    <Compile Include="Issues\Issue6.cs" />
-    <Compile Include="Issues\Issue9.cs" />
-    <Compile Include="ListDocumentationTest.cs" />
-    <Compile Include="OperatorOverloads.cs" />
-    <Compile Include="PInvokeInterfaceTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublicDocumentedClass.cs" />
-    <Compile Include="ReferenceInterfaceDocumentationTest.cs" />
-    <Compile Include="SeeDocumentationTest.cs" />
-    <Compile Include="StaticConstructorTest_25.cs" />
-    <Compile Include="SyntaxTests\ClassTests.cs" />
-    <Compile Include="SyntaxTests\MethodTests.cs" />
-    <Compile Include="TestException.cs" />
-    <Compile Include="VisibilityTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
-      <Project>{B8749831-5746-4443-BEE9-9B01792C0D98}</Project>
-      <Name>TheBoxSoftware.Reflection</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CommentTests\includedfile.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)source\theboxsoftware.reflection.tests\testoutput\documentationtest.dll&quot;" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

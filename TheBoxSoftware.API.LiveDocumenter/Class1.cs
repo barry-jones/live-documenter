@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TheBoxSoftware
+namespace TheBoxSoftware.API.LiveDocumenter
 {
     public class Class1
     {
