@@ -6,6 +6,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.2\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj.old" />
   </ItemGroup>

@@ -5,6 +5,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\TheBoxSoftware.Documentation.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="packages.config" />
     <None Remove="TheBoxSoftware.Documentation.csproj.old" />
