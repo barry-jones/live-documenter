@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Comments
     [TestFixture]
     public class XmlCommentFileTests
     {
-        private string _testXmlFilePath = @"..\..\testfiles\xmlcommentfile.xml";
+        private string _testXmlFilePath = @"..\..\..\testfiles\xmlcommentfile.xml";
         private Mock<IFileSystem> _fileSystem;
 
         private XmlCommentFile CreateXmlCommentFile(string filename)

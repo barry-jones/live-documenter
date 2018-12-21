@@ -63,7 +63,7 @@ namespace TheBoxSoftware.Exporter
                 Console.ForegroundColor = Logger.outputColours[type];
             }
 
-            Console.Write(string.Format("{0}{1}", Logger.messagePrefix[type], message));
+            Console.Write($"{Logger.messagePrefix[type]}{message}");
             Console.ResetColor();
         }
 

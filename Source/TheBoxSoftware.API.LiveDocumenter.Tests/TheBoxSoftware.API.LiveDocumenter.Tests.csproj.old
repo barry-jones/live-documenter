@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF85B422-161B-474A-9AE0-738693F3013C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{761E81D8-B8A2-41CA-8355-089E006C0CD7}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SignitureReader</RootNamespace>
-    <AssemblyName>SignitureReader</AssemblyName>
+    <RootNamespace>TheBoxSoftware.API.LiveDocumenter.Tests</RootNamespace>
+    <AssemblyName>TheBoxSoftware.API.LiveDocumenter.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,36 +33,44 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.5.22.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.5.22\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumenter.csproj">
+      <Project>{db46e5f7-d6f2-40b7-a8b5-f4e57f5d1621}</Project>
+      <Name>TheBoxSoftware.API.LiveDocumenter</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj">
-      <Project>{2ad369a3-7737-4ec5-a4ba-3e846f80c066}</Project>
-      <Name>DocumentationTest</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
-      <Project>{b8749831-5746-4443-bee9-9b01792c0d98}</Project>
-      <Name>TheBoxSoftware.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
-      <Project>{20b33f17-25df-4db1-ac52-a8128af0cdd1}</Project>
-      <Name>TheBoxSoftware</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Unit\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
