@@ -1,29 +1,16 @@
-﻿using System.Windows;
-using TheBoxSoftware.Reflection.Core;
-
+﻿
 namespace TheBoxSoftware.DeveloperSuite.PEViewer
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    using System.Windows;
+    using TheBoxSoftware.Reflection.Core;
+
     public partial class MainWindow : Window
     {
         private Model.PEFile _peFile;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Initilialises the window for the newly loaded PEFile.
-        /// </summary>
-        private void InitialiseForNewPEFile()
-        {
-            this.peViewMap.ItemsSource = _peFile.Entries;
         }
 
         /// <summary>
@@ -36,18 +23,31 @@ namespace TheBoxSoftware.DeveloperSuite.PEViewer
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
             if(ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                PeCoffFile coffFile = new PeCoffFile(ofd.FileName, new FileSystem());
-                coffFile.Initialise();
-
-                _peFile = new Model.PEFile(coffFile);
-                this.InitialiseForNewPEFile();
+                LoadAndInitialiseAssembly(ofd.FileName);
             }
         }
 
-        private void ShowAbout(object sender, RoutedEventArgs e)
+        private void LoadAndInitialiseAssembly(string filename)
         {
-            TheBoxSoftware.DeveloperSuite.LiveDocumenter.About about = new TheBoxSoftware.DeveloperSuite.LiveDocumenter.About();
+            PeCoffFile coffFile = new PeCoffFile(filename, new FileSystem());
+            coffFile.Initialise();
+
+            _peFile = new Model.PEFile(coffFile);
+            InitialiseForNewPEFile();
+        }
+
+        private void ShowAboutDialog(object sender, RoutedEventArgs e)
+        {
+            LiveDocumenter.About about = new LiveDocumenter.About();
             about.ShowDialog();
+        }
+
+        /// <summary>
+        /// Initilialises the window for the newly loaded PEFile.
+        /// </summary>
+        private void InitialiseForNewPEFile()
+        {
+            peViewMap.ItemsSource = _peFile.Entries;
         }
     }
 }

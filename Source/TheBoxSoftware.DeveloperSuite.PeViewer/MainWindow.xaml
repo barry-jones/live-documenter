@@ -14,7 +14,7 @@
                 <MenuItem Header="Load Assembly..." Click="LoadAssembly_Click" />
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Header="About" Click="ShowAbout" />
+                <MenuItem Header="About" Click="ShowAboutDialog" />
             </MenuItem>
         </Menu>
         <ToolBar DockPanel.Dock="Top">

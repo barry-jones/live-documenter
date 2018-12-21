@@ -139,7 +139,7 @@ namespace TheBoxSoftware.Exporter
         /// </summary>
         private void PrintHelp()
         {
-            this.PrintVersionInformation();
+            PrintVersionInformation();
 
             string help =
                 "\nThe exporter takes the following arguments\n" +
@@ -160,7 +160,7 @@ namespace TheBoxSoftware.Exporter
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Logger.Verbose(string.Format("Live Documenter Exporter Version: {0}\n\n", fvi.ProductVersion));
+            Logger.Verbose($"Live Documenter Exporter Version: {fvi.ProductVersion}\n\n");
         }
     }
 }

@@ -12,13 +12,13 @@ namespace TheBoxSoftware.API.LiveDocumenter
     /// <include file='Documentation\tableofcontents.xml' path='members/member[@name="tableofcontents"]/*'/>
     public sealed class TableOfContents : IEnumerable
     {
-        private Document document;
+        private Document _document;
 
         // initialises the toc class with the map reference.. this whole class will have
         // to be invalidated when the documentation is reloaded. <HOW?>
         internal TableOfContents(Document document)
         {
-            this.document = document;
+            _document = document;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// <include file='Documentation\tableofcontents.xml' path='members/member[@name="GetEntryFor.key"]/*'/>
         public ContentEntry GetEntryFor(long key, string subKey)
         {
-            Entry found = this.document.Find(key, subKey);
+            Entry found = _document.Find(key, subKey);
             return found == null ? null : new ContentEntry(found);
         }
 
@@ -46,8 +46,8 @@ namespace TheBoxSoftware.API.LiveDocumenter
             if (path.PathType == Reflection.Comments.CRefTypes.Error)
                 throw new DocumentationException("The provided cref path {0} did not parse correctly.");
 
-            Entry found = this.document.Find(path);
-            return found == null ? null : new ContentEntry(this.document.Find(path));
+            Entry found = _document.Find(path);
+            return found == null ? null : new ContentEntry(_document.Find(path));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// <returns>A list of ContentEntrys or an empty list if none are found.</returns>
         public List<ContentEntry> Search(string text)
         {
-            List<Entry> results = this.document.Search(text);
+            List<Entry> results = _document.Search(text);
             List<ContentEntry> entries = new List<ContentEntry>();
 
             for (int i = 0; i < results.Count; i++)
@@ -77,7 +77,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         {
             get
             {
-                return new ContentEntry(this.document.Map[index]);
+                return new ContentEntry(_document.Map[index]);
             }
         }
 
@@ -86,7 +86,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         public int Count
         {
-            get { return this.document.Map.Count; }
+            get { return _document.Map.Count; }
         }
 
         /// <summary>
@@ -99,31 +99,31 @@ namespace TheBoxSoftware.API.LiveDocumenter
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)new Enumerator(this.document.Map);
+            return new Enumerator(_document.Map);
         }
 
         private class Enumerator : IEnumerator
         {
-            private DocumentMap map;
-            private int position = -1;
+            private DocumentMap _map;
+            private int _position = -1;
 
             internal Enumerator(DocumentMap map)
             {
-                this.map = map;
+                _map = map;
             }
 
             object IEnumerator.Current
             {
                 get
                 {
-                    return new ContentEntry(this.map[this.position]);
+                    return new ContentEntry(_map[_position]);
                 }
             }
 
             bool IEnumerator.MoveNext()
             {
-                this.position++;
-                return this.position < this.map.Count;
+                _position++;
+                return _position < _map.Count;
             }
 
             void IEnumerator.Reset()
