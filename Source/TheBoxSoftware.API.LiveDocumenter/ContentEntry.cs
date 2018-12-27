@@ -14,11 +14,11 @@ namespace TheBoxSoftware.API.LiveDocumenter
     /// <include file='Documentation\contententry.xml' path='members/member[@name="ContentEntry"]/*'/>
     public sealed class ContentEntry
     {
-        private TheBoxSoftware.Documentation.Entry entry;                   // the internal representation of the entry data
+        private Entry _entry;                   // the internal representation of the entry data
 
-        internal ContentEntry(TheBoxSoftware.Documentation.Entry entry)
+        internal ContentEntry(Entry entry)
         {
-            this.entry = entry;
+            _entry = entry;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         {
             List<ContentEntry> parents = new List<ContentEntry>();
 
-            ContentEntry currentParent = this.Parent;
+            ContentEntry currentParent = Parent;
 
             while(currentParent != null)
             {
@@ -50,21 +50,21 @@ namespace TheBoxSoftware.API.LiveDocumenter
         {
             get 
             {
-                if (entry.Item is ReflectedMember && !(entry.Item is AssemblyDef))  // assemblies cant be cref'd
+                if (_entry.Item is ReflectedMember && !(_entry.Item is AssemblyDef))  // assemblies cant be cref'd
                 { 
-                    ReflectedMember member = entry.Item as ReflectedMember;
+                    ReflectedMember member = _entry.Item as ReflectedMember;
                     return CRefPath.Parse(TheBoxSoftware.Reflection.Comments.CRefPath.Create(member).ToString());
                 }
-                else if (entry.Item is KeyValuePair<string, List<TypeDef>>)         // namespace
+                else if (_entry.Item is KeyValuePair<string, List<TypeDef>>)         // namespace
                 {
-                    return CRefPath.Parse(string.Format("N:{0}", ((KeyValuePair<string, List<TypeDef>>)entry.Item).Key));
+                    return CRefPath.Parse(string.Format("N:{0}", ((KeyValuePair<string, List<TypeDef>>)_entry.Item).Key));
                 }
-                else if (entry.Item is TheBoxSoftware.Documentation.EntryTypes)
+                else if (_entry.Item is TheBoxSoftware.Documentation.EntryTypes)
                 {
                     CRefPath path = new LiveDocumenter.CRefPath();
                     path.PathType = CRefTypes.Error;
 
-                    TheBoxSoftware.Documentation.EntryTypes entryType = (TheBoxSoftware.Documentation.EntryTypes)entry.Item;
+                    TheBoxSoftware.Documentation.EntryTypes entryType = (TheBoxSoftware.Documentation.EntryTypes)_entry.Item;
 
                     switch (entryType)
                     {
@@ -88,7 +88,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         public long Key
         {
-            get { return this.entry.Key; }
+            get { return _entry.Key; }
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         public string SubKey
         {
-            get { return this.entry.SubKey; }
+            get { return _entry.SubKey; }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         public string DisplayName
         {
-            get { return this.entry.Name; }
+            get { return _entry.Name; }
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         public bool IsContainer
         {
             // note: be sure to indicate in the documentation that there is a different between a container and member
-            get { return !string.IsNullOrEmpty(this.SubKey); }
+            get { return !string.IsNullOrEmpty(SubKey); }
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         public ContentEntryCollection Children
         {
-            get { return new ContentEntryCollection(this.entry.Children); }
+            get { return new ContentEntryCollection(_entry.Children); }
         }
 
         /// <summary>
@@ -132,9 +132,9 @@ namespace TheBoxSoftware.API.LiveDocumenter
             get
             {
                 ContentEntry entry = null;
-                if (this.entry.Parent != null)
+                if (_entry.Parent != null)
                 {
-                    entry = new ContentEntry(this.entry.Parent);
+                    entry = new ContentEntry(_entry.Parent);
                 }
                 return entry;
             }
@@ -145,7 +145,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         public bool HasComments
         {
-            get { return this.entry.XmlCommentFile != null; }
+            get { return _entry.XmlCommentFile != null; }
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// </summary>
         internal Entry Entry
         {
-            get { return this.entry; }
+            get { return _entry; }
         }
     }
 }
