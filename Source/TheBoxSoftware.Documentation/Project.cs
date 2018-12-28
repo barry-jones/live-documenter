@@ -18,13 +18,19 @@ namespace TheBoxSoftware.Documentation
     [XmlRoot("project")]
     public class Project
     {
+        private readonly IFileSystem _filessytem;
         private string _fileLocation;
 
-        public Project()
+        public Project() : this(new FileSystem())
         {
-            this.Files = new List<string>();
-            this.VisibilityFilters = new List<Reflection.Visibility>();
-            this.RemovedAssemblies = new List<string>();
+            Files = new List<string>();
+            VisibilityFilters = new List<Reflection.Visibility>();
+            RemovedAssemblies = new List<string>();
+        }
+
+        public Project(IFileSystem filesystem)
+        {
+            _filessytem = filesystem;
         }
 
         /// <summary>
@@ -40,12 +46,12 @@ namespace TheBoxSoftware.Documentation
         {
             List<DocumentedAssembly> assemblies = new List<DocumentedAssembly>();
 
-            foreach (string file in this.Files)
+            foreach (string file in Files)
             {
-                List<DocumentedAssembly> readFiles = InputFileReader.Read(file, this.Configuration);
+                List<DocumentedAssembly> readFiles = InputFileReader.Read(file, Configuration);
                 for (int i = 0; i < readFiles.Count; i++)
                 {
-                    if (!this.RemovedAssemblies.Any(current => current == string.Format("{0}\\{1}", System.IO.Path.GetFileName(file), readFiles[i].Name)))
+                    if (!RemovedAssemblies.Any(current => current == string.Format("{0}\\{1}", System.IO.Path.GetFileName(file), readFiles[i].Name)))
                     {
                         assemblies.Add(readFiles[i]);
                     }
@@ -65,9 +71,9 @@ namespace TheBoxSoftware.Documentation
         {
             for (int i = 0; i < files.Length; i++)
             {
-                if (!this.Files.Any(current => current == files[i]))
+                if (!Files.Any(current => current == files[i]))
                 {
-                    this.Files.Add(files[i]);
+                    Files.Add(files[i]);
                 }
             }
         }
@@ -80,11 +86,11 @@ namespace TheBoxSoftware.Documentation
         public string[] GetMissingFiles()
         {
             List<string> missingFiles = new List<string>();
-            for (int i = 0; i < this.Files.Count; i++)
+            for (int i = 0; i < Files.Count; i++)
             {
-                if (!System.IO.File.Exists(this.Files[i]))
+                if (!System.IO.File.Exists(Files[i]))
                 {
-                    missingFiles.Add(this.Files[i]);
+                    missingFiles.Add(Files[i]);
                 }
             }
             return missingFiles.ToArray();
@@ -96,9 +102,9 @@ namespace TheBoxSoftware.Documentation
         /// <param name="toFile">The file to replace or create.</param>
         public void Serialize(string toFile)
         {
-            this._fileLocation = toFile;
+            _fileLocation = toFile;
 
-            this.MakePathsRelative();
+            MakePathsRelative();
 
             using (FileStream fs = new FileStream(toFile, FileMode.OpenOrCreate))
             {
@@ -107,7 +113,7 @@ namespace TheBoxSoftware.Documentation
                 serializer.Serialize(fs, this);
             }
 
-            this.DenormaliseRelativePaths();
+            DenormaliseRelativePaths();
         }
 
         /// <summary>

@@ -135,20 +135,32 @@ namespace TheBoxSoftware.Documentation
             /// <returns>An array of assemblies output by the solution and its projects.</returns>
             public override List<DocumentedAssembly> Read()
             {
-                string solutionFile = File.ReadAllText(this.FileName);
+                string solutionFile = File.ReadAllText(FileName);
                 List<string> projectFiles = new List<string>();
                 List<DocumentedAssembly> references = new List<DocumentedAssembly>();
 
-                // Find the version number
-                Match versionMatch = Regex.Match(solutionFile, VersionPattern);
+                ReadVersionNumber(solutionFile);
+                FindAllProjectFiles(solutionFile, projectFiles, references);
 
-                // Find all the project files
+                return references;
+            }
+
+            private void ReadVersionNumber(string solutionFile)
+            {
+                Match versionMatch = Regex.Match(solutionFile, VersionPattern);
+                Version = versionMatch.Value;
+            }
+
+            private void FindAllProjectFiles(string solutionFile, List<string> projectFiles, List<DocumentedAssembly> references)
+            {
                 MatchCollection projectFileMatches = Regex.Matches(solutionFile, V10ProjectPattern);
                 foreach (Match current in projectFileMatches)
                 {
-                    if (current.Groups.Count == 2) {
+                    if (current.Groups.Count == 2)
+                    {
                         string projectFile = current.Groups[1].Value;
-                        if (ValidExtensions.Contains(System.IO.Path.GetExtension(projectFile))) {
+                        if (ValidExtensions.Contains(Path.GetExtension(projectFile)))
+                        {
                             projectFiles.Add(projectFile);
                         }
                     }
@@ -156,28 +168,22 @@ namespace TheBoxSoftware.Documentation
 
                 foreach (string project in projectFiles)
                 {
-                    string fullProjectPath = System.IO.Path.GetDirectoryName(this.FileName) + "\\" + project;
-                    if (System.IO.File.Exists(fullProjectPath))
+                    string fullProjectPath = Path.GetDirectoryName(FileName) + "\\" + project;
+                    if (File.Exists(fullProjectPath))
                     {
                         ProjectFileReader reader = ProjectFileReader.Create(fullProjectPath);
-                        reader.BuildConfiguration = this.BuildConfiguration;
+                        reader.BuildConfiguration = BuildConfiguration;
                         references.AddRange(reader.Read());
                     }
                 }
-
-                return references;
             }
 
-            #region Properties
-            /// <summary>
-            /// The visual studio solution file version
-            /// </summary>
+            /// <summary>The visual studio solution file version</summary>
             public string Version
             {
                 get;
                 set;
             }
-            #endregion
         }
 
         /// <summary>
