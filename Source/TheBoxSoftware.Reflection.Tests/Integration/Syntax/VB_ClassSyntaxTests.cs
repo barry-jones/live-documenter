@@ -7,7 +7,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
     [TestFixture]
     public class VB_ClassSyntaxTests
     {
-        private const string TestFile = @"..\..\..\testoutput\documentationtest.dll";
+        private const string TestFile = @"..\..\..\..\testoutput\documentationtest.dll";
 
         private AssemblyDef _assemblyDef;
 

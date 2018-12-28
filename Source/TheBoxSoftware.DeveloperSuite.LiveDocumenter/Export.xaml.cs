@@ -65,7 +65,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
 
 			foreach (string file in System.IO.Directory.GetFiles(appFolder + @"/ApplicationData/", "*.ldec"))
             {
-				ExportConfigFile currentConfig = ExportConfigFile.Create(file);
+				ExportConfigFile currentConfig = new ExportConfigFile(file);
+                currentConfig.Initialise();
+
                 if (currentConfig.IsValid) // only add valid ldec files
                 { 
 					exportFiles.Add(currentConfig);

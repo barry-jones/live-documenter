@@ -1,6 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Xml;
@@ -26,27 +27,30 @@ namespace TheBoxSoftware.Documentation.Exporting
         private bool _hasScreenshot;
         private Dictionary<string, string> _properties;
         private bool _isValid;
-
-        public static ExportConfigFile Create(string filename)
-        {
-            return new ExportConfigFile(filename);
-        }
+        private bool _isInitialised = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportConfigFile"/> class.
         /// </summary>
         /// <param name="filename">The file.</param>
-        private ExportConfigFile(string filename)
+        public ExportConfigFile(string filename)
         {
+            if (string.IsNullOrEmpty(filename)) throw new ArgumentException("filename");
+
             _properties = new Dictionary<string, string>();
             _configFile = filename;
+        }
 
-            using(ZipFile file = new ZipFile(filename))
+        public void Initialise()
+        {
+            _isInitialised = true;
+
+            using (ZipFile file = new ZipFile(_configFile))
             {
                 // get the config file
                 _xmlDocument = null;
                 Stream ms = new MemoryStream();
-                if(file.ContainsEntry("export.config"))
+                if (file.ContainsEntry("export.config"))
                 {
                     file["export.config"].Extract(ms);
                     ms.Seek(0, SeekOrigin.Begin);
@@ -55,29 +59,29 @@ namespace TheBoxSoftware.Documentation.Exporting
                     ms.Close();
 
                     XmlNode nameNode = _xmlDocument.SelectSingleNode("/export/name");
-                    if(nameNode != null)
+                    if (nameNode != null)
                         _name = nameNode.InnerText;
 
                     XmlNode versionNode = _xmlDocument.SelectSingleNode("/export/version");
-                    if(versionNode != null)
+                    if (versionNode != null)
                         _version = versionNode.InnerText;
 
                     _exporters = this.UnpackExporter(_xmlDocument.SelectSingleNode("/export/exporter"));
 
                     XmlNode descriptionNode = _xmlDocument.SelectSingleNode("/export/description");
-                    if(descriptionNode != null)
+                    if (descriptionNode != null)
                     {
                         _description = descriptionNode.InnerText;
                     }
 
                     XmlNode screenshotNode = _xmlDocument.SelectSingleNode("/export/screenshot");
-                    if(screenshotNode != null)
+                    if (screenshotNode != null)
                     {
                         _hasScreenshot = true;
                     }
 
                     XmlNodeList properties = _xmlDocument.SelectNodes("/export/properties/property");
-                    foreach(XmlNode currentProperty in properties)
+                    foreach (XmlNode currentProperty in properties)
                     {
                         _properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
                     }
@@ -93,6 +97,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <returns></returns>
         public virtual Stream GetXslt()
         {
+            CheckIfInitialised();
+
             using (ZipFile file = new ZipFile(this.ConfigFile))
             {
                 string xslt = _xmlDocument.SelectSingleNode("/export/xslt").InnerText;
@@ -110,6 +116,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <returns>The Bitmap</returns>
         public Stream GetScreenshot()
         {
+            CheckIfInitialised();
+
             using (ZipFile file = new ZipFile(this.ConfigFile))
             {
                 string filename = _xmlDocument.SelectSingleNode("/export/screenshot").InnerText;
@@ -127,6 +135,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="location">The location.</param>
         public virtual void SaveOutputFilesTo(string location)
         {
+            CheckIfInitialised();
+
             using (ZipFile file = new ZipFile(this.ConfigFile))
             {
                 XmlNodeList files = _xmlDocument.SelectNodes("export/outputfiles/file");
@@ -159,6 +169,8 @@ namespace TheBoxSoftware.Documentation.Exporting
 
         public virtual List<string> GetOutputFileURLs()
         {
+            CheckIfInitialised();
+
             List<string> urls = new List<string>();
 
             using (ZipFile file = new ZipFile(this.ConfigFile))
@@ -191,6 +203,11 @@ namespace TheBoxSoftware.Documentation.Exporting
             }
 
             return urls;
+        }
+
+        private void CheckIfInitialised()
+        {
+            if (!_isInitialised) throw new InvalidOperationException("ExportConfigFile must be initialised first with a call to Initialise().");
         }
 
         private Exporters UnpackExporter(XmlNode value)

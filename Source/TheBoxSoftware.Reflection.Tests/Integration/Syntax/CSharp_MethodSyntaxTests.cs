@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
     [TestFixture]
     public class CSharp_MethodSyntaxTests
     {
-        private const string TestFile = @"..\..\..\testoutput\documentationtest.dll";
+        private const string TestFile = @"..\..\..\..\testoutput\documentationtest.dll";
         private const string NamespaceName = "SyntaxTests";
         private const string TypeName = "ForMethod";
 

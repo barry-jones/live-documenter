@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Documentation.Tests.Integration
     [TestFixture]
     public class GroupedNamespaceFirstDocumentMapperTests
     {
-        private readonly string DocumentationFile = @"..\..\..\testoutput\documentationtest.dll";
+        private readonly string DocumentationFile = @"..\..\..\..\testoutput\documentationtest.dll";
 
         public GroupedNamespaceFirstDocumentMapperTests()
         {

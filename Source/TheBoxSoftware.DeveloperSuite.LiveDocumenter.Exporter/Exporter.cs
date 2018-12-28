@@ -112,11 +112,12 @@ namespace TheBoxSoftware.Exporter
         {
             DateTime start = DateTime.Now;
             DateTime end;
-            export.ExportConfigFile config = export.ExportConfigFile.Create(
+            export.ExportConfigFile config = new export.ExportConfigFile(
                 Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
                 + "\\ApplicationData\\"
                 + output.File
                 );
+            config.Initialise();
 
             Logger.Log($"\nExporting with {output.File} to location {output.Location}.\n", LogType.Progress);
 

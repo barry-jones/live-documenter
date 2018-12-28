@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit.Core
     [TestFixture]
     public class PeCoffFileTests
     {
-        private readonly string TestLibrary = @"..\..\..\testoutput\documentationtest.dll";
+        private readonly string TestLibrary = @"..\..\..\..\testoutput\documentationtest.dll";
 
         public PeCoffFileTests()
         {

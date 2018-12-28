@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="packages.config" />
     <None Remove="TheBoxSoftware.Reflection.Tests.csproj.old" />
   </ItemGroup>
 
