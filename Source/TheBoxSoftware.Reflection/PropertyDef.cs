@@ -34,7 +34,7 @@ namespace TheBoxSoftware.Reflection
         {
             bool isIndexer = false;
             bool getHasParameters = _getMethod != null && _getMethod.Parameters.Count > 0;
-            bool setHasParaemters = _setMethod != null && _setMethod.Parameters.Count > 0;
+            bool setHasParaemters = _setMethod != null && _setMethod.Parameters.Count > 1;
 
             if(getHasParameters || setHasParaemters)
             {
