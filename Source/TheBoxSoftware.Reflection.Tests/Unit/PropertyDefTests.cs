@@ -39,7 +39,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsIndexer_WhenGetterHasProperties_IsIndexerReturnsTrue()
+        public void IsIndexer_WhenGetterHasParameters_IsIndexerReturnsTrue()
         {
             ParamDef parameter = new ParamDef();
 
@@ -56,7 +56,26 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void IsIndexer_WhenSetterHasProperties_IsIndexerReturnsTrue()
+        public void IsIndexer_WhenSetterHasMultipleParameters_IsIndexerReturnsTrue()
+        {
+            ParamDef param1 = new ParamDef();
+            ParamDef param2 = new ParamDef();
+
+            MethodDef setMethod = new MethodDef();
+            setMethod.Parameters = new System.Collections.Generic.List<ParamDef>();
+            setMethod.Parameters.Add(param1);
+            setMethod.Parameters.Add(param2);
+
+            PropertyDef property = new PropertyDef();
+            property.Setter = setMethod;
+
+            bool result = property.IsIndexer();
+
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void IsIndexer_WhenSetterHasSingleParameters_IsIndexerReturnsFalse()
         {
             ParamDef parameter = new ParamDef();
 
@@ -69,7 +88,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
 
             bool result = property.IsIndexer();
 
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(false, result);
         }
 
         [Test]
