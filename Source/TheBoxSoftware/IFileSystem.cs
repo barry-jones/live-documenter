@@ -16,6 +16,8 @@ namespace TheBoxSoftware
         void CreateDirectory(string directory);
 
         void DeleteFile(string filename);
+
+        void SaveFile(Stream contents, string filename);
     }
 
     public class FileSystem : IFileSystem
@@ -50,6 +52,15 @@ namespace TheBoxSoftware
         public void CreateDirectory(string directory)
         {
             Directory.CreateDirectory(directory);
+        }
+
+        public void SaveFile(Stream contents, string filename)
+        {
+            using (FileStream stream = File.Create(filename))
+            {
+                contents.CopyTo(stream);
+                stream.Close();
+            }
         }
     }
 }

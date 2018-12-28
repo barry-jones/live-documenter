@@ -5,7 +5,6 @@ namespace TheBoxSoftware.Documentation.Exporting
     using System.Collections.Generic;
     using System.IO;
     using System.Xml;
-    using Ionic.Zip;
 
     /// <summary>
     /// Reads a file that contains all of the information needed to perform an export.
@@ -45,7 +44,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             _isInitialised = true;
 
-            using (ICompressedConfigFile tempFile = new IonicsCompressedConfigFile(_configFile))
+            using (ICompressedConfigFile tempFile = new ZipCompressedConfigFile(_configFile))
             {
                 if (tempFile.HasEntry("export.config"))
                 {
@@ -68,7 +67,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             CheckIfInitialised();
 
-            using (ICompressedConfigFile file = new IonicsCompressedConfigFile(_configFile))
+            using (ICompressedConfigFile file = new ZipCompressedConfigFile(_configFile))
             {
                 string xslt = _xmlDocument.SelectSingleNode("/export/xslt").InnerText;
                 return file.GetEntry(xslt);
@@ -84,7 +83,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             CheckIfInitialised();
 
-            using (ICompressedConfigFile file = new IonicsCompressedConfigFile(_configFile))
+            using (ICompressedConfigFile file = new ZipCompressedConfigFile(_configFile))
             {
                 string xslt = _xmlDocument.SelectSingleNode("/export/screenshot").InnerText;
                 return file.GetEntry(xslt);
@@ -100,7 +99,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             CheckIfInitialised();
 
-            using (ICompressedConfigFile compressedFile = new IonicsCompressedConfigFile(_configFile))
+            using (ICompressedConfigFile compressedFile = new ZipCompressedConfigFile(_configFile))
             {
                 XmlNodeList files = _xmlDocument.SelectNodes("export/outputfiles/file");
                 foreach (XmlNode current in files)
@@ -127,7 +126,7 @@ namespace TheBoxSoftware.Documentation.Exporting
 
             List<string> urls = new List<string>();
 
-            using (ICompressedConfigFile compressedFile = new IonicsCompressedConfigFile(_configFile))
+            using (ICompressedConfigFile compressedFile = new ZipCompressedConfigFile(_configFile))
             {
                 XmlNodeList files = _xmlDocument.SelectNodes("/export/outputfiles/file");
                 foreach (XmlNode current in files)

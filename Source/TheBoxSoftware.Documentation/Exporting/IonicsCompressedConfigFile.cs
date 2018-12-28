@@ -72,6 +72,7 @@ namespace TheBoxSoftware.Documentation.Exporting
 
         private void Dispose(bool disposing)
         {
+            _disposed = true;
             if(disposing)
             {
                 _file.Dispose();
