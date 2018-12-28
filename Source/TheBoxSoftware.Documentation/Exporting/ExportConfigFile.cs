@@ -45,49 +45,18 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             _isInitialised = true;
 
-            using (ZipFile file = new ZipFile(_configFile))
+            using (ICompressedConfigFile tempFile = new IonicsCompressedConfigFile(_configFile))
             {
-                // get the config file
-                _xmlDocument = null;
-                Stream ms = new MemoryStream();
-                if (file.ContainsEntry("export.config"))
+                if (tempFile.HasEntry("export.config"))
                 {
-                    file["export.config"].Extract(ms);
-                    ms.Seek(0, SeekOrigin.Begin);
+                    Stream stream = tempFile.GetEntry("export.config");
                     _xmlDocument = new XmlDocument();
-                    _xmlDocument.LoadXml(new StreamReader(ms).ReadToEnd());
-                    ms.Close();
+                    _xmlDocument.LoadXml(new StreamReader(stream).ReadToEnd());
+                    stream.Close();
 
-                    XmlNode nameNode = _xmlDocument.SelectSingleNode("/export/name");
-                    if (nameNode != null)
-                        _name = nameNode.InnerText;
-
-                    XmlNode versionNode = _xmlDocument.SelectSingleNode("/export/version");
-                    if (versionNode != null)
-                        _version = versionNode.InnerText;
-
-                    _exporters = this.UnpackExporter(_xmlDocument.SelectSingleNode("/export/exporter"));
-
-                    XmlNode descriptionNode = _xmlDocument.SelectSingleNode("/export/description");
-                    if (descriptionNode != null)
-                    {
-                        _description = descriptionNode.InnerText;
-                    }
-
-                    XmlNode screenshotNode = _xmlDocument.SelectSingleNode("/export/screenshot");
-                    if (screenshotNode != null)
-                    {
-                        _hasScreenshot = true;
-                    }
-
-                    XmlNodeList properties = _xmlDocument.SelectNodes("/export/properties/property");
-                    foreach (XmlNode currentProperty in properties)
-                    {
-                        _properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
-                    }
+                    ReadConfigurationDetails();
+                    CheckIsValid(tempFile);
                 }
-
-                this.CheckIsValid(file);
             }
         }
 
@@ -99,13 +68,10 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             CheckIfInitialised();
 
-            using (ZipFile file = new ZipFile(this.ConfigFile))
+            using (ICompressedConfigFile file = new IonicsCompressedConfigFile(_configFile))
             {
                 string xslt = _xmlDocument.SelectSingleNode("/export/xslt").InnerText;
-                MemoryStream xsltStream = new MemoryStream();
-                file[xslt].Extract(xsltStream);
-                xsltStream.Seek(0, SeekOrigin.Begin);
-                return xsltStream;
+                return file.GetEntry(xslt);
             }
         }
 
@@ -118,13 +84,10 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             CheckIfInitialised();
 
-            using (ZipFile file = new ZipFile(this.ConfigFile))
+            using (ICompressedConfigFile file = new IonicsCompressedConfigFile(_configFile))
             {
-                string filename = _xmlDocument.SelectSingleNode("/export/screenshot").InnerText;
-                MemoryStream imageStream = new MemoryStream();
-                file[filename].Extract(imageStream);
-                imageStream.Seek(0, SeekOrigin.Begin);
-                return imageStream;
+                string xslt = _xmlDocument.SelectSingleNode("/export/screenshot").InnerText;
+                return file.GetEntry(xslt);
             }
         }
 
@@ -137,7 +100,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             CheckIfInitialised();
 
-            using (ZipFile file = new ZipFile(this.ConfigFile))
+            using (ICompressedConfigFile compressedFile = new IonicsCompressedConfigFile(_configFile))
             {
                 XmlNodeList files = _xmlDocument.SelectNodes("export/outputfiles/file");
                 foreach (XmlNode current in files)
@@ -150,18 +113,9 @@ namespace TheBoxSoftware.Documentation.Exporting
                         continue;
                     }
 
-                    if (file[from] == null)
+                    if (compressedFile.HasEntry(from))
                     {
-                        continue;
-                    }
-
-                    if (file[from].IsDirectory)
-                    {
-                        file.ExtractSelectedEntries("name = *.*", file[from].FileName, location, ExtractExistingFileAction.OverwriteSilently);
-                    }
-                    else
-                    {
-                        file[from].Extract(location);
+                        compressedFile.ExtractEntry(from, location);
                     }
                 }
             }
@@ -173,9 +127,9 @@ namespace TheBoxSoftware.Documentation.Exporting
 
             List<string> urls = new List<string>();
 
-            using (ZipFile file = new ZipFile(this.ConfigFile))
+            using (ICompressedConfigFile compressedFile = new IonicsCompressedConfigFile(_configFile))
             {
-                XmlNodeList files = this._xmlDocument.SelectNodes("/export/outputfiles/file");
+                XmlNodeList files = _xmlDocument.SelectNodes("/export/outputfiles/file");
                 foreach (XmlNode current in files)
                 {
                     string from = current.Attributes["internal"] == null ? string.Empty : current.Attributes["internal"].Value;
@@ -186,18 +140,17 @@ namespace TheBoxSoftware.Documentation.Exporting
                         continue;
                     }
 
-                    if (file[from] == null)
+                    if (compressedFile.HasEntry(from))
                     {
-                        continue;
-                    }
-
-                    if (file[from].IsDirectory)
-                    {
-                        urls.Add(file[from].FileName + "*.*");
-                    }
-                    else
-                    {
-                        urls.Add(file[from].FileName);
+                        CompressedFileEntry details = compressedFile.GetEntryDetails(from);
+                        if (details.IsDirectory)
+                        {
+                            urls.Add(details.FileName + "*.*");
+                        }
+                        else
+                        {
+                            urls.Add(details.FileName);
+                        }
                     }
                 }
             }
@@ -235,7 +188,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <summary>
         /// Checks if the file has all of the requisits met and sets the <see cref="IsValid"/> property.
         /// </summary>
-        private void CheckIsValid(ZipFile container)
+        private void CheckIsValid(ICompressedConfigFile container)
         {
             // we need to have a config file
             this.IsValid = _xmlDocument != null;
@@ -247,10 +200,41 @@ namespace TheBoxSoftware.Documentation.Exporting
                 this.IsValid = this.IsValid && (xsltNode != null && !string.IsNullOrEmpty(xsltNode.InnerText));
 
                 // does the xslt link point to a file in the zip
-                this.IsValid = this.IsValid && container.ContainsEntry(xsltNode.InnerText);
+                this.IsValid = this.IsValid && container.HasEntry(xsltNode.InnerText);
             }
 
             this.IsValid = this.IsValid && !string.IsNullOrEmpty(this.Name);
+        }
+
+        private void ReadConfigurationDetails()
+        {
+            XmlNode nameNode = _xmlDocument.SelectSingleNode("/export/name");
+            if (nameNode != null)
+                _name = nameNode.InnerText;
+
+            XmlNode versionNode = _xmlDocument.SelectSingleNode("/export/version");
+            if (versionNode != null)
+                _version = versionNode.InnerText;
+
+            _exporters = this.UnpackExporter(_xmlDocument.SelectSingleNode("/export/exporter"));
+
+            XmlNode descriptionNode = _xmlDocument.SelectSingleNode("/export/description");
+            if (descriptionNode != null)
+            {
+                _description = descriptionNode.InnerText;
+            }
+
+            XmlNode screenshotNode = _xmlDocument.SelectSingleNode("/export/screenshot");
+            if (screenshotNode != null)
+            {
+                _hasScreenshot = true;
+            }
+
+            XmlNodeList properties = _xmlDocument.SelectNodes("/export/properties/property");
+            foreach (XmlNode currentProperty in properties)
+            {
+                _properties.Add(currentProperty.Attributes["name"].Value, currentProperty.Attributes["value"].Value);
+            }
         }
 
         /// <summary>

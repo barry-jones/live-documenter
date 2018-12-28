@@ -10,7 +10,7 @@ namespace TheBoxSoftware.Documentation.Tests.Unit.Exporting
         [Test]
         public void ExportConfigFile_Create()
         {
-            ExportConfigFile config = new ExportConfigFile(string.Empty);
+            ExportConfigFile config = new ExportConfigFile("testfile.zip");
         }
     }
 }
