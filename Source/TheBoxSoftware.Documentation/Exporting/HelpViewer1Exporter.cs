@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.IO;
-using TheBoxSoftware.Documentation;
-using Saxon.Api;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
+    using System.IO;
+    using System.IO.Compression;
+    using Saxon.Api;
+
     /// <summary>
     /// Exports documentation in the MS Help Viewer 1 format.
     /// </summary>
@@ -159,10 +158,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <param name="projectFile">The HxC file.</param>
         private void CompileHelp(string projectFile)
         {
-            // zip up the content director and rename it
-            Ionic.Zip.ZipFile outputFile = new Ionic.Zip.ZipFile();
-            outputFile.AddDirectory(this.OutputDirectory);
-            outputFile.Save(projectFile);
+            ZipFile.CreateFromDirectory(OutputDirectory, projectFile);
         }
     }
 }
