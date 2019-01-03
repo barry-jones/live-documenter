@@ -4,7 +4,7 @@
 
 [![](https://img.shields.io/github/release/barry-jones/live-documenter.svg)](https://github.com/barry-jones/live-documenter/releases/tag/v2.0.5)
 
-A collection of applications that enable the generation of API documentation in Web, XML, HTML Help and Help Viewer formats fast and automatically from .NET libraries and XML code comments.
+A collection of applications that enable the ridiculously fast generation of API documentation in Web, XML, HTML Help and Help Viewer from .NET libraries and XML code comments.
 
 #### Desktop Application
 Desktop application allows visual studio projects, solutions or libraries to be opened and documentation
