@@ -24,7 +24,7 @@ namespace TheBoxSoftware.Exporter
             Configuration configuration = null;
             bool verbose = false;
 
-            Console.WriteLine(string.Empty); // always start hte output with a new line clearing from the command data
+            Console.WriteLine(string.Empty); // always start the output with a new line clearing from the command data
 
             // read all the arguments
             if(args == null || args.Length == 0)
