@@ -8,11 +8,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("The Box Software Ltd")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Live Documentation Exporter")]
-[assembly: AssemblyCopyright("Copyright © The Box Software Ltd 2009")]
+[assembly: AssemblyCopyright("Copyright © 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: AssemblyVersion("2.0.5.0")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -21,3 +22,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("e2fa5b3d-009d-4748-a6c3-96d9a5db069c")]
+[assembly: InternalsVisibleTo("TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests")]
