@@ -1,5 +1,5 @@
 ﻿
-namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter
+namespace TheBoxSoftware.Exporter
 {
     using System;
     using System.Linq;
