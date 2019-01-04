@@ -9,10 +9,6 @@ namespace TheBoxSoftware.Exporter
 
     internal class Program
     {
-        /// <summary>
-        /// Application entry point.
-        /// </summary>
-        /// <param name="args">Command line arguments.</param>
 		static void Main(string[] args)
         {
             // https://github.com/dotnet/corefx/issues/31390
@@ -104,37 +100,12 @@ namespace TheBoxSoftware.Exporter
         /// </remarks>
         private void ReadArguments(string[] args, out string configuration, out bool verbose, out bool showHelp)
         {
-            List<string> arguments = new List<string>(args);
+            Parameters parameters = new Parameters();
+            parameters.Read(args);
 
-            // pre the output variables
-            configuration = string.Empty;
-            verbose = false;
-            showHelp = false;
-
-            foreach(string modifier in arguments)
-            {
-                switch(modifier)
-                {
-                    case "-h":
-                    case "help":
-                    case "?":
-                        showHelp = true;
-                        break;
-                    case "-v":
-                        verbose = true;
-                        break;
-                }
-            }
-
-            // get the details of the configuration file.
-            if(arguments.Count > 0)
-            {
-                string lastItem = arguments[arguments.Count - 1];
-                if(!lastItem.StartsWith("-"))
-                {
-                    configuration = lastItem;
-                }
-            }
+            showHelp = parameters.ShowHelp;
+            verbose = parameters.Verbose;
+            configuration = parameters.FileToExport;
         }
 
         /// <summary>
@@ -146,7 +117,7 @@ namespace TheBoxSoftware.Exporter
 
             string help =
                 "\nThe exporter takes the following arguments\n" +
-                "   exporter [modifiers] <filename>\n\n" +
+                "   exporter <filename> mmodifiers\n\n" +
                 "   modifiers:\n" +
                 "     -h        show help information\n" +
                 "     -v        show verbose export details\n\n" +
