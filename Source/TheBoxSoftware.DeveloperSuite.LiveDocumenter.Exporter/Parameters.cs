@@ -1,5 +1,9 @@
 ﻿
+<<<<<<< HEAD
 namespace TheBoxSoftware.Exporter
+=======
+namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter
+>>>>>>> updated test projects to net core 2.2 to enable testign of the exporter. Added parameters class to read parameters from the command line and associated tests.
 {
     using System;
     using System.Linq;
@@ -69,7 +73,11 @@ namespace TheBoxSoftware.Exporter
 
         private bool hasParameters(string[] parameters)
         {
+<<<<<<< HEAD
             return parameters != null && parameters.Length > 0;
+=======
+            return parameters != null;
+>>>>>>> updated test projects to net core 2.2 to enable testign of the exporter. Added parameters class to read parameters from the command line and associated tests.
         }
 
         private void readFileToExport(string[] parameters)
@@ -155,10 +163,13 @@ namespace TheBoxSoftware.Exporter
         {
             get { return _showHelp; }
         }
+<<<<<<< HEAD
 
         public bool HasParameters
         {
             get { return _hasParameters; }
         }
+=======
+>>>>>>> updated test projects to net core 2.2 to enable testign of the exporter. Added parameters class to read parameters from the command line and associated tests.
     }
 }
