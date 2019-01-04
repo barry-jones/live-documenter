@@ -92,6 +92,30 @@ namespace TheBoxSoftware.Exporter
             _ui.WriteLine(string.Empty);
         }
 
+        /// <summary>
+        /// Reads the arguments from the command line.
+        /// </summary>
+        /// <param name="args">The arguments provided by the user.</param>
+        /// <param name="configuration">The configuration file to be processed.</param>
+        /// <param name="verbose">Indicates if the output should be verbose or not.</param>
+        /// <remarks>
+        /// <para>The command line takes the following arguments:</para>
+        /// <list type="">
+        ///     <item>-h show help</item>
+        ///     <item>-v verbose output</item>
+        ///     <item>[file] configuration file</item>
+        /// </list>
+        /// </remarks>
+        private void ReadArguments(string[] args, out string configuration, out bool verbose, out bool showHelp)
+        {
+            Parameters parameters = new Parameters();
+            parameters.Read(args);
+
+            showHelp = parameters.ShowHelp;
+            verbose = parameters.Verbose;
+            configuration = parameters.FileToExport;
+        }
+
         private void PrintHelp()
         {
             PrintVersionInformation();

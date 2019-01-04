@@ -1,7 +1,7 @@
 ﻿namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
 {
     using NUnit.Framework;
-    using TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter;
+    using TheBoxSoftware.Exporter;
 
     [TestFixture]
     public class ParametersTests
