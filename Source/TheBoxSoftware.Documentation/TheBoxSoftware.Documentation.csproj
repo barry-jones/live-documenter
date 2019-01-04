@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.1" />
-    <PackageReference Include="Saxon-HE-fixedrefs" Version="9.7.0.13" />
   </ItemGroup>
 
   <ItemGroup>

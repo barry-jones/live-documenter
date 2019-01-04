@@ -6,7 +6,6 @@ namespace TheBoxSoftware.Documentation.Exporting
     using System.Xml;
     using System.IO;
     using System.IO.Compression;
-    using Saxon.Api;
 
     /// <summary>
     /// Exports documentation in the MS Help Viewer 1 format.
@@ -75,39 +74,36 @@ namespace TheBoxSoftware.Documentation.Exporting
                 // perform the transform of the full XML files produced to the Help Viewer 1 format.
                 if (!this.IsCancelled)
                 {
-                    Processor p = new Processor();
-                    using (Stream xsltStream = this.Config.GetXslt())
+                    string outputFile = string.Empty;
+
+                    IXsltProcessor xsltProcessor = new MsXsltProcessor(TempDirectory);
+                    using (Stream xsltStream = Config.GetXslt())
                     {
-                        XsltTransformer transform = p.NewXsltCompiler().Compile(xsltStream).Load();
-                        transform.SetParameter(new QName(new XmlQualifiedName("directory")), new XdmAtomicValue(System.IO.Path.GetFullPath(this.TempDirectory)));
+                        xsltProcessor.CompileXslt(xsltStream);
+                    }
 
-                        // set output files
-                        this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-                        this.Config.SaveOutputFilesTo(this.OutputDirectory);
+                    // set output files
+                    this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
+                    this.Config.SaveOutputFilesTo(this.OutputDirectory);
 
-                        this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+                    this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
 
-                        // export the content files
-                        int counter = 0;
-                        foreach (string current in Directory.GetFiles(this.TempDirectory))
+                    // export the content files
+                    int counter = 0;
+                    foreach (string current in Directory.GetFiles(this.TempDirectory))
+                    {
+                        if (current.Substring(this.TempDirectory.Length) == "toc.xml")
+                            continue;
+                        outputFile = OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm";
+
+                        xsltProcessor.Transform(current, outputFile);
+
+                        counter++;
+                        if (counter % this.XmlExportStep == 0)
                         {
-                            if (current.Substring(this.TempDirectory.Length) == "toc.xml")
-                                continue;
-                            using (FileStream fs = File.OpenRead(current))
-                            {
-                                Serializer s = new Serializer();
-                                s.SetOutputFile(this.OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm");
-                                transform.SetInputStream(fs, new Uri(new Uri(System.Reflection.Assembly.GetExecutingAssembly().Location), this.OutputDirectory));
-                                transform.Run(s);
-                                s.Close();
-                            }
-                            counter++;
-                            if (counter % this.XmlExportStep == 0)
-                            {
-                                this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
-                            }
-                            if (this.IsCancelled) break;
+                            this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
                         }
+                        if (this.IsCancelled) break;
                     }
                 }
 
@@ -115,8 +111,8 @@ namespace TheBoxSoftware.Documentation.Exporting
                 {
                     // compile the html help file
                     this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
-                    this.CompileHelp(this.OutputDirectory + "\\Documentation.mshc");
-                    File.Copy(this.ApplicationDirectory + "\\ApplicationData\\Documentation.msha", this.OutputDirectory + "\\Documentation.msha");
+                    this.CompileHelp(TempDirectory + "\\Documentation.mshc");
+                    File.Copy(ApplicationDirectory + "\\ApplicationData\\Documentation.msha", TempDirectory + "\\Documentation.msha");
 
                     // publish the documentation
                     this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
@@ -124,8 +120,8 @@ namespace TheBoxSoftware.Documentation.Exporting
                     for (int i = 0; i < files.Length; i++)
                     {
                         File.Move(
-                            Path.Combine(this.OutputDirectory, files[i]),
-                            Path.Combine(this.PublishDirectory, files[i])
+                            Path.Combine(TempDirectory, files[i]),
+                            Path.Combine(PublishDirectory, files[i])
                             ); ;
                     }
                 }

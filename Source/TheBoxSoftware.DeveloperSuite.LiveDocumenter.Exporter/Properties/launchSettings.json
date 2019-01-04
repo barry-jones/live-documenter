@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter": {
+      "commandName": "Project",
+      "commandLineArgs": "-v example-configuration.xml"
+    }
+  }
+}

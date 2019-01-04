@@ -8,6 +8,7 @@ namespace TheBoxSoftware.Documentation.Exporting
     using Microsoft.Win32;
     using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     /// <summary>
     /// Produces HTML Help 2 compiled help documentation.
@@ -213,6 +214,11 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <returns>Boolean indicating if the compiler was found.</returns>
         private bool FindHtmlHelpCompiler()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw new PlatformNotSupportedException("The HTML Help Compilers are only available on windows.");
+            }
+
             // test local paths for compiler
             string compiler = Path.Combine(
                     Environment.GetFolderPath(

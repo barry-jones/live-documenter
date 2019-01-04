@@ -15,6 +15,9 @@ namespace TheBoxSoftware.Exporter
         /// <param name="args">Command line arguments.</param>
 		static void Main(string[] args)
         {
+            // https://github.com/dotnet/corefx/issues/31390
+            AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
+
             Program p = new Program();
 
             bool printHelp = false;

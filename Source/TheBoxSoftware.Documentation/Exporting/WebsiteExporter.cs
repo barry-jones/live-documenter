@@ -60,7 +60,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         {
             if(!this.IsCancelled)
             {
-                IXsltProcessor xsltProcessor = new SaxonXsltProcessor(TempDirectory);
+                IXsltProcessor xsltProcessor = new MsXsltProcessor(TempDirectory);
                 using(Stream xsltStream = this.Config.GetXslt())
                 {
                     xsltProcessor.CompileXslt(xsltStream);

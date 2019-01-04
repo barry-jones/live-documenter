@@ -9,6 +9,7 @@ namespace TheBoxSoftware.Documentation.Exporting
     using Microsoft.Win32;
     using HtmlHelp1;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     /// <summary>
     /// Exports the documentation to the HTML Help 1 format.
@@ -99,7 +100,7 @@ namespace TheBoxSoftware.Documentation.Exporting
 
                 if (!this.IsCancelled)
                 {
-                    IXsltProcessor xsltProcessor = new SaxonXsltProcessor(TempDirectory);
+                    IXsltProcessor xsltProcessor = new MsXsltProcessor(TempDirectory);
 
                     using(Stream xsltStream = this.Config.GetXslt())
                     {
@@ -191,6 +192,11 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <returns>Boolean indicating if the compiler was found.</returns>
         private bool FindHtmlHelpCompiler()
         {
+            if(!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw new PlatformNotSupportedException("The HTML Help Compilers are only available on windows.");
+            }
+
             string compiler = Path.Combine(
                     Environment.GetFolderPath(
                         Environment.SpecialFolder.ProgramFilesX86),

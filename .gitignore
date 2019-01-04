@@ -9,6 +9,7 @@
 *.user
 *.sln.docstates
 livedocumenter.lic
+exporters/*.ldec
 
 # Build results
 [Dd]ebug/

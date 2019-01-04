@@ -1,4 +1,4 @@
-﻿
+﻿/*
 namespace TheBoxSoftware.Documentation.Exporting
 {
     using System;
@@ -78,3 +78,4 @@ namespace TheBoxSoftware.Documentation.Exporting
         }
     }
 }
+*/
