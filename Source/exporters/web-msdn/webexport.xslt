@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
     >
 	<xsl:output method="xml" indent="no" />
@@ -543,7 +543,11 @@
 		<xsl:param name="parents"/>
 		<xsl:param name="childs"/>
 		<xsl:if test="$parents">
-			<xsl:variable name="parentCurrent" select="if (concat($parents[1]/@key,$parents[1]/@subkey) = concat($id,$subId)) then 'current' else ''" />
+			<xsl:variable name="parentCurrent">
+				<xsl:if test="concat($parents[1]/@key,$parents[1]/@subkey) = concat($id,$subId)">
+					<xsl:text>current</xsl:text>
+				</xsl:if>
+			</xsl:variable>
 			<ul>
 				<li>
 					<xsl:if test="not($parents[1]/@subkey = '')">
@@ -563,7 +567,11 @@
 					<xsl:if test="count($parents)=1">
 						<ul>
 							<xsl:for-each select="$childs">
-								<xsl:variable name="current" select="if (concat(@key,@subkey) = concat($id,$subId)) then 'current' else ''" />
+								<xsl:variable name="current">
+									<xsl:if test="concat(@key,@subkey) = concat($id,$subId)">
+										<xsl:text>current</xsl:text>
+									</xsl:if>
+								</xsl:variable>
 								<xsl:if test="not(@subkey = '')">
 									<li>
 										<a class="{$current}" href="{@key}-{@subkey}.htm">
