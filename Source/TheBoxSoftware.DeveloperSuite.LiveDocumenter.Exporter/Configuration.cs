@@ -34,7 +34,6 @@ namespace TheBoxSoftware.Exporter
             public string File { get; set; }
         }
 
-        #region Serialization
         /// <summary>
         /// Deserializes a Configuration from the <paramref name="formFile"/>.
         /// </summary>
@@ -48,20 +47,19 @@ namespace TheBoxSoftware.Exporter
                 return (Configuration)serializer.Deserialize(fs);
             }
         }
-        #endregion
 
         /// <summary>
         /// Checks if the configuration is valid and if not outputs the issues to the console and returns
         /// false.
         /// </summary>
         /// <returns></returns>
-        public bool IsValid()
+        internal bool IsValid(ILog log)
         {
             bool isValid = true;
 
             if(!File.Exists(this.Document))
             {
-                Logger.Log(string.Format("The document '{0}' does not exist.", this.Document), LogType.Error);
+                log.Log(string.Format("The document '{0}' does not exist.", this.Document), LogType.Error);
                 isValid = false;
             }
 

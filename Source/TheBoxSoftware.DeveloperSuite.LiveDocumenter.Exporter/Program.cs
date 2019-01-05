@@ -2,28 +2,48 @@
 namespace TheBoxSoftware.Exporter
 {
     using System;
-    using System.IO;
     using System.Reflection;
     using System.Diagnostics;
 
     internal class Program
     {
+        private readonly IFileSystem _filesystem;
+        private readonly string[] _arguments;
+        private readonly IUserInterface _ui;
+        private readonly ILog _log;
+
 		static void Main(string[] args)
         {
             // https://github.com/dotnet/corefx/issues/31390
             AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
 
-            Program p = new Program();
+            ConsoleUserInterface ui = new ConsoleUserInterface();
+            Program p = new Program(args, new FileSystem(), ui, new Logger(ui));
+
+            p.HandleExport();
+        }
+
+        public Program(string[] arguments, IFileSystem fileSystem, IUserInterface ui, ILog logger)
+        {
+            _filesystem = fileSystem;
+            _arguments = arguments;
+            _ui = ui;
+            _log = logger;
+        }
+
+
+        private void HandleExport()
+        {
             Configuration configuration = null;
 
-            Console.WriteLine(string.Empty); // always start the output with a new line clearing from the command data
+            _ui.WriteLine(string.Empty); // always start the output with a new line clearing from the command data
 
             Parameters parameters = new Parameters();
-            parameters.Read(args);
+            parameters.Read(_arguments);
 
-            if(!parameters.HasParameters || parameters.ShowHelp)
+            if (!parameters.HasParameters || parameters.ShowHelp)
             {
-                p.PrintHelp();
+                PrintHelp();
             }
             else
             {
@@ -31,9 +51,9 @@ namespace TheBoxSoftware.Exporter
 
                 if (string.IsNullOrEmpty(configFile))
                 {
-                    Logger.Log("No configuration file was provided.\n", LogType.Error);
+                    _log.Log("No configuration file was provided.\n", LogType.Error);
                 }
-                else if (File.Exists(configFile))
+                else if (_filesystem.FileExists(configFile))
                 {
                     try
                     {
@@ -48,24 +68,24 @@ namespace TheBoxSoftware.Exporter
                     }
                     catch (InvalidOperationException e)
                     {
-                        Logger.Log(string.Format("There was an error reading the configuration file\n  {0}", e.Message), LogType.Error);
+                        _log.Log(string.Format("There was an error reading the configuration file\n  {0}", e.Message), LogType.Error);
                         return; // bail we have no configuration or some of it is missing
                     }
                 }
                 else
                 {
-                    Logger.Log(string.Format("The config file '{0}' does not exist", configFile), LogType.Error);
+                    _log.Log(string.Format("The config file '{0}' does not exist", configFile), LogType.Error);
                 }
             }
 
-            if(configuration != null)
+            if (configuration != null)
             {
-                if(configuration.IsValid())
+                if (configuration.IsValid(_log))
                 {
-                    Logger.Init(parameters.Verbose);
-                    p.PrintVersionInformation();
+                    _log.Init(parameters.Verbose);
+                    PrintVersionInformation();
 
-                    Exporter exporter = new Exporter(configuration, parameters.Verbose);
+                    Exporter exporter = new Exporter(configuration, parameters.Verbose, _log);
                     exporter.Export();
                 }
             }
@@ -87,7 +107,7 @@ namespace TheBoxSoftware.Exporter
                 "   modifiers:\n" +
                 "     -h        show help information\n" +
                 "     -v        show verbose export details\n\n";
-            Logger.Log(help);
+            _log.Log(help);
         }
 
         /// <summary>
@@ -99,7 +119,7 @@ namespace TheBoxSoftware.Exporter
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Logger.Verbose($"Live Documenter Exporter Version: {fvi.ProductVersion}\n\n");
+            _log.Verbose($"Live Documenter Exporter Version: {fvi.ProductVersion}\n\n");
         }
     }
 }
