@@ -99,6 +99,30 @@
             Assert.AreEqual(EXPECTED, parameters.ShowHelp);
         }
 
+        [Test]
+        public void Parameters_WhenNoParametersProvided_HasParametersIsFalse()
+        {
+            const bool EXPECTED = false;
+            string[] input = new string[] { };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.HasParameters);
+        }
+
+        [Test]
+        public void Parameters_WhenParametersProvided_HasParametersIsTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "-h" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.HasParameters);
+        }
+
         /*
         public void Parameters_WhenValidInput_ReadsValidationFile()
         {
