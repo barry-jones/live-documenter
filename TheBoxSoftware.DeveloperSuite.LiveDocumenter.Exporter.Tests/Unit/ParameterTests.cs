@@ -6,9 +6,6 @@
     [TestFixture]
     public class ParametersTests
     {
-        const string VALID_CONFIGFILE = @"data\configuration\configuration.json";
-        const string VALID_INPUTFILE = @"data\simplefile.csv";
-
         [Test]
         public void Parameters_Create()
         {
