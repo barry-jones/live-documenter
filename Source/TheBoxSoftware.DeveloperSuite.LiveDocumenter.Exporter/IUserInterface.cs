@@ -2,10 +2,8 @@
 namespace TheBoxSoftware.Exporter
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
-    internal interface IUserInterface
+    public interface IUserInterface
     {
         void Write(string content);
 
