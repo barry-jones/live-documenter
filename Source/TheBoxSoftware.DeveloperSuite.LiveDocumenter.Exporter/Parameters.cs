@@ -14,6 +14,7 @@ namespace TheBoxSoftware.Exporter
         private string _filters = string.Empty;
         private string _format = string.Empty;
         private string _export = string.Empty;
+        private bool _hasParameters = false;
 
         public Parameters()
         {
@@ -21,8 +22,9 @@ namespace TheBoxSoftware.Exporter
 
         public void Read(string[] parameters)
         {
-            // first value is expected to be the file to validate
-            if (hasParameters(parameters))
+            _hasParameters = hasParameters(parameters);
+
+            if (_hasParameters)
             {
                 readFileToExport(parameters);
                 readVerbosity(parameters);
@@ -67,7 +69,7 @@ namespace TheBoxSoftware.Exporter
 
         private bool hasParameters(string[] parameters)
         {
-            return parameters != null;
+            return parameters != null && parameters.Length > 0;
         }
 
         private void readFileToExport(string[] parameters)
@@ -152,6 +154,11 @@ namespace TheBoxSoftware.Exporter
         public bool ShowHelp
         {
             get { return _showHelp; }
+        }
+
+        public bool HasParameters
+        {
+            get { return _hasParameters; }
         }
     }
 }
