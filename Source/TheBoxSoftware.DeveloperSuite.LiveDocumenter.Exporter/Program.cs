@@ -83,10 +83,10 @@ namespace TheBoxSoftware.Exporter
             string help =
                 "\nThe exporter takes the following arguments\n" +
                 "   exporter <filename> mmodifiers\n\n" +
+                "   <filename>  The path to the configuration xml file.\n" +
                 "   modifiers:\n" +
                 "     -h        show help information\n" +
-                "     -v        show verbose export details\n\n" +
-                "   <filename>  The path to the configuration xml file.\n";
+                "     -v        show verbose export details\n\n";
             Logger.Log(help);
         }
 
