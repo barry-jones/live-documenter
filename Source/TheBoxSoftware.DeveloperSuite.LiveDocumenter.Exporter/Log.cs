@@ -8,45 +8,44 @@ namespace TheBoxSoftware.Exporter
     /// Class for logging output to the System.Console.
     /// </summary>
     /// <include file='Documentation\logger.xml' path='members/member[@name="Logger"]/*'/>
-    internal static class Logger
+    internal class Logger : ILog
     {
-        private static readonly Dictionary<LogType, ConsoleColor> outputColours;
-        private static readonly Dictionary<LogType, string> messagePrefix;
-        private static bool verbose = false;
+        private readonly Dictionary<LogType, ConsoleColor> _outputColours;
+        private readonly Dictionary<LogType, string> _messagePrefix;
+        private bool _verbose = false;
+        private readonly IUserInterface _ui;
 
-        /// <summary>
-        /// Static constructor for initialising readonly static fields.
-        /// </summary>
-        static Logger()
+        public Logger(IUserInterface ui)
         {
-            Logger.outputColours = new Dictionary<LogType, ConsoleColor> {
+            _outputColours = new Dictionary<LogType, ConsoleColor> {
                 { LogType.Information, ConsoleColor.White },
                 { LogType.Warning, ConsoleColor.Yellow },
                 { LogType.Error, ConsoleColor.Red },
                 { LogType.Progress, ConsoleColor.Green }
                 };
-            Logger.messagePrefix = new Dictionary<LogType, string> {
+            _messagePrefix = new Dictionary<LogType, string> {
                 { LogType.Information,  "" },
                 { LogType.Progress,  "" },
                 { LogType.Warning,      "[wrn] " },
                 { LogType.Error,        "[err] " }
                 };
+            _ui = ui;
         }
 
         /// <summary>
         /// Initialises the logger with details that control how this application instance will run.
         /// </summary>
         /// <param name="verbose">Indicates if verbose messages should be logged.</param>
-        public static void Init(bool verbose)
+        public void Init(bool verbose)
         {
-            Logger.verbose = verbose;
+            _verbose = verbose;
         }
 
         /// <summary>
         /// Log an informational message to the console.
         /// </summary>
         /// <param name="message">The message to log.</param>
-        public static void Log(string message)
+        public void Log(string message)
         {
             Log(message, LogType.Information);
         }
@@ -56,22 +55,22 @@ namespace TheBoxSoftware.Exporter
         /// </summary>
         /// <param name="message">The message to log.</param>
         /// <param name="type">The type of message to log.</param>
-        public static void Log(string message, LogType type)
+        public void Log(string message, LogType type)
         {
             if(type != LogType.Information)
             {
-                Console.ForegroundColor = Logger.outputColours[type];
+                _ui.ForegroundColor = _outputColours[type];
             }
 
-            Console.Write($"{Logger.messagePrefix[type]}{message}");
-            Console.ResetColor();
+            _ui.Write($"{_messagePrefix[type]}{message}");
+            _ui.ResetColor();
         }
 
         /// <summary>
         /// Log an informational verbose message to the console.
         /// </summary>
         /// <param name="message"></param>
-        public static void Verbose(string message)
+        public void Verbose(string message)
         {
             Verbose(message, LogType.Information);
         }
@@ -81,9 +80,9 @@ namespace TheBoxSoftware.Exporter
         /// </summary>
         /// <param name="message">The message to log.</param>
         /// <param name="type">The type of message to log.</param>
-        public static void Verbose(string message, LogType type)
+        public void Verbose(string message, LogType type)
         {
-            if(Logger.verbose)
+            if(_verbose)
             {
                 Log(message, type);
             }
