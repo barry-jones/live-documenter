@@ -92,7 +92,7 @@ namespace TheBoxSoftware.Exporter
     /// <summary>
     /// Types of log messages that can be output via the <see cref="Logger"/> class.
     /// </summary>
-    internal enum LogType
+    public enum LogType
     {
         /// <summary>
         /// An information message which can be largely ignored.

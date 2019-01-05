@@ -1,7 +1,7 @@
 ﻿
 namespace TheBoxSoftware.Exporter
 {
-    internal interface ILog
+    public interface ILog
     {
         void Log(string message);
 

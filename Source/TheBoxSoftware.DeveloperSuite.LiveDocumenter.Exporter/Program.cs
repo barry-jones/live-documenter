@@ -31,7 +31,6 @@ namespace TheBoxSoftware.Exporter
             _log = logger;
         }
 
-
         private void HandleExport()
         {
             Configuration configuration = null;
@@ -68,13 +67,13 @@ namespace TheBoxSoftware.Exporter
                     }
                     catch (InvalidOperationException e)
                     {
-                        _log.Log(string.Format("There was an error reading the configuration file\n  {0}", e.Message), LogType.Error);
+                        _log.Log($"There was an error reading the configuration file\n  {e.Message}", LogType.Error);
                         return; // bail we have no configuration or some of it is missing
                     }
                 }
                 else
                 {
-                    _log.Log(string.Format("The config file '{0}' does not exist", configFile), LogType.Error);
+                    _log.Log($"The config file '{configFile}' does not exist", LogType.Error);
                 }
             }
 
@@ -90,12 +89,9 @@ namespace TheBoxSoftware.Exporter
                 }
             }
 
-            Console.WriteLine(); // space at end of outpuut for readability
+            _ui.WriteLine(string.Empty);
         }
 
-        /// <summary>
-        /// Outputs the help information
-        /// </summary>
         private void PrintHelp()
         {
             PrintVersionInformation();
