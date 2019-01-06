@@ -18,8 +18,4 @@
     <ProjectReference Include="..\..\..\TheBoxSoftware\TheBoxSoftware.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)source\testoutput\documentationtest.dll&quot;" />
-  </Target>
-
 </Project>
