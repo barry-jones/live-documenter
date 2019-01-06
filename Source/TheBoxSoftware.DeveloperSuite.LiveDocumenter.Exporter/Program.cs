@@ -113,10 +113,17 @@ namespace TheBoxSoftware.Exporter
                 string help =
                     "\nThe exporter takes the following arguments\n" +
                     "   exporter <filename> mmodifiers\n\n" +
-                    "   <filename>  The path to the configuration xml file.\n" +
+                    "   [e.g.] exporter theboxsoftware.reflection.dll -to c:\\temp\\web -filters \"public|protected\"\n\n" +
+                    "   <filename>  The path to the configuration file, library, project or solution.\n" +
                     "   modifiers:\n" +
                     "     -h        show help information\n" +
-                    "     -v        show verbose export details\n\n";
+                    "     -v        show verbose export details\n" +
+                    "     -to       the directory to export to\n" +
+                    "     -format   the ldec file format to export content. Defaults to web-msdn.ldec\n" +
+                    "     -filters  the visibilty filters (public|protected etc) defaults to public\n\n" +
+                    "\n`-to`, `-format` and `-filters` are only used when the file provided is not a\n" +
+                    "configuration xml file.\n\n";
+
                 _log.Log(help);
             }
             return showHelp;
