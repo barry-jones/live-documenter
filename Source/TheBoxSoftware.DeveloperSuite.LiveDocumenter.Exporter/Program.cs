@@ -98,7 +98,6 @@ namespace TheBoxSoftware.Exporter
             _ui.WriteLine(string.Empty);
         }
 
-
         private static bool IsConfigurationFile(string configFile)
         {
             return System.IO.Path.GetExtension(configFile) == ".xml";
