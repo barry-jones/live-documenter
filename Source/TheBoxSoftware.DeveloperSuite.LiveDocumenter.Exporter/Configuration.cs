@@ -34,34 +34,46 @@ namespace TheBoxSoftware.Exporter
             public string File { get; set; }
         }
 
-        #region Serialization
+        public Configuration()
+        {
+            Outputs = new List<Output>();
+            Filters = new List<Reflection.Visibility>();
+        }
+
         /// <summary>
-        /// Deserializes a Configuration from the <paramref name="formFile"/>.
+        /// Deserializes a Configuration from the <paramref name="fromFile"/>.
         /// </summary>
         /// <param name="fromFile">The file to read the project from.</param>
         /// <returns>The instantiated project.</returns>
         public static Configuration Deserialize(string fromFile)
         {
-            using(FileStream fs = new FileStream(fromFile, FileMode.Open))
+            using(Stream fs = new FileStream(fromFile, FileMode.Open))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
                 return (Configuration)serializer.Deserialize(fs);
             }
         }
-        #endregion
+
+        internal void AddOutput(string location, string ldec)
+        {
+            Output output = new Output();
+            output.File = ldec;
+            output.Location = location;
+            Outputs.Add(output);
+        }
 
         /// <summary>
         /// Checks if the configuration is valid and if not outputs the issues to the console and returns
         /// false.
         /// </summary>
         /// <returns></returns>
-        public bool IsValid()
+        internal bool IsValid(ILog log)
         {
             bool isValid = true;
 
             if(!File.Exists(this.Document))
             {
-                Logger.Log(string.Format("The document '{0}' does not exist.", this.Document), LogType.Error);
+                log.Log(string.Format("The document '{0}' does not exist.", this.Document), LogType.Error);
                 isValid = false;
             }
 

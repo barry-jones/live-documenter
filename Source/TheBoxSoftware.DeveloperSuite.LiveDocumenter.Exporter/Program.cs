@@ -2,158 +2,144 @@
 namespace TheBoxSoftware.Exporter
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
     using System.Reflection;
     using System.Diagnostics;
 
     internal class Program
     {
-        /// <summary>
-        /// Application entry point.
-        /// </summary>
-        /// <param name="args">Command line arguments.</param>
+        private readonly IFileSystem _filesystem;
+        private readonly string[] _arguments;
+        private readonly IUserInterface _ui;
+        private readonly ILog _log;
+
 		static void Main(string[] args)
         {
             // https://github.com/dotnet/corefx/issues/31390
             AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
 
-            Program p = new Program();
+            ConsoleUserInterface ui = new ConsoleUserInterface();
+            Program p = new Program(args, new FileSystem(), ui, new Logger(ui));
 
-            bool printHelp = false;
+            p.HandleExport();
+        }
+
+        public Program(string[] arguments, IFileSystem fileSystem, IUserInterface ui, ILog logger)
+        {
+            _filesystem = fileSystem;
+            _arguments = arguments;
+            _ui = ui;
+            _log = logger;
+        }
+
+        public void HandleExport()
+        {
             Configuration configuration = null;
-            bool verbose = false;
 
-            Console.WriteLine(string.Empty); // always start hte output with a new line clearing from the command data
+            _ui.WriteLine(string.Empty); // always start the output with a new line clearing from the command data
 
-            // read all the arguments
-            if(args == null || args.Length == 0)
+            Parameters parameters = new Parameters();
+            try
             {
-                printHelp = true;
+                parameters.Read(_arguments);
+            }
+            catch(InvalidParameterException ex)
+            {
+                _log.Log($"An invalid value '{ex.Value}' for parameter '{ex.Parameter}' was provided. Please resolve and try again.", LogType.Error);
+                return;
+            }
+
+            string configFile = parameters.FileToExport;
+
+            if (IsHelpShown(parameters))
+                return;
+
+            if (IsFileNotProvided(configFile))
+                return;
+
+            if (IsConfigurationFile(configFile))
+            {
+                try
+                {
+                    configuration = Configuration.Deserialize(configFile);
+
+                    // if no filters are defined, default to Public/Protected
+                    if (configuration.Filters == null || configuration.Filters.Count == 0)
+                    {
+                        configuration.Filters.Add(Reflection.Visibility.Public);
+                        configuration.Filters.Add(Reflection.Visibility.Protected);
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                    _log.Log($"There was an error reading the configuration file\n  {e.Message}", LogType.Error);
+                    return; // bail we have no configuration or some of it is missing
+                }
             }
             else
             {
-                string configFile;
-
-                p.ReadArguments(args, out configFile, out verbose, out printHelp);
-
-                if(!printHelp)
-                {
-                    if(string.IsNullOrEmpty(configFile))
-                    {
-                        Logger.Log("No configuration file was provided.\n", LogType.Error);
-                    }
-                    else if(File.Exists(configFile))
-                    {
-                        try
-                        {
-                            configuration = Configuration.Deserialize(configFile);
-
-                            // if no filters are defined, default to Public/Protected
-                            if(configuration.Filters == null || configuration.Filters.Count == 0)
-                            {
-                                configuration.Filters.Add(Reflection.Visibility.Public);
-                                configuration.Filters.Add(Reflection.Visibility.Protected);
-                            }
-                        }
-                        catch(InvalidOperationException e)
-                        {
-                            Logger.Log(string.Format("There was an error reading the configuration file\n  {0}", e.Message), LogType.Error);
-                            return; // bail we have no configuration or some of it is missing
-                        }
-                    }
-                    else
-                    {
-                        Logger.Log(string.Format("The config file '{0}' does not exist", configFile), LogType.Error);
-                    }
-                }
+                configuration = new Configuration();
+                configuration.Document = configFile;
+                configuration.Filters.AddRange(parameters.Filters);
+                configuration.AddOutput(parameters.To, parameters.Format);
             }
 
-            if(printHelp)
+            if (configuration != null)
             {
-                p.PrintHelp();
-            }
-            else if(configuration != null)
-            {
-                if(configuration.IsValid())
+                if (configuration.IsValid(_log))
                 {
-                    Logger.Init(verbose);
-                    p.PrintVersionInformation();
+                    _log.Init(parameters.Verbose);
+                    PrintVersionInformation();
 
-                    Exporter exporter = new Exporter(configuration, verbose);
+                    Exporter exporter = new Exporter(configuration, parameters.Verbose, _log);
                     exporter.Export();
                 }
             }
 
-            Console.WriteLine(); // space at end of outpuut for readability
+            _ui.WriteLine(string.Empty);
         }
 
-        /// <summary>
-        /// Reads the arguments from the command line.
-        /// </summary>
-        /// <param name="args">The arguments provided by the user.</param>
-        /// <param name="configuration">The configuration file to be processed.</param>
-        /// <param name="verbose">Indicates if the output should be verbose or not.</param>
-        /// <remarks>
-        /// <para>The command line takes the following arguments:</para>
-        /// <list type="">
-        ///     <item>-h show help</item>
-        ///     <item>-v verbose output</item>
-        ///     <item>[file] configuration file</item>
-        /// </list>
-        /// </remarks>
-        private void ReadArguments(string[] args, out string configuration, out bool verbose, out bool showHelp)
+        private static bool IsConfigurationFile(string configFile)
         {
-            List<string> arguments = new List<string>(args);
+            return System.IO.Path.GetExtension(configFile) == ".xml";
+        }
 
-            // pre the output variables
-            configuration = string.Empty;
-            verbose = false;
-            showHelp = false;
-
-            foreach(string modifier in arguments)
+        private bool IsHelpShown(Parameters parameters)
+        {
+            bool showHelp = !parameters.HasParameters || parameters.ShowHelp;
+            if (showHelp)
             {
-                switch(modifier)
-                {
-                    case "-h":
-                    case "help":
-                    case "?":
-                        showHelp = true;
-                        break;
-                    case "-v":
-                        verbose = true;
-                        break;
-                }
+                PrintVersionInformation();
+
+                string help =
+                    "\nThe exporter takes the following arguments\n" +
+                    "   exporter <filename> mmodifiers\n\n" +
+                    "   <filename>  The path to the configuration xml file.\n" +
+                    "   modifiers:\n" +
+                    "     -h        show help information\n" +
+                    "     -v        show verbose export details\n\n";
+                _log.Log(help);
+            }
+            return showHelp;
+        }
+
+        private bool IsFileNotProvided(string configFile)
+        {
+            bool isFileProvided = false;
+
+            if (string.IsNullOrEmpty(configFile))
+            {
+                _log.Log($"No file was specified to export.\n", LogType.Error);
+                isFileProvided = true;
+            }
+            else if (!_filesystem.FileExists(configFile))
+            {
+                _log.Log($"The config file '{configFile}' does not exist", LogType.Error);
+                isFileProvided = true;
             }
 
-            // get the details of the configuration file.
-            if(arguments.Count > 0)
-            {
-                string lastItem = arguments[arguments.Count - 1];
-                if(!lastItem.StartsWith("-"))
-                {
-                    configuration = lastItem;
-                }
-            }
+            return isFileProvided;
         }
-
-        /// <summary>
-        /// Outputs the help information
-        /// </summary>
-        private void PrintHelp()
-        {
-            PrintVersionInformation();
-
-            string help =
-                "\nThe exporter takes the following arguments\n" +
-                "   exporter [modifiers] <filename>\n\n" +
-                "   modifiers:\n" +
-                "     -h        show help information\n" +
-                "     -v        show verbose export details\n\n" +
-                "   <filename>  The path to the configuration xml file.\n";
-            Logger.Log(help);
-        }
-
+        
         /// <summary>
         /// Prints the exporters current version and details to the console.
         /// </summary>
@@ -163,7 +149,7 @@ namespace TheBoxSoftware.Exporter
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            Logger.Verbose($"Live Documenter Exporter Version: {fvi.ProductVersion}\n\n");
+            _log.Verbose($"Live Documenter Exporter Version: {fvi.ProductVersion}\n\n");
         }
     }
 }

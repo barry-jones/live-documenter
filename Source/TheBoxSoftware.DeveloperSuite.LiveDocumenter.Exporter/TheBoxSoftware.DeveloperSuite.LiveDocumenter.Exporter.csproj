@@ -5,7 +5,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <StartupObject>TheBoxSoftware.Exporter.Program</StartupObject>
-    <AssemblyName>ld-exporter</AssemblyName>
+    <AssemblyName>exporter</AssemblyName>
+    <RootNamespace>TheBoxSoftware.Exporter</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -18,6 +18,7 @@ namespace TheBoxSoftware.Exporter
     /// </remarks>
 	internal sealed class Exporter
     {
+        private readonly ILog _log;
         private Configuration _configuration;
         private string _lastStep = string.Empty; // stores the last export step so we can work out where we are
         private bool _verbose = false;           // indicates if the output information should be verbose or not
@@ -27,8 +28,10 @@ namespace TheBoxSoftware.Exporter
         /// </summary>
         /// <param name="configuration">The export configuration information.</param>
         /// <param name="verbose">Indicates if the output should be complete or limited.</param>
-        public Exporter(Configuration configuration, bool verbose)
+        /// <param name="log">The ILog instance to write export details to.</param>
+        public Exporter(Configuration configuration, bool verbose, ILog log)
         {
+            _log = log;
             _configuration = configuration;
             _verbose = verbose;
         }
@@ -54,7 +57,7 @@ namespace TheBoxSoftware.Exporter
                 }
                 catch(InvalidOperationException e)
                 {
-                    Logger.Log(
+                    _log.Log(
                         $"Invalid document '{_configuration.Document}' please fix the error and try again.\n  {e.Message}",
                         LogType.Error
                         );
@@ -85,7 +88,7 @@ namespace TheBoxSoftware.Exporter
             // use the configurations visibility filters or default to just public
             if(settings.Settings.VisibilityFilters == null || settings.Settings.VisibilityFilters.Count == 0)
             {
-                Logger.Log("No visibility filters are found defaulting to Public and Protected.\n", LogType.Warning);
+                _log.Log("No visibility filters are found defaulting to Public and Protected.\n", LogType.Warning);
                 settings.Settings.VisibilityFilters = new List<Visibility>() { Visibility.Public };
             }
             else
@@ -95,8 +98,9 @@ namespace TheBoxSoftware.Exporter
                 {
                     filters.Add(Enum.GetName(typeof(Visibility), current));
                 }
-                Logger.Verbose(
-                    string.Format("Details:\n  Visible members: ({0})\n", string.Join("|", filters.ToArray()))
+                _log.Log(
+                    string.Format("Details:\n  Visible members: ({0})\n", string.Join("|", filters.ToArray())),
+                    LogType.Information
                     );
             }
 
@@ -119,11 +123,11 @@ namespace TheBoxSoftware.Exporter
                 );
             config.Initialise();
 
-            Logger.Log($"\nExporting with {output.File} to location {output.Location}.\n", LogType.Progress);
+            _log.Log($"\nExporting with {output.File} to location {output.Location}.\n", LogType.Progress);
 
             if(!config.IsValid)
             {
-                Logger.Log(string.Format("There are issues with the LDEC file: {0}\n", output.File), LogType.Error);
+                _log.Log(string.Format("There are issues with the LDEC file: {0}\n", output.File), LogType.Error);
             }
             else
             {
@@ -140,25 +144,25 @@ namespace TheBoxSoftware.Exporter
                 {
                     foreach(export.Issue issue in issues)
                     {
-                        Logger.Log($"{issue.Description}\n", LogType.Error);
+                        _log.Log($"{issue.Description}\n", LogType.Error);
                     }
                 }
                 else
                 {
-                    Logger.Verbose($"The export began at {start}.\n");
+                    _log.Verbose($"The export began at {start}.\n");
                     exporter.Export();
                     end = DateTime.Now;
 
                     if(exporter.ExportExceptions != null && exporter.ExportExceptions.Count > 0)
                     {
-                        Logger.Log("The export completed with the following issues:\n", LogType.Warning);
+                        _log.Log("The export completed with the following issues:\n", LogType.Warning);
                         foreach(Exception current in exporter.ExportExceptions)
                         {
-                            Logger.Log(FormatExceptionData(current), LogType.Warning);
+                            _log.Log(FormatExceptionData(current), LogType.Warning);
                         }
                     }
 
-                    Logger.Verbose($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
+                    _log.Log($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n", LogType.Information);
                 }
             }
         }
@@ -171,7 +175,7 @@ namespace TheBoxSoftware.Exporter
             document.Settings = settings.Settings;
             document.UpdateDocumentMap();
 
-            Logger.Verbose($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
+            _log.Verbose($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
 
             return document;
         }
@@ -183,23 +187,23 @@ namespace TheBoxSoftware.Exporter
             else
             {
                 _lastStep = e.Description;
-                Logger.Verbose($"  {e.Description}\n");
+                _log.Verbose($"  {e.Description}\n");
             }
         }
 
         private void exporter_ExportException(object sender, export.ExportExceptionEventArgs e)
         {
-            Logger.Log($"{e.Exception.Message}\n", LogType.Error);
+            _log.Log($"{e.Exception.Message}\n", LogType.Error);
         }
 
         private void exporter_ExportCalculated(object sender, export.ExportCalculatedEventArgs e)
         {
-            Logger.Verbose("Export started\n");
+            _log.Verbose("Export started\n");
         }
 
         private void exporter_ExportFailed(export.ExportFailedEventArgs e)
         {
-            Logger.Log($"{e.Message}\n", LogType.Error);
+            _log.Log($"{e.Message}\n", LogType.Error);
         }
 
         private string FormatExceptionData(Exception forException)
