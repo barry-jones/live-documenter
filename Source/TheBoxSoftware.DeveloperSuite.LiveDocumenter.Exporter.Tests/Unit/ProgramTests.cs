@@ -53,6 +53,16 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
             _log.Verify(m => m.Log(It.IsRegex("show help information")));
         }
 
+        [Test]
+        public void Program_IfInvalidParameterProvided_ErrorIsLogged()
+        {
+            string[] arguments = new string[] { "test.dll", "-filters", "pulsic" };
+            Program p = CreateProgram(arguments);
+
+            p.HandleExport();
+
+            _log.Verify(m => m.Log(It.IsRegex("pulsic"), LogType.Error));
+        }
 
         private Program CreateProgram(string[] arguments)
         {

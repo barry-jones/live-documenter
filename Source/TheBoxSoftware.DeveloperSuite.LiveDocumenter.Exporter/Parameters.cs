@@ -2,16 +2,19 @@
 namespace TheBoxSoftware.Exporter
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using TheBoxSoftware.Reflection;
 
     internal class Parameters
     {
+        private const string DefaultFormat = "web-msdn.ldec";
         private readonly string[] PARAMETERS = { "-v", "-h", "-format", "-f", "-filters", "-to" };
 
         private bool _showVerbose = false;
         private bool _showHelp = false;
         private string _toLocation = string.Empty;
-        private string _filters = string.Empty;
+        private List<Visibility> _filters = new List<Visibility>();
         private string _format = string.Empty;
         private string _export = string.Empty;
         private bool _hasParameters = false;
@@ -106,6 +109,10 @@ namespace TheBoxSoftware.Exporter
             {
                 _format = ReadValue(index, parameters);
             }
+            if(string.IsNullOrEmpty(_format))
+            {
+                _format = DefaultFormat;
+            }
         }
 
         private void readTo(string[] parameters)
@@ -120,10 +127,38 @@ namespace TheBoxSoftware.Exporter
         private void readFilters(string[] parameters)
         {
             int index = Array.IndexOf(parameters, "-filters");
+            string value = string.Empty;
             if (index != -1)
             {
-                _filters = ReadValue(index, parameters);
+                value = ReadValue(index, parameters);
             }
+
+            if(string.IsNullOrEmpty(value))
+            {
+                addDefaultVisibilityFilters();
+            }
+            else
+            {
+                convertFilters(value);
+            }
+        }
+
+        private void convertFilters(string value)
+        {
+            foreach (string current in value.Split('|'))
+            {
+                object parsed = null;
+                bool hasParsed = Enum.TryParse(typeof(Visibility), current, true, out parsed);
+                if (hasParsed)
+                    _filters.Add((Visibility)parsed);
+                else
+                    throw new InvalidParameterException("formats", current);
+            }
+        }
+
+        private void addDefaultVisibilityFilters()
+        {
+            _filters.Add(Visibility.Public);
         }
 
         public string FileToExport
@@ -146,7 +181,7 @@ namespace TheBoxSoftware.Exporter
             get { return _toLocation; }
         }
 
-        public string Filters
+        public List<Visibility> Filters
         {
             get { return _filters; }
         }

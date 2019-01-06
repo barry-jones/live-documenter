@@ -38,43 +38,49 @@ namespace TheBoxSoftware.Exporter
             _ui.WriteLine(string.Empty); // always start the output with a new line clearing from the command data
 
             Parameters parameters = new Parameters();
-            parameters.Read(_arguments);
-
-            if (!parameters.HasParameters || parameters.ShowHelp)
+            try
             {
-                PrintHelp();
+                parameters.Read(_arguments);
+            }
+            catch(InvalidParameterException ex)
+            {
+                _log.Log($"An invalid value '{ex.Value}' for parameter '{ex.Parameter}' was provided. Please resolve and try again.", LogType.Error);
+                return;
+            }
+
+            string configFile = parameters.FileToExport;
+
+            if (IsHelpShown(parameters))
+                return;
+
+            if (IsFileNotProvided(configFile))
+                return;
+
+            if (IsConfigurationFile(configFile))
+            {
+                try
+                {
+                    configuration = Configuration.Deserialize(configFile);
+
+                    // if no filters are defined, default to Public/Protected
+                    if (configuration.Filters == null || configuration.Filters.Count == 0)
+                    {
+                        configuration.Filters.Add(Reflection.Visibility.Public);
+                        configuration.Filters.Add(Reflection.Visibility.Protected);
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                    _log.Log($"There was an error reading the configuration file\n  {e.Message}", LogType.Error);
+                    return; // bail we have no configuration or some of it is missing
+                }
             }
             else
             {
-                string configFile = parameters.FileToExport;
-
-                if (string.IsNullOrEmpty(configFile))
-                {
-                    _log.Log($"No file was specified to export.\n", LogType.Error);
-                }
-                else if (_filesystem.FileExists(configFile))
-                {
-                    try
-                    {
-                        configuration = Configuration.Deserialize(configFile);
-
-                        // if no filters are defined, default to Public/Protected
-                        if (configuration.Filters == null || configuration.Filters.Count == 0)
-                        {
-                            configuration.Filters.Add(Reflection.Visibility.Public);
-                            configuration.Filters.Add(Reflection.Visibility.Protected);
-                        }
-                    }
-                    catch (InvalidOperationException e)
-                    {
-                        _log.Log($"There was an error reading the configuration file\n  {e.Message}", LogType.Error);
-                        return; // bail we have no configuration or some of it is missing
-                    }
-                }
-                else
-                {
-                    _log.Log($"The config file '{configFile}' does not exist", LogType.Error);
-                }
+                configuration = new Configuration();
+                configuration.Document = configFile;
+                configuration.Filters.AddRange(parameters.Filters);
+                configuration.AddOutput(parameters.To, parameters.Format);
             }
 
             if (configuration != null)
@@ -92,44 +98,49 @@ namespace TheBoxSoftware.Exporter
             _ui.WriteLine(string.Empty);
         }
 
-        /// <summary>
-        /// Reads the arguments from the command line.
-        /// </summary>
-        /// <param name="args">The arguments provided by the user.</param>
-        /// <param name="configuration">The configuration file to be processed.</param>
-        /// <param name="verbose">Indicates if the output should be verbose or not.</param>
-        /// <remarks>
-        /// <para>The command line takes the following arguments:</para>
-        /// <list type="">
-        ///     <item>-h show help</item>
-        ///     <item>-v verbose output</item>
-        ///     <item>[file] configuration file</item>
-        /// </list>
-        /// </remarks>
-        private void ReadArguments(string[] args, out string configuration, out bool verbose, out bool showHelp)
-        {
-            Parameters parameters = new Parameters();
-            parameters.Read(args);
 
-            showHelp = parameters.ShowHelp;
-            verbose = parameters.Verbose;
-            configuration = parameters.FileToExport;
+        private static bool IsConfigurationFile(string configFile)
+        {
+            return System.IO.Path.GetExtension(configFile) == ".xml";
         }
 
-        private void PrintHelp()
+        private bool IsHelpShown(Parameters parameters)
         {
-            PrintVersionInformation();
+            bool showHelp = !parameters.HasParameters || parameters.ShowHelp;
+            if (showHelp)
+            {
+                PrintVersionInformation();
 
-            string help =
-                "\nThe exporter takes the following arguments\n" +
-                "   exporter <filename> mmodifiers\n\n" +
-                "   <filename>  The path to the configuration xml file.\n" +
-                "   modifiers:\n" +
-                "     -h        show help information\n" +
-                "     -v        show verbose export details\n\n";
-            _log.Log(help);
+                string help =
+                    "\nThe exporter takes the following arguments\n" +
+                    "   exporter <filename> mmodifiers\n\n" +
+                    "   <filename>  The path to the configuration xml file.\n" +
+                    "   modifiers:\n" +
+                    "     -h        show help information\n" +
+                    "     -v        show verbose export details\n\n";
+                _log.Log(help);
+            }
+            return showHelp;
         }
 
+        private bool IsFileNotProvided(string configFile)
+        {
+            bool isFileProvided = false;
+
+            if (string.IsNullOrEmpty(configFile))
+            {
+                _log.Log($"No file was specified to export.\n", LogType.Error);
+                isFileProvided = true;
+            }
+            else if (!_filesystem.FileExists(configFile))
+            {
+                _log.Log($"The config file '{configFile}' does not exist", LogType.Error);
+                isFileProvided = true;
+            }
+
+            return isFileProvided;
+        }
+        
         /// <summary>
         /// Prints the exporters current version and details to the console.
         /// </summary>

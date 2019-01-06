@@ -98,8 +98,9 @@ namespace TheBoxSoftware.Exporter
                 {
                     filters.Add(Enum.GetName(typeof(Visibility), current));
                 }
-                _log.Verbose(
-                    string.Format("Details:\n  Visible members: ({0})\n", string.Join("|", filters.ToArray()))
+                _log.Log(
+                    string.Format("Details:\n  Visible members: ({0})\n", string.Join("|", filters.ToArray())),
+                    LogType.Information
                     );
             }
 
@@ -161,7 +162,7 @@ namespace TheBoxSoftware.Exporter
                         }
                     }
 
-                    _log.Verbose($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
+                    _log.Log($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n", LogType.Information);
                 }
             }
         }
