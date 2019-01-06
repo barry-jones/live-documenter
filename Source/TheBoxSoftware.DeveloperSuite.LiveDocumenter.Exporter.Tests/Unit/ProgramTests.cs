@@ -8,15 +8,59 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
     [TestFixture]
     public class ProgramTests
     {
+        private Mock<IUserInterface> _ui;
+        private Mock<ILog> _log;
+        private Mock<IFileSystem> _filesystem;
+
         [Test]
         public void Program_Create()
         {
-            Mock<IUserInterface> ui = new Mock<IUserInterface>();
-            Mock<ILog> log = new Mock<ILog>();
-            Mock<IFileSystem> filesystem = new Mock<IFileSystem>();
-            string[] arguments = new string[] { };
+            Program p = CreateProgram(new string[] { });
+        }
+
+        [Test]
+        public void Program_WhenFileSpecifiedDoesntExist_ErrorIsLogged()
+        {
+            string[] arguments = new string[] { "nonexistentfile" };
+            Program p = CreateProgram(arguments);
+
+            _filesystem.Setup(m => m.FileExists(It.IsAny<string>())).Returns(false);
+
+            p.HandleExport();
+
+            _log.Verify(m => m.Log(It.IsRegex("does not exist"), LogType.Error), "Error was not logged");
+        }
+
+        [Test]
+        public void Program_WhenNoFileSpecified_ErrorIsLogged()
+        {
+            string[] arguments = new string[] { "" };
+            Program p = CreateProgram(arguments);
+
+            p.HandleExport();
+
+            _log.Verify(m => m.Log(It.IsRegex("No file was specified"), LogType.Error), "Error was not logged");
+        }
+        
+        [Test]
+        public void Program_IfHelpRequested_HelpIsShown()
+        {
+            string[] arguments = new string[] { "-h" };
+            Program p = CreateProgram(arguments);
+
+            p.HandleExport();
+
+            _log.Verify(m => m.Log(It.IsRegex("show help information")));
+        }
+
+
+        private Program CreateProgram(string[] arguments)
+        {
+            _ui = new Mock<IUserInterface>();
+            _log = new Mock<ILog>();
+            _filesystem = new Mock<IFileSystem>();
             
-            Program p = new Program(arguments, filesystem.Object, ui.Object, log.Object);
+            return new Program(arguments, _filesystem.Object, _ui.Object, _log.Object);
         }
     }
 }
