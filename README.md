@@ -3,6 +3,7 @@
 # Live Documenter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Live%20Documenter%20on%20GitHub.%20.NET%20documentation%20generator&url=https://github.com/barry-jones/live-documenter&hashtags=.net,xml_comments,documentation,generator,developers,livedocumenter)
 
 [![](https://img.shields.io/github/release/barry-jones/live-documenter.svg)](https://github.com/barry-jones/live-documenter/releases/tag/v2.0.5)
+[![Build Status](https://dev.azure.com/barryjones78/livedocumenter/_apis/build/status/barry-jones.live-documenter?branchName=master)](https://dev.azure.com/barryjones78/livedocumenter/_build/latest?definitionId=1?branchName=master)
 
 A collection of applications that enable the ridiculously fast generation of API documentation in Web, XML, HTML Help and Help Viewer from .NET libraries and XML code comments.
 
