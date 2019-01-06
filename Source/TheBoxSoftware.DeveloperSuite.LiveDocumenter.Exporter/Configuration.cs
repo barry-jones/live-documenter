@@ -34,18 +34,32 @@ namespace TheBoxSoftware.Exporter
             public string File { get; set; }
         }
 
+        public Configuration()
+        {
+            Outputs = new List<Output>();
+            Filters = new List<Reflection.Visibility>();
+        }
+
         /// <summary>
-        /// Deserializes a Configuration from the <paramref name="formFile"/>.
+        /// Deserializes a Configuration from the <paramref name="fromFile"/>.
         /// </summary>
         /// <param name="fromFile">The file to read the project from.</param>
         /// <returns>The instantiated project.</returns>
         public static Configuration Deserialize(string fromFile)
         {
-            using(FileStream fs = new FileStream(fromFile, FileMode.Open))
+            using(Stream fs = new FileStream(fromFile, FileMode.Open))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
                 return (Configuration)serializer.Deserialize(fs);
             }
+        }
+
+        internal void AddOutput(string location, string ldec)
+        {
+            Output output = new Output();
+            output.File = ldec;
+            output.Location = location;
+            Outputs.Add(output);
         }
 
         /// <summary>

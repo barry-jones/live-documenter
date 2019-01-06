@@ -1,7 +1,10 @@
 ﻿namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
 {
     using NUnit.Framework;
+    using NUnit.Framework.Constraints;
+    using System;
     using TheBoxSoftware.Exporter;
+    using TheBoxSoftware.Reflection;
 
     [TestFixture]
     public class ParametersTests
@@ -47,19 +50,7 @@
 
             Assert.AreEqual(EXPECTED, parameters.Format);
         }
-
-        [Test]
-        public void Parameters_WhenForamtProvidedWithNoValue_FormatIsEmptyString()
-        {
-            const string EXPECTED = "";
-            string[] input = new string[] { "mylib.dll", "-v", "-format", };
-
-            Parameters parameters = new Parameters();
-            parameters.Read(input);
-
-            Assert.AreEqual(EXPECTED, parameters.Format);
-        }
-
+        
         [Test]
         public void Parameters_WhenToProvided_ToIsRead()
         {
@@ -75,13 +66,14 @@
         [Test]
         public void Parameters_WhenFiltersProvided_FiltersAreRead()
         {
-            const string EXPECTED = "public";
+            const Visibility EXPECTED = Visibility.Public;
             string[] input = new string[] { "mylib.dll", "-filters", "public", "-to", "c:\\alocation", "-v" };
 
             Parameters parameters = new Parameters();
             parameters.Read(input);
 
-            Assert.AreEqual(EXPECTED, parameters.Filters);
+            Assert.AreEqual(1, parameters.Filters.Count);
+            Assert.AreEqual(EXPECTED, parameters.Filters[0]);
         }
 
         [Test]
@@ -118,6 +110,57 @@
             parameters.Read(input);
 
             Assert.AreEqual(EXPECTED, parameters.HasParameters);
+        }
+
+        [Test]
+        public void Parameters_WhenNoFormatIsProvided_DefaultIsReturned()
+        {
+            const string EXPECTED = "web-msdn.ldec";
+
+            string[] input = new string[] { "file.dll" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.Format);
+        }
+
+        [Test]
+        public void Parameters_WhenNoFiltersAreProvided_DefaultIsReturned()
+        {
+            const Visibility EXPECTED = Visibility.Public;
+
+            string[] input = new string[] { "file.dll" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(1, parameters.Filters.Count);
+            Assert.AreEqual(EXPECTED, parameters.Filters[0]);
+        }
+
+        [Test]
+        public void Parameters_WhenManyFiltersAreProvided_AllAreReturned()
+        {
+            string[] input = new string[] { "file.dll", "-filters", "public|internal" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(2, parameters.Filters.Count);
+            Assert.That(parameters.Filters, Contains.Item(Visibility.Public));
+            Assert.That(parameters.Filters, Contains.Item(Visibility.Internal));
+        }
+
+        [Test]
+        public void Parameters_WhenInvalidFiltersAreProvided_ExceptionIsThrown()
+        {
+            string[] input = new string[] { "file.dll", "-filters", "public|internals" };
+
+            Parameters parameters = new Parameters();
+            TestDelegate test = () => parameters.Read(input);
+
+            Assert.That(test, Throws.TypeOf<InvalidParameterException>());
         }
     }
 }
