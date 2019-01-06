@@ -1,11 +1,16 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'VS2017-Win2016'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
 resources:
 - repo: self
-queue:
-  name: Hosted VS2017
-  demands: 
-  - msbuild
-  - visualstudio
-  - vstest
 
 #Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
 #Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
@@ -28,9 +33,6 @@ steps:
     versionSpec: 4.4.1
 
 - task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '$(Parameters.solution)'
 
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln'
