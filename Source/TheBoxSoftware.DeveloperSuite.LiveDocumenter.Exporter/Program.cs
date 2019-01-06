@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Exporter
             _log = logger;
         }
 
-        private void HandleExport()
+        public void HandleExport()
         {
             Configuration configuration = null;
 
@@ -50,7 +50,7 @@ namespace TheBoxSoftware.Exporter
 
                 if (string.IsNullOrEmpty(configFile))
                 {
-                    _log.Log("No configuration file was provided.\n", LogType.Error);
+                    _log.Log($"No file was specified to export.\n", LogType.Error);
                 }
                 else if (_filesystem.FileExists(configFile))
                 {
