@@ -36,8 +36,9 @@ steps:
   displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)\Source\testoutput\'
   inputs:
     SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: '**\DocumentationTest.dll'
+    Contents: '**\Release**\DocumentationTest.dll'
     TargetFolder: '$(System.DefaultWorkingDirectory)\Source\testoutput\'
+    flattenFolders: true
 
 - task: VSTest@2
   displayName: 'VsTest - testAssemblies'
