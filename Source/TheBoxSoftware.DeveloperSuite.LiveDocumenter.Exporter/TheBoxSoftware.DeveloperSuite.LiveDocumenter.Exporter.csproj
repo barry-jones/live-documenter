@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.2\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.xml</DocumentationFile>
+    <DocumentationFile>D:\Development\Personal\live-documenter\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\exporter.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
