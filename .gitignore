@@ -21,7 +21,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 .vs/
-testoutput/
+testoutput/*.*
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

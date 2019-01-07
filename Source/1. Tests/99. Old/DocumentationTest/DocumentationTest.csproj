@@ -1,8 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,5 +20,9 @@
     <ProjectReference Include="..\..\..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
     <ProjectReference Include="..\..\..\TheBoxSoftware\TheBoxSoftware.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if &quot;$(ConfigurationName)&quot;==&quot;Debug&quot; (&#xD;&#xA;  copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)source\testoutput\documentationtest.dll&quot; /Y&#xD;&#xA;)&#xD;&#xA;" />
+  </Target>
 
 </Project>
