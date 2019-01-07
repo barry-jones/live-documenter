@@ -9,14 +9,6 @@
     <RootNamespace>TheBoxSoftware.Exporter</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\Development\Personal\live-documenter\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\exporter.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj.old" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj" />
     <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
