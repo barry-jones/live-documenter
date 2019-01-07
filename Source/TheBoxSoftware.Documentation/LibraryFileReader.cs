@@ -20,8 +20,6 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         /// <returns>The list of assemblies that are to be read by the application.</returns>
         public override List<DocumentedAssembly> Read()
-        {
-            return new List<DocumentedAssembly>() { new DocumentedAssembly(this.FileName) };
-        }
+            => new List<DocumentedAssembly>() { new DocumentedAssembly(FileName) };
     }
 }

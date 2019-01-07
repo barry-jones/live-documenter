@@ -12,6 +12,15 @@ namespace TheBoxSoftware.Documentation
     /// <include file='code-documentation\inputfilereader.xml' path='docs/inputfilereader/member[@name="class"]/*' />
     public class InputFileReader
     {
+        private readonly IFileSystem _filesystem;
+
+        public InputFileReader() : this(new FileSystem()) { }
+
+        public InputFileReader(IFileSystem filesystem)
+        {
+            _filesystem = filesystem;
+        }
+
         /// <summary>
         /// Reads and parses the file and returns all of the associated library
         /// references
@@ -20,9 +29,7 @@ namespace TheBoxSoftware.Documentation
         public List<DocumentedAssembly> Read(string fileName, string buildConfiguration)
         {
             if (string.IsNullOrEmpty(fileName))
-            {
                 throw new ArgumentNullException("fileName");
-            }
 
             List<DocumentedAssembly> files = null;
             FileReader reader = null;
@@ -30,13 +37,13 @@ namespace TheBoxSoftware.Documentation
             switch (Path.GetExtension(fileName).ToLower())
             {
                 case ".sln":
-                    reader = new SolutionFileReader(fileName);
+                    reader = new SolutionFileReader(fileName, _filesystem);
                     break;
 
                 case ".csproj":
                 case ".vbproj":
                 case ".vcproj":
-                    reader = ProjectFileReader.Create(fileName);
+                    reader = ProjectFileReader.Create(fileName, _filesystem);
                     break;
 
                 case ".dll":
@@ -49,6 +56,7 @@ namespace TheBoxSoftware.Documentation
 
             reader.BuildConfiguration = string.IsNullOrEmpty(buildConfiguration) ? "Debug" : buildConfiguration;
             files = reader.Read();
+
             return files;
         }
     }

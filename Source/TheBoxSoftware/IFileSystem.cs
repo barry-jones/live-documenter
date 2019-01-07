@@ -18,6 +18,8 @@ namespace TheBoxSoftware
         void DeleteFile(string filename);
 
         void SaveFile(Stream contents, string filename);
+
+        string ReadAllText(string filename);
     }
 
     public class FileSystem : IFileSystem
@@ -37,6 +39,11 @@ namespace TheBoxSoftware
         public byte[] ReadAllBytes(string filename)
         {
             return File.ReadAllBytes(filename);
+        }
+
+        public string ReadAllText(string filename)
+        {
+            return File.ReadAllText(filename);
         }
 
         public bool DirectoryExists(string directory)

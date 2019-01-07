@@ -29,4 +29,19 @@ Document doc = new Document(assemblies);
       <exception cref="ArgumentException">The filename is not an accepted extension</exception>
     </member>
   </inputfilereader>
+
+  <projectfilereader>
+    <member name="Create">
+      <param name="filename">The name of the project file to read.</param>
+      <param name="filesystem">The filesystem to use to read the file contents</param>
+      <returns>An instance of a ProjectFileReader.</returns>
+      <remarks>
+      This method automatically determines which ProjectFileReader to instantiate
+      from the file provided.
+      </remarks>
+      <exception cref="ArgumentNullException">
+      Thrown when the provided <paramref name="filename"/> is null or empty.
+      </exception>
+    </member>
+  </projectfilereader>
 </docs>

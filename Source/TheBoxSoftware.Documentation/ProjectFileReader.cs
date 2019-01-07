@@ -19,22 +19,16 @@ namespace TheBoxSoftware.Documentation
         /// <summary>
         /// Factory method for instantiating <see cref="ProjectFileReader" /> instances.
         /// </summary>
-        /// <param name="filename">The name of the project file to read.</param>
-        /// <returns>An instance of a ProjectFileReader.</returns>
-        /// <remarks>
-        /// This method automatically determines which ProjectFileReader to instantiate
-        /// from the file provided.
-        /// </remarks>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when the provided <paramref name="filename"/> is null or empty.
-        /// </exception>
-        public static ProjectFileReader Create(string filename)
+        /// <include file='code-documentation\inputfilereader.xml' path='docs/projectfilereader/member[@name="Create"]/*' />
+        public static ProjectFileReader Create(string filename, IFileSystem filesystem)
         {
             if (string.IsNullOrEmpty(filename))
                 throw new ArgumentNullException("filename");
 
+            string fileContent = filesystem.ReadAllText(filename);
+
             XmlDocument doc = new XmlDocument();
-            doc.Load(filename);
+            doc.LoadXml(fileContent);
 
             // should find a nice way of figuring out the schema version numbers and loading a reader based on that
             // but speed is of the essance! [#94]

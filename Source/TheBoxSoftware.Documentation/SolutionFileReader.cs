@@ -14,15 +14,18 @@ namespace TheBoxSoftware.Documentation
     {
         private const string VersionPattern = @"Microsoft Visual Studio Solution File, Format Version ([\d\.]*)";
         private const string V10ProjectPattern = "Project.*\\\".*\\\".*\\\".*\\\".*\\\"(.*)\\\".*\\\".*\\\"";
+        private readonly IFileSystem _filesystem;
         private string[] ValidExtensions = new string[] { ".csproj", ".vbproj", ".vcproj" };
 
         /// <summary>
         /// Initialises a new instance of the SolutionFileReader class.
         /// </summary>
         /// <param name="fileName">The filenname and path for the solution</param>
-        public SolutionFileReader(string fileName)
+        /// <param name="filesystem">The filesystem to use to get the file contents</param>
+        public SolutionFileReader(string fileName, IFileSystem filesystem)
             : base(fileName)
         {
+            _filesystem = filesystem;
         }
 
         /// <summary>
@@ -32,7 +35,7 @@ namespace TheBoxSoftware.Documentation
         /// <returns>An array of assemblies output by the solution and its projects.</returns>
         public override List<DocumentedAssembly> Read()
         {
-            string solutionFile = File.ReadAllText(FileName);
+            string solutionFile = _filesystem.ReadAllText(FileName);
             List<string> projectFiles = new List<string>();
             List<DocumentedAssembly> references = new List<DocumentedAssembly>();
 
@@ -68,7 +71,7 @@ namespace TheBoxSoftware.Documentation
                 string fullProjectPath = Path.GetDirectoryName(FileName) + "\\" + project;
                 if (File.Exists(fullProjectPath))
                 {
-                    ProjectFileReader reader = ProjectFileReader.Create(fullProjectPath);
+                    ProjectFileReader reader = ProjectFileReader.Create(fullProjectPath, _filesystem);
                     reader.BuildConfiguration = BuildConfiguration;
                     references.AddRange(reader.Read());
                 }
