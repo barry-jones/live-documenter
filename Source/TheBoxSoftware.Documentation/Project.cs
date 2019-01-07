@@ -48,7 +48,7 @@ namespace TheBoxSoftware.Documentation
 
             foreach (string file in Files)
             {
-                List<DocumentedAssembly> readFiles = InputFileReader.Read(file, Configuration);
+                List<DocumentedAssembly> readFiles = new InputFileReader().Read(file, Configuration);
                 for (int i = 0; i < readFiles.Count; i++)
                 {
                     if (!RemovedAssemblies.Any(current => current == string.Format("{0}\\{1}", System.IO.Path.GetFileName(file), readFiles[i].Name)))

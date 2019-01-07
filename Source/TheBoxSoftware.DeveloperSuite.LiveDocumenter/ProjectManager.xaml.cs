@@ -64,7 +64,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 				}
 
 				if (parent.Children != null) {
-					List<DocumentedAssembly> libraries = InputFileReader.Read(file, project.Configuration);
+					List<DocumentedAssembly> libraries = new InputFileReader().Read(file, project.Configuration);
 					foreach (DocumentedAssembly assembly in libraries) {
 						ProjectEntry child = new ProjectEntry();
 						child.Name = assembly.Name;

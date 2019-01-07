@@ -95,7 +95,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
                 try
                 {
                     files.AddRange(
-                        InputFileReader.Read(
+                        new InputFileReader().Read(
                         _forDocument,
                         "Release"
                         ));

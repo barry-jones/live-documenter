@@ -1,0 +1,32 @@
+﻿<docs>
+
+  <inputfilereader>
+    <member name="class">
+      <remarks>
+        <see cref="Document"/>s are collections of DocumentedAssembly files, this class
+        parses input files and returns the correctly instantiated DocumentAssembly instances.
+      </remarks>
+      <example>
+        The filename and build configuration are required.
+        <code>
+List&lt;DocumentedAssembly&gt; assemblies = InputFileReader.Read(
+  "c:\projects\mysolution.sln", "Debug"
+  );
+Document doc = new Document(assemblies);
+        </code>
+      </example>
+      <seealso cref="Document"/>
+      <seealso cref="DocumentedAssembly"/>
+    </member>
+
+    <member name="ctor1">
+      <param name="fileName">The filename to read</param>
+      <returns>An array of <see cref="DocumentedAssembly"/> instances that represent the assemblies to be documented by the application.</returns>
+      <exception cref="ArgumentNullException">
+      Thrown when the <paramref name="fileName"/> provided is null or an
+      empty string.
+      </exception>
+      <exception cref="ArgumentException">The filename is not an accepted extension</exception>
+    </member>
+  </inputfilereader>
+</docs>

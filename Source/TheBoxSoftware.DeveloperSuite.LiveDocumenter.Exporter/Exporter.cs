@@ -79,7 +79,7 @@ namespace TheBoxSoftware.Exporter
             else
             {
                 files.AddRange(
-                    InputFileReader.Read(
+                    new InputFileReader().Read(
                     _configuration.Document,
                     "Release"
                     ));
