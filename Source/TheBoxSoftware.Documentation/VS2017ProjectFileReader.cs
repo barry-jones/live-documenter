@@ -19,24 +19,37 @@ namespace TheBoxSoftware.Documentation
         {
             ProjectFileProperties properties = new ProjectFileProperties();
             properties.DocumentationFile = readDocumentationFile();
-            properties.OutputPath = readOutputPath();
             properties.LibraryName = readLibraryName();
             properties.OutputType = readOutputType();
+
+            properties.OutputPath = readOutputPath();
+
             return properties;
         }
 
         private string readOutputPath()
         {
-            string outputPath = readNodeValue(@"/Project/OutputPath");
-            string basePath = readNodeValue(@"/Project/BaseOutputPath");
+            string outputPath = readNodeValue(@"/Project/PropertyGroup/OutputPath");
+            string basePath = readNodeValue(@"/Project/PropertyGroup/BaseOutputPath");
             string targetFramework = readNodeValue(@"/Project/PropertyGroup/TargetFramework");
+            string startOfPath = string.Empty;
 
-            if(string.IsNullOrEmpty(outputPath))
+            if(!string.IsNullOrEmpty(outputPath))
             {
-                outputPath = @"bin\Debug\";
+                // base path is ignored, as is the current build configuration
+                startOfPath = outputPath;
+            }
+            else if(!string.IsNullOrEmpty(basePath))
+            {
+                // base path and build configuration is used
+                startOfPath = Path.Combine(basePath, BuildConfiguration);
+            }
+            else
+            {
+                startOfPath = Path.Combine("bin", BuildConfiguration);
             }
 
-            return Path.Combine(basePath, outputPath, targetFramework);
+            return $"{Path.Combine(startOfPath, targetFramework)}\\";
         }
 
         private string readOutputType()
@@ -59,9 +72,9 @@ namespace TheBoxSoftware.Documentation
         {
             XmlNode node = _document.SelectSingleNode(xpath);
             string value = string.Empty;
-            if (null != node && !string.IsNullOrEmpty(node.Value))
+            if (null != node && !string.IsNullOrEmpty(node.InnerText))
             {
-                value = node.Value;
+                value = node.InnerText;
             }
             return value;
         }

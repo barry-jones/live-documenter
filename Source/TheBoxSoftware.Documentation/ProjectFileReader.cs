@@ -32,7 +32,7 @@ namespace TheBoxSoftware.Documentation
 
             // should find a nice way of figuring out the schema version numbers and loading a reader based on that
             // but speed is of the essance! [#94]
-            if (doc.FirstChild.Name == "Project" && doc.Attributes["Sdk"] != null)
+            if (doc.FirstChild.Name == "Project" && doc.FirstChild.Attributes["Sdk"] != null)
             {
                 return new VS2017ProjectFileReader(doc, filename);
             }
@@ -132,7 +132,7 @@ namespace TheBoxSoftware.Documentation
             public string GetOutputExtension()
             {
                 string extension = string.Empty;
-                switch (this.OutputType.ToLower())
+                switch (OutputType.ToLower())
                 {
                     case "library":
                         extension = "dll";
@@ -142,6 +142,7 @@ namespace TheBoxSoftware.Documentation
                         extension = "exe";
                         break;
                     default:
+                        extension = "dll";
                         break;
                 }
                 return extension;

@@ -12,25 +12,48 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
         [Test]
         public void VS2017Project_Create()
         {
-            create();
+            create(@"test-files\vs2017_test1.csproj");
         }
 
         [Test]
-        public void VS2017Project_Test1_DefaultOuputPath()
+        public void VS2017Project_Test1_DefaultOuputPath_IsCorrect()
         {
-            const string ExpectedOutput = @"bin\Debug\netstandard2.0\vs2017_test1.dll";
-            VS2017ProjectFileReader reader = create();
+            const string ExpectedOutput = @"bin\Debug\netstandard2.0\";
+            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test1.csproj");
             ProjectFileReader.ProjectFileProperties props = reader.ParseProject();
 
             Assert.That(props.OutputPath, Is.EqualTo(ExpectedOutput));
         }
 
-        private VS2017ProjectFileReader create()
+        [Test]
+        public void VS2017Project_Test2_OuputPathWhenBasePathSupplied_IsCorrect()
+        {
+            const string ExpectedOutput = @"basepath\Debug\netcoreapp2.2\";
+            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test2.csproj");
+            ProjectFileReader.ProjectFileProperties props = reader.ParseProject();
+
+            Assert.That(props.OutputPath, Is.EqualTo(ExpectedOutput));
+        }
+
+        [Test]
+        public void VS2017Project_Test3_WhenOutputPathSupplied_IsCorrect()
+        {
+            const string ExpectedOutput = @"outputpath\netcoreapp2.2\";
+            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test3.csproj");
+            ProjectFileReader.ProjectFileProperties props = reader.ParseProject();
+
+            Assert.That(props.OutputPath, Is.EqualTo(ExpectedOutput));
+        }
+
+        private VS2017ProjectFileReader create(string testfile)
         {
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml(File.ReadAllText(@"test-files\vs2017_test1.csproj"));
+            doc.LoadXml(File.ReadAllText(testfile));
 
-            return new VS2017ProjectFileReader(doc, "afilename.csproj");
+            VS2017ProjectFileReader reader = new VS2017ProjectFileReader(doc, "afilename.csproj");
+            reader.BuildConfiguration = "Debug";
+
+            return reader;
         }
     }
 }
