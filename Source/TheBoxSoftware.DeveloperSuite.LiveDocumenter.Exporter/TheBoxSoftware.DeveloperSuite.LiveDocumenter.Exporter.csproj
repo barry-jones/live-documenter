@@ -7,6 +7,7 @@
     <StartupObject>TheBoxSoftware.Exporter.Program</StartupObject>
     <AssemblyName>exporter</AssemblyName>
     <RootNamespace>TheBoxSoftware.Exporter</RootNamespace>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
