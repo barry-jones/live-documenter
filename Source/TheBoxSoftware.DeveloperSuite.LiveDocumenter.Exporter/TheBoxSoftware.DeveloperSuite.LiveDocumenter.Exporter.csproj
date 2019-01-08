@@ -10,6 +10,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ApplicationData\web-msdn.ldec" />
+    <None Remove="ApplicationData\xml.ldec" />
+    <None Remove="example-configuration.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ApplicationData\web-msdn.ldec">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ApplicationData\xml.ldec">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="example-configuration.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj" />
     <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
   </ItemGroup>
