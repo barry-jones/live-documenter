@@ -34,7 +34,7 @@ steps:
 
 - script: |
     echo Making published director
-    mkdir 'published\exporter'
+    mkdir published\exporter
     dir
 
     echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
@@ -43,7 +43,7 @@ steps:
     cd '$(System.DefaultWorkingDirectory)'
 
     echo Copy Desktop Applications
-    mkdir 'published\desktop'
+    mkdir published\desktop
     cd '$(System.DefaultWorkingDirectory)'
 
     echo Release API
