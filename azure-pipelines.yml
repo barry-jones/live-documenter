@@ -33,26 +33,31 @@ steps:
     configuration: '$(BuildConfiguration)'
 
 - script: |
-    echo Making published director
+    echo Making published directories
+    mkdir published\desktop
     mkdir published\exporter
+    mkdir published\api
     dir
 
     echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
-    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\'
+    cd 'Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\'
     dir
     dotnet publish TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
     cd '$(System.DefaultWorkingDirectory)'
 
-    echo Copy Desktop Applications
-    mkdir published\desktop
-    cd '$(System.DefaultWorkingDirectory)'
-
     echo Release API
-    mkdir published\api
-    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.API.LiveDocumenter\'
+    cd 'Source\TheBoxSoftware.API.LiveDocumenter\'
     dotnet build TheBoxSoftware.API.LiveDocumenter.csproj -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\api'
     cd '$(System.DefaultWorkingDirectory)'
   displayName: 'Publish .NET Core Applications'
+
+- task: CopyFiles@2
+  displayName: 'Copy files from desktop application release to published\desktop'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: '**\TheBoxSoftware.DeveloperSuite.LiveDocumenter\**\$(BuildConfiguration)\**'
+    TargetFolder: '$(System.DefaultWorkingDirectory)\published\desktop'
+    flattenFolders: true
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)\Source\testoutput\'
