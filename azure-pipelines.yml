@@ -44,7 +44,7 @@ steps:
     cd "$(System.DefaultWorkingDirectory)"
 
     echo Copying desktop application to release directory
-    xcopy /s "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\$(BuildConfiguration)" ""$(System.DefaultWorkingDirectory)\published\desktop"
+    xcopy /s "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\$(BuildConfiguration)" "$(System.DefaultWorkingDirectory)\published\desktop"
 
     echo Release API
     cd "Source\TheBoxSoftware.API.LiveDocumenter\"
