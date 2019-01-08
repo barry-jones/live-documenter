@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="test-files\vs2005_test1.example" />
+    <None Remove="test-files\vs2017_test1.example" />
+    <None Remove="test-files\vs2017_test2.example" />
+    <None Remove="test-files\vs2017_test3.example" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.3.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
@@ -22,19 +29,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="test-files\vs2017_test3.csproj">
+    <Content Include="test-files\vs2017_test3.example">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="test-files\vs2017_test2.csproj">
+    <Content Include="test-files\vs2017_test2.example">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="test-files\vs2017_test1.csproj">
+    <Content Include="test-files\vs2017_test1.example">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="test-files\vs2005_test1.csproj">
+    <Content Include="test-files\vs2005_test1.example">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

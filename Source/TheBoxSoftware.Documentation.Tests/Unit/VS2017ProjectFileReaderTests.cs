@@ -12,14 +12,14 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
         [Test]
         public void VS2017Project_Create()
         {
-            create(@"test-files\vs2017_test1.csproj");
+            create(@"test-files\vs2017_test1.example");
         }
 
         [Test]
         public void VS2017Project_Test1_DefaultOuputPath_IsCorrect()
         {
             const string ExpectedOutput = @"bin\Debug\netstandard2.0\";
-            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test1.csproj");
+            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test1.example");
             ProjectFileReader.ProjectFileProperties props = reader.ParseProject();
 
             Assert.That(props.OutputPath, Is.EqualTo(ExpectedOutput));
@@ -29,7 +29,7 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
         public void VS2017Project_Test2_OuputPathWhenBasePathSupplied_IsCorrect()
         {
             const string ExpectedOutput = @"basepath\Debug\netcoreapp2.2\";
-            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test2.csproj");
+            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test2.example");
             ProjectFileReader.ProjectFileProperties props = reader.ParseProject();
 
             Assert.That(props.OutputPath, Is.EqualTo(ExpectedOutput));
@@ -39,7 +39,7 @@ namespace TheBoxSoftware.Documentation.Tests.Unit
         public void VS2017Project_Test3_WhenOutputPathSupplied_IsCorrect()
         {
             const string ExpectedOutput = @"outputpath\netcoreapp2.2\";
-            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test3.csproj");
+            VS2017ProjectFileReader reader = create(@"test-files\vs2017_test3.example");
             ProjectFileReader.ProjectFileProperties props = reader.ParseProject();
 
             Assert.That(props.OutputPath, Is.EqualTo(ExpectedOutput));
