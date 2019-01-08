@@ -38,9 +38,9 @@ steps:
     dir
 
     echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
-    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
+    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\'
     dir
-    dotnet publish -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
+    dotnet publish TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
     cd '$(System.DefaultWorkingDirectory)'
 
     echo Copy Desktop Applications
@@ -49,8 +49,8 @@ steps:
 
     echo Release API
     mkdir published\api
-    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumenter.csproj'
-    dotnet build -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\api'
+    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.API.LiveDocumenter\'
+    dotnet build TheBoxSoftware.API.LiveDocumenter.csproj -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\api'
     cd '$(System.DefaultWorkingDirectory)'
   displayName: 'Publish .NET Core Applications'
 
@@ -79,10 +79,17 @@ steps:
   continueOnError: true
 
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  displayName: 'Copy build files to: $(build.artifactstagingdirectory)'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: '**\bin\$(BuildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: CopyFiles@2
+  displayName: 'Copy published files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: 'published\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
