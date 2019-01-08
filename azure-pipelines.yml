@@ -34,10 +34,23 @@ steps:
 
 - script: |
     echo Making published director
-    mkdir published\exporter
+    mkdir 'published\exporter'
+    dir
+
     echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
     cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
     dotnet publish -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
+    cd '$(System.DefaultWorkingDirectory)'
+
+    echo Copy Desktop Applications
+    mkdir 'published\desktop'
+    cd '$(System.DefaultWorkingDirectory)'
+
+    echo Release API
+    mkdir published\api
+    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.API.LiveDocumenter\TheBoxSoftware.API.LiveDocumenter.csproj'
+    dotnet build -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\api'
+    cd '$(System.DefaultWorkingDirectory)'
   displayName: 'Publish .NET Core Applications'
 
 - task: CopyFiles@2
