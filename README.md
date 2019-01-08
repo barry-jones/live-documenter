@@ -34,8 +34,11 @@ This will only work on Windows at the moment, work is ongoing to transfer to net
 The installers are provided in the release pages for the [latest version](https://github.com/barry-jones/live-documenter/releases) MSI files are provided seperately. To install download required MSI files from the release page and run the installer.
 
 ## Build Latest
-The latest code has been worked on in Visual Studio 2017 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
 
-The only dependancies are Visual Studio and .NET Core 2.1 which should all be installed if your copy of Visual Studio is up to date.
+Requirements
+-  .NET Core SDK 2.2
+-  .NET Framework 4.6.1
+
+The latest code has been worked on in Visual Studio 2017 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
 
 __Please let me know if there are any issues building from source so I can resolve them.__
