@@ -32,6 +32,12 @@ steps:
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
 
+- script: |
+    mkdir published\exporter
+    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\'
+    dotnet publish -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
+  displayName: 'Publish .NET Core Applications'
+
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)\Source\testoutput\'
   inputs:
