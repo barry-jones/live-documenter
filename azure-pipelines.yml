@@ -35,8 +35,8 @@ steps:
 - script: |
     echo Making published director
     mkdir published\exporter
-    echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\'
-    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\'
+    echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
+    cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
     dotnet publish -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
   displayName: 'Publish .NET Core Applications'
 
