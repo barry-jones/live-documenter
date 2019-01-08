@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Documentation
         {
         }
 
-        protected override ProjectFileReader.ProjectFileProperties ParseProject()
+        internal override ProjectFileReader.ProjectFileProperties ParseProject()
         {
             XmlDocument projectFile = new XmlDocument();
             projectFile.Load(this.FileName);

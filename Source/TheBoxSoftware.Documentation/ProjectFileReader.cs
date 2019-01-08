@@ -32,7 +32,11 @@ namespace TheBoxSoftware.Documentation
 
             // should find a nice way of figuring out the schema version numbers and loading a reader based on that
             // but speed is of the essance! [#94]
-            if (doc.FirstChild.Name == "Project" || (doc.FirstChild.Name == "xml" && doc.FirstChild.NextSibling.Name == "Project"))
+            if (doc.FirstChild.Name == "Project" && doc.Attributes["Sdk"] != null)
+            {
+                return new VS2017ProjectFileReader(doc, filename);
+            }
+            else if(doc.FirstChild.Name == "Project" || (doc.FirstChild.Name == "xml" && doc.FirstChild.NextSibling.Name == "Project"))
             {
                 return new VS2005ProjectFileReader(filename);
             }
@@ -93,13 +97,13 @@ namespace TheBoxSoftware.Documentation
         /// details to the caller.
         /// </summary>
         /// <returns>The relevant properties from the project files.</returns>
-        protected abstract ProjectFileProperties ParseProject();
+        internal abstract ProjectFileProperties ParseProject();
 
         /// <summary>
         /// A data class that contains all the required information from the project
         /// files.
         /// </summary>
-        protected struct ProjectFileProperties
+        internal struct ProjectFileProperties
         {
             /// <summary>
             /// The type of output Library, etc.

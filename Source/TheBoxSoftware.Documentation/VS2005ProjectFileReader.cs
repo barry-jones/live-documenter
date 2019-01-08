@@ -25,7 +25,7 @@ namespace TheBoxSoftware.Documentation
         /// details to the caller.
         /// </summary>
         /// <returns>The relevant properties from the project files.</returns>
-        protected override ProjectFileProperties ParseProject()
+        internal override ProjectFileProperties ParseProject()
         {
             XmlDocument projectFile = new XmlDocument();
             projectFile.Load(this.FileName);

@@ -21,4 +21,10 @@
     <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="test-files\vs2017_test1.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
