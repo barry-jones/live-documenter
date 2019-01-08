@@ -39,6 +39,7 @@ steps:
 
     echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
     cd '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
+    dir
     dotnet publish -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
     cd '$(System.DefaultWorkingDirectory)'
 
