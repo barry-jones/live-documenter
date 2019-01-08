@@ -39,16 +39,19 @@ steps:
     mkdir published\api
     dir
 
-    echo Publishing '$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj'
+    echo Publishing "$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj""
     cd "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter"
     dir
-    dotnet publish TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\exporter'
+    dotnet publish -c $(BuildConfiguration) -o "$(System.DefaultWorkingDirectory)\published\exporter"
     cd '$(System.DefaultWorkingDirectory)'
 
+    echo Copying desktop application to release directory
+    xcopy /s "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\$(BuildConfiguration)" ""$(System.DefaultWorkingDirectory)\published\desktop"
+
     echo Release API
-    cd 'Source\TheBoxSoftware.API.LiveDocumenter\'
-    dotnet build TheBoxSoftware.API.LiveDocumenter.csproj -c $(BuildConfiguration) -o '$(System.DefaultWorkingDirectory)\published\api'
-    cd '$(System.DefaultWorkingDirectory)'
+    cd "Source\TheBoxSoftware.API.LiveDocumenter\"
+    dotnet build -c $(BuildConfiguration) -o "$(System.DefaultWorkingDirectory)\published\api"
+    cd "$(System.DefaultWorkingDirectory)"
   displayName: 'Publish .NET Core Applications'
 
 - task: CopyFiles@2
