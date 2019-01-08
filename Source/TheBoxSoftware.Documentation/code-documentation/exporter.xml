@@ -1,0 +1,35 @@
+﻿<docs>
+  <exporter>
+    <member name="class">
+      <remarks>
+      <para>
+      This class will not throw exceptions in the Export method. All exceptions will be driven
+      through the <see cref="ExportException"/> event.
+      </para>
+      <para>
+      Implementers of derived classes should make sure that this export exception mechanism
+      is continued. As this method is likely to be called on seperate threads.
+      </para>
+      </remarks>
+    </member>
+    
+    <member name="Create">
+      <param name="document">The document to export.</param>
+      <param name="config">The export configuration.</param>
+      <returns>A valid instance of an Exporter.</returns>
+      <exception cref="ArgumentNullException">
+      All of the parameters are required so provided a null reference will cause this exception
+      please see the parameter name in the exception for more information.
+      </exception>
+    </member>
+
+    <member name="Export">
+      <param name="current">The current entry to export.</param>
+      <returns>The name of the rendered XML file</returns>
+      <remarks>
+      This method captures exceptions during imort of single items and records the details
+      in the <see cref="ExportExceptions"/> property. Errors here will not halt an export.
+      </remarks>
+    </member>
+  </exporter>
+</docs>
