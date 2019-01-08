@@ -41,42 +41,42 @@ namespace TheBoxSoftware.API.LiveDocumenter
 		/// </summary>
 		private void Parse() 
         {
-			this.ParseType();
+			ParseType();
 
-			if (this.PathType != CRefTypes.Error)
+			if (PathType != CRefTypes.Error)
             {
 				string[] items;
-				int startParams = this._crefPath.IndexOf('(');
+				int startParams = _crefPath.IndexOf('(');
 				if (startParams == -1) 
                 {
-					items = this._crefPath.Substring(this._crefPath.IndexOf(':') + 1).Split('.');
+					items = _crefPath.Substring(_crefPath.IndexOf(':') + 1).Split('.');
 				}
 				else 
                 {
-					items = this._crefPath.Substring(this._crefPath.IndexOf(':') + 1, this._crefPath.IndexOf('(') - 2).Split('.');
-					this.Parameters = this._crefPath.Substring(this._crefPath.IndexOf('('));
+					items = _crefPath.Substring(_crefPath.IndexOf(':') + 1, _crefPath.IndexOf('(') - 2).Split('.');
+					Parameters = _crefPath.Substring(_crefPath.IndexOf('('));
 				}
 
-				switch (this.PathType)
+				switch (PathType)
                 {
 					case CRefTypes.Namespace:
-						this.Namespace = string.Join(".", items);
+						Namespace = string.Join(".", items);
 						break;
 					case CRefTypes.Type:
-						this.TypeName = items[items.Length - 1];
-						this.Namespace = string.Join(".", items, 0, items.Length - 1);
+						TypeName = items[items.Length - 1];
+						Namespace = string.Join(".", items, 0, items.Length - 1);
 						break;
 					default:
 						if (items.Length - 2 <= 0)
                         {
-							this.PathType = CRefTypes.Error;
+							PathType = CRefTypes.Error;
 						}
 						else
                         {
 							// -2 because the last element is the element name
-							this.TypeName = items[items.Length - 2];
-							this.ElementName = items[items.Length - 1];
-							this.Namespace = string.Join(".", items, 0, items.Length - 2);
+							TypeName = items[items.Length - 2];
+							ElementName = items[items.Length - 1];
+							Namespace = string.Join(".", items, 0, items.Length - 2);
 						}
 						break;
 				}
@@ -91,22 +91,22 @@ namespace TheBoxSoftware.API.LiveDocumenter
 		/// </exception>
 		private void ParseType() 
         {
-			if (this._crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(this._crefPath.Substring(0, this._crefPath.IndexOf(':'))))
+			if (_crefPath.IndexOf(':') < 0 || string.IsNullOrEmpty(_crefPath.Substring(0, _crefPath.IndexOf(':'))))
             {
-				this.PathType = CRefTypes.Error;
+				PathType = CRefTypes.Error;
 				return;
 			}
 
-			string typePortion = this._crefPath.Substring(0, this._crefPath.IndexOf(':'));
+			string typePortion = _crefPath.Substring(0, _crefPath.IndexOf(':'));
 			switch (typePortion) 
             {
-				case CRefConstants.TypeIndicator: this.PathType = CRefTypes.Type; break;
-				case CRefConstants.PropertyTypeIndicator: this.PathType = CRefTypes.Property; break;
-				case CRefConstants.MethodTypeIndicator: this.PathType = CRefTypes.Method; break;
-				case CRefConstants.FieldTypeIndicator: this.PathType = CRefTypes.Field; break;
-				case CRefConstants.ErrorTypeIndicator: this.PathType = CRefTypes.Error; break;
-				case CRefConstants.NamespaceTypeIndicator: this.PathType = CRefTypes.Namespace; break;
-				case CRefConstants.EventTypeIndicator: this.PathType = CRefTypes.Event; break;
+				case CRefConstants.TypeIndicator: PathType = CRefTypes.Type; break;
+				case CRefConstants.PropertyTypeIndicator: PathType = CRefTypes.Property; break;
+				case CRefConstants.MethodTypeIndicator: PathType = CRefTypes.Method; break;
+				case CRefConstants.FieldTypeIndicator: PathType = CRefTypes.Field; break;
+				case CRefConstants.ErrorTypeIndicator: PathType = CRefTypes.Error; break;
+				case CRefConstants.NamespaceTypeIndicator: PathType = CRefTypes.Namespace; break;
+				case CRefConstants.EventTypeIndicator: PathType = CRefTypes.Event; break;
 				default:
 					break;
 			}
@@ -119,36 +119,36 @@ namespace TheBoxSoftware.API.LiveDocumenter
 		public override string ToString() 
         {
 			string toString = string.Empty;
-			switch (this.PathType) 
+			switch (PathType) 
             {
 				case CRefTypes.Namespace:
 					toString = string.Format("{0}:{1}",
-						CRefConstants.GetIndicatorFor(this.PathType),
-						this.Namespace);
+						CRefConstants.GetIndicatorFor(PathType),
+						Namespace);
 					break;
 				case CRefTypes.Error: break;
 				default:
 					string typePortion = string.Format("{0}:{1}.{2}",
-						CRefConstants.GetIndicatorFor(this.PathType),
-						this.Namespace,
-						this.TypeName);
-					if (this.PathType != CRefTypes.Type)
+						CRefConstants.GetIndicatorFor(PathType),
+						Namespace,
+						TypeName);
+					if (PathType != CRefTypes.Type)
                     {
-						typePortion += "." + this.ElementName;
+						typePortion += "." + ElementName;
 					}
 					// [#32] - Added code to make cref paths add parameters for
 					//	parameterised properties.
-					if (this.PathType == CRefTypes.Method  || (this.PathType == CRefTypes.Property && this.Parameters != null)) 
+					if (PathType == CRefTypes.Method  || (PathType == CRefTypes.Property && Parameters != null)) 
                     {
-						typePortion += this.Parameters;
+						typePortion += Parameters;
 					}
 
 					// Operators provide the return types after a "~" character as specified in:
 					//	http://msdn.microsoft.com/en-us/library/fsbx0t7x(VS.71).aspx
-					if (this._isOperator && !string.IsNullOrEmpty(this._returnType)) 
+					if (_isOperator && !string.IsNullOrEmpty(_returnType)) 
                     {
 						typePortion += "~";
-						typePortion += this._returnType;
+						typePortion += _returnType;
 					}
 
 					toString = typePortion;

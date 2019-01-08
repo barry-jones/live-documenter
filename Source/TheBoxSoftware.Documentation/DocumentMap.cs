@@ -11,7 +11,7 @@ namespace TheBoxSoftware.Documentation
     /// </summary>
     public class DocumentMap : IList<Entry>
     {
-        private IList<Entry> _baseCollection;
+        private readonly IList<Entry> _baseCollection;
 
         /// <summary>
         /// Initialises a new instance of the DocumentMap
