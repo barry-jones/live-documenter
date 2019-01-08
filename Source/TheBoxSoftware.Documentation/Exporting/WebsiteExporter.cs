@@ -126,9 +126,6 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// running.
         /// </summary>
         /// <returns>The issues.</returns>
-        public override List<Issue> GetIssues()
-        {
-            return new List<Issue>();
-        }
+        public override List<Issue> GetIssues() => new List<Issue>();
     }
 }

@@ -9,16 +9,7 @@ namespace TheBoxSoftware.Documentation.Exporting
     /// <summary>
     /// Exports a Document using ExportSettings and an ExportConfigFile.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    /// This class will not throw exceptions in the Export method. All exceptions will be driven
-    /// through the <see cref="ExportException"/> event.
-    /// </para>
-    /// <para>
-    /// Implementers of derived classes should make sure that this export exception mechanism
-    /// is continued. As this method is likely to be called on seperate threads.
-    /// </para>
-    /// </remarks>
+    /// <include file='../code-documentation/exporter.xml' path='docs/exporter[@name="class"]'/>
     public abstract class Exporter
     {
         private readonly IFileSystem _fileSystem;
@@ -64,13 +55,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <summary>
         /// Factory method for creating new Exporter instances.
         /// </summary>
-        /// <param name="document">The document to export.</param>
-        /// <param name="config">The export configuration.</param>
-        /// <returns>A valid instance of an Exporter.</returns>
-        /// <exception cref="ArgumentNullException">
-        /// All of the parameters are required so provided a null reference will cause this exception
-        /// please see the parameter name in the exception for more information.
-        /// </exception>
+        /// <include file='../code-documentation/exporter.xml' path='docs/exporter[@name="Create"]'/>
         public static Exporter Create(Document document, ExportSettings settings, ExportConfigFile config)
         {
             if (document == null) throw new ArgumentNullException("document");
@@ -144,12 +129,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// <summary>
         /// Exports the <paramref name="current"/> entry to intermediate XML format.
         /// </summary>
-        /// <param name="current">The current entry to export.</param>
-        /// <returns>The name of the rendered XML file</returns>
-        /// <remarks>
-        /// This method captures exceptions during imort of single items and records the details
-        /// in the <see cref="ExportExceptions"/> property. Errors here will not halt an export.
-        /// </remarks>
+        /// <include file='../code-documentation/exporter.xml' path='docs/exporter[@name="export"]'/>
         protected virtual string Export(Entry current)
         {
             string filename = string.Format("{0}{1}{2}.xml",
@@ -160,10 +140,10 @@ namespace TheBoxSoftware.Documentation.Exporting
 
             try
             {
-                Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, this.Document);
+                Rendering.XmlRenderer r = Rendering.XmlRenderer.Create(current, Document);
 
                 if (null == r)
-                    this.ExportExceptions.Add(new Exception(string.Format("No XML renderer for the Entry {0}", current.Name)));
+                    ExportExceptions.Add(new Exception($"No XML renderer for the Entry {current.Name}"));
 
                 using (System.Xml.XmlWriter writer = XmlWriter.Create(filename))
                 {
@@ -172,16 +152,16 @@ namespace TheBoxSoftware.Documentation.Exporting
             }
             catch (Exception ex)
             {
-                if (System.IO.File.Exists(filename))
+                if(_fileSystem.FileExists(filename))
                 {
-                    System.IO.File.Delete(filename);
+                    _fileSystem.DeleteFile(filename);
                 }
 
                 // ignore it and add it to the list of exceptions, try and add more details
                 if (current != null)
                 {
                     ExportException issue = new ExportException(
-                        string.Format("Failed to export member '{0}'.", current.Name),
+                        $"Failed to export member '{current.Name}'.",
                         ex);
                     ex = issue;
                 }
@@ -525,11 +505,6 @@ namespace TheBoxSoftware.Documentation.Exporting
             {
                 _exportExceptions = value;
             }
-        }
-
-        protected IFileSystem FileSystem
-        {
-            get { return _fileSystem; }
         }
     }
 }

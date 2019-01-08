@@ -6,17 +6,11 @@ namespace TheBoxSoftware.Documentation.Exporting
     using System.Xml.Xsl;
 
     /// <summary>
-    /// Implementation of the IXsltProcesser used by the export routines which uses an underlying
-    /// System.Xml.XslCompiledTransform. 
+    /// MS .NET Core XSLT Processor which support version 1.0 of the XSLT spec.
     /// </summary>
-    /// <remarks>
-    /// This does not currently work as it uses XSLT 1.0 which does not support some of the functionality
-    /// that is being used in the XSLT in the exporters. But if used would allow us to move to .NET standard
-    /// for this and other libraries.
-    /// </remarks>
     public class MsXsltProcessor : IXsltProcessor
     {
-        private bool _disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false;
         private XslCompiledTransform _transform;
         private readonly string _xmlDirectory;
 
@@ -48,25 +42,19 @@ namespace TheBoxSoftware.Documentation.Exporting
             }
         }
 
-
         protected virtual void Dispose(bool disposing)
         {
             if(!_disposedValue)
             {
                 if(disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
                     _transform = null;
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
 
                 _disposedValue = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             Dispose(true);

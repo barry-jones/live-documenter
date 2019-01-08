@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
     /// <summary>
@@ -17,14 +13,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public string Description
         {
-            get
-            {
-                return _description;
-            }
-            set
-            {
-                _description = value;
-            }
+            get => _description;
+            set => _description = value;
         }
     }
 }
