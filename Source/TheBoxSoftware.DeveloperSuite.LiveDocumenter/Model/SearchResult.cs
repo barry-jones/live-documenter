@@ -9,7 +9,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Model
     using Reflection.Signatures;
 
     /// <summary>
-    /// Represents an individual result from a search across the <see cref="LiveDocument.Map" />.
+    /// Represents an individual result from a search across the <see cref="DocumentedAssembly" />.
     /// </summary>
     internal sealed class SearchResult : IComparable<SearchResult>
     {

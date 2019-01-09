@@ -234,7 +234,6 @@
       <DependentUpon>Export.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\TreeViewItemBehaviour.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="LiveDocument.cs" />
     <Compile Include="LiveDocumenterEntry.cs" />
     <Compile Include="LiveDocumentorFile.cs" />
