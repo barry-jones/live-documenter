@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ApplicationData\documentation.msha" />
+    <Content Include="ApplicationData\documentation.msha">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ApplicationData\helpviewer1-msdn.ldec">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
