@@ -117,9 +117,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\Solution Items\PEViewerVersionInfo.cs">
-      <Link>PEViewerVersionInfo.cs</Link>
-    </Compile>
     <Compile Include="About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
