@@ -9,7 +9,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements
 
     internal class NoXmlComments : Paragraph
     {
-        private const string HelpUri = "http://livedocumenter.barryjones.me.uk/docs/issues/no-xml-comments";
+        private const string HelpUri = "https://livedocumenter.barryjones.me.uk/docs/issues/no-xml-comments";
         public NoXmlComments(ReflectedMember entry)
         {
             this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
