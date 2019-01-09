@@ -8,6 +8,7 @@
     <AssemblyName>exporter</AssemblyName>
     <RootNamespace>TheBoxSoftware.Exporter</RootNamespace>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
