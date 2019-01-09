@@ -33,24 +33,6 @@ namespace TheBoxSoftware.Exporter
         }
 
         /// <summary>
-        /// Initialises the logger with details that control how this application instance will run.
-        /// </summary>
-        /// <param name="verbose">Indicates if verbose messages should be logged.</param>
-        public void Init(bool verbose)
-        {
-            _verbose = verbose;
-        }
-
-        /// <summary>
-        /// Log an informational message to the console.
-        /// </summary>
-        /// <param name="message">The message to log.</param>
-        public void Log(string message)
-        {
-            Log(message, LogType.Information);
-        }
-
-        /// <summary>
         /// Log a message to the console.
         /// </summary>
         /// <param name="message">The message to log.</param>
@@ -66,26 +48,31 @@ namespace TheBoxSoftware.Exporter
             _ui.ResetColor();
         }
 
-        /// <summary>
-        /// Log an informational verbose message to the console.
-        /// </summary>
-        /// <param name="message"></param>
-        public void Verbose(string message)
+        public void LogInformation(string message)
         {
-            Verbose(message, LogType.Information);
+            LogTemp(message, LogType.Information);
         }
 
-        /// <summary>
-        /// Log a verbose message to the console.
-        /// </summary>
-        /// <param name="message">The message to log.</param>
-        /// <param name="type">The type of message to log.</param>
-        public void Verbose(string message, LogType type)
+        public void LogWarning(string message)
         {
-            if(_verbose)
-            {
-                Log(message, type);
-            }
+            LogTemp(message, LogType.Warning);
+        }
+
+        public void LogError(string message)
+        {
+            LogTemp(message, LogType.Error);
+        }
+
+        public void LogProgress(string message)
+        {
+            LogTemp(message, LogType.Progress);
+        }
+
+        private void LogTemp(string message, LogType type)
+        {
+            _ui.ForegroundColor = _outputColours[type];
+            _ui.Write($"{_messagePrefix[type]}{message}");
+            _ui.ResetColor();
         }
     }
 

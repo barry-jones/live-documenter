@@ -3,14 +3,12 @@ namespace TheBoxSoftware.Exporter
 {
     public interface ILog
     {
-        void Log(string message);
+        void LogInformation(string message);
 
-        void Log(string message, LogType type);
+        void LogWarning(string message);
 
-        void Verbose(string message);
+        void LogError(string message);
 
-        void Verbose(string message, LogType type);
-
-        void Init(bool verbose);
+        void LogProgress(string message);
     }
 }

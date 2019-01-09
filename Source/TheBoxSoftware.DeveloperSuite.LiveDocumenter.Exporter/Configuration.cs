@@ -73,7 +73,7 @@ namespace TheBoxSoftware.Exporter
 
             if(!File.Exists(this.Document))
             {
-                log.Log(string.Format("The document '{0}' does not exist.", this.Document), LogType.Error);
+                log.LogError($"The document '{Document}' does not exist.");
                 isValid = false;
             }
 

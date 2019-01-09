@@ -28,7 +28,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
 
             p.HandleExport();
 
-            _log.Verify(m => m.Log(It.IsRegex("does not exist"), LogType.Error), "Error was not logged");
+            _log.Verify(m => m.LogError(It.IsRegex("does not exist")), "Error was not logged");
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
 
             p.HandleExport();
 
-            _log.Verify(m => m.Log(It.IsRegex("No file was specified"), LogType.Error), "Error was not logged");
+            _log.Verify(m => m.LogError(It.IsRegex("No file was specified")), "Error was not logged");
         }
         
         [Test]
@@ -50,7 +50,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
 
             p.HandleExport();
 
-            _log.Verify(m => m.Log(It.IsRegex("show help information")));
+            _ui.Verify(m => m.Write(It.IsRegex("show help information")));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
 
             p.HandleExport();
 
-            _log.Verify(m => m.Log(It.IsRegex("pulsic"), LogType.Error));
+            _log.Verify(m => m.LogError(It.IsRegex("pulsic")));
         }
 
         private Program CreateProgram(string[] arguments)

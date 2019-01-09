@@ -44,7 +44,7 @@ namespace TheBoxSoftware.Exporter
             }
             catch(InvalidParameterException ex)
             {
-                _log.Log($"An invalid value '{ex.Value}' for parameter '{ex.Parameter}' was provided. Please resolve and try again.", LogType.Error);
+                _log.LogError($"An invalid value '{ex.Value}' for parameter '{ex.Parameter}' was provided. Please resolve and try again.");
                 return;
             }
 
@@ -71,7 +71,7 @@ namespace TheBoxSoftware.Exporter
                 }
                 catch (InvalidOperationException e)
                 {
-                    _log.Log($"There was an error reading the configuration file\n  {e.Message}", LogType.Error);
+                    _log.LogError($"There was an error reading the configuration file\n  {e.Message}");
                     return; // bail we have no configuration or some of it is missing
                 }
             }
@@ -87,7 +87,6 @@ namespace TheBoxSoftware.Exporter
             {
                 if (configuration.IsValid(_log))
                 {
-                    _log.Init(parameters.Verbose);
                     PrintVersionInformation();
 
                     Exporter exporter = new Exporter(configuration, parameters.Verbose, _log);
@@ -106,6 +105,7 @@ namespace TheBoxSoftware.Exporter
         private bool IsHelpShown(Parameters parameters)
         {
             bool showHelp = !parameters.HasParameters || parameters.ShowHelp;
+
             if (showHelp)
             {
                 PrintVersionInformation();
@@ -124,7 +124,8 @@ namespace TheBoxSoftware.Exporter
                     "\n`-to`, `-format` and `-filters` are only used when the file provided is not a\n" +
                     "configuration xml file.\n\n";
 
-                _log.Log(help);
+                _ui.Write(help);
+
             }
             return showHelp;
         }
@@ -135,12 +136,12 @@ namespace TheBoxSoftware.Exporter
 
             if (string.IsNullOrEmpty(configFile))
             {
-                _log.Log($"No file was specified to export.\n", LogType.Error);
+                _log.LogError($"No file was specified to export.\n");
                 isFileProvided = true;
             }
             else if (!_filesystem.FileExists(configFile))
             {
-                _log.Log($"The config file '{configFile}' does not exist", LogType.Error);
+                _log.LogError($"The config file '{configFile}' does not exist");
                 isFileProvided = true;
             }
 
@@ -156,7 +157,7 @@ namespace TheBoxSoftware.Exporter
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            _log.Verbose($"Live Documenter Exporter Version: {fvi.ProductVersion}\n\n");
+            _log.LogInformation($"Live Documenter Exporter Version: {fvi.ProductVersion}\n\n");
         }
     }
 }

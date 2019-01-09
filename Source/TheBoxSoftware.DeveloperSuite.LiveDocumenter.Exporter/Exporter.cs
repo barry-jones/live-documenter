@@ -57,9 +57,8 @@ namespace TheBoxSoftware.Exporter
                 }
                 catch(InvalidOperationException e)
                 {
-                    _log.Log(
-                        $"Invalid document '{_configuration.Document}' please fix the error and try again.\n  {e.Message}",
-                        LogType.Error
+                    _log.LogError(
+                        $"Invalid document '{_configuration.Document}' please fix the error and try again.\n  {e.Message}"
                         );
                     return; // bail we have an invalid ldproj file
                 }
@@ -88,7 +87,7 @@ namespace TheBoxSoftware.Exporter
             // use the configurations visibility filters or default to just public
             if(settings.Settings.VisibilityFilters == null || settings.Settings.VisibilityFilters.Count == 0)
             {
-                _log.Log("No visibility filters are found defaulting to Public and Protected.\n", LogType.Warning);
+                _log.LogWarning("No visibility filters are found defaulting to Public and Protected.\n");
                 settings.Settings.VisibilityFilters = new List<Visibility>() { Visibility.Public };
             }
             else
@@ -98,10 +97,7 @@ namespace TheBoxSoftware.Exporter
                 {
                     filters.Add(Enum.GetName(typeof(Visibility), current));
                 }
-                _log.Log(
-                    string.Format("Details:\n  Visible members: ({0})\n", string.Join("|", filters.ToArray())),
-                    LogType.Information
-                    );
+                _log.LogInformation($"Details:\n  Visible members: ({string.Join("|", filters.ToArray())})\n");
             }
 
             Document document = InitialiseDocumentForExport(files, settings);
@@ -123,11 +119,11 @@ namespace TheBoxSoftware.Exporter
                 );
             config.Initialise();
 
-            _log.Log($"\nExporting with {output.File} to location {output.Location}.\n", LogType.Progress);
+            _log.LogProgress($"\nExporting with {output.File} to location {output.Location}.\n");
 
             if(!config.IsValid)
             {
-                _log.Log(string.Format("There are issues with the LDEC file: {0}\n", output.File), LogType.Error);
+                _log.LogError($"There are issues with the LDEC file: {output.File}\n");
             }
             else
             {
@@ -144,25 +140,25 @@ namespace TheBoxSoftware.Exporter
                 {
                     foreach(export.Issue issue in issues)
                     {
-                        _log.Log($"{issue.Description}\n", LogType.Error);
+                        _log.LogError($"{issue.Description}\n");
                     }
                 }
                 else
                 {
-                    _log.Verbose($"The export began at {start}.\n");
+                    _log.LogInformation($"The export began at {start}.\n");
                     exporter.Export();
                     end = DateTime.Now;
 
                     if(exporter.ExportExceptions != null && exporter.ExportExceptions.Count > 0)
                     {
-                        _log.Log("The export completed with the following issues:\n", LogType.Warning);
+                        _log.LogWarning("The export completed with the following issues:\n");
                         foreach(Exception current in exporter.ExportExceptions)
                         {
-                            _log.Log(FormatExceptionData(current), LogType.Warning);
+                            _log.LogWarning(FormatExceptionData(current));
                         }
                     }
 
-                    _log.Log($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n", LogType.Information);
+                    _log.LogInformation($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
                 }
             }
         }
@@ -175,7 +171,7 @@ namespace TheBoxSoftware.Exporter
             document.Settings = settings.Settings;
             document.UpdateDocumentMap();
 
-            _log.Verbose($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
+            _log.LogInformation($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
 
             return document;
         }
@@ -187,23 +183,23 @@ namespace TheBoxSoftware.Exporter
             else
             {
                 _lastStep = e.Description;
-                _log.Verbose($"  {e.Description}\n");
+                _log.LogInformation($"  {e.Description}\n");
             }
         }
 
         private void exporter_ExportException(object sender, export.ExportExceptionEventArgs e)
         {
-            _log.Log($"{e.Exception.Message}\n", LogType.Error);
+            _log.LogError($"{e.Exception.Message}\n");
         }
 
         private void exporter_ExportCalculated(object sender, export.ExportCalculatedEventArgs e)
         {
-            _log.Verbose("Export started\n");
+            _log.LogInformation("Export started\n");
         }
 
         private void exporter_ExportFailed(export.ExportFailedEventArgs e)
         {
-            _log.Log($"{e.Message}\n", LogType.Error);
+            _log.LogError($"{e.Message}\n");
         }
 
         private string FormatExceptionData(Exception forException)
