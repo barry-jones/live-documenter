@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("TheBoxSoftware.DeveloperSuite.LiveDocumenter")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("The Box Software Ltd")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Live Documenter")]
-[assembly: AssemblyCopyright("Copyright © The Box Software Ltd 2009")]
+[assembly: AssemblyCopyright("Copyright © 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
