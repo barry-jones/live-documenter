@@ -10,6 +10,7 @@ namespace TheBoxSoftware.Documentation.Exporting
     using HtmlHelp1;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Exports the documentation to the HTML Help 1 format.
@@ -40,134 +41,137 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public override void Export()
         {
-            if (!this.FindHtmlHelpCompiler())
+            if (!FindHtmlHelpCompiler())
             {
-                this.OnExportFailed(new ExportFailedEventArgs("The HTML Help 1 compiler could not be located, please check that it is installed."));
+                OnExportFailed(new ExportFailedEventArgs("The HTML Help 1 compiler could not be located, please check that it is installed."));
                 return; // can not continue
             }
 
             try
             {
-                this.PrepareForExport();
+                PrepareForExport();
 
                 // calculate the export steps
                 int numberOfSteps = 0;
                 numberOfSteps += 1; // toc and index steps
-                numberOfSteps += this.Document.Map.Count; // top level entries for recursive export
+                numberOfSteps += Document.Map.Count; // top level entries for recursive export
                 numberOfSteps += 1; // output files
-                numberOfSteps += ((this.Document.Map.NumberOfEntries / this.XmlExportStep) * 3); // xml export stage
+                numberOfSteps += ((Document.Map.NumberOfEntries / XmlExportStep) * 3); // xml export stage
                 numberOfSteps += 1; // publish files
                 numberOfSteps += 1; // cleanup files
 
-                this.OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
-                this.CurrentExportStep = 1;
+                OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
+                CurrentExportStep = 1;
 
-                if (!this.IsCancelled)
+                if (!IsCancelled)
                 {
                     // export the document map
-                    this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory)))
+                    OnExportStep(new ExportStepEventArgs("Export as XML...", ++CurrentExportStep));
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", TempDirectory)))
                     {
                         Rendering.DocumentMapXmlRenderer map = new Rendering.DocumentMapXmlRenderer(
-                            this.Document.Map
+                            Document.Map
                             );
                         map.Render(writer);
                     }
 
                     // export the project xml
-                    ProjectXmlRenderer projectXml = new ProjectXmlRenderer(this.Document.Map);
-                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/project.xml", this.TempDirectory)))
+                    ProjectXmlRenderer projectXml = new ProjectXmlRenderer(Document.Map);
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/project.xml", TempDirectory)))
                     {
                         projectXml.Render(writer);
                     }
 
                     // export the index xml
-                    IndexXmlRenderer indexXml = new IndexXmlRenderer(this.Document.Map);
-                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory)))
+                    IndexXmlRenderer indexXml = new IndexXmlRenderer(Document.Map);
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", TempDirectory)))
                     {
                         indexXml.Render(writer);
                     }
 
                     // export each of the members
-                    foreach (Entry current in this.Document.Map)
+                    foreach (Entry current in Document.Map)
                     {
-                        this.RecursiveEntryExport(current);
-                        this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-                        if (this.IsCancelled) break;
+                        RecursiveEntryExport(current);
+                        OnExportStep(new ExportStepEventArgs("Export as XML...", ++CurrentExportStep));
+                        if (IsCancelled) break;
                     }
                     GC.Collect();
                 }
 
-                if (!this.IsCancelled)
+                if (!IsCancelled)
                 {
+                    List<Task> conversionTasks = new List<Task>();
                     IXsltProcessor xsltProcessor = new MsXsltProcessor(TempDirectory);
 
-                    using(Stream xsltStream = this.Config.GetXslt())
+                    using(Stream xsltStream = Config.GetXslt())
                     {
                         xsltProcessor.CompileXslt(xsltStream);
                     }
 
                     // set output files
-                    this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-                    this.Config.SaveOutputFilesTo(this.OutputDirectory);
+                    OnExportStep(new ExportStepEventArgs("Saving output files...", ++CurrentExportStep));
+                    Config.SaveOutputFilesTo(OutputDirectory);
 
-                    this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+                    OnExportStep(new ExportStepEventArgs("Transforming XML...", ++CurrentExportStep));
 
                     // export the project file
                     string inputFile = $"{TempDirectory}/project.xml";
                     string outputFile = OutputDirectory + "project.hhp";
-                    xsltProcessor.Transform(inputFile, outputFile);
+                    conversionTasks.Add(xsltProcessor.TransformAsync(inputFile, outputFile));
 
                     // export the index file
                     inputFile = $"{TempDirectory}/index.xml";
                     outputFile = OutputDirectory + "index.hhk";
-                    xsltProcessor.Transform(inputFile, outputFile);
+                    conversionTasks.Add(xsltProcessor.TransformAsync(inputFile, outputFile));
 
                     // export the content file
                     inputFile = $"{TempDirectory}/toc.xml";
                     outputFile = OutputDirectory + "toc.hhc";
-                    xsltProcessor.Transform(inputFile, outputFile);
+                    conversionTasks.Add(xsltProcessor.TransformAsync(inputFile, outputFile));
 
                     // export the content files
                     int counter = 0;
                     string[] exclude = { "toc.xml", "index.xml", "project.xml" };
-                    foreach (string current in Directory.GetFiles(this.TempDirectory))
+                    foreach (string current in Directory.GetFiles(TempDirectory))
                     {
-                        if (exclude.Contains(current.Substring(this.TempDirectory.Length)))
+                        if (exclude.Contains(current.Substring(TempDirectory.Length)))
                             continue;
 
                         outputFile = OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm";
-                        xsltProcessor.Transform(current, outputFile);
+                        conversionTasks.Add(xsltProcessor.TransformAsync(current, outputFile));
 
                         counter++;
-                        if (counter % this.XmlExportStep == 0)
+                        if (counter % XmlExportStep == 0)
                         {
-                            this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+                            OnExportStep(new ExportStepEventArgs("Transforming XML...", CurrentExportStep += 3));
                         }
-                        if (this.IsCancelled) break;
+                        if (IsCancelled) break;
                     }
+
+                    Task.WaitAll(conversionTasks.ToArray());
                 }
 
-                if (!this.IsCancelled)
+                if (!IsCancelled)
                 {
                     // compile the html help file
-                    this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
-                    this.CompileHelp(this.OutputDirectory + "project.hhp");
+                    OnExportStep(new ExportStepEventArgs("Compiling help...", ++CurrentExportStep));
+                    CompileHelp(OutputDirectory + "project.hhp");
 
                     // publish the compiled help file
-                    this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
-                    File.Copy(this.OutputDirectory + "project.chm", this.PublishDirectory + "documentation.chm");
+                    OnExportStep(new ExportStepEventArgs("Publishing help...", ++CurrentExportStep));
+                    File.Copy(OutputDirectory + "project.chm", PublishDirectory + "documentation.chm");
                 }
 
                 // clean up the temp directory
-                this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
-                this.Cleanup();
+                OnExportStep(new ExportStepEventArgs("Cleaning up", ++CurrentExportStep));
+                Cleanup();
             }
             catch (Exception ex)
             {
-                this.Cleanup(); // attempt to clean up our mess before dying
+                Cleanup(); // attempt to clean up our mess before dying
                 ExportException exception = new ExportException(ex.Message, ex);
-                this.OnExportException(new ExportExceptionEventArgs(exception));
+                OnExportException(new ExportExceptionEventArgs(exception));
             }
         }
 
@@ -179,7 +183,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         public override List<Issue> GetIssues()
         {
             List<Issue> issues = new List<Issue>();
-            if (!this.FindHtmlHelpCompiler())
+            if (!FindHtmlHelpCompiler())
             {
                 issues.Add(new Issue { Description = "Could not locate the HTML Help 1 compiler 'hhc.exe'. Please check it is installed correctly." });
             }

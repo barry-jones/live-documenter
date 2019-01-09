@@ -9,6 +9,7 @@ namespace TheBoxSoftware.Documentation.Exporting
     using TheBoxSoftware.Documentation.Exporting.HtmlHelp2;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Produces HTML Help 2 compiled help documentation.
@@ -48,109 +49,113 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public override void Export()
         {
-            if (!this.FindHtmlHelpCompiler())
+            if (!FindHtmlHelpCompiler())
             {
-                this.OnExportFailed(new ExportFailedEventArgs("The HTML Help 2 compiler could not be located, please check that it is installed."));
+                OnExportFailed(new ExportFailedEventArgs("The HTML Help 2 compiler could not be located, please check that it is installed."));
                 return; // can not continue
             }
 
             try
             {
-                this.PrepareForExport();
+                PrepareForExport();
 
                 // calculate the export steps
                 int numberOfSteps = 0;
                 numberOfSteps += 1; // toc and index steps
-                numberOfSteps += this.Document.Map.Count; // top level entries for recursive export
+                numberOfSteps += Document.Map.Count; // top level entries for recursive export
                 numberOfSteps += 1; // output files
-                numberOfSteps += ((this.Document.Map.NumberOfEntries / this.XmlExportStep) * 3); // xml export stage
+                numberOfSteps += ((Document.Map.NumberOfEntries / XmlExportStep) * 3); // xml export stage
                 numberOfSteps += 1; // publish files
                 numberOfSteps += 1; // cleanup files
 
-                this.OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
-                this.CurrentExportStep = 1;
+                OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
+                CurrentExportStep = 1;
 
-                if (!this.IsCancelled)
+                if (!IsCancelled)
                 {
                     // export the document map
-                    this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory)))
+                    OnExportStep(new ExportStepEventArgs("Export as XML...", ++CurrentExportStep));
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", TempDirectory)))
                     {
                         Rendering.DocumentMapXmlRenderer map = new Rendering.DocumentMapXmlRenderer(
-                            this.Document.Map
+                            Document.Map
                             );
                         map.Render(writer);
                     }
 
                     // export each of the members
-                    foreach (Entry current in this.Document.Map)
+                    foreach (Entry current in Document.Map)
                     {
-                        this.RecursiveEntryExport(current);
-                        this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-                        if (this.IsCancelled) break;
+                        RecursiveEntryExport(current);
+                        OnExportStep(new ExportStepEventArgs("Export as XML...", ++CurrentExportStep));
+                        if (IsCancelled) break;
                     }
                     GC.Collect();
                 }
 
-                if (!this.IsCancelled)
+                if (!IsCancelled)
                 {
+                    List<Task> conversionTasks = new List<Task>();
                     IXsltProcessor xsltProcessor = new MsXsltProcessor(TempDirectory);
+
                     using(Stream xsltStream = Config.GetXslt())
                     {
                         xsltProcessor.CompileXslt(xsltStream);
                     }
 
                     // set output files
-                    this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-                    this.Config.SaveOutputFilesTo(this.OutputDirectory);
+                    OnExportStep(new ExportStepEventArgs("Saving output files...", ++CurrentExportStep));
+                    Config.SaveOutputFilesTo(OutputDirectory);
 
-                    this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
+                    OnExportStep(new ExportStepEventArgs("Transforming XML...", ++CurrentExportStep));
 
                     // export the project xml, we cant render the XML because the DTD protocol causes loads of probs with Saxon
-                    CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(this.Document.Map, string.Empty);
-                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", this.OutputDirectory)))
+                    CollectionXmlRenderer collectionXml = new CollectionXmlRenderer(Document.Map, string.Empty);
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxC", OutputDirectory)))
                     {
                         collectionXml.Render(writer);
                     }
 
                     // export the incldue file xml
-                    IncludeFileXmlRenderer includeXml = new IncludeFileXmlRenderer(this.Config);
-                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxF", this.OutputDirectory)))
+                    IncludeFileXmlRenderer includeXml = new IncludeFileXmlRenderer(Config);
+                    using (XmlWriter writer = XmlWriter.Create(string.Format("{0}/Documentation.HxF", OutputDirectory)))
                     {
                         includeXml.Render(writer);
                     }
 
                     string outputFile = OutputDirectory + "Documentation.HxT";
                     string inputFile = $"{TempDirectory}/toc.xml";
-                    xsltProcessor.Transform(inputFile, outputFile);
+                    conversionTasks.Add(xsltProcessor.TransformAsync(inputFile, outputFile));
 
                     // export the content files
                     int counter = 0;
-                    foreach (string current in Directory.GetFiles(this.TempDirectory))
+                    foreach (string current in Directory.GetFiles(TempDirectory))
                     {
-                        if (current.Substring(this.TempDirectory.Length) == "toc.xml")
+                        if (current.Substring(TempDirectory.Length) == "toc.xml")
                             continue;
 
                         outputFile = OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm";
-                        xsltProcessor.Transform(current, outputFile);
+                        conversionTasks.Add(xsltProcessor.TransformAsync(current, outputFile));
 
                         counter++;
-                        if (counter % this.XmlExportStep == 0)
+                        if (counter % XmlExportStep == 0)
                         {
-                            this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+                            OnExportStep(new ExportStepEventArgs("Transforming XML...", CurrentExportStep += 3));
                         }
-                        if (this.IsCancelled) break;
+                        if (IsCancelled) break;
                     }
+
+                    Task.WaitAll(conversionTasks.ToArray());
                 }
 
-                if (!this.IsCancelled)
+                if (!IsCancelled)
                 {
                     // compile the html help file
-                    this.OnExportStep(new ExportStepEventArgs("Compiling help...", ++this.CurrentExportStep));
-                    this.CompileHelp(this.OutputDirectory + "/Documentation.HxC");
+                    OnExportStep(new ExportStepEventArgs("Compiling help...", ++CurrentExportStep));
+                    CompileHelp(OutputDirectory + "/Documentation.HxC");
 
                     // publish the help
-                    this.OnExportStep(new ExportStepEventArgs("Publishing help...", ++this.CurrentExportStep));
+                    OnExportStep(new ExportStepEventArgs("Publishing help...", ++CurrentExportStep));
                     string[] files = {
                                          "Documentation.HxC", "Documentation.HxF", "Documentation.HxT", "Documentation.HxS",
                                          "Documentation_A.HxK", "Documentation_B.HxK", "Documentation_F.HxK", "Documentation_K.HxK",
@@ -158,25 +163,25 @@ namespace TheBoxSoftware.Documentation.Exporting
                                      };
                     for (int i = 0; i < files.Length; i++)
                     {
-                        string from = Path.Combine(this.OutputDirectory, files[i]);
+                        string from = Path.Combine(OutputDirectory, files[i]);
 
                         if (!File.Exists(from)) continue;
                         File.Move(
                             from,
-                            Path.Combine(this.PublishDirectory, files[i])
+                            Path.Combine(PublishDirectory, files[i])
                             ); ;
                     }
                 }
 
                 // clean up the temp directory
-                this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
-                this.Cleanup();
+                OnExportStep(new ExportStepEventArgs("Cleaning up", ++CurrentExportStep));
+                Cleanup();
             }
             catch (Exception ex)
             {
-                this.Cleanup(); // attempt to clean up our mess before dying
+                Cleanup(); // attempt to clean up our mess before dying
                 ExportException exception = new ExportException(ex.Message, ex);
-                this.OnExportException(new ExportExceptionEventArgs(exception));
+                OnExportException(new ExportExceptionEventArgs(exception));
             }
         }
 
@@ -199,7 +204,7 @@ namespace TheBoxSoftware.Documentation.Exporting
         public override List<Issue> GetIssues()
         {
             List<Issue> issues = new List<Issue>();
-            if (!this.FindHtmlHelpCompiler())
+            if (!FindHtmlHelpCompiler())
             {
                 issues.Add(new Issue { Description = "Could not locate the HTML Help 2.0 compiler 'hxcomp.exe'. Please check it is installed correctly." });
             }
@@ -226,7 +231,7 @@ namespace TheBoxSoftware.Documentation.Exporting
                     @"Common Files\microsoft shared\Help 2.0 Compiler\hxcomp.exe");
             if (File.Exists(compiler))
             {
-                this.HtmlHelpCompilerFilePath = compiler;
+                HtmlHelpCompilerFilePath = compiler;
             }
 
             compiler = Path.Combine(
@@ -235,11 +240,11 @@ namespace TheBoxSoftware.Documentation.Exporting
                     @"Common Files\microsoft shared\Help 2.0 Compiler\hxcomp.exe");
             if (File.Exists(compiler))
             {
-                this.HtmlHelpCompilerFilePath = compiler;
+                HtmlHelpCompilerFilePath = compiler;
             }
 
             // Not in default directory check in registry
-            if (string.IsNullOrEmpty(this.HtmlHelpCompilerFilePath))
+            if (string.IsNullOrEmpty(HtmlHelpCompilerFilePath))
             {
                 RegistryKey key = Registry.ClassesRoot.OpenSubKey("MSHelp.hxs.2.5");
                 if (key != null)
@@ -262,11 +267,11 @@ namespace TheBoxSoftware.Documentation.Exporting
                 }
                 if (File.Exists(compiler))
                 {
-                    this.HtmlHelpCompilerFilePath = compiler;
+                    HtmlHelpCompilerFilePath = compiler;
                 }
             }
 
-            return !string.IsNullOrEmpty(this.HtmlHelpCompilerFilePath);
+            return !string.IsNullOrEmpty(HtmlHelpCompilerFilePath);
         }
 
         /// <summary>
@@ -278,7 +283,7 @@ namespace TheBoxSoftware.Documentation.Exporting
             Process compileProcess = new Process();
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = this.HtmlHelpCompilerFilePath;
+            processStartInfo.FileName = HtmlHelpCompilerFilePath;
             processStartInfo.Arguments = "-p \"" + Path.GetFullPath(projectFile) + "\" -r \"" + Directory.GetParent(projectFile) + "\" -l \"I:\\current\\log.log\"";
             processStartInfo.ErrorDialog = false;
             // processStartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

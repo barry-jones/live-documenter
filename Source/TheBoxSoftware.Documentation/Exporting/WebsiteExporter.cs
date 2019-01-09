@@ -6,6 +6,7 @@ namespace TheBoxSoftware.Documentation.Exporting
     using System.Xml;
     using Website;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class WebsiteExporter : Exporter
     {
@@ -28,97 +29,101 @@ namespace TheBoxSoftware.Documentation.Exporting
 
             try
             {
-                this.PrepareForExport();
+                PrepareForExport();
 
                 // calculate the export steps
                 int numberOfSteps = 0;
                 numberOfSteps += 1; // toc and index steps
-                numberOfSteps += this.Document.Map.Count; // top level entries for recursive export
+                numberOfSteps += Document.Map.Count; // top level entries for recursive export
                 numberOfSteps += 1; // output files
-                numberOfSteps += ((this.Document.Map.NumberOfEntries / this.XmlExportStep) * 3); // xml export stage
+                numberOfSteps += ((Document.Map.NumberOfEntries / XmlExportStep) * 3); // xml export stage
                 numberOfSteps += 1; // cleanup files
 
-                this.OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
-                this.CurrentExportStep = 1;
+                OnExportCalculated(new ExportCalculatedEventArgs(numberOfSteps));
+                CurrentExportStep = 1;
 
                 ExportContentAsXml();
                 ConvertXmlToWebsite();
 
                 // clean up the temp directory
-                this.OnExportStep(new ExportStepEventArgs("Cleaning up", ++this.CurrentExportStep));
-                this.Cleanup();
+                OnExportStep(new ExportStepEventArgs("Cleaning up", ++CurrentExportStep));
+                Cleanup();
             }
             catch (Exception ex)
             {
-                this.Cleanup(); // attempt to clean up our mess before dying
+                Cleanup(); // attempt to clean up our mess before dying
                 ExportException exception = new ExportException(ex.Message, ex);
-                this.OnExportException(new ExportExceptionEventArgs(exception));
+                OnExportException(new ExportExceptionEventArgs(exception));
             }
         }
 
         private void ConvertXmlToWebsite()
         {
-            if(!this.IsCancelled)
+            List<Task> conversionTasks = new List<Task>();
+            if(!IsCancelled)
             {
                 IXsltProcessor xsltProcessor = new MsXsltProcessor(TempDirectory);
-                using(Stream xsltStream = this.Config.GetXslt())
+                using(Stream xsltStream = Config.GetXslt())
                 {
                     xsltProcessor.CompileXslt(xsltStream);
                 }
 
                 // set output files
-                this.OnExportStep(new ExportStepEventArgs("Saving output files...", ++this.CurrentExportStep));
-                this.Config.SaveOutputFilesTo(this.PublishDirectory);
+                OnExportStep(new ExportStepEventArgs("Saving output files...", ++CurrentExportStep));
+                Config.SaveOutputFilesTo(PublishDirectory);
 
-                this.OnExportStep(new ExportStepEventArgs("Transforming XML...", ++this.CurrentExportStep));
-                string extension = this.Config.Properties.ContainsKey("extension") ? this.Config.Properties["extension"] : "htm";
+                OnExportStep(new ExportStepEventArgs("Transforming XML...", ++CurrentExportStep));
+                string extension = Config.Properties.ContainsKey("extension") ? Config.Properties["extension"] : "htm";
                 int counter = 0;
-                foreach(string current in Directory.GetFiles(this.TempDirectory))
+                foreach(string current in Directory.GetFiles(TempDirectory))
                 {
-                    if(current.Substring(this.TempDirectory.Length) == "toc.xml")
+                    if(current.Substring(TempDirectory.Length) == "toc.xml")
                         continue;
 
-                    string outputFile = this.PublishDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension;
-                    xsltProcessor.Transform(current, outputFile);
+                    string outputFile = PublishDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension;
+                    conversionTasks.Add(xsltProcessor.TransformAsync(current, outputFile));
 
                     counter++;
-                    if(counter % this.XmlExportStep == 0)
+                    if(counter % XmlExportStep == 0)
                     {
-                        this.OnExportStep(new ExportStepEventArgs("Transforming XML...", this.CurrentExportStep += 3));
+                        OnExportStep(new ExportStepEventArgs("Transforming XML...", CurrentExportStep += 3));
                     }
 
-                    if(this.IsCancelled) break;
+                    if(IsCancelled) break;
                 }
             }
+            Task.WaitAll(conversionTasks.ToArray());
         }
 
         private void ExportContentAsXml()
         {
-            if(!this.IsCancelled)
+            List<Task> conversionTasks = new List<Task>();
+            if(!IsCancelled)
             {
-                this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-                using(XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", this.TempDirectory)))
+                OnExportStep(new ExportStepEventArgs("Export as XML...", ++CurrentExportStep));
+                using(XmlWriter writer = XmlWriter.Create(string.Format("{0}/toc.xml", TempDirectory)))
                 {
-                    Rendering.DocumentMapXmlRenderer map = new Rendering.DocumentMapXmlRenderer(this.Document.Map);
+                    Rendering.DocumentMapXmlRenderer map = new Rendering.DocumentMapXmlRenderer(Document.Map);
                     map.Render(writer);
                 }
 
                 // export the index page
-                IndexXmlRenderer indexPage = new IndexXmlRenderer(this.Document.Map);
-                using(XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", this.TempDirectory)))
+                IndexXmlRenderer indexPage = new IndexXmlRenderer(Document.Map);
+                using(XmlWriter writer = XmlWriter.Create(string.Format("{0}/index.xml", TempDirectory)))
                 {
                     indexPage.Render(writer);
                 }
 
                 // export each of the members
-                foreach(Entry current in this.Document.Map)
+                foreach(Entry current in Document.Map)
                 {
-                    this.RecursiveEntryExport(current);
-                    this.OnExportStep(new ExportStepEventArgs("Export as XML...", ++this.CurrentExportStep));
-                    if(this.IsCancelled) break;
+                    RecursiveEntryExport(current);
+                    OnExportStep(new ExportStepEventArgs("Export as XML...", ++CurrentExportStep));
+                    if(IsCancelled) break;
                 }
-                GC.Collect();
             }
+            Task.WaitAll(conversionTasks.ToArray());
+            GC.Collect();
         }
 
         /// <summary>

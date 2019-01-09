@@ -1,7 +1,9 @@
 ﻿
 namespace TheBoxSoftware.Documentation.Exporting
 {
+    using System;
     using System.IO;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Xsl;
 
@@ -40,6 +42,21 @@ namespace TheBoxSoftware.Documentation.Exporting
             {
                 _transform.Transform(inputFile, arguments, writer);
             }
+        }
+
+        public async Task TransformAsync(string inputFile, string outputFile)
+        {
+            Action action = () =>
+            {
+                XsltArgumentList arguments = new XsltArgumentList();
+                arguments.AddParam("directory", "", _xmlDirectory);
+
+                using (StreamWriter writer = new StreamWriter(outputFile))
+                {
+                    _transform.Transform(inputFile, arguments, writer);
+                }
+            };
+            await Task.Run(action);
         }
 
         protected virtual void Dispose(bool disposing)
