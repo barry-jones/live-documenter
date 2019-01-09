@@ -23,15 +23,16 @@ useful for exporting configuration as part of the build process.
 ![Live Documenter](/readme/images/command-line-output.png)
 
 #### API Library
-A DLL that can be referenced by projects to automatically generate documentation at runtime.
-
-#### PE Viewer
-An unfinished application that provides a simple view of metadata tables available in .NET libraries.
+A DLL that can be referenced by projects to automatically generate documentation at runtime. Details of the 
+API and how to use it can be found in the [documentation][1].
 
 ## Installation
-This will only work on Windows at the moment, work is ongoing to transfer to netstandard and to make everything except the desktop application cross platform on .NET Core.
+This will only work on Windows at the moment, work is ongoing to transfer to netstandard 
+and to make everything except the desktop application cross platform on .NET Core.
 
-The installers are provided in the release pages for the [latest version](https://github.com/barry-jones/live-documenter/releases) MSI files are provided seperately. To install download required MSI files from the release page and run the installer.
+The installers are provided in the release pages for the 
+[latest version](https://github.com/barry-jones/live-documenter/releases) MSI files are provided seperately. 
+To install, download the required MSI files from the release page and run the installer.
 
 ## Build Latest
 
@@ -42,3 +43,5 @@ Requirements
 The latest code has been worked on in Visual Studio 2017 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
 
 __Please let me know if there are any issues building from source so I can resolve them.__
+
+[1]: https://livedocumenter.barryjones.me.uk/docs/api/index.html
