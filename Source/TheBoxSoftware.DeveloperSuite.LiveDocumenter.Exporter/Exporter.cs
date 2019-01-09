@@ -130,9 +130,9 @@ namespace TheBoxSoftware.Exporter
                 settings.PublishDirectory = output.Location;
 
                 export.Exporter exporter = export.Exporter.Create(document, settings, config);
-                if(_verbose) exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
+                exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
                 exporter.ExportException += new export.ExportExceptionHandler(exporter_ExportException);
-                if(_verbose) exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
+                exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
                 exporter.ExportFailed += new export.ExportFailedEventHandler(exporter_ExportFailed);
 
                 List<export.Issue> issues = exporter.GetIssues();
