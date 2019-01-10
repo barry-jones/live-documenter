@@ -81,13 +81,17 @@ namespace TheBoxSoftware.Documentation.Exporting
                         continue;
 
                     string outputFile = PublishDirectory + Path.GetFileNameWithoutExtension(current) + "." + extension;
-                    conversionTasks.Add(xsltProcessor.TransformAsync(current, outputFile));
 
-                    counter++;
-                    if(counter % XmlExportStep == 0)
-                    {
-                        OnExportStep(new ExportStepEventArgs("Transforming XML...", CurrentExportStep += 3));
-                    }
+                    conversionTasks.Add(xsltProcessor.TransformAsync(current, outputFile).ContinueWith(
+                        (Task outer) =>
+                        {
+                            counter++;
+                            if (counter % XmlExportStep == 0)
+                            {
+                                OnExportStep(new ExportStepEventArgs("Transforming XML...", CurrentExportStep += 3));
+                            }
+                        }
+                        ));
 
                     if(IsCancelled) break;
                 }

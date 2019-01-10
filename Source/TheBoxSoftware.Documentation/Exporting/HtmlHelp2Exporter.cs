@@ -135,13 +135,17 @@ namespace TheBoxSoftware.Documentation.Exporting
                             continue;
 
                         outputFile = OutputDirectory + Path.GetFileNameWithoutExtension(current) + ".htm";
-                        conversionTasks.Add(xsltProcessor.TransformAsync(current, outputFile));
-
-                        counter++;
-                        if (counter % XmlExportStep == 0)
+                        conversionTasks.Add(xsltProcessor.TransformAsync(current, outputFile).ContinueWith(
+                        (Task outer) =>
                         {
-                            OnExportStep(new ExportStepEventArgs("Transforming XML...", CurrentExportStep += 3));
+                            counter++;
+                            if (counter % XmlExportStep == 0)
+                            {
+                                OnExportStep(new ExportStepEventArgs("Transforming XML...", CurrentExportStep += 3));
+                            }
                         }
+                        ));
+
                         if (IsCancelled) break;
                     }
 
