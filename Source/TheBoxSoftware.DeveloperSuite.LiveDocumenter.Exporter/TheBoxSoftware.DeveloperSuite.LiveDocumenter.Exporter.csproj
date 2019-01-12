@@ -17,6 +17,7 @@
     <None Remove="ApplicationData\htmlhelp1-msdn.ldec" />
     <None Remove="ApplicationData\htmlhelp2-msdn.ldec" />
     <None Remove="ApplicationData\web-msdn.ldec" />
+    <None Remove="ApplicationData\web-refresh.ldec" />
     <None Remove="ApplicationData\xml.ldec" />
     <None Remove="example-configuration.xml" />
   </ItemGroup>
@@ -36,6 +37,9 @@
     </Content>
     <Content Include="ApplicationData\web-msdn.ldec">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ApplicationData\web-refresh.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ApplicationData\xml.ldec">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
