@@ -267,6 +267,7 @@ Auto Index=Yes
                     <xsl:apply-templates select="/member/*/syntax" />
 					<xsl:apply-templates select="/member/genericparameters" />
 					<xsl:apply-templates select="/member/parameters" />
+                	<xsl:apply-templates select="/member/return" />
 					<xsl:apply-templates select="/member/exceptions" />
 
 					<xsl:if test="/member/@type != 'delegate'">
@@ -598,6 +599,25 @@ Auto Index=Yes
 		<div class="examples">
 			<h2>Examples</h2>
 			<xsl:apply-templates />
+		</div>
+	</xsl:template>
+	
+	<xsl:template match="return">
+		<div class="return">
+			<h3>Returns</h3>
+			<div class="item">
+				<xsl:if test="not(type[@key])">
+					<xsl:value-of select="type/@name"/>
+				</xsl:if>
+				<xsl:if test="type[@key]">
+					<a href="{type/@key}.htm">
+						<xsl:value-of select="type/@name"/>
+					</a>
+				</xsl:if>
+			</div>
+			<div class="returns">
+				<xsl:value-of select="returns" />
+			</div>
 		</div>
 	</xsl:template>
 
