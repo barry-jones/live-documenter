@@ -75,7 +75,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                     tokens.AddRange(FormatSetVisibility(syntax));
                     tokens.Add(Constants.Space);
                 }
-                tokens.Add(Constants.Space);
+                tokens.Add(Constants.KeywordSet);
                 tokens.Add(new SyntaxToken(";", SyntaxTokens.Text));
             }
             tokens.Add(new SyntaxToken("\n\t}", SyntaxTokens.Text));
