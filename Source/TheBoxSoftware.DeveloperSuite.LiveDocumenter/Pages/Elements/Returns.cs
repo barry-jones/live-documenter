@@ -13,9 +13,8 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements
     {
         public Returns(List<Block> children)
         {
-            this.Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
-            this.Blocks.Add(new Header3("Return Value"));
-            this.Blocks.AddRange(children);
+            Resources.MergedDictionaries.Add(DocumentationResources.BaseResources);
+            Blocks.AddRange(children);
         }
     }
 }

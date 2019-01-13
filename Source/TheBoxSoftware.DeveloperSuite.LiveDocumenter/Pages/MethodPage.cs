@@ -14,7 +14,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
     public class MethodPage : Page
     {
         private MethodDef _method;
-        private ICommentSource _commentsXml;
+        private readonly ICommentSource _commentsXml;
 
         /// <summary>
         /// Initialises a new MethodPage class
@@ -33,118 +33,156 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
         /// </summary>
         public override void Generate()
         {
-            if(!this.IsGenerated)
+            if(!IsGenerated)
             {
                 CRefPath crefPath = new CRefPath(_method);
                 List<Block> parsedBlocks = Elements.Parser.Parse(_method.Assembly, _commentsXml, crefPath);
 
-                if(!this._commentsXml.Exists())
+                if (!_commentsXml.Exists())
                 {
-                    this.Blocks.Add(new NoXmlComments(_method));
+                    Blocks.Add(new NoXmlComments(_method));
                 }
 
-                this.Blocks.Add(new Elements.Header1(_method.GetDisplayName(false)));
+                Blocks.Add(new Elements.Header1(_method.GetDisplayName(false)));
 
                 // Add the summary if it exists
-                if(parsedBlocks != null)
+                if (parsedBlocks != null)
                 {
                     Block summary = parsedBlocks.Find(currentBlock => currentBlock is Summary);
-                    if(summary != null)
+                    if (summary != null)
                     {
-                        this.Blocks.Add(summary);
+                        Blocks.Add(summary);
                     }
                 }
 
-                //Diagramming.SequenceDiagram diagram = new Diagramming.SequenceDiagram(
-                //    new Model.Diagram.SequenceDiagram.SequenceDiagram(method)
-                //    );
-                //diagram.Height = 300;
-                //BlockUIContainer diagramContainer = new BlockUIContainer(diagram);
-                //this.Blocks.Add(diagramContainer);
-
-                this.AddSyntaxBlock(this._method);
+                AddSyntaxBlock(_method);
 
                 // Add the type parameters if they exist
-                if(parsedBlocks != null)
+                if (parsedBlocks != null)
                 {
                     List<Block> typeParams = parsedBlocks.FindAll(currentBlock => currentBlock is TypeParamEntry);
-                    if(typeParams.Count > 0)
+                    if (typeParams.Count > 0)
                     {
                         TypeParamSection typeParamSection = new TypeParamSection();
-                        foreach(GenericTypeRef genericType in this._method.GenericTypes)
+                        foreach (GenericTypeRef genericType in _method.GenericTypes)
                         {
                             string name = genericType.Name;
                             string description = string.Empty;
-                            foreach(TypeParamEntry current in typeParams)
+                            foreach (TypeParamEntry current in typeParams)
                             {
-                                if(current.Param == genericType.Name)
+                                if (current.Param == genericType.Name)
                                 {
                                     description = current.Description;
                                 }
                             }
                             typeParamSection.AddEntry(new TypeParamEntry(name, description));
                         }
-                        this.Blocks.Add(typeParamSection);
+                        Blocks.Add(typeParamSection);
                     }
                 }
 
-                // Add the parameter information if available
-                this.AddParametersForMethod(this._method, parsedBlocks);
-
-                // add the returns comment if it is found
-                if(parsedBlocks != null)
-                {
-                    Block returns = parsedBlocks.Find(currentBlock => currentBlock is Returns);
-                    if(returns != null)
-                    {
-                        this.Blocks.Add(returns);
-                    }
-                }
+                AddParametersForMethod(_method, parsedBlocks);
+                AddReturnDetails(parsedBlocks);
 
                 // Add the exception table if it exists
-                if(parsedBlocks != null)
+                if (parsedBlocks != null)
                 {
                     Block exceptions = parsedBlocks.Find(currentBlock => currentBlock is ExceptionList);
-                    if(exceptions != null)
+                    if (exceptions != null)
                     {
-                        this.Blocks.Add(exceptions);
+                        Blocks.Add(exceptions);
                     }
                 }
 
-                if(parsedBlocks != null)
+                if (parsedBlocks != null)
                 {
                     Block permissions = parsedBlocks.Find(current => current is PermissionList);
-                    if(permissions != null)
+                    if (permissions != null)
                     {
-                        this.Blocks.Add(permissions);
+                        Blocks.Add(permissions);
                     }
                 }
 
                 // Add the remarks if it exists
-                if(parsedBlocks != null)
+                if (parsedBlocks != null)
                 {
                     Block remarks = parsedBlocks.Find(currentBlock => currentBlock is Remarks);
-                    if(remarks != null)
+                    if (remarks != null)
                     {
-                        this.Blocks.Add(remarks);
+                        Blocks.Add(remarks);
                     }
                 }
 
                 // Add the example if it exists
-                if(parsedBlocks != null)
+                if (parsedBlocks != null)
                 {
                     Block summary = parsedBlocks.Find(currentBlock => currentBlock is Example);
-                    if(summary != null)
+                    if (summary != null)
                     {
-                        this.Blocks.Add(new Header2("Examples"));
-                        this.Blocks.Add(summary);
+                        Blocks.Add(new Header2("Examples"));
+                        Blocks.Add(summary);
                     }
                 }
 
                 // Add the seealso list if it exists
-                this.AddSeeAlso(parsedBlocks);
+                AddSeeAlso(parsedBlocks);
 
-                this.IsGenerated = true;
+                IsGenerated = true;
+            }
+        }
+
+        private void AddReturnDetails(List<Block> parsedBlocks)
+        {
+            TypeRef returnTypeRef = _method.GetReturnType();
+
+            if (returnTypeRef == WellKnownTypeDef.Void)
+                return;
+
+            Blocks.Add(new Header3("Returns"));
+
+            // get details fo the Type being returned
+            EntryKey typeKey = null;
+            string typeName = returnTypeRef.GetDisplayName(false);
+
+            if (returnTypeRef is TypeDef)
+            {
+                typeKey = new EntryKey(returnTypeRef.GetGloballyUniqueId());
+            }
+            else
+            {
+                CRefPath path = new CRefPath(returnTypeRef);
+                Documentation.Entry found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
+                if (found != null)
+                {
+                    typeKey = new EntryKey(found.Key);
+                    typeName = found.Name;
+                }
+                else
+                {
+                    typeKey = null;
+                }
+            }
+
+            // build the page output
+            Inline type = null;
+            if (typeKey != null)
+            {
+                type = new Hyperlink(new Run(typeName));
+                ((Hyperlink)type).Tag = typeKey;
+                ((Hyperlink)type).Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+            }
+            else
+            {
+                type = new Run(typeName);
+            }
+
+            Blocks.Add(new Paragraph(type));
+
+            if (parsedBlocks != null)
+            {
+                Block found = parsedBlocks.Find(currentBlock => currentBlock is Returns);
+                if(found != null)
+                    Blocks.Add(found);
             }
         }
     }
