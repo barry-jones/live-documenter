@@ -91,7 +91,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
             if (returnTypeRef == WellKnownTypeDef.Void)
                 return;
 
-            writer.WriteStartElement("returns");
+            writer.WriteStartElement("return");
 
             // write the details of the type and link details if available
             writer.WriteStartElement("type");

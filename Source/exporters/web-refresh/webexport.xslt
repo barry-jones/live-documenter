@@ -177,11 +177,12 @@
 				</div>
 			</xsl:if>
 		
-			<xsl:apply-templates select="/member/*/syntax" />
+			<xsl:apply-templates select="/member/*/syntax" />			
 		</section>
 		
 		<xsl:apply-templates select="/member/genericparameters" />
 		<xsl:apply-templates select="/member/parameters" />
+		<xsl:apply-templates select="/member/return" />
 		
 		<xsl:apply-templates select="/member/example" />
 
@@ -563,6 +564,25 @@
 				<xsl:value-of select="description" />
 			</div>
 		</div>
+	</xsl:template>
+	
+	<xsl:template match="return">
+		<section class="return">
+			<h3>Returns</h3>
+			<div class="item">
+				<xsl:if test="not(type[@key])">
+					<xsl:value-of select="type/@name"/>
+				</xsl:if>
+				<xsl:if test="type[@key]">
+					<a href="{type/@key}.htm">
+						<xsl:value-of select="type/@name"/>
+					</a>
+				</xsl:if>
+			</div>
+			<div class="returns">
+				<xsl:value-of select="returns" />
+			</div>
+		</section>
 	</xsl:template>
 
 	<xsl:template match="exceptions">
