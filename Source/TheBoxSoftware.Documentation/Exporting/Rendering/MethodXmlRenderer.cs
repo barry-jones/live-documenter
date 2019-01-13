@@ -60,6 +60,70 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 RenderGenericTypeParameters(_member.GetGenericTypes(), writer, comment);
             }
 
+            RenderParameters(writer, comment);
+            RenderExceptionBlock(_member, writer, comment);
+            RenderPermissionBlock(_member, writer, comment);
+
+            if (comment != XmlCodeComment.Empty)
+            {
+                RenderXmlBlock(writer, comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement));
+            }
+
+            RenderSyntaxBlocks(_member, writer);
+            RenderReturnsBlock(writer, comment);
+
+            if (comment != XmlCodeComment.Empty)
+            {
+                RenderXmlBlock(writer, comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement));
+                RenderXmlBlock(writer, comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement));
+                RenderXmlBlock(writer, comment.Elements.Find(currentBlock => currentBlock is SeeAlsoXmlCodeElement));
+            }
+
+            RenderSeeAlsoBlock(_member, writer, comment);
+
+            writer.WriteEndElement();
+        }
+
+        private void RenderReturnsBlock(System.Xml.XmlWriter writer, XmlCodeComment comment)
+        {
+            TypeRef returnTypeRef = _member.GetReturnType();
+
+            if (returnTypeRef == WellKnownTypeDef.Void)
+                return;
+
+            writer.WriteStartElement("returns");
+
+            // write the details of the type and link details if available
+            writer.WriteStartElement("type");
+            TypeDef foundEntry = _member.Assembly.FindType(returnTypeRef.Namespace, returnTypeRef.Name);
+
+            writer.WriteAttributeString("name", returnTypeRef.GetDisplayName(false));
+            if (foundEntry != null)
+            {
+                writer.WriteAttributeString("key", foundEntry.GetGloballyUniqueId().ToString());
+                writer.WriteAttributeString("cref", CRefPath.Create(foundEntry).ToString());
+            }
+            writer.WriteEndElement();
+
+            // output the returns comment xml element if available
+            if (comment != XmlCodeComment.Empty)
+            {
+                RenderXmlBlock(writer, comment.Elements.Find(currentBlock => currentBlock is ReturnsXmlCodeElement));
+            }
+
+            writer.WriteEndElement();
+        }
+
+        private void RenderXmlBlock(System.Xml.XmlWriter writer, XmlCodeElement element)
+        {
+            if (element != null)
+            {
+                Serialize(element, writer);
+            }
+        }
+
+        private void RenderParameters(System.Xml.XmlWriter writer, XmlCodeComment comment)
+        {
             if (_member.Parameters.Count > 0)
             {
                 writer.WriteStartElement("parameters");
@@ -103,55 +167,6 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
                 }
                 writer.WriteEndElement();
             }
-
-            RenderExceptionBlock(_member, writer, comment);
-            RenderPermissionBlock(_member, writer, comment);
-
-            // find and output the summary
-            if (comment != XmlCodeComment.Empty)
-            {
-                XmlCodeElement summary = comment.Elements.Find(currentBlock => currentBlock is SummaryXmlCodeElement);
-                if (summary != null)
-                {
-                    Serialize(summary, writer);
-                }
-            }
-
-            RenderSyntaxBlocks(_member, writer);
-
-            // find and output the summary
-            if (comment != XmlCodeComment.Empty)
-            {
-                XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is RemarksXmlCodeElement);
-                if (remarks != null)
-                {
-                    Serialize(remarks, writer);
-                }
-            }
-
-            // find and output the examples
-            if (comment != XmlCodeComment.Empty)
-            {
-                XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is ExampleXmlCodeElement);
-                if (remarks != null)
-                {
-                    Serialize(remarks, writer);
-                }
-            }
-
-            // find and output the see also
-            if (comment != XmlCodeComment.Empty)
-            {
-                XmlCodeElement remarks = comment.Elements.Find(currentBlock => currentBlock is SeeAlsoXmlCodeElement);
-                if (remarks != null)
-                {
-                    Serialize(remarks, writer);
-                }
-            }
-
-            RenderSeeAlsoBlock(_member, writer, comment);
-
-            writer.WriteEndElement();
         }
     }
 }

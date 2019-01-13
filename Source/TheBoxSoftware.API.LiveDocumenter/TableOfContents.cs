@@ -72,7 +72,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// Gets the ContentEntry at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the ContentEntry to return.</param>
-        /// <returns>The ContentEntry at the specified index.</returns>
+        /// <value>The object at position <paramref name="index"/></value>
         public ContentEntry this[int index]
         {
             get
@@ -84,6 +84,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// <summary>
         /// Returns the number of top level elements in this <see cref="Documentation"/>.
         /// </summary>
+        /// <value>The number of elements at the top level of the TOC.</value>
         public int Count
         {
             get { return _document.Map.Count; }
@@ -92,6 +93,7 @@ namespace TheBoxSoftware.API.LiveDocumenter
         /// <summary>
         /// Indicates if the collection is read only.
         /// </summary>
+        /// <value>Wether or not the collection is read only.</value>
         public bool IsReadOnly
         {
             get { return true; }

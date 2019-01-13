@@ -112,6 +112,20 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
+        /// Returns the <see cref="TypeRef"/> for the return type. For methods with no
+        /// return value, this will be the WellKnownType void.
+        /// </summary>
+        /// <returns>The TypeRef fo the turn type.</returns>
+        public TypeRef GetReturnType()
+        {
+            ReturnTypeSignatureToken returnType = (ReturnTypeSignatureToken)Signiture.Tokens.Find(
+                t => t.TokenType == SignatureTokens.ReturnType
+                );
+            TypeDetails details = returnType.GetTypeDetails(this);
+            return details.Type;
+        }
+
+        /// <summary>
         /// Obtains the Intermediate Language instructions for this method
         /// </summary>
         /// <param name="address">The address of the start of the actual code</param>
