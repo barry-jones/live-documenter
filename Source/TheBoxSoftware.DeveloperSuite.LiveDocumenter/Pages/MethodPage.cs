@@ -140,17 +140,45 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
 
             Blocks.Add(new Header3("Returns"));
 
-            // get details fo the Type being returned
-            EntryKey typeKey = null;
-            string typeName = returnTypeRef.GetDisplayName(false);
+            (EntryKey typeKey, string typeName) = CreateEntryKey(returnTypeRef);
 
-            if (returnTypeRef is TypeDef)
+            // build the page output
+            Inline type = new Run(typeName);
+            if (typeKey != null)
             {
-                typeKey = new EntryKey(returnTypeRef.GetGloballyUniqueId());
+                type = new Hyperlink(new Run(typeName));
+                ((Hyperlink)type).Tag = typeKey;
+                ((Hyperlink)type).Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
+            }
+
+            Blocks.Add(new Paragraph(type));
+
+            if (parsedBlocks != null)
+            {
+                Block found = parsedBlocks.Find(currentBlock => currentBlock is Returns);
+                if (found != null)
+                    Blocks.Add(found);
+            }
+        }
+
+        /// <summary>
+        /// Attempts to resolve the provided TypeRef to an EntryKey which can be used to create
+        /// a link to the return type.
+        /// </summary>
+        /// <param name="typeReference">The TypeRef to resolve</param>
+        /// <returns>The resolved EntryKey or null if not found.</returns>
+        private (EntryKey, string) CreateEntryKey(TypeRef typeReference)
+        {
+            EntryKey typeKey = null;
+            string typeName = typeReference.GetDisplayName(false);
+            if (typeReference is TypeDef) // TypeDef as it is defined in same library as method
+            {
+                typeKey = new EntryKey(typeReference.GetGloballyUniqueId());
             }
             else
             {
-                CRefPath path = new CRefPath(returnTypeRef);
+                // check all other loaded libraries to try and resolve type
+                CRefPath path = new CRefPath(typeReference);
                 Documentation.Entry found = LiveDocumentorFile.Singleton.LiveDocument.Find(path);
                 if (found != null)
                 {
@@ -162,28 +190,7 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages
                     typeKey = null;
                 }
             }
-
-            // build the page output
-            Inline type = null;
-            if (typeKey != null)
-            {
-                type = new Hyperlink(new Run(typeName));
-                ((Hyperlink)type).Tag = typeKey;
-                ((Hyperlink)type).Click += new System.Windows.RoutedEventHandler(LinkHelper.Resolve);
-            }
-            else
-            {
-                type = new Run(typeName);
-            }
-
-            Blocks.Add(new Paragraph(type));
-
-            if (parsedBlocks != null)
-            {
-                Block found = parsedBlocks.Find(currentBlock => currentBlock is Returns);
-                if(found != null)
-                    Blocks.Add(found);
-            }
+            return (typeKey, typeName);
         }
     }
 }
