@@ -313,7 +313,7 @@ namespace TheBoxSoftware.Reflection.Signatures
 
         private bool ShouldConvertParameters()
         {
-            return _method.Parameters.Count > 0 && _property != null;
+            return _method.Parameters.Count > 0;
         }
 
         private void ConvertAndIncludeTypeName(StringBuilder converted)

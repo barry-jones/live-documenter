@@ -41,11 +41,11 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             {
                 if(i != 0)
                 {
-                    tokens.Add(new SyntaxToken($",{Environment.NewLine}", SyntaxTokens.Text));
+                    tokens.Add(new SyntaxToken($",{Environment.NewLine}\t", SyntaxTokens.Text));
                 }
                 else
                 {
-                    tokens.Add(new SyntaxToken(Environment.NewLine, SyntaxTokens.Text));
+                    tokens.Add(new SyntaxToken($"{Environment.NewLine}\t", SyntaxTokens.Text));
                 }
 
                 // need to check out first as out is also by ref
