@@ -6,6 +6,9 @@ namespace TheBoxSoftware.Exporter
     using System.Linq;
     using TheBoxSoftware.Reflection;
 
+    /// <summary>
+    /// Reads and processes the command line arguments for the Exporter application.
+    /// </summary>
     internal class Parameters
     {
         private const string DefaultFormat = "web-msdn.ldec";
@@ -25,16 +28,16 @@ namespace TheBoxSoftware.Exporter
 
         public void Read(string[] parameters)
         {
-            _hasParameters = hasParameters(parameters);
+            _hasParameters = CheckForParameters(parameters);
 
             if (_hasParameters)
             {
-                readFileToExport(parameters);
-                readVerbosity(parameters);
-                readFormats(parameters);
-                readTo(parameters);
-                readFilters(parameters);
-                readHelp(parameters);
+                ReadFileToExport(parameters);
+                ReadVerbosity(parameters);
+                ReadFormats(parameters);
+                ReadTo(parameters);
+                ReadFilters(parameters);
+                ReadHelp(parameters);
             }
         }
 
@@ -57,7 +60,7 @@ namespace TheBoxSoftware.Exporter
                 readValue = parameters[indexOfValue];
             }
 
-            if (valueIsAParameter(readValue))
+            if (ValueIsAParameter(readValue))
             {
                 readValue = string.Empty;
             }
@@ -65,22 +68,22 @@ namespace TheBoxSoftware.Exporter
             return readValue;
         }
 
-        private bool valueIsAParameter(string readValue)
+        private bool ValueIsAParameter(string readValue)
         {
             return PARAMETERS.Contains(readValue);
         }
 
-        private bool hasParameters(string[] parameters)
+        private bool CheckForParameters(string[] parameters)
         {
             return parameters != null && parameters.Length > 0;
         }
 
-        private void readFileToExport(string[] parameters)
+        private void ReadFileToExport(string[] parameters)
         {
             _export = parameters[0];
         }
 
-        private void readVerbosity(string[] parameters)
+        private void ReadVerbosity(string[] parameters)
         {
             for (int i = 0; i < parameters.Length; i++)
             {
@@ -91,7 +94,7 @@ namespace TheBoxSoftware.Exporter
             }
         }
 
-        private void readHelp(string[] parameters)
+        private void ReadHelp(string[] parameters)
         {
             for (int i = 0; i < parameters.Length; i++)
             {
@@ -102,7 +105,7 @@ namespace TheBoxSoftware.Exporter
             }
         }
 
-        private void readFormats(string[] parameters)
+        private void ReadFormats(string[] parameters)
         {
             int index = Array.IndexOf(parameters, "-format");
             if (index != -1)
@@ -115,7 +118,7 @@ namespace TheBoxSoftware.Exporter
             }
         }
 
-        private void readTo(string[] parameters)
+        private void ReadTo(string[] parameters)
         {
             int index = Array.IndexOf(parameters, "-to");
             if (index != -1)
@@ -124,7 +127,7 @@ namespace TheBoxSoftware.Exporter
             }
         }
 
-        private void readFilters(string[] parameters)
+        private void ReadFilters(string[] parameters)
         {
             int index = Array.IndexOf(parameters, "-filters");
             string value = string.Empty;
@@ -135,28 +138,28 @@ namespace TheBoxSoftware.Exporter
 
             if(string.IsNullOrEmpty(value))
             {
-                addDefaultVisibilityFilters();
+                AddDefaultVisibilityFilters();
             }
             else
             {
-                convertFilters(value);
+                ConvertFilters(value);
             }
         }
 
-        private void convertFilters(string value)
+        private void ConvertFilters(string value)
         {
             foreach (string current in value.Split('|'))
             {
-                object parsed = null;
-                bool hasParsed = Enum.TryParse(typeof(Visibility), current, true, out parsed);
+                Visibility parsed;
+                bool hasParsed = Enum.TryParse<Visibility>(current, true, out parsed);
                 if (hasParsed)
-                    _filters.Add((Visibility)parsed);
+                    _filters.Add(parsed);
                 else
                     throw new InvalidParameterException("formats", current);
             }
         }
 
-        private void addDefaultVisibilityFilters()
+        private void AddDefaultVisibilityFilters()
         {
             _filters.Add(Visibility.Public);
         }

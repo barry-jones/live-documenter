@@ -2,7 +2,7 @@
   "profiles": {
     "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter": {
       "commandName": "Project",
-      "commandLineArgs": "theboxsoftware.reflection.dll -to c:\\temp\\test -format \"web-msdn.ldec\""
+      "commandLineArgs": "theboxsoftware.reflection.dll -to c:\\temp\\test -format \"xml.ldec\" -filters \"public|protected|internal|internalprotected|private\""
     }
   }
 }
