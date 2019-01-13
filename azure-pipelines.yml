@@ -40,7 +40,8 @@ steps:
 
     echo Publishing "$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj""
     cd "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter"
-    dotnet publish -c $(BuildConfiguration) -o "$(System.DefaultWorkingDirectory)\published\exporter"
+    dotnet publish -c $(BuildConfiguration) -f net471 -o "$(System.DefaultWorkingDirectory)\published\exporter\net471"
+    dotnet publish -c $(BuildConfiguration) -f netcoreapp2.2 -o "$(System.DefaultWorkingDirectory)\published\exporter\netcoreapp2.2"
     cd "$(System.DefaultWorkingDirectory)"
 
     echo Copying desktop application to release directory
