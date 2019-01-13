@@ -48,10 +48,6 @@ using TheBoxSoftware.API.LiveDocumenter
     <exception cref="ArgumentException">
       Thrown when the provided parameter <paramref name="forDocument" /> is null or empty.
     </exception>
-    <exception cref="LicenceException">
-      Thrown when there is an issue with the license. Please read the messge for more details and contact
-      support@theboxsoftware if you require assitance.
-    </exception>
   </member>
 
   <member name="GetDocumentationFor.key">
