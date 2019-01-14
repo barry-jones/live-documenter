@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/release/barry-jones/live-documenter.svg)](https://github.com/barry-jones/live-documenter/releases/tag/v2.0.5)
 [![Build Status](https://dev.azure.com/barryjones78/livedocumenter/_apis/build/status/barry-jones.live-documenter?branchName=master)](https://dev.azure.com/barryjones78/livedocumenter/_build/latest?definitionId=1?branchName=master)
 
-> __Live Documenter__ is a suite of applications and libraries that enable the live viewing and automatic generation of documentation from .NET code and xml comment files. Learn what Live Documenter is from our [homepage](/) and [download](/download) the latest version.
+> __Live Documenter__ is a suite of applications and libraries that enable the live viewing and automatic generation of documentation from .NET code and xml comment files. Learn what Live Documenter is from our [homepage](https://livedocumenter.barryjones.me.uk/docs) and [download](https://livedocumenter.barryjones.me.uk/download) the latest version.
 
 #### Desktop Application
 Desktop application allows visual studio projects, solutions or libraries to be opened and documentation
