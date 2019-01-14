@@ -7,22 +7,35 @@
 
 > __Live Documenter__ is a suite of applications and libraries that enable the live viewing and automatic generation of documentation from .NET code and xml comment files. Learn what Live Documenter is from our [homepage](https://livedocumenter.barryjones.me.uk/docs) and [download](https://livedocumenter.barryjones.me.uk/download) the latest version.
 
-#### Desktop Application
-Desktop application allows visual studio projects, solutions or libraries to be opened and documentation
+__View documentaion live and up to date!__
+
+![Live Documenter](/readme/images/ld_view_live.png)
+
+__Create beautiful static documentation.__
+
+![Live Documenter](/readme/images/web_refresh.png)
+
+Or use the API library to integrate in to your own projects.
+
+## Introduction
+
+The Live Documenter is a desktop application, console utility and API library designed to make your .NET code and comments more readable and more available. Lets free them from the confines of the xml squirrelled away in your source code and put them to good use!
+
+Get started by downloading the [latest version](https://livedocumenter.barryjones.me.uk/download) and reading the quick [start guide](https://livedocumenter.barryjones.me.uk/doc).
+
+### Desktop Application
+The desktop application allows visual studio projects, solutions or libraries to be opened and documentation
 generated for them from the XML comment files live. If changes are made to the codebase these are reflected
 in the application when the project is re-built.
 
 It also provides a nice interface for exporting documentation, reading and printing.
 
-![Live Documenter](/readme/images/ld-open-docs.png)
+### Console Application
+The exporter application is useful for integrating documentation generation in to existing processes; such as your build scripts or creating ad-hoc documentation.
 
-#### Console Application
-Command line application that can be used to generate documentation from a configuration xml file. This is 
-useful for exporting configuration as part of the build process.
+![Console application](/readme/images/ld_console_preview.png)
 
-![Live Documenter](/readme/images/command-line-output.png)
-
-#### API Library
+### API Library
 A DLL that can be referenced by projects to automatically generate documentation at runtime. Details of the 
 API and how to use it can be found in the [documentation][1].
 
@@ -43,5 +56,12 @@ Requirements
 The latest code has been worked on in Visual Studio 2017 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
 
 __Please let me know if there are any issues building from source so I can resolve them.__
+
+## Helping the project
+All help is appreciated. There is an [associated documentation](https://github.com/barry-jones/livedocumenter-site) site that can always be improved.
+
+If you would like to get involved in the project, please take a look at the current issues. Make a note of your interest, get the latest version and create a pull request when you are ready to merge the changes.
+
+Also simply providing feedback via GitHub issues helps to make sure the project is being made more stable and is being constantly enhanced.
 
 [1]: https://livedocumenter.barryjones.me.uk/docs/api/index.html
