@@ -38,7 +38,7 @@ To install, download the required MSI files from the release page and run the in
 
 Requirements
 -  .NET Core SDK 2.2
--  .NET Framework 4.6.1
+-  .NET Framework 4.7.1
 
 The latest code has been worked on in Visual Studio 2017 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
 
