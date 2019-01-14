@@ -77,6 +77,32 @@
         }
 
         [Test]
+        public void Parameters_WhenMultipleFiltersAreProvided_FiltersAreParsed()
+        {
+            const Visibility EXPECTED = Visibility.Public;
+            string[] input = new string[] { "mylib.dll", "-filters", "public|internal|protected", "-to", "c:\\alocation", "-v" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.That(3, Is.EqualTo(parameters.Filters.Count));
+            Assert.AreEqual(EXPECTED, parameters.Filters[0]);
+        }
+
+        [Test]
+        public void Parameters_WhenFiltersIsAll_FiltersAreSpreadToFullList()
+        {
+            const Visibility EXPECTED = Visibility.Public;
+            string[] input = new string[] { "mylib.dll", "-filters", "all", "-to", "c:\\alocation", "-v" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.That(5, Is.EqualTo(parameters.Filters.Count));
+            Assert.Contains(EXPECTED, parameters.Filters);
+        }
+
+        [Test]
         public void Parameters_WheHelpRequested_ShowHelpIsTrue()
         {
             const bool EXPECTED = true;

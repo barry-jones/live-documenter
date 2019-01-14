@@ -12,6 +12,13 @@ namespace TheBoxSoftware.Exporter
     internal class Parameters
     {
         private const string DefaultFormat = "web-msdn.ldec";
+        private readonly Visibility[] AllVisibilities = {
+            Visibility.Public,
+            Visibility.Protected,
+            Visibility.Internal,
+            Visibility.InternalProtected,
+            Visibility.Private
+        };
         private readonly string[] PARAMETERS = { "-v", "-h", "-format", "-f", "-filters", "-to" };
 
         private bool _showVerbose = false;
@@ -150,6 +157,11 @@ namespace TheBoxSoftware.Exporter
         {
             foreach (string current in value.Split('|'))
             {
+                if(IsAllParameter(current))
+                {
+                    return;
+                }
+
                 Visibility parsed;
                 bool hasParsed = Enum.TryParse<Visibility>(current, true, out parsed);
                 if (hasParsed)
@@ -157,6 +169,17 @@ namespace TheBoxSoftware.Exporter
                 else
                     throw new InvalidParameterException("formats", current);
             }
+        }
+
+        private bool IsAllParameter(string current)
+        {
+            if (string.Compare(current, "all", true) != 0)
+                return false;
+
+            _filters.Clear();
+            _filters.AddRange(AllVisibilities);
+
+            return true;
         }
 
         private void AddDefaultVisibilityFilters()
