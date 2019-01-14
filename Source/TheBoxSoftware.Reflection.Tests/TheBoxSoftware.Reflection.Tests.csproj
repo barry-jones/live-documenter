@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj" />
     <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
   </ItemGroup>
 

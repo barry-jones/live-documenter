@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration
     [TestFixture]
     public class AssemblyDefTests
     {
-        private const string TestFile = @"..\..\..\..\testoutput\documentationtest.dll";
+        private const string TestFile = @"documentationtest.dll";
 
         private AssemblyDef _assemblyDef;
 
