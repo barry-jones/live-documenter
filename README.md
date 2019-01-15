@@ -11,13 +11,15 @@ Live Documenter is a suite of applications and libraries that enable the live vi
 
 __View documentation live and up to date!__
 
-![Live Documenter](/readme/images/ld_view_live.png)
+<img src="readme/images/ld_view_live.png" style="border-radius: 3px;  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);" />
 
 __Create beautiful static documentation.__
 
-![Live Documenter](/readme/images/web_refresh.png)
+<img src="readme/images/web_refresh.png" style="border-radius: 3px;  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);" />
 
 Or use the API library to integrate in to your own projects.
+
+***
 
 ## Introduction
 
@@ -33,7 +35,7 @@ It also provides a nice interface for exporting documentation, reading and print
 ### Console Application
 The exporter application is useful for integrating documentation generation in to existing processes; such as your build scripts or creating ad-hoc documentation.
 
-![Console application](/readme/images/ld_console_preview.png)
+<img src="readme/images/ld_console_preview.png" style="border-radius: 3px;  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);" />
 
 ### API Library
 A DLL that can be referenced by projects to automatically generate documentation at runtime. Details of the API and how to use it can be found in the [documentation][1].
