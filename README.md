@@ -9,7 +9,7 @@ __Don't let comments hide in your source code! Read it, search it and publish it
 
 Live Documenter is a suite of applications and libraries that enable the live viewing and automatic generation of documentation from .NET code and xml comment files. Learn what Live Documenter is from our [homepage](https://livedocumenter.barryjones.me.uk/docs) and [download](https://livedocumenter.barryjones.me.uk/download) the latest version.
 
-__View documentaion live and up to date!__
+__View documentation live and up to date!__
 
 ![Live Documenter](/readme/images/ld_view_live.png)
 
@@ -26,9 +26,7 @@ The Live Documenter is a desktop application, console utility and API library de
 Get started by downloading the [latest version](https://livedocumenter.barryjones.me.uk/download) and reading the quick [start guide](https://livedocumenter.barryjones.me.uk/doc).
 
 ### Desktop Application
-The desktop application allows visual studio projects, solutions or libraries to be opened and documentation
-generated for them from the XML comment files live. If changes are made to the codebase these are reflected
-in the application when the project is re-built.
+The desktop application allows visual studio projects, solutions or libraries to be opened and documentation generated for them from the XML comment files live. If changes are made to the codebase these are reflected in the application when the project is re-built.
 
 It also provides a nice interface for exporting documentation, reading and printing.
 
@@ -38,15 +36,13 @@ The exporter application is useful for integrating documentation generation in t
 ![Console application](/readme/images/ld_console_preview.png)
 
 ### API Library
-A DLL that can be referenced by projects to automatically generate documentation at runtime. Details of the 
-API and how to use it can be found in the [documentation][1].
+A DLL that can be referenced by projects to automatically generate documentation at runtime. Details of the API and how to use it can be found in the [documentation][1].
 
 ## Installation
 This will only work on Windows at the moment, work is ongoing to transfer to netstandard 
 and to make everything except the desktop application cross platform on .NET Core.
 
-The installers are provided in the release pages for the 
-[latest version](https://github.com/barry-jones/live-documenter/releases) MSI files are provided seperately. 
+The installers are provided in the release pages for the [latest version](https://github.com/barry-jones/live-documenter/releases) MSI files are provided separately. 
 To install, download the required MSI files from the release page and run the installer.
 
 ## Build Latest
