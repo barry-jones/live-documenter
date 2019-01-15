@@ -32,7 +32,7 @@
         <KeyBinding Key="Escape" Command="ApplicationCommands.Close" />
     </Window.InputBindings>
 
-    <Grid DataContext="{Binding cb:UserApplicationStore.Store}">
+    <Grid DataContext="{Binding UserApplicationStore.Store}">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.289*" />
             <RowDefinition />
@@ -73,7 +73,7 @@
                 <Button Width="57.893" Height="25" Margin="5,7.074,0,7.073" Click="Cancel">
                     <TextBlock Text="Cancel" Padding="5,3,5,3" />
                 </Button>
-                <Button Width="56.75" Height="25" Margin="5,7.074,3,7.073" Click="Apply" d:LayoutOverrides="VerticalMargin">
+                <Button Width="56.75" Height="25" Margin="5,7.074,3,7.073" Click="Apply">
                     <TextBlock Text="Apply" Padding="5,3,5,3" />
                 </Button>
             </StackPanel>

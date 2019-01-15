@@ -116,13 +116,18 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			}
 		}
 
-		/// <summary>
-		/// Command binding event handler, checks if a command executed by the user can be
-		/// handled by the application in its current state.
-		/// </summary>
-		/// <param name="sender">Calling object</param>
-		/// <param name="e">Event arguments</param>
-		private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// Command binding event handler, checks if a command executed by the user can be
+        /// handled by the application in its current state.
+        /// </summary>
+        /// <param name="sender">Calling object</param>
+        /// <param name="e">Event arguments</param>
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 			if (e.Command == ApplicationCommands.Close) {
 				e.CanExecute = true;
 			}

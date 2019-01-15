@@ -113,5 +113,10 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter {
 			public TheBoxSoftware.Reflection.Visibility Visibility { get; set; }
 			public bool IsSelected { get; set; }
 		}
-	}
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
 }
