@@ -57,7 +57,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             }
             if(parameters.Count > 0)
             {
-                tokens.Add(new SyntaxToken(Environment.NewLine, SyntaxTokens.Text));
+                tokens.Add(new SyntaxToken("\n\t", SyntaxTokens.Text));
             }
             tokens.Add(new SyntaxToken(")", SyntaxTokens.Text));
 
