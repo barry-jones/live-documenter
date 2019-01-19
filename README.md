@@ -2,7 +2,7 @@
 
 # Live Documenter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Live%20Documenter%20on%20GitHub.%20.NET%20documentation%20generator&url=https://github.com/barry-jones/live-documenter&hashtags=.net,xml_comments,documentation,generator,developers,livedocumenter)
 
-[![](https://img.shields.io/github/release/barry-jones/live-documenter.svg)](https://github.com/barry-jones/live-documenter/releases/tag/v2.0.5)
+[![](https://img.shields.io/github/release/barry-jones/live-documenter.svg)](https://github.com/barry-jones/live-documenter/releases)
 [![Build Status](https://dev.azure.com/barryjones78/livedocumenter/_apis/build/status/barry-jones.live-documenter?branchName=master)](https://dev.azure.com/barryjones78/livedocumenter/_build/latest?definitionId=1?branchName=master)
 
 __Don't let comments hide in your source code! Read it, search it and publish it with Live Documenter. Documentation for .NET made easy.__
