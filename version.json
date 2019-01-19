@@ -7,6 +7,8 @@
   "cloudBuild": {
     "buildNumber": {
       "enabled": true
-    }
+    },
+    "setVersionVariables": true,
+    "setAllVariables": true
   }
 }
