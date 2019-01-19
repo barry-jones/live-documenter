@@ -7,12 +7,10 @@ namespace TheBoxSoftware.Documentation
     using TheBoxSoftware.Reflection.Comments;
 
     /// <summary>
-    /// Creates <see cref="DocumentMap"/>s based on the <see cref="Assemblies"/> and <see cref="Settings"/> provided.
+    /// DocumentMappers handle how a set of <see cref="DocumentedAssembly"/>s
+    /// are structured. They create a searchable structured table of contents.
     /// </summary>
-    /// <remarks>
-    /// <para>The document mapper creates a hierarchical representation of all of the entries in the documentation step. It
-    /// is also the area where the decision about which details are provided easily for sorting and searching.</para>
-    /// </remarks>
+    /// <include file='code-documentation\members.xml' path='members/member[@name="DocumentMapper"]/entry[@name="Class"]'/>
     public abstract class DocumentMapper : IDocumentMapper
     {
         private EventHandler<PreEntryAddedEventArgs> _preEntryAddedEvent;
@@ -24,21 +22,12 @@ namespace TheBoxSoftware.Documentation
         /// <summary>
         /// Factory method for creating new DocumentMappers.
         /// </summary>
-        /// <param name="assemblies">The assemblies to map.</param>
-        /// <param name="typeOfMapper">The type of document mapper to instiate.</param>
-        /// <param name="useObservableCollection">Wether or not to create an observable collection.</param>
-        /// <param name="creator">The EntryCreator used to create new Entry instances.</param>
-        /// <returns>The instantiated and initialised DocumentMapper.</returns>
-        /// <exception cref="InvalidOperationException">
-        /// The provided <paramref name="typeOfMapper"/> has no implementation, the document mapper failed to be
-        /// created.
-        /// </exception>
+        /// <include file='code-documentation\members.xml' path='members/member[@name="DocumentMapper"]/entry[@name="Create"]'/>
         public static IDocumentMapper Create(List<DocumentedAssembly> assemblies,
             Mappers typeOfMapper,
             bool useObservableCollection,
             EntryCreator creator)
         {
-
             DocumentMapper mapper = null;
 
             switch (typeOfMapper)
