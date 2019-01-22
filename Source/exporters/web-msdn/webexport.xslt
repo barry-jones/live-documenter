@@ -316,7 +316,7 @@
 
 	<xsl:template name="footer">
 		<div class="footer">
-			Produced by the <a href="http://theboxsoftware.com/products/live-documenter/">Live Documenter</a> developed by <a href="http://theboxsoftware.com">The Box Software</a>.
+			Produced by the <a href="https://livedocumenter.barryjones.me.uk/">Live Documenter</a>.
 		</div>
 	</xsl:template>
 
