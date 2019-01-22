@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Documentation
 
     /// <summary>
     /// DocumentMappers handle how a set of <see cref="DocumentedAssembly"/>s
-    /// are structured. They create a searchable structured table of contents.
+    /// are structured. The create a searchable structured table of contents.
     /// </summary>
     /// <include file='code-documentation\members.xml' path='members/member[@name="DocumentMapper"]/entry[@name="Class"]'/>
     public abstract class DocumentMapper : IDocumentMapper

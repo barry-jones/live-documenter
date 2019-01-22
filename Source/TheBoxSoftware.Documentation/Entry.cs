@@ -7,6 +7,11 @@ namespace TheBoxSoftware.Documentation
     using TheBoxSoftware.Reflection;
     using Reflection.Comments;
 
+    /// <summary>
+    /// Class that represents an entry in the live document, relates to a single page
+    /// so defines the details of a method, type assembly and diagram pages etc.It
+    /// contains information to populate the document tree in the user interface.
+    /// </summary>
     /// <include file='code-documentation\entry.xml' path='docs/entry/member[@name="entry"]/*' />
 	[System.Diagnostics.DebuggerDisplay("Key: {Key} SubKey: {SubKey}")]
     public class Entry : INotifyPropertyChanged, IComparable<Entry>

@@ -2,11 +2,6 @@
   <entry>
     
     <member name="entry">
-      <summary>
-        Class that represents an entry in the live document, relates to a single page
-        so defines the details of a method, type assembly and diagram pages etc. It
-        contains information to populate the document tree in the user interface.
-      </summary>
       <remarks>
         <para>Keys are unique et</para>
       </remarks>
