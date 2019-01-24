@@ -29,7 +29,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.PEViewer", "Source\TheBoxSoftware.DeveloperSuite.PeViewer\TheBoxSoftware.DeveloperSuite.PEViewer.csproj", "{E23C4A5D-127A-48B1-A17E-4972054A078F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests", "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.csproj", "{52CDFDA7-2D70-4BC2-A1D0-94389F4DA3F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests", "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.csproj", "{52CDFDA7-2D70-4BC2-A1D0-94389F4DA3F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "performance", "performance", "{D63B992C-4FB5-46D2-A0F3-FCFA10AA3C6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,7 @@ Global
 		{A1DC656F-CF25-43A1-93E6-7AB3AA57B194} = {7192C60D-8AE6-45BF-9203-FAEB23996D34}
 		{E23C4A5D-127A-48B1-A17E-4972054A078F} = {7192C60D-8AE6-45BF-9203-FAEB23996D34}
 		{52CDFDA7-2D70-4BC2-A1D0-94389F4DA3F1} = {AE045A3E-5EC9-4489-A462-BB8724E01A8A}
+		{D63B992C-4FB5-46D2-A0F3-FCFA10AA3C6D} = {AE045A3E-5EC9-4489-A462-BB8724E01A8A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AFDAF445-C383-45F4-8186-5BC8991D9CF2}

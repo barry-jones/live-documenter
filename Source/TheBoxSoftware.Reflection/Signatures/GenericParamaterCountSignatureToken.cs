@@ -32,5 +32,10 @@ namespace TheBoxSoftware.Reflection.Signatures
         {
             return $"[GenParamCount: {_count}]";
         }
+
+        public uint Count
+        {
+            get => _count;
+        }
     }
 }

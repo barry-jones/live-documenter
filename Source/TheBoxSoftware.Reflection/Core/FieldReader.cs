@@ -54,7 +54,6 @@ namespace TheBoxSoftware.Reflection.Core
             return BitConverter.ToUInt16(value, offset);
         }
 
-#if DEBUG
         public static string ToHexString(byte[] source, int start, int length)
         {
             byte[] temp = new byte[length];
@@ -69,6 +68,5 @@ namespace TheBoxSoftware.Reflection.Core
 
             return builder.ToString();
         }
-#endif
     }
 }

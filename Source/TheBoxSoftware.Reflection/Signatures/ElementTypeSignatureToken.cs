@@ -144,7 +144,10 @@ namespace TheBoxSoftware.Reflection.Signatures
         /// <returns>A string</returns>
         public override string ToString()
         {
-            return $"[ElementType: {Definition}] ";
+            if (Definition != null)
+                return $"[ElementType: {Definition}";
+            
+            return $"[ElementType: {ElementType} {Token}] ";
         }
 
         /// <summary>
