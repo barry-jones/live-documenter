@@ -7,13 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BenchmarkDotNet.Artifacts\**" />
+    <EmbeddedResource Remove="BenchmarkDotNet.Artifacts\**" />
+    <None Remove="BenchmarkDotNet.Artifacts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.11.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\1. Tests\99. Old\DocumentationTest\DocumentationTest.csproj" />
     <ProjectReference Include="..\..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj" />
     <ProjectReference Include="..\..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
     <ProjectReference Include="..\..\TheBoxSoftware\TheBoxSoftware.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Reflection\Signatures\" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ namespace DocumentationTest {
 	/// <summary>
 	/// Summary for the interface. <see cref="Method"/>
 	/// </summary>
-	interface InterfaceTest {
+	public interface InterfaceTest {
 		/// <summary>
 		/// Summary for Method
 		/// </summary>

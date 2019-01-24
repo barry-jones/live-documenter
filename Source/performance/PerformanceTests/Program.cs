@@ -13,10 +13,11 @@ namespace PerformanceTests
             var gcDiagnoser = new MemoryDiagnoser();
             config.Add(gcDiagnoser);
 
-            BenchmarkRunner.Run<Reflection.Core.PeCoffFileBenchmark>();
-            BenchmarkRunner.Run<Reflection.Core.COFF.StringStreamBenchmark>();
-            BenchmarkRunner.Run<Reflection.AssemblyDefBenchmark>();
-            BenchmarkRunner.Run<Reflection.Syntax.CSharp.ClassFormatterBenchmark>();
+            //BenchmarkRunner.Run<Reflection.Core.PeCoffFileBenchmark>();
+            //BenchmarkRunner.Run<Reflection.Core.COFF.StringStreamBenchmark>();
+            //BenchmarkRunner.Run<Reflection.AssemblyDefBenchmark>();
+            //BenchmarkRunner.Run<Reflection.Syntax.CSharp.ClassFormatterBenchmark>();
+            BenchmarkRunner.Run<Reflection.DisplayNameSignatureBenchmark>();
         }
     }
 }
