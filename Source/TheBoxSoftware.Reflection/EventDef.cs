@@ -9,10 +9,14 @@ namespace TheBoxSoftware.Reflection
     /// <seealso cref="MethodDef"/>
     public sealed class EventDef : ReflectedMember
     {
-        private TypeDef _containingType;
+        private readonly TypeDef _containingType;
 
-        public EventDef() { }
-
+        /// <summary>
+        /// Initialises a new instance of EventDef with the provided details.
+        /// </summary>
+        /// <param name="name">The name of the event.</param>
+        /// <param name="definingAssembly">The assembly the event is defined in.</param>
+        /// <param name="containingType">The type the event is declared in.</param>
         public EventDef(string name, AssemblyDef definingAssembly, TypeDef containingType)
         {
             Name = name;
@@ -83,7 +87,6 @@ namespace TheBoxSoftware.Reflection
         public TypeDef Type
         {
             get { return _containingType; }
-            set { _containingType = value; }
         }
 
         public override Visibility MemberAccess
