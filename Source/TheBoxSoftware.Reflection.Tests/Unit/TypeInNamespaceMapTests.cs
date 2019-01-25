@@ -16,14 +16,26 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void Add_ItemShouldBeAdded()
+        public void Add_WhenNewNamespace_NamespaceAdded()
         {
-            const int ExpectedCount = 1;
+            const int Expected = 1;
             TypeInNamespaceMap map = new TypeInNamespaceMap();
 
-            map.Add(CreateType(string.Empty, string.Empty));
+            map.Add(CreateType("New", "Type"));
 
-            Assert.AreEqual(ExpectedCount, map.GetAllNamespaces().Count);
+            Assert.That(Expected == map.GetAllNamespaces().Count);
+        }
+
+        [Test]
+        public void Add_WhenNamespaceExists_NoNamespaceAdded()
+        {
+            const int Expected = 1;
+            TypeInNamespaceMap map = new TypeInNamespaceMap();
+
+            map.Add(CreateType("New", "Type"));
+            map.Add(CreateType("New", "SecondType"));
+
+            Assert.That(Expected == map.GetAllNamespaces().Count);
         }
 
         [Test]
