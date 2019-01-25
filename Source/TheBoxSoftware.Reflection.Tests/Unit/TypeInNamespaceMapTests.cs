@@ -8,7 +8,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
     public class TypeInNamespaceMapTests
     {
         [Test]
-        public void WhenCreated_ShouldHaveNoEntries()
+        public void Create_ShouldHaveNoEntries()
         {
             TypeInNamespaceMap map = new TypeInNamespaceMap();
 
@@ -16,28 +16,22 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenAdding_ItemShouldBeAdded()
+        public void Add_ItemShouldBeAdded()
         {
             const int ExpectedCount = 1;
-
             TypeInNamespaceMap map = new TypeInNamespaceMap();
-            TypeDef typeDef = new TypeDef();
-            typeDef.Namespace = string.Empty;
 
-            map.Add(typeDef);
+            map.Add(CreateType(string.Empty, string.Empty));
 
             Assert.AreEqual(ExpectedCount, map.GetAllNamespaces().Count);
         }
 
         [Test]
-        public void WhenTypeTypesAddedWithSameNamespace_GetAllNamespaces_Returns1()
+        public void GetAllNamespaces_WhenTypeTypesAddedWithSameNamespace_Returns1()
         {
             TypeInNamespaceMap map = new TypeInNamespaceMap();
-            TypeDef def = new TypeDef();
-            def.Namespace = "System";
-
-            map.Add(def);
-            map.Add(def);
+            map.Add(CreateType("System", "First"));
+            map.Add(CreateType("System", "Second"));
 
             List<string> namespaces = map.GetAllNamespaces();
 
@@ -46,14 +40,11 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenTwoTypesWithDifferentNamespacesAdded_GetAllNamespaces_Returns2()
+        public void GetAllNamespaces_WhenTwoTypesWithDifferentNamespacesAdded_Returns2()
         {
             TypeInNamespaceMap map = new TypeInNamespaceMap();
-            TypeDef def1 = new TypeDef() { Namespace = "System" };
-            TypeDef def2 = new TypeDef() { Namespace = "System.IO" };
-
-            map.Add(def1);
-            map.Add(def2);
+            map.Add(CreateType("System", "First"));
+            map.Add(CreateType("System.IO", "First"));
 
             List<string> namespaces = map.GetAllNamespaces();
 
@@ -63,7 +54,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenMapHasEntries_GetAllTypesInNamespaces_IsCorrect()
+        public void GetAllTypesInNamespaces_WhenMapHasEntries_IsCorrect()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -75,19 +66,18 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenMapHasEntries_GetAllTypesInNamespaces_ReturnsAShallowCopy()
+        public void GetAllTypesInNamespaces_WhenMapHasEntries_ReturnsAShallowCopy()
         {
             TypeInNamespaceMap map = BuildTestMap();
-
             Dictionary<string, List<TypeDef>> all = map.GetAllTypesInNamespaces();
 
-            map.Add(new TypeDef() { Namespace = "Another", Name = "AnotherTestClass" });
+            map.Add(CreateType("Another", "AnotherTestClass"));
 
             Assert.AreNotEqual(all.Keys.Count, map.GetAllNamespaces().Count);
         }
 
         [Test]
-        public void WhenNoNamespace_FindTypeInNamespace_FindsEntry()
+        public void FindTypeInNamespace_WhenNoNamespace_FindsEntry()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -98,7 +88,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenSearchFails_FindTypeInNamespace_ReturnsNull()
+        public void FindTypeInNamespace_WhenSearchFails_ReturnsNull()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -110,7 +100,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenSearchSucceeds_FindTypeInNamesapce_FindsEntry()
+        public void FindTypeInNamesapce_WhenSearchSucceeds_FindsEntry()
         {
             TypeInNamespaceMap map = BuildTestMap();
 
@@ -121,17 +111,12 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenRemovingInvalidItem_Remove_DoesNothing()
+        public void Remove_WhenItemInvalid_DoesNothing()
         {
             TypeInNamespaceMap map = BuildTestMap();
-
-            TypeDef item = new TypeDef();
-            item.Name = "Nope";
-            item.Namespace = "Test1";
-
             int expected = map.GetAllTypesInNamespaces().Count;
 
-            map.Remove(item);
+            map.Remove(CreateType("Nope", "Test1"));
 
             int result = map.GetAllTypesInNamespaces().Count;
 
@@ -139,14 +124,11 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenRemovingValidItem_Remove_RemovesItem()
+        public void Remove_WhenItemValid_RemovesItem()
         {
             TypeInNamespaceMap map = BuildTestMap();
+            TypeDef itemToRemove = CreateType("Test", "First");
 
-            TypeDef itemToRemove = new TypeDef();
-            itemToRemove.Name = "Test";
-            itemToRemove.Namespace = "First";
-            
             map.Add(itemToRemove);
             int expected = map.GetAllTypesInNamespaces()["First"].Count - 1;
 
@@ -157,19 +139,24 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void WhenLastItemInNamespaceRemoved_Remove_NamespaceNotInDictionary()
+        public void Remove_WhenLastItemInNamespaceRemoved_NamespaceNotInDictionary()
         {
             TypeInNamespaceMap map = new TypeInNamespaceMap();
-
-            TypeDef testType = new TypeDef();
-            testType.Namespace = "Namespace";
-            testType.Name = "MyType";
+            TypeDef testType = CreateType("Namespace", "MyType");
 
             map.Add(testType);
-
             map.Remove(testType);
 
             Assert.AreEqual(0, map.GetAllNamespaces().Count);
+        }
+
+        private TypeDef CreateType(string space, string name)
+        {
+            return new TypeDef
+            {
+                Namespace = space,
+                Name = name
+            };
         }
 
         private TypeInNamespaceMap BuildTestMap()
