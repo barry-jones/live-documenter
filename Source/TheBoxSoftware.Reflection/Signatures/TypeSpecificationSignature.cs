@@ -2,8 +2,6 @@
 namespace TheBoxSoftware.Reflection.Signatures
 {
     using System.Text;
-    using TheBoxSoftware.Diagnostics;
-    using TheBoxSoftware.Reflection.Core;
 
     /// <summary>
     /// Represents a signiture for a type specification as detailed in
@@ -32,45 +30,6 @@ namespace TheBoxSoftware.Reflection.Signatures
             return TypeToken.GetTypeDetails(member);
         }
 
-#if TEST
-        /// <summary>
-        /// Prints tokens to the current TRACE output
-        /// </summary>
-        public void PrintTokens()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (SignitureToken token in this.Type.Tokens)
-            {
-                switch (token.TokenType)
-                {
-                    case SignitureTokens.ArrayShape: // non-nested token
-                    case SignitureTokens.CallingConvention:
-                    case SignitureTokens.Constraint:
-                    case SignitureTokens.ElementType:
-                    case SignitureTokens.GenericArgumentCount:
-                    case SignitureTokens.Count:
-                    case SignitureTokens.CustomModifier:
-                    case SignitureTokens.GenericParameterCount:
-                    case SignitureTokens.Type:
-                    case SignitureTokens.TypeDefOrRefEncodedToken:
-                    case SignitureTokens.Field:
-                    case SignitureTokens.LocalSigniture:
-                    case SignitureTokens.Param:
-                    case SignitureTokens.ParameterCount:
-                    case SignitureTokens.Prolog:
-                    case SignitureTokens.Property:
-                    case SignitureTokens.ReturnType:
-                    case SignitureTokens.Sentinal:                    
-                    default:
-                        sb.Append(token.ToString()); 
-                        break;
-                }
-            }
-
-            TraceHelper.WriteLine(sb.ToString());
-        }
-#endif
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

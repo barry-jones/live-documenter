@@ -5,79 +5,27 @@ namespace TheBoxSoftware.Reflection.Signatures
     using Core;
 
     /// <summary>
-    /// <para>
-    /// Class that represents the simplist single element when a type is involved in
-    /// a signiture. Where for example a type can be represented simply as a base type
-    /// a class, or a valuetype, the ElementTypeSignitureToken will contain the relevant
-    /// details about it and provide a mechanism for resolving the type.
-    /// </para>
-    /// <para>
-    /// Where a type is described by more than a single element; that element will have
-    /// its superflous detail described in the <see cref="TypeSignatureToken"/> class.
-    /// </para>
+    /// A representation of a Type in a signature [23.1.16].
     /// </summary>
     /// <seealso cref="TypeSignatureToken"/>
+    /// <include file='code-documentation\signatures.xml' path='docs/elementtypesignaturetoken/member[@name="class"]/*'/> 
     [DebuggerDisplay("ElementType: {ElementType}, {Token}")]
     internal sealed class ElementTypeSignatureToken : SignatureToken
     {
-        private uint _token;
-        private object _definition;
-        private ElementTypes _elementType;
-
         /// <summary>
         /// Instantiates a new instance of the ElementTypeSignitureToken class.
         /// </summary>
-        /// <param name="signiture">The signiture where this token is defined.</param>
-        /// <param name="offset">The current offset in the signiture to read the token.</param>
-        /// <remarks>
-        /// <para>
-        /// An ElementTypeSignitureToken details the element of a Type signiture. These
-        /// elements are defined in section 23.1.16 in ECMA 335. Where a type can contain
-        /// multiple ElementTypeSignitureTokens each building up to reveal more information
-        /// about the type. This class will only ever provide a single item of detail.
-        /// </para>
-        /// </remarks>
+        /// <include file='code-documentation\signatures.xml' path='docs/elementtypesignaturetoken/member[@name="ctor"]/*'/> 
         public ElementTypeSignatureToken(byte[] signiture, Offset offset)
             : base(SignatureTokens.ElementType)
         {
-
             ElementType = (ElementTypes)GetCompressedValue(signiture, offset);
-            int typeMask;
-            uint token;
 
             switch(ElementType)
             {
                 case ElementTypes.Class:
-                    // Read the typedef, typeref or typespec token
-                    typeMask = 0x00000003;
-                    token = GetCompressedValue(signiture, offset);
-                    switch(typeMask & token)
-                    {
-                        case 0: // TypeDef
-                            Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
-                            break;
-                        case 1: // TypeRef
-                            Token = token >> 2 | (int)ILMetadataToken.TypeRef; //(token & typeMask) | token >> 2;
-                            break;
-                        case 2: // TypeSpec
-                            Token = token >> 2 | (int)ILMetadataToken.TypeSpec; // (token & typeMask) | token >> 2;
-                            break;
-                    }
-                    break;
-
                 case ElementTypes.ValueType:
-                    // Read the typedef, typeref or typespec token
-                    typeMask = 0x00000003;
-                    token = GetCompressedValue(signiture, offset);
-                    switch(typeMask & token)
-                    {
-                        case 0: // TypeDef
-                            Token = token >> 2 | (int)ILMetadataToken.TypeDef; // (token & typeMask) | token >> 2;
-                            break;
-                        case 1: // TypeRef
-                            Token = token >> 2 | (int)ILMetadataToken.TypeRef; //(token & typeMask) | token >> 2;
-                            break;
-                    }
+                    DecodeEncodedDefRefSpecToken(signiture, offset);
                     break;
 
                 case ElementTypes.MVar:
@@ -111,11 +59,8 @@ namespace TheBoxSoftware.Reflection.Signatures
         /// Checks if the token a the <paramref name="offset"/> in the <paramref name="signiture"/>
         /// is one of the <paramref name="allowed"/> element types.
         /// </summary>
-        /// <param name="signiture">The signiture blob.</param>
-        /// <param name="offset">The offset in the signiture.</param>
-        /// <param name="allowed">The allowed element type flags.</param>
-        /// <returns>True of false</returns>
-		public static bool IsToken(byte[] signiture, int offset, ElementTypes allowed)
+        /// <include file='code-documentation\signatures.xml' path='docs/elementtypesignaturetoken/member[@name="istoken"]/*'/> 
+        public static bool IsToken(byte[] signiture, int offset, ElementTypes allowed)
         {
             ElementTypes value = (ElementTypes)GetCompressedValue(signiture, offset);
             return value == allowed;
@@ -145,38 +90,54 @@ namespace TheBoxSoftware.Reflection.Signatures
         public override string ToString()
         {
             if (Definition != null)
-                return $"[ElementType: {Definition}";
+                return $"[ElementType: {Definition}] ";
             
             return $"[ElementType: {ElementType} {Token}] ";
+        }
+
+        /// <summary>
+        /// Decode the TypeDefOrRefOrSpecEncoded Token, the reverse of II.23.2.8.
+        /// </summary>
+        /// <param name="signiture">The signature being processed</param>
+        /// <param name="offset">The current offset in to the signature</param>
+        private void DecodeEncodedDefRefSpecToken(byte[] signiture, Offset offset)
+        {
+            // The reverse of the steps in 23.2.8 is:
+            //  1. decompress
+            //  2. shift the token back 2 bits
+            //  3. Or the correct metadata token to the first two bits.
+            uint typeMask = 0x00000003;
+            uint token = GetCompressedValue(signiture, offset);
+
+            switch (typeMask & token)
+            {
+                case 0:
+                    Token = token >> 2 | (int)ILMetadataToken.TypeDef;
+                    break;
+                case 1:
+                    Token = token >> 2 | (int)ILMetadataToken.TypeRef;
+                    break;
+                case 2:
+                    Token = token >> 2 | (int)ILMetadataToken.TypeSpec;
+                    break;
+            }
         }
 
         /// <summary>
         /// The token parameter to this element type, this is not always relevant
         /// so can be zero.
         /// </summary>
-        public uint Token
-        {
-            get { return _token; }
-            private set { _token = value; }
-        }
+        public uint Token { get; private set; }
 
         /// <summary>
         /// The definition of the specified element. This is populated when the element
         /// is a well known system type. Token will be 0;
         /// </summary>
-        public object Definition
-        {
-            get { return _definition; }
-            set { _definition = value; }
-        }
+        public object Definition { get; set; }
 
         /// <summary>
         /// The enumerated value indicating which type of element is contained in this token.
         /// </summary>
-        public ElementTypes ElementType
-        {
-            get { return _elementType; }
-            private set { _elementType = value; }
-        }
+        public ElementTypes ElementType { get; private set; }
     }
 }

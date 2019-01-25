@@ -56,7 +56,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         [TestCase("ReturnJaggedArray", "Public Function ReturnJaggedArray() As Int()()")]
         [TestCase("ReturnClass", "Public Function ReturnClass() As ForMethod")]
         [TestCase("ReturnArray", "Public Function ReturnArray() As Byte()")]
-        [TestCase("ReturnGeneric", "Public Function ReturnGeneric() As GenericClass(Of String)")]
+        [TestCase("ReturnGeneric", "Public Function ReturnGeneric() As GenericClass(Of String, String, String)")]
         public void VBSyntax_Method_ReturnTypes(string method, string expected)
         {
             TestIt(method, expected);

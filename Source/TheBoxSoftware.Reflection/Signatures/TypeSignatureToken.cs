@@ -9,16 +9,9 @@ namespace TheBoxSoftware.Reflection.Signatures
     using Core;
 
     /// <summary>
-    /// <para>Represents an element of a signiture that can be used to resolve back to a type,
-    /// however the type it resolves back to can be one of many things; see ECMA 335
-    /// 23.2.12.
-    /// </para>
-    /// <para>
-    /// A type can be represented by one or more tokens, hence this token derives from
-    /// <see cref="SignatureTokenContainer"/>. However it will always have an <see cref="ElementTypeSignatureToken"/>
-    /// which should allow any resolving to be perfomed more easily.
-    /// </para>
+    /// Represents a type in a signature as specified in II.23.2.12.
     /// </summary>
+    /// <include file='code-documentation/signatures.xml' path='doc/typesignaturetoken/member[@name="class"]'/>
     [DebuggerDisplay("Type: {ElementType}, ")]
     internal sealed class TypeSignatureToken : SignatureTokenContainer
     {
@@ -28,7 +21,8 @@ namespace TheBoxSoftware.Reflection.Signatures
         /// </summary>
         /// <param name="signiture">The signiture to parse the type from.</param>
         /// <param name="offset">The offset to start reading from.</param>
-        public TypeSignatureToken(byte[] signiture, Offset offset) : base(SignatureTokens.Type)
+        public TypeSignatureToken(byte[] signiture, Offset offset) 
+            : base(SignatureTokens.Type)
         {
             ElementTypeSignatureToken type = new ElementTypeSignatureToken(signiture, offset);
             TypeSignatureToken childType;
@@ -174,9 +168,6 @@ namespace TheBoxSoftware.Reflection.Signatures
         /// <summary>
         /// Attempts to resolve the type.
         /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="member"></param>
-        /// <returns></returns>
         internal TypeRef ResolveType(AssemblyDef assembly, ReflectedMember member)
         {
             TypeRef type = null;

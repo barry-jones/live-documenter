@@ -7,7 +7,7 @@ namespace DocumentationTest
     /// T:DocumentationTest.GenericClass`1
     /// </summary>
     /// <typeparam name="T">T</typeparam>
-    public class GenericClass<T>
+    public class GenericClass<T,A,B>
     {
         /// <summary>
         /// M:DocumentationTest.GenericClass`1.GenericMethod``1(`0,``0)
@@ -32,6 +32,31 @@ namespace DocumentationTest
         /// </summary>
         /// <returns></returns>
         public List<InterfaceTest> GenericReturnDefinedInLibrary() => new List<InterfaceTest>() { };
+
+        /// <summary>
+        /// Returns the first class generic type
+        /// </summary>
+        /// <returns></returns>
+        public List<T> GenericReturnGeneric1() => new List<T>() { };
+
+        /// <summary>
+        /// Returns the third class generic type
+        /// </summary>
+        /// <returns></returns>
+        public List<B> GenericReturnGeneric3() => new List<B>() { };
+
+        /// <summary>
+        /// Returns the third class generic type
+        /// </summary>
+        /// <returns></returns>
+        public List<C> GenericReturnGeneric3<C>() => new List<C>() { };
+
+        /// <summary>
+        /// Pointless method that just returns the generic type parameter passed in
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public T ReturnGenericType2(T input) => input;
 
         /// <summary>
         /// A test to check if child classes of generic types causes problems.
@@ -99,28 +124,28 @@ namespace DocumentationTest
     /// generic classes in documentation. <see cref="GenericClass{T}" />
     /// </summary>
     /// <seealso cref="GenericClass{T}" />
-    public class InheritedGenericClass : GenericClass<string>
+    public class InheritedGenericClass : GenericClass<string, string, string>
     {
     }
 
     /// <summary>
     /// Summary Test 2
     /// </summary>
-    public class InheritedGenericClassTest2 : GenericClass<int>
+    public class InheritedGenericClassTest2 : GenericClass<int,int,int>
     {
     }
 
     /// <summary>
     /// Summary Test 3
     /// </summary>
-    public class InheritedGenericClassTest3 : GenericClass<List<int>>
+    public class InheritedGenericClassTest3 : GenericClass<List<int>, int, int>
     {
     }
 
     /// <summary>
     /// Test summary Test 4.
     /// </summary>
-    public class InheritedGenericClassTest4 : GenericClass<List<GenericClass<string>>>
+    public class InheritedGenericClassTest4 : GenericClass<List<GenericClass<string, int, int>>, int, int>
     {
     }
 }

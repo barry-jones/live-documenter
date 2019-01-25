@@ -1,6 +1,9 @@
 ﻿
 namespace TheBoxSoftware.Reflection.Signatures
 {
+    /// <summary>
+    /// All element types that are used in signatures.
+    /// </summary>
     public enum ElementTypes
     {
         End = 0x0,

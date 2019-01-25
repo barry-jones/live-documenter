@@ -1,0 +1,53 @@
+﻿<docs>
+  <elementtypesignaturetoken>
+    <member name="class">
+      <remarks>
+        <para>
+        Class that represents the simplist single element when a type is involved in
+        a signiture. Where for example a type can be represented simply as a base type
+        a class, or a valuetype, the ElementTypeSignitureToken will contain the relevant
+        details about it and provide a mechanism for resolving the type.
+        </para>
+        <para>
+        Where a type is described by more than a single element; that element will have
+        its superflous detail described in the <see cref="TypeSignatureToken"/> class.
+        </para>
+      </remarks>
+    </member>
+    <member name="ctor">
+      <param name="signiture">The signiture where this token is defined.</param>
+      <param name="offset">The current offset in the signiture to read the token.</param>
+      <remarks>
+      <para>
+      An ElementTypeSignitureToken details the element of a Type signiture. These
+      elements are defined in section 23.1.16 in ECMA 335. Where a type can contain
+      multiple ElementTypeSignitureTokens each building up to reveal more information
+      about the type. This class will only ever provide a single item of detail.
+      </para>
+      </remarks>
+    </member>
+    <member name="istoken">
+      <param name="signiture">The signiture blob.</param>
+      <param name="offset">The offset in the signiture.</param>
+      <param name="allowed">The allowed element type flags.</param>
+      <returns>True of false</returns>
+    </member>
+  </elementtypesignaturetoken>
+
+  <typesignaturetoken>
+    <member name="class">
+      <remarks>
+        <para>
+        Represents an element of a signiture that can be used to resolve back to a type,
+        however the type it resolves back to can be one of many things; see ECMA 335
+        23.2.12.
+        </para>
+        <para>
+        A type can be represented by one or more tokens, hence this token derives from
+        <see cref="SignatureTokenContainer"/>. However it will always have an <see cref="ElementTypeSignatureToken"/>
+        which should allow any resolving to be perfomed more easily.
+        </para>
+      </remarks>
+    </member>
+  </typesignaturetoken>
+</docs>

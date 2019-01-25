@@ -22,7 +22,7 @@ namespace SyntaxTests
         public int[][] ReturnJaggedArray() { return new int[0][]; }
         public ForMethod ReturnClass() { return new ForMethod(); }
         public byte[] ReturnArray() { return new byte[0]; }
-        public DocumentationTest.GenericClass<string> ReturnGeneric() { return new DocumentationTest.GenericClass<string>(); }
+        public DocumentationTest.GenericClass<string,string,string> ReturnGeneric() { return new DocumentationTest.GenericClass<string, string, string>(); }
 
         
         // static method

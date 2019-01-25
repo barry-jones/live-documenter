@@ -47,7 +47,7 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         [TestCase("ReturnJaggedArray", "public int[][] ReturnJaggedArray()")]
         [TestCase("ReturnClass", "public ForMethod ReturnClass()")]
         [TestCase("ReturnArray", "public byte[] ReturnArray()")]
-        [TestCase("ReturnGeneric", "public GenericClass<string> ReturnGeneric()")]
+        [TestCase("ReturnGeneric", "public GenericClass<string, string, string> ReturnGeneric()")]
         public void CSharpSyntax_Method_ReturnTypes(string method, string expected)
         {
             TestIt(method, expected);
