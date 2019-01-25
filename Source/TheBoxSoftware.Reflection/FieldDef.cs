@@ -14,6 +14,14 @@ namespace TheBoxSoftware.Reflection
 
         public FieldDef() { }
 
+        /// <summary>
+        /// Initialises an instance of the FieldDef with the specified details.
+        /// </summary>
+        /// <param name="name">The name of the field.</param>
+        /// <param name="definingAssembly">The assembly the field is defined in.</param>
+        /// <param name="containingType">The type the field is declared in.</param>
+        /// <param name="attributes">Attributes describing the field.</param>
+        /// <param name="signitureIndex">Index in to the signature stream for the field.</param>
         public FieldDef(string name, AssemblyDef definingAssembly, TypeDef containingType, FieldAttributes attributes, BlobIndex signitureIndex)
         {
             UniqueId = definingAssembly.CreateUniqueId();
@@ -48,7 +56,7 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// TODO: Document
+        /// Not used at the moment.
         /// </summary>
         public List<ConstantInfo> Constants
         {
