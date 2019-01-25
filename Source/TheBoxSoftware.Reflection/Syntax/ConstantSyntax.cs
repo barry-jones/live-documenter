@@ -6,7 +6,7 @@ namespace TheBoxSoftware.Reflection.Syntax
     /// </summary>
     internal class ConstantSyntax : Syntax
     {
-        private FieldDef _field;
+        private readonly FieldDef _field;
 
         /// <summary>
         /// Initialises a new instance of the ConstantSyntax class.
@@ -17,6 +17,10 @@ namespace TheBoxSoftware.Reflection.Syntax
             _field = field;
         }
 
+        /// <summary>
+        /// Not implemented, returns an empty array.
+        /// </summary>
+        /// <returns></returns>
         public string[] GetAttributes()
         {
             return new string[0];
@@ -39,7 +43,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         {
             TypeRef returnType = null;
 
-            Signatures.Signature signiture = this._field.Signiture;
+            Signatures.Signature signiture = _field.Signiture;
             Signatures.SignatureToken token = signiture.Tokens.Find(
                 t => t.TokenType == Signatures.SignatureTokens.ElementType || t.TokenType == Signatures.SignatureTokens.Type
                 );

@@ -3,9 +3,12 @@ namespace TheBoxSoftware.Reflection.Syntax
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Provides a mechanism for obtaining useful syntax information for a class.
+    /// </summary>
     internal sealed class ClassSyntax : Syntax
     {
-        private TypeDef _type;
+        private readonly TypeDef _type;
 
         /// <summary>
         /// Initialises a new instance of the ClassSyntax class.
@@ -84,7 +87,7 @@ namespace TheBoxSoftware.Reflection.Syntax
                 return null;
             }
 #endif
-            if(this._type.InheritsFrom is TypeSpec)
+            if(_type.InheritsFrom is TypeSpec)
             {
                 return ((TypeSpec)_type.InheritsFrom).TypeDetails;
             }
