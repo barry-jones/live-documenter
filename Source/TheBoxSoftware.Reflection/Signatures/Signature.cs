@@ -59,6 +59,7 @@ namespace TheBoxSoftware.Reflection.Signatures
                 case Signatures.Property: instantiatedSigniture = new PropertySignature(signiture); break;
                 case Signatures.TypeSpecification: instantiatedSigniture = new TypeSpecificationSignature(signiture); break;
             }
+
             return instantiatedSigniture;
         }
 

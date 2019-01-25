@@ -23,8 +23,4 @@
     <ProjectReference Include="..\..\TheBoxSoftware\TheBoxSoftware.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Reflection\Signatures\" />
-  </ItemGroup>
-
 </Project>

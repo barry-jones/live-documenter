@@ -59,6 +59,12 @@ namespace DocumentationTest
         public T ReturnGenericType2(T input) => input;
 
         /// <summary>
+        /// Complex nested generic methods to check syntax creation.
+        /// </summary>
+        /// <returns></returns>
+        public List<List<List<A>>> NestedGenericReturnType() => null;
+
+        /// <summary>
         /// A test to check if child classes of generic types causes problems.
         /// </summary>
         public class ChildClassTest
