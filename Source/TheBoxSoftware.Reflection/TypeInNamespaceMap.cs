@@ -5,17 +5,13 @@ namespace TheBoxSoftware.Reflection
     using System.Linq;
 
     /// <summary>
-    /// Internal mapping class that maps types into there respective namespaces. The type itself
-    /// is not returned only an index to the defenition map.
+    /// Creates and manages a map of <see cref="TypeDef"/> instances in to namespaces.
     /// </summary>
+    /// <seealso cref="AssemblyDef"/>
     internal class TypeInNamespaceMap
     {
         private Dictionary<string, List<TypeDef>> _typeInNamespace = new Dictionary<string, List<TypeDef>>();
 
-        /// <summary>
-        /// Adds a new type to a namespace with a reference to its associated metadata file.
-        /// </summary>
-        /// <param name="type">The type being added</param>
         public void Add(TypeDef type)
         {
             string inNamespace = type.Namespace;
@@ -42,16 +38,13 @@ namespace TheBoxSoftware.Reflection
             }
         }
         
-        /// <summary>
-        /// Returns all the namespaces in the map.
-        /// </summary>
         public List<string> GetAllNamespaces()
         {
             return _typeInNamespace.Keys.ToList();
         }
 
         /// <summary>
-        /// Returns all the types in their respective namespaces.
+        /// Get a dictionary of namespaces with a list of types in those namespaces.
         /// </summary>
         /// <returns>The dictionary of types in namespaces.</returns>
         public Dictionary<string, List<TypeDef>> GetAllTypesInNamespaces()
