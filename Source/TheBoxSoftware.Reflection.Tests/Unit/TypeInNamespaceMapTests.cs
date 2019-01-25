@@ -127,7 +127,7 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         public void Remove_WhenItemValid_RemovesItem()
         {
             TypeInNamespaceMap map = BuildTestMap();
-            TypeDef itemToRemove = CreateType("Test", "First");
+            TypeDef itemToRemove = CreateType("First", "Test");
 
             map.Add(itemToRemove);
             int expected = map.GetAllTypesInNamespaces()["First"].Count - 1;
