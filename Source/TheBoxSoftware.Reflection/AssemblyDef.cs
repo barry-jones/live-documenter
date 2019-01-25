@@ -8,6 +8,10 @@ namespace TheBoxSoftware.Reflection
     using Core;
     using Signatures;
 
+    /// <summary>
+    /// The AssemblyDef provides the top level information and entry an point to
+    /// all types, methods etc reflected from a .NET executable.
+    /// </summary>
     /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="class"]/*'/> 
     public class AssemblyDef : ReflectedMember
     {
@@ -43,6 +47,11 @@ namespace TheBoxSoftware.Reflection
             _peCoffFile = peCoffFile;
         }
 
+        /// <summary>
+        /// Creates and instantiates an AssemblyDef based on the provided filename.
+        /// </summary>
+        /// <param name="fileName">The file name of the assembly to reflect.</param>
+        /// <returns>The insantiated AssemblyDef</returns>
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create"]/*'/> 
         public static AssemblyDef Create(string fileName)
         {
@@ -60,6 +69,12 @@ namespace TheBoxSoftware.Reflection
             return Create(peFile);
         }
 
+        /// <summary>
+        /// Initialises and instantiates an AssemblyDef instance for the provided
+        /// <see cref = "PeCoffFile" /> (assembly).
+        /// </summary>
+        /// <param name="peCoffFile">The PeCoffFile to load the AssemblyDef from.</param>
+        /// <returns>The instantiated AssemblyDef.</returns>
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create2"]/*'/> 
         public static AssemblyDef Create(PeCoffFile peCoffFile)
         {
@@ -75,25 +90,41 @@ namespace TheBoxSoftware.Reflection
             return created;
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
+        /// <summary>
+        /// Returns a dictionary of all of the types in this assembly in their 
+        /// respective namespaces.
+        /// </summary>
         public Dictionary<string, List<TypeDef>> GetTypesInNamespaces()
         {
             return _map.GetAllTypesInNamespaces();
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getnamespaces"]/*'/> 
+        /// <summary>
+        /// Gets a list of all of the namespaces defined in this assembly.
+        /// </summary>
         public List<string> GetNamespaces()
         {
             return _map.GetAllNamespaces();
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="findtype"]/*'/> 
+        /// <summary>
+        /// Searches the assembly for the named type in the specified assembly.
+        /// </summary>
+        /// <param name="theNamespace">The namespace to search for the type in.</param>
+        /// <param name="theTypeName">The name of the type</param>
+        /// <returns>The resolved type definition or null if not found.</returns>
         public TypeDef FindType(string theNamespace, string theTypeName)
         {
             if(string.IsNullOrEmpty(theTypeName)) return null;
             return _map.FindTypeInNamespace(theNamespace, theTypeName);
         }
 
+        /// <summary>
+        /// Helps to resolve tokens from the metadata to there associated types and elements inside
+        /// this assembly.
+        /// </summary>
+        /// <param name="metadataToken">The metadata token to resolve</param>
+        /// <returns>A resolved token reference or null if not found in this assembly.</returns>
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="resolvemetadatatoken"]/*'/> 
         public ReflectedMember ResolveMetadataToken(uint metadataToken)
         {
@@ -106,7 +137,6 @@ namespace TheBoxSoftware.Reflection
 
             ReflectedMember returnItem = null;
 
-            // 
             switch(token)
             {
                 // Method related tokens
@@ -139,9 +169,6 @@ namespace TheBoxSoftware.Reflection
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getgloballyuniqueid"]/*'/> 
         public override long GetGloballyUniqueId() => ((long)UniqueId) << 32;
-
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
-        // public override long GetAssemblyId() => UniqueId;
 
         internal Signatures.Signature GetSigniture(BlobIndex fromIndex)
         {
