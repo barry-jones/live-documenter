@@ -50,25 +50,14 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A fully qualified name</returns>
         public string GetFullyQualifiedName()
         {
-            return this.GetUniqueName();
+            return GetUniqueName();
         }
 
         /// <summary>
         /// Returns a nice display name for the type
         /// </summary>
-        /// <param name="includeNamespace">
-        /// Indicates wether or not the namespace should be included.
-        /// </param>
-        /// <returns>A string that is a nice representation of the type for display purposes.</returns>
-        /// <remarks>
-        /// This method will return a name that can be used to display to users of
-        /// applications utilising this type.
-        /// <example>
-        /// Generic Type: List&lt;MyClass&gt;
-        /// Array: MyClass[]
-        /// Normal: MyClass
-        /// </example>
-        /// </remarks>
+        /// <param name="includeNamespace">Indicates wether or not the namespace should be included.</param>
+        /// <include file='code-documentation/reflection.xml' path='docs/typeref/member[@name="getdisplayname"]'/>
         public virtual string GetDisplayName(bool includeNamespace)
         {
             string name = string.Empty;
@@ -81,13 +70,13 @@ namespace TheBoxSoftware.Reflection
             {
                 if (includeNamespace)
                 {
-                    name = this.GetFullyQualifiedName();
+                    name = GetFullyQualifiedName();
                 }
                 else
                 {
-                    name = this.Name;
+                    name = Name;
                 }
-                if (this.IsGeneric)
+                if (IsGeneric)
                 {
                     if (this is TypeSpec)
                     {
@@ -111,7 +100,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A string that represents the type reference.</returns>
         public override string ToString()
         {
-            return string.Format("{0}{1}{2}", this.Namespace, string.IsNullOrEmpty(this.Namespace) ? string.Empty : ".", this.Name);
+            return string.Format("{0}{1}{2}", Namespace, string.IsNullOrEmpty(Namespace) ? string.Empty : ".", Name);
         }
 
         /// <summary>
@@ -120,7 +109,7 @@ namespace TheBoxSoftware.Reflection
         /// <returns>A string</returns>
         internal string GetUniqueName()
         {
-            return string.IsNullOrEmpty(this.Namespace) ? this.Name : this.Namespace + "." + this.Name;
+            return string.IsNullOrEmpty(Namespace) ? Name : Namespace + "." + Name;
         }
 
         /// <summary>
@@ -172,12 +161,7 @@ namespace TheBoxSoftware.Reflection
         /// <summary>
         /// Extension methods associated with this type.
         /// </summary>
-        /// <remarks>
-        /// Extension methods are defined on the TypeRef as this represents a reference which 
-        /// is used in this library. So in essance all types loaded will be recorded. TypeDef
-        /// derives for this type too, which means all assembly defined types will get this
-        /// functionality.
-        /// </remarks>
+        /// <include file='code-documentation/reflection.xml' path='docs/typeref/member[@name="extensionmethods"]'/>
         public List<MethodDef> ExtensionMethods
         {
             get { return _extensionMethods; }

@@ -183,4 +183,27 @@
       <returns>True if it is else false.</returns>
     </member>
   </typeinnamespacemap>
+
+  <typeref>
+    <member name="getdisplayname">
+      <returns>A string that is a nice representation of the type for display purposes.</returns>
+      <remarks>
+      This method will return a name that can be used to display to users of
+      applications utilising this type.
+      <example>
+Generic Type: List&lt;MyClass&gt;
+Array: MyClass[]
+Normal: MyClass
+        </example>
+      </remarks>
+    </member>
+    <member name="extensionmethods">
+      <remarks>
+        Extension methods are defined on the TypeRef as this represents a reference which
+        is used in this library. So in essance all types loaded will be recorded. TypeDef
+        derives for this type too, which means all assembly defined types will get this
+        functionality.
+      </remarks>
+    </member>
+  </typeref>
 </docs>
