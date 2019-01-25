@@ -22,7 +22,7 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Constructs a ParamDef with the provided details.
+        /// Initialises an instance of ParamDef with the provided details.
         /// </summary>
         /// <param name="name">The name for the parameter</param>
         /// <param name="container">The method that defines and contains the parameter</param>
