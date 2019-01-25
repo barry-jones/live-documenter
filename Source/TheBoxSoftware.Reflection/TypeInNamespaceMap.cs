@@ -4,16 +4,18 @@ namespace TheBoxSoftware.Reflection
     using System.Collections.Generic;
     using System.Linq;
 
-    /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="class"]'/>
+    /// <summary>
+    /// Internal mapping class that maps types into there respective namespaces. The type itself
+    /// is not returned only an index to the defenition map.
+    /// </summary>
     internal class TypeInNamespaceMap
     {
         private Dictionary<string, List<TypeDef>> _typeInNamespace = new Dictionary<string, List<TypeDef>>();
 
-        public TypeInNamespaceMap()
-        {
-        }
-
-        /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="add"]'/>
+        /// <summary>
+        /// Adds a new type to a namespace with a reference to its associated metadata file.
+        /// </summary>
+        /// <param name="type">The type being added</param>
         public void Add(TypeDef type)
         {
             string inNamespace = type.Namespace;
@@ -40,13 +42,18 @@ namespace TheBoxSoftware.Reflection
             }
         }
         
-        /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="getallnamespaces"]'/>
+        /// <summary>
+        /// Returns all the namespaces in the map.
+        /// </summary>
         public List<string> GetAllNamespaces()
         {
             return _typeInNamespace.Keys.ToList();
         }
 
-        /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="getalltypesinnamespaces"]'/>
+        /// <summary>
+        /// Returns all the types in their respective namespaces.
+        /// </summary>
+        /// <returns>The dictionary of types in namespaces.</returns>
         public Dictionary<string, List<TypeDef>> GetAllTypesInNamespaces()
         {
             Dictionary<string, List<TypeDef>> copy = new Dictionary<string, List<TypeDef>>();
@@ -59,13 +66,19 @@ namespace TheBoxSoftware.Reflection
             return copy;
         }
 
-        /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="getalltypesinnamespaces"]'/>
+        /// <summary>
+        /// Searches for the <paramref name="typeName"/> in the <paramref name="inNamespace"/>.
+        /// </summary>
+        /// <param name="inNamespace">The namespace to search in.</param>
+        /// <param name="typeName">The type name to search for.</param>
+        /// <returns>The found type or null if not found.</returns>
         public TypeDef FindTypeInNamespace(string inNamespace, string typeName)
         {
             if(inNamespace == null || !_typeInNamespace.ContainsKey(inNamespace))
             {
                 return null;
             }
+
             List<TypeDef> entries = _typeInNamespace[inNamespace];
             for(int i = 0; i < entries.Count; i++)
             {
@@ -77,7 +90,11 @@ namespace TheBoxSoftware.Reflection
             return null;
         }
 
-        /// <include file='code-documentation/reflection.xml' path='docs/typeinnamespace/member[@name="containsnamespace"]'/>
+        /// <summary>
+        /// Checks if the <paramref name="theNamespace"/> is in the map.
+        /// </summary>
+        /// <param name="theNamespace">The namespaces name to check for.</param>
+        /// <returns>True if found else false.</returns>
         public bool ContainsNamespace(string theNamespace)
         {
             return _typeInNamespace.ContainsKey(theNamespace);
