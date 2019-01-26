@@ -157,24 +157,14 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
         }
 
         [Test]
-        public void Namespace_WhenInContainingType_IsCorrect()
-        {
-            // currently returns a space at the end...
-            const string ExpectedResult = "BaseNamespace.Container ";
-
-            TypeDef testType = new TypeDef() { Name = "MyClass" };
-            testType.ContainingClass = new TypeDef() { Namespace = "BaseNamespace", Name = "Container " };
-
-            Assert.AreEqual(ExpectedResult, testType.Namespace);
-        }
-        
-        [Test]
         public void Namespace()
         {
-            const string ExpectedResult = "BaseNamespace";
-            TypeDef testType = new TypeDef() { Namespace = "BaseNamespace", Name = "MyClass" };
+            TypeDef container = new TypeDef() { Namespace = "BaseNamespace", Name = "Container " };
+            TypeDef def = new TypeDef() { Name = "MyClass" };
+            def.ContainingClass = container;
 
-            Assert.AreEqual(ExpectedResult, testType.Namespace);
+            Assert.AreEqual("BaseNamespace", container.Namespace);
+            Assert.AreEqual("BaseNamespace.Container ", def.Namespace, "When in containing type");
         }
 
         [Test]
