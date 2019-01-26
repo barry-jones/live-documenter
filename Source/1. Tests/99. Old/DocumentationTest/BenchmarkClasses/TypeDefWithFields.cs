@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace DocumentationTest.BenchmarkClasses
 {
     public class TypeDefWithFields
@@ -19,5 +21,17 @@ namespace DocumentationTest.BenchmarkClasses
         public int Property4 { get; set; }
 
         public int Property5 { get; set; }
+
+        public void Method1()
+        {
+            // should create a compiler generated methods
+            Func<int, int, int> add = (int a, int b) => a + b;
+        }
+
+        public string Method2() => "return info";
+
+        public string Generic<T>() => "return";
+
+        public void AnotherMethod() { }
     }
 }

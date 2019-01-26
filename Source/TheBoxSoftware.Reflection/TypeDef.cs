@@ -98,18 +98,19 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The methods defined in this type.</returns>
         public List<MethodDef> GetMethods(bool includeSystemGenerated)
         {
+            if (includeSystemGenerated) return Methods;
+
             List<MethodDef> methods = new List<MethodDef>();
             for(int i = 0; i < Methods.Count; i++)
             {
+                bool isSystemGenerated = Methods[i].IsSpecialName || Methods[i].IsCompilerGenerated;
+
                 // IsSpecialName denotes (or appears to) that the method is a compiler
                 // generated get|set for properties. Compiler generated code for linq
                 // expressions are not 'special name' so need to be checked for seperately.
-                if(!this.Methods[i].IsSpecialName)
+                if(!isSystemGenerated)
                 {
-                    if(includeSystemGenerated || (!includeSystemGenerated && !Methods[i].IsCompilerGenerated))
-                    {
-                        methods.Add(Methods[i]);
-                    }
+                    methods.Add(Methods[i]);
                 }
             }
             return methods;

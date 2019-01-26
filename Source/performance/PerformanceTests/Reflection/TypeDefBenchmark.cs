@@ -30,5 +30,17 @@ namespace PerformanceTests.Reflection
         {
             _withFields.GetFields(true);
         }
+
+        [Benchmark]
+        public void GetMethodsWithoutSystemGenerated()
+        {
+            _withFields.GetMethods();
+        }
+
+        [Benchmark]
+        public void GetMethodsWithSystemGenerated()
+        {
+            _withFields.GetMethods(true);
+        }
     }
 }
