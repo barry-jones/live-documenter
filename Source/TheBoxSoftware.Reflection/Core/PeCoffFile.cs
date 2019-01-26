@@ -4,6 +4,7 @@ namespace TheBoxSoftware.Reflection.Core
     using System;
     using System.Collections.Generic;
     using PE;
+    using TheBoxSoftware.Reflection.Core.COFF;
 
     /// <summary>
     /// Provides access to the details of a .NET PE/COFF file, implementation is from
@@ -61,6 +62,57 @@ namespace TheBoxSoftware.Reflection.Core
             return _metadataDirectory;
         }
 
+        public bool CanGetAddressFromRva(uint rva)
+        {
+            return FindHeaderForRva(rva) != null;
+        }
+
+        /// <summary>
+        /// Resolves a metadata token to a <see cref="ReflectedMember"/> defined in this
+        /// PeCoffFile.
+        /// </summary>
+        /// <param name="metadataToken">The token to resolve.</param>
+        /// <returns>The found member or null if not found.</returns>
+        public ReflectedMember ResolveMetadataToken(uint metadataToken)
+        {
+            MetadataStream metadataStream = GetMetadataDirectory().GetMetadataStream();
+
+            // Get the details in the token
+            ILMetadataToken token = (ILMetadataToken)(metadataToken & 0xff000000);
+            uint index = metadataToken & 0x00ffffff;
+
+            ReflectedMember returnItem = null;
+
+            switch (token)
+            {
+                // Method related tokens
+                case ILMetadataToken.MethodDef:
+                    returnItem = _map.GetDefinition(MetadataTables.MethodDef, metadataStream.GetEntryFor(MetadataTables.MethodDef, index));
+                    break;
+                case ILMetadataToken.MemberRef:
+                    returnItem = _map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, index));
+                    break;
+                case ILMetadataToken.MethodSpec:
+                    returnItem = _map.GetDefinition(MetadataTables.MethodSpec, metadataStream.GetEntryFor(MetadataTables.MethodSpec, index));
+                    break;
+                // Type related tokens
+                case ILMetadataToken.TypeDef:
+                    returnItem = _map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, index));
+                    break;
+                case ILMetadataToken.TypeRef:
+                    returnItem = _map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, index));
+                    break;
+                case ILMetadataToken.TypeSpec:
+                    returnItem = _map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, index));
+                    break;
+                case ILMetadataToken.FieldDef:
+                    returnItem = _map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, index));
+                    break;
+            }
+
+            return returnItem;
+        }
+
         /// <summary>
         /// Converts a Relative Virtual Address to a file offset
         /// </summary>
@@ -69,7 +121,7 @@ namespace TheBoxSoftware.Reflection.Core
         internal uint GetAddressFromRVA(uint rva)
         {
             SectionHeader found = FindHeaderForRva(rva);
-            if(found == null)
+            if (found == null)
             {
                 throw new InvalidOperationException();
             }
@@ -78,11 +130,6 @@ namespace TheBoxSoftware.Reflection.Core
             uint fileLocation = found.PointerToRawData;
 
             return fileLocation + (rva - virtualOffset);
-        }
-
-        public bool CanGetAddressFromRva(uint rva)
-        {
-            return FindHeaderForRva(rva) != null;
         }
 
         private SectionHeader FindHeaderForRva(uint rva)

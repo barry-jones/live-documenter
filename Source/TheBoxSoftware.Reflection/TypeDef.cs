@@ -6,6 +6,8 @@ namespace TheBoxSoftware.Reflection
     using System.Diagnostics;
     using System.Text;
     using Core.COFF;
+    using TheBoxSoftware.Reflection.Core;
+    using TheBoxSoftware.Reflection.Signatures;
 
     /// <summary>
     /// Contains the information regarding the construction and elements of a type reflected 
@@ -46,8 +48,7 @@ namespace TheBoxSoftware.Reflection
         public List<TypeRef> GetExtendingTypes()
         {
             CodedIndex ciForThisType = new CodedIndex(_table, (uint)_index);
-
-            return Assembly.GetExtendindTypes(this, ciForThisType);
+            return GetExtendingTypes(this, ciForThisType);
         }
 
         /// <summary>
@@ -215,6 +216,66 @@ namespace TheBoxSoftware.Reflection
         {
             TypeDefBuilder builder = new TypeDefBuilder(references, fromRow);
             return builder.Build();
+        }
+
+        private List<TypeRef> GetExtendingTypes(TypeDef type, CodedIndex ciForThisType)
+        {
+            PeCoffFile peFile = Assembly.PeCoffFile;
+            MetadataStream stream = peFile.GetMetadataDirectory().GetMetadataStream();
+            List<TypeRef> inheritingTypes = new List<TypeRef>();
+            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata Signatures
+
+            ourIndexes.Add(ciForThisType);
+
+            // All types in this assembly that extend another use the TypeDef.Extends data in the metadata
+            // table.
+            if (type.IsGeneric)
+            {
+                MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
+                for (int i = 0; i < typeSpecs.Length; i++)
+                {
+                    if (typeSpecs[i] is TypeSpecMetadataTableRow row)
+                    {
+                        // We need to find all of the TypeSpec references that point back to us, remember
+                        // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
+                        // for example. Each one of these will be a different type spec.
+                        TypeSpec spec = peFile.Map.GetDefinition(MetadataTables.TypeSpec, row) as TypeSpec;
+                        SignatureToken token = spec.Signiture.TypeToken.Tokens[0];
+
+                        // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
+                        if (token.TokenType == SignatureTokens.ElementType && ((ElementTypeSignatureToken)token).ElementType == ElementTypes.GenericInstance)
+                        {
+                            ElementTypeSignatureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignatureToken;
+
+                            TypeRef typeRef = typeToken.ResolveToken(Assembly);
+                            if (typeRef == type)
+                            {
+                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1));
+                            }
+                        }
+                    }
+                }
+            }
+
+            MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
+            for (int i = 0; i < typeDefs.Length; i++)
+            {
+                for (int j = 0; j < ourIndexes.Count; j++)
+                {
+                    TypeDefMetadataTableRow row = typeDefs[i] as TypeDefMetadataTableRow;
+                    CodedIndex ourCi = ourIndexes[j];
+
+                    if (row.Extends == ourCi)
+                    {
+                        inheritingTypes.Add(
+                            (TypeDef)peFile.Map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i])
+                            );
+                        continue; // a type can only be extending once so if we find ourselves we are done
+                    }
+                }
+            }
+
+            return inheritingTypes;
         }
 
         /// <summary>
