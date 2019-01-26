@@ -510,11 +510,10 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                // a type is generated if it is a child of generated type.
-                bool parentGenerated = this.ContainingClass != null ? this.ContainingClass.IsCompilerGenerated : false;
+                bool parentGenerated = ContainingClass != null ? ContainingClass.IsCompilerGenerated : false;
                 return parentGenerated ||
-                    this.Namespace == "XamlGeneratedNamespace" ||
-                    this.Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
+                    Namespace == "XamlGeneratedNamespace" ||
+                    Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
             }
         }
 

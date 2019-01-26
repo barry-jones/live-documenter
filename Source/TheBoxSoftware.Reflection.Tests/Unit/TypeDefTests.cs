@@ -145,6 +145,54 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
             Assert.AreEqual(2, def.GetOperators().Count);
         }
 
+        [Test]
+        public void IsInterface()
+        {
+            TypeDef inter = new TypeDef();
+            inter.Flags = Reflection.Core.COFF.TypeAttributes.Interface;
+            TypeDef none = new TypeDef();
+
+            Assert.IsTrue(inter.IsInterface);
+            Assert.IsFalse(none.IsInterface);
+        }
+
+        [Test]
+        public void Namespace_WhenInContainingType_IsCorrect()
+        {
+            // currently returns a space at the end...
+            const string ExpectedResult = "BaseNamespace.Container ";
+
+            TypeDef testType = new TypeDef() { Name = "MyClass" };
+            testType.ContainingClass = new TypeDef() { Namespace = "BaseNamespace", Name = "Container " };
+
+            Assert.AreEqual(ExpectedResult, testType.Namespace);
+        }
+        
+        [Test]
+        public void Namespace()
+        {
+            const string ExpectedResult = "BaseNamespace";
+            TypeDef testType = new TypeDef() { Namespace = "BaseNamespace", Name = "MyClass" };
+
+            Assert.AreEqual(ExpectedResult, testType.Namespace);
+        }
+
+        [Test]
+        public void IsGenerated()
+        {
+            TypeDef generated = new TypeDef();
+            generated.Attributes.Add(CreateGeneratedAttribute());
+            TypeDef def = new TypeDef();
+            TypeDef child = new TypeDef
+            {
+                ContainingClass = generated
+            };
+
+            Assert.IsTrue(generated.IsCompilerGenerated, "When compiler generated");
+            Assert.IsFalse(def.IsCompilerGenerated, "When not compiler generated");
+            Assert.IsTrue(child.IsCompilerGenerated, "When child of compiler generated");
+        }
+
         private CustomAttribute CreateGeneratedAttribute()
         {
             MemberRef attributeType = new MemberRef();
