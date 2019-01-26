@@ -33,5 +33,21 @@ namespace DocumentationTest.BenchmarkClasses
         public string Generic<T>() => "return";
 
         public void AnotherMethod() { }
+
+        public class InheritedOne : TypeDefWithFields { }
+
+        public class InheritedTwo : TypeDefWithFields { }
+
+        public class InhertiedThree : TypeDefWithFields { }
+
+        public class InheritedFour : TypeDefWithFields { }
+
+        public class SecondLevelInherited : TypeDefWithFields.InheritedFour { }
+
+        public TypeDefWithFields() { }
+
+        public TypeDefWithFields(string first) { }
+
+        public TypeDefWithFields(int another) { }
     }
 }

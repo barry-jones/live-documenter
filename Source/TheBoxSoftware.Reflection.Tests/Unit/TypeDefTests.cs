@@ -96,5 +96,60 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
 
             Assert.AreEqual(3, def.GetMethods(true).Count);
         }
+
+        [Test]
+        public void GetConstructors_WhenSystemGenerated_IsEmpty()
+        {
+            TypeDef def = new TypeDef();
+            def.Methods.AddRange(new MethodDef[] {
+                new MethodDef() { Name = ".ctor", IsConstructor = true }
+            });
+            def.Methods[0].Attributes.Add(CreateGeneratedAttribute());
+
+            Assert.AreEqual(0, def.GetConstructors().Count);
+        }
+
+        [Test]
+        public void GetConstructors_WhenNotSystemGenerated_IsNotEmpty()
+        {
+            TypeDef def = new TypeDef();
+            def.Methods.AddRange(new MethodDef[] {
+                new MethodDef() { Name = ".ctor", IsConstructor = true },
+                new MethodDef() { Name = ".ctor", IsConstructor = true }
+            });
+
+            Assert.AreEqual(2, def.GetConstructors().Count);
+        }
+
+        [Test]
+        public void GetOperators_WhenSystemGenerated_IsEmpty()
+        {
+            TypeDef def = new TypeDef();
+            def.Methods.AddRange(new MethodDef[] {
+                new MethodDef() { Name = "op_one", IsOperator = true }
+            });
+            def.Methods[0].Attributes.Add(CreateGeneratedAttribute());
+
+            Assert.AreEqual(0, def.GetOperators().Count);
+        }
+
+        [Test]
+        public void GetOperators_WhenNotSystemGenerated_IsNotEmpty()
+        {
+            TypeDef def = new TypeDef();
+            def.Methods.AddRange(new MethodDef[] {
+                new MethodDef() { Name = "op_one", IsOperator = true },
+                new MethodDef() { Name = "op_tow", IsOperator = true }
+            });
+
+            Assert.AreEqual(2, def.GetOperators().Count);
+        }
+
+        private CustomAttribute CreateGeneratedAttribute()
+        {
+            MemberRef attributeType = new MemberRef();
+            attributeType.Type = new TypeRef() { Name = "CompilerGeneratedAttribute" };
+            return new CustomAttribute(attributeType);
+        }
     }
 }

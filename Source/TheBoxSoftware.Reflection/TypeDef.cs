@@ -325,7 +325,6 @@ namespace TheBoxSoftware.Reflection
         /// Collection of all the generic types that are relevant for this member, this
         /// includes the types defined in parent and containing classes.
         /// </summary>
-        /// <seealso cref="GetGenericTypes"/>
         public List<GenericTypeRef> GenericTypes
         {
             get { return _genericTypes; }
