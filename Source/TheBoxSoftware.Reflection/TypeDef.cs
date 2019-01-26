@@ -29,6 +29,9 @@ namespace TheBoxSoftware.Reflection
         private TypeAttributes _flags;
         private List<GenericTypeRef> _genericTypes;
 
+        /// <summary>
+        /// Initialises a new instance of the TypeDef class.
+        /// </summary>
         public TypeDef()
         {
             Methods = new List<MethodDef>();
