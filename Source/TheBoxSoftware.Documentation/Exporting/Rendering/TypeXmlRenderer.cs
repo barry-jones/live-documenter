@@ -55,7 +55,7 @@ namespace TheBoxSoftware.Documentation.Exporting.Rendering
 
             if (_member.IsGeneric)
             {
-                RenderGenericTypeParameters(_member.GetGenericTypes(), writer, comment);
+                RenderGenericTypeParameters(_member.GenericTypes, writer, comment);
             }
 
             // find and output the summary
