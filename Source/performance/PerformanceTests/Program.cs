@@ -18,7 +18,8 @@ namespace PerformanceTests
             //BenchmarkRunner.Run<Reflection.AssemblyDefBenchmark>();
             //BenchmarkRunner.Run<Reflection.Syntax.CSharp.ClassFormatterBenchmark>();
             //BenchmarkRunner.Run<Reflection.DisplayNameSignatureBenchmark>();
-            BenchmarkRunner.Run<Reflection.Signatures.SignatureBenchmark>();
+            //BenchmarkRunner.Run<Reflection.Signatures.SignatureBenchmark>();
+            BenchmarkRunner.Run<Reflection.TypeDefBenchmark>();
         }
     }
 }

@@ -52,30 +52,6 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <summary>
-        /// Obtains the list of generic types that are defined and owned only by this member.
-        /// </summary>
-        /// <returns>A collection of generic types for this member</returns>
-        public List<GenericTypeRef> GetGenericTypes()
-        {
-            List<GenericTypeRef> parameters = new List<GenericTypeRef>();
-            string generic = Name.Substring(
-                Name.Length - 1,
-                1);
-            int numberOfParams = 0;
-
-            if(int.TryParse(generic, out numberOfParams))
-            {
-                int index = GenericTypes.Count - numberOfParams;
-                for(int i = index; i < GenericTypes.Count; i++)
-                {
-                    parameters.Add(GenericTypes[i]);
-                }
-            }
-
-            return parameters;
-        }
-
-        /// <summary>
         /// Obtains the fields that are defined in this type. System generated fields will not be
         /// returned.
         /// </summary>

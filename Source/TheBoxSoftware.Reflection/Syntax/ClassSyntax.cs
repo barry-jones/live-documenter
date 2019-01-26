@@ -71,7 +71,7 @@ namespace TheBoxSoftware.Reflection.Syntax
         /// </remarks>
         public List<GenericTypeRef> GetGenericParameters()
         {
-            return _type.GetGenericTypes();
+            return _type.GenericTypes;
         }
 
         /// <summary>
