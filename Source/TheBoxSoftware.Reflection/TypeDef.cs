@@ -68,11 +68,13 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The fields in the type.</returns>
         public List<FieldDef> GetFields(bool includeSystemGenerated)
         {
+            if (includeSystemGenerated) return Fields;
+
             List<FieldDef> fields = new List<FieldDef>();
-            for(int i = 0; i < Fields.Count; i++)
+            for (int i = 0; i < Fields.Count; i++)
             {
                 FieldDef currentField = Fields[i];
-                if(includeSystemGenerated || (!includeSystemGenerated && !currentField.IsSystemGenerated))
+                if (!currentField.IsSystemGenerated)
                 {
                     fields.Add(currentField);
                 }

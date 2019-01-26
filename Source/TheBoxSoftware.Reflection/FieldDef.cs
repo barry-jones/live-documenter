@@ -39,6 +39,8 @@ namespace TheBoxSoftware.Reflection
         /// </summary>
         public bool IsSystemGenerated
         {
+            // `value__` is the compiler generated field for enumerations
+
             get
             {
                 return Name == "value__" 
