@@ -24,4 +24,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("TheBoxSoftware.Reflection.Tests")]
 [assembly: InternalsVisibleTo("TheBoxSoftware.Documentation.Tests")]
 [assembly: InternalsVisibleTo("SignitureReader")]
-[assembly: InternalsVisibleTo("PerformanceTests")]
+[assembly: InternalsVisibleTo("Performance")]
