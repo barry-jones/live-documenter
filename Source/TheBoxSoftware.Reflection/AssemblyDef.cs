@@ -6,7 +6,6 @@ namespace TheBoxSoftware.Reflection
     using Core.COFF;
     using Core.PE;
     using Core;
-    using Signatures;
 
     /// <summary>
     /// The AssemblyDef provides the top level information and entry an point to
@@ -128,8 +127,6 @@ namespace TheBoxSoftware.Reflection
             BlobStream stream = _peCoffFile.GetMetadataDirectory().Streams[Streams.BlobStream] as BlobStream;
             return stream.GetSigniture(fromIndex.Value, fromIndex.SignitureType);
         }
-
-        
 
         internal object ResolveCodedIndex(CodedIndex index)
         {
