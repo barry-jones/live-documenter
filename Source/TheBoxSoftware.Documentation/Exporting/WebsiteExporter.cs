@@ -8,18 +8,23 @@ namespace TheBoxSoftware.Documentation.Exporting
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Utilises an XSLT to convert the base XML to a web site.
+    /// </summary>
     public class WebsiteExporter : Exporter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WebsiteExporter"/> class.
         /// </summary>
         /// <param name="document">The document to be exported.</param>
+        /// <param name="settings">The settings for the export</param>
+        /// <param name="filesystem">The filesystem instance.</param>
         /// <param name="config">The export configuration.</param>
-        public WebsiteExporter(Document document, ExportSettings settings, ExportConfigFile config)
-            : base(document, settings, config, new FileSystem())
+        public WebsiteExporter(Document document, ExportSettings settings, ExportConfigFile config, IFileSystem filesystem)
+            : base(document, settings, config, filesystem)
         {
         }
-
+        
         /// <summary>
         /// Exports the full contained documentation.
         /// </summary>

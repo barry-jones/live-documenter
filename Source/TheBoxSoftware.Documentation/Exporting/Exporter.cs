@@ -13,13 +13,14 @@ namespace TheBoxSoftware.Documentation.Exporting
     public abstract class Exporter
     {
         private readonly IFileSystem _fileSystem;
+        
+        protected readonly int XmlExportStep = 10;
 
         private ExportCalculatedEventHandler _exportCalculated;
         private ExportStepEventHandler _exportStep;
         private ExportExceptionHandler _exportException;
         private ExportFailedEventHandler _exportFailure;
         private string _baseTempDirectory;   // base working directory for output and temp
-        protected readonly int XmlExportStep = 10;
         private Document _document;
         private string _applicationDirectory;
         private string _tempDirectory;
@@ -84,7 +85,7 @@ namespace TheBoxSoftware.Documentation.Exporting
 
                 case Exporters.Website:
                 default:
-                    createdExporter = new WebsiteExporter(document, settings, config);
+                    createdExporter = new WebsiteExporter(document, settings, config, new FileSystem());
                     break;
             }
 
@@ -275,14 +276,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public event ExportCalculatedEventHandler ExportCalculated
         {
-            add
-            {
-                _exportCalculated += value;
-            }
-            remove
-            {
-                _exportCalculated -= value;
-            }
+            add => _exportCalculated += value;
+            remove => _exportCalculated -= value;
         }
 
         /// <summary>
@@ -299,14 +294,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public event ExportExceptionHandler ExportException
         {
-            add
-            {
-                _exportException += value;
-            }
-            remove
-            {
-                _exportException -= value;
-            }
+            add => _exportException += value;
+            remove => _exportException -= value;
         }
 
         /// <summary>
@@ -323,14 +312,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public event ExportFailedEventHandler ExportFailed
         {
-            add
-            {
-                _exportFailure += value;
-            }
-            remove
-            {
-                _exportFailure -= value;
-            }
+            add => _exportFailure += value;
+            remove => _exportFailure -= value;
         }
 
         /// <summary>
@@ -347,14 +330,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public Document Document
         {
-            get
-            {
-                return _document;
-            }
-            set
-            {
-                _document = value;
-            }
+            get => _document;
+            set => _document = value;
         }
 
         /// <summary>
@@ -362,14 +339,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected string ApplicationDirectory
         {
-            get
-            {
-                return _applicationDirectory;
-            }
-            private set
-            {
-                _applicationDirectory = value;
-            }
+            get => _applicationDirectory;
+            private set => _applicationDirectory = value;
         }
 
         /// <summary>
@@ -377,14 +348,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected string TempDirectory
         {
-            get
-            {
-                return _tempDirectory;
-            }
-            private set
-            {
-                _tempDirectory = value;
-            }
+            get => _tempDirectory;
+            private set => _tempDirectory = value;
         }
 
         /// <summary>
@@ -392,14 +357,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected string OutputDirectory
         {
-            get
-            {
-                return _outputDirectory;
-            }
-            private set
-            {
-                _outputDirectory = value;
-            }
+            get => _outputDirectory;
+            private set => _outputDirectory = value;
         }
 
         /// <summary>
@@ -407,14 +366,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected string PublishDirectory
         {
-            get
-            {
-                return _publishDirectory;
-            }
-            set
-            {
-                _publishDirectory = value;
-            }
+            get => _publishDirectory;
+            set => _publishDirectory = value;
         }
 
         /// <summary>
@@ -422,14 +375,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected System.Text.RegularExpressions.Regex IllegalFileCharacters
         {
-            get
-            {
-                return _illegalFileCharacters;
-            }
-            private set
-            {
-                _illegalFileCharacters = value;
-            }
+            get => _illegalFileCharacters;
+            private set => _illegalFileCharacters = value;
         }
 
         /// <summary>
@@ -437,14 +384,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected ExportSettings Settings
         {
-            get
-            {
-                return _settings;
-            }
-            set
-            {
-                _settings = value;
-            }
+            get => _settings;
+            set => _settings = value;
         }
 
         /// <summary>
@@ -452,14 +393,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected ExportConfigFile Config
         {
-            get
-            {
-                return _config;
-            }
-            set
-            {
-                _config = value;
-            }
+            get => _config;
+            set => _config = value;
         }
 
         /// <summary>
@@ -467,14 +402,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected int CurrentExportStep
         {
-            get
-            {
-                return _currentExportStep;
-            }
-            set
-            {
-                _currentExportStep = value;
-            }
+            get => _currentExportStep;
+            set => _currentExportStep = value;
         }
 
         /// <summary>
@@ -482,14 +411,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         protected bool IsCancelled
         {
-            get
-            {
-                return _isCancelled;
-            }
-            private set
-            {
-                _isCancelled = value;
-            }
+            get => _isCancelled;
+            private set => _isCancelled = value;
         }
 
         /// <summary>
@@ -497,14 +420,8 @@ namespace TheBoxSoftware.Documentation.Exporting
         /// </summary>
         public List<Exception> ExportExceptions
         {
-            get
-            {
-                return _exportExceptions;
-            }
-            set
-            {
-                _exportExceptions = value;
-            }
+            get => _exportExceptions;
+            set => _exportExceptions = value;
         }
     }
 }
