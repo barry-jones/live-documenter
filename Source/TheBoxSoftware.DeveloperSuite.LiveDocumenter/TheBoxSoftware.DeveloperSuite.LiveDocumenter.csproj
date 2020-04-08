@@ -1,606 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A1DC656F-CF25-43A1-93E6-7AB3AA57B194}</ProjectGuid>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TheBoxSoftware.DeveloperSuite.LiveDocumenter</RootNamespace>
-    <AssemblyName>Live Documenter</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
     <ApplicationIcon>win.ico</ApplicationIcon>
-    <ExpressionBlendVersion>3.0.1927.0</ExpressionBlendVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>http://localhost/Live Documenter/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Live Documenter.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Test\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\Live Documenter.xml</DocumentationFile>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>TheBoxSoftware.DeveloperSuite.LiveDocumenter.App</StartupObject>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Commands.cs" />
-    <Compile Include="Controls\ComboWithCheckboxes.xaml.cs">
-      <DependentUpon>ComboWithCheckboxes.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DropDownButton.cs" />
-    <Compile Include="DocumentationResources.cs" />
-    <Compile Include="ExceptionsMessageBox.xaml.cs">
-      <DependentUpon>ExceptionsMessageBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LiveDocumenterEntryCreator.cs" />
-    <Compile Include="Model\DocumentSettings.cs" />
-    <Compile Include="Model\PrivacyFilter.cs" />
-    <Compile Include="Model\PrivacyFilterCollection.cs" />
-    <Compile Include="Model\XmlCommentParserException.cs" />
-    <Compile Include="Pages\Elements\NoXmlComments.cs" />
-    <Compile Include="Pages\Elements\PermissionEntry.cs" />
-    <Compile Include="Pages\Elements\PermissionList.cs" />
-    <Compile Include="Pages\ErrorPage.cs" />
-    <Compile Include="Pages\NamespaceContainerPage.cs" />
-    <Compile Include="ProjectManager.xaml.cs">
-      <DependentUpon>ProjectManager.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Controls\ComboWithCheckboxes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ExceptionsMessageBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProjectManager.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Flow.MSDN.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="System">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationCore">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationFramework">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Page Include="Diagramming\Component.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Diagramming\Diagram.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Diagramming\Component.xaml.cs">
-      <DependentUpon>Component.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Diagramming\Diagram.xaml.cs">
-      <DependentUpon>Diagram.xaml</DependentUpon>
-    </Compile>
-    <Resource Include="Resources\bluebackground.png" />
-    <Resource Include="Resources\grayheader.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="App.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="About.xaml.cs">
-      <DependentUpon>About.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Activation.cs" />
-    <Compile Include="Controls\Call.cs" />
-    <Compile Include="Controls\CustomControl1.cs" />
-    <Compile Include="Controls\Object.cs" />
-    <Compile Include="Controls\SequenceDiagramPanel.cs" />
-    <Compile Include="Controls\WelcomePageControl.xaml.cs">
-      <DependentUpon>WelcomePageControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\ErrorReporting.xaml.cs">
-      <DependentUpon>ErrorReporting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Diagramming\SequenceDiagram.xaml.cs">
-      <DependentUpon>SequenceDiagram.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Diagramming\SequenceObject.xaml.cs">
-      <DependentUpon>SequenceObject.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EntryKey.cs" />
-    <Compile Include="Export.xaml.cs">
-      <DependentUpon>Export.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Extensions\TreeViewItemBehaviour.cs" />
-    <Compile Include="LiveDocument.cs" />
-    <Compile Include="LiveDocumenterEntry.cs" />
-    <Compile Include="LiveDocumentorFile.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\BuildConfigurations.cs" />
-    <Compile Include="Model\Diagram\Sequence\Activation.cs" />
-    <Compile Include="Model\Diagram\Sequence\Call.cs" />
-    <Compile Include="Model\Diagram\Sequence\SequenceDiagram.cs" />
-    <Compile Include="Model\Diagram\Sequence\Object.cs" />
-    <Compile Include="Model\ElementIconConstants.cs" />
-    <Compile Include="Model\PlainTextSummaryConverter.cs" />
-    <Compile Include="Model\RecentFileList.cs" />
-    <Compile Include="Model\SearchResult.cs" />
-    <Compile Include="Model\SearchResultCollection.cs" />
-    <Compile Include="Model\TreeViewItemDataTemplateSelector.cs" />
-    <Compile Include="Model\UserApplicationStore.cs" />
-    <Compile Include="Model\UserViewingHistory.cs" />
-    <Compile Include="Pages\AssemblyPage.xaml.cs">
-      <DependentUpon>AssemblyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\DelegatePage.cs" />
-    <Compile Include="Pages\DeploymentDiagram.cs" />
-    <Compile Include="Pages\Elements\C.cs" />
-    <Compile Include="Pages\Elements\Code.cs" />
-    <Compile Include="Pages\Elements\Example.cs" />
-    <Compile Include="Pages\Elements\ExceptionEntry.cs" />
-    <Compile Include="Pages\Elements\ExceptionList.xaml.cs">
-      <DependentUpon>ExceptionList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Elements\Header1.cs" />
-    <Compile Include="Pages\Elements\Header2.cs" />
-    <Compile Include="Pages\Elements\Header3.cs" />
-    <Compile Include="Pages\Elements\Keyword.cs" />
-    <Compile Include="Pages\Elements\List.xaml.cs">
-      <DependentUpon>List.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Elements\ListTypes.cs" />
-    <Compile Include="Pages\Elements\Para.cs" />
-    <Compile Include="Pages\Elements\Param.cs" />
-    <Compile Include="Pages\Elements\ParameterList.xaml.cs">
-      <DependentUpon>ParameterList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Elements\ParamRef.cs" />
-    <Compile Include="Pages\Elements\Parser.cs" />
-    <Compile Include="Pages\Elements\Remarks.cs" />
-    <Compile Include="Pages\Elements\Returns.cs" />
-    <Compile Include="Pages\Elements\See.cs" />
-    <Compile Include="Pages\Elements\SeeAlso.cs" />
-    <Compile Include="Pages\Elements\SeeAlsoList.cs" />
-    <Compile Include="Pages\Elements\Summary.cs" />
-    <Compile Include="Pages\Elements\SummaryTable.xaml.cs">
-      <DependentUpon>SummaryTable.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Elements\TypeHeaderSection.xaml.cs">
-      <DependentUpon>TypeHeaderSection.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Elements\TypeParamEntry.cs" />
-    <Compile Include="Pages\Elements\TypeParamSection.xaml.cs">
-      <DependentUpon>TypeParamSection.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Elements\UnorderedList.cs" />
-    <Compile Include="Pages\Elements\Value.cs" />
-    <Compile Include="Pages\EnumerationPage.cs" />
-    <Compile Include="Pages\EventPage.cs" />
-    <Compile Include="Pages\FieldPage.cs" />
-    <Compile Include="Pages\LinkHelper.cs" />
-    <Compile Include="Pages\MethodPage.cs" />
-    <Compile Include="Pages\NamespacePage.cs" />
-    <Compile Include="Pages\Page.cs" />
-    <Compile Include="Pages\PropertyPage.cs" />
-    <Compile Include="Pages\SolutionOverviewPage.cs" />
-    <Compile Include="Pages\TypeConstructorsPage.cs" />
-    <Compile Include="Pages\TypeEventsPage.cs" />
-    <Compile Include="Pages\TypeFieldsPage.cs" />
-    <Compile Include="Pages\TypeMembersPage.cs" />
-    <Compile Include="Pages\TypeMethodsPage.cs" />
-    <Compile Include="Pages\TypeOperatorsPage.cs" />
-    <Compile Include="Pages\TypePage.cs" />
-    <Compile Include="Pages\TypePropertiesPage.cs" />
-    <Compile Include="Pages\WelcomePage.xaml.cs">
-      <DependentUpon>WelcomePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Preferences.xaml.cs">
-      <DependentUpon>Preferences.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="ResourcesExceptionText.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ResourcesExceptionText.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\BoxSoftwareServices\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Resource Include="Resources\frontpage-background.png" />
-    <Resource Include="Resources\srch_16x16.png" />
-    <Resource Include="Resources\sinfo_48x48.png" />
-    <Resource Include="Resources\exp_48x48.png" />
-    <Resource Include="Resources\add_24x24.png" />
-    <Resource Include="Resources\back_24x24.png" />
-    <Resource Include="Resources\exp_24x24.png" />
-    <Resource Include="Resources\forwd_24x24.png" />
-    <Resource Include="Resources\open_24x24.png" />
-    <Resource Include="Resources\print_24x24.png" />
-    <Resource Include="Resources\remov_24x24.png" />
-    <Resource Include="Resources\save_24x24.png" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ResourcesExceptionText.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResourcesExceptionText.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <Content Include="ApplicationData\documentation.msha">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="ApplicationData\export.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ApplicationData\exported.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="ApplicationData\helpviewer1-msdn.ldec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ApplicationData\htmlhelp1-msdn.ldec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ApplicationData\htmlhelp2-msdn.ldec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ApplicationData\xml.ldec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ApplicationData\web-refresh.ldec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Page Include="Resources\Flow.Classic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <None Include="Service References\BoxSoftwareServices\ErrorReporting.wsdl" />
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="About.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\WelcomePageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Diagnostics\ErrorReporting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Diagramming\SequenceDiagram.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Diagramming\SequenceObject.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Export.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\AssemblyPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Elements\ExceptionList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Elements\List.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Elements\ParameterList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Elements\SummaryTable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Elements\TypeHeaderSection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Elements\TypeParamSection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\WelcomePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Preferences.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\DefaultStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ApplicationData\web-msdn.ldec">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Service References\BoxSoftwareServices\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\BoxSoftwareServices\configuration.svcinfo" />
-    <None Include="Service References\BoxSoftwareServices\configuration91.svcinfo" />
-    <None Include="Service References\BoxSoftwareServices\ErrorReporting.disco" />
-    <Resource Include="Resources\default.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_class_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_class_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_class_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_class_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_constant.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_constant_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_constant_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_constant_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_constant_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_delegate.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_delegate_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_delegate_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_delegate_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_delegate_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enum.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enumitem.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enumitem_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enumitem_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enumitem_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enumitem_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enum_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enum_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enum_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_enum_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_event_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_event_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_event_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_event_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_field_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_field_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_field_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_field_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_interface_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_interface_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_interface_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_interface_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_methodoverload.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_method_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_method_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_method_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_method_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_namespaceprivate.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_namespaceprotected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_namespace_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_namespace_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_operator.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_operator_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_operator_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_operator_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_operator_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_properties_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_properties_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_properties_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_properties_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_structure.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_structure_friend.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_structure_private.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_structure_protected.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_structure_sealed.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_namespace.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_event.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_field.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_interface.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_method.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_properties.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_assembly.png" />
-    <Resource Include="Resources\ElementIcons\vsobject_class.png" />
-    <Resource Include="Resources\about.png" />
-    <Resource Include="win.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\BoxSoftwareServices\" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
+  
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
       <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
@@ -613,30 +21,373 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj">
-      <Project>{0b8aa021-532c-4fe9-b1f6-919cc5b4f6e9}</Project>
-      <Name>TheBoxSoftware.Documentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj">
-      <Project>{2cf8c06e-9a62-4887-9b0f-8d9f12756611}</Project>
-      <Name>TheBoxSoftware.Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj">
-      <Project>{7f444a72-f280-4722-9816-926ec84875e4}</Project>
-      <Name>TheBoxSoftware</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj" />
+    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
+    <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNetProjects.WpfToolkit.Input">
       <Version>6.0.79</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <Compile Remove="Service References\BoxSoftwareServices\Reference1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\about.png" />
+    <None Remove="Resources\add_24x24.png" />
+    <None Remove="Resources\back_24x24.png" />
+    <None Remove="Resources\bluebackground.png" />
+    <None Remove="Resources\default.png" />
+    <None Remove="Resources\ElementIcons\vsobject_assembly.png" />
+    <None Remove="Resources\ElementIcons\vsobject_class.png" />
+    <None Remove="Resources\ElementIcons\vsobject_class_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_class_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_class_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_class_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_constant.png" />
+    <None Remove="Resources\ElementIcons\vsobject_constant_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_constant_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_constant_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_constant_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_delegate.png" />
+    <None Remove="Resources\ElementIcons\vsobject_delegate_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_delegate_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_delegate_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_delegate_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enum.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enumitem.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enumitem_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enumitem_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enumitem_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enumitem_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enum_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enum_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enum_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_enum_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_event.png" />
+    <None Remove="Resources\ElementIcons\vsobject_event_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_event_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_event_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_event_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_field.png" />
+    <None Remove="Resources\ElementIcons\vsobject_field_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_field_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_field_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_field_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_interface.png" />
+    <None Remove="Resources\ElementIcons\vsobject_interface_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_interface_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_interface_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_interface_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_method.png" />
+    <None Remove="Resources\ElementIcons\vsobject_methodoverload.png" />
+    <None Remove="Resources\ElementIcons\vsobject_methodoverload_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_methodoverload_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_methodoverload_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_methodoverload_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_method_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_method_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_method_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_method_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_namespace.png" />
+    <None Remove="Resources\ElementIcons\vsobject_namespaceprivate.png" />
+    <None Remove="Resources\ElementIcons\vsobject_namespaceprotected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_namespace_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_namespace_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_operator.png" />
+    <None Remove="Resources\ElementIcons\vsobject_operator_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_operator_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_operator_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_operator_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_properties.png" />
+    <None Remove="Resources\ElementIcons\vsobject_properties_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_properties_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_properties_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_properties_sealed.png" />
+    <None Remove="Resources\ElementIcons\vsobject_structure.png" />
+    <None Remove="Resources\ElementIcons\vsobject_structure_friend.png" />
+    <None Remove="Resources\ElementIcons\vsobject_structure_private.png" />
+    <None Remove="Resources\ElementIcons\vsobject_structure_protected.png" />
+    <None Remove="Resources\ElementIcons\vsobject_structure_sealed.png" />
+    <None Remove="Resources\exp_24x24.png" />
+    <None Remove="Resources\exp_48x48.png" />
+    <None Remove="Resources\forwd_24x24.png" />
+    <None Remove="Resources\frontpage-background.png" />
+    <None Remove="Resources\grayheader.png" />
+    <None Remove="Resources\open_24x24.png" />
+    <None Remove="Resources\print_24x24.png" />
+    <None Remove="Resources\remov_24x24.png" />
+    <None Remove="Resources\save_24x24.png" />
+    <None Remove="Resources\sinfo_48x48.png" />
+    <None Remove="Resources\srch_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Resources\DefaultStyles.xaml" />
+    <Page Remove="Resources\Flow.Classic.xaml" />
+    <Page Remove="Resources\Flow.MSDN.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\about.png" />
+    <Resource Include="Resources\add_24x24.png" />
+    <Resource Include="Resources\back_24x24.png" />
+    <Resource Include="Resources\bluebackground.png" />
+    <Resource Include="Resources\default.png" />
+    <Resource Include="Resources\DefaultStyles.xaml" />
+    <Resource Include="Resources\ElementIcons\vsobject_assembly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_class.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_class_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_class_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_class_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_class_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_constant.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_constant_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_constant_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_constant_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_constant_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_delegate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_delegate_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_delegate_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_delegate_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_delegate_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enum.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enumitem.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enumitem_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enumitem_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enumitem_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enumitem_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enum_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enum_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enum_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_enum_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_event.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_event_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_event_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_event_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_event_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_field.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_field_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_field_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_field_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_field_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_interface.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_interface_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_interface_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_interface_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_interface_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_method.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_methodoverload.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_methodoverload_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_method_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_method_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_method_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_method_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_namespace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_namespaceprivate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_namespaceprotected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_namespace_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_namespace_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_operator.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_operator_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_operator_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_operator_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_operator_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_properties.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_properties_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_properties_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_properties_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_properties_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_structure.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_structure_friend.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_structure_private.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_structure_protected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ElementIcons\vsobject_structure_sealed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\exp_24x24.png" />
+    <Resource Include="Resources\exp_48x48.png" />
+    <Resource Include="Resources\Flow.Classic.xaml" />
+    <Resource Include="Resources\Flow.MSDN.xaml" />
+    <Resource Include="Resources\forwd_24x24.png" />
+    <Resource Include="Resources\frontpage-background.png" />
+    <Resource Include="Resources\grayheader.png" />
+    <Resource Include="Resources\open_24x24.png" />
+    <Resource Include="Resources\print_24x24.png" />
+    <Resource Include="Resources\remov_24x24.png" />
+    <Resource Include="Resources\save_24x24.png" />
+    <Resource Include="Resources\sinfo_48x48.png" />
+    <Resource Include="Resources\srch_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ApplicationData\documentation.msha">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\export.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\exported.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\helpviewer1-msdn.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\htmlhelp1-msdn.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\htmlhelp2-msdn.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\web-msdn.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\web-refresh.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ApplicationData\xml.ldec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
