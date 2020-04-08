@@ -91,7 +91,7 @@ namespace TheBoxSoftware.Reflection
         public bool IsConstructor
         {
             get { return _isConstructor; }
-            protected set { _isConstructor = value; }
+            set { _isConstructor = value; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace TheBoxSoftware.Reflection
         public bool IsOperator
         {
             get { return _isOperator; }
-            protected set { _isOperator = value; }
+            set { _isOperator = value; }
         }
 
         /// <summary>

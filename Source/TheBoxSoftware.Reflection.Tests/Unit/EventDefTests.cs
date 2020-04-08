@@ -9,14 +9,6 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
     {
         private TypeDef _container;
 
-        private EventDef Create()
-        {
-            _container = new TypeDef();
-            AssemblyDef assembly = new AssemblyDef();
-
-            return new EventDef("EventName", assembly, _container);
-        }
-
         [Test]
         public void FindAddMethod_WhenNoMethod_ReturnsNull()
         {
@@ -128,6 +120,14 @@ namespace TheBoxSoftware.Reflection.Tests.Unit
             remove.Name = $"{addOrRemove}_EventName";
             remove.MethodAttributes = attributes;
             return remove;
+        }
+
+        private EventDef Create()
+        {
+            _container = new TypeDef();
+            AssemblyDef assembly = new AssemblyDef();
+
+            return new EventDef("EventName", assembly, _container);
         }
     }
 }

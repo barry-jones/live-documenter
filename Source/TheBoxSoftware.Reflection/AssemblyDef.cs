@@ -6,8 +6,11 @@ namespace TheBoxSoftware.Reflection
     using Core.COFF;
     using Core.PE;
     using Core;
-    using Signatures;
 
+    /// <summary>
+    /// The AssemblyDef provides the top level information and entry an point to
+    /// all types, methods etc reflected from a .NET executable.
+    /// </summary>
     /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="class"]/*'/> 
     public class AssemblyDef : ReflectedMember
     {
@@ -22,12 +25,6 @@ namespace TheBoxSoftware.Reflection
         private PeCoffFile _peCoffFile;
         private string _fileName;
         private TypeInNamespaceMap _map;
-        private IStringStream _stringStream;
-        private BlobStream _blobStream;
-        private MetadataDirectory _metadataDirectory;
-        private MetadataStream _metadataStream;
-        private MetadataToDefinitionMap _metadataMap;
-        private byte[] _fileContents;
 
         internal AssemblyDef()
         {
@@ -43,6 +40,11 @@ namespace TheBoxSoftware.Reflection
             _peCoffFile = peCoffFile;
         }
 
+        /// <summary>
+        /// Creates and instantiates an AssemblyDef based on the provided filename.
+        /// </summary>
+        /// <param name="fileName">The file name of the assembly to reflect.</param>
+        /// <returns>The insantiated AssemblyDef</returns>
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create"]/*'/> 
         public static AssemblyDef Create(string fileName)
         {
@@ -60,163 +62,83 @@ namespace TheBoxSoftware.Reflection
             return Create(peFile);
         }
 
+        /// <summary>
+        /// Initialises and instantiates an AssemblyDef instance for the provided
+        /// <see cref = "PeCoffFile" /> (assembly).
+        /// </summary>
+        /// <param name="peCoffFile">The PeCoffFile to load the AssemblyDef from.</param>
+        /// <returns>The instantiated AssemblyDef.</returns>
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="create2"]/*'/> 
         public static AssemblyDef Create(PeCoffFile peCoffFile)
         {
             AssemblyDef created = new AssemblyDefBuilder(peCoffFile).Build();
 
             created._fileName = peCoffFile.FileName;
-            created._metadataDirectory = peCoffFile.GetMetadataDirectory();
-            created._metadataStream = created._metadataDirectory.GetMetadataStream();
-            created._blobStream = created._metadataDirectory.Streams[Streams.BlobStream] as BlobStream;
-            created._metadataMap = peCoffFile.Map;
-            created._fileContents = peCoffFile.FileContents;
 
             return created;
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="gettypesinnamespaces"]/*'/> 
+        /// <summary>
+        /// Returns a dictionary of all of the types in this assembly in their 
+        /// respective namespaces.
+        /// </summary>
         public Dictionary<string, List<TypeDef>> GetTypesInNamespaces()
         {
             return _map.GetAllTypesInNamespaces();
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getnamespaces"]/*'/> 
+        /// <summary>
+        /// Gets a list of all of the namespaces defined in this assembly.
+        /// </summary>
         public List<string> GetNamespaces()
         {
             return _map.GetAllNamespaces();
         }
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="findtype"]/*'/> 
+        /// <summary>
+        /// Searches the assembly for the named type in the specified assembly.
+        /// </summary>
+        /// <param name="theNamespace">The namespace to search for the type in.</param>
+        /// <param name="theTypeName">The name of the type</param>
+        /// <returns>The resolved type definition or null if not found.</returns>
         public TypeDef FindType(string theNamespace, string theTypeName)
         {
             if(string.IsNullOrEmpty(theTypeName)) return null;
             return _map.FindTypeInNamespace(theNamespace, theTypeName);
         }
 
+        /// <summary>
+        /// Helps to resolve tokens from the metadata to there associated types and elements inside
+        /// this assembly.
+        /// </summary>
+        /// <param name="metadataToken">The metadata token to resolve</param>
+        /// <returns>A resolved token reference or null if not found in this assembly.</returns>
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="resolvemetadatatoken"]/*'/> 
         public ReflectedMember ResolveMetadataToken(uint metadataToken)
         {
-            MetadataToDefinitionMap map = _peCoffFile.Map;
-            MetadataStream metadataStream = _peCoffFile.GetMetadataDirectory().GetMetadataStream();
-
-            // Get the details in the token
-            ILMetadataToken token = (ILMetadataToken)(metadataToken & 0xff000000);
-            uint index = metadataToken & 0x00ffffff;
-
-            ReflectedMember returnItem = null;
-
-            // 
-            switch(token)
-            {
-                // Method related tokens
-                case ILMetadataToken.MethodDef:
-                    returnItem = map.GetDefinition(MetadataTables.MethodDef, metadataStream.GetEntryFor(MetadataTables.MethodDef, index));
-                    break;
-                case ILMetadataToken.MemberRef:
-                    returnItem = map.GetDefinition(MetadataTables.MemberRef, metadataStream.GetEntryFor(MetadataTables.MemberRef, index));
-                    break;
-                case ILMetadataToken.MethodSpec:
-                    returnItem = map.GetDefinition(MetadataTables.MethodSpec, metadataStream.GetEntryFor(MetadataTables.MethodSpec, index));
-                    break;
-                // Type related tokens
-                case ILMetadataToken.TypeDef:
-                    returnItem = map.GetDefinition(MetadataTables.TypeDef, metadataStream.GetEntryFor(MetadataTables.TypeDef, index));
-                    break;
-                case ILMetadataToken.TypeRef:
-                    returnItem = map.GetDefinition(MetadataTables.TypeRef, metadataStream.GetEntryFor(MetadataTables.TypeRef, index));
-                    break;
-                case ILMetadataToken.TypeSpec:
-                    returnItem = map.GetDefinition(MetadataTables.TypeSpec, metadataStream.GetEntryFor(MetadataTables.TypeSpec, index));
-                    break;
-                case ILMetadataToken.FieldDef:
-                    returnItem = map.GetDefinition(MetadataTables.Field, metadataStream.GetEntryFor(MetadataTables.Field, index));
-                    break;
-            }
-
-            return returnItem;
+            return _peCoffFile.ResolveMetadataToken(metadataToken);
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getgloballyuniqueid"]/*'/> 
         public override long GetGloballyUniqueId() => ((long)UniqueId) << 32;
 
-        /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="getassemblyid"]/*'/> 
-        // public override long GetAssemblyId() => UniqueId;
-
         internal Signatures.Signature GetSigniture(BlobIndex fromIndex)
         {
-            return _blobStream.GetSigniture(fromIndex.Value, fromIndex.SignitureType);
-        }
-
-        internal List<TypeRef> GetExtendindTypes(TypeDef type, CodedIndex ciForThisType)
-        {
-            List<TypeRef> inheritingTypes = new List<TypeRef>();
-            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata Signatures
-
-            ourIndexes.Add(ciForThisType);
-
-            // All types in this assembly that extend another use the TypeDef.Extends data in the metadata
-            // table.
-            if(type.IsGeneric)
-            {
-                MetadataRow[] typeSpecs = _metadataStream.Tables[MetadataTables.TypeSpec];
-                for(int i = 0; i < typeSpecs.Length; i++)
-                {
-                    TypeSpecMetadataTableRow row = typeSpecs[i] as TypeSpecMetadataTableRow;
-                    if(row != null)
-                    {
-                        // We need to find all of the TypeSpec references that point back to us, remember
-                        // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
-                        // for example. Each one of these will be a different type spec.
-                        TypeSpec spec = _metadataMap.GetDefinition(MetadataTables.TypeSpec, row) as TypeSpec;
-                        SignatureToken token = spec.Signiture.TypeToken.Tokens[0];
-
-                        // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
-                        if(token.TokenType == SignatureTokens.ElementType && ((ElementTypeSignatureToken)token).ElementType == ElementTypes.GenericInstance)
-                        {
-                            ElementTypeSignatureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignatureToken;
-
-                            TypeRef typeRef = typeToken.ResolveToken(Assembly);
-                            if(typeRef == type)
-                            {
-                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1));
-                            }
-                        }
-                    }
-                }
-            }
-
-            MetadataRow[] typeDefs = _metadataStream.Tables[MetadataTables.TypeDef];
-            for(int i = 0; i < typeDefs.Length; i++)
-            {
-                for(int j = 0; j < ourIndexes.Count; j++)
-                {
-                    TypeDefMetadataTableRow row = (TypeDefMetadataTableRow)typeDefs[i];
-                    CodedIndex ourCi = ourIndexes[j];
-
-                    if(row.Extends == ourCi)
-                    {
-                        inheritingTypes.Add(
-                            (TypeDef)_metadataMap.GetDefinition(MetadataTables.TypeDef, _metadataStream.Tables[MetadataTables.TypeDef][i])
-                            );
-                        continue; // a type can only be extending once so if we find ourselves we are done
-                    }
-                }
-            }
-
-            return inheritingTypes;
+            BlobStream stream = _peCoffFile.GetMetadataDirectory().Streams[Streams.BlobStream] as BlobStream;
+            return stream.GetSigniture(fromIndex.Value, fromIndex.SignitureType);
         }
 
         internal object ResolveCodedIndex(CodedIndex index)
         {
+            MetadataStream stream = _peCoffFile.GetMetadataDirectory().GetMetadataStream();
             object resolvedReference = null;
 
-            if(_metadataStream.Tables.ContainsKey(index.Table))
+            if(stream.Tables.ContainsKey(index.Table))
             {
-                if(_metadataStream.Tables[index.Table].Length + 1 > index.Index)
+                if(stream.Tables[index.Table].Length + 1 > index.Index)
                 {
-                    MetadataRow metadataRow = _metadataStream.GetEntryFor(index);
-                    resolvedReference = _metadataMap.GetDefinition(index.Table, metadataRow);
+                    MetadataRow metadataRow = stream.GetEntryFor(index);
+                    resolvedReference = _peCoffFile.Map.GetDefinition(index.Table, metadataRow);
                 }
             }
 
@@ -225,7 +147,7 @@ namespace TheBoxSoftware.Reflection
 
         internal byte[] GetFileContents()
         {
-            return _fileContents;
+            return _peCoffFile.FileContents;
         }
 
         internal uint FileAddressFromRVA(uint rva)
@@ -282,11 +204,7 @@ namespace TheBoxSoftware.Reflection
         }
 
         /// <include file='code-documentation\reflection.xml' path='docs/assemblydef/member[@name="stringstream"]/*'/> 
-        public IStringStream StringStream
-        {
-            get { return _stringStream; }
-            set { _stringStream = value; }
-        }
+        public IStringStream StringStream { get; set; }
 
         public List<AssemblyRef> ReferencedAssemblies
         {
@@ -311,5 +229,10 @@ namespace TheBoxSoftware.Reflection
             get { return _map; }
             set { _map = value; }
         }
+
+        /// <summary>
+        /// Obtain a reference to the underlying PeCoffFile
+        /// </summary>
+        internal PeCoffFile PeCoffFile { get => _peCoffFile; }
     }
 }

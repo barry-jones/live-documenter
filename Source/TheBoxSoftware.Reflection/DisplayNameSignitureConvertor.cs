@@ -325,7 +325,7 @@ namespace TheBoxSoftware.Reflection.Signatures
                 {
                     converted.Append(GenericStart);
                     bool first = true;
-                    foreach(GenericTypeRef type in _type.GetGenericTypes())
+                    foreach(GenericTypeRef type in _type.GenericTypes)
                     {
                         if(first)
                         {

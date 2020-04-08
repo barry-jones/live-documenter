@@ -1,10 +1,6 @@
 ﻿<docs>
   <assemblydef>
     <member name="class">
-      <summary>
-        The AssemblyDef provides the top level information and entry point to
-        all types, methods etc reflected from a .NET executable.
-      </summary>
       <remarks>
         <para>
           The AssemblyDef is the starting point for obtaining reflected information
@@ -34,11 +30,6 @@
     </member>
 
     <member name="create">
-      <summary>
-        Creates and instantiates an AssemblyDef based on the provided library name.
-      </summary>
-      <param name="fileName">The file name of the assembly to reflect.</param>
-      <returns>The instantiated AssemblyDef.</returns>
       <exception cref="ArgumentNullException">The filename was null or empty.</exception>
       <exception cref="NotAManagedLibraryException">
         Thrown when a PeCoff file is passed to the function and the <paramref name="fileName"/>
@@ -47,24 +38,11 @@
     </member>
 
     <member name="create2">
-      <summary>
-        Initialises and instantiates an AssemblyDef instance for the provided
-        <see cref="PeCoffFile"/> (assembly).
-      </summary>
-      <param name="peCoffFile">The PeCoffFile to load the AssemblyDef from.</param>
-      <returns>The instantiated AssemblyDef.</returns>
       <exception cref="ArgumentNullException">Thrown when the PeCoffFile is null.</exception>
       <exception cref="NotAManagedLibraryException">
         Thrown when a PeCoff file is passed to the function and the <paramref name="peCoffFile"/>
         does not contain a <see cref="DataDirectories.CommonLanguageRuntimeHeader"/>.
       </exception>
-    </member>
-
-    <member name="gettypesinnamespaces">
-      <summary>
-        Returns all the types in their respective namespaces.
-      </summary>
-      <returns>A dictionary of namespaces and its containing types</returns>
     </member>
 
     <member name="isnamespacedefined">
@@ -79,29 +57,7 @@
       </remarks>
     </member>
 
-    <member name="getnamespaces">
-      <summary>
-        Obtains a collection of all the namespaces defined in this assembly.
-      </summary>
-      <returns>The collection of strings representing the namespaces.</returns>
-    </member>
-
-    <member name="findtype">
-      <summary>
-        Searches the assembly for the named type in the specified assembly.
-      </summary>
-      <param name="theNamespace">The namespace to search for the type in.</param>
-      <param name="theTypeName">The name of the type</param>
-      <returns>The resolved type definition or null if not found.</returns>
-    </member>
-
     <member name="resolvemetadatatoken">
-      <summary>
-        Helps to resolve tokens from the metadata to there associated types and elements inside
-        this assembly.
-      </summary>
-      <param name="metadataToken">The metadata token to resolve</param>
-      <returns>A resolved token reference or null if not found in this assembly.</returns>
       <remarks>
         A token is specific to an assembly.
       </remarks>
@@ -132,57 +88,6 @@
       </remarks>
     </member>
   </assemblydef>
-
-  <typeinnamespacemap>
-    <member name="class">
-      <summary>
-        Internal mapping class that maps types in to there respective namespaces. The type itself is not
-        returned only an index to the definition map.
-      </summary>
-    </member>
-    
-    <member name="add">
-      <summary>
-        Adds a new type to a namespaces with a reference to its associated metadata file.
-      </summary>
-        <param name="type">The type being added</param>
-        <param name="table">The table storing the metadata</param>
-        <param name="row">The row defining the details of the types metadata.</param>
-    </member>
-
-    <member name="getallnamespaces">
-      <summary>
-        Returns a collection of all the namespaces defined in this map.
-      </summary>
-      <returns>The string collection of namespaces.</returns>
-    </member>
-
-    <member name="getalltypesinnamespaces">
-      <summary>
-        Returns all the types for each namespace defined in the map.
-      </summary>
-      <returns>The dictionary of the namespaces and types.</returns>
-    </member>
-
-    <member name="findtypeinnamespace">
-      <summary>
-        This is going to be a slow method and it will get slower the more types are
-        defined in an assembly. This is a last resort method for finding types in
-        an assembly.
-      </summary>
-      <param name="inNamespace">The namspace the type is in.</param>
-      <param name="typeName">The name of the type to find</param>
-      <returns>The found TypeDef or null if not found.</returns>
-    </member>
-
-    <member name="containsnamespace">
-      <summary>
-        Checks if 'theNamespace' specified is defined in this assembly.
-      </summary>
-      <param name="theNamespace">The namespace to check for.</param>
-      <returns>True if it is else false.</returns>
-    </member>
-  </typeinnamespacemap>
 
   <typeref>
     <member name="getdisplayname">

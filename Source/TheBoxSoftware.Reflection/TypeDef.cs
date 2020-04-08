@@ -6,6 +6,8 @@ namespace TheBoxSoftware.Reflection
     using System.Diagnostics;
     using System.Text;
     using Core.COFF;
+    using TheBoxSoftware.Reflection.Core;
+    using TheBoxSoftware.Reflection.Signatures;
 
     /// <summary>
     /// Contains the information regarding the construction and elements of a type reflected 
@@ -27,6 +29,9 @@ namespace TheBoxSoftware.Reflection
         private TypeAttributes _flags;
         private List<GenericTypeRef> _genericTypes;
 
+        /// <summary>
+        /// Initialises a new instance of the TypeDef class.
+        /// </summary>
         public TypeDef()
         {
             Methods = new List<MethodDef>();
@@ -46,32 +51,7 @@ namespace TheBoxSoftware.Reflection
         public List<TypeRef> GetExtendingTypes()
         {
             CodedIndex ciForThisType = new CodedIndex(_table, (uint)_index);
-
-            return Assembly.GetExtendindTypes(this, ciForThisType);
-        }
-
-        /// <summary>
-        /// Obtains the list of generic types that are defined and owned only by this member.
-        /// </summary>
-        /// <returns>A collection of generic types for this member</returns>
-        public List<GenericTypeRef> GetGenericTypes()
-        {
-            List<GenericTypeRef> parameters = new List<GenericTypeRef>();
-            string generic = Name.Substring(
-                Name.Length - 1,
-                1);
-            int numberOfParams = 0;
-
-            if(int.TryParse(generic, out numberOfParams))
-            {
-                int index = GenericTypes.Count - numberOfParams;
-                for(int i = index; i < GenericTypes.Count; i++)
-                {
-                    parameters.Add(GenericTypes[i]);
-                }
-            }
-
-            return parameters;
+            return GetExtendingTypes(this, ciForThisType);
         }
 
         /// <summary>
@@ -91,11 +71,13 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The fields in the type.</returns>
         public List<FieldDef> GetFields(bool includeSystemGenerated)
         {
+            if (includeSystemGenerated) return Fields;
+
             List<FieldDef> fields = new List<FieldDef>();
-            for(int i = 0; i < Fields.Count; i++)
+            for (int i = 0; i < Fields.Count; i++)
             {
                 FieldDef currentField = Fields[i];
-                if(includeSystemGenerated || (!includeSystemGenerated && !currentField.IsSystemGenerated))
+                if (!currentField.IsSystemGenerated)
                 {
                     fields.Add(currentField);
                 }
@@ -119,18 +101,19 @@ namespace TheBoxSoftware.Reflection
         /// <returns>The methods defined in this type.</returns>
         public List<MethodDef> GetMethods(bool includeSystemGenerated)
         {
+            if (includeSystemGenerated) return Methods;
+
             List<MethodDef> methods = new List<MethodDef>();
             for(int i = 0; i < Methods.Count; i++)
             {
+                bool isSystemGenerated = Methods[i].IsSpecialName || Methods[i].IsCompilerGenerated;
+
                 // IsSpecialName denotes (or appears to) that the method is a compiler
                 // generated get|set for properties. Compiler generated code for linq
                 // expressions are not 'special name' so need to be checked for seperately.
-                if(!this.Methods[i].IsSpecialName)
+                if(!isSystemGenerated)
                 {
-                    if(includeSystemGenerated || (!includeSystemGenerated && !Methods[i].IsCompilerGenerated))
-                    {
-                        methods.Add(Methods[i]);
-                    }
+                    methods.Add(Methods[i]);
                 }
             }
             return methods;
@@ -217,6 +200,66 @@ namespace TheBoxSoftware.Reflection
             return builder.Build();
         }
 
+        private List<TypeRef> GetExtendingTypes(TypeDef type, CodedIndex ciForThisType)
+        {
+            PeCoffFile peFile = Assembly.PeCoffFile;
+            MetadataStream stream = peFile.GetMetadataDirectory().GetMetadataStream();
+            List<TypeRef> inheritingTypes = new List<TypeRef>();
+            List<CodedIndex> ourIndexes = new List<CodedIndex>(); // our coded index in typedef and any that appear in the type spec metadata Signatures
+
+            ourIndexes.Add(ciForThisType);
+
+            // All types in this assembly that extend another use the TypeDef.Extends data in the metadata
+            // table.
+            if (type.IsGeneric)
+            {
+                MetadataRow[] typeSpecs = stream.Tables[MetadataTables.TypeSpec];
+                for (int i = 0; i < typeSpecs.Length; i++)
+                {
+                    if (typeSpecs[i] is TypeSpecMetadataTableRow row)
+                    {
+                        // We need to find all of the TypeSpec references that point back to us, remember
+                        // that as a generic type people can inherit from us in different ways - Type<int> or Type<string>
+                        // for example. Each one of these will be a different type spec.
+                        TypeSpec spec = peFile.Map.GetDefinition(MetadataTables.TypeSpec, row) as TypeSpec;
+                        SignatureToken token = spec.Signiture.TypeToken.Tokens[0];
+
+                        // First check if it is a GenericInstance as per the signiture spec in ECMA 23.2.14
+                        if (token.TokenType == SignatureTokens.ElementType && ((ElementTypeSignatureToken)token).ElementType == ElementTypes.GenericInstance)
+                        {
+                            ElementTypeSignatureToken typeToken = spec.Signiture.TypeToken.Tokens[1] as ElementTypeSignatureToken;
+
+                            TypeRef typeRef = typeToken.ResolveToken(Assembly);
+                            if (typeRef == type)
+                            {
+                                ourIndexes.Add(new CodedIndex(MetadataTables.TypeSpec, (uint)i + 1));
+                            }
+                        }
+                    }
+                }
+            }
+
+            MetadataRow[] typeDefs = stream.Tables[MetadataTables.TypeDef];
+            for (int i = 0; i < typeDefs.Length; i++)
+            {
+                for (int j = 0; j < ourIndexes.Count; j++)
+                {
+                    TypeDefMetadataTableRow row = typeDefs[i] as TypeDefMetadataTableRow;
+                    CodedIndex ourCi = ourIndexes[j];
+
+                    if (row.Extends == ourCi)
+                    {
+                        inheritingTypes.Add(
+                            (TypeDef)peFile.Map.GetDefinition(MetadataTables.TypeDef, stream.Tables[MetadataTables.TypeDef][i])
+                            );
+                        continue; // a type can only be extending once so if we find ourselves we are done
+                    }
+                }
+            }
+
+            return inheritingTypes;
+        }
+
         /// <summary>
         /// The methods this type contains
         /// </summary>
@@ -285,7 +328,6 @@ namespace TheBoxSoftware.Reflection
         /// Collection of all the generic types that are relevant for this member, this
         /// includes the types defined in parent and containing classes.
         /// </summary>
-        /// <seealso cref="GetGenericTypes"/>
         public List<GenericTypeRef> GenericTypes
         {
             get { return _genericTypes; }
@@ -471,11 +513,10 @@ namespace TheBoxSoftware.Reflection
         {
             get
             {
-                // a type is generated if it is a child of generated type.
-                bool parentGenerated = this.ContainingClass != null ? this.ContainingClass.IsCompilerGenerated : false;
+                bool parentGenerated = ContainingClass != null ? ContainingClass.IsCompilerGenerated : false;
                 return parentGenerated ||
-                    this.Namespace == "XamlGeneratedNamespace" ||
-                    this.Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
+                    Namespace == "XamlGeneratedNamespace" ||
+                    Attributes.Find(attribute => attribute.Name == "CompilerGeneratedAttribute") != null;
             }
         }
 
