@@ -50,10 +50,10 @@ To install, download the file, unzip and execute from the directories.
 ## Build Latest
 
 Requirements
--  .NET Core SDK 2.2
+-  .NET Core SDK 3.1
 -  .NET Framework 4.7.1
 
-The latest code has been worked on in Visual Studio 2017 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
+The latest code has been worked on in Visual Studio 2019 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
 
 __Please let me know if there are any issues building from source so I can resolve them.__
 
