@@ -9,7 +9,6 @@ namespace TheBoxSoftware.Documentation.Tests.Unit.Exporting
     [TestFixture]
     public class WebsiteExporterTests
     {
-        [Test]
         public WebsiteExporter WebsiteExporter_Create()
         {
             Mock<IFileSystem> filesystem = new Mock<IFileSystem>();
