@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:pages="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages"
-    xmlns:local="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements"
+    xmlns:pages="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages;assembly=TheBoxSoftware.DeveloperSuite.LiveDocumenter"
+    xmlns:local="clr-namespace:TheBoxSoftware.DeveloperSuite.LiveDocumenter.Pages.Elements;assembly=TheBoxSoftware.DeveloperSuite.LiveDocumenter"
     xmlns:doc="clr-namespace:System.Windows.Documents;assembly=PresentationFramework"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Style x:Key="PageStyle" TargetType="{x:Type pages:Page}">
