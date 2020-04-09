@@ -12,10 +12,6 @@
     <ProjectReference Include="..\TheBoxSoftware\TheBoxSoftware.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\bluebackground.png" />
-    <Resource Include="Resources\grayheader.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="DataViews\" />
   </ItemGroup>
 </Project>
