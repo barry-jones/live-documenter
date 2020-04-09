@@ -114,7 +114,6 @@
     <None Remove="Resources\exp_48x48.png" />
     <None Remove="Resources\forwd_24x24.png" />
     <None Remove="Resources\frontpage-background.png" />
-    <None Remove="Resources\grayheader.png" />
     <None Remove="Resources\open_24x24.png" />
     <None Remove="Resources\print_24x24.png" />
     <None Remove="Resources\remov_24x24.png" />
@@ -353,7 +352,6 @@
     <Resource Include="Resources\Flow.MSDN.xaml" />
     <Resource Include="Resources\forwd_24x24.png" />
     <Resource Include="Resources\frontpage-background.png" />
-    <Resource Include="Resources\grayheader.png" />
     <Resource Include="Resources\open_24x24.png" />
     <Resource Include="Resources\print_24x24.png" />
     <Resource Include="Resources\remov_24x24.png" />

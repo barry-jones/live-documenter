@@ -10,6 +10,7 @@
 *.sln.docstates
 livedocumenter.lic
 exporters/*.ldec
+[Tt]humbs.db
 
 # Build results
 [Dd]ebug/
