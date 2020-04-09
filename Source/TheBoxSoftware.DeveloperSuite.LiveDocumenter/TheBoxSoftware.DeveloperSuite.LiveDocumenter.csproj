@@ -37,7 +37,6 @@
     <None Remove="Resources\about.png" />
     <None Remove="Resources\add_24x24.png" />
     <None Remove="Resources\back_24x24.png" />
-    <None Remove="Resources\bluebackground.png" />
     <None Remove="Resources\default.png" />
     <None Remove="Resources\ElementIcons\vsobject_assembly.png" />
     <None Remove="Resources\ElementIcons\vsobject_class.png" />
@@ -130,7 +129,6 @@
     <Resource Include="Resources\about.png" />
     <Resource Include="Resources\add_24x24.png" />
     <Resource Include="Resources\back_24x24.png" />
-    <Resource Include="Resources\bluebackground.png" />
     <Resource Include="Resources\default.png" />
     <Resource Include="Resources\DefaultStyles.xaml" />
     <Resource Include="Resources\ElementIcons\vsobject_assembly.png">
