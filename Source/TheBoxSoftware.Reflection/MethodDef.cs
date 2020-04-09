@@ -122,12 +122,13 @@ namespace TheBoxSoftware.Reflection
                 t => t.TokenType == SignatureTokens.ReturnType
                 );
             TypeDetails details = returnType.GetTypeDetails(this);
-            TypeRef found = details.Type;
-            if(details.IsArray)
+
+            while(details.IsArray)
             {
-                found = details.ArrayOf.Type;
+                details = details.ArrayOf;
             }
-            return found;
+
+            return details.Type;
         }
 
         /// <summary>
