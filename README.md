@@ -51,7 +51,6 @@ To install, download the file, unzip and execute from the directories.
 
 Requirements
 -  .NET Core SDK 3.1
--  .NET Framework 4.7.1
 
 The latest code has been worked on in Visual Studio 2019 and several of the projects have been transferred to netstandard libraries and use the latest csproj file format.
 
