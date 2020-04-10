@@ -10,8 +10,6 @@ namespace PerformanceTests
         static void Main(string[] args)
         {
             var config = ManualConfig.Create(DefaultConfig.Instance);
-            var gcDiagnoser = new MemoryDiagnoser();
-            config.Add(gcDiagnoser);
 
             //BenchmarkRunner.Run<Reflection.Core.PeCoffFileBenchmark>();
             //BenchmarkRunner.Run<Reflection.Core.COFF.StringStreamBenchmark>();
