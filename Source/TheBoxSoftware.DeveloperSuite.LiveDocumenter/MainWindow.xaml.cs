@@ -29,6 +29,9 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter
         /// </summary>
         public MainWindow()
         {
+            // https://github.com/dotnet/corefx/issues/31390
+            AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
+
             InitializeComponent();
 
             Model.UserApplicationStore.Load();
