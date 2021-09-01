@@ -30,6 +30,9 @@ namespace TheBoxSoftware.Exporter
             [XmlAttribute("location")]
             public string Location { get; set; }
 
+            [XmlAttribute("overwrite")]
+            public bool Overwrite { get; set; } = false;
+
             [XmlText()]
             public string File { get; set; }
         }
