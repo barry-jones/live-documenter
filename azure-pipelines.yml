@@ -14,14 +14,9 @@ resources:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 3.1'
+  displayName: 'Use .NET Core sdk 6.0'
   inputs:
-    version: 3.1.x
-
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 2.2'
-  inputs:
-    version: 2.2.x
+    version: 6.0
 
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet'
@@ -44,7 +39,7 @@ steps:
     echo Publishing "$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj""
     cd "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter"
     dotnet publish -c $(BuildConfiguration) -f net471 -o "$(System.DefaultWorkingDirectory)\published\exporter\net471"
-    dotnet publish -c $(BuildConfiguration) -f netcoreapp2.2 -o "$(System.DefaultWorkingDirectory)\published\exporter\netcoreapp2.2"
+    dotnet publish -c $(BuildConfiguration) -f net6.0 -o "$(System.DefaultWorkingDirectory)\published\exporter\net6.0"
     cd "$(System.DefaultWorkingDirectory)"
 
     echo Copying desktop application to release directory
