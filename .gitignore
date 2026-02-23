@@ -22,6 +22,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 .vs/
+.idea/
 
 # Performance test results
 BenchmarkDotNet.Artifacts/
