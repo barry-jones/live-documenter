@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <StartupObject>TheBoxSoftware.Exporter.Program</StartupObject>
     <AssemblyName>exporter</AssemblyName>
@@ -52,6 +52,12 @@
   <ItemGroup>
     <ProjectReference Include="..\TheBoxSoftware.Documentation\TheBoxSoftware.Documentation.csproj" />
     <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Nerdbank.GitVersioning">
+      <Version>3.9.50</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
