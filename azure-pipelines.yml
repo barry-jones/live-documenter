@@ -14,26 +14,22 @@ resources:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 3.1'
+  displayName: 'Use .NET 10 SDK'
   inputs:
-    version: 3.1.x
+    version: 10.x
 
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 2.2'
+- task: DotNetCoreCLI@2
+  displayName: 'Restore packages'
   inputs:
-    version: 2.2.x
+    command: 'restore'
+    projects: '**/*.sln'
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet'
-
-- task: NuGetCommand@2
-
-- task: VSBuild@1
-  displayName: 'Build solution **\*.sln'
+- task: DotNetCoreCLI@2
+  displayName: 'Build solution'
   inputs:
-    solution: '**\*.sln'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+    command: 'build'
+    projects: '**/*.sln'
+    arguments: '-c $(BuildConfiguration)'
 
 - script: |
     echo Making published directories
@@ -41,37 +37,26 @@ steps:
     mkdir published\exporter
     mkdir published\api
 
-    echo Publishing "$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj""
+    echo Publishing "$(System.DefaultWorkingDirectory)\Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj"
     cd "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter"
-    dotnet publish -c $(BuildConfiguration) -f net471 -o "$(System.DefaultWorkingDirectory)\published\exporter\net471"
-    dotnet publish -c $(BuildConfiguration) -f netcoreapp2.2 -o "$(System.DefaultWorkingDirectory)\published\exporter\netcoreapp2.2"
+    dotnet publish -c $(BuildConfiguration) -f net10.0 -o "$(System.DefaultWorkingDirectory)\published\exporter\net10.0"
     cd "$(System.DefaultWorkingDirectory)"
 
     echo Copying desktop application to release directory
-    xcopy /s "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\$(BuildConfiguration)" "$(System.DefaultWorkingDirectory)\published\desktop"
+    xcopy /s "Source\TheBoxSoftware.DeveloperSuite.LiveDocumenter\bin\$(BuildConfiguration)\net10.0-windows" "$(System.DefaultWorkingDirectory)\published\desktop"
 
     echo Release API
     cd "Source\TheBoxSoftware.API.LiveDocumenter\"
     dotnet build -c $(BuildConfiguration) -o "$(System.DefaultWorkingDirectory)\published\api"
     cd "$(System.DefaultWorkingDirectory)"
-  displayName: 'Publish .NET Core Applications'
+  displayName: 'Publish .NET Applications'
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)\Source\testoutput\'
+- task: DotNetCoreCLI@2
+  displayName: 'Run tests'
   inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: '**\Release\**\DocumentationTest.dll'
-    TargetFolder: '$(System.DefaultWorkingDirectory)\Source\testoutput\'
-    flattenFolders: true
-
-- task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\**\*Tests.dll
-     !**\obj\**
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+    command: 'test'
+    projects: '**/*Tests.csproj'
+    arguments: '-c $(BuildConfiguration)'
 
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
