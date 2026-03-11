@@ -128,6 +128,7 @@ namespace TheBoxSoftware.Exporter
             else
             {
                 settings.PublishDirectory = output.Location;
+                settings.OverwritePublishDirectory = output.Overwrite;
 
                 export.Exporter exporter = export.Exporter.Create(document, settings, config);
                 exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);

@@ -217,7 +217,12 @@ namespace TheBoxSoftware.Documentation.Exporting
             // #38 always add a new export directory to the publish location, this is to stop people deleting their
             // files and folders.
             DateTime now = DateTime.Now;
-            this.PublishDirectory = Path.Combine(PublishDirectory, string.Format("LD Export - {4:0000}{3:00}{2:00} {1:00}{0:00}\\", now.Minute, now.Hour, now.Day, now.Month, now.Year));
+            if (_settings.OverwritePublishDirectory) {
+                this.PublishDirectory = Path.Combine(PublishDirectory, "LD Export\\");
+            }
+            else {
+                this.PublishDirectory = Path.Combine(PublishDirectory, string.Format("LD Export - {4:0000}{3:00}{2:00} {1:00}{0:00}\\", now.Minute, now.Hour, now.Day, now.Month, now.Year));
+            }
 
             if (_fileSystem.DirectoryExists(PublishDirectory))
             {

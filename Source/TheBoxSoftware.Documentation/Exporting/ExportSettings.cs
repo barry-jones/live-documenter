@@ -44,5 +44,10 @@ namespace TheBoxSoftware.Documentation.Exporting
             get { return _publishDirectory; }
             set { _publishDirectory = value; }
         }
+
+        /// <summary>
+        /// Whether to overwrite the <see cref="PublishDirectory"/> or to create a new one.
+        /// </summary>
+        public bool OverwritePublishDirectory { get; set; }
     }
 }
