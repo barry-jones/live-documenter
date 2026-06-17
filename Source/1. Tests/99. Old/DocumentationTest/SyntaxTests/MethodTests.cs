@@ -23,6 +23,9 @@ namespace SyntaxTests
         public ForMethod ReturnClass() { return new ForMethod(); }
         public byte[] ReturnArray() { return new byte[0]; }
         public DocumentationTest.GenericClass<string,string,string> ReturnGeneric() { return new DocumentationTest.GenericClass<string, string, string>(); }
+        public (string, string) ReturnTuple() { return ("", ""); }
+        public void ParameterTuple((int, bool) arg) { }
+        public ((int, string), bool) ReturnNestedTuple() { return ((0, ""), false); }
 
         
         // static method

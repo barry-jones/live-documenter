@@ -48,6 +48,8 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         [TestCase("ReturnClass", "public ForMethod ReturnClass()")]
         [TestCase("ReturnArray", "public byte[] ReturnArray()")]
         [TestCase("ReturnGeneric", "public GenericClass<string, string, string> ReturnGeneric()")]
+        [TestCase("ReturnTuple", "public (string, string) ReturnTuple()")]
+        [TestCase("ReturnNestedTuple", "public ((int, string), bool) ReturnNestedTuple()")]
         public void CSharpSyntax_Method_ReturnTypes(string method, string expected)
         {
             TestIt(method, expected);
@@ -58,6 +60,12 @@ namespace TheBoxSoftware.Reflection.Tests.Integration.Syntax
         [TestCase("ParameterOut", "public void ParameterOut(\n\tout int test\n\t)")]
         // bug 49 [TestCase("ParameterDefault", "public void ParameterDefault(\n\tint test = 3\n\t)")]
         public void CSharpSyntax_Method_ParameterModifiers(string method, string expected)
+        {
+            TestIt(method, expected);
+        }
+
+        [TestCase("ParameterTuple", "public void ParameterTuple(\n\t(int, bool) arg\n\t)")]
+        public void CSharpSyntax_Method_TupleParameter(string method, string expected)
         {
             TestIt(method, expected);
         }

@@ -167,13 +167,17 @@ namespace TheBoxSoftware.Reflection.Signatures
                     break;
                 case ElementTypes.GenericInstance:
                     TypeRef genericType = ((ElementTypeSignatureToken)typeToken.Tokens[1]).ResolveToken(assembly);
-                    GetTypeName(convertedSigniture, genericType);
+                    bool isValueTuple = genericType.Namespace == "System" && genericType.Name != null && genericType.Name.StartsWith("ValueTuple");
+                    if(!isValueTuple)
+                    {
+                        GetTypeName(convertedSigniture, genericType);
+                    }
 
                     GenericArgumentCountSignatureToken argsCount = typeToken.GetGenericArgumentCount();
                     bool isFirstArgument = true;
                     if(argsCount.Count > 0)
                     {
-                        sb.Append(GenericStart);
+                        sb.Append(isValueTuple ? "(" : GenericStart);
                         for(int j = 0; j < argsCount.Count; j++)
                         {
                             if(isFirstArgument)
@@ -208,7 +212,7 @@ namespace TheBoxSoftware.Reflection.Signatures
                                 elType,
                                 argResolvedType);
                         }
-                        sb.Append(GenericEnd);
+                        sb.Append(isValueTuple ? ")" : GenericEnd);
                     }
                     break;
                 case ElementTypes.Class:
