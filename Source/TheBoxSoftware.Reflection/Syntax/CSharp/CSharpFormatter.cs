@@ -143,10 +143,20 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
             }
             else
             {
-                tokens.Add(FormatTypeName(details.Type));
+                bool isValueTuple = details.IsGenericInstance
+                    && details.Type != null
+                    && details.Type.Namespace == "System"
+                    && details.Type.Name != null
+                    && details.Type.Name.StartsWith("ValueTuple");
+
+                if(!isValueTuple)
+                {
+                    tokens.Add(FormatTypeName(details.Type));
+                }
+
                 if(details.IsGenericInstance)
                 {
-                    tokens.Add(Constants.GenericStart);
+                    tokens.Add(isValueTuple ? new SyntaxToken("(", SyntaxTokens.Text) : Constants.GenericStart);
                     for(int i = 0; i < details.GenericParameters.Count; i++)
                     {
                         if(i != 0)
@@ -155,7 +165,7 @@ namespace TheBoxSoftware.Reflection.Syntax.CSharp
                         }
                         tokens.AddRange(FormatTypeDetails(details.GenericParameters[i]));
                     }
-                    tokens.Add(Constants.GenericEnd);
+                    tokens.Add(isValueTuple ? new SyntaxToken(")", SyntaxTokens.Text) : Constants.GenericEnd);
                 }
             }
 
