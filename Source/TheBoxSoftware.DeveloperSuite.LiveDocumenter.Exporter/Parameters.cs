@@ -19,7 +19,7 @@ namespace TheBoxSoftware.Exporter
             Visibility.InternalProtected,
             Visibility.Private
         };
-        private readonly string[] PARAMETERS = { "-v", "-h", "-format", "-f", "-filters", "-to" };
+        private readonly string[] PARAMETERS = { "-v", "--verbose", "-h", "-format", "-f", "-filters", "-to", "-d", "--dry-run" };
 
         private bool _showVerbose = false;
         private bool _showHelp = false;
@@ -28,6 +28,7 @@ namespace TheBoxSoftware.Exporter
         private string _format = string.Empty;
         private string _export = string.Empty;
         private bool _hasParameters = false;
+        private bool _dryRun = false;
 
         public Parameters()
         {
@@ -45,6 +46,7 @@ namespace TheBoxSoftware.Exporter
                 ReadTo(parameters);
                 ReadFilters(parameters);
                 ReadHelp(parameters);
+                ReadDryRun(parameters);
             }
         }
 
@@ -94,7 +96,7 @@ namespace TheBoxSoftware.Exporter
         {
             for (int i = 0; i < parameters.Length; i++)
             {
-                if ("-v" == parameters[i])
+                if ("-v" == parameters[i] || "--verbose" == parameters[i])
                 {
                     _showVerbose = true;
                 }
@@ -108,6 +110,17 @@ namespace TheBoxSoftware.Exporter
                 if ("-h" == parameters[i])
                 {
                     _showHelp = true;
+                }
+            }
+        }
+
+        private void ReadDryRun(string[] parameters)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if ("-d" == parameters[i] || "--dry-run" == parameters[i])
+                {
+                    _dryRun = true;
                 }
             }
         }
@@ -220,6 +233,11 @@ namespace TheBoxSoftware.Exporter
         public bool HasParameters
         {
             get { return _hasParameters; }
+        }
+
+        public bool DryRun
+        {
+            get { return _dryRun; }
         }
     }
 }

@@ -188,5 +188,53 @@
 
             Assert.That(test, Throws.TypeOf<InvalidParameterException>());
         }
+
+        [Test]
+        public void Parameters_WhenDryRunShortFormProvided_DryRunIsTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "mylib.dll", "-d" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.DryRun);
+        }
+
+        [Test]
+        public void Parameters_WhenDryRunLongFormProvided_DryRunIsTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "mylib.dll", "--dry-run" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.DryRun);
+        }
+
+        [Test]
+        public void Parameters_WhenNoDryRunProvided_DryRunIsFalse()
+        {
+            const bool EXPECTED = false;
+            string[] input = new string[] { "mylib.dll" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.DryRun);
+        }
+
+        [Test]
+        public void Parameters_WhenVerboseLongFormProvided_VerboseSetToTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "mylib.dll", "--verbose" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.Verbose);
+        }
     }
 }

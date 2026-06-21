@@ -205,6 +205,37 @@ namespace TheBoxSoftware.Documentation.Exporting
             this.IsValid = this.IsValid && !string.IsNullOrEmpty(this.Name);
         }
 
+        /// <summary>
+        /// Gets a list of validation issues with this LDEC file.
+        /// </summary>
+        /// <returns>List of validation issues, empty if valid.</returns>
+        public List<Issue> GetValidationIssues()
+        {
+            List<Issue> issues = new List<Issue>();
+
+            if (_xmlDocument == null)
+            {
+                issues.Add(new Issue { Description = "LDEC file does not contain a valid export.config" });
+                return issues;
+            }
+
+            if (string.IsNullOrEmpty(this.Name))
+            {
+                issues.Add(new Issue { Description = "LDEC file must have a name specified in export.config" });
+            }
+
+            if (this.Exporter != Exporters.XML)
+            {
+                XmlNode xsltNode = _xmlDocument.SelectSingleNode("/export/xslt");
+                if (xsltNode == null || string.IsNullOrEmpty(xsltNode.InnerText))
+                {
+                    issues.Add(new Issue { Description = "LDEC file must specify an XSLT file for non-XML exporters" });
+                }
+            }
+
+            return issues;
+        }
+
         private void ReadConfigurationDetails()
         {
             XmlNode nameNode = _xmlDocument.SelectSingleNode("/export/name");

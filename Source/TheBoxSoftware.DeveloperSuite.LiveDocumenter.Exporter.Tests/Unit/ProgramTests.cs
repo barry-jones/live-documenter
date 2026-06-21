@@ -64,12 +64,47 @@ namespace TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.Tests.Unit
             _log.Verify(m => m.LogError(It.IsRegex("pulsic")));
         }
 
+        [Test]
+        public void Program_WhenNoFileSpecified_ReturnsNonZero()
+        {
+            string[] arguments = new string[] { "" };
+            Program p = CreateProgram(arguments);
+
+            int result = p.HandleExport();
+
+            Assert.That(result, Is.Not.EqualTo(0));
+        }
+
+        [Test]
+        public void Program_WhenHelpRequested_ReturnsZero()
+        {
+            string[] arguments = new string[] { "-h" };
+            Program p = CreateProgram(arguments);
+
+            int result = p.HandleExport();
+
+            Assert.That(result, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Program_WhenFileSpecifiedDoesntExist_ReturnsNonZero()
+        {
+            string[] arguments = new string[] { "nonexistentfile" };
+            Program p = CreateProgram(arguments);
+
+            _filesystem.Setup(m => m.FileExists(It.IsAny<string>())).Returns(false);
+
+            int result = p.HandleExport();
+
+            Assert.That(result, Is.Not.EqualTo(0));
+        }
+
         private Program CreateProgram(string[] arguments)
         {
             _ui = new Mock<IUserInterface>();
             _log = new Mock<ILog>();
             _filesystem = new Mock<IFileSystem>();
-            
+
             return new Program(arguments, _filesystem.Object, _ui.Object, _log.Object);
         }
     }

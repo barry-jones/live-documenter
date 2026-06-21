@@ -12,7 +12,7 @@ namespace TheBoxSoftware.Exporter
         private readonly IUserInterface _ui;
         private readonly ILog _log;
 
-		static void Main(string[] args)
+		static int Main(string[] args)
         {
             // https://github.com/dotnet/corefx/issues/31390
             AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
@@ -20,7 +20,7 @@ namespace TheBoxSoftware.Exporter
             ConsoleUserInterface ui = new ConsoleUserInterface();
             Program p = new Program(args, new FileSystem(), ui, new Logger(ui));
 
-            p.HandleExport();
+            return p.HandleExport();
         }
 
         public Program(string[] arguments, IFileSystem fileSystem, IUserInterface ui, ILog logger)
@@ -31,7 +31,7 @@ namespace TheBoxSoftware.Exporter
             _log = logger;
         }
 
-        public void HandleExport()
+        public int HandleExport()
         {
             Configuration configuration = null;
 
@@ -45,16 +45,16 @@ namespace TheBoxSoftware.Exporter
             catch(InvalidParameterException ex)
             {
                 _log.LogError($"An invalid value '{ex.Value}' for parameter '{ex.Parameter}' was provided. Please resolve and try again.");
-                return;
+                return 1;
             }
 
             string configFile = parameters.FileToExport;
 
             if (IsHelpShown(parameters))
-                return;
+                return 0;
 
             if (IsFileNotProvided(configFile))
-                return;
+                return 1;
 
             if (IsConfigurationFile(configFile))
             {
@@ -72,7 +72,7 @@ namespace TheBoxSoftware.Exporter
                 catch (InvalidOperationException e)
                 {
                     _log.LogError($"There was an error reading the configuration file\n  {e.Message}");
-                    return; // bail we have no configuration or some of it is missing
+                    return 1; // bail we have no configuration or some of it is missing
                 }
             }
             else
@@ -90,11 +90,22 @@ namespace TheBoxSoftware.Exporter
                     PrintVersionInformation();
 
                     Exporter exporter = new Exporter(configuration, parameters.Verbose, _log);
-                    exporter.Export();
+
+                    if (parameters.DryRun)
+                    {
+                        return exporter.ValidateAndLogSummary();
+                    }
+                    else
+                    {
+                        exporter.Export();
+                        return 0;
+                    }
                 }
+                return 1;
             }
 
             _ui.WriteLine(string.Empty);
+            return 1;
         }
 
         private static bool IsConfigurationFile(string configFile)

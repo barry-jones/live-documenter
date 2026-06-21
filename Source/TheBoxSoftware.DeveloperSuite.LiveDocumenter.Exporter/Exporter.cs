@@ -100,11 +100,118 @@ namespace TheBoxSoftware.Exporter
                 _log.LogInformation($"Details:\n  Visible members: ({string.Join("|", filters.ToArray())})\n");
             }
 
-            Document document = InitialiseDocumentForExport(files, settings);
-
-            foreach(Configuration.Output output in _configuration.Outputs)
+            try
             {
-                ExportToOutputMethod(settings, document, output);
+                Document document = InitialiseDocumentForExport(files, settings);
+
+                foreach(Configuration.Output output in _configuration.Outputs)
+                {
+                    ExportToOutputMethod(settings, document, output);
+                }
+            }
+            catch(Exception ex)
+            {
+                _log.LogError($"Failed to initialize document for export: {ex.Message}\n");
+            }
+        }
+
+        /// <summary>
+        /// Validates the configuration and assemblies without writing output. Returns 0 on success, 1 on failure.
+        /// </summary>
+        public int ValidateAndLogSummary()
+        {
+            _log.LogInformation("Performing dry-run validation...\n");
+
+            List<DocumentedAssembly> files = new List<DocumentedAssembly>();
+            Project project = null;
+            export.ExportSettings settings = new export.ExportSettings();
+            settings.Settings = new DocumentSettings();
+            settings.Settings.VisibilityFilters = _configuration.Filters;
+
+            // initialise the assemblies to be documented
+            if(Path.GetExtension(_configuration.Document) == ".ldproj")
+            {
+                try
+                {
+                    project = Project.Deserialize(_configuration.Document);
+                }
+                catch(InvalidOperationException e)
+                {
+                    _log.LogError(
+                        $"Invalid document '{_configuration.Document}' please fix the error and try again.\n  {e.Message}"
+                        );
+                    return 1;
+                }
+                files.AddRange(project.GetAssemblies());
+
+                if(!(settings.Settings.VisibilityFilters != null && settings.Settings.VisibilityFilters.Count > 0))
+                {
+                    settings.Settings.VisibilityFilters = project.VisibilityFilters;
+                }
+            }
+            else if(Path.GetExtension(_configuration.Document) == ".dll")
+            {
+                files.Add(new DocumentedAssembly(_configuration.Document));
+            }
+            else
+            {
+                files.AddRange(
+                    new InputFileReader().Read(
+                    _configuration.Document,
+                    "Release"
+                    ));
+            }
+
+            if(settings.Settings.VisibilityFilters == null || settings.Settings.VisibilityFilters.Count == 0)
+            {
+                _log.LogWarning("No visibility filters are found defaulting to Public and Protected.\n");
+                settings.Settings.VisibilityFilters = new List<Visibility>() { Visibility.Public };
+            }
+            else
+            {
+                List<string> filters = new List<string>();
+                foreach(Visibility current in settings.Settings.VisibilityFilters)
+                {
+                    filters.Add(Enum.GetName(typeof(Visibility), current));
+                }
+                _log.LogInformation($"Details:\n  Visible members: ({string.Join("|", filters.ToArray())})\n");
+            }
+
+            try
+            {
+                Document document = InitialiseDocumentForExport(files, settings);
+
+                // Validate all LDEC files without exporting
+                foreach(Configuration.Output output in _configuration.Outputs)
+                {
+                    export.ExportConfigFile config = new export.ExportConfigFile(
+                        Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
+                        + "\\ApplicationData\\"
+                        + output.File
+                        );
+                    config.Initialise();
+
+                    _log.LogInformation($"Validating LDEC file {output.File} for export to {output.Location}.\n");
+
+                    if(!config.IsValid)
+                    {
+                        _log.LogError($"There are issues with the LDEC file: {output.File}\n");
+                        List<export.Issue> validationIssues = config.GetValidationIssues();
+                        foreach(export.Issue issue in validationIssues)
+                        {
+                            _log.LogError($"  {issue.Description}\n");
+                        }
+                        return 1;
+                    }
+                }
+
+                _log.LogInformation("Dry-run validation successful. All configurations and assemblies are valid.\n");
+                return 0;
+            }
+            catch(Exception ex)
+            {
+                _log.LogError($"Failed to validate: {ex.Message}\n");
+                return 1;
             }
         }
 
@@ -124,6 +231,11 @@ namespace TheBoxSoftware.Exporter
             if(!config.IsValid)
             {
                 _log.LogError($"There are issues with the LDEC file: {output.File}\n");
+                List<export.Issue> validationIssues = config.GetValidationIssues();
+                foreach(export.Issue issue in validationIssues)
+                {
+                    _log.LogError($"  {issue.Description}\n");
+                }
             }
             else
             {
