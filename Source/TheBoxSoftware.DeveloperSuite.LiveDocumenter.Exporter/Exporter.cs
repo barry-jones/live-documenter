@@ -22,6 +22,7 @@ namespace TheBoxSoftware.Exporter
         private Configuration _configuration;
         private string _lastStep = string.Empty; // stores the last export step so we can work out where we are
         private bool _verbose = false;           // indicates if the output information should be verbose or not
+        private bool _dryRun = false;            // indicates if this is a dry-run validation
 
         /// <summary>
         /// Initialises a new instance of the Exporter
@@ -29,11 +30,23 @@ namespace TheBoxSoftware.Exporter
         /// <param name="configuration">The export configuration information.</param>
         /// <param name="verbose">Indicates if the output should be complete or limited.</param>
         /// <param name="log">The ILog instance to write export details to.</param>
-        public Exporter(Configuration configuration, bool verbose, ILog log)
+        public Exporter(Configuration configuration, bool verbose, ILog log) : this(configuration, verbose, log, false)
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the Exporter
+        /// </summary>
+        /// <param name="configuration">The export configuration information.</param>
+        /// <param name="verbose">Indicates if the output should be complete or limited.</param>
+        /// <param name="log">The ILog instance to write export details to.</param>
+        /// <param name="dryRun">Indicates if this is a dry-run (validation without writing files).</param>
+        public Exporter(Configuration configuration, bool verbose, ILog log, bool dryRun)
         {
             _log = log;
             _configuration = configuration;
             _verbose = verbose;
+            _dryRun = dryRun;
         }
 
         /// <summary>
@@ -100,6 +113,11 @@ namespace TheBoxSoftware.Exporter
                 _log.LogInformation($"Details:\n  Visible members: ({string.Join("|", filters.ToArray())})\n");
             }
 
+            if(_dryRun)
+            {
+                ValidateAssembliesForDryRun(files);
+            }
+
             Document document = InitialiseDocumentForExport(files, settings);
 
             foreach(Configuration.Output output in _configuration.Outputs)
@@ -108,57 +126,99 @@ namespace TheBoxSoftware.Exporter
             }
         }
 
+        private void ValidateAssembliesForDryRun(List<DocumentedAssembly> files)
+        {
+            foreach(DocumentedAssembly file in files)
+            {
+                if(!Path.IsPathRooted(file.FileName))
+                {
+                    _log.LogError($"Assembly file path is not absolute: {file.FileName}\n");
+                    throw new InvalidOperationException($"Assembly file path is not absolute: {file.FileName}");
+                }
+
+                if(!System.IO.File.Exists(file.FileName))
+                {
+                    _log.LogError($"Assembly file does not exist: {file.FileName}\n");
+                    throw new FileNotFoundException($"Assembly file does not exist: {file.FileName}");
+                }
+            }
+        }
+
         private void ExportToOutputMethod(export.ExportSettings settings, Document document, Configuration.Output output)
         {
             DateTime start = DateTime.Now;
             DateTime end;
-            export.ExportConfigFile config = new export.ExportConfigFile(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
+
+            string configPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
                 + "\\ApplicationData\\"
-                + output.File
-                );
+                + output.File;
+
+            if(!Path.IsPathRooted(configPath))
+            {
+                _log.LogError($"LDEC file path is not absolute: {configPath}\n");
+                throw new InvalidOperationException($"LDEC file path is not absolute: {configPath}");
+            }
+
+            if(!File.Exists(configPath))
+            {
+                _log.LogError($"LDEC file not found: {output.File}\n");
+                throw new FileNotFoundException($"LDEC file not found: {output.File}");
+            }
+
+            export.ExportConfigFile config = new export.ExportConfigFile(configPath);
             config.Initialise();
 
             _log.LogProgress($"\nExporting with {output.File} to location {output.Location}.\n");
 
             if(!config.IsValid)
             {
-                _log.LogError($"There are issues with the LDEC file: {output.File}\n");
+                List<string> issues = config.GetConfigIssues();
+                foreach(string issue in issues)
+                {
+                    _log.LogError($"{issue}\n");
+                }
             }
             else
             {
-                settings.PublishDirectory = output.Location;
-
-                export.Exporter exporter = export.Exporter.Create(document, settings, config);
-                exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
-                exporter.ExportException += new export.ExportExceptionHandler(exporter_ExportException);
-                exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
-                exporter.ExportFailed += new export.ExportFailedEventHandler(exporter_ExportFailed);
-
-                List<export.Issue> issues = exporter.GetIssues();
-                if(issues.Count > 0)
+                if(_dryRun)
                 {
-                    foreach(export.Issue issue in issues)
-                    {
-                        _log.LogError($"{issue.Description}\n");
-                    }
+                    _log.LogInformation($"[DRY-RUN] Would export {output.File} to {output.Location}\n");
                 }
                 else
                 {
-                    _log.LogInformation($"The export began at {start}.\n");
-                    exporter.Export();
-                    end = DateTime.Now;
+                    settings.PublishDirectory = output.Location;
 
-                    if(exporter.ExportExceptions != null && exporter.ExportExceptions.Count > 0)
+                    export.Exporter exporter = export.Exporter.Create(document, settings, config);
+                    exporter.ExportStep += new export.ExportStepEventHandler(exporter_ExportStep);
+                    exporter.ExportException += new export.ExportExceptionHandler(exporter_ExportException);
+                    exporter.ExportCalculated += new export.ExportCalculatedEventHandler(exporter_ExportCalculated);
+                    exporter.ExportFailed += new export.ExportFailedEventHandler(exporter_ExportFailed);
+
+                    List<export.Issue> issues = exporter.GetIssues();
+                    if(issues.Count > 0)
                     {
-                        _log.LogWarning("The export completed with the following issues:\n");
-                        foreach(Exception current in exporter.ExportExceptions)
+                        foreach(export.Issue issue in issues)
                         {
-                            _log.LogWarning(FormatExceptionData(current));
+                            _log.LogError($"{issue.Description}\n");
                         }
                     }
+                    else
+                    {
+                        _log.LogInformation($"The export began at {start}.\n");
+                        exporter.Export();
+                        end = DateTime.Now;
 
-                    _log.LogInformation($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
+                        if(exporter.ExportExceptions != null && exporter.ExportExceptions.Count > 0)
+                        {
+                            _log.LogWarning("The export completed with the following issues:\n");
+                            foreach(Exception current in exporter.ExportExceptions)
+                            {
+                                _log.LogWarning(FormatExceptionData(current));
+                            }
+                        }
+
+                        _log.LogInformation($"The export completed at {end}, taking {end.Subtract(start).ToString()}.\n");
+                    }
                 }
             }
         }
@@ -169,7 +229,16 @@ namespace TheBoxSoftware.Exporter
             Document document = new Document(files, Mappers.GroupedNamespaceFirst, false, entryCreator);
 
             document.Settings = settings.Settings;
-            document.UpdateDocumentMap();
+
+            try
+            {
+                document.UpdateDocumentMap();
+            }
+            catch(Exception ex)
+            {
+                _log.LogError($"Error parsing assemblies: {ex.Message}\n");
+                throw;
+            }
 
             _log.LogInformation($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
 

@@ -11,6 +11,7 @@ namespace TheBoxSoftware.Exporter
         private readonly string[] _arguments;
         private readonly IUserInterface _ui;
         private readonly ILog _log;
+        private int _exitCode = 0;
 
 		static void Main(string[] args)
         {
@@ -21,6 +22,7 @@ namespace TheBoxSoftware.Exporter
             Program p = new Program(args, new FileSystem(), ui, new Logger(ui));
 
             p.HandleExport();
+            Environment.Exit(p.ExitCode);
         }
 
         public Program(string[] arguments, IFileSystem fileSystem, IUserInterface ui, ILog logger)
@@ -29,6 +31,11 @@ namespace TheBoxSoftware.Exporter
             _arguments = arguments;
             _ui = ui;
             _log = logger;
+        }
+
+        public int ExitCode
+        {
+            get { return _exitCode; }
         }
 
         public void HandleExport()
@@ -45,16 +52,23 @@ namespace TheBoxSoftware.Exporter
             catch(InvalidParameterException ex)
             {
                 _log.LogError($"An invalid value '{ex.Value}' for parameter '{ex.Parameter}' was provided. Please resolve and try again.");
+                _exitCode = 2;
                 return;
             }
 
             string configFile = parameters.FileToExport;
 
             if (IsHelpShown(parameters))
+            {
+                _exitCode = 0;
                 return;
+            }
 
             if (IsFileNotProvided(configFile))
+            {
+                _exitCode = 1;
                 return;
+            }
 
             if (IsConfigurationFile(configFile))
             {
@@ -72,6 +86,7 @@ namespace TheBoxSoftware.Exporter
                 catch (InvalidOperationException e)
                 {
                     _log.LogError($"There was an error reading the configuration file\n  {e.Message}");
+                    _exitCode = 1;
                     return; // bail we have no configuration or some of it is missing
                 }
             }
@@ -89,12 +104,31 @@ namespace TheBoxSoftware.Exporter
                 {
                     PrintVersionInformation();
 
-                    Exporter exporter = new Exporter(configuration, parameters.Verbose, _log);
-                    exporter.Export();
+                    try
+                    {
+                        Exporter exporter = new Exporter(configuration, parameters.Verbose, _log, parameters.DryRun);
+                        exporter.Export();
+                        _ui.WriteLine(string.Empty);
+                        _exitCode = 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.LogError($"Export failed: {ex.Message}");
+                        _ui.WriteLine(string.Empty);
+                        _exitCode = 1;
+                    }
+                }
+                else
+                {
+                    _ui.WriteLine(string.Empty);
+                    _exitCode = 1;
                 }
             }
-
-            _ui.WriteLine(string.Empty);
+            else
+            {
+                _ui.WriteLine(string.Empty);
+                _exitCode = 1;
+            }
         }
 
         private static bool IsConfigurationFile(string configFile)

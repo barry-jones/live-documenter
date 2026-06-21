@@ -185,6 +185,47 @@ namespace TheBoxSoftware.Documentation.Exporting
         }
         
         /// <summary>
+        /// Returns human-readable validation issue strings if the config is invalid; empty list if valid.
+        /// </summary>
+        public List<string> GetConfigIssues()
+        {
+            CheckIfInitialised();
+            var issues = new List<string>();
+
+            if (_xmlDocument == null)
+            {
+                issues.Add("export.config entry missing or could not be read from LDEC file");
+                return issues;
+            }
+
+            if (string.IsNullOrEmpty(this.Name))
+            {
+                issues.Add("Export name is empty");
+            }
+
+            if (this.Exporter != Exporters.XML)
+            {
+                XmlNode xsltNode = _xmlDocument.SelectSingleNode("/export/xslt");
+                if (xsltNode == null || string.IsNullOrEmpty(xsltNode.InnerText))
+                {
+                    issues.Add("XSLT entry missing from export.config");
+                }
+                else
+                {
+                    using (ICompressedConfigFile container = new ZipCompressedConfigFile(_configFile))
+                    {
+                        if (!container.HasEntry(xsltNode.InnerText))
+                        {
+                            issues.Add($"XSLT file '{xsltNode.InnerText}' not found in LDEC archive");
+                        }
+                    }
+                }
+            }
+
+            return issues;
+        }
+
+        /// <summary>
         /// Checks if the file has all of the requisits met and sets the <see cref="IsValid"/> property.
         /// </summary>
         private void CheckIsValid(ICompressedConfigFile container)
