@@ -242,7 +242,64 @@ namespace TheBoxSoftware.Exporter
 
             _log.LogInformation($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
 
+            if(_verbose && document.SkippedMembers.Count > 0)
+            {
+                if(_dryRun)
+                {
+                    _log.LogInformation("  Skipped members:\n");
+                    foreach(var skipped in document.SkippedMembers)
+                    {
+                        string fullyQualified = GetFullyQualifiedName(skipped.Member);
+                        _log.LogInformation($"    {fullyQualified} — {skipped.Reason}\n");
+                    }
+                }
+                else
+                {
+                    Dictionary<string, int> skipCounts = new Dictionary<string, int>();
+                    foreach(var skipped in document.SkippedMembers)
+                    {
+                        if(!skipCounts.ContainsKey(skipped.Reason))
+                        {
+                            skipCounts[skipped.Reason] = 0;
+                        }
+                        skipCounts[skipped.Reason]++;
+                    }
+                    foreach(var kvp in skipCounts)
+                    {
+                        _log.LogInformation($"  Skipped {kvp.Value} members — {kvp.Key}\n");
+                    }
+                }
+            }
+
             return document;
+        }
+
+        private string GetFullyQualifiedName(ReflectedMember member)
+        {
+            if(member is TypeDef typeDef)
+            {
+                return $"{typeDef.Namespace}.{typeDef.Name}";
+            }
+            else if(member is MethodDef methodDef)
+            {
+                return $"{methodDef.Type.Namespace}.{methodDef.Type.Name}.{methodDef.GetDisplayName(false, false)}";
+            }
+            else if(member is PropertyDef propertyDef)
+            {
+                return $"{propertyDef.OwningType.Namespace}.{propertyDef.OwningType.Name}.{propertyDef.Name}";
+            }
+            else if(member is FieldDef fieldDef)
+            {
+                return $"{fieldDef.Type.Namespace}.{fieldDef.Type.Name}.{fieldDef.Name}";
+            }
+            else if(member is EventDef eventDef)
+            {
+                return $"{eventDef.Type.Namespace}.{eventDef.Type.Name}.{eventDef.Name}";
+            }
+            else
+            {
+                return member.Name;
+            }
         }
 
         private void exporter_ExportStep(object sender, export.ExportStepEventArgs e)

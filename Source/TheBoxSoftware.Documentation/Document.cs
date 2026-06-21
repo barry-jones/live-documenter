@@ -6,6 +6,18 @@ namespace TheBoxSoftware.Documentation
     using Reflection;
     using Reflection.Comments;
 
+    public class SkippedMember
+    {
+        internal SkippedMember(ReflectedMember member, string reason)
+        {
+            Member = member;
+            Reason = reason;
+        }
+
+        public ReflectedMember Member { get; }
+        public string Reason { get; }
+    }
+
     /// <summary>
     /// Represents the entire documentation for a set of assemblies.
     /// </summary>
@@ -15,6 +27,7 @@ namespace TheBoxSoftware.Documentation
         private DocumentSettings _settings;
         private DocumentMap _map;
         private List<DocumentedAssembly> _assemblies;
+        private List<SkippedMember> _skippedMembers = new List<SkippedMember>();
 
         /// <summary>
         /// Initialises a new instance of the Document class.
@@ -37,6 +50,7 @@ namespace TheBoxSoftware.Documentation
             _mapper = DocumentMapper.Create(assemblies, mapperType, useObservableCollection, creator);
             _mapper.PreEntryAdded += new EventHandler<PreEntryAddedEventArgs>(PreEntryAdded);
             _assemblies = assemblies;
+            _skippedMembers = new List<SkippedMember>();
         }
 
         /// <summary>
@@ -44,6 +58,7 @@ namespace TheBoxSoftware.Documentation
         /// </summary>
         public void UpdateDocumentMap()
         {
+            _skippedMembers.Clear();
             _map = _mapper.GenerateMap();
         }
 
@@ -236,6 +251,11 @@ namespace TheBoxSoftware.Documentation
         private void PreEntryAdded(object sender, PreEntryAddedEventArgs e)
         {
             e.Filter = IsMemberFiltered(e.Member);
+            if (e.Filter)
+            {
+                string reason = $"visibility: {e.Member.MemberAccess}";
+                _skippedMembers.Add(new SkippedMember(e.Member, reason));
+            }
         }
 
         /// <summary>
@@ -281,6 +301,11 @@ namespace TheBoxSoftware.Documentation
             {
                 return Assemblies != null && Assemblies.Count > 0;
             }
+        }
+
+        public IReadOnlyList<SkippedMember> SkippedMembers
+        {
+            get { return _skippedMembers.AsReadOnly(); }
         }
     }
 }
