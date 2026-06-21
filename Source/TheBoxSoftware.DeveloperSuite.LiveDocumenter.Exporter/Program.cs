@@ -116,11 +116,12 @@ namespace TheBoxSoftware.Exporter
                     "   [e.g.] exporter theboxsoftware.reflection.dll -to c:\\temp\\web -filters \"public|protected\"\n\n" +
                     "   <filename>  The path to the configuration file, library, project or solution.\n" +
                     "   modifiers:\n" +
-                    "     -h        show help information\n" +
-                    "     -v        show verbose export details\n" +
-                    "     -to       the directory to export to\n" +
-                    "     -format   the ldec file format to export content. Defaults to web-msdn.ldec\n" +
-                    "     -filters  the visibilty filters (public|protected etc) defaults to public\n\n" +
+                    "     -h            show help information\n" +
+                    "     -v, --verbose show verbose export details\n" +
+                    "     -d, --dry-run perform a dry run without writing output files\n" +
+                    "     -to           the directory to export to\n" +
+                    "     -format       the ldec file format to export content. Defaults to web-msdn.ldec\n" +
+                    "     -filters      the visibilty filters (public|protected etc) defaults to public\n\n" +
                     "\n`-to`, `-format` and `-filters` are only used when the file provided is not a\n" +
                     "configuration xml file.\n\n";
 

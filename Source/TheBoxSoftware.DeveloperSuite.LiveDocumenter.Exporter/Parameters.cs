@@ -19,10 +19,11 @@ namespace TheBoxSoftware.Exporter
             Visibility.InternalProtected,
             Visibility.Private
         };
-        private readonly string[] PARAMETERS = { "-v", "-h", "-format", "-f", "-filters", "-to" };
+        private readonly string[] PARAMETERS = { "-v", "-h", "-format", "-f", "-filters", "-to", "-d", "--dry-run", "--verbose" };
 
         private bool _showVerbose = false;
         private bool _showHelp = false;
+        private bool _showDryRun = false;
         private string _toLocation = string.Empty;
         private List<Visibility> _filters = new List<Visibility>();
         private string _format = string.Empty;
@@ -41,6 +42,7 @@ namespace TheBoxSoftware.Exporter
             {
                 ReadFileToExport(parameters);
                 ReadVerbosity(parameters);
+                ReadDryRun(parameters);
                 ReadFormats(parameters);
                 ReadTo(parameters);
                 ReadFilters(parameters);
@@ -94,7 +96,7 @@ namespace TheBoxSoftware.Exporter
         {
             for (int i = 0; i < parameters.Length; i++)
             {
-                if ("-v" == parameters[i])
+                if ("-v" == parameters[i] || "--verbose" == parameters[i])
                 {
                     _showVerbose = true;
                 }
@@ -108,6 +110,17 @@ namespace TheBoxSoftware.Exporter
                 if ("-h" == parameters[i])
                 {
                     _showHelp = true;
+                }
+            }
+        }
+
+        private void ReadDryRun(string[] parameters)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if ("-d" == parameters[i] || "--dry-run" == parameters[i])
+                {
+                    _showDryRun = true;
                 }
             }
         }
@@ -195,6 +208,11 @@ namespace TheBoxSoftware.Exporter
         public bool Verbose
         {
             get { return _showVerbose; }
+        }
+
+        public bool DryRun
+        {
+            get { return _showDryRun; }
         }
 
         public string Format

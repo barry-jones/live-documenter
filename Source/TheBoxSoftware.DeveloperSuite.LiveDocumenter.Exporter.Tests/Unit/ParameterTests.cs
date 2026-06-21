@@ -188,5 +188,78 @@
 
             Assert.That(test, Throws.TypeOf<InvalidParameterException>());
         }
+
+        [Test]
+        public void Parameters_WhenDryRunProvided_DryRunIsTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "mylib.dll", "-d" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.DryRun);
+        }
+
+        [Test]
+        public void Parameters_WhenLongDryRunProvided_DryRunIsTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "mylib.dll", "--dry-run" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.DryRun);
+        }
+
+        [Test]
+        public void Parameters_WhenVerboseProvidedLongForm_VerboseIsTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "mylib.dll", "--verbose" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.Verbose);
+        }
+
+        [Test]
+        public void Parameters_WhenDryRunAndVerboseProvided_BothAreTrue()
+        {
+            string[] input = new string[] { "mylib.dll", "-d", "--verbose", "-to", "c:\\out", "-format", "web-msdn.ldec" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(true, parameters.DryRun);
+            Assert.AreEqual(true, parameters.Verbose);
+            Assert.AreEqual("c:\\out", parameters.To);
+        }
+
+        [Test]
+        public void Parameters_WhenFlagFollowsTo_FlagIsNotConsumedAsValue()
+        {
+            string[] input = new string[] { "mylib.dll", "-to", "--dry-run" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(string.Empty, parameters.To);
+            Assert.AreEqual(true, parameters.DryRun);
+        }
+
+        [Test]
+        public void Parameters_WhenVerboseShortFormProvided_VerboseIsTrue()
+        {
+            const bool EXPECTED = true;
+            string[] input = new string[] { "mylib.dll", "-v" };
+
+            Parameters parameters = new Parameters();
+            parameters.Read(input);
+
+            Assert.AreEqual(EXPECTED, parameters.Verbose);
+        }
     }
 }
