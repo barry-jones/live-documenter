@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter\TheBoxSoftware.DeveloperSuite.LiveDocumenter.Exporter.csproj" />
+    <ProjectReference Include="..\TheBoxSoftware.Reflection\TheBoxSoftware.Reflection.csproj" />
   </ItemGroup>
 
 </Project>

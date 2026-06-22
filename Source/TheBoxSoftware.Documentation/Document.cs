@@ -241,7 +241,7 @@ namespace TheBoxSoftware.Documentation
         /// <summary>
         /// The DocumentMapper used to generate the DocumentMap
         /// </summary>
-        protected IDocumentMapper Mapper
+        public IDocumentMapper Mapper
         {
             get { return _mapper; }
         }

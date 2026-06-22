@@ -22,6 +22,9 @@ namespace TheBoxSoftware.Exporter
         private Configuration _configuration;
         private string _lastStep = string.Empty; // stores the last export step so we can work out where we are
         private bool _verbose = false;           // indicates if the output information should be verbose or not
+        private Dictionary<Visibility, List<string>> _skippedMembers;  // collects members filtered by visibility
+        private List<Visibility> _visibilityFilters;  // visibility filters to report on
+        private bool _dryRun = false;            // indicates if this is a dry-run validation
 
         /// <summary>
         /// Initialises a new instance of the Exporter
@@ -42,6 +45,7 @@ namespace TheBoxSoftware.Exporter
         /// </summary>
 		public void Export()
         {
+            _dryRun = false;
             List<DocumentedAssembly> files = new List<DocumentedAssembly>();
             Project project = null;
             export.ExportSettings settings = new export.ExportSettings();
@@ -108,6 +112,11 @@ namespace TheBoxSoftware.Exporter
                 {
                     ExportToOutputMethod(settings, document, output);
                 }
+
+                if(_verbose)
+                {
+                    LogSkipSummary();
+                }
             }
             catch(Exception ex)
             {
@@ -120,6 +129,7 @@ namespace TheBoxSoftware.Exporter
         /// </summary>
         public int ValidateAndLogSummary()
         {
+            _dryRun = true;
             _log.LogInformation("Performing dry-run validation...\n");
 
             List<DocumentedAssembly> files = new List<DocumentedAssembly>();
@@ -206,6 +216,12 @@ namespace TheBoxSoftware.Exporter
                 }
 
                 _log.LogInformation("Dry-run validation successful. All configurations and assemblies are valid.\n");
+
+                if(_verbose)
+                {
+                    LogSkipDetails();
+                }
+
                 return 0;
             }
             catch(Exception ex)
@@ -277,8 +293,17 @@ namespace TheBoxSoftware.Exporter
 
         private Document InitialiseDocumentForExport(List<DocumentedAssembly> files, export.ExportSettings settings)
         {
+            _skippedMembers = new Dictionary<Visibility, List<string>>();
+            _visibilityFilters = settings.Settings.VisibilityFilters ?? new List<Visibility>();
+
             EntryCreator entryCreator = new EntryCreator();
             Document document = new Document(files, Mappers.GroupedNamespaceFirst, false, entryCreator);
+
+            // Subscribe to skip-observer for filtering tracking
+            if(_verbose)
+            {
+                document.Mapper.PreEntryAdded += OnPreEntryAdded;
+            }
 
             document.Settings = settings.Settings;
             document.UpdateDocumentMap();
@@ -286,6 +311,46 @@ namespace TheBoxSoftware.Exporter
             _log.LogInformation($"  {Path.GetFileName(_configuration.Document)} contains {entryCreator.Created} members and types.\n");
 
             return document;
+        }
+
+        private void OnPreEntryAdded(object sender, PreEntryAddedEventArgs e)
+        {
+            if(e.Filter && e.Member != null)
+            {
+                Visibility visibility = e.Member.MemberAccess;
+                if(!_skippedMembers.ContainsKey(visibility))
+                {
+                    _skippedMembers[visibility] = new List<string>();
+                }
+                _skippedMembers[visibility].Add(e.Member.Name);
+            }
+        }
+
+        private void LogSkipSummary()
+        {
+            _log.LogInformation("[Visibility]\n");
+            foreach(Visibility visibility in _visibilityFilters)
+            {
+                int count = _skippedMembers.ContainsKey(visibility) ? _skippedMembers[visibility].Count : 0;
+                string visibilityName = Enum.GetName(typeof(Visibility), visibility);
+                _log.LogInformation($"{visibilityName} — {count} members excluded.\n");
+            }
+        }
+
+        private void LogSkipDetails()
+        {
+            foreach(Visibility visibility in _visibilityFilters)
+            {
+                if(_skippedMembers.ContainsKey(visibility) && _skippedMembers[visibility].Count > 0)
+                {
+                    string visibilityName = Enum.GetName(typeof(Visibility), visibility);
+                    _log.LogInformation($"{visibilityName}:\n");
+                    foreach(string memberName in _skippedMembers[visibility])
+                    {
+                        _log.LogInformation($"  {memberName}\n");
+                    }
+                }
+            }
         }
 
         private void exporter_ExportStep(object sender, export.ExportStepEventArgs e)
