@@ -326,31 +326,84 @@ namespace TheBoxSoftware.Exporter
             }
         }
 
+        // The member visibilities a filter can EXCLUDE. Public members are always shown
+        // (see Document.IsMemberFiltered), so Public is never an excluded group.
+        private static readonly Visibility[] FilterableVisibilities =
+        {
+            Visibility.Private, Visibility.Protected, Visibility.InternalProtected, Visibility.Internal
+        };
+
         private void LogSkipSummary()
         {
             _log.LogInformation("[Visibility]\n");
-            foreach(Visibility visibility in _visibilityFilters)
+            foreach(string line in BuildSkipSummaryLines(_visibilityFilters, _skippedMembers))
             {
-                int count = _skippedMembers.ContainsKey(visibility) ? _skippedMembers[visibility].Count : 0;
-                string visibilityName = Enum.GetName(typeof(Visibility), visibility);
-                _log.LogInformation($"{visibilityName} — {count} members excluded.\n");
+                _log.LogInformation($"{line}\n");
             }
         }
 
         private void LogSkipDetails()
         {
-            foreach(Visibility visibility in _visibilityFilters)
+            foreach(string line in BuildSkipDetailLines(_visibilityFilters, _skippedMembers))
             {
-                if(_skippedMembers.ContainsKey(visibility) && _skippedMembers[visibility].Count > 0)
+                _log.LogInformation($"{line}\n");
+            }
+        }
+
+        /// <summary>
+        /// Builds the grouped skip summary: one line per visibility the filter EXCLUDES
+        /// (a visibility NOT in <paramref name="allowedFilters"/>), with the count of members
+        /// skipped for that reason. A member is skipped when its own visibility is not allowed,
+        /// so the report is keyed by the EXCLUDED visibilities — never by the allowed ones.
+        /// </summary>
+        internal static List<string> BuildSkipSummaryLines(
+            ICollection<Visibility> allowedFilters,
+            IDictionary<Visibility, List<string>> skippedMembers)
+        {
+            List<string> lines = new List<string>();
+            foreach(Visibility visibility in FilterableVisibilities)
+            {
+                if(allowedFilters != null && allowedFilters.Contains(visibility))
                 {
-                    string visibilityName = Enum.GetName(typeof(Visibility), visibility);
-                    _log.LogInformation($"{visibilityName}:\n");
-                    foreach(string memberName in _skippedMembers[visibility])
-                    {
-                        _log.LogInformation($"  {memberName}\n");
-                    }
+                    continue; // in the allowed set — these members are kept, not excluded
+                }
+
+                int count = skippedMembers != null && skippedMembers.ContainsKey(visibility)
+                    ? skippedMembers[visibility].Count
+                    : 0;
+                lines.Add($"{Enum.GetName(typeof(Visibility), visibility)} — {count} members excluded.");
+            }
+            return lines;
+        }
+
+        /// <summary>
+        /// Builds the per-member skip detail (dry-run + verbose): each excluded visibility that
+        /// actually skipped members, followed by the member names. Keyed by the EXCLUDED
+        /// visibilities, mirroring <see cref="BuildSkipSummaryLines"/>.
+        /// </summary>
+        internal static List<string> BuildSkipDetailLines(
+            ICollection<Visibility> allowedFilters,
+            IDictionary<Visibility, List<string>> skippedMembers)
+        {
+            List<string> lines = new List<string>();
+            foreach(Visibility visibility in FilterableVisibilities)
+            {
+                if(allowedFilters != null && allowedFilters.Contains(visibility))
+                {
+                    continue;
+                }
+                if(skippedMembers == null || !skippedMembers.ContainsKey(visibility) || skippedMembers[visibility].Count == 0)
+                {
+                    continue;
+                }
+
+                lines.Add($"{Enum.GetName(typeof(Visibility), visibility)}:");
+                foreach(string memberName in skippedMembers[visibility])
+                {
+                    lines.Add($"  {memberName}");
                 }
             }
+            return lines;
         }
 
         private void exporter_ExportStep(object sender, export.ExportStepEventArgs e)
